@@ -4,3 +4,36 @@ scripts/current.pine
 temp_*
 *.log
 discovery-log.json
+
+# local secrets / env
+.env
+**/.env
+*.env
+
+# runtime logs / generated research logs
+alert-bridge/logs/*.jsonl
+alert-bridge/logs/*.log
+alert-bridge/logs/*.out
+alert-bridge/logs/d2r_daily/
+
+# backups / generated patch backups
+*.backup
+*.backup_*
+*.bak
+backups/
+
+# runtime state / counters / last snapshots
+alert-bridge/*.jsonl
+alert-bridge/logs/*.json
+alert-bridge/logs/*_last.json
+alert-bridge/logs/*state*.json
+alert-bridge/logs/*counter*.json
+
+# patch/script backups
+*.backup.*
+*.backup_*
+*.bak*
+*.lock
+
+# generated backtest outputs - keep source scripts/reports only if intentionally added
+my-strategy/research/backtests/**/all_summaries.json

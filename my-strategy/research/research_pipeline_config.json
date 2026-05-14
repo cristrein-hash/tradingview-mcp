@@ -1,0 +1,107 @@
+{
+  "name": "EDGE Trading Research Pipeline",
+  "status": "experimental",
+
+  "analysis_window": {
+    "default_since": "2026-05-04",
+    "rolling_days": 14
+  },
+
+  "symbols": [
+    "PEPPERSTONE:XAUUSD",
+    "PEPPERSTONE:XAGUSD",
+    "PEPPERSTONE:XPTUSD",
+    "PEPPERSTONE:BTCUSD",
+    "PEPPERSTONE:ETHUSD",
+    "PEPPERSTONE:US500",
+    "VANTAGE:USOUSD",
+    "PEPPERSTONE:EURUSD",
+    "PEPPERSTONE:USDJPY"
+  ],
+
+  "timeframes": {
+    "intraday": ["15", "30", "60"],
+    "htf": ["240", "720", "1D"],
+    "default_backtest": ["15", "30", "60"]
+  },
+
+  "alert_types": {
+    "default_backtest": [
+      "monitor_dynamic_bb_zone",
+      "monitor_dynamic_line",
+      "monitor_zone"
+    ],
+    "extended": [
+      "monitor_dynamic_bb_zone",
+      "monitor_dynamic_line",
+      "monitor_zone",
+      "monitor_invalidation",
+      "monitor_breakout",
+      "monitor_trendline_lta",
+      "monitor_trendline_ltb"
+    ]
+  },
+
+  "classifications": {
+    "primary_focus": [
+      "SETUP_CANDIDATO_FORTE",
+      "SETUP_EM_OBSERVACAO",
+      "SETUP EM OBSERVAÇÃO"
+    ],
+    "candidate_only": [
+      "SETUP_CANDIDATO_FORTE"
+    ]
+  },
+
+  "d2": {
+    "enabled": true,
+    "batch_limit": 1,
+    "iterations_default": 10,
+    "timeout_seconds": 600,
+    "sleep_seconds": 10,
+    "skip_partial_50": true,
+    "horizons": [5, 10, 20, 50]
+  },
+
+  "d2r": {
+    "enabled": true,
+    "batch_limit": 3,
+    "iterations_default": 10,
+    "timeout_seconds": 900,
+    "sleep_seconds": 10,
+    "minimum_events_for_report": 30,
+    "target_events_for_decision": 50
+  },
+
+  "reports": {
+    "daily_dir": "/Users/cristrein/tradingview-mcp/my-strategy/research/daily",
+    "weekly_dir": "/Users/cristrein/tradingview-mcp/my-strategy/research/weekly",
+    "proposals_dir": "/Users/cristrein/tradingview-mcp/my-strategy/research/proposals"
+  },
+
+  "logs": {
+    "setup_research_log": "/Users/cristrein/tradingview-mcp/alert-bridge/logs/setup_research_log.jsonl",
+    "setup_outcome_log": "/Users/cristrein/tradingview-mcp/alert-bridge/logs/setup_outcome_log.jsonl",
+    "setup_r_outcome_log": "/Users/cristrein/tradingview-mcp/alert-bridge/logs/setup_r_outcome_log.jsonl",
+    "d2_backfill_runs": "/Users/cristrein/tradingview-mcp/alert-bridge/logs/d2_backfill_runs.jsonl",
+    "d2r_backfill_runs": "/Users/cristrein/tradingview-mcp/alert-bridge/logs/d2r_backfill_runs.jsonl"
+  },
+
+  "ignore": {
+    "test_markers": [
+      "test_connectivity",
+      "system_test",
+      "teste manual",
+      "teste controlado",
+      "named tunnel",
+      "webhook fixo",
+      "ssl ok"
+    ]
+  },
+
+  "decision_policy": {
+    "do_not_auto_modify_strategy_rules": true,
+    "do_not_auto_modify_operational_prompt": true,
+    "human_approval_required_for_d4": true
+  }
+}

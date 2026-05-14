@@ -1,0 +1,1580 @@
+{
+  "version": "0.4",
+  "updated_at": "2026-05-14T13:22:34Z",
+  "language": "pt-BR",
+  "mode": "tradingview_operational_assistant",
+  "strategy_status": "active",
+  "strategy_name": "BigBeluga Zone Reversal with RSI Extreme, TOP/BOTTOM and Market Order Bubbles",
+  "legacy_strategy_status": "deprecated_reference_only",
+  "watchlist": {
+    "allowed_symbols": [
+      "USOUSD",
+      "XAUUSD",
+      "XAGUSD",
+      "XPTUSD",
+      "ETHUSD",
+      "BTCUSD",
+      "US500",
+      "EURUSD"
+    ],
+    "_changelog_2026_05_12": [
+      "Removido GBPUSD da watchlist (decisão operacional 2026-05-12).",
+      "Removido USDJPY da watchlist (decisão prévia 2026-04-29).",
+      "USOUSD mantido apenas para MONITORAÇÃO/CONTEXTO macro — não criar módulo operacional. Atualmente influencia outros ativos por situação geopolítica."
+    ],
+    "_changelog_2026_05_13": [
+      "USOUSD PROMOVIDO a operacional LONG-only (D2R Phase 1: 5 trades, 80% win, +6.81R, avg +1.36R). Decisão baseada em dados live, não backtest.",
+      "XPTUSD SHORT desativado operacionalmente (D2R Phase 1: 8 trades, 0% win, -8R total). Manter monitoring para contexto metals. Avaliar LONG-only futuro com mais amostra.",
+      "US500 SHORT degradado (D2R Phase 1: 3 trades, 0% win, -3R). US500 LONG mantido ativo (6 trades, 100% win, +12.79R).",
+      "XAUUSD SHORT marcado para revisão profunda futura (D2R Phase 1: 7 trades, 14% win, -2.77R)."
+    ],
+    "monitoring_only_assets": {},
+    "operational_assets_with_constraints": {
+      "USOUSD": "OPERACIONAL LONG-only. PR 1 (2026-05-13) confirmou edge LONG (n=5, 80% win, +6.81R). PR 4 (2026-05-14): SHORT explicitamente BLOQUEADO operacionalmente — D2R n=6, 17% win, -2.58R. SHORT pode classificar como SETUP_EM_OBSERVACAO ou NO_TRADE, NUNCA CANDIDATO_FORTE.",
+      "US500": "LONG operacional (n=7, 100% win, +14.54R). SHORT BLOQUEADO (n=3, 0% win, -3R) — manter máx SETUP_EM_OBSERVACAO. PR 4: sem mudança.",
+      "XAUUSD": "LONG operacional (n=13, 46% win, +7.03R). SHORT marginal (n=23, 39% win, +12.64R total mas win baixo) — máx SETUP_EM_OBSERVACAO, em revisão profunda futura. PR 4: sem mudança.",
+      "XPTUSD": "PR 4 (2026-05-14): LONG OPERACIONAL (n=6, 83% win, +16.39R — sample dobrou desde PR1). SHORT: máx SETUP_EM_OBSERVACAO (n=25, 40% win, +8.24R — reversão vs PR 1 onde era 0/8). XPT SHORT pode coletar mais dados em shadow defensivo — NUNCA CANDIDATO_FORTE até n≥50 e win≥50%.",
+      "ETHUSD": "PR 4 (2026-05-14): OPERACIONAL ambas direções. LONG n=21, 57% win, +18.28R (sólido). SHORT n=10, 60% win, +11.33R (edge-surpresa confirmado). Ambos podem classificar como SETUP_CANDIDATO_FORTE.",
+      "EURUSD": "PR 4 (2026-05-14): OPERACIONAL ambas direções. LONG n=3, 100% win, +5.96R. SHORT n=3, 67% win, +3.37R. Sample pequeno mas direcional clara — pode classificar como SETUP_CANDIDATO_FORTE.",
+      "XAGUSD": "PR 4 (2026-05-14): SHORT operacional (n=8, 50% win, +4.16R). LONG não tem amostra significativa ainda. Ambas direções podem classificar até CANDIDATO_FORTE quando critérios técnicos OK."
+    },
+    "match_rule": "Um símbolo TradingView é permitido se a parte depois de ':' bater exatamente com algum item da whitelist. Exemplo: PEPPERSTONE:XAUUSD é permitido porque XAUUSD está na whitelist.",
+    "outside_watchlist_policy": "Claude pode ler e descrever ativos fora da whitelist, mas não pode gerar sinal operacional, desenhar setup, criar alerta, editar Pine Script ou apoiar execução.",
+    "_changelog_2026_05_14": [
+      "PR 4 — Refinamento operacional pós-Phase 2 (n=220 D2R consolidado, USDJPY excluído).",
+      "ETHUSD: promovido a operacional AMBAS direções. SHORT 60% win em 10 trades (+11.33R) confirmou edge-surpresa. LONG 57% win em 21 trades.",
+      "XPTUSD: LONG desbloqueado operacionalmente (83% win, +16.39R em n=6 — sample dobrou desde PR1). SHORT relaxado para máx SETUP_EM_OBSERVACAO (n=25, 40% win, +8.24R — inversão vs PR1 mas ainda preliminar).",
+      "EURUSD: promovido a operacional AMBAS direções. LONG 100% win n=3, SHORT 67% win n=3. Sample pequeno mas direcional clara.",
+      "XAGUSD: SHORT explicitamente operacional (50% win, +4.16R em n=8).",
+      "USOUSD SHORT: explicitamente BLOQUEADO operacionalmente (n=6, 17% win, -2.58R — novo achado pós-PR1).",
+      "US500 SHORT, XAUUSD SHORT: sem mudança (manter degradados conforme PR2).",
+      "Princípio aplicado: paciência metodológica (n<30 direcional, n<50 preliminar, n≥100 sólido). Decisões marginais usam shadow defensivo (max OBSERVACAO)."
+    ]
+  },
+  "allowed_actions": {
+    "read_chart": true,
+    "analyze_chart": true,
+    "suggest_trade": true,
+    "draw_on_chart": true,
+    "create_alerts": true,
+    "edit_pine_scripts": true,
+    "create_pine_scripts": true,
+    "modify_indicators": true,
+    "take_screenshots": true,
+    "change_symbol": true,
+    "change_timeframe": true,
+    "scan_watchlist": true,
+    "support_execution_planning": true,
+    "execute_trades": false
+  },
+  "human_confirmation_required": {
+    "draw_on_chart": false,
+    "create_alerts": false,
+    "edit_pine_scripts": true,
+    "create_pine_scripts": true,
+    "modify_indicators": true,
+    "placing_live_orders": true,
+    "modifying_live_orders": true,
+    "canceling_live_orders": true,
+    "deleting_alerts": true,
+    "overwriting_pine_scripts": true,
+    "changing_strategy_rules": true,
+    "modifying_alerts": true,
+    "delete_user_drawings": true,
+    "modify_user_drawings": true
+  },
+  "core_principles": [
+    "Price Action e regiões estruturais são a base da leitura.",
+    "Indicadores servem como confirmação, nunca como gatilho isolado.",
+    "Não procurar sinais isolados; procurar confluências agrupadas na mesma região operacional.",
+    "TOP/BOTTOM isolado não é setup.",
+    "RSI extremo é obrigatório para setup de reversão clássica (régua global). Para módulos experimentais (MODULE_AWARE_GLOBAL_RULES_V3), o requisito de RSI é definido pelo checklist do módulo, não por esta régua.",
+    "Market Order Bubbles clusters são confluência forte, mas não substituem zona, RSI e TOP/BOTTOM.",
+    "Trendlines têm peso auxiliar, não principal.",
+    "Nenhum setup deve ser sugerido se o risco/retorno mínimo de 2:1 não for possível.",
+    "Nenhuma ação operacional sensível deve ser feita sem confirmação humana explícita."
+  ],
+  "timeframes": {
+    "swing": [
+      "240",
+      "4H",
+      "720",
+      "12H",
+      "D",
+      "1D"
+    ],
+    "intraday": [
+      "15",
+      "15M",
+      "30",
+      "30M",
+      "60",
+      "1H"
+    ],
+    "rules": {
+      "swing": "Usar 4H, 12H e Diário para operações mais longas e menos frequentes.",
+      "intraday": "Usar 15M, 30M e 1H para operações intraday, sempre respeitando contexto maior.",
+      "top_down": "Quando possível, analisar contexto maior antes de validar setup no timeframe atual."
+    }
+  },
+  "primary_setup": {
+    "name": "Reversão em Zona BigBeluga com RSI Extremo, TOP/BOTTOM e Bubbles",
+    "description": "Operar reversões ou continuações em zonas relevantes marcadas pelo BigBeluga/SMC, suporte ou resistência, usando TOP/BOTTOM, RSI extremo e clusters de Market Order Bubbles como confirmações de exaustão/reação, sempre com validação de espaço, stop técnico e R:R mínimo de 2:1."
+  },
+  "zone_rules": {
+    "main_zones": [
+      "BigBeluga / SMC",
+      "suporte horizontal relevante",
+      "resistência horizontal relevante",
+      "região estrutural importante"
+    ],
+    "secondary_zones": [
+      "Volume Profile / HVN / LVN, se visível",
+      "HTF Power of Three boxes, se visíveis",
+      "trendlines, apenas como apoio auxiliar"
+    ],
+    "required": true,
+    "rule": "O preço precisa estar dentro, tocando ou muito próximo de uma zona relevante. Se o preço estiver no meio do range sem região clara, classificar como NO TRADE."
+  },
+  "top_bottom_rules": {
+    "required": true,
+    "validity_rule": "TOP/BOTTOM só é válido se estiver dentro ou muito próximo de uma zona relevante.",
+    "buy_condition": "Para compra, procurar BOTTOM, LONG ou sinal bullish dentro/próximo da zona.",
+    "sell_condition": "Para venda, procurar TOP, SHORT ou sinal bearish dentro/próximo da zona.",
+    "invalid_condition": "Sinal TOP/BOTTOM fora de zona relevante não conta como setup.",
+    "nas100_swing_entry_note": "O nome do indicador 'NAS100 Swing Entry Institutional' é apenas o nome do script. Ele pode ser usado nos demais ativos da whitelist e não deve ser desconsiderado só por conter NAS100 no nome."
+  },
+  "rsi_rules": {
+    "required": "module_dependent",
+    "_v3_note": "Desde MODULE_AWARE_GLOBAL_RULES_V3: RSI extremo deixou de ser requisito universal. É confluência cuja exigência depende do módulo. Os campos abaixo descrevem o comportamento DEFAULT quando nenhum módulo experimental se aplica. Quando um módulo experimental se aplica, seu checklist próprio define o requisito de RSI.",
+    "indicator": "RSI",
+    "oversold_threshold": 30,
+    "overbought_threshold": 70,
+    "recent_exit_window_bars": 3,
+    "buy_condition_default": "Para compra (sem módulo experimental aplicável), RSI deve estar em sobrevenda ou ter acabado de sair da sobrevenda nos últimos 3 candles, desde que haja reação clara na zona.",
+    "sell_condition_default": "Para venda (sem módulo experimental aplicável), RSI deve estar em sobrecompra ou ter acabado de sair da sobrecompra nos últimos 3 candles, desde que haja reação clara na zona.",
+    "neutral_rsi_policy_default": "Quando NENHUM módulo experimental se aplica e RSI não está extremo nem recém saindo do extremo com reação clara, a classificação máxima permitida pela régua global clássica é SETUP_EM_OBSERVACAO. Quando um módulo se aplica, vale o checklist do módulo.",
+    "warning": "Não comprar apenas porque o RSI chegou em sobrevenda se o preço ainda estiver despencando. Não vender apenas porque o RSI chegou em sobrecompra se o preço ainda estiver rompendo para cima."
+  },
+  "accepted_price_structures": {
+    "_purpose": "Definição formal e fechada do que conta como 'estrutura de preço' para o hard block global 'setup baseado apenas em RSI/NAS/bubble/dry zone touch sem estrutura de preço'. Se ao menos uma das estruturas abaixo está presente, a estrutura de preço é considerada satisfeita.",
+    "structures": [
+      "BOS_BULLISH (break of structure bullish — fechamento acima de swing high recente relevante)",
+      "BOS_BEARISH (break of structure bearish — fechamento abaixo de swing low recente relevante)",
+      "CHOCH_BULLISH (change of character bullish — primeiro higher high/higher low após sequência de lower lows)",
+      "CHOCH_BEARISH (change of character bearish — primeiro lower low/lower high após sequência de higher highs)",
+      "SWEEP_REENTRY_BULLISH (sweep abaixo de suporte/swing low com reclaim e fechamento acima do nível varrido)",
+      "SWEEP_REENTRY_BEARISH (sweep acima de resistência/swing high com retorno e fechamento abaixo do nível varrido)",
+      "REJECTION_CLOSE_BULLISH (candle fechado com pavio inferior >= 50% do range total, close no terço superior, contra a zona)",
+      "REJECTION_CLOSE_BEARISH (candle fechado com pavio superior >= 50% do range total, close no terço inferior, contra a zona)",
+      "BREAKOUT_RETEST_HOLD (rompimento confirmado de nível + retest do nível como suporte/resistência com fechamento que respeita o lado da quebra)",
+      "QUALITY_REJECTION (definição específica do módulo — geralmente pavio significativo + close oposto + stop estrutural disponível)",
+      "MOMENTUM_CONTINUATION (expansão clara de candle na direção do setup + close além de consolidação prévia)",
+      "RETEST_HOLD (retorno ao nível rompido com manutenção do lado correto sem fechamento que invalide)"
+    ],
+    "not_structures": [
+      "toque seco da zona sem fechamento",
+      "candle ainda aberto sem confirmação de fechamento",
+      "wick isolado em volume baixo",
+      "movimento vertical em queda livre / melt-up sem reação"
+    ],
+    "rule": "Setup que depende apenas de RSI extremo, NAS TOP/BOTTOM, cluster de Bubbles ou toque de zona — SEM nenhuma das estruturas acima presente — viola o hard block global e não pode ser SETUP_VALIDO nem SETUP_CANDIDATO_FORTE."
+  },
+  "market_order_bubbles_rules": {
+    "importance": "strong_confluence",
+    "cluster_definition": "Cluster válido é uma concentração de múltiplas bubbles próximas entre si, na mesma região de preço, dentro ou ao redor de uma zona BigBeluga/SMC/suporte/resistência.",
+    "buy_interpretation": "Para compra, clusters de pressão vendedora falhando na zona podem indicar exaustão/absorção vendedora.",
+    "sell_interpretation": "Para venda, clusters de pressão compradora falhando na zona podem indicar exaustão/absorção compradora.",
+    "invalid_condition": "Uma bubble isolada ou bubbles espalhadas longe da zona não bastam."
+  },
+  "trendline_rules": {
+    "importance": "auxiliary",
+    "uses": [
+      "Filtro de contexto: ajuda a entender se o trade está a favor ou contra a estrutura maior.",
+      "Gatilho auxiliar: rompimento ou rejeição de trendline pode reforçar o setup."
+    ],
+    "weight_rule": "Trendline não deve bloquear um setup forte se as condições obrigatórias principais estiverem presentes."
+  },
+  "required_conditions": [
+    "Ativo dentro da whitelist.",
+    "Timeframe adequado ao tipo de operação.",
+    "Preço em zona relevante BigBeluga/SMC/suporte/resistência.",
+    "TOP/BOTTOM válido dentro ou muito próximo da zona.",
+    "RSI em extremo ou recém saindo do extremo com reação clara na zona.",
+    "Stop técnico possível atrás da região de invalidação.",
+    "Alvo com R:R mínimo de 2:1."
+  ],
+  "strong_confluences": [
+    "Cluster de Market Order Bubbles na zona.",
+    "Rejeição clara do preço na região.",
+    "Sinal LONG/SHORT adicional próximo da zona.",
+    "ChoCh/BOS favorável.",
+    "Volume Profile favorecendo o caminho do trade.",
+    "Região já respeitada anteriormente."
+  ],
+  "auxiliary_confluences": [
+    "Trendline maior ou menor.",
+    "Rompimento ou rejeição de trendline.",
+    "Timeframe maior alinhado.",
+    "Movimento esticado até a região.",
+    "Proximidade de número psicológico."
+  ],
+  "blocking_conditions": [
+    "Ativo fora da whitelist.",
+    "TOP/BOTTOM fora de zona relevante.",
+    "RSI não extremo e não recém saindo do extremo com reação clara.",
+    "Preço no meio do range sem região clara.",
+    "Alvo muito próximo.",
+    "R:R menor que 2:1.",
+    "Stop grande demais ou tecnicamente ruim.",
+    "Notícia forte próxima.",
+    "Mercado sem liquidez.",
+    "Sinais contraditórios fortes."
+  ],
+  "classification_rules": {
+    "_canonical_list_v3": [
+      "SETUP_VALIDO",
+      "SETUP_VALIDO_INTRADAY",
+      "SETUP_CANDIDATO_FORTE",
+      "SETUP_EM_OBSERVACAO",
+      "NO_TRADE",
+      "SETUP_PERDIDO_NAO_PERSEGUIR",
+      "SETUP_ATRASADO_AGUARDAR_RETESTE"
+    ],
+    "_canonical_list_note": "Lista canônica de 7 classificações. Shadow mode foi removido — confiamos no backtest e fazemos revisão manual via Telegram. Quaisquer classificações antigas (SETUP_FORTE, SETUP_EXCELENTE, SETUP_VALIDO_SHADOW, SETUP_VALIDO_INTRADAY_SHADOW, SETUP_OPERACIONAL_MANUAL, INTRADAY_EM_OBSERVACAO, SETUP_CANDIDATO_FORTE_INTRADAY) são deprecadas e devem ser mapeadas para a lista canônica. Distinção intraday/swing é mantida apenas em SETUP_VALIDO_INTRADAY; demais classificações usam o campo execution_tf para indicar o timeframe.",
+    "SETUP_VALIDO": "Swing/HTF. Hard blocks globais passam + checklist do módulo passa + trigger objetivo presente + R:R >= 2:1 + entrada não atrasada. Aplicar regras de precedência se múltiplos módulos dispararem.",
+    "SETUP_VALIDO_INTRADAY": "Intraday (15M/30M/1H). Mesmas condições do SETUP_VALIDO, mas o módulo é intraday. Mantido como classificação separada porque a gestão (timing, hold, target) é estruturalmente diferente do swing.",
+    "SETUP_CANDIDATO_FORTE": "Módulo aplica e contexto é bom, mas falta 1+ requisito do módulo (ex.: trigger não fechou, confluência adicional ausente). Vai para Telegram como revisão manual. Aplicar cap de Telegram (ver module_aware_policy). Usar campo execution_tf para indicar swing vs intraday.",
+    "SETUP_EM_OBSERVACAO": "Área relevante, setup incompleto, trigger ausente, R:R não confirmado ou contexto misto. Pode ou não ir para Telegram conforme política. Usar campo execution_tf para indicar swing vs intraday.",
+    "NO_TRADE": "Hard block global presente, setup invalidado, R:R impossível, leitura unreliable, direção conflitante entre módulos, ou módulo não aplica e régua global clássica também falha.",
+    "SETUP_PERDIDO_NAO_PERSEGUIR": "O movimento ideal já ocorreu durante janela em que o sistema não pôde reagir (ex.: cloudflared down) ou durante avaliação. Não perseguir. Marcar e aguardar próximo reteste limpo.",
+    "SETUP_ATRASADO_AGUARDAR_RETESTE": "Trigger técnico ocorreu mas entrada atual já estaria comprometida (entry_late_distance_r >= 0.5R contra o stop ideal). Aguardar reteste da zona com R:R recalculado."
+  },
+  "risk_management": {
+    "min_risk_reward": 2.0,
+    "target_risk_reward_range": "2:1 a 5:1",
+    "risk_per_trade_guidance": {
+      "low_confluence": "0.25% a 0.5%",
+      "high_confluence": "1%",
+      "exceptional_setup": "Avaliar manualmente, nunca automático."
+    },
+    "stop_loss_rule": "Stop deve ficar atrás da zona de invalidação técnica, nunca em ponto aleatório.",
+    "take_profit_rule": "Alvo deve ser definido antes da entrada, com espaço real até próximo suporte/resistência/zona relevante.",
+    "rr_recalculation_rule": "R:R calculado antes da confirmação é apenas provisório. Antes de qualquer entrada, recalcular entrada, stop e alvo com o preço atualizado.",
+    "move_stop_rule": "Nunca mover stop contra a posição."
+  },
+  "analysis_output_format": [
+    "1. Ativo e timeframe atual",
+    "2. Está na whitelist? Sim/Não",
+    "3. Tipo de operação possível: compra, venda, observação ou nenhuma",
+    "4. Contexto do preço: tendência, range, reversão ou continuação",
+    "5. Zona relevante: existe? qual?",
+    "6. TOP/BOTTOM: existe sinal válido na zona?",
+    "7. RSI: valor aproximado, extremo ou recém saindo do extremo, favorece compra/venda/nenhum",
+    "8. Market Order Bubbles / reação: há cluster? há rejeição?",
+    "9. Trendline: ajuda, atrapalha ou é neutra?",
+    "10. Espaço até alvo: há espaço suficiente?",
+    "11. Stop: existe região técnica clara de invalidação?",
+    "12. R:R: parece permitir pelo menos 2:1? Se ainda não houver confirmação, declarar que é provisório.",
+    "13. Bloqueios encontrados",
+    "14. Classificação final (canônica v3): SETUP_VALIDO | SETUP_VALIDO_INTRADAY | SETUP_CANDIDATO_FORTE | SETUP_EM_OBSERVACAO | NO_TRADE | SETUP_PERDIDO_NAO_PERSEGUIR | SETUP_ATRASADO_AGUARDAR_RETESTE",
+    "15. Próxima ação recomendada: aguardar, monitorar zona, pedir confirmação para desenhar setup, pedir confirmação para criar alerta ou nenhuma ação"
+  ],
+  "no_trade_conditions": [
+    "Ativo fora da whitelist.",
+    "Preço sem zona relevante.",
+    "TOP/BOTTOM fora de zona.",
+    "RSI neutro sem extremo ou saída recente do extremo.",
+    "Ausência de espaço até alvo.",
+    "R:R inferior a 2:1.",
+    "Stop técnico inviável.",
+    "Sinais contraditórios fortes.",
+    "Mercado sem liquidez.",
+    "Notícia forte próxima."
+  ],
+  "module_aware_policy": {
+    "version": "v3.0",
+    "status": "active",
+    "policy_name": "MODULE_AWARE_GLOBAL_RULES_V3",
+    "_v3_changes_vs_v2": "Removido shadow mode por decisão do usuário (confia em backtest e faz revisão manual via Telegram). Adicionados caps de Telegram/Watch Manager, precedência entre módulos, hierarquia de avaliação curto-circuitada e A2/A3/A4 (estruturas de preço, module_backtest_n, PASS binário).",
+    "evaluation_hierarchy": {
+      "_purpose": "Ordem de curto-circuito para classificação. Se um passo falha, parar e classificar conforme a regra de saída desse passo. NÃO continuar avaliando passos subsequentes.",
+      "steps": [
+        {
+          "step": 1,
+          "name": "hard_blocks",
+          "check": "Avaliar todos os hard blocks globais.",
+          "on_fail": "classification = NO_TRADE. hard_block_triggered = nome do block. STOP.",
+          "on_pass": "Seguir para step 2."
+        },
+        {
+          "step": 2,
+          "name": "module_detection",
+          "check": "Detectar se algum módulo experimental aplica (ativo + TF + direção compatíveis).",
+          "on_no_match": "Aplicar régua global clássica. Classification máxima = SETUP_CANDIDATO_FORTE (régua antiga). RSI extremo continua sendo o cap clássico.",
+          "on_match": "Seguir para step 3 com o módulo escolhido (aplicar regras de precedência se múltiplos match)."
+        },
+        {
+          "step": 3,
+          "name": "module_checklist",
+          "check": "Avaliar checklist específico do módulo detectado.",
+          "on_fail": "classification máxima = SETUP_CANDIDATO_FORTE. module_checklist_failed_on = item que falhou. STOP de promoção.",
+          "on_pass": "Seguir para step 4."
+        },
+        {
+          "step": 4,
+          "name": "promotion_trigger",
+          "check": "Verificar se o trigger objetivo do módulo está presente e confirmado (candle fechado quando aplicável).",
+          "on_none": "classification máxima = SETUP_CANDIDATO_FORTE. promotion_trigger = NONE. STOP de promoção.",
+          "on_present": "Seguir para step 5."
+        },
+        {
+          "step": 5,
+          "name": "entry_quality",
+          "check": "Validar R:R >= 2:1, stop técnico definido, entrada não atrasada (entry_late_distance_r < 0.5).",
+          "on_fail_rr_or_stop": "classification = NO_TRADE ou SETUP_EM_OBSERVACAO conforme severidade.",
+          "on_late_entry": "classification = SETUP_ATRASADO_AGUARDAR_RETESTE.",
+          "on_pass": "Promover a SETUP_VALIDO (módulo swing) ou SETUP_VALIDO_INTRADAY (módulo intraday)."
+        }
+      ]
+    },
+    "telegram_caps": {
+      "max_setup_candidato_forte_per_asset_per_day": 5,
+      "max_setup_valido_per_asset_per_day": "unlimited",
+      "max_setup_valido_intraday_per_asset_per_day": "unlimited",
+      "rationale": "SETUP_VALIDO é raro e de alta qualidade — não capar. SETUP_CANDIDATO_FORTE é a tier ruidosa — capar em 5/ativo/dia para preservar sinal-ruído no Telegram. SETUP_EM_OBSERVACAO normalmente não vai para Telegram exceto quando relevante (entrada próxima, gatilho faltando 1 confirmação).",
+      "above_cap_behavior": "Agrupar em digest diário; não enviar mensagem individual.",
+      "applies_to_classifications": [
+        "SETUP_CANDIDATO_FORTE"
+      ]
+    },
+    "watch_manager_caps": {
+      "max_active_watches_simultaneous": 6,
+      "priority_queue": [
+        "A",
+        "B",
+        "C"
+      ],
+      "rule": "Quando atingir 6 ACTIVE_WATCH simultâneos, novos watches só são aceitos se substituírem um watch existente de prioridade inferior. Fila prioritária: Priority A > B > C. Em empate, preferir o mais antigo (FIFO) ou o de maior module_backtest_n.",
+      "watch_creation_classifications": [
+        "SETUP_CANDIDATO_FORTE",
+        "SETUP_EM_OBSERVACAO com entry_late=false e gatilho faltante explícito"
+      ]
+    },
+    "module_precedence": {
+      "rules_in_order": [
+        "1. Se SWING e INTRADAY disparam no mesmo ativo no mesmo dia: SWING > INTRADAY.",
+        "2. Se direções conflitantes (um LONG, outro SHORT no mesmo ativo): classification = NO_TRADE. Não tomar nenhum dos dois.",
+        "3. Se mesma direção, múltiplos módulos aplicáveis: o módulo de maior Priority ganha (A > B > C).",
+        "4. Em empate de Priority entre módulos mesma direção: o de maior module_backtest_n ganha.",
+        "5. Em empate de n: o de menor TF (mais granular) ganha — assumindo timing mais preciso.",
+        "6. Nunca empilhar exposição duplicada — apenas um módulo gera SETUP_VALIDO por ativo por janela operacional."
+      ]
+    },
+    "module_backtest_n_required": {
+      "_purpose": "Cada módulo precisa declarar n (número de trades em backtest). Este número é persistido em cada evento gerado para ponderação posterior.",
+      "field_name_in_log": "module_backtest_n",
+      "field_required_in_claude_output": true,
+      "current_values": {
+        "XAUUSD_4H_LONG_BREAKOUT_CONTINUATION_REGIME_FILTERED": 234,
+        "XAUUSD_4H_LONG_REJECTION_SWING": "DEACTIVATED em 2026-05-12 — backtest profundo mostrou edge negativo (-59.3R em 7.4y); substituído por XAUUSD_4H_LONG_BREAKOUT_CONTINUATION_REGIME_FILTERED",
+        "XAUUSD_1H_LONG_DECISIVE_BODY60_HTF": 127,
+        "XAGUSD_1H_LONG_DECISIVE_DXY_STRUCTURAL": 69,
+        "XAUUSD_1H_LONG_REJECTION_EXECUTION": "DEACTIVATED em 2026-05-12 — audit profundo confirmou sem edge (PF 1.04, avg +0.017R, no_top5 -5.38R em n=1338). Substituído operacionalmente por XAUUSD_1H_LONG_DECISIVE_BODY60_HTF.",
+        "XAUUSD_INTRADAY_BB_CONFLUENCE_EXECUTION": "não declarado — forward-test apenas; depende de zonas BB",
+        "US500_4H_LONG_FAILED_BREAKDOWN_REGIME": 45,
+        "US500_1H_LONG_BREAKOUT_REGIME_FILTERED": 222,
+        "US500_4H_LONG_PULLBACK_REJECTION": "DEACTIVATED em 2026-05-12 — backtest profundo mostrou Total Net R -67.65R em 4.4y, PF 0.68, win 12.9%. TODOS os anos negativos. Substituído por US500_4H_LONG_FAILED_BREAKDOWN_REGIME.",
+        "US500_INTRADAY_LONG_PULLBACK_EXECUTION": "DEACTIVATED em 2026-05-12 — backtest profundo mostrou Total Net R -105.20R em 1.3y, PF 0.78. Pior módulo do sistema. Substituído por US500_1H_LONG_BREAKOUT_REGIME_FILTERED (SETUP_CANDIDATO_FORTE).",
+        "ETHUSD_4H_LONG_BREAKOUT_REGIME_FILTERED": 72,
+        "ETHUSD_4H_LONG_BREAKOUT_REGIME_FILTERED_v1_2_note": "Sample n=72 com filtro macro ETHBTC > EMA50 (v1.2 de 2026-05-12). Antes v1.0/v1.1 tinha n=120/95 sem macro.",
+        "ETHUSD_1H_LONG_PULLBACK_EMA50_REGIME": 96,
+        "ETHUSD_4H_LONG_BREAKOUT_CONTINUATION": "DEPRECATED em 2026-05-12 — backtest profundo mostrou edge negativo (-35.68R em 5.4y); substituído por ETHUSD_4H_LONG_BREAKOUT_REGIME_FILTERED",
+        "ETHUSD_30M_CONFIRMED_MOMENTUM_EXECUTION": "DEACTIVATED em 2026-05-12 — backtest profundo mostrou edge negativo (-265.20R combined LONG+SHORT em 1.4y); sem substituto direto. Para intraday LONG ETH usar ETHUSD_1H_LONG_PULLBACK_EMA50_REGIME. SHORT em ETHUSD sem edge sistemático em nenhum TF.",
+        "EURUSD_4H_LONG_BREAKOUT_COMBO_STRICT_DXY": 47,
+        "EURUSD_1H_LONG_DECISIVE_HTF1D_DXY": 73,
+        "EURUSD_30M_LONG_QUALITY_BREAKOUT_CONTINUATION": "DEACTIVATED em 2026-05-12 — backtest profundo mostrou -104.34R. Substituído por EURUSD_4H_LONG_BREAKOUT_COMBO_STRICT_DXY (swing) e EURUSD_1H_LONG_DECISIVE_HTF1D_DXY (intraday candidato forte) após audit V2."
+      }
+    },
+    "deactivated_modules": {
+      "XAUUSD_4H_LONG_REJECTION_SWING": {
+        "deactivated_at": "2026-05-12",
+        "reason": "backtest profundo (n=1070, 7.4y) mostrou Total R -59.3R, PF 0.88, avg -0.055R. Edge não confirmado. Substituído por XAUUSD_4H_LONG_BREAKOUT_CONTINUATION_REGIME_FILTERED.",
+        "replacement_module": "XAUUSD_4H_LONG_BREAKOUT_CONTINUATION_REGIME_FILTERED",
+        "behavior": "não deve mais gerar SETUP_VALIDO; arquivo .md mantido em /research/experimental/ como histórico"
+      },
+      "XAUUSD_1H_LONG_REJECTION_EXECUTION": {
+        "deactivated_at": "2026-05-12",
+        "reason": "audit profundo 1H confirmou sem edge sistemático em rejection-based (n=1338, PF 1.04, avg +0.017R, win 17.4%, no_top5 -5.38R — fat-tail dependente, edge inexistente). Forward-test live havia rodado com n=21, insuficiente para descartar antes do audit.",
+        "replacement_module": "XAUUSD_1H_LONG_DECISIVE_BODY60_HTF",
+        "behavior": "não deve mais gerar SETUP_VALIDO_INTRADAY nem SETUP_CANDIDATO_FORTE sob este nome; reclassificar alertas como XAUUSD_1H_LONG_DECISIVE_BODY60_HTF se critérios deste módulo se aplicam, ou SETUP_EM_OBSERVACAO/NO_TRADE caso contrário; arquivo .md mantido em /research/experimental/ como histórico"
+      },
+      "ETHUSD_4H_LONG_BREAKOUT_CONTINUATION": {
+        "deactivated_at": "2026-05-12",
+        "status_label": "DEPRECATED (substituído)",
+        "reason": "backtest profundo (n=613, 5.4y) mostrou Total Net R -35.68R, PF 0.89, avg -0.058R. RSI >= 52 não filtra losses comprovadamente. Edge não confirmado.",
+        "replacement_module": "ETHUSD_4H_LONG_BREAKOUT_REGIME_FILTERED",
+        "behavior": "não deve mais gerar SETUP_VALIDO; arquivo .md mantido em /research/experimental/ como histórico"
+      },
+      "ETHUSD_30M_CONFIRMED_MOMENTUM_EXECUTION": {
+        "deactivated_at": "2026-05-12",
+        "status_label": "DEACTIVATED (sem substituto direto)",
+        "reason": "backtest profundo (n=2061 combined, 1.4y) mostrou Total Net R -265.20R, PF 0.72 LONG+SHORT. LONG isoladamente: -170.20R / PF 0.67. SHORT isoladamente: -94.99R / PF 0.78. Filtro de confirmação adicional não excluiu losses (resultado idêntico com ou sem). Edge não reproduzível.",
+        "replacement_module": "ETHUSD_1H_LONG_PULLBACK_EMA50_REGIME (apenas para LONG intraday; sem substituto para SHORT)",
+        "behavior": "não deve mais gerar SETUP_VALIDO_INTRADAY nem SETUP_CANDIDATO_FORTE. SHORT em ETHUSD não tem edge sistemático em nenhum TF — não automatizar.",
+        "additional_notes": "Backtest original que apontava +144R/542 trades não é reproduzível com regras atuais. Possíveis razões: período diferente, parâmetros diferentes, definição de 'momentum confirmado' mais restritiva no original."
+      },
+      "US500_4H_LONG_PULLBACK_REJECTION": {
+        "deactivated_at": "2026-05-12",
+        "status_label": "DEACTIVATED (substituído por FAILED_BREAKDOWN_REGIME)",
+        "reason": "backtest profundo (n=412, 4.4y) mostrou Total Net R -67.65R, PF 0.68, avg -0.164R, win 12.9%. TODOS os anos negativos. Win rate 13% torna o target 4.5R matematicamente impossível.",
+        "replacement_module": "US500_4H_LONG_FAILED_BREAKDOWN_REGIME",
+        "behavior": "não deve mais gerar SETUP_VALIDO; arquivo .md mantido em /research/experimental/ como histórico"
+      },
+      "US500_INTRADAY_LONG_PULLBACK_EXECUTION": {
+        "deactivated_at": "2026-05-12",
+        "status_label": "DEACTIVATED (substituído por US500_1H_LONG_BREAKOUT_REGIME_FILTERED como CANDIDATO_FORTE)",
+        "reason": "backtest profundo (n=943, 1.3y) mostrou Total Net R -105.20R, PF 0.78, avg -0.112R. Pior módulo do sistema. Frequência 14 trades/semana garantia exposição máxima a spread negativo.",
+        "replacement_module": "US500_1H_LONG_BREAKOUT_REGIME_FILTERED (SETUP_CANDIDATO_FORTE)",
+        "behavior": "não deve mais gerar SETUP_VALIDO_INTRADAY nem SETUP_CANDIDATO_FORTE. Para intraday LONG US500 usar o substituto. SHORT em US500 não automatizar."
+      },
+      "EURUSD_30M_LONG_QUALITY_BREAKOUT_CONTINUATION": {
+        "deactivated_at": "2026-05-12",
+        "status_label": "DEACTIVATED (sem substituto — EURUSD sem edge técnico encontrável)",
+        "reason": "backtest profundo (n=605, 1.4y) mostrou Total Net R -104.34R, PF 0.65, avg -0.173R, win 21.5%. Foi testado contra 40+ alternativas (regime breakout, failed breakdown, BB squeeze, EMA pullback, hammer, RSI bounce, London open, inside bar, macro DXY filter) — nenhuma atendeu critérios SETUP_VALIDO. Melhor candidato (D_4H_BREAKOUT_REGIME 3R) entregou apenas +3.64R em 7.4y (avg 0.031, PF 1.08) — edge essencialmente zero. Filtro DXY surpreendentemente não ajudou.",
+        "replacement_module": "NENHUM — EURUSD permanece sem módulo operacional automático. Pode ser ativo de OBSERVAÇÃO/CONTEXTO mas não gera SETUP_VALIDO nem SETUP_CANDIDATO_FORTE.",
+        "behavior": "não deve mais gerar nenhuma classificação operacional automática. EURUSD pode ser lido para contexto USD strength/weakness mas não para sinal.",
+        "additional_notes": "Pesquisa futura aguardando: yield differentials Fed/ECB, COT report, carry indicators, ou validação Fase 1 do External Market Factors (iMac analyst) que pode revelar valor preditivo macro previously inacessível."
+      }
+    },
+    "module_definitions": {
+      "XAGUSD_1H_LONG_DECISIVE_DXY_STRUCTURAL": {
+        "status": "active",
+        "version": "v1.0",
+        "activated_at": "2026-05-12",
+        "asset": "PEPPERSTONE:XAGUSD",
+        "timeframe": "1H",
+        "execution_tf": "60",
+        "direction": "LONG_ONLY",
+        "strategy_layer": "Intraday / 1H Decisive Breakout + Multi-HTF + Macro DXY Estrutural",
+        "default_classification": "SETUP_CANDIDATO_FORTE",
+        "do_not_auto_promote": true,
+        "execution": "manual_only",
+        "module_backtest_n": 69,
+        "backtest_span_years": 2.36,
+        "backtest_data_window": "2024-01-01 → 2026-05-12",
+        "backtest_total_net_r_at_005_spread": 16.12,
+        "backtest_avg_net_r": 0.234,
+        "backtest_profit_factor_net": 1.79,
+        "backtest_win_rate": 0.449,
+        "backtest_max_losing_streak": 4,
+        "backtest_r_no_top5_net": 1.37,
+        "backtest_r_no_top10_net": -9.5,
+        "backtest_source_file": "research/backtests/xagusd_audit_20260512/XAG_audit_summary.csv",
+        "backtest_source_config_id": "XAG_INTRA_1H_brk_dec_b60_r12|DXY_below_ema200|HTF1D+HTF4H|tgt3.0R",
+        "trigger": {
+          "all_required": [
+            "close > swing_high(10)",
+            "close > open",
+            "body_pct >= 0.6 (corpo >= 60% do range)",
+            "range >= 1.2 × ATR(14)",
+            "RSI(14) > RSI-based MA"
+          ]
+        },
+        "regime_filters_all_required": [
+          "close > EMA(200) no 1H",
+          "EMA(50) > EMA(200) no 1H",
+          "ATR(14) > ATR_MA(20)"
+        ],
+        "htf_filters_all_required": [
+          "HTF 1D close > HTF 1D EMA(50)",
+          "HTF 4H close > HTF 4H EMA(50)"
+        ],
+        "macro_filter_dxy": {
+          "status": "ACTIVE_v1_0",
+          "definition": "TVC:DXY close < EMA200(DXY) no 4H (USD bearish ESTRUTURAL — não EMA50 tático)",
+          "rationale": "Audit comparou EMA50 vs EMA200 — para XAG, EMA200 estrutural deu no_top5 mais robusto. Diferente do EURUSD onde EMA50 funciona.",
+          "data_source": "pull live via MCP — chart_set_symbol TVC:DXY + TF 240, data_get_ohlcv count=250, calcular EMA200 alpha=2/201",
+          "fallback_policy": {
+            "case_A_dxy_below_ema200_confirmed": "SETUP_CANDIDATO_FORTE (default)",
+            "case_B_dxy_above_ema200": "downgrade SETUP_EM_OBSERVACAO; macro_filter_dxy_not_structural_bear",
+            "case_C_mcp_failed": "downgrade SETUP_EM_OBSERVACAO; macro_filter_unverifiable"
+          }
+        },
+        "stop_rule": "low - 0.5 × ATR(14); rejeitar se R > 5 × ATR(14)",
+        "target": "3R fixo",
+        "management": {
+          "be_after": "+1R",
+          "trailing": "disabled",
+          "max_hold_candles": 20
+        },
+        "promotion_trigger": "MOMENTUM_CONTINUATION",
+        "operational_signal": "YES_MANUAL_REVIEW",
+        "d2r_required": true,
+        "promotion_criteria_to_setup_valido_intraday": {
+          "min_live_trades": 30,
+          "min_avg_r_live": 0.15,
+          "min_pf_live": 1.4,
+          "min_no_top5_live_non_negative": true,
+          "max_losing_streak_live": 10
+        },
+        "live_revert_criteria": {
+          "revert_if_avg_r_live_below": 0.1,
+          "revert_if_max_losing_streak_live_above": 8,
+          "revert_if_no_top5_live_negative": true,
+          "revert_to": "SETUP_EM_OBSERVACAO"
+        }
+      },
+      "XAUUSD_1H_LONG_DECISIVE_BODY60_HTF": {
+        "status": "active",
+        "version": "v1.0",
+        "activated_at": "2026-05-12",
+        "asset": "PEPPERSTONE:XAUUSD",
+        "timeframe": "1H",
+        "execution_tf": "60",
+        "direction": "LONG_ONLY",
+        "strategy_layer": "Intraday / 1H Decisive Breakout + Multi-HTF",
+        "default_classification": "SETUP_CANDIDATO_FORTE",
+        "do_not_auto_promote": true,
+        "execution": "manual_only",
+        "module_backtest_n": 127,
+        "backtest_span_years": 2.36,
+        "backtest_data_window": "2024-01-01 → 2026-05-12",
+        "backtest_total_net_r_at_005_spread": 27.0,
+        "backtest_avg_net_r": 0.213,
+        "backtest_profit_factor_net": 1.57,
+        "backtest_win_rate": 0.449,
+        "backtest_max_losing_streak": 9,
+        "backtest_r_no_top5_net": 14.75,
+        "backtest_r_no_top10_net": 2.5,
+        "backtest_source_file": "research/backtests/xauusd_1h_audit_20260512/XAU_1H_audit_summary.csv",
+        "backtest_source_config_id": "XAU_1H_body60+HTF1D+HTF4H_target2.5R",
+        "trigger": {
+          "all_required": [
+            "close > swing_high(10)",
+            "close > open",
+            "body_pct >= 0.6 (corpo >= 60% do range)",
+            "range >= 1.2 × ATR(14)",
+            "RSI(14) > RSI-based MA"
+          ]
+        },
+        "regime_filters_all_required": [
+          "close > EMA(200) no 1H",
+          "EMA(50) > EMA(200) no 1H",
+          "ATR(14) > ATR_MA(20)"
+        ],
+        "htf_filters_all_required": [
+          "HTF 1D close > HTF 1D EMA(50)",
+          "HTF 4H close > HTF 4H EMA(50)"
+        ],
+        "macro_filter_dxy": {
+          "status": "PENDING_v1_1",
+          "note": "DXY filter NÃO incluído na v1.0 — refinamento futuro. Hipótese: pull live via MCP (TVC:DXY close < EMA50 no 4H) deve melhorar PF 10-15% baseado em correlação XAU/DXY conhecida."
+        },
+        "stop_rule": "low - 0.5 × ATR(14); rejeitar se R > 5 × ATR(14)",
+        "target": "2.5R fixo",
+        "management": {
+          "be_after": "+1R",
+          "trailing": "disabled",
+          "max_hold_candles": 20
+        },
+        "promotion_trigger": "MOMENTUM_CONTINUATION",
+        "operational_signal": "YES_MANUAL_REVIEW",
+        "d2r_required": true,
+        "promotion_criteria_to_setup_valido_intraday": {
+          "min_live_trades": 30,
+          "min_avg_r_live": 0.15,
+          "min_pf_live": 1.4,
+          "min_no_top5_live_non_negative": true,
+          "max_losing_streak_live": 10
+        },
+        "live_revert_criteria": {
+          "revert_if_avg_r_live_below": 0.1,
+          "revert_if_max_losing_streak_live_above": 12,
+          "revert_if_no_top5_live_negative": true,
+          "revert_to": "SETUP_EM_OBSERVACAO"
+        },
+        "substitutes_legacy_module": "XAUUSD_1H_LONG_REJECTION_EXECUTION"
+      },
+      "XAUUSD_4H_LONG_BREAKOUT_CONTINUATION_REGIME_FILTERED": {
+        "status": "active",
+        "activated_at": "2026-05-12",
+        "asset": "PEPPERSTONE:XAUUSD",
+        "timeframe": "4H",
+        "execution_tf": "240",
+        "direction": "LONG_ONLY",
+        "strategy_layer": "Swing / 4H Momentum",
+        "default_classification": "SETUP_VALIDO",
+        "execution": "manual_only",
+        "module_backtest_n": 234,
+        "backtest_span_years": 7.4,
+        "backtest_total_net_r_at_005_spread": 64.57,
+        "backtest_avg_net_r": 0.276,
+        "backtest_profit_factor_net": 1.64,
+        "backtest_win_rate": 0.286,
+        "backtest_max_losing_streak": 16,
+        "backtest_r_no_top5_net": 44.82,
+        "backtest_r_no_top10_net": 25.07,
+        "backtest_source_file": "research/backtests/xauusd_audit_20260512/XAUUSD_4H_breakout_regime_filter_sweep.csv",
+        "backtest_source_config_id": "R_full_trend_regime",
+        "trigger": {
+          "all_required": [
+            "close > swing_high(10)",
+            "close > open",
+            "body_pct >= 0.5 (corpo >= 50% do range)",
+            "RSI(14) > RSI-based MA"
+          ]
+        },
+        "regime_filters_all_required": [
+          "ADX(14) >= 20",
+          "Close > EMA(200)",
+          "EMA(50) > EMA(200)",
+          "EMA(50) slope (5 bars) > 0",
+          "ATR(14) > ATR_MA(20)"
+        ],
+        "stop_rule": "low_signal_bar - 0.5 × ATR(14)",
+        "stop_sanity_check": "rejeitar setup se R = |entry - stop| > 5 × ATR(14)",
+        "target": "4R fixo",
+        "management": {
+          "move_to_be_at": "+1R",
+          "trailing": "disabled (testado e piora resultado)",
+          "max_hold_bars": 24,
+          "time_exit": "mark-to-market no candle 24 com close"
+        },
+        "promotion_trigger": "MOMENTUM_CONTINUATION",
+        "operational_signal": "YES_MANUAL_REVIEW",
+        "d2r_required": true,
+        "doc_path": "research/experimental/xauusd_4h_long_breakout_continuation_regime_filtered.md",
+        "blocks_when_any_true": [
+          "ADX(14) < 20",
+          "close <= EMA(200)",
+          "EMA(50) <= EMA(200)",
+          "EMA(50) slope <= 0",
+          "ATR(14) <= ATR_MA(20)",
+          "qualquer item do trigger falha",
+          "hard block global falha (R:R < 2:1, MCP unreliable, macro red window, entrada atrasada, etc.)"
+        ]
+      },
+      "ETHUSD_4H_LONG_BREAKOUT_REGIME_FILTERED": {
+        "status": "active",
+        "version": "1.2",
+        "activated_at": "2026-05-12",
+        "asset": "PEPPERSTONE:ETHUSD",
+        "timeframe": "4H",
+        "execution_tf": "240",
+        "direction": "LONG_ONLY",
+        "strategy_layer": "Swing / 4H Momentum + Macro Filter",
+        "default_classification": "SETUP_VALIDO",
+        "do_not_auto_promote_to_setup_valido": false,
+        "promoted_to_setup_valido_at": "2026-05-12",
+        "promotion_evidence": "v1.2 backtest com filtro macro ETHBTC > EMA50: n=72/5.4y, total_net +38.42R, avg +0.534R, PF 2.13, win 36.1%, max streak 9, sem top 5 +13.67R (robusto). Atende TODOS os critérios mínimos para SETUP_VALIDO.",
+        "execution": "manual_only",
+        "module_backtest_n": 72,
+        "backtest_span_years": 5.4,
+        "backtest_total_net_r_at_005_spread": 38.42,
+        "backtest_avg_net_r": 0.534,
+        "backtest_profit_factor_net": 2.13,
+        "backtest_win_rate": 0.361,
+        "backtest_max_losing_streak": 9,
+        "backtest_r_no_top5_net": 13.67,
+        "backtest_r_no_top10_net": -6.02,
+        "trigger": {
+          "all_required": [
+            "close > swing_high(10)",
+            "close > open",
+            "body_pct >= 0.6 (corpo >= 60% do range — v1.1)",
+            "RSI(14) > RSI-based MA"
+          ]
+        },
+        "regime_filters_all_required": [
+          "ADX(14) >= 25 (NOTA: ETH usa 25, mais estrito que XAU=20)",
+          "Close > EMA(200)",
+          "EMA(50) > EMA(200)",
+          "EMA(50) slope (5 bars) > 0",
+          "ATR(14) > ATR_MA(20)"
+        ],
+        "macro_filter_v1_2": {
+          "name": "ETHBTC_OUTPERFORMING_BTC",
+          "required": true,
+          "definition": "BINANCE:ETHBTC close (4H) > EMA50(BINANCE:ETHBTC, 4H)",
+          "rationale": "ETH só entrega edge estatístico quando está outperformando BTC. Sem esse filtro, sem top 10 fica -26R; com ele, sem top 5 vira +13.67R.",
+          "data_source": "TradingView MCP — chart_set_symbol('BINANCE:ETHBTC') + data_get_ohlcv(count>=100) + EMA50 manual em Python",
+          "fallback_policy": "Se MCP falhar ao pull do ETHBTC OU se ETHBTC <= EMA50: classificar como SETUP_CANDIDATO_FORTE (downgrade), nunca SETUP_VALIDO. Sempre conservador.",
+          "expected_overhead_seconds": "3-5 segundos por análise"
+        },
+        "stop_rule": "low_signal_bar - 0.5 × ATR(14)",
+        "stop_sanity_check": "rejeitar setup se R = |entry - stop| > 5 × ATR(14)",
+        "target": "5R fixo",
+        "management": {
+          "move_to_be_at": "+1R",
+          "trailing": "disabled (testado e piora resultado)",
+          "max_hold_bars": 30,
+          "time_exit": "mark-to-market no candle 30 com close"
+        },
+        "promotion_trigger": "MOMENTUM_CONTINUATION",
+        "operational_signal": "YES_MANUAL_REVIEW",
+        "d2r_required": true,
+        "doc_path": "research/experimental/ethusd_4h_long_breakout_regime_filtered.md",
+        "downgrade_to_setup_candidato_forte_when_any_true": [
+          "ETHBTC close <= EMA50(ETHBTC) no 4H (macro filter fail)",
+          "MCP failed to read BINANCE:ETHBTC (macro_context UNKNOWN — conservative downgrade)"
+        ],
+        "blocks_when_any_true_no_trade": [
+          "ADX(14) < 25",
+          "close <= EMA(200)",
+          "EMA(50) <= EMA(200)",
+          "EMA(50) slope <= 0",
+          "ATR(14) <= ATR_MA(20)",
+          "qualquer item do trigger falha (body_pct < 0.6, RSI <= MA, etc.)",
+          "hard block global falha"
+        ],
+        "live_revert_criteria": {
+          "_purpose": "Critérios para reverter de SETUP_VALIDO de volta a SETUP_CANDIDATO_FORTE em produção",
+          "min_live_trades_to_evaluate": 30,
+          "revert_if_avg_r_live_below": 0.1,
+          "revert_if_max_losing_streak_live_above": 12,
+          "revert_if_no_top5_live_negative": true
+        }
+      },
+      "US500_4H_LONG_FAILED_BREAKDOWN_REGIME": {
+        "status": "active",
+        "version": "1.0",
+        "activated_at": "2026-05-12",
+        "asset": "PEPPERSTONE:US500",
+        "timeframe": "4H",
+        "execution_tf": "240",
+        "direction": "LONG_ONLY",
+        "strategy_layer": "Swing / 4H Failed Breakdown Reversal",
+        "default_classification": "SETUP_VALIDO",
+        "do_not_auto_promote_to_setup_valido": false,
+        "promoted_to_setup_valido_at": "2026-05-12",
+        "promotion_evidence": "Backtest 4.4y mostrou n=45, total_net +15.26R, avg +0.339R, PF 1.83, win 37.8%, max losing streak 5, sem top 5 +3.01R (robusto), TODOS os anos completos positivos (2022 bear +2.70R / 2023 +6.64R / 2024 +7.15R / 2025 +4.13R). Único módulo US500 que atendeu TODOS os critérios mínimos.",
+        "execution": "manual_only",
+        "module_backtest_n": 45,
+        "backtest_span_years": 4.4,
+        "backtest_total_net_r_at_005_spread": 15.26,
+        "backtest_avg_net_r": 0.339,
+        "backtest_profit_factor_net": 1.83,
+        "backtest_win_rate": 0.378,
+        "backtest_max_losing_streak": 5,
+        "backtest_r_no_top5_net": 3.01,
+        "backtest_r_no_top10_net": -9.24,
+        "trigger": {
+          "all_required": [
+            "low < swing_low(20) — varreu mínima dos últimos 20 candles 4H",
+            "close > swing_low(20) — fechamento recuperou para cima da mínima varrida (RECLAIM)",
+            "close > open — candle bullish",
+            "body_pct >= 0.5 — corpo >= 50% do range (recuperação decisiva)"
+          ]
+        },
+        "regime_filters_all_required": [
+          "Close > EMA(200) no 4H",
+          "EMA(50) > EMA(200) no 4H (golden cross)",
+          "ATR(14) > ATR_MA(20) (volatilidade expandindo)"
+        ],
+        "stop_rule": "low_signal_bar - 0.5 × ATR(14)",
+        "stop_sanity_check": "rejeitar setup se R = |entry - stop| > 5 × ATR(14)",
+        "target": "2.5R fixo (CONSERVATIVE — US500 movements pós-failed-breakdown geralmente limitados)",
+        "management": {
+          "move_to_be_at": "+1R",
+          "trailing": "disabled",
+          "max_hold_bars": 24,
+          "time_exit": "mark-to-market no candle 24 com close"
+        },
+        "promotion_trigger": "SWEEP_REENTRY",
+        "operational_signal": "YES_MANUAL_REVIEW",
+        "d2r_required": true,
+        "doc_path": "research/experimental/us500_4h_long_failed_breakdown_regime.md",
+        "blocks_when_any_true": [
+          "low não rompeu swing_low(20)",
+          "close <= swing_low(20) (sem reclaim)",
+          "close <= open (candle bearish)",
+          "body_pct < 0.5",
+          "close <= EMA200",
+          "EMA50 <= EMA200",
+          "ATR <= ATR_MA20",
+          "hard block global falha"
+        ],
+        "live_revert_criteria": {
+          "min_live_trades_to_evaluate": 30,
+          "revert_if_avg_r_live_below": 0.15,
+          "revert_if_max_losing_streak_live_above": 10,
+          "revert_if_no_top5_live_negative": true
+        }
+      },
+      "US500_1H_LONG_BREAKOUT_REGIME_FILTERED": {
+        "status": "active",
+        "version": "1.1",
+        "activated_at": "2026-05-12",
+        "asset": "PEPPERSTONE:US500",
+        "timeframe": "1H",
+        "execution_tf": "60",
+        "direction": "LONG_ONLY",
+        "strategy_layer": "Intraday / 1H Breakout Continuation com HTF gate",
+        "default_classification": "SETUP_CANDIDATO_FORTE",
+        "do_not_auto_promote_to_setup_valido_intraday": true,
+        "auto_promote_reason_blocked": "Avg R líquido (+0.085) abaixo do mínimo 0.15 e sem top 5 marginalmente negativo (-0.47). Edge marginal mas existe. 2025 foi ano negativo (-12R). Manter como CANDIDATO_FORTE até validação ao vivo.",
+        "promotion_criteria_to_setup_valido_intraday": {
+          "min_live_trades_in_d2r": 30,
+          "min_avg_r_live": 0.15,
+          "min_profit_factor_live": 1.4,
+          "max_losing_streak_live": 10,
+          "no_fat_tail_dependency": "sem top 5 ainda positivo"
+        },
+        "execution": "manual_only",
+        "module_backtest_n": 222,
+        "backtest_span_years": 2.3,
+        "backtest_total_net_r_at_005_spread": 18.93,
+        "backtest_avg_net_r": 0.085,
+        "backtest_profit_factor_net": 1.22,
+        "backtest_win_rate": 0.405,
+        "backtest_max_losing_streak": 11,
+        "backtest_r_no_top5_net": -0.47,
+        "backtest_r_no_top10_net": -12.58,
+        "trigger": {
+          "all_required": [
+            "close > swing_high(10)",
+            "close > open",
+            "body_pct >= 0.5",
+            "RSI(14) > RSI-based MA"
+          ]
+        },
+        "regime_filters_all_required": [
+          "Close > EMA(200) no 1H",
+          "EMA(50) > EMA(200) no 1H",
+          "EMA(50) slope (5 bars) > 0",
+          "ATR(14) > ATR_MA(20)",
+          "ADX(14) >= 20"
+        ],
+        "htf_filters_all_required": [
+          "HTF 1D close > HTF 1D EMA(50) — diário em bull regime",
+          "HTF 4H close > HTF 4H EMA(50) — 4H em bull regime"
+        ],
+        "stop_rule": "low_signal_bar - 0.5 × ATR(14)",
+        "stop_sanity_check": "rejeitar setup se R = |entry - stop| > 5 × ATR(14)",
+        "target": "4R fixo",
+        "management": {
+          "move_to_be_at": "+1R",
+          "trailing": "disabled",
+          "max_hold_bars": 20,
+          "time_exit": "mark-to-market no candle 20 com close"
+        },
+        "promotion_trigger": "MOMENTUM_CONTINUATION",
+        "operational_signal": "YES_MANUAL_REVIEW",
+        "d2r_required": true,
+        "doc_path": "research/experimental/us500_1h_long_breakout_regime_filtered.md",
+        "blocks_when_any_true": [
+          "close <= swing_high(10)",
+          "candle bearish ou body_pct < 0.5",
+          "RSI <= RSI_MA",
+          "close <= EMA200 no 1H",
+          "EMA50 <= EMA200 no 1H",
+          "EMA50 slope <= 0",
+          "ATR <= ATR_MA20",
+          "ADX < 20",
+          "HTF 1D close <= HTF 1D EMA50",
+          "HTF 4H close <= HTF 4H EMA50",
+          "hard block global falha"
+        ]
+      },
+      "EURUSD_4H_LONG_BREAKOUT_COMBO_STRICT_DXY": {
+        "status": "active",
+        "version": "1.0",
+        "activated_at": "2026-05-12",
+        "asset": "PEPPERSTONE:EURUSD",
+        "timeframe": "4H",
+        "execution_tf": "240",
+        "direction": "LONG_ONLY",
+        "strategy_layer": "Swing / 4H Breakout + Multi-TF Strict + Macro DXY",
+        "default_classification": "SETUP_VALIDO",
+        "do_not_auto_promote_to_setup_valido": false,
+        "promoted_to_setup_valido_at": "2026-05-12",
+        "promotion_evidence": "Backtest V2 7.4y mostrou n=47, total_net +13.35R, avg +0.284R, PF 2.03, win 42.6%, max losing streak 4, sem top 5 +1.10R (robusto). 6 de 8 anos positivos. Único módulo EURUSD com edge sólido após testar 60+ variantes incluindo régua antiga, regime breakout simples, failed breakdown, EMA pullback, inside bar, hammer, RSI oversold, London open, BB squeeze. Multi-confluência (HTF + body + range + ADX + DXY) é essencial.",
+        "execution": "manual_only",
+        "module_backtest_n": 47,
+        "backtest_span_years": 7.4,
+        "backtest_total_net_r_at_005_spread": 13.35,
+        "backtest_avg_net_r": 0.284,
+        "backtest_profit_factor_net": 2.03,
+        "backtest_win_rate": 0.426,
+        "backtest_max_losing_streak": 4,
+        "backtest_r_no_top5_net": 1.1,
+        "backtest_r_no_top10_net": -7.47,
+        "trigger": {
+          "all_required": [
+            "close > swing_high(10)",
+            "close > open",
+            "body_pct >= 0.6 (corpo >= 60%)",
+            "range >= 1.2 × ATR(14)",
+            "RSI(14) > RSI-based MA"
+          ]
+        },
+        "regime_filters_all_required": [
+          "Close > EMA(200) no 4H",
+          "EMA(50) > EMA(200) no 4H",
+          "ATR(14) > ATR_MA(20)",
+          "ADX(14) >= 25"
+        ],
+        "htf_filters_all_required": [
+          "HTF 1D close > HTF 1D EMA(50)",
+          "HTF 12H close > HTF 12H EMA(50)"
+        ],
+        "macro_filter_dxy": {
+          "name": "DXY_BEARISH",
+          "required": true,
+          "definition": "TVC:DXY close (4H) < EMA50(TVC:DXY, 4H)",
+          "rationale": "EURUSD inversamente correlacionado com DXY. Breakouts EUR só pagam consistentemente quando USD está em weakness confirmada.",
+          "data_source": "TradingView MCP — chart_set_symbol('TVC:DXY') + data_get_ohlcv(count>=100) + EMA50 manual em Python",
+          "fallback_policy": "Se MCP falhar ao pull do DXY OU se DXY >= EMA50: classificar como SETUP_CANDIDATO_FORTE (downgrade), nunca SETUP_VALIDO.",
+          "expected_overhead_seconds": "3-5 segundos por análise"
+        },
+        "stop_rule": "low_signal_bar - 0.5 × ATR(14)",
+        "stop_sanity_check": "rejeitar setup se R > 5 × ATR(14)",
+        "target": "2.5R fixo",
+        "management": {
+          "move_to_be_at": "+1R",
+          "trailing": "disabled",
+          "max_hold_bars": 24,
+          "time_exit": "mark-to-market no candle 24 com close"
+        },
+        "promotion_trigger": "MOMENTUM_CONTINUATION",
+        "operational_signal": "YES_MANUAL_REVIEW",
+        "d2r_required": true,
+        "doc_path": "research/experimental/eurusd_4h_long_breakout_combo_strict_dxy.md",
+        "downgrade_to_setup_candidato_forte_when_any_true": [
+          "DXY close >= EMA50 (DXY não bearish — macro filter fail)",
+          "MCP failed to read TVC:DXY (macro_context UNKNOWN — conservative downgrade)"
+        ],
+        "blocks_when_any_true_no_trade": [
+          "close <= swing_high(10)",
+          "candle bearish ou body_pct < 0.6",
+          "range < 1.2 × ATR",
+          "RSI <= RSI_MA",
+          "close <= EMA200 no 4H",
+          "EMA50 <= EMA200 no 4H",
+          "ATR <= ATR_MA20",
+          "ADX < 25",
+          "HTF 1D close <= HTF 1D EMA50",
+          "HTF 12H close <= HTF 12H EMA50",
+          "hard block global falha"
+        ],
+        "live_revert_criteria": {
+          "min_live_trades_to_evaluate": 30,
+          "revert_if_avg_r_live_below": 0.15,
+          "revert_if_max_losing_streak_live_above": 8,
+          "revert_if_no_top5_live_negative": true
+        }
+      },
+      "EURUSD_1H_LONG_DECISIVE_HTF1D_DXY": {
+        "status": "active",
+        "version": "1.0",
+        "activated_at": "2026-05-12",
+        "asset": "PEPPERSTONE:EURUSD",
+        "timeframe": "1H",
+        "execution_tf": "60",
+        "direction": "LONG_ONLY",
+        "strategy_layer": "Intraday / 1H Decisive Breakout + HTF + Macro DXY",
+        "default_classification": "SETUP_CANDIDATO_FORTE",
+        "do_not_auto_promote_to_setup_valido_intraday": true,
+        "auto_promote_reason_blocked": "Sample 2.4y curto. Sem top 5 marginal (-2.07R). Frequência 0.66/sem abaixo do mínimo intraday (2/sem). Edge real (PF 1.46, avg 0.174, todos os anos positivos) mas requer validação ao vivo antes de promover.",
+        "promotion_criteria_to_setup_valido_intraday": {
+          "min_live_trades_in_d2r": 30,
+          "min_avg_r_live": 0.15,
+          "min_profit_factor_live": 1.4,
+          "max_losing_streak_live": 10,
+          "no_fat_tail_dependency": "sem top 5 ainda positivo"
+        },
+        "execution": "manual_only",
+        "module_backtest_n": 73,
+        "backtest_span_years": 2.4,
+        "backtest_total_net_r_at_005_spread": 12.68,
+        "backtest_avg_net_r": 0.174,
+        "backtest_profit_factor_net": 1.46,
+        "backtest_win_rate": 0.425,
+        "backtest_max_losing_streak": 8,
+        "backtest_r_no_top5_net": -2.07,
+        "backtest_r_no_top10_net": -14.09,
+        "trigger": {
+          "all_required": [
+            "close > swing_high(10)",
+            "close > open",
+            "body_pct >= 0.7 (DECISIVE — corpo >= 70%)",
+            "range >= 1.5 × ATR(14)",
+            "RSI(14) > RSI-based MA"
+          ]
+        },
+        "regime_filters_all_required": [
+          "Close > EMA(200) no 1H",
+          "EMA(50) > EMA(200) no 1H",
+          "ATR(14) > ATR_MA(20)"
+        ],
+        "htf_filters_all_required": [
+          "HTF 1D close > HTF 1D EMA(50)"
+        ],
+        "macro_filter_dxy": {
+          "name": "DXY_BEARISH",
+          "required": true,
+          "definition": "TVC:DXY close (4H) < EMA50(TVC:DXY, 4H)",
+          "rationale": "Mesmo princípio do módulo swing EURUSD — DXY bearish confirma USD weakness, condição mandatória para LONG EUR.",
+          "data_source": "TradingView MCP — chart_set_symbol('TVC:DXY') + data_get_ohlcv(count>=100) + EMA50 manual em Python",
+          "fallback_policy": "Se MCP falhar OU DXY >= EMA50: downgrade para SETUP_EM_OBSERVACAO (já é SETUP_CANDIDATO_FORTE como default, então downgrade adicional)."
+        },
+        "stop_rule": "low_signal_bar - 0.5 × ATR(14)",
+        "stop_sanity_check": "rejeitar setup se R > 5 × ATR(14)",
+        "target": "3R fixo",
+        "management": {
+          "move_to_be_at": "+1R",
+          "trailing": "disabled",
+          "max_hold_bars": 20,
+          "time_exit": "mark-to-market no candle 20 com close"
+        },
+        "promotion_trigger": "MOMENTUM_CONTINUATION",
+        "operational_signal": "YES_MANUAL_REVIEW",
+        "d2r_required": true,
+        "doc_path": "research/experimental/eurusd_1h_long_decisive_htf1d_dxy.md",
+        "downgrade_to_setup_em_observacao_when_any_true": [
+          "DXY close >= EMA50 (DXY não bearish)",
+          "MCP failed to read TVC:DXY"
+        ],
+        "blocks_when_any_true_no_trade": [
+          "close <= swing_high(10)",
+          "candle bearish ou body_pct < 0.7",
+          "range < 1.5 × ATR",
+          "RSI <= RSI_MA",
+          "close <= EMA200 no 1H",
+          "EMA50 <= EMA200 no 1H",
+          "ATR <= ATR_MA20",
+          "HTF 1D close <= HTF 1D EMA50",
+          "hard block global falha"
+        ]
+      },
+      "ETHUSD_1H_LONG_PULLBACK_EMA50_REGIME": {
+        "status": "active",
+        "activated_at": "2026-05-12",
+        "asset": "PEPPERSTONE:ETHUSD",
+        "timeframe": "1H",
+        "execution_tf": "60",
+        "direction": "LONG_ONLY",
+        "strategy_layer": "Intraday / 1H Pullback Continuation",
+        "default_classification": "SETUP_CANDIDATO_FORTE",
+        "do_not_auto_promote_to_setup_valido_intraday": true,
+        "auto_promote_reason_blocked": "Sample backtest 1.4y apenas. Promover para SETUP_VALIDO_INTRADAY somente após validação ao vivo (ver promotion_criteria abaixo).",
+        "promotion_criteria_to_setup_valido_intraday": {
+          "min_live_trades_in_d2r": 30,
+          "min_avg_r_live": 0.15,
+          "min_profit_factor_live": 1.4,
+          "max_losing_streak_live": 12,
+          "no_fat_tail_dependency": "sem top 5 ainda positivo"
+        },
+        "execution": "manual_only",
+        "module_backtest_n": 96,
+        "backtest_span_years": 1.4,
+        "backtest_total_net_r_at_005_spread": 23.19,
+        "backtest_avg_net_r": 0.242,
+        "backtest_profit_factor_net": 1.68,
+        "backtest_win_rate": 0.333,
+        "backtest_max_losing_streak": 9,
+        "backtest_r_no_top5_net": 8.44,
+        "backtest_r_no_top10_net": -6.31,
+        "trigger": {
+          "all_required": [
+            "low <= EMA(50) (pullback toca/atravessa EMA50)",
+            "close > EMA(50) (fechamento recupera para cima da EMA50)",
+            "close > open (candle bullish)",
+            "body_pct >= 0.4 (corpo >= 40% do range)",
+            "RSI(14) > RSI-based MA"
+          ]
+        },
+        "regime_filters_all_required": [
+          "Close > EMA(200) no 1H",
+          "EMA(50) > EMA(200) no 1H",
+          "HTF 1D close > HTF 1D EMA(50) (gate HTF crítico)"
+        ],
+        "stop_rule": "low_signal_bar - 0.5 × ATR(14)",
+        "stop_sanity_check": "rejeitar setup se R = |entry - stop| > 5 × ATR(14)",
+        "target": "3R fixo",
+        "management": {
+          "move_to_be_at": "+1R",
+          "trailing": "disabled",
+          "max_hold_bars": 20,
+          "time_exit": "mark-to-market no candle 20 com close"
+        },
+        "promotion_trigger": "RETEST_HOLD",
+        "operational_signal": "YES_MANUAL_REVIEW",
+        "d2r_required": true,
+        "doc_path": "research/experimental/ethusd_1h_long_pullback_ema50_regime.md",
+        "blocks_when_any_true": [
+          "low > EMA(50) (pullback não tocou EMA50)",
+          "close <= EMA(50) (sem recuperação)",
+          "close <= open (candle não bullish)",
+          "body_pct < 0.4",
+          "RSI <= RSI_MA",
+          "close <= EMA(200) no 1H",
+          "EMA(50) <= EMA(200) no 1H",
+          "HTF 1D close <= HTF 1D EMA(50)",
+          "hard block global falha"
+        ]
+      }
+    },
+    "required_structured_fields_in_output": [
+      "Strategy Module",
+      "Global hard blocks",
+      "Module checklist",
+      "Module score",
+      "Module backtest n",
+      "Operational signal",
+      "D2R required",
+      "Hard block triggered",
+      "Module checklist failed on",
+      "Module checklist notes",
+      "Promotion trigger",
+      "Promotion status",
+      "Priority",
+      "Trigger",
+      "Entrada ideal",
+      "Preço atual",
+      "Entrada atrasada",
+      "Entry late distance R",
+      "Execution TF"
+    ],
+    "binary_pass_rule": {
+      "_v3_change": "Substituído 'PASS parcial' (a4) por estados estritamente binários + campo de notas separado.",
+      "Global hard blocks": "PASS | FAIL — nunca PARCIAL",
+      "Module checklist": "PASS | FAIL — nunca PARCIAL",
+      "checklist_notes_field": "Module checklist notes — texto livre para detalhar itens parcialmente cumpridos quando classification = SETUP_CANDIDATO_FORTE."
+    },
+    "deprecated_classifications": [
+      "SETUP_FORTE",
+      "SETUP_EXCELENTE",
+      "SETUP_VALIDO_SHADOW",
+      "SETUP_VALIDO_INTRADAY_SHADOW",
+      "SETUP_OPERACIONAL_MANUAL",
+      "INTRADAY_NO_TRADE",
+      "INTRADAY_EM_OBSERVACAO",
+      "INTRADAY_SETUP_VALIDO",
+      "INTRADAY_SETUP_FORTE",
+      "INTRADAY_SETUP_EXCELENTE",
+      "SETUP_CANDIDATO_FORTE_INTRADAY"
+    ],
+    "deprecation_mapping": {
+      "SETUP_FORTE": "SETUP_VALIDO (com Priority A em module_score)",
+      "SETUP_EXCELENTE": "SETUP_VALIDO (com Priority A em module_score)",
+      "SETUP_VALIDO_SHADOW": "SETUP_VALIDO (com module_backtest_n declarado)",
+      "SETUP_VALIDO_INTRADAY_SHADOW": "SETUP_VALIDO_INTRADAY (com module_backtest_n declarado)",
+      "SETUP_OPERACIONAL_MANUAL": "SETUP_VALIDO ou SETUP_VALIDO_INTRADAY (conforme TF)",
+      "INTRADAY_NO_TRADE": "NO_TRADE com execution_tf",
+      "INTRADAY_EM_OBSERVACAO": "SETUP_EM_OBSERVACAO com execution_tf",
+      "INTRADAY_SETUP_VALIDO": "SETUP_VALIDO_INTRADAY",
+      "INTRADAY_SETUP_FORTE": "SETUP_VALIDO_INTRADAY (com Priority A)",
+      "INTRADAY_SETUP_EXCELENTE": "SETUP_VALIDO_INTRADAY (com Priority A)",
+      "SETUP_CANDIDATO_FORTE_INTRADAY": "SETUP_CANDIDATO_FORTE com execution_tf"
+    }
+  },
+  "legacy_notes": {
+    "old_strategy": "Pivot Reversal ProTrend / CounterTrend com RSI, AO, CVD, Delta, OBV e HVN.",
+    "current_status": "Referência antiga. Não usar como checklist principal, a menos que o usuário peça explicitamente.",
+    "kept_from_legacy": [
+      "Price Action como base.",
+      "Análise top-down.",
+      "R:R mínimo 2:1.",
+      "Stop técnico.",
+      "Não mover SL contra a posição.",
+      "Journaling e revisão."
+    ],
+    "paused_or_deprioritized": [
+      "AO",
+      "CVD",
+      "Delta",
+      "OBV",
+      "Footprint/imbalance",
+      "HVN obrigatório"
+    ]
+  },
+  "alert_policy": {
+    "autonomous_alert_creation": true,
+    "confirmation_required_for_alert_creation": false,
+    "confirmation_required_for_alert_modification": true,
+    "confirmation_required_for_alert_deletion": true,
+    "applies_to": [
+      "análises individuais de gráfico",
+      "varreduras top-down da watchlist",
+      "monitoramento de ativos prioritários",
+      "setups classificados como PRÓXIMO DE ZONA, SETUP EM OBSERVAÇÃO ou superior"
+    ],
+    "conditions_for_autonomous_creation": [
+      "ativo está na whitelist",
+      "alerta é apenas de monitoramento",
+      "alerta não executa ordem",
+      "existe motivo estratégico claro",
+      "alerta monitora zona, RSI, rompimento, rejeição, invalidação, alvo ou confirmação relevante",
+      "não existe alerta duplicado equivalente",
+      "limite de 3 alertas por ativo/timeframe é respeitado"
+    ],
+    "forbidden_without_confirmation": [
+      "modificar alerta existente",
+      "deletar alerta existente",
+      "criar alerta fora da whitelist",
+      "criar alerta que execute ordem"
+    ],
+    "max_alerts_per_symbol_timeframe": 3,
+    "reporting_rule": "Após criar alerta, Claude deve informar nome, ativo, timeframe, condição, motivo estratégico, classificação atual e próxima ação esperada.",
+    "must_include_alert_type": true,
+    "recommended_payload_fields": [
+      "symbol",
+      "timeframe",
+      "alert_type",
+      "event",
+      "message",
+      "price",
+      "time",
+      "time_now",
+      "created_by"
+    ]
+  },
+  "workflow_policy": {
+    "daily_top_down_scan": true,
+    "scan_order": [
+      "D",
+      "12H",
+      "4H"
+    ],
+    "intraday_refinement_only_for_candidates": true,
+    "intraday_timeframes": [
+      "1H",
+      "30M",
+      "15M"
+    ],
+    "candidate_statuses": [
+      "SETUP_EM_OBSERVACAO",
+      "SETUP_CANDIDATO_FORTE",
+      "SETUP_VALIDO",
+      "SETUP_VALIDO_INTRADAY"
+    ],
+    "automation_policy": {
+      "full_watchlist_scan_manual_or_scheduled": true,
+      "15_minute_monitoring_only_for_priority_candidates": true,
+      "no_automatic_orders": true,
+      "no_automatic_pine_edits": true,
+      "no_automatic_strategy_rule_changes": true
+    },
+    "intraday_layer_active": true,
+    "intraday_priority_symbols": [
+      "XAUUSD",
+      "XAGUSD",
+      "US500",
+      "BTCUSD",
+      "ETHUSD",
+      "EURUSD"
+    ],
+    "intraday_scan_timeframes": [
+      "1H",
+      "30M",
+      "15M"
+    ],
+    "intraday_scan_policy": "Intraday deve ser avaliado como camada independente, usando zonas locais. HTF é filtro de qualidade, não bloqueio absoluto."
+  },
+  "drawing_policy": {
+    "autonomous_drawing_allowed": true,
+    "confirmation_required_for_new_drawings": false,
+    "whitelist_only": true,
+    "allowed_purposes": [
+      "marcar zonas relevantes",
+      "desenhar retângulos de suporte/resistência/BigBeluga/SMC",
+      "marcar zonas de monitoramento",
+      "desenhar trendlines auxiliares",
+      "plotar setup sugerido quando SETUP VÁLIDO ou superior",
+      "marcar entrada sugerida, stop, alvo 1, alvo 2 e R:R",
+      "marcar invalidação"
+    ],
+    "allowed_when": [
+      "ativo está na whitelist",
+      "existe zona relevante",
+      "classificação é PRÓXIMO DE ZONA, SETUP EM OBSERVAÇÃO ou superior para desenhos de monitoramento",
+      "classificação é SETUP VÁLIDO ou superior para plotar operação completa"
+    ],
+    "forbidden_without_confirmation": [
+      "apagar desenhos manuais do usuário",
+      "modificar desenhos manuais do usuário",
+      "desenhar em ativo fora da whitelist",
+      "desenhar setup operacional sem zona relevante",
+      "desenhar setup operacional com R:R menor que 2:1",
+      "desenhar qualquer coisa que implique execução automática de ordem"
+    ],
+    "own_drawings_policy": {
+      "prefix": "AUTO_CLAUDE_",
+      "can_update_own_drawings": true,
+      "can_remove_stale_own_drawings": true,
+      "must_report_changes": true
+    },
+    "reporting_rule": "Após desenhar, Claude deve informar nome do desenho, ativo, timeframe, tipo de desenho, motivo estratégico, classificação e próxima ação esperada."
+  },
+  "alert_interpretation_policy": {
+    "principle": "Alertas são gatilhos de reavaliação, não sinais de entrada.",
+    "required_payload_field": "alert_type",
+    "valid_alert_types": [
+      "test_connectivity",
+      "monitor_zone",
+      "monitor_rsi_extreme",
+      "monitor_rsi_exit",
+      "monitor_rejection",
+      "monitor_breakout",
+      "monitor_invalidation",
+      "monitor_target",
+      "setup_recheck"
+    ],
+    "rules": [
+      "A classificação final sempre depende do gráfico no momento do disparo, não do momento em que o alerta foi criado.",
+      "Alertas de teste não devem gerar análise operacional completa.",
+      "Alertas de zona apenas acionam reavaliação; não significam entrada.",
+      "Alertas de RSI apenas acionam reavaliação; não significam entrada.",
+      "Alertas de rompimento/rejeição precisam ser confirmados pelo contexto atual.",
+      "Se o alerta estiver fora da whitelist, apenas registrar e não gerar sinal operacional.",
+      "Se o alerta não tiver alert_type, tratar como setup_recheck genérico, mas mencionar que o payload está incompleto."
+    ],
+    "test_alert_response": "Para alertas de teste, responder apenas que o canal TradingView → webhook → Claude → Telegram está funcionando. Não analisar setup.",
+    "telegram_summary_format": [
+      "Classificação",
+      "Direção",
+      "Resumo",
+      "Confluências",
+      "Bloqueio principal",
+      "Ação tomada",
+      "Próxima ação"
+    ]
+  },
+  "intraday_strategy_layer": {
+    "status": "active",
+    "name": "Intraday Local Zone Reversal Layer",
+    "purpose": "Identificar setups intraday em 1H, 30M e 15M usando zonas locais, RSI extremo, TOP/BOTTOM e Market Order Bubbles, sem exigir que o setup esteja obrigatoriamente em zona BigBeluga 4H/12H/D.",
+    "priority_symbols": [
+      "XAUUSD",
+      "XAGUSD",
+      "US500",
+      "BTCUSD",
+      "ETHUSD",
+      "EURUSD"
+    ],
+    "timeframes": {
+      "execution": [
+        "15M",
+        "30M",
+        "1H"
+      ],
+      "local_context": {
+        "15M": [
+          "15M",
+          "30M",
+          "1H"
+        ],
+        "30M": [
+          "30M",
+          "1H"
+        ],
+        "1H": [
+          "1H",
+          "4H"
+        ]
+      }
+    },
+    "core_rule": "Um setup intraday pode ser válido mesmo sem estar em zona BigBeluga 4H/12H/D, desde que exista uma zona relevante clara no próprio timeframe de execução ou no timeframe imediatamente superior.",
+    "htf_context_rule": {
+      "favorable": "Aumenta prioridade/probabilidade qualitativa.",
+      "neutral": "Não impede o setup intraday se as condições locais estiverem presentes.",
+      "against": "Reduz probabilidade, exige confirmação local mais forte e impede classificação como INTRADAY SETUP EXCELENTE."
+    },
+    "valid_local_zones": [
+      "BigBeluga/SMC local no timeframe atual",
+      "suporte ou resistência local clara",
+      "zona de rejeição local",
+      "região de liquidez intraday",
+      "zona de topo/fundo recente",
+      "linha ou retângulo local relevante",
+      "nível psicológico próximo, se houver reação"
+    ],
+    "buy_conditions": [
+      "Ativo na whitelist e preferencialmente na lista de prioridade intraday, ou escolhido manualmente pelo usuário.",
+      "Timeframe 15M, 30M ou 1H.",
+      "Zona local relevante no timeframe atual ou imediatamente superior.",
+      "BOTTOM, LONG ou sinal bullish válido dentro/próximo da zona local.",
+      "RSI em sobrevenda ou recém saindo da sobrevenda com reação clara.",
+      "Reação clara ou cluster de Market Order Bubbles local.",
+      "Stop abaixo da invalidação local.",
+      "R:R mínimo de 2:1."
+    ],
+    "sell_conditions": [
+      "Ativo na whitelist e preferencialmente na lista de prioridade intraday, ou escolhido manualmente pelo usuário.",
+      "Timeframe 15M, 30M ou 1H.",
+      "Zona local relevante no timeframe atual ou imediatamente superior.",
+      "TOP, SHORT ou sinal bearish válido dentro/próximo da zona local.",
+      "RSI em sobrecompra ou recém saindo da sobrecompra com reação clara.",
+      "Reação clara ou cluster de Market Order Bubbles local.",
+      "Stop acima da invalidação local.",
+      "R:R mínimo de 2:1."
+    ],
+    "classifications": {
+      "_v3_note": "Camada intraday usa a mesma lista canônica de 7 classificações (ver classification_rules._canonical_list_v3). A distinção intraday/swing é capturada exclusivamente em SETUP_VALIDO_INTRADAY (sinal real intraday) e em campo execution_tf das demais classificações. INTRADAY_NO_TRADE, INTRADAY_EM_OBSERVACAO, INTRADAY_SETUP_VALIDO, INTRADAY_SETUP_FORTE e INTRADAY_SETUP_EXCELENTE foram deprecados — ver deprecation_mapping em module_aware_policy.",
+      "SETUP_VALIDO_INTRADAY": "Sinal intraday completo: hard blocks globais passam + módulo intraday detectado + checklist do módulo passa + trigger objetivo + R:R >= 2:1 + entrada não atrasada.",
+      "SETUP_CANDIDATO_FORTE": "Intraday com execution_tf preenchido. Vai para Telegram (sujeito a cap).",
+      "SETUP_EM_OBSERVACAO": "Intraday com execution_tf preenchido.",
+      "NO_TRADE": "Intraday com execution_tf preenchido."
+    },
+    "blocking_conditions": [
+      "Ativo fora da whitelist.",
+      "Preço sem zona local clara.",
+      "TOP/BOTTOM fora da zona local.",
+      "RSI neutro sem extremo nem saída recente do extremo.",
+      "R:R menor que 2:1.",
+      "Stop local tecnicamente ruim.",
+      "Preço no meio do range local sem reação.",
+      "Sinais contraditórios fortes.",
+      "Mercado sem liquidez ou spread inadequado.",
+      "Contexto HTF fortemente contrário sem confirmação local forte."
+    ],
+    "monitoring_policy": {
+      "initial_mode": "manual_scan",
+      "recommended_frequency": "A cada 30 minutos nas sessões ativas, depois de validado manualmente.",
+      "do_not_scan_all_watchlist_every_15m": true,
+      "scan_priority_symbols_first": true,
+      "telegram_notifications": "Enviar apenas quando houver INTRADAY SETUP VÁLIDO ou superior, ou quando um ativo subir de INTRADAY EM OBSERVAÇÃO para condição próxima de gatilho."
+    }
+  },
+  "visual_drawing_policy": {
+    "rectangle_extension_policy": {
+      "status": "active",
+      "principle": "Retângulos de zona devem ser projetados para a direita para funcionarem como zonas operacionais vivas e possíveis bases de alertas futuros.",
+      "reason": "Zonas estreitas deixam de cobrir a ação futura do preço e podem prejudicar alertas, monitoramento e leitura visual.",
+      "preferred_behavior": "Usar extend_right se a ferramenta suportar. Se não suportar, desenhar o retângulo com largura temporal futura suficiente.",
+      "projection_guidelines": {
+        "15M": "projetar 24 a 48 horas à frente",
+        "30M": "projetar 24 a 48 horas à frente",
+        "1H": "projetar 3 a 5 dias à frente",
+        "4H": "projetar 2 a 4 semanas à frente",
+        "12H": "projetar 1 a 3 meses à frente",
+        "1D": "projetar 1 a 3 meses à frente",
+        "W": "projetar vários meses à frente"
+      },
+      "applies_to": [
+        "zonas BigBeluga",
+        "zonas SMC",
+        "suportes",
+        "resistências",
+        "demand zones",
+        "supply zones",
+        "zonas intraday relevantes"
+      ],
+      "do_not": [
+        "não criar retângulos estreitos que terminam perto do candle atual",
+        "não usar zonas curtas demais para monitoramento operacional",
+        "não depender de varredura constante se uma zona pode ser marcada e monitorada"
+      ]
+    }
+  },
+  "classification_v4_shadow": {
+    "_status": "SHADOW MODE since 2026-05-14 — logged but does not affect Telegram routing or operational decisions",
+    "_validation_target": "After 1 week of live data (or n>=30 new SETUP_CONFIRMED_ENTRY), compare V4 against D2R outcomes",
+    "_basis": "D2R n=220 reclassification (Phase 2): entry_model + R:R + closed trigger is the real edge discriminator",
+    "categories": {
+      "NO_TRADE_V4": "Hard block, late, invalidated, MCP fail",
+      "SETUP_INFO_ONLY": "Structure interesting but no operational trigger (line_break/trendline/breakout WITHOUT R:R>=2 OR without closed confirmation)",
+      "SETUP_ZONE_WATCH": "Active zone tested, NO closed confirmation candle yet (= zone_touch pure; even with multiple confluences)",
+      "SETUP_CONFIRMED_ENTRY": "Trigger candle CLOSED + R:R>=2:1 + no active blockers (= reentry/breakout_retest/confirmation_close/line_break with would_have_been_tradeable=True)"
+    },
+    "mapping_rules": [
+      "1. hard_blocks failed -> NO_TRADE_V4",
+      "2a. entry_model in {confirmation_close, breakout_retest, line_break} + R:R>=2 + sem blockers -> SETUP_CONFIRMED_ENTRY",
+      "2b. entry_model in {confirmation_close, breakout_retest, line_break} otherwise -> SETUP_INFO_ONLY",
+      "3a. entry_model = reentry + R:R>=2 + V3 = CANDIDATO_FORTE -> SETUP_CONFIRMED_ENTRY",
+      "3b. entry_model = reentry otherwise -> SETUP_ZONE_WATCH",
+      "4. entry_model = zone_touch -> SETUP_ZONE_WATCH (NEVER promote by confluence alone)",
+      "5. alert_type with line/trendline/breakout/invalidation without trigger -> SETUP_INFO_ONLY",
+      "6. default -> SETUP_ZONE_WATCH"
+    ],
+    "phase2_stats_at_implementation": {
+      "SETUP_CONFIRMED_ENTRY": {
+        "n": 26,
+        "avg_r": 1.97,
+        "win_pct": 69,
+        "target_win_pct": 70
+      },
+      "SETUP_INFO_ONLY": {
+        "n": 13,
+        "avg_r": 0.71,
+        "win_pct": 46,
+        "target_win_pct": "60-70"
+      },
+      "SETUP_ZONE_WATCH": {
+        "n": 98,
+        "avg_r": 0.57,
+        "win_pct": 50,
+        "target_win_pct": "<50"
+      },
+      "NO_TRADE_V4": {
+        "n": 83,
+        "note": "excluded from stats"
+      }
+    },
+    "old_to_new_mapping_observed": {
+      "SETUP_CANDIDATO_FORTE": {
+        "SETUP_CONFIRMED_ENTRY": 11,
+        "SETUP_ZONE_WATCH": 16,
+        "SETUP_INFO_ONLY": 1
+      },
+      "SETUP_EM_OBSERVACAO": {
+        "SETUP_CONFIRMED_ENTRY": 9,
+        "SETUP_ZONE_WATCH": 55,
+        "SETUP_INFO_ONLY": 8
+      },
+      "INTRADAY_EM_OBSERVACAO": {
+        "SETUP_ZONE_WATCH": 23,
+        "SETUP_INFO_ONLY": 2
+      }
+    },
+    "shadow_to_active_criteria": "Switch from shadow to active routing when: (a) >=30 new live alerts classified V4, (b) D2R win rate for SETUP_CONFIRMED_ENTRY >= 70%, (c) no regression in operational flow."
+  },
+  "oracle_score_shadow": {
+    "_status": "SHADOW MODE since 2026-05-14 — logged but does not affect Telegram routing or operational decisions",
+    "_basis": "D2R Oracle investigation 2026-05-14: 34 trades with setup_valid_retro=True had 100% win rate, +99R total, avg +2.91R. Three forward-available features discriminate Oracle from Control (tradeable but retro=False) by 29-34pp.",
+    "score_definition": {
+      "+1 if sweep+reentry mentioned": "delta +29pp Oracle vs Control (n=22/34 oracle vs 11/31 control)",
+      "+1 if CHoCH or BOS mentioned": "delta +30pp when combined with sweep+reentry",
+      "+1 if RSI extreme mentioned": "delta +34pp when combined with sweep+reentry — STRONGEST"
+    },
+    "counting_rule": "Count only when concept is AFFIRMATIVELY described as present in the setup. Negations (\"RSI not extreme\") = 0 points for that condition.",
+    "performance_observed_phase2": {
+      "baseline_n137": {
+        "avg_r": 0.85,
+        "win_pct": 53,
+        "total_r": 115.96
+      },
+      "score_0": {
+        "n": 3,
+        "avg_r": 2.33,
+        "win_pct": 33,
+        "note": "sample too small"
+      },
+      "score_1": {
+        "n": 28,
+        "avg_r": 0.66,
+        "win_pct": 50
+      },
+      "score_2": {
+        "n": 71,
+        "avg_r": 0.47,
+        "win_pct": 48
+      },
+      "score_3": {
+        "n": 35,
+        "avg_r": 1.64,
+        "win_pct": 69,
+        "note": "GOLD STANDARD — proposed threshold"
+      }
+    },
+    "shadow_to_active_criteria": "Switch from shadow to active gate when: (a) >=30 new live alerts with oracle_score logged, (b) Score=3 cohort maintains win% >=65% prospectively, (c) Score>=2 maintains avg R >=0.5R.",
+    "interaction_with_v4_shadow": "When Oracle Score=3 AND classification_v4_shadow=SETUP_CONFIRMED_ENTRY, expected hit rate is even higher (intersection of two independent signals). Track this combination separately during validation period.",
+    "forward_predictors_discarded": {
+      "bubble_cluster_alone": "NOT discriminating — Oracle 88% vs Control 90%. Bubbles WITHOUT sweep+reentry actually NEGATIVE (-29pp).",
+      "NAS100_signal": "NOT discriminating — Oracle 94% vs Control 97%.",
+      "zone_nested_HTF": "mildly negative — Control has slightly more."
+    }
+  }
+}
