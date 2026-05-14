@@ -4,7 +4,40 @@ import json
 import subprocess
 import sys
 import textwrap
+import fcntl
+import time
 from datetime import datetime
+
+CHART_LOCK_PATH = "/tmp/tradingview_chart.lock"
+CHART_LOCK_TIMEOUT_S = 90
+
+
+def acquire_chart_lock(timeout_s=CHART_LOCK_TIMEOUT_S):
+    """Acquire exclusive flock on TradingView chart resource.
+    Returns (fd, wait_seconds). Raises TimeoutError if timeout exceeded.
+    Serializes chart_set_symbol/timeframe across concurrent claude headless runs."""
+    fd = open(CHART_LOCK_PATH, "w")
+    deadline = time.monotonic() + timeout_s
+    start = time.monotonic()
+    while True:
+        try:
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            return fd, round(time.monotonic() - start, 2)
+        except BlockingIOError:
+            if time.monotonic() >= deadline:
+                fd.close()
+                raise TimeoutError(f"chart lock timeout after {timeout_s}s")
+            time.sleep(0.5)
+
+
+def release_chart_lock(fd):
+    if fd is None:
+        return
+    try:
+        fcntl.flock(fd, fcntl.LOCK_UN)
+        fd.close()
+    except Exception:
+        pass
 
 BASE_DIR = Path.home() / "tradingview-mcp"
 STRATEGY_DIR = BASE_DIR / "my-strategy"
@@ -1074,26 +1107,39 @@ def main():
         "Read,mcp__tradingview__*"
     ]
 
+    chart_lock_fd = None
+    chart_lock_wait_s = None
+    chart_lock_error = None
     try:
-        result = subprocess.run(
-            cmd,
-            cwd=str(BASE_DIR),
-            text=True,
-            capture_output=True,
-            timeout=360
-        )
-    except subprocess.TimeoutExpired:
-        output = "ERRO: Claude Code headless excedeu timeout de 360s."
-        data = {
-            "started_at": started,
-            "ok": False,
-            "error": "timeout",
-            "output": output,
-            "alert": alert
-        }
-        log_file.write_text(json.dumps(data, ensure_ascii=False, indent=2))
-        print(output)
-        sys.exit(1)
+        chart_lock_fd, chart_lock_wait_s = acquire_chart_lock()
+    except TimeoutError as e:
+        chart_lock_error = str(e)
+
+    try:
+        try:
+            result = subprocess.run(
+                cmd,
+                cwd=str(BASE_DIR),
+                text=True,
+                capture_output=True,
+                timeout=360
+            )
+        except subprocess.TimeoutExpired:
+            output = "ERRO: Claude Code headless excedeu timeout de 360s."
+            data = {
+                "started_at": started,
+                "ok": False,
+                "error": "timeout",
+                "output": output,
+                "alert": alert,
+                "chart_lock_wait_s": chart_lock_wait_s,
+                "chart_lock_error": chart_lock_error,
+            }
+            log_file.write_text(json.dumps(data, ensure_ascii=False, indent=2))
+            print(output)
+            sys.exit(1)
+    finally:
+        release_chart_lock(chart_lock_fd)
 
     output = (result.stdout or "").strip()
     stderr = (result.stderr or "").strip()
@@ -1104,7 +1150,9 @@ def main():
         "returncode": result.returncode,
         "stdout": output,
         "stderr": stderr,
-        "alert": alert
+        "alert": alert,
+        "chart_lock_wait_s": chart_lock_wait_s,
+        "chart_lock_error": chart_lock_error,
     }
     log_file.write_text(json.dumps(data, ensure_ascii=False, indent=2))
 
