@@ -1,0 +1,23 @@
+config,n,total_net_r,avg_net_r,pf_net,win_rate,max_losing_streak,r_no_top5_net,r_no_top10_net,trades_per_week,trades_per_month,best_r,worst_r,filters
+S_full_trend_htf,427,68.8,0.1611,1.37,0.258,22,49.05,29.3,1.17,5.08,3.95,-1.05,"{'adx_min': 20, 'close_above_ema200': True, 'ema50_above_ema200': True, 'htf_1d_bullish': True}"
+T_minimal_trend_htf,565,68.65,0.1215,1.28,0.246,30,48.9,29.15,1.54,6.71,3.95,-1.05,"{'close_above_ema200': True, 'ema50_above_ema200': True, 'htf_1d_bullish': True}"
+P_adx20+ema_stack,428,67.75,0.1583,1.36,0.257,22,48.0,28.25,1.17,5.09,3.95,-1.05,"{'adx_min': 20, 'close_above_ema200': True, 'ema50_above_ema200': True}"
+J_ema50_above_ema200,572,66.28,0.1159,1.27,0.245,30,46.53,26.78,1.56,6.79,3.95,-1.05,{'ema50_above_ema200': True}
+F_atr_expanding,434,65.27,0.1504,1.36,0.279,18,45.52,25.77,1.15,5.02,3.95,-1.05,{'atr_expanding': True}
+R_full_trend_regime,234,64.57,0.276,1.64,0.286,16,44.82,25.07,0.65,2.81,3.95,-1.05,"{'adx_min': 20, 'close_above_ema200': True, 'ema50_above_ema200': True, 'ema50_slope_pos': True, 'atr_expanding': True}"
+V_robust,362,55.64,0.1537,1.35,0.251,19,35.89,16.14,0.99,4.3,3.95,-1.05,"{'adx_min': 18, 'ema50_above_ema200': True, 'htf_1d_bullish': True, 'breakout_expansion_required': True}"
+C_adx20,613,55.36,0.0903,1.2,0.251,21,35.61,15.86,1.63,7.09,3.95,-1.05,{'adx_min': 20}
+Q_adx22+ema_stack,378,54.23,0.1435,1.33,0.251,20,34.48,14.73,1.03,4.49,3.95,-1.05,"{'adx_min': 22, 'close_above_ema200': True, 'ema50_above_ema200': True}"
+M_range_expanding,436,52.75,0.121,1.29,0.264,21,33.0,13.25,1.16,5.04,3.95,-1.05,{'range_expanding': True}
+U_anti_chop,350,52.54,0.1501,1.35,0.274,20,32.79,13.04,0.93,4.05,3.95,-1.05,"{'no_chop_10': True, 'breakout_expansion_required': True, 'atr_expanding': True}"
+D_adx22,542,50.06,0.0924,1.21,0.249,20,30.31,10.56,1.44,6.27,3.95,-1.05,{'adx_min': 22}
+E_adx25,418,50.0,0.1196,1.27,0.254,23,30.25,10.5,1.12,4.86,3.95,-1.05,{'adx_min': 25}
+O_htf1d_bullish,692,49.71,0.0718,1.17,0.234,26,29.96,10.21,1.85,8.06,3.95,-1.05,{'htf_1d_bullish': True}
+B_adx18,676,49.45,0.0731,1.17,0.24,20,29.7,9.95,1.8,7.82,3.95,-1.05,{'adx_min': 18}
+K_no_chop_10,792,44.81,0.0566,1.13,0.236,31,25.06,5.31,2.11,9.16,3.95,-1.05,{'no_chop_10': True}
+N_htf12h_bullish,706,40.85,0.0579,1.13,0.234,26,21.1,1.35,1.88,8.16,3.95,-1.05,{'htf_12h_bullish': True}
+I_close_above_ema200,690,40.15,0.0582,1.13,0.235,27,20.4,0.65,1.83,7.98,3.95,-1.05,{'close_above_ema200': True}
+A_baseline_no_regime,834,32.84,0.0394,1.09,0.231,31,13.09,-6.66,2.22,9.64,3.95,-1.05,{}
+L_breakout_expansion,583,31.63,0.0543,1.12,0.232,39,11.88,-7.87,1.55,6.74,3.95,-1.05,{'breakout_expansion_required': True}
+H_close_above_ema50,780,21.48,0.0275,1.06,0.228,29,1.73,-18.02,2.07,9.02,3.95,-1.05,{'close_above_ema50': True}
+G_ema50_slope_pos,677,19.51,0.0288,1.06,0.22,29,-0.24,-19.99,1.8,7.83,3.95,-1.05,{'ema50_slope_pos': True}

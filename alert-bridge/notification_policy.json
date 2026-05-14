@@ -1,0 +1,46 @@
+{
+  "version": "0.1",
+  "mode": "telegram_frequency_control",
+  "telegram_policy": {
+    "send_only_on_relevant_change": true,
+    "non_critical_cooldown_minutes_per_target": 60,
+    "critical_events_bypass_cooldown": true,
+    "send_short_summary_only": true,
+    "save_full_report_to_logs": true
+  },
+  "critical_events": [
+    "SETUP VÁLIDO",
+    "SETUP FORTE",
+    "SETUP EXCELENTE",
+    "INTRADAY_SETUP_VALIDO",
+    "INTRADAY_SETUP_FORTE",
+    "INTRADAY_SETUP_EXCELENTE",
+    "setup_invalidated",
+    "risk_alert",
+    "price_hit_invalidation",
+    "price_hit_target"
+  ],
+  "non_critical_events": [
+    "probability_changed",
+    "priority_changed",
+    "classification_observation_changed",
+    "zone_touched",
+    "rsi_entered_extreme",
+    "rsi_exited_extreme"
+  ],
+  "state_update_rules": {
+    "update_after_each_successful_run": true,
+    "update_classification_last": true,
+    "update_probability_label_last": true,
+    "update_priority": true,
+    "update_last_checked_at": true,
+    "update_last_change_reason": true,
+    "update_last_notified_at_when_telegram_sent": true
+  },
+  "notes": [
+    "Telegram deve ser usado para mudanças relevantes, não para repetir status estático.",
+    "Relatório completo deve ficar nos logs locais.",
+    "Eventos críticos podem furar o cooldown.",
+    "Mudanças comuns devem respeitar cooldown de 60 minutos por alvo."
+  ]
+}

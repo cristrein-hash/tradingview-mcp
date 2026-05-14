@@ -1,0 +1,2 @@
+exit_idx,exit_price,r_outcome,exit_reason,mfe,mae,bars_held,entry_time,entry_price,stop_price,direction,r_planned,strategy,tf
+13362,6765.4250546052435,-1.0,stop,0.345098630406108,1.7317676725833726,9,2026-04-08 05:00:00,6797.3,6765.4250546052435,LONG,2.5,H10_bull_flag_1H_target2.5R,1H

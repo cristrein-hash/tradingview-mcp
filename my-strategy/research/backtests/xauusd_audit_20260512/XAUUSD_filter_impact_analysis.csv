@@ -1,0 +1,8 @@
+filter,n_trades,trades_per_year,total_r,avg_r,win_rate,max_losing_streak,profit_factor
+baseline_no_filter,1070,145.4,-53.34,-0.05,0.22,23,0.89
+with_rsi_extreme,90,12.2,10.69,0.119,0.278,10,1.27
+with_bubble,460,62.5,-26.9,-0.058,0.213,23,0.87
+with_nas,47,6.4,-3.31,-0.07,0.234,9,0.87
+with_divergence,1070,145.4,-53.34,-0.05,0.22,23,0.89
+with_rsi_AND_bubble,67,9.1,5.69,0.085,0.269,12,1.19
+with_rsi_AND_bubble_AND_nas,35,4.8,-0.31,-0.009,0.257,9,0.98

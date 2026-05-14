@@ -1,0 +1,365 @@
+{
+  "version": "0.1",
+  "mode": "claude_intraday_internal_monitor",
+  "created_at": "2026-04-28",
+  "description": "Alvos intraday internos baseados na primeira varredura intraday v0.1. Monitor separado do swing monitor.",
+  "notification_policy": {
+    "send_telegram": true,
+    "send_only_on_relevant_change": true,
+    "include_ranking": true,
+    "include_probability_label": true,
+    "probability_labels": [
+      "Baixa",
+      "Média-baixa",
+      "Média",
+      "Média-alta",
+      "Alta"
+    ]
+  },
+  "global_rules": {
+    "do_not_execute_orders": true,
+    "do_not_edit_pine": true,
+    "do_not_change_strategy_rules": true,
+    "do_not_create_tradingview_alerts": true,
+    "do_not_draw_in_first_test_round": true,
+    "use_strategy_rules_json": true,
+    "use_operational_prompt": true,
+    "use_intraday_scan_prompt": true
+  },
+  "priority_symbols": [
+    "XAUUSD",
+    "XAGUSD",
+    "US500",
+    "BTCUSD",
+    "ETHUSD",
+    "EURUSD"
+  ],
+  "targets": [
+    {
+      "id": "US500_15M_INTRADAY_EXHAUSTION_SHORT",
+      "symbol": "PEPPERSTONE:US500",
+      "base_symbol": "US500",
+      "primary_timeframe": "15M",
+      "secondary_timeframes": [
+        "30M",
+        "1H"
+      ],
+      "direction_bias": "short_observation",
+      "classification_last": "INTRADAY_EM_OBSERVACAO",
+      "priority": "Média-baixa",
+      "probability_label_last": "Média-baixa",
+      "monitor_reasons": [
+        "RSI 15M em sobrecompra",
+        "Movimento esticado em novo high",
+        "Sinais SHORT próximos no 1H",
+        "Principal candidato intraday da rodada"
+      ],
+      "watch_conditions": [
+        {
+          "type": "monitor_rsi_exit",
+          "timeframe": "15M",
+          "threshold": 70,
+          "condition": "rsi_exit_overbought",
+          "description": "RSI 15M saindo da sobrecompra"
+        },
+        {
+          "type": "monitor_rejection",
+          "timeframe": "15M",
+          "description": "Candle de rejeição/topo local após RSI sobrecomprado"
+        }
+      ],
+      "promotion_conditions": [
+        "RSI 15M sai de >70 com candle bearish de rejeição",
+        "TOP/SHORT local válido aparece na região",
+        "Preço perde microestrutura local com R:R >= 2:1"
+      ],
+      "invalidation_notes": [
+        "Preço continua subindo sem rejeição",
+        "RSI permanece sobrecomprado com continuação limpa",
+        "Sem candle bearish ou microestrutura de reversão"
+      ],
+      "status": "active",
+      "last_checked_at": "2026-05-14T14:40:26.877886+00:00",
+      "last_relevant_change": true,
+      "last_change_reason": "RSI 1H entrou em sobrecompra (71.44 vs 68.43 ant.); preço esticado ATR 3.6; ainda sem TOP/SHORT nem candle de rejeição; 15M RSI 62.03 neutro",
+      "last_event_types": [
+        "rsi_entered_extreme",
+        "classification_observation_changed",
+        "probability_changed"
+      ],
+      "last_next_action": "Aguardar TOP/SHORT no 15M/1H com candle bearish de rejeição; vigiar reversão pós-novo high",
+      "last_notified_at": "2026-05-14T14:40:26.877886+00:00"
+    },
+    {
+      "id": "XAUUSD_1H_30M_INTRADAY_LOCAL_DEMAND",
+      "symbol": "PEPPERSTONE:XAUUSD",
+      "base_symbol": "XAUUSD",
+      "primary_timeframe": "30M",
+      "secondary_timeframes": [
+        "1H",
+        "15M"
+      ],
+      "direction_bias": "long_observation",
+      "classification_last": "INTRADAY_EM_OBSERVACAO",
+      "priority": "Média",
+      "probability_label_last": "Média",
+      "monitor_reasons": [
+        "Reação da zona local 4658–4677",
+        "Preço reagiu de 4677 para região próxima de 4691",
+        "Zona local 1H/30M respeitada"
+      ],
+      "watch_conditions": [
+        {
+          "type": "monitor_zone",
+          "timeframe": "30M",
+          "level": 4677,
+          "condition": "retest_or_hold",
+          "description": "Reteste ou sustentação acima da zona 4658–4677"
+        },
+        {
+          "type": "monitor_rsi_extreme",
+          "timeframe": "30M",
+          "threshold": 30,
+          "condition": "rsi_oversold",
+          "description": "RSI 30M/15M entrando em sobrevenda em novo teste"
+        }
+      ],
+      "promotion_conditions": [
+        "Novo teste da zona com RSI em sobrevenda ou saindo da sobrevenda",
+        "BOTTOM/LONG local válido aparece na zona",
+        "Rejeição clara ou cluster MOB local"
+      ],
+      "invalidation_notes": [
+        "Perda limpa da zona 4658–4677",
+        "Fechamento abaixo da invalidação local sem reação",
+        "RSI neutro persistente e preço no meio do range"
+      ],
+      "status": "active",
+      "last_checked_at": "2026-05-14T14:40:26.877886+00:00",
+      "last_relevant_change": false,
+      "last_change_reason": "Zona 4658-4677 testada (low 4666.77) com reação leve para 4691; preço 4687.79; RSI 30M 46.60 saindo do baixo mas neutro; sem BOTTOM/LONG nem MOB",
+      "last_event_types": [],
+      "last_next_action": "Aguardar BOTTOM/LONG ou novo teste mais profundo da zona; ganha confiança pós-GDP/PCE",
+      "last_notified_at": "2026-04-28T13:18:49.349584+00:00"
+    },
+    {
+      "id": "ETHUSD_1H_INTRADAY_DEMAND_APPROACH",
+      "symbol": "PEPPERSTONE:ETHUSD",
+      "base_symbol": "ETHUSD",
+      "primary_timeframe": "1H",
+      "secondary_timeframes": [
+        "30M",
+        "15M"
+      ],
+      "direction_bias": "long_observation",
+      "classification_last": "INTRADAY_NO_TRADE",
+      "priority": "Baixa",
+      "probability_label_last": "Baixa",
+      "monitor_reasons": [
+        "Preço aproximando da zona BB 1H 2261–2270",
+        "RSI 1H baixo, próximo de sobrevenda",
+        "Possível compra intraday se tocar zona com RSI baixo"
+      ],
+      "watch_conditions": [
+        {
+          "type": "monitor_zone",
+          "timeframe": "1H",
+          "level": 2270,
+          "condition": "zone_touch",
+          "description": "Entrada na zona 2261–2270"
+        },
+        {
+          "type": "monitor_rsi_extreme",
+          "timeframe": "1H",
+          "threshold": 30,
+          "condition": "rsi_oversold_or_exit",
+          "description": "RSI 1H/30M em sobrevenda ou saindo dela"
+        }
+      ],
+      "promotion_conditions": [
+        "Preço toca 2261–2270 com RSI ainda baixo",
+        "BOTTOM/LONG local aparece na zona",
+        "Rejeição ou cluster MOB local confirma reação"
+      ],
+      "invalidation_notes": [
+        "Preço rompe a zona para baixo sem reação",
+        "RSI neutro antes de tocar a zona",
+        "Sem BOTTOM/LONG ou rejeição local"
+      ],
+      "status": "active",
+      "last_checked_at": "2026-05-14T14:40:26.877886+00:00",
+      "last_relevant_change": true,
+      "last_change_reason": "Preço 2267 voltou para meio do range; RSI 1H 51.79 (vs 44.92 ant.) já neutro; zona 2261-2270 perfurada e recuperada sem BOTTOM/LONG; janela LONG enfraquecida",
+      "last_event_types": [
+        "probability_changed",
+        "priority_changed",
+        "classification_observation_changed"
+      ],
+      "last_next_action": "Rebaixar prioridade; reavaliar só com novo recuo profundo + BOTTOM/LONG na zona",
+      "last_notified_at": "2026-05-14T14:40:26.877886+00:00"
+    },
+    {
+      "id": "BTCUSD_30M_1H_INTRADAY_OVERSOLD_WATCH",
+      "symbol": "PEPPERSTONE:BTCUSD",
+      "base_symbol": "BTCUSD",
+      "primary_timeframe": "30M",
+      "secondary_timeframes": [
+        "1H",
+        "15M"
+      ],
+      "direction_bias": "long_observation",
+      "classification_last": "INTRADAY_NO_TRADE",
+      "priority": "Baixa",
+      "probability_label_last": "Baixa",
+      "monitor_reasons": [
+        "RSI 1H/30M baixo, próximo ou saindo de sobrevenda",
+        "Suporte local recente em 76455",
+        "Zona BigBeluga mais distante, setup depende de zona local"
+      ],
+      "watch_conditions": [
+        {
+          "type": "monitor_rsi_exit",
+          "timeframe": "30M",
+          "threshold": 30,
+          "condition": "rsi_exit_oversold",
+          "description": "RSI 30M saindo de sobrevenda"
+        },
+        {
+          "type": "monitor_zone",
+          "timeframe": "30M",
+          "level": 76455,
+          "condition": "local_support_retest",
+          "description": "Reteste do suporte local 76455"
+        }
+      ],
+      "promotion_conditions": [
+        "RSI sai da sobrevenda com reação no suporte local",
+        "BOTTOM/LONG local aparece próximo de 76455",
+        "R:R >= 2:1 até próximo alvo"
+      ],
+      "invalidation_notes": [
+        "Preço perde 76455 sem reação",
+        "RSI volta ao neutro sem setup",
+        "Sem zona local clara"
+      ],
+      "status": "active",
+      "last_checked_at": "2026-05-14T14:40:26.877886+00:00",
+      "last_relevant_change": false,
+      "last_change_reason": "Preço continua acima dos 80000 (80210); RSI 30M 63.15 (vs 56.18 ant.) subindo sem retorno à zona local 76455; janela LONG segue perdida",
+      "last_event_types": [],
+      "last_next_action": "Manter arquivado; reavaliar só com recuo significativo até zona local com RSI baixo",
+      "last_notified_at": "2026-05-14T14:00:12.806535+00:00"
+    },
+    {
+      "id": "EURUSD_1H_INTRADAY_RANGE_LOW_PRIORITY",
+      "symbol": "PEPPERSTONE:EURUSD",
+      "base_symbol": "EURUSD",
+      "primary_timeframe": "1H",
+      "secondary_timeframes": [
+        "30M",
+        "15M"
+      ],
+      "direction_bias": "range_observation",
+      "classification_last": "INTRADAY_EM_OBSERVACAO",
+      "priority": "Baixa",
+      "probability_label_last": "Média-baixa",
+      "monitor_reasons": [
+        "Range estreito no 1H",
+        "Divergência bullish regular isolada",
+        "Sem RSI extremo e sem expansão de movimento"
+      ],
+      "watch_conditions": [
+        {
+          "type": "monitor_breakout",
+          "timeframe": "1H",
+          "description": "Expansão para fora do range estreito"
+        },
+        {
+          "type": "monitor_rsi_extreme",
+          "timeframe": "30M",
+          "threshold": 30,
+          "condition": "rsi_extreme",
+          "description": "RSI 30M/15M entra em extremo com zona local"
+        }
+      ],
+      "promotion_conditions": [
+        "Expansão clara do range",
+        "RSI extremo em zona local",
+        "TOP/BOTTOM local válido"
+      ],
+      "invalidation_notes": [
+        "Continua em range estreito sem extremo",
+        "Sem zona local operacional"
+      ],
+      "status": "active",
+      "last_checked_at": "2026-05-14T14:40:26.877886+00:00",
+      "last_relevant_change": true,
+      "last_change_reason": "RSI 1H saiu da zona baixa (38.05 vs 32.64 ant.); preço 1.16961 recuperou parcialmente do low 1.16856; sem BOTTOM/LONG nem MOB; reação fraca",
+      "last_event_types": [
+        "rsi_exited_extreme",
+        "probability_changed"
+      ],
+      "last_next_action": "Vigiar reteste de 1.16775 com BOTTOM/LONG e reação clara; aguardar pós-ECB/FOMC",
+      "last_notified_at": "2026-05-14T14:00:12.806535+00:00"
+    },
+    {
+      "id": "XAGUSD_30M_INTRADAY_ZONE_WAIT",
+      "symbol": "PEPPERSTONE:XAGUSD",
+      "base_symbol": "XAGUSD",
+      "primary_timeframe": "30M",
+      "secondary_timeframes": [
+        "1H",
+        "15M"
+      ],
+      "direction_bias": "observation",
+      "classification_last": "INTRADAY_SETUP_VALIDO",
+      "priority": "Média-alta",
+      "probability_label_last": "Média",
+      "monitor_reasons": [
+        "Zona 30M 76.19–76.56 acima",
+        "Ativo frio nesta rodada",
+        "Aguardar toque em zona com RSI extremo"
+      ],
+      "watch_conditions": [
+        {
+          "type": "monitor_zone",
+          "timeframe": "30M",
+          "level": 76.19,
+          "condition": "zone_touch",
+          "description": "Toque na zona 76.19–76.56"
+        },
+        {
+          "type": "monitor_zone",
+          "timeframe": "30M",
+          "level": 75.1,
+          "condition": "support_retest",
+          "description": "Retorno à zona inferior 74.66–75.10"
+        }
+      ],
+      "promotion_conditions": [
+        "Preço toca zona com RSI extremo",
+        "TOP/BOTTOM local válido aparece",
+        "Rejeição ou cluster MOB local"
+      ],
+      "invalidation_notes": [
+        "Preço segue no meio do range",
+        "RSI neutro persistente",
+        "Sem reação em zona"
+      ],
+      "status": "active",
+      "last_checked_at": "2026-05-14T14:40:26.877886+00:00",
+      "last_relevant_change": true,
+      "last_change_reason": "BOTTOM/LONG ativo no 30M; RSI 30M 33.41 saiu da sobrevenda extrema (vs 23.46 ant.); preço fez bounce de 83.816 para 84.78 (~1.15%) retomando zona local 84.66-85; sweep + reclaim; bloqueios: MOB cluster ausente, 1H Regular Bearish divergence, queda intraday -2.43% ainda dominante",
+      "last_event_types": [
+        "INTRADAY_SETUP_VALIDO",
+        "rsi_exited_extreme",
+        "classification_observation_changed",
+        "probability_changed",
+        "priority_changed",
+        "zone_touched"
+      ],
+      "last_next_action": "Aguardar fechamento candle 30M com BOTTOM confirmado + reforço 15M; calcular R:R real (alvo 86.5-87, stop <83.7); macro filtro recomenda confirmação extra",
+      "last_notified_at": "2026-05-14T14:40:26.877886+00:00"
+    }
+  ]
+}

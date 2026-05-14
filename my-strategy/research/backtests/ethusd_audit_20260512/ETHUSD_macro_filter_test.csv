@@ -1,0 +1,11 @@
+config,n,total_net_r,avg_net_r,pf_net,win_rate,max_losing_streak,r_no_top5_net,r_no_top10_net
+v1.1+ETHBTC_bullish,72,38.42,0.5336,2.13,0.361,9.0,13.67,-6.02
+v1.1+ETHBTC_bull+BTC_bull,65,30.77,0.4734,1.97,0.369,6.0,6.02,-9.28
+v1.1_body60,95,30.51,0.3211,1.65,0.316,9.0,5.76,-14.03
+v1.1+BTC_bull_regime,88,22.86,0.2597,1.51,0.318,6.0,-1.89,-17.88
+v1.1+BTC.D_falling (slope_10 < 0),23,19.79,0.8606,3.28,0.391,8.0,-2.94,-8.65
+baseline_v1.0,120,18.29,0.1525,1.29,0.267,14.0,-6.46,-26.24
+v1.1+BTC.D_bearish (BTCD < EMA50),0,,,,,,,
+v1.1+DXY_bearish,0,,,,,,,
+v1.1+BTCD_bearish+BTC_bull,0,,,,,,,
+v1.1+ALL_macro_bullish,0,,,,,,,

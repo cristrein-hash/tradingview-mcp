@@ -1,0 +1,222 @@
+{
+  "version": "0.1",
+  "mode": "claude_internal_monitor",
+  "created_at": "2026-04-27",
+  "description": "Alvos internos de monitoramento criados a partir da Round 2 da varredura top-down. Substitui dependência de alert_create do TradingView MCP enquanto essa ferramenta está falhando.",
+  "notification_policy": {
+    "send_telegram": true,
+    "send_only_on_relevant_change": true,
+    "include_ranking": true,
+    "include_probability_label": true,
+    "probability_labels": [
+      "Baixa",
+      "Média-baixa",
+      "Média",
+      "Média-alta",
+      "Alta"
+    ]
+  },
+  "global_rules": {
+    "do_not_execute_orders": true,
+    "do_not_edit_pine": true,
+    "do_not_change_strategy_rules": true,
+    "use_strategy_rules_json": true,
+    "use_operational_prompt": true
+  },
+  "targets": [
+    {
+      "id": "US500_12H_4H_EXHAUSTION_MONITOR",
+      "symbol": "PEPPERSTONE:US500",
+      "base_symbol": "US500",
+      "primary_timeframe": "12H",
+      "secondary_timeframes": [
+        "4H"
+      ],
+      "direction_bias": "short_observation",
+      "classification_last": "NO_TRADE",
+      "priority": "Baixa",
+      "probability_label_last": "Baixa",
+      "monitor_reasons": [
+        "RSI 12H em sobrecompra",
+        "Divergência bearish no 4H",
+        "Múltiplos sinais SHORT próximos",
+        "Movimento esticado em topo"
+      ],
+      "watch_conditions": [
+        {
+          "type": "monitor_rsi_exit",
+          "timeframe": "12H",
+          "description": "RSI saindo da sobrecompra"
+        },
+        {
+          "type": "monitor_breakout",
+          "timeframe": "4H",
+          "level": 7140,
+          "condition": "crossing_down",
+          "description": "Perda de estrutura curta / região de confirmação de topo"
+        }
+      ],
+      "invalidation_notes": [
+        "Continuação forte acima do topo sem rejeição",
+        "RSI permanece sobrecomprado com preço avançando e sem perda estrutural"
+      ],
+      "status": "active",
+      "last_checked_at": "2026-05-14T14:43:55.830064+00:00",
+      "last_relevant_change": true,
+      "last_change_reason": "Continuação forte acima do topo sem rejeição: preço 7495.9 (~+5% acima de 7140), RSI 12H 77.83 sobrecompra extrema, RSI 4H 73.59. Tese SHORT do monitor original invalidada.",
+      "last_event_types": [
+        "setup_invalidated",
+        "classification_observation_changed",
+        "priority_changed",
+        "probability_changed"
+      ],
+      "last_next_action": "Encerrar monitor SHORT. Reabrir apenas se TOP/BOTTOM bearish 12H + RSI exit com perda estrutural abaixo de 7400.",
+      "last_notified_at": "2026-05-14T14:43:55.830064+00:00"
+    },
+    {
+      "id": "GBPUSD_4H_ZONE_TOP_MONITOR",
+      "symbol": "PEPPERSTONE:GBPUSD",
+      "base_symbol": "GBPUSD",
+      "primary_timeframe": "4H",
+      "secondary_timeframes": [
+        "12H",
+        "1H"
+      ],
+      "direction_bias": "short_observation",
+      "classification_last": "NO_TRADE",
+      "priority": "Média",
+      "probability_label_last": "Baixa",
+      "monitor_reasons": [
+        "Preço dentro/encostado na zona 1.35–1.36",
+        "Sinais SHORT concentrados na zona",
+        "Estrutura em topo de range"
+      ],
+      "watch_conditions": [
+        {
+          "type": "monitor_rsi_extreme",
+          "timeframe": "4H",
+          "threshold": 70,
+          "condition": "rsi_overbought",
+          "description": "RSI 4H entrando em sobrecompra"
+        },
+        {
+          "type": "monitor_zone",
+          "timeframe": "4H",
+          "level": 1.36,
+          "condition": "zone_touch_or_rejection",
+          "description": "Toque/rejeição/rompimento na zona 1.3600"
+        }
+      ],
+      "invalidation_notes": [
+        "Rompimento forte acima de 1.3600/1.3700 sem rejeição",
+        "RSI neutro persistente sem exaustão"
+      ],
+      "status": "active",
+      "last_checked_at": "2026-05-14T14:43:55.830064+00:00",
+      "last_relevant_change": false,
+      "last_change_reason": "Sem mudança material. Preço 1.35068, RSI 4H 39.94 neutro, longe da zona 1.36. Movimento bear leve sem trigger.",
+      "last_event_types": [],
+      "last_next_action": "Aguardar pullback para 1.3550-1.3600 com RSI ≥65 e novo TOP antes de reclassificar.",
+      "last_notified_at": "2026-04-28T13:29:41.569673+00:00"
+    },
+    {
+      "id": "XAUUSD_1H_4H_DEMAND_MONITOR",
+      "symbol": "PEPPERSTONE:XAUUSD",
+      "base_symbol": "XAUUSD",
+      "primary_timeframe": "1H",
+      "secondary_timeframes": [
+        "4H"
+      ],
+      "direction_bias": "long_observation",
+      "classification_last": "SETUP_EM_OBSERVACAO",
+      "priority": "Alta",
+      "probability_label_last": "Média",
+      "monitor_reasons": [
+        "Zona 4H/1H ativa",
+        "Preço dentro/próximo da zona BigBeluga 4657–4677",
+        "RSI 1H mais próximo de sobrevenda, mas ainda neutro"
+      ],
+      "watch_conditions": [
+        {
+          "type": "monitor_rsi_extreme",
+          "timeframe": "1H",
+          "threshold": 30,
+          "condition": "rsi_oversold",
+          "description": "RSI 1H entrando em sobrevenda"
+        },
+        {
+          "type": "monitor_invalidation",
+          "timeframe": "1H",
+          "level": 4657.63,
+          "condition": "crossing_down",
+          "description": "Perda da zona BigBeluga / invalidação do suporte"
+        }
+      ],
+      "invalidation_notes": [
+        "Fechamento 1H abaixo de 4657.63",
+        "Perda da zona sem reação e sem RSI extremo"
+      ],
+      "status": "active",
+      "last_checked_at": "2026-05-14T14:43:55.830064+00:00",
+      "last_relevant_change": true,
+      "last_change_reason": "RSI 1H 49.17 saiu da sobrevenda (era 25.81). Zona BigBeluga 4657-4677 retestada com low 4666.77 e fechamento 4692.12 acima da zona. Reação clara intra-zona, mas sem BOTTOM/LONG do NAS detector e sem cluster MOB ainda.",
+      "last_event_types": [
+        "rsi_exited_extreme",
+        "zone_touched",
+        "classification_observation_changed",
+        "probability_changed"
+      ],
+      "last_next_action": "Monitorar 1H para BOTTOM/LONG ou nova reação no reteste 4657-4677. Promover a SETUP_VALIDO_INTRADAY LONG se BOTTOM/LONG aparecer com R:R≥2:1 vs invalidação <4657.",
+      "last_notified_at": "2026-05-14T14:43:55.830064+00:00"
+    },
+    {
+      "id": "USDJPY_4H_RANGE_ZONE_MONITOR",
+      "symbol": "PEPPERSTONE:USDJPY",
+      "base_symbol": "USDJPY",
+      "primary_timeframe": "4H",
+      "secondary_timeframes": [
+        "12H"
+      ],
+      "direction_bias": "range_observation",
+      "classification_last": "NO_TRADE",
+      "priority": "Média",
+      "probability_label_last": "Baixa",
+      "monitor_reasons": [
+        "Preço em range estreito 157–161",
+        "Zona 159.72–160.03 acima",
+        "Zona inferior próxima de 158.02"
+      ],
+      "watch_conditions": [
+        {
+          "type": "monitor_zone",
+          "timeframe": "4H",
+          "level": 159.72,
+          "condition": "zone_touch_or_rejection",
+          "description": "Reentrada/toque na zona superior 159.72–160.03"
+        },
+        {
+          "type": "monitor_zone",
+          "timeframe": "4H",
+          "level": 158.02,
+          "condition": "zone_touch_or_rejection",
+          "description": "Toque/reentrada na zona inferior"
+        }
+      ],
+      "invalidation_notes": [
+        "Preço permanece no meio do range sem RSI extremo",
+        "Rompimento limpo sem rejeição"
+      ],
+      "status": "active",
+      "last_checked_at": "2026-05-14T14:43:55.830064+00:00",
+      "last_relevant_change": true,
+      "last_change_reason": "Preço 157.918 fechou abaixo da zona inferior 158.02; low recente 156.749 rompeu o suporte do range. RSI 4H 65.56 não está em extremo — sem confirmação de reversão LONG na zona inferior. Range provavelmente rompido para baixo.",
+      "last_event_types": [
+        "zone_touched",
+        "classification_observation_changed",
+        "probability_changed"
+      ],
+      "last_next_action": "Aguardar reteste 158.02-159.30 com TOP bearish para reabrir SHORT, ou BOTTOM bullish em 156.50-157.00 com RSI≤30 para LONG.",
+      "last_notified_at": "2026-05-14T14:43:55.830064+00:00"
+    }
+  ]
+}

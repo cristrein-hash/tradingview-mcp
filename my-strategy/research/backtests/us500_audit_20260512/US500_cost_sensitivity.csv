@@ -1,0 +1,13 @@
+model,strategy,spread,total_r_net,avg_r_net,pf_net,win_rate,positive
+best_swing,D_4H_breakout_regime_body60_4.5R,0.0,4.61,0.064,1.16,0.361,True
+best_swing,D_4H_breakout_regime_body60_4.5R,0.02,3.17,0.044,1.11,0.361,True
+best_swing,D_4H_breakout_regime_body60_4.5R,0.03,2.45,0.034,1.08,0.361,True
+best_swing,D_4H_breakout_regime_body60_4.5R,0.05,1.01,0.014,1.03,0.361,True
+best_swing,D_4H_breakout_regime_body60_4.5R,0.07,-0.43,-0.006,0.99,0.361,False
+best_swing,D_4H_breakout_regime_body60_4.5R,0.1,-2.59,-0.036,0.92,0.347,False
+best_intraday,F_1H_breakout_regime,0.0,17.3,0.0769,1.2,0.324,True
+best_intraday,F_1H_breakout_regime,0.02,12.8,0.0569,1.14,0.324,True
+best_intraday,F_1H_breakout_regime,0.03,10.55,0.0469,1.11,0.32,True
+best_intraday,F_1H_breakout_regime,0.05,6.05,0.0269,1.06,0.32,True
+best_intraday,F_1H_breakout_regime,0.07,1.55,0.0069,1.02,0.32,True
+best_intraday,F_1H_breakout_regime,0.1,-5.2,-0.0231,0.95,0.316,False
