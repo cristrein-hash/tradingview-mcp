@@ -40,8 +40,8 @@ CSV_BASE = '/Users/cristrein/Downloads/PEPPERSTONE_{asset}, {tf}_{hash}.csv'
 FILES = {
     'XAUUSD': {'15M':'24384','30M':'7ea8c','1H':'309fa','4H':'aea76','1D':'7f278'},
     'EURUSD': {'15M':'c43cf','30M':'2e138','1H':'2e3eb','4H':'28fd2','1D':'1ec8f'},
-    'ETHUSD': {'15M':None,  '30M':None,  '1H':'e89c2','4H':'cbbf3','1D':None},
-    'US500':  {'15M':None,  '30M':None,  '1H':'9097c','4H':'c18d8','1D':None},
+    'ETHUSD': {'15M':None,  '30M':None,  '1H':'e89c2','4H':'cbbf3','1D':'12fed'},
+    'US500':  {'15M':None,  '30M':None,  '1H':'9097c','4H':'c18d8','1D':'47dfd'},
     'XAGUSD': {'15M':'be865','30M':'0c1bf','1H':'1a0a1','4H':'47164','1D':'4b306'},
     'BTCUSD': {'15M':'797ea','30M':'490ce','1H':'807e4','4H':'cfb3e','1D':'dfd6b'},
     'XPTUSD': {'15M':'ae49d','30M':'6f0cd','1H':'5be86','4H':'d0ab6','1D':'21321'},

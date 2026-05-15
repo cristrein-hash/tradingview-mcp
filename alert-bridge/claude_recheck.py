@@ -483,9 +483,17 @@ def build_prompt(alert: dict) -> str:
     ═══════════════════════════════════════════════════════════════════════════
     MTF SHADOW — HTF BOS/CHOCH gate (Hybrid Grade A/B, audit MTF1 2026-05-15)
     ═══════════════════════════════════════════════════════════════════════════
-    APLICAR para alertas em XAUUSD 4H, EURUSD 4H ou EURUSD 1H que disparam um
-    módulo mecânico (SETUP_VALIDO ou SETUP_CANDIDATO_FORTE). Para outros casos,
-    emitir todos os campos MTF como N/A.
+    APLICAR APENAS para alertas em XAUUSD 4H, EURUSD 4H ou EURUSD 1H que
+    disparam módulo mecânico (SETUP_VALIDO ou SETUP_CANDIDATO_FORTE).
+
+    NÃO APLICAR (emitir N/A) para:
+    - XAUUSD 1H: filtro testado, HURTS edge (-3.46 Sharpe vs misaligned)
+    - XAGUSD 1H: filtro testado, HURTS edge (-0.34 Sharpe vs misaligned)
+    - ETHUSD 1H PULLBACK: lookback BOS recente não aplicável a pullback
+    - US500 4H FAILED_BREAKDOWN: trigger contra-tendência, SMALL_N inconclusivo
+    - ETH 4H BREAKOUT v1.2: marginal (+0.46 Sharpe), não vale overhead
+    - US500 1H BREAKOUT: marginal (+0.28 Sharpe), não vale overhead
+    - Qualquer outro asset/TF: emitir todos os campos MTF como N/A.
 
     Evidência empírica (backtest 7.4 anos, audit MTF1 em módulos reais):
     - XAUUSD 4H BREAKOUT_CONTINUATION: aligned PF 3.37 (Sharpe +2.40) vs
