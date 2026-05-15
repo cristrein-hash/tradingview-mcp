@@ -480,6 +480,50 @@ def build_prompt(alert: dict) -> str:
       V3d shadow R potential pts: <número | N/A>
     ═══════════════════════════════════════════════════════════════════════════
 
+    ═══════════════════════════════════════════════════════════════════════════
+    MTF SHADOW — HTF BOS/CHOCH gate (Hybrid Grade A/B, audit MTF1 2026-05-15)
+    ═══════════════════════════════════════════════════════════════════════════
+    APLICAR para alertas em XAUUSD 4H, EURUSD 4H ou EURUSD 1H que disparam um
+    módulo mecânico (SETUP_VALIDO ou SETUP_CANDIDATO_FORTE). Para outros casos,
+    emitir todos os campos MTF como N/A.
+
+    Evidência empírica (backtest 7.4 anos, audit MTF1 em módulos reais):
+    - XAUUSD 4H BREAKOUT_CONTINUATION: aligned PF 3.37 (Sharpe +2.40) vs
+      misaligned PF 1.45 (Sharpe +1.83) — Δ Sharpe +0.57. n=234.
+    - EURUSD 4H BREAKOUT_COMBO_STRICT_DXY: aligned PF 5.04 (Sharpe +1.77) vs
+      misaligned PF 1.54 (Sharpe +0.93) — Δ Sharpe +0.84. n=47.
+    - EURUSD 1H DECISIVE_HTF1D_DXY: aligned PF 3.86 (Sharpe +1.59) vs
+      misaligned PF 1.22 (Sharpe +0.57) — Δ Sharpe +1.02. n=73.
+
+    Mapeamento HTF:
+    - XAUUSD 4H trigger → HTF = 1D
+    - EURUSD 4H trigger → HTF = 1D
+    - EURUSD 1H trigger → HTF = 4H
+
+    Verificação MTF (BOS/CHOCH HTF nos últimos 6 candles HTF):
+    1. Identificar HTF aplicável (ver tabela acima)
+    2. Puxar OHLCV HTF (~50 candles) via MCP — chart_set_symbol + chart_set_timeframe + data_get_ohlcv
+    3. Aplicar mesma lógica BOS/CHOCH do V3d:
+       - BOS_BULL: close > pivot_high(5,5) anterior + trend já era 1
+       - CHOCH_BULL: close > pivot_high(5,5) anterior + trend anterior era -1
+    4. Verificar: algum evento BOS_BULL/CHOCH_BULL ocorreu nos ÚLTIMOS 6 CANDLES HTF
+       antes do timestamp atual?
+    5. Restaurar chart_set_symbol e chart_set_timeframe ao original do alerta
+
+    REGRA DE SHADOW (atual — não altera classificação ainda):
+      - MTF é APENAS LOGADO. NÃO altera classificação V3 nem V4 nem Telegram.
+      - Acumulação live → após n≥30 trades com MTF preenchido em módulo X,
+        validar prospectivamente se mtf_aligned=true tem PF/Sharpe superior.
+      - Critério promoção a Hybrid (futuro):
+          SETUP_VALIDO  ← módulo + mtf_aligned=true (Grade A, position cheio)
+          SETUP_CANDIDATO_FORTE ← módulo + mtf_aligned=false (Grade B, reduzido)
+
+    OUTPUT MTF OBRIGATÓRIO — adicionar 3 linhas:
+      MTF shadow applicable: <true | false>
+      MTF shadow HTF used: <1D | 4H | N/A>
+      MTF shadow aligned: <true | false | N/A>
+    ═══════════════════════════════════════════════════════════════════════════
+
     REGRA PREVALECENTE — VOCABULÁRIO ESTRITO V3 (esta seção prevalece sobre qualquer outra):
     - Use APENAS estas 7 strings exatas como valor de "Classificação:":
         1. SETUP_VALIDO

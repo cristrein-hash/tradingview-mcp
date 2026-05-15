@@ -907,6 +907,14 @@ def build_setup_research_record(
         return None
     v3d_event_present = _bool_or_none(v3d_event_present_raw)
     v3d_in_zone = _bool_or_none(v3d_in_zone_raw)
+
+    # MTF SHADOW (2026-05-15) — HTF BOS/CHOCH gate for XAU 4H, EUR 4H, EUR 1H
+    mtf_applicable_raw = extract_field(stdout, "MTF shadow applicable")
+    mtf_htf_used = extract_field(stdout, "MTF shadow HTF used")
+    mtf_aligned_raw = extract_field(stdout, "MTF shadow aligned")
+    mtf_applicable = _bool_or_none(mtf_applicable_raw)
+    mtf_aligned = _bool_or_none(mtf_aligned_raw)
+
     direction = extract_field(stdout, "Direção") or extract_field(stdout, "Direção possível")
     health = extract_field(stdout, "Health")
     summary = extract_field(stdout, "Resumo")
@@ -946,6 +954,10 @@ def build_setup_research_record(
         "v3d_shadow_lvb_stop": v3d_lvb_stop,
         "v3d_shadow_in_zone": v3d_in_zone,
         "v3d_shadow_r_potential_pts": v3d_r_potential,
+        # MTF SHADOW (2026-05-15) — HTF BOS/CHOCH gate, XAU 4H + EUR 4H + EUR 1H only
+        "mtf_shadow_applicable": mtf_applicable,
+        "mtf_shadow_htf_used": mtf_htf_used,
+        "mtf_shadow_aligned": mtf_aligned,
         "direction": direction,
         "health": health,
         "summary": summary,
