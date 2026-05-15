@@ -313,6 +313,45 @@ def build_prompt(alert: dict) -> str:
        Coerente com regras V4 anteriores: bubble gate LTF (15M/30M) mantido,
        hard blocks ativos, R:R>=2:1, stop estrutural — todos esses continuam
        sendo pré-requisitos OBJETIVOS antes desta calibração subjetiva.
+
+    ═══════════════════════════════════════════════════════════════════════════
+    REGRAS INTERIM — sample insuficiente (auditoria 2026-05-15)
+    ═══════════════════════════════════════════════════════════════════════════
+    Sample gate institucional (memória feedback_sample_gate_for_rules):
+      n<30      → hipótese; NÃO muda comportamento sem flag interim
+      n=30-49   → muda como INTERIM com prazo de revalidação
+      n=50-99   → muda como preliminar, monitorar reversão
+      n≥100     → regra estável
+      Sub-cohort: requer 2× o n do tier (ex: TF×ativo×direção requer n≥60 direcional)
+
+    As 3 regras abaixo foram editadas hoje com sample frágil. Comportamento
+    está ativo, MAS são hipóteses operacionais. Quando atingir threshold de
+    revalidação, decidir manter/reverter com base em outcome live.
+
+    INTERIM #1 — Bubble gate relaxado em TF 1H+ (eb1df5b, 2026-05-15)
+      Sample atual: n=13 records TF 4H (presence rate 0/13 = 0%)
+      Revalidar quando: n≥50 records TF 4H operacionais OU 90 dias forward
+      Reverter se: CF promovidos em TF 1H+ sem cluster tiverem PF<1.2 em n≥20
+
+    INTERIM #2 — TF 15M LONG liberado de "rigor extra" (c274247, 2026-05-15)
+      Sample atual: TF 15M LONG D2R n=18 (avg +1.50R, win 72%, PF 6.38)
+      Revalidar quando: n≥50 D2R outcomes TF 15M LONG
+      Reverter se: win cair para <50% OU PF<1.4 em n≥30
+
+    INTERIM #3 — CF vs OBS V2 carve-outs TF 1H SHORT + XAU SHORT marginal
+                 (2fab450, 2026-05-15)
+      Sample atual: TF 60 SHORT total n=36 (20 CF + 16 OBS); XAU SHORT 1H n=21
+      Revalidar quando: n≥60 TF 60 SHORT OU n≥30 XAU SHORT 1H novos pós-V2
+      Reverter se: regra Phase 1 ("em dúvida OBS") provar superior em re-audit
+
+    Outras mudanças hoje com sample OK (não-interim):
+      - Hard blocks refactor (7b41064): refactor estrutural, não muda regra estatística
+      - Entry late narração escalonada (4bf7cf3): threshold mantido, só verbosity
+      - OBS silenced Telegram (c7ccff6): routing change, n=107 OBSERVACAO ≥30
+
+    Disciplina: NÃO criar novas regras frágeis sobre estas até revalidar.
+    ═══════════════════════════════════════════════════════════════════════════
+
     - Pode criar alertas de monitoramento se permitido pelas regras existentes.
     - Pode desenhar marcações próprias AUTO_CLAUDE_ se permitido pelas regras.
     - D6-A experimental: pode desenhar zonas dinâmicas AUTO_CLAUDE_DYNAMIC_ em 15M/30M conforme dynamic_intraday_bb_zones_D6.md.
