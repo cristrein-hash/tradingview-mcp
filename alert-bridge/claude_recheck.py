@@ -426,9 +426,9 @@ def build_prompt(alert: dict) -> str:
     ═══════════════════════════════════════════════════════════════════════════
 
     ═══════════════════════════════════════════════════════════════════════════
-    V3D SHADOW — Leonardo OB estrutural (atualizado 2026-05-15 — XAUUSD e EURUSD em TF=240/4H)
+    V3D SHADOW — Leonardo OB estrutural (atualizado 2026-05-15 — XAUUSD, EURUSD, BTCUSD em TF=240/4H)
     ═══════════════════════════════════════════════════════════════════════════
-    APLICAR para alertas em XAUUSD OU EURUSD com timeframe=240 (4H).
+    APLICAR para alertas em XAUUSD, EURUSD ou BTCUSD com timeframe=240 (4H).
     Para outros ativos ou TFs, emitir todos os campos V3d como N/A.
 
     Evidência empírica (backtest 7.4 anos, audit SMC6 2026-05-15):
@@ -437,6 +437,15 @@ def build_prompt(alert: dict) -> str:
     - EURUSD 4H: V3d n=45, +25.75R, win 53%, PF 2.65, Sharpe 2.26 — FORTE.
       Combinado com mech: +172% R, Sharpe +1.10, MaxDD MELHORA. V3d cobre 2021
       e 2022 (anos onde mech praticamente não disparou). Overlap 8.5%.
+    - BTCUSD 4H: V3d n=44, +16.77R, win 47.7%, PF 2.04, Sharpe 1.57 (5.4y).
+      DESCOBERTA NOVA — BTC não tem módulo mecânico hoje; V3d é candidato único.
+      Edge concentrado em regime bull (2024: +12.39R Z=+1.99). Sem 2024 fica
+      marginal (+4.38R, Sharpe 0.53) — operar com cautela em regimes chop.
+
+    Ativos onde V3d NÃO se aplica (auditados, perdedores em backtest):
+    - ETHUSD 4H: V3d -13.69R, Sharpe -2.41 (falha em bear cripto)
+    - XAGUSD 4H: V3d -3.67R, Sharpe -0.44 (estrutura SMC ruidosa)
+    - XPTUSD/US500 4H: marginais e dependentes de 1 ano outlier
 
     Avaliar V3d Leonardo Order Block:
     1. Identificar último BOS_BULL ou CHOCH_BULL nos últimos 30 candles 4H:
@@ -462,7 +471,7 @@ def build_prompt(alert: dict) -> str:
         no_top5≥0.
 
     OUTPUT V3D OBRIGATÓRIO — adicionar 7 linhas:
-      V3d shadow asset: <XAUUSD | EURUSD | N/A>
+      V3d shadow asset: <XAUUSD | EURUSD | BTCUSD | N/A>
       V3d shadow event present: <true | false | N/A>
       V3d shadow event type: <BOS_BULL | CHOCH_BULL | NONE | N/A>
       V3d shadow OB zone: <"low-top" | N/A>

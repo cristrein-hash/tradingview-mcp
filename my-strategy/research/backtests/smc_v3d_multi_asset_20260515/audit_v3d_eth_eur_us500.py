@@ -28,6 +28,9 @@ ASSETS = {
     'ETHUSD': '/Users/cristrein/Downloads/PEPPERSTONE_ETHUSD, 240_cbbf3.csv',
     'EURUSD': '/Users/cristrein/Downloads/PEPPERSTONE_EURUSD, 240_28fd2.csv',
     'US500':  '/Users/cristrein/Downloads/PEPPERSTONE_US500, 240_c18d8.csv',
+    'XAGUSD': '/Users/cristrein/Downloads/PEPPERSTONE_XAGUSD, 240_47164.csv',
+    'BTCUSD': '/Users/cristrein/Downloads/PEPPERSTONE_BTCUSD, 240_cfb3e.csv',
+    'XPTUSD': '/Users/cristrein/Downloads/PEPPERSTONE_XPTUSD, 240_d0ab6.csv',
 }
 
 # V3d winning config (from XAU audit)
