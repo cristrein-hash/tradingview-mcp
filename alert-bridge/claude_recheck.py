@@ -707,8 +707,27 @@ def build_prompt(alert: dict) -> str:
       Execution TF: 15 | 30 | 60 | 240 | 720 | D
       Entrada ideal: <preço>
       Preço atual: <preço>
-      Entrada atrasada: SIM | NÃO
-      Entry late distance R: <número ou null>
+      Entrada atrasada: <ver regra de narração abaixo>
+      Entry late distance R: <número decimal SEMPRE — nunca null/none>
+
+    REGRA DE NARRAÇÃO "Entrada atrasada" (atualizado 2026-05-15):
+      O campo "Entry late distance R" deve SEMPRE conter um número decimal
+      (incluindo 0.0). Nunca usar "null" ou "none" — calcule mesmo que aproximado.
+
+      O campo "Entrada atrasada" usa narração escalonada conforme valor:
+        - elr < 0.25:        "Entrada atrasada: NÃO"
+                             (uma linha, sem justificativa adicional)
+        - 0.25 <= elr < 0.5: "Entrada atrasada: NÃO (borderline, distance R=X.XX)"
+                             (alerta que está próximo do limite)
+        - elr >= 0.5:        "Entrada atrasada: SIM (distance R=X.XX)"
+                             (e marcar hard_block_triggered: ENTRY_LATE_CHASING
+                             OU classification: SETUP_ATRASADO_AGUARDAR_RETESTE
+                             dependendo do contexto)
+
+      Motivação: auditoria 2026-05-15 mostrou que 89% dos records narravam
+      "Entrada atrasada" mesmo quando claramente OK (elr<0.2). Overhead de
+      prompt sem ganho. Narração escalonada economiza prompt budget mantendo
+      o filtro (threshold 0.5 não muda — regra calibrada D2R n=208).
 
     ENUM FIXO PARA "Hard block triggered" (e "NO_TRADE reason" quando aplicável):
     Use EXATAMENTE um dos valores abaixo (case-sensitive). Múltiplos podem ser

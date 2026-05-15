@@ -7,6 +7,7 @@ from urllib.request import urlopen, Request
 from html import escape
 import json
 import os
+import re
 import subprocess
 import sys
 import threading
@@ -1097,7 +1098,14 @@ def build_setup_research_record(
     "ideal_entry_price_text": extract_stdout_field(stdout, "Entrada ideal"),
     "current_price_at_eval_text": extract_stdout_field(stdout, "Preço atual"),
     "entry_late": extract_stdout_field(stdout, "Entrada atrasada"),
-    "entry_late_distance_r": extract_stdout_field(stdout, "Entry late distance R"),
+    # entry_late_distance_r: try numeric parse first (post 2026-05-15 prompt forces decimal);
+    # fallback to raw string for legacy records.
+    "entry_late_distance_r": (
+        (lambda s: (float(re.search(r'[-+]?\d+\.?\d*', s).group(0))
+                    if s and re.search(r'[-+]?\d+\.?\d*', s) else s)
+        )(extract_stdout_field(stdout, "Entry late distance R") or "")
+        if extract_stdout_field(stdout, "Entry late distance R") else None
+    ),
     "is_shadow_valid": False,  # DEPRECATED v3 — kept for backward compat with readers; shadow mode removed.
 
     # === External Market Factors — Passive Logging (v1.2 since 2026-05-13) ===
