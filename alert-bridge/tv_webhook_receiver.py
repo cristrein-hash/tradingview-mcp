@@ -311,14 +311,27 @@ def is_setup_candidato_forte_stdout(stdout: str) -> bool:
 
 
 def extract_stdout_field(stdout: str, label: str) -> str:
-    """Extracts a single 'Label: value' field from Claude stdout."""
+    """Extracts a single 'Label: value' field from Claude stdout.
+
+    Robust to markdown bold variations (2026-05-15 fix):
+    - "Label: value"            (plain)
+    - "**Label:** value"        (markdown bold both sides)
+    - "**Label**: value"        (markdown bold label only)
+    - "*Label:* value"          (single asterisk italic/bold)
+    - "**Label:** **value**"    (markdown on both label and value)
+    Trailing markdown also stripped from value.
+    """
     if not stdout:
         return ""
-    label_l = label.lower().rstrip(":")
+    # Pattern: optional ** or * prefix, label (case-insensitive), optional ** or *,
+    # then colon, optional ** or *, then the value (greedy), optional ** or *.
+    pattern = rf"^\s*[*]{{0,2}}\s*{re.escape(label)}\s*[*]{{0,2}}\s*:\s*[*]{{0,2}}\s*(.+?)\s*[*]{{0,2}}\s*$"
     for line in stdout.splitlines():
-        clean = line.strip()
-        if clean.lower().startswith(label_l + ":"):
-            return clean.split(":", 1)[1].strip()
+        m = re.match(pattern, line.strip(), flags=re.IGNORECASE)
+        if m:
+            value = m.group(1).strip()
+            # Strip any residual markdown emphasis from value endpoints
+            return value.strip("*").strip()
     return ""
 
 
