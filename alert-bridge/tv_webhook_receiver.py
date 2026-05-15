@@ -113,12 +113,12 @@ def send_telegram(text: str, parse_mode: str = "HTML"):
 
 
 def _extract_stdout_field_local(stdout: str, field: str) -> str:
-    import re
-    pattern = rf"^\s*{re.escape(field)}\s*:\s*(.+?)\s*$"
+    # 2026-05-15 fix: robust to markdown bold (**Field:**, **Field**:, *Field:*).
+    pattern = rf"^\s*[*]{{0,2}}\s*{re.escape(field)}\s*[*]{{0,2}}\s*:\s*[*]{{0,2}}\s*(.+?)\s*[*]{{0,2}}\s*$"
     for line in (stdout or "").splitlines():
-        m = re.match(pattern, line, flags=re.IGNORECASE)
+        m = re.match(pattern, line.strip(), flags=re.IGNORECASE)
         if m:
-            return m.group(1).strip()
+            return m.group(1).strip().strip("*").strip()
     return ""
 
 
@@ -773,11 +773,8 @@ def format_tradingview_message(event: dict) -> str:
 
 
 def extract_field(stdout: str, field: str) -> str:
-    prefix = field + ":"
-    for line in stdout.splitlines():
-        if line.strip().startswith(prefix):
-            return line.split(":", 1)[1].strip()
-    return ""
+    # 2026-05-15 fix: robust to markdown bold variations (delegated to robust extractor).
+    return extract_stdout_field(stdout, field)
 
 
 def compact_text(value: str, limit: int) -> str:
