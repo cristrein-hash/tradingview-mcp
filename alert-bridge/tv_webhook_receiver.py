@@ -915,6 +915,28 @@ def build_setup_research_record(
     mtf_applicable = _bool_or_none(mtf_applicable_raw)
     mtf_aligned = _bool_or_none(mtf_aligned_raw)
 
+    # BUBBLES + NAS SHADOW (2026-05-15) — structured logging
+    def _int_or_none(s):
+        if not s:
+            return None
+        s = str(s).strip().replace('+', '')
+        try:
+            return int(s)
+        except (ValueError, TypeError):
+            return None
+    def _float_or_none(s):
+        if not s or str(s).strip().lower() in ('n/a', 'na', 'none', '-'):
+            return None
+        try:
+            return float(str(s).strip())
+        except (ValueError, TypeError):
+            return None
+    bubble_cluster_count = _int_or_none(extract_field(stdout, "Bubble cluster count"))
+    bubble_cluster_distance_r = _float_or_none(extract_field(stdout, "Bubble cluster distance R"))
+    nas_signal_active = extract_field(stdout, "NAS signal active")
+    nas_signal_recent_bars = _int_or_none(extract_field(stdout, "NAS signal recent bars"))
+    direction_intended = extract_field(stdout, "Direction intended")
+
     direction = extract_field(stdout, "Direção") or extract_field(stdout, "Direção possível")
     health = extract_field(stdout, "Health")
     summary = extract_field(stdout, "Resumo")
@@ -958,6 +980,12 @@ def build_setup_research_record(
         "mtf_shadow_applicable": mtf_applicable,
         "mtf_shadow_htf_used": mtf_htf_used,
         "mtf_shadow_aligned": mtf_aligned,
+        # BUBBLES + NAS SHADOW (2026-05-15) — structured logging for forward validation
+        "bubble_cluster_count": bubble_cluster_count,
+        "bubble_cluster_distance_r": bubble_cluster_distance_r,
+        "nas_signal_active": nas_signal_active,
+        "nas_signal_recent_bars": nas_signal_recent_bars,
+        "direction_intended": direction_intended,
         "direction": direction,
         "health": health,
         "summary": summary,

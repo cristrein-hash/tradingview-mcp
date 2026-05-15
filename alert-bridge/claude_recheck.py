@@ -532,6 +532,55 @@ def build_prompt(alert: dict) -> str:
       MTF shadow aligned: <true | false | N/A>
     ═══════════════════════════════════════════════════════════════════════════
 
+    ═══════════════════════════════════════════════════════════════════════════
+    BUBBLES + NAS SHADOW — logging estruturado (2026-05-15)
+    ═══════════════════════════════════════════════════════════════════════════
+    APLICAR para TODOS os alertas (qualquer ativo + TF). Captura estruturada
+    de Market Order Bubbles e NAS TOP/BOTTOM signals pra cross-check forward
+    com outcomes D2R.
+
+    Motivação: D2R Phase 1 (n=57) sugeriu que cluster bubbles correlaciona
+    com +36R; análise Phase 2 (n=208, parse de texto livre) deu sinal oposto
+    OU viés de seleção. Parser regex falhou em 75% dos casos (texto livre).
+    Logging estruturado permite responder definitivamente: bubbles/NAS
+    adicionam edge real OU é viés operacional?
+
+    CAPTURAR via leitura do chart (data_get_pine_labels, draw_list, etc.):
+
+    1. BUBBLE CLUSTER:
+       - Contar shapes/bubbles visíveis na região do entry (entry ± 0.5×ATR)
+       - bubble_cluster_count: int (0 se nenhuma; 5+ aceitável)
+       - bubble_cluster_distance_r: float (distância em R do bubble mais
+         próximo até entry_ideal; 0 = no preço; negativo = abaixo entry)
+
+    2. NAS TOP/BOTTOM:
+       - Verificar se NAS_TOP_SIGNAL ou NAS_BOTTOM_SIGNAL disparou nos
+         últimos 5 candles do TF do alerta
+       - nas_signal_active: "top" | "bottom" | "none"
+       - nas_signal_recent_bars: int (quantos bars atrás disparou; 0 = candle atual; -1 = N/A)
+
+    3. DIREÇÃO INTENDIDA:
+       - direction_intended: "LONG" | "SHORT" | "UNCLEAR"
+       - Necessária pra separar NAS TOP (sinal SHORT) de NAS BOTTOM (LONG)
+         em análise estatística futura. Sem isso, mistura LONG+SHORT polui dados.
+
+    REGRA DE SHADOW:
+      - APENAS logado. NÃO altera classificação V3/V4/Telegram.
+      - A lógica vigente do prompt (BUBBLE CLUSTER GATE obrigatório pra
+        SETUP_CANDIDATO_FORTE) PERMANECE — esses campos coexistem.
+      - Validação forward: após n≥30 por módulo, cruzar bubble_cluster_count
+        e nas_signal_active com r_outcome do D2R por módulo (XAU 4H, EUR 4H,
+        etc.). Se cluster_count≥3 tiver Sharpe superior a count<3 em pelo
+        menos 2 módulos com n≥30, promover a filtro Grade A/B.
+
+    OUTPUT BUBBLES+NAS OBRIGATÓRIO — adicionar 5 linhas:
+      Bubble cluster count: <0 | 1 | 2 | 3 | 4 | 5+>
+      Bubble cluster distance R: <número | N/A>
+      NAS signal active: <top | bottom | none>
+      NAS signal recent bars: <0 | 1 | 2 | 3 | 4 | 5 | -1 (N/A)>
+      Direction intended: <LONG | SHORT | UNCLEAR>
+    ═══════════════════════════════════════════════════════════════════════════
+
     REGRA PREVALECENTE — VOCABULÁRIO ESTRITO V3 (esta seção prevalece sobre qualquer outra):
     - Use APENAS estas 7 strings exatas como valor de "Classificação:":
         1. SETUP_VALIDO
