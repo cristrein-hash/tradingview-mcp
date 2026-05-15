@@ -217,10 +217,22 @@ def build_prompt(alert: dict) -> str:
 
     REGRAS OPERACIONAIS V4 (D2R Phase 1 — 2026-05-13, baseadas em 95 trades reais):
 
-    1. **BUBBLE CLUSTER GATE (obrigatório):**
-       - SEM cluster de market order bubbles visível (Shapes 0 ou ausência clara) → no MÁXIMO SETUP_EM_OBSERVACAO.
-       - D2R Phase 1: 2 trades sem cluster bubbles foram ambos -1R. 55 com cluster: +36.24R, 47% win.
-       - Regra: bubble cluster é confluência OBRIGATÓRIA para SETUP_CANDIDATO_FORTE.
+    1. **BUBBLE CLUSTER GATE (restrito por TF — atualizado 2026-05-15):**
+       - TF 15M / 30M: SEM cluster bubbles → no MÁXIMO SETUP_EM_OBSERVACAO.
+         Razão: LTF mais propenso a noise; cluster é confluência crítica em baixa
+         resolução temporal.
+       - TF 1H / 4H / 12H / 1D: cluster bubbles é OPCIONAL. NÃO bloqueia promoção
+         a SETUP_CANDIDATO_FORTE quando ausente. Outras confluências estruturais
+         (CHoCH/BOS, RSI extremo, divergência, sweep, NAS, rejeição, zona nested
+         HTF) substituem o sinal de cluster.
+         Razão: auditoria 2026-05-15 (n=557 records operacionais) mostrou cluster
+         present em 0/13 records TF 4H. Gate impedia CANDIDATO_FORTE em 4H —
+         justamente o TF de melhor win rate documentado (D2R Phase 1: TF 4H = 71%
+         win, avg +1.63R). Phase 1 (n=2 no grupo controle sem cluster) é base
+         estatística frágil; relaxamento por TF mantém proteção em LTF onde
+         noise domina e libera HTF onde estrutura dispensa cluster.
+       - Em TF 1H / 4H / 12H / 1D: AINDA assim, se cluster bubble estiver PRESENT,
+         tratar como confluência extra forte (peso na decisão).
 
     2. **SHORT side — política por ativo (PR 4, D2R n=220 atualizado 2026-05-14):**
        ATIVOS COM SHORT OPERACIONAL (podem virar CANDIDATO_FORTE se critérios OK):
