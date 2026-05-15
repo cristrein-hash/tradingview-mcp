@@ -275,11 +275,44 @@ def build_prompt(alert: dict) -> str:
        - TF 30M: rigor extra mantido para promoção a CANDIDATO_FORTE — precisam
          confluência adicional além do mínimo (3 fortes).
 
-    5. **Inversão promoção CANDIDATO_FORTE vs OBSERVACAO (em revisão):**
-       - D2R Phase 1 mostrou que CANDIDATO_FORTE (n=13, +0.12 avg) underperforma OBSERVACAO (n=37, +0.85 avg).
-       - Hipótese: CANDIDATO_FORTE está sendo emitido em contextos contra-tendência ou esticados.
-       - Diretriz interim: ao emitir CANDIDATO_FORTE, verificar se setup tem ALTA probabilidade de "would_have_been_tradeable=True" (R:R real >= 2:1, stop bem posicionado, contexto não esticado).
-       - Quando em dúvida entre CANDIDATO_FORTE e OBSERVACAO, prefira OBSERVACAO (mais robusto em dados live).
+    5. **Calibração CANDIDATO_FORTE vs OBSERVACAO V2 (atualizado 2026-05-15 — D2R Phase 2 n=208):**
+
+       Phase 1 (n=50) sugeriu inversão (CF +0.12 vs OBS +0.85, Δ -0.73). Phase 2
+       com 4× mais dados mostra equivalência geral (CF +0.54 vs OBS +0.59, Δ -0.05).
+       A inversão real é LOCAL, não universal.
+
+       Onde CF SUPERA OBS claramente (regra antiga deixava dinheiro na mesa):
+         - TF 15M: CF +1.19R vs OBS +0.72R (Δ +0.47)
+         - TF 4H:  CF +2.06R vs OBS +0.93R (Δ +1.14)
+         - ETHUSD: CF +1.49R vs OBS +0.56R (Δ +0.93)
+         - XPTUSD: CF +0.87R vs OBS -0.10R (Δ +0.97)
+
+       Onde a INVERSÃO real existe (preferir OBSERVACAO):
+         - TF 60 (1H) + direção SHORT: CF +0.09R / 25% win vs OBS +0.68R / 56% win (Δ -0.59)
+         - XAUUSD com sinais marginais (apenas 1 confluência além do trigger,
+           típico CHoCH solo): CF +0.24R vs OBS +0.61R (Δ -0.37 no geral XAU)
+
+       Observação importante (D2R retroativo n=208):
+         - 24 records OBSERVACAO (16% do total OBS) entregaram +2.85R / 100% win
+           retroativamente — setups rebaixados a OBS por excesso de cautela.
+         - Esses são os "jewels perdidos" que esta calibração V2 visa recuperar.
+
+       DIRETRIZ V2 (substitui "em dúvida prefira OBSERVACAO"):
+         DEFAULT: quando critérios de CANDIDATO_FORTE passam, PROMOVER. Não rebaixar
+                  por excesso de cautela.
+
+         EXCEÇÕES — preferir OBSERVACAO mesmo com critérios borderline OK:
+           (a) TF 60 (1H) + direção SHORT — independente do ativo
+           (b) XAUUSD SHORT com apenas 1 confluência forte além do trigger
+               (típico: CHoCH único sem RSI extremo/sweep/NAS confluência adicional)
+
+         Em todos os outros contextos (TF 15M, 30M, 4H; ETHUSD, XPTUSD, EURUSD,
+         BTCUSD, US500, USOUSD; LONG ou SHORT exceto exceção a): promover a
+         CANDIDATO_FORTE quando critérios passam.
+
+       Coerente com regras V4 anteriores: bubble gate LTF (15M/30M) mantido,
+       hard blocks ativos, R:R>=2:1, stop estrutural — todos esses continuam
+       sendo pré-requisitos OBJETIVOS antes desta calibração subjetiva.
     - Pode criar alertas de monitoramento se permitido pelas regras existentes.
     - Pode desenhar marcações próprias AUTO_CLAUDE_ se permitido pelas regras.
     - D6-A experimental: pode desenhar zonas dinâmicas AUTO_CLAUDE_DYNAMIC_ em 15M/30M conforme dynamic_intraday_bb_zones_D6.md.
