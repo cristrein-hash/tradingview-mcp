@@ -261,10 +261,19 @@ def build_prompt(alert: dict) -> str:
 
        Nenhum LONG bloqueado por ativo no PR 4.
 
-    4. **Priorização TF 4H:**
-       - D2R Phase 1: TF 4H = 71% win, avg +1.63R. TF 30M = 25% win, avg +0.10R.
-       - Sinais 4H têm peso MAIOR na classificação.
-       - Sinais 30M/15M devem ter rigor extra para promoção a CANDIDATO_FORTE: precisam confluência adicional além do mínimo.
+    4. **Priorização TF 4H + TF 15M LONG (atualizado 2026-05-15 — D2R Phase 2 n=208):**
+       - TF 4H continua STAR: +1.08R, 59% win, PF 3.98 (n=22). Peso MAIOR na classificação.
+       - TF 15M LONG: prioridade IGUAL a TF 4H quando direção LONG + ativo whitelist.
+         Evidência D2R Phase 2: TF 15M LONG entrega +1.50R, 72% win, PF 6.38 (n=18) —
+         equivalente a TF 4H LONG (+1.43R, 75% win, PF 9.61 em n=12).
+         NÃO aplicar rigor extra em 15M LONG. Critérios standard suficientes para
+         promoção a CANDIDATO_FORTE. Ativos com edge LONG confirmado: US500
+         (TF 15M: +1.14R / 73% win em n=11), XPTUSD (+0.87R / 42% / n=19), ETHUSD,
+         XAUUSD (LONG operacional em todos TFs).
+       - TF 15M SHORT: rigor padrão (sem tratamento especial nem promoção facilitada).
+         Evidência: TF 15M SHORT entrega +0.40R, 38% win (n=26) — mediano, sem edge claro.
+       - TF 30M: rigor extra mantido para promoção a CANDIDATO_FORTE — precisam
+         confluência adicional além do mínimo (3 fortes).
 
     5. **Inversão promoção CANDIDATO_FORTE vs OBSERVACAO (em revisão):**
        - D2R Phase 1 mostrou que CANDIDATO_FORTE (n=13, +0.12 avg) underperforma OBSERVACAO (n=37, +0.85 avg).
