@@ -425,6 +425,52 @@ def build_prompt(alert: dict) -> str:
       Oracle Score: <0 | 1 | 2 | 3>
     ═══════════════════════════════════════════════════════════════════════════
 
+    ═══════════════════════════════════════════════════════════════════════════
+    V3D SHADOW — Leonardo OB estrutural (atualizado 2026-05-15 — XAUUSD e EURUSD em TF=240/4H)
+    ═══════════════════════════════════════════════════════════════════════════
+    APLICAR para alertas em XAUUSD OU EURUSD com timeframe=240 (4H).
+    Para outros ativos ou TFs, emitir todos os campos V3d como N/A.
+
+    Evidência empírica (backtest 7.4 anos, audit SMC6 2026-05-15):
+    - XAUUSD 4H: V3d n=37, +9.28R, win 43%, PF 1.49 — COMPLEMENTAR ao mech
+      (Pearson -0.05, só 2 overlap em 7.4y, +14% R combinado, Sharpe igual).
+    - EURUSD 4H: V3d n=45, +25.75R, win 53%, PF 2.65, Sharpe 2.26 — FORTE.
+      Combinado com mech: +172% R, Sharpe +1.10, MaxDD MELHORA. V3d cobre 2021
+      e 2022 (anos onde mech praticamente não disparou). Overlap 8.5%.
+
+    Avaliar V3d Leonardo Order Block:
+    1. Identificar último BOS_BULL ou CHOCH_BULL nos últimos 30 candles 4H:
+       - BOS_BULL: candle com close > pivot_high(5,5) anterior
+       - CHOCH_BULL: idem após sequência bearish
+    2. Se evento encontrado, identificar Order Block Leonardo:
+       - Último candle BEARISH (close < open) ANTES da pernada de impulso
+       - Range do OB: [low, high] desse candle
+    3. Identificar último fundo válido (LVB):
+       - Low mínimo entre o evento e seu pivot low anterior
+    4. Verificar se preço atual está em zona OB:
+       - low_atual <= ob_top
+    5. Calcular potencial trade:
+       - Entry = ob_top
+       - Stop = LVB (sem buffer)
+       - Target = entry + 5R
+       - R_pts = entry - stop
+
+    REGRA DE SHADOW:
+      - V3d é APENAS LOGADO. NÃO altera classificação V3, V4, Oracle ou Telegram.
+      - Validação forward: D2R comparará outcomes V3d com mecânico.
+      - Critério promoção a operacional: 30+ trades V3d shadow com PF≥1.4 e
+        no_top5≥0.
+
+    OUTPUT V3D OBRIGATÓRIO — adicionar 7 linhas:
+      V3d shadow asset: <XAUUSD | EURUSD | N/A>
+      V3d shadow event present: <true | false | N/A>
+      V3d shadow event type: <BOS_BULL | CHOCH_BULL | NONE | N/A>
+      V3d shadow OB zone: <"low-top" | N/A>
+      V3d shadow LVB stop: <preço | N/A>
+      V3d shadow in zone now: <true | false | N/A>
+      V3d shadow R potential pts: <número | N/A>
+    ═══════════════════════════════════════════════════════════════════════════
+
     REGRA PREVALECENTE — VOCABULÁRIO ESTRITO V3 (esta seção prevalece sobre qualquer outra):
     - Use APENAS estas 7 strings exatas como valor de "Classificação:":
         1. SETUP_VALIDO

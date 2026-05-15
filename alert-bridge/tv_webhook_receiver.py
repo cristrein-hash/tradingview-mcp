@@ -887,6 +887,26 @@ def build_setup_research_record(
             oracle_score = None
     except (ValueError, AttributeError):
         oracle_score = None
+
+    # V3D SHADOW (2026-05-15) — Leonardo OB structural, APENAS XAUUSD 4H
+    v3d_asset = extract_field(stdout, "V3d shadow asset")
+    v3d_event_present_raw = extract_field(stdout, "V3d shadow event present")
+    v3d_event_type = extract_field(stdout, "V3d shadow event type")
+    v3d_ob_zone = extract_field(stdout, "V3d shadow OB zone")
+    v3d_lvb_stop = extract_field(stdout, "V3d shadow LVB stop")
+    v3d_in_zone_raw = extract_field(stdout, "V3d shadow in zone now")
+    v3d_r_potential = extract_field(stdout, "V3d shadow R potential pts")
+    def _bool_or_none(s):
+        if not s:
+            return None
+        sl = str(s).strip().lower()
+        if sl in ("true", "yes", "sim"):
+            return True
+        if sl in ("false", "no", "nao", "não"):
+            return False
+        return None
+    v3d_event_present = _bool_or_none(v3d_event_present_raw)
+    v3d_in_zone = _bool_or_none(v3d_in_zone_raw)
     direction = extract_field(stdout, "Direção") or extract_field(stdout, "Direção possível")
     health = extract_field(stdout, "Health")
     summary = extract_field(stdout, "Resumo")
@@ -918,6 +938,14 @@ def build_setup_research_record(
         "classification_v4_shadow": classification_v4,  # SHADOW MODE 2026-05-14 — new naming scheme, not yet routed to Telegram
         "oracle_score_shadow": oracle_score,  # SHADOW MODE 2026-05-14 — int 0-3 or None; pre-flight check
         "oracle_score_raw": oracle_score_raw,  # raw string for audit (in case parsing fails)
+        # V3D SHADOW (2026-05-15) — Leonardo OB structural, only XAUUSD 4H
+        "v3d_shadow_asset": v3d_asset,
+        "v3d_shadow_event_present": v3d_event_present,
+        "v3d_shadow_event_type": v3d_event_type,
+        "v3d_shadow_ob_zone": v3d_ob_zone,
+        "v3d_shadow_lvb_stop": v3d_lvb_stop,
+        "v3d_shadow_in_zone": v3d_in_zone,
+        "v3d_shadow_r_potential_pts": v3d_r_potential,
         "direction": direction,
         "health": health,
         "summary": summary,
