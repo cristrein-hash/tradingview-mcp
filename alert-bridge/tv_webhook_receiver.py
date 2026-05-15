@@ -329,23 +329,33 @@ def stdout_contains_any(stdout: str, terms: list[str]) -> bool:
 
 def should_send_claude_recheck_to_telegram(stdout: str) -> tuple[bool, str]:
     """
-    Decide whether Claude's recheck output should be sent to Telegram (V3).
+    Decide whether Claude's recheck output should be sent to Telegram (V3.1 — 2026-05-15).
 
-    V3 routing (post MODULE_AWARE_GLOBAL_RULES_V3, shadow removed):
-    - Connectivity/test messages: never sent.
-    - SETUP_VALIDO / SETUP_VALIDO_INTRADAY: always sent (no cap).
-    - SETUP_CANDIDATO_FORTE: sent (subject to daily cap of 5/asset/day — enforced at send time, see telegram_cap_for_candidato_forte).
-    - SETUP_PERDIDO_NAO_PERSEGUIR / SETUP_ATRASADO_AGUARDAR_RETESTE: sent (contextually useful).
-    - SETUP_EM_OBSERVACAO: only when relevant (trigger within 1 candle of closing — handled by upstream prompt).
-    - NO_TRADE: not sent.
-    - Critical invalidations: always sent.
+    V3.1 routing changes (2026-05-15):
+    - SETUP_EM_OBSERVACAO now ALWAYS silenced (was 51% sent due to critical_terms
+      false-positive on narrative "invalidation" mentions). Cris explicit decision:
+      excessive operational noise.
+    - Critical invalidation routing now uses is_explicit_invalidation_stdout()
+      (rigorous parser) instead of broad text match, preventing OBSERVACAO with
+      narrative "invalidação técnica" from triggering sends.
+
+    Routing priority:
+    1. empty/test/connectivity → not sent
+    2. SETUP_VALIDO / SETUP_VALIDO_INTRADAY → always sent (no cap)
+    3. SETUP_CANDIDATO_FORTE → sent (daily cap 5/asset/day)
+    4. SETUP_PERDIDO_NAO_PERSEGUIR / SETUP_ATRASADO_AGUARDAR_RETESTE → sent
+    5. Explicit operational invalidation (is_explicit_invalidation_stdout) → sent
+    6. Explicit critical event (is_explicit_critical_event_stdout) → sent
+    7. SETUP_EM_OBSERVACAO (any variant) → SILENCED (V3.1 — 2026-05-15)
+    8. NO_TRADE → not sent
+    9. default → not sent
     """
     text = (stdout or "").lower()
 
     if not text.strip():
         return False, "empty_stdout"
 
-    # Do not send connectivity/non-operational tests.
+    # 1. Do not send connectivity/non-operational tests.
     test_terms = [
         "teste recebido",
         "test_connectivity",
@@ -359,7 +369,7 @@ def should_send_claude_recheck_to_telegram(stdout: str) -> tuple[bool, str]:
     if any(term in text for term in test_terms):
         return False, "test_or_non_operational"
 
-    # Fully valid setups (canonical V3) — always sent, no cap.
+    # 2. Fully valid setups — always sent, no cap.
     valid_terms = [
         "classificação: setup_valido",
         "classificacao: setup_valido",
@@ -375,7 +385,7 @@ def should_send_claude_recheck_to_telegram(stdout: str) -> tuple[bool, str]:
     if any(term in text for term in valid_terms):
         return True, "matched:setup_valido"
 
-    # Strong candidates / human review (V3 — execution_tf field distinguishes swing/intraday).
+    # 3. Strong candidates — sent with daily cap.
     candidate_terms = [
         "setup_candidato_forte",
         "candidato forte: sim",
@@ -387,7 +397,7 @@ def should_send_claude_recheck_to_telegram(stdout: str) -> tuple[bool, str]:
     if any(term in text for term in candidate_terms):
         return True, "matched:setup_candidato_forte"
 
-    # Late entry / missed setup states — contextually useful.
+    # 4. Late entry / missed setup states — contextually useful.
     contextual_terms = [
         "setup_perdido_nao_perseguir",
         "setup_atrasado_aguardar_reteste",
@@ -395,20 +405,32 @@ def should_send_claude_recheck_to_telegram(stdout: str) -> tuple[bool, str]:
     if any(term in text for term in contextual_terms):
         return True, "matched:setup_context_state"
 
-    # Critical invalidation / danger states should be sent.
-    critical_terms = [
-        "setup_invalidado",
-        "invalidated",
-        "invalidation",
-        "invalidação",
-        "invalidacao",
-        "evento crítico",
-        "evento critico",
-        "critical",
-    ]
-    if any(term in text for term in critical_terms):
-        return True, "matched:critical_or_invalidation"
+    # 5. Explicit operational invalidation — uses rigorous parser (V3.1 2026-05-15).
+    # Prevents OBSERVACAO with narrative "invalidação técnica X.XX" from triggering.
+    if is_explicit_invalidation_stdout(stdout or ""):
+        return True, "matched:explicit_invalidation"
 
+    # 6. Explicit critical event — also rigorous.
+    if is_explicit_critical_event_stdout(stdout or ""):
+        return True, "matched:explicit_critical"
+
+    # 7. SETUP_EM_OBSERVACAO any variant — SILENCED (V3.1 2026-05-15 — Cris).
+    # Audit 2026-05-15: 55/107 OBSERVACAO records were being sent due to
+    # critical_terms regex false positives. Operational noise without action.
+    observacao_terms = [
+        "classificação: setup_em_observacao",
+        "classificacao: setup_em_observacao",
+        "setup_em_observacao",
+        "classificação: intraday_em_observacao",
+        "classificacao: intraday_em_observacao",
+        "intraday_em_observacao",
+        "classificação: setup em observação",
+        "classificacao: setup em observacao",
+    ]
+    if any(term in text for term in observacao_terms):
+        return False, "silenced:setup_em_observacao"
+
+    # 8/9. NO_TRADE or anything else → not sent.
     return False, "not_relevant"
 
 
