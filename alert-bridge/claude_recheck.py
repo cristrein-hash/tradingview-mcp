@@ -636,19 +636,47 @@ def build_prompt(alert: dict) -> str:
       5. entry_quality: se R:R/stop falham → NO_TRADE ou SETUP_EM_OBSERVACAO. Se entry late → SETUP_ATRASADO_AGUARDAR_RETESTE.
          Se tudo passa → promover a SETUP_VALIDO (swing) ou SETUP_VALIDO_INTRADAY (intraday).
 
-    Hard blocks globais continuam obrigatórios:
-      MCP não confiável; símbolo/timeframe errado; direção indefinida ou incompatível com o módulo;
-      R:R < 2:1; stop técnico indefinido; entrada atrasada/chasing (entry_late_distance_r >= 0.5);
-      setup perdido/não perseguir; macro red window imediato; falling knife/melt-up chase evidente;
-      ausência de gatilho objetivo; setup baseado APENAS em RSI/NAS/Bubble/dry zone touch sem
-      ESTRUTURA DE PREÇO (ver accepted_price_structures em strategy_rules.json).
+    Hard blocks globais (atualizado 2026-05-15 — enum fixo, dormentes removidos):
+
+      ATIVOS (disparam quando aplicável):
+        - MCP_UNRELIABLE                — leitura MCP falhou/inconsistente
+        - DIRECTION_UNDEFINED           — direção indefinida ou incompatível com módulo
+        - RR_BELOW_2                    — R:R < 2:1
+        - ENTRY_LATE_CHASING            — entry_late_distance_r >= 0.5
+        - SETUP_LOST_NO_CHASE           — setup perdido / preço já passou
+        - FALLING_KNIFE                 — falling knife ou melt-up chase evidente
+        - NO_OBJECTIVE_TRIGGER          — ausência de gatilho objetivo
+        - ONLY_NOISE_NO_STRUCTURE       — setup baseado APENAS em RSI/NAS/Bubble/dry zone
+                                          touch sem ESTRUTURA DE PREÇO
+                                          (ver accepted_price_structures em strategy_rules.json)
+
+      DORMENTE (NÃO disparar até further notice):
+        - MACRO_RED_WINDOW              — DORMENTE 2026-05-15. External Factors writer iMac
+                                          está degenerado (calendar_active=False em 100% de
+                                          87 healthy records). Sem fonte confiável → não
+                                          usar como hard block. Reativar após patch iMac
+                                          (real yield escalonado + writer 9 fatores).
+
+      OPERATIONAL GATES (NÃO são hard blocks globais, são downgrade caps por ativo/TF):
+        - BUBBLE_CLUSTER_GATE_LTF       — TF 15M/30M sem cluster → max OBSERVACAO
+                                          (TF 1H+ liberado em 2026-05-15)
+        - ASSET_DIRECTION_BLOCKED       — ex: XPT SHORT bloqueado, USOUSD SHORT bloqueado.
+                                          Use formato ASSET_DIRECTION_BLOCKED:{SYMBOL}_{DIR}.
+                                          Esses CAPS na classificação (max OBSERVACAO),
+                                          NÃO bloqueiam fluxo. Reportar em Module checklist
+                                          notes, não em Hard block triggered.
+
+      REMOVIDOS (nunca disparam empiricamente — Claude já filtra implicitamente):
+        - STOP_UNDEFINED                — Claude sempre define stop em texto livre
+        - SYMBOL_TF_WRONG               — receiver tem watchlist gate + módulos validam TF
 
     RSI dependente de módulo (NÃO universal):
     - RSI extremo, NAS TOP/BOTTOM e Market Order Bubbles NÃO são obrigatórios universais.
     - Para módulos validados, pergunte: "O RSI/NAS/Bubbles confirma este tipo específico de setup?"
     - Se hard blocks passarem e checklist obrigatório do módulo passar, SETUP_VALIDO/SETUP_VALIDO_INTRADAY
       pode ser emitido mesmo sem RSI extremo, se o módulo não exigir RSI extremo.
-    - Nunca relaxar: R:R, stop, entrada atrasada, MCP confiável, macro red window, setup perdido, chasing.
+    - Nunca relaxar: R:R, entrada atrasada, MCP confiável, setup perdido, chasing,
+      gatilho objetivo, estrutura de preço.
 
     Operacional V3:
     - Todo SETUP_VALIDO / SETUP_VALIDO_INTRADAY / SETUP_CANDIDATO_FORTE deve ter:
@@ -669,7 +697,8 @@ def build_prompt(alert: dict) -> str:
       Module score: A/B/C ou 0
       Operational signal: YES_MANUAL_REVIEW | NO
       D2R required: true | false
-      Hard block triggered: NONE | <nome>
+      Hard block triggered: <ENUM FIXO — ver tabela abaixo>
+      NO_TRADE reason: <ENUM FIXO — preenchido APENAS quando Classificação=NO_TRADE; senão NONE>
       Module checklist failed on: NONE | <item>
       Promotion trigger: NONE | REJECTION_CLOSE | MOMENTUM_CONTINUATION | BREAKOUT_RETEST | SWEEP_REENTRY | CHOCH_BOS | RETEST_HOLD | NAS_SIGNAL_AT_ZONE | DENSE_STRUCTURAL_CONFLUENCE
       Promotion status: NOT_PROMOTED | KEEP_AS_CANDIDATO_FORTE | PROMOTE_TO_SETUP_VALIDO | PROMOTE_TO_SETUP_VALIDO_INTRADAY | DOWNGRADE_TO_OBSERVACAO | NO_TRADE
@@ -680,6 +709,38 @@ def build_prompt(alert: dict) -> str:
       Preço atual: <preço>
       Entrada atrasada: SIM | NÃO
       Entry late distance R: <número ou null>
+
+    ENUM FIXO PARA "Hard block triggered" (e "NO_TRADE reason" quando aplicável):
+    Use EXATAMENTE um dos valores abaixo (case-sensitive). Múltiplos podem ser
+    combinados com " + " (ex: "RR_BELOW_2 + ENTRY_LATE_CHASING"). NUNCA inventar
+    nomes novos — se o caso não bate, use OTHER + comentário em Module checklist notes.
+
+      Hard blocks globais ativos:
+        NONE                        — passou todos os hard blocks
+        MCP_UNRELIABLE
+        DIRECTION_UNDEFINED
+        RR_BELOW_2
+        ENTRY_LATE_CHASING
+        SETUP_LOST_NO_CHASE
+        FALLING_KNIFE
+        NO_OBJECTIVE_TRIGGER
+        ONLY_NOISE_NO_STRUCTURE
+
+      Operational gates (NÃO são hard blocks — usar somente quando essa for
+      A ÚNICA razão do downgrade; senão deixar NONE e mencionar em Module
+      checklist notes):
+        BUBBLE_CLUSTER_GATE_LTF       — apenas em TF 15M/30M
+        ASSET_DIRECTION_BLOCKED:{SYMBOL}_{LONG|SHORT}
+
+      Reserva:
+        OTHER                         — só se NENHUM dos acima bate; detalhar em notes
+
+    EXEMPLOS válidos:
+      Hard block triggered: NONE
+      Hard block triggered: RR_BELOW_2
+      Hard block triggered: ENTRY_LATE_CHASING + NO_OBJECTIVE_TRIGGER
+      Hard block triggered: ASSET_DIRECTION_BLOCKED:XPTUSD_SHORT
+      NO_TRADE reason: RR_BELOW_2 + FALLING_KNIFE
 
     PASS/FAIL ESTRITAMENTE BINÁRIO:
     - Global hard blocks e Module checklist são PASS ou FAIL. NUNCA "PASS parcial".

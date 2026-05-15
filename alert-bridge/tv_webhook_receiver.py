@@ -1087,6 +1087,7 @@ def build_setup_research_record(
     "operational_signal": extract_stdout_field(stdout, "Operational signal"),
     "d2r_required": extract_stdout_field(stdout, "D2R required"),
     "hard_block_triggered": extract_stdout_field(stdout, "Hard block triggered"),
+    "no_trade_reason": extract_stdout_field(stdout, "NO_TRADE reason"),
     "module_checklist_failed_on": extract_stdout_field(stdout, "Module checklist failed on"),
     "promotion_trigger_fired": extract_stdout_field(stdout, "Promotion trigger"),
     "promotion_status": extract_stdout_field(stdout, "Promotion status"),
