@@ -1,0 +1,30 @@
+//@version=5
+// CUSTOM OB SIMPLE DEBUG — apenas pra validar se pivot detection funciona
+// Sem state arrays, sem alerts, sem lifecycle. Apenas desenha box em cada pivot.
+// Use this temporariamente pra diagnose.
+
+indicator("Custom OB Simple Debug", overlay=true, max_boxes_count=500)
+
+ms_len   = input.int(3, "Pivot length", minval=2, maxval=10)
+lookback = input.int(10, "Lookback for OB candle", minval=3, maxval=30)
+
+ph = ta.pivothigh(ms_len, ms_len)
+pl = ta.pivotlow(ms_len, ms_len)
+
+// Plot small triangle at each pivot to visualize detection
+plotshape(not na(ph), title="Pivot High", style=shape.triangledown, location=location.abovebar, color=color.red, size=size.tiny, offset=-ms_len)
+plotshape(not na(pl), title="Pivot Low", style=shape.triangleup, location=location.belowbar, color=color.green, size=size.tiny, offset=-ms_len)
+
+// On pivot high → find last bullish candle (closest to pivot) → BEAR OB box
+if not na(ph)
+    for i = ms_len + 1 to ms_len + lookback
+        if close[i] > open[i]
+            box.new(bar_index - i, math.max(open[i], close[i]), bar_index + 10, math.min(open[i], close[i]), bgcolor=color.new(color.orange, 70), border_color=color.orange)
+            break
+
+// On pivot low → find last bearish candle → BULL OB box
+if not na(pl)
+    for i = ms_len + 1 to ms_len + lookback
+        if close[i] < open[i]
+            box.new(bar_index - i, math.max(open[i], close[i]), bar_index + 10, math.min(open[i], close[i]), bgcolor=color.new(color.blue, 70), border_color=color.blue)
+            break

@@ -1,0 +1,86 @@
+//@version=5
+// ETHUSD_4H_LONG_BREAKOUT_REGIME_FILTERED v1.2 — alert source
+// Backtest: 72 trades / 5.4y / PF 2.13
+// Filtro macro: ETHBTC > EMA50 (4H) — ETH outperformando BTC
+// Created 2026-05-15.
+
+indicator("ETHUSD 4H BREAKOUT_REGIME_FILTERED v1.2 — Alert", overlay=true)
+
+swing_len  = 10
+body_min   = 0.6
+adx_min    = 25.0
+ema_fast   = 50
+ema_slow   = 200
+ema_slope_lookback = 5
+atr_len    = 14
+atr_ma_len = 20
+rsi_len    = 14
+rsi_ma_len = 14
+stop_atr_mult = 0.5
+target_r   = 4.0
+
+atr14 = ta.atr(atr_len)
+atr_ma = ta.sma(atr14, atr_ma_len)
+atr_expanding = atr14 > atr_ma
+
+ema50  = ta.ema(close, ema_fast)
+ema200 = ta.ema(close, ema_slow)
+ema50_slope_positive = ema50 > ema50[ema_slope_lookback]
+
+swhi_10 = ta.highest(high, swing_len)[1]
+body_pct = math.abs(close - open) / math.max(high - low, syminfo.mintick)
+
+rsi14 = ta.rsi(close, rsi_len)
+rsi_ma = ta.ema(rsi14, rsi_ma_len)
+
+[diplus, diminus, adx14] = ta.dmi(atr_len, atr_len)
+
+// ETHBTC > EMA50 (4H) — macro filter
+ethbtc_close = request.security("BINANCE:ETHBTC", "240", close)
+ethbtc_ema50 = request.security("BINANCE:ETHBTC", "240", ta.ema(close, 50))
+ethbtc_above_ema50 = ethbtc_close > ethbtc_ema50
+
+t4_breakout    = close > swhi_10
+t5_bullish     = close > open
+t6_body        = body_pct >= body_min
+t7_rsi         = rsi14 > rsi_ma
+
+f1_adx         = adx14 >= adx_min
+f2_above_ema200 = close > ema200
+f3_ema_stack   = ema50 > ema200
+f4_slope       = ema50_slope_positive
+f5_atr_expand  = atr_expanding
+f6_ethbtc_filter = ethbtc_above_ema50
+
+all_triggers_pass = t4_breakout and t5_bullish and t6_body and t7_rsi
+all_filters_pass  = f1_adx and f2_above_ema200 and f3_ema_stack and f4_slope and f5_atr_expand and f6_ethbtc_filter
+
+setup_qualified = all_triggers_pass and all_filters_pass and barstate.isconfirmed
+
+entry_price = close
+stop_price  = low - stop_atr_mult * atr14
+r_points    = entry_price - stop_price
+r_sanity_pass = r_points > 0 and r_points <= 5 * atr14
+
+setup_final = setup_qualified and r_sanity_pass
+
+plotshape(setup_final, title="Module Trigger", style=shape.triangleup, location=location.belowbar, color=color.new(color.green, 0), size=size.small, text="MOD")
+bgcolor(setup_final ? color.new(color.green, 85) : na)
+
+if setup_final
+    target_price = entry_price + target_r * r_points
+    sym_s   = syminfo.tickerid
+    tf_s    = timeframe.period
+    ep_s    = str.tostring(entry_price, "#.##")
+    sp_s    = str.tostring(stop_price, "#.##")
+    tg_s    = str.tostring(target_price, "#.##")
+    rp_s    = str.tostring(r_points, "#.##")
+    atr_s   = str.tostring(atr14, "#.##")
+    rsi_s   = str.tostring(rsi14, "#.##")
+    adx_s   = str.tostring(adx14, "#.##")
+    body_s  = str.tostring(body_pct, "#.##")
+    sw_s    = str.tostring(swhi_10, "#.##")
+    px_s    = str.tostring(close, "#.##")
+
+    alert_msg = "{" + "\"symbol\":\"" + sym_s + "\"," + "\"base_symbol\":\"ETHUSD\"," + "\"timeframe\":\"" + tf_s + "\"," + "\"alert_type\":\"module_trigger_ethusd_4h_breakout_regime\"," + "\"event\":\"mechanical_trigger_fired\"," + "\"drawing_name\":\"PINE_AUTO_TRIGGER\"," + "\"strategy_module\":\"ETHUSD_4H_LONG_BREAKOUT_REGIME_FILTERED\"," + "\"module_backtest_n\":72," + "\"direction\":\"LONG\"," + "\"trigger_method\":\"close_above_swing_high_10_with_ethbtc_filter\"," + "\"entry_price\":" + ep_s + "," + "\"stop_price\":" + sp_s + "," + "\"target_price_4r\":" + tg_s + "," + "\"r_points\":" + rp_s + "," + "\"atr14\":" + atr_s + "," + "\"rsi14\":" + rsi_s + "," + "\"adx14\":" + adx_s + "," + "\"body_pct\":" + body_s + "," + "\"swing_high_10\":" + sw_s + "," + "\"price\":" + px_s + "," + "\"priority\":\"A\"," + "\"reason\":\"Trigger mecanico modulo ETH 4H BREAKOUT_REGIME (filtro ETHBTC ativo). Promote a SETUP_VALIDO se hard blocks PASS.\"" + "}"
+    alert(alert_msg, alert.freq_once_per_bar_close)

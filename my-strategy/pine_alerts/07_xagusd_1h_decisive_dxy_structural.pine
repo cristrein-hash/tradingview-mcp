@@ -1,0 +1,91 @@
+//@version=5
+// XAGUSD_1H_LONG_DECISIVE_DXY_STRUCTURAL — alert source
+// Backtest: 69 trades / PF 1.79
+// Body 60%, range 1.2 ATR, HTF1D + HTF4H bull, DXY < EMA200 4H
+// Created 2026-05-15.
+
+indicator("XAG 1H DECISIVE_DXY_STRUCTURAL — Alert", overlay=true)
+
+swing_len  = 10
+body_min   = 0.6
+range_atr_min = 1.2
+ema_fast   = 50
+ema_slow   = 200
+atr_len    = 14
+atr_ma_len = 20
+rsi_len    = 14
+rsi_ma_len = 14
+stop_atr_mult = 0.5
+target_r   = 2.5
+
+atr14 = ta.atr(atr_len)
+atr_ma = ta.sma(atr14, atr_ma_len)
+atr_expanding = atr14 > atr_ma
+
+ema50  = ta.ema(close, ema_fast)
+ema200 = ta.ema(close, ema_slow)
+
+swhi_10 = ta.highest(high, swing_len)[1]
+body_pct = math.abs(close - open) / math.max(high - low, syminfo.mintick)
+range_to_atr = (high - low) / atr14
+
+rsi14 = ta.rsi(close, rsi_len)
+rsi_ma = ta.ema(rsi14, rsi_ma_len)
+
+htf1d_close = request.security(syminfo.tickerid, "1D", close)
+htf1d_ema50 = request.security(syminfo.tickerid, "1D", ta.ema(close, 50))
+htf1d_bullish = htf1d_close > htf1d_ema50
+
+htf4h_close = request.security(syminfo.tickerid, "240", close)
+htf4h_ema50 = request.security(syminfo.tickerid, "240", ta.ema(close, 50))
+htf4h_bullish = htf4h_close > htf4h_ema50
+
+// DXY < EMA200 4H (structural bearish)
+dxy_close = request.security("TVC:DXY", "240", close)
+dxy_ema200 = request.security("TVC:DXY", "240", ta.ema(close, 200))
+dxy_structural_bearish = dxy_close < dxy_ema200
+
+t4_breakout = close > swhi_10
+t5_bullish  = close > open
+t6_body     = body_pct >= body_min
+t7_range    = range_to_atr >= range_atr_min
+t8_rsi      = rsi14 > rsi_ma
+
+f1_above_ema200 = close > ema200
+f2_ema_stack    = ema50 > ema200
+f3_atr_expand   = atr_expanding
+f4_htf1d        = htf1d_bullish
+f5_htf4h        = htf4h_bullish
+f6_dxy_struct   = dxy_structural_bearish
+
+all_triggers = t4_breakout and t5_bullish and t6_body and t7_range and t8_rsi
+all_filters  = f1_above_ema200 and f2_ema_stack and f3_atr_expand and f4_htf1d and f5_htf4h and f6_dxy_struct
+
+setup_qualified = all_triggers and all_filters and barstate.isconfirmed
+
+entry_price = close
+stop_price  = low - stop_atr_mult * atr14
+r_points    = entry_price - stop_price
+r_sanity_pass = r_points > 0 and r_points <= 5 * atr14
+
+setup_final = setup_qualified and r_sanity_pass
+
+plotshape(setup_final, title="Module Trigger", style=shape.triangleup, location=location.belowbar, color=color.new(color.green, 0), size=size.small, text="MOD")
+bgcolor(setup_final ? color.new(color.green, 85) : na)
+
+if setup_final
+    target_price = entry_price + target_r * r_points
+    sym_s   = syminfo.tickerid
+    tf_s    = timeframe.period
+    ep_s    = str.tostring(entry_price, "#.###")
+    sp_s    = str.tostring(stop_price, "#.###")
+    tg_s    = str.tostring(target_price, "#.###")
+    rp_s    = str.tostring(r_points, "#.###")
+    atr_s   = str.tostring(atr14, "#.###")
+    rsi_s   = str.tostring(rsi14, "#.##")
+    body_s  = str.tostring(body_pct, "#.##")
+    sw_s    = str.tostring(swhi_10, "#.###")
+    px_s    = str.tostring(close, "#.###")
+
+    alert_msg = "{" + "\"symbol\":\"" + sym_s + "\"," + "\"base_symbol\":\"XAGUSD\"," + "\"timeframe\":\"" + tf_s + "\"," + "\"alert_type\":\"module_trigger_xagusd_1h_decisive_dxy_structural\"," + "\"event\":\"mechanical_trigger_fired\"," + "\"drawing_name\":\"PINE_AUTO_TRIGGER\"," + "\"strategy_module\":\"XAGUSD_1H_LONG_DECISIVE_DXY_STRUCTURAL\"," + "\"module_backtest_n\":69," + "\"direction\":\"LONG\"," + "\"trigger_method\":\"decisive_breakout_body60_htf_stack_dxy_structural\"," + "\"entry_price\":" + ep_s + "," + "\"stop_price\":" + sp_s + "," + "\"target_price_2_5r\":" + tg_s + "," + "\"r_points\":" + rp_s + "," + "\"atr14\":" + atr_s + "," + "\"rsi14\":" + rsi_s + "," + "\"body_pct\":" + body_s + "," + "\"swing_high_10\":" + sw_s + "," + "\"price\":" + px_s + "," + "\"priority\":\"A\"," + "\"reason\":\"Trigger mecanico XAG 1H DECISIVE_DXY_STRUCTURAL (HTF1D+4H bull + DXY<EMA200). Promote a SETUP_VALIDO_INTRADAY se hard blocks PASS.\"" + "}"
+    alert(alert_msg, alert.freq_once_per_bar_close)

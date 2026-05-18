@@ -1,0 +1,97 @@
+//@version=5
+// XAUUSD_4H_LONG_BREAKOUT_CONTINUATION_REGIME_FILTERED — alert source
+// Backtest: 234 trades / 7.4y / +64.57R / PF 1.64
+// Created 2026-05-15. Replica os 9 critérios do módulo formal.
+//
+// COMO USAR NO TRADINGVIEW:
+//   1. Pine Editor → New blank indicator → cole este código → Save → Add to chart
+//   2. Aplicar no chart PEPPERSTONE:XAUUSD timeframe 240 (4H)
+//   3. Criar alerta:
+//      - Condition: "XAU 4H BREAKOUT_CONTINUATION_REGIME_FILTERED — Alert" → "Any alert() function call"
+//      - Frequency: Once per bar close
+//      - Webhook URL: a URL do cloudflared tunnel (mesma dos outros alertas)
+//   4. Confirmar alerta ativo
+
+indicator("XAU 4H BREAKOUT_CONTINUATION_REGIME_FILTERED — Alert", overlay=true)
+
+// === Parâmetros do módulo ===
+swing_len  = 10
+body_min   = 0.5
+adx_min    = 20.0
+ema_fast   = 50
+ema_slow   = 200
+ema_slope_lookback = 5
+atr_len    = 14
+atr_ma_len = 20
+rsi_len    = 14
+rsi_ma_len = 14
+stop_atr_mult = 0.5
+target_r   = 4.0
+
+// === Indicadores ===
+atr14 = ta.atr(atr_len)
+atr_ma = ta.sma(atr14, atr_ma_len)
+atr_expanding = atr14 > atr_ma
+
+ema50  = ta.ema(close, ema_fast)
+ema200 = ta.ema(close, ema_slow)
+ema50_slope_positive = ema50 > ema50[ema_slope_lookback]
+
+swhi_10 = ta.highest(high, swing_len)[1]
+body_pct = math.abs(close - open) / math.max(high - low, syminfo.mintick)
+
+rsi14 = ta.rsi(close, rsi_len)
+rsi_ma = ta.ema(rsi14, rsi_ma_len)
+
+[diplus, diminus, adx14] = ta.dmi(atr_len, atr_len)
+
+// === Trigger conditions ===
+t4_breakout    = close > swhi_10
+t5_bullish     = close > open
+t6_body        = body_pct >= body_min
+t7_rsi         = rsi14 > rsi_ma
+
+f1_adx         = adx14 >= adx_min
+f2_above_ema200 = close > ema200
+f3_ema_stack   = ema50 > ema200
+f4_slope       = ema50_slope_positive
+f5_atr_expand  = atr_expanding
+
+all_triggers_pass = t4_breakout and t5_bullish and t6_body and t7_rsi
+all_filters_pass  = f1_adx and f2_above_ema200 and f3_ema_stack and f4_slope and f5_atr_expand
+
+setup_qualified = all_triggers_pass and all_filters_pass and barstate.isconfirmed
+
+// === Stop and R sanity ===
+entry_price = close
+stop_price  = low - stop_atr_mult * atr14
+r_points    = entry_price - stop_price
+r_sanity_pass = r_points > 0 and r_points <= 5 * atr14
+
+setup_final = setup_qualified and r_sanity_pass
+
+// === Plot visual ===
+plotshape(setup_final, title="Module Trigger", style=shape.triangleup, location=location.belowbar, color=color.new(color.green, 0), size=size.small, text="MOD")
+bgcolor(setup_final ? color.new(color.green, 85) : na)
+
+// === Alert payload JSON ===
+// Compatible com tv_webhook_receiver: campos symbol, base_symbol, timeframe,
+// alert_type, event, message, price, e contexto extra.
+
+if setup_final
+    target_price = entry_price + target_r * r_points
+    sym_s   = syminfo.tickerid
+    tf_s    = timeframe.period
+    ep_s    = str.tostring(entry_price, "#.##")
+    sp_s    = str.tostring(stop_price, "#.##")
+    tg_s    = str.tostring(target_price, "#.##")
+    rp_s    = str.tostring(r_points, "#.##")
+    atr_s   = str.tostring(atr14, "#.##")
+    rsi_s   = str.tostring(rsi14, "#.##")
+    adx_s   = str.tostring(adx14, "#.##")
+    body_s  = str.tostring(body_pct, "#.##")
+    sw_s    = str.tostring(swhi_10, "#.##")
+    px_s    = str.tostring(close, "#.##")
+
+    alert_msg = "{" + "\"symbol\":\"" + sym_s + "\"," + "\"base_symbol\":\"XAUUSD\"," + "\"timeframe\":\"" + tf_s + "\"," + "\"alert_type\":\"module_trigger_xauusd_4h_breakout_continuation\"," + "\"event\":\"mechanical_trigger_fired\"," + "\"drawing_name\":\"PINE_AUTO_TRIGGER\"," + "\"strategy_module\":\"XAUUSD_4H_LONG_BREAKOUT_CONTINUATION_REGIME_FILTERED\"," + "\"module_backtest_n\":234," + "\"direction\":\"LONG\"," + "\"trigger_method\":\"close_above_swing_high_10\"," + "\"entry_price\":" + ep_s + "," + "\"stop_price\":" + sp_s + "," + "\"target_price_4r\":" + tg_s + "," + "\"r_points\":" + rp_s + "," + "\"atr14\":" + atr_s + "," + "\"rsi14\":" + rsi_s + "," + "\"adx14\":" + adx_s + "," + "\"body_pct\":" + body_s + "," + "\"swing_high_10\":" + sw_s + "," + "\"price\":" + px_s + "," + "\"priority\":\"A\"," + "\"reason\":\"Trigger mecanico modulo XAU 4H BREAKOUT_CONTINUATION fechou no candle atual.\"," + "\"expected_recheck\":\"Reavaliar com hard blocks, HTF, macro. Promote a SETUP_VALIDO se tudo PASS.\"" + "}"
+    alert(alert_msg, alert.freq_once_per_bar_close)
