@@ -11,9 +11,7 @@
       "USOUSD",
       "XAUUSD",
       "XAGUSD",
-      "XPTUSD",
       "ETHUSD",
-      "BTCUSD",
       "US500",
       "EURUSD"
     ],
@@ -49,7 +47,11 @@
       "USOUSD SHORT: explicitamente BLOQUEADO operacionalmente (n=6, 17% win, -2.58R — novo achado pós-PR1).",
       "US500 SHORT, XAUUSD SHORT: sem mudança (manter degradados conforme PR2).",
       "Princípio aplicado: paciência metodológica (n<30 direcional, n<50 preliminar, n≥100 sólido). Decisões marginais usam shadow defensivo (max OBSERVACAO)."
-    ]
+    ],
+    "blocked_reasons": {
+      "BTCUSD": "Removed 2026-05-18 — focus on 5 main assets + USOUSD for backtest data",
+      "XPTUSD": "Removed 2026-05-18 — focus on 5 main assets + USOUSD for backtest data"
+    }
   },
   "allowed_actions": {
     "read_chart": true,

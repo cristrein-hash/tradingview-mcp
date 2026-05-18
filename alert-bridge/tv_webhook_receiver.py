@@ -5,6 +5,7 @@ from pathlib import Path
 from urllib.parse import urlencode
 from urllib.request import urlopen, Request
 from html import escape
+import hashlib
 import json
 import os
 import re
@@ -22,6 +23,9 @@ LOG_FILE = LOG_DIR / "tradingview_alerts.jsonl"
 SETUP_RESEARCH_LOG = LOG_DIR / "setup_research_log.jsonl"
 INTRADAY_QUASE_VALIDO_LOG = LOG_DIR / "intraday_quase_valido_log.jsonl"
 WATCHLIST_REJECTIONS_LOG = LOG_DIR / "watchlist_rejections.jsonl"
+# 2026-05-17: passive indicator signal logging (separate channel, no claude_recheck)
+INDICATOR_SIGNALS_LOG = LOG_DIR / "indicator_signals.jsonl"
+INDICATOR_SIGNALS_DEDUP_INDEX = LOG_DIR / "indicator_signals_dedup_index.json"
 ENV_FILE = BASE_DIR / ".env"
 CLAUDE_RECHECK = BASE_DIR / "claude_recheck.py"
 STRATEGY_RULES_PATH = Path.home() / "tradingview-mcp" / "my-strategy" / "strategy_rules.json"
@@ -1199,6 +1203,92 @@ def append_setup_research_record(record: dict):
         }, ensure_ascii=False), flush=True)
 
 
+# === Indicator signal passive logging (2026-05-17) ===
+# Separate channel for high-volume indicator signals (NAS, BigBeluga, Bubbles, RSI, VRP
+# across 5 TFs × 5 ativos). No claude_recheck, no Telegram. Dedup by hash. Schema v1.0.
+
+_INDICATOR_DEDUP_LOCK = threading.Lock()
+_INDICATOR_DEDUP_CACHE = {"hashes": None}
+_INDICATOR_DEDUP_MAX = 50000
+_INDICATOR_DEDUP_TRIM_TO = 40000
+
+
+def _compute_signal_hash(parsed: dict) -> str:
+    ts_signal = parsed.get("ts_signal") or parsed.get("time") or ""
+    base_symbol = (parsed.get("base_symbol") or "").upper()
+    timeframe = str(parsed.get("timeframe") or "")
+    indicator_name = parsed.get("indicator_name") or ""
+    signal_type = parsed.get("signal_type") or ""
+    key = f"{ts_signal}|{base_symbol}|{timeframe}|{indicator_name}|{signal_type}"
+    return hashlib.sha256(key.encode("utf-8")).hexdigest()[:16]
+
+
+def _load_indicator_dedup_set() -> set:
+    if _INDICATOR_DEDUP_CACHE["hashes"] is not None:
+        return _INDICATOR_DEDUP_CACHE["hashes"]
+    seen = set()
+    if INDICATOR_SIGNALS_DEDUP_INDEX.exists():
+        try:
+            with INDICATOR_SIGNALS_DEDUP_INDEX.open() as f:
+                seen = set(json.load(f))
+        except Exception:
+            seen = set()
+    _INDICATOR_DEDUP_CACHE["hashes"] = seen
+    return seen
+
+
+def _persist_indicator_dedup_set(seen: set):
+    try:
+        with INDICATOR_SIGNALS_DEDUP_INDEX.open("w") as f:
+            json.dump(list(seen), f)
+    except Exception as exc:
+        print(json.dumps({"indicator_dedup_persist_error": str(exc)}, ensure_ascii=False), flush=True)
+
+
+def write_indicator_signal(event: dict, parsed: dict) -> dict:
+    """Write indicator_signal payload to indicator_signals.jsonl with dedup hash.
+
+    Returns dict with: written (bool), signal_hash (str), reason (str).
+    """
+    h = _compute_signal_hash(parsed)
+    with _INDICATOR_DEDUP_LOCK:
+        seen = _load_indicator_dedup_set()
+        if h in seen:
+            return {"written": False, "signal_hash": h, "reason": "duplicate_hash"}
+
+        seen.add(h)
+        if len(seen) > _INDICATOR_DEDUP_MAX:
+            seen = set(list(seen)[-_INDICATOR_DEDUP_TRIM_TO:])
+            _INDICATOR_DEDUP_CACHE["hashes"] = seen
+        _persist_indicator_dedup_set(seen)
+
+        record = {
+            "schema_version": "1.0",
+            "ts_received": event.get("received_at", ""),
+            "ts_signal": parsed.get("ts_signal") or parsed.get("time") or event.get("received_at", ""),
+            "base_symbol": (parsed.get("base_symbol") or "").upper(),
+            "symbol": parsed.get("symbol", ""),
+            "timeframe": str(parsed.get("timeframe") or ""),
+            "indicator_name": parsed.get("indicator_name") or "",
+            "signal_type": parsed.get("signal_type") or "",
+            "price": parsed.get("price"),
+            "alert_type": parsed.get("alert_type", "indicator_signal"),
+            "indicator_version": parsed.get("indicator_version", "unversioned"),
+            "priority": parsed.get("priority", "C"),
+            "signal_hash": h,
+            "payload_full": parsed,
+        }
+
+        try:
+            with INDICATOR_SIGNALS_LOG.open("a", encoding="utf-8") as f:
+                f.write(json.dumps(record, ensure_ascii=False) + "\n")
+        except Exception as exc:
+            print(json.dumps({"indicator_signal_write_error": str(exc)}, ensure_ascii=False), flush=True)
+            return {"written": False, "signal_hash": h, "reason": f"write_error:{exc}"}
+
+        return {"written": True, "signal_hash": h, "reason": "ok"}
+
+
 def is_intraday_quase_valido_stdout(stdout: str) -> bool:
     """
     Detecta QUASE_VALIDO experimental somente quando o Claude afirma explicitamente.
@@ -1528,18 +1618,53 @@ class Handler(BaseHTTPRequestHandler):
             })
             return
 
+        # === Indicator signal routing (2026-05-17) ===
+        # Separate channel for passive indicator data collection.
+        # No claude_recheck, no Telegram, dedup by hash. Volume expected 200-500/day.
+        if isinstance(parsed, dict) and parsed.get("alert_type") == "indicator_signal":
+            sig_result = write_indicator_signal(event, parsed)
+            print(json.dumps({
+                "indicator_signal_routed": True,
+                "base_symbol": (parsed.get("base_symbol") or "").upper(),
+                "timeframe": str(parsed.get("timeframe") or ""),
+                "indicator_name": parsed.get("indicator_name", ""),
+                "signal_type": parsed.get("signal_type", ""),
+                "written": sig_result["written"],
+                "signal_hash": sig_result["signal_hash"],
+                "reason": sig_result["reason"],
+            }, ensure_ascii=False), flush=True)
+            self._send(200, {
+                "ok": True,
+                "routed": "indicator_signals.jsonl",
+                "written": sig_result["written"],
+                "signal_hash": sig_result["signal_hash"],
+            })
+            return
+
         send_raw = os.environ.get("TV_SEND_RAW_TRADINGVIEW_ALERTS", "0") == "1"
         if send_raw:
             telegram_result = send_telegram(format_tradingview_message(event))
         else:
             telegram_result = {"ok": True, "skipped": "raw_tradingview_alert_suppressed"}
 
-        thread = threading.Thread(
-            target=run_claude_recheck_background,
-            args=(event,),
-            daemon=True
-        )
-        thread.start()
+        # 2026-05-18: pause flag — touch /tmp/claude_recheck.paused to suspend
+        # claude analysis without restarting receiver. Alerts continue logging
+        # to research_log/indicator_signals; only claude_recheck thread is skipped.
+        pause_flag = Path("/tmp/claude_recheck.paused")
+        if pause_flag.exists():
+            print(json.dumps({
+                "claude_recheck_paused": True,
+                "reason": "pause_flag_present",
+                "flag_path": str(pause_flag),
+            }, ensure_ascii=False), flush=True)
+            telegram_result["claude_recheck_paused"] = True
+        else:
+            thread = threading.Thread(
+                target=run_claude_recheck_background,
+                args=(event,),
+                daemon=True
+            )
+            thread.start()
 
         print(json.dumps({
             "event": event,
