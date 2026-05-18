@@ -15,6 +15,17 @@ BRIDGE_DIR = BASE_DIR / "alert-bridge"
 STRATEGY_DIR = BASE_DIR / "my-strategy"
 
 TARGETS_FILE = BRIDGE_DIR / "monitor_targets.json"
+
+# 2026-05-18: split config (versionable, here) from runtime state (gitignored).
+# See monitor_state_helpers.py for rationale.
+from monitor_state_helpers import (
+    state_path_for,
+    load_state,
+    merge_state_into_targets,
+    save_state,
+    RUNTIME_FIELDS,
+)
+STATE_FILE = state_path_for(TARGETS_FILE)
 POLICY_FILE = BRIDGE_DIR / "notification_policy.json"
 ENV_FILE = BRIDGE_DIR / ".env"
 LOG_DIR = BRIDGE_DIR / "logs"
@@ -67,26 +78,28 @@ def split_text(text: str, limit: int = 3800):
 def send_telegram(text: str):
     env = load_env()
     token = env.get("TELEGRAM_BOT_TOKEN")
-    chat_id = env.get("TELEGRAM_CHAT_ID")
+    chat_ids_raw = env.get("TELEGRAM_CHAT_IDS") or env.get("TELEGRAM_CHAT_ID")
 
-    if not token or not chat_id:
+    if not token or not chat_ids_raw:
         print("Telegram não configurado no .env")
         return False
 
+    chat_ids = [x.strip() for x in chat_ids_raw.split(",") if x.strip()]
     url = f"https://api.telegram.org/bot{token}/sendMessage"
 
     ok = True
-    for chunk in split_text(text):
-        data = urlencode({
-            "chat_id": chat_id,
-            "text": chunk,
-            "disable_web_page_preview": "true"
-        }).encode("utf-8")
+    for chat_id in chat_ids:
+        for chunk in split_text(text):
+            data = urlencode({
+                "chat_id": chat_id,
+                "text": chunk,
+                "disable_web_page_preview": "true"
+            }).encode("utf-8")
 
-        req = Request(url, data=data, method="POST")
-        with urlopen(req, timeout=20) as resp:
-            result = json.loads(resp.read().decode("utf-8"))
-        ok = ok and bool(result.get("ok"))
+            req = Request(url, data=data, method="POST")
+            with urlopen(req, timeout=20) as resp:
+                result = json.loads(resp.read().decode("utf-8"))
+            ok = ok and bool(result.get("ok"))
 
     return ok
 
@@ -358,7 +371,8 @@ def update_targets_file(targets_data: dict, state_update: dict, notified_ids: se
         if tid in notified_ids:
             target["last_notified_at"] = now
 
-    TARGETS_FILE.write_text(json.dumps(targets_data, ensure_ascii=False, indent=2) + "\n")
+    # 2026-05-18: persist ONLY runtime state to separate file; config stays read-only
+    save_state(STATE_FILE, targets_data)
 
 
 def build_short_telegram_summary(state_update: dict, due_updates: list, stdout: str) -> str:
@@ -419,6 +433,9 @@ def main():
         sys.exit(1)
 
     targets_data = json.loads(TARGETS_FILE.read_text())
+    # Merge in runtime state from separate state file
+    state_by_id = load_state(STATE_FILE)
+    merge_state_into_targets(targets_data.get("targets", []), state_by_id)
     policy = load_policy()
     prompt = build_prompt(targets_data, test_mode=args.test)
 
