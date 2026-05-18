@@ -127,3 +127,16 @@ Claude Code ←→ MCP Server (stdio) ←→ CDP (localhost:9222) ←→ Trading
 ```
 
 Pine graphics path: `study._graphics._primitivesCollection.dwglines.get('lines').get(false)._primitivesDataById`
+
+## Pre-Change Discipline (added 2026-05-18)
+
+Before proposing ANY code change to production files (`alert-bridge/*.py`, prompt sections in `claude_recheck.py`, strategy modules, pipeline scripts, daemons, hooks), answer these 4 questions **in order, before writing any code**:
+
+1. **What INPUT does this change operate on?** (specific `alert_type`, webhook channel, log field, etc.)
+2. **Is that input alive in the last 7 days?** Validate with `grep`/`wc` on the affected log, or `jq` on a recent snapshot. Don't assume — query.
+3. **How many events/day arrive through the affected channel?** (last 24–48h).
+4. **If < 5 events/day OR channel dormant: STOP.** Re-examine architecture before proposing a fix. The fix may be targeting dead infrastructure.
+
+**Architectural changes require the Plan agent.** When the change touches prompt operacional, strategy module, webhook routing, pipeline logic, or schema of logs/events: invoke `Agent` with `subagent_type=Plan` BEFORE writing code. Plan agent is specialized for design — it forces premise verification that fast-fix mode skips.
+
+This discipline exists because on 2026-05-18 a fix was proposed and implemented for the "Caminho B" (Zone Touch SMC) path in the operational prompt before discovering the drawings channel (`monitor_zone`, `monitor_dynamic_bb_zone`, etc.) had been silent for 3+ days post-indicators migration. The fix targeted dead architecture, had to be reverted, and eroded trust. **Skipping these 4 questions = repeating that mistake.**
