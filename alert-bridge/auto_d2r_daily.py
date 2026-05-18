@@ -40,8 +40,17 @@ CLASSIFICATIONS = (
     "SETUP_CANDIDATO_FORTE_INTRADAY,"
     "SETUP_EM_OBSERVACAO,"
     "SETUP_EM_OBSERVACAO_INTRADAY,"
-    "INTRADAY_EM_OBSERVACAO"
+    "INTRADAY_EM_OBSERVACAO,"
+    # 2026-05-18: variantes legacy com espaço/acento (pre-V3 vocabulário)
+    "SETUP EM OBSERVAÇÃO,"
+    "INTRADAY EM OBSERVAÇÃO,"
+    # 2026-05-18: classifications de contextual state (incluídas no scope D2R)
+    "SETUP_PERDIDO_NAO_PERSEGUIR,"
+    "SETUP_ATRASADO_AGUARDAR_RETESTE"
 )
+
+# 2026-05-18: B.1 — indicator_signals outcomes pra appendix no Telegram daily
+INDICATOR_SIGNALS_OUTCOMES_LOG = Path.home() / "tradingview-mcp" / "alert-bridge" / "logs" / "indicator_signals_outcomes.jsonl"
 
 
 def load_env():
@@ -220,6 +229,93 @@ def build_telegram_message(stats, outliers, new_records):
     return "\n".join(msg)
 
 
+# === B.1 (2026-05-18): indicator_signals outcomes appendix ===
+def build_indicator_outcomes_summary():
+    """Read indicator_signals_outcomes.jsonl and produce compact summary block
+    for Telegram daily message. Returns "" if file empty/missing."""
+    if not INDICATOR_SIGNALS_OUTCOMES_LOG.exists():
+        return ""
+    rows = []
+    try:
+        with INDICATOR_SIGNALS_OUTCOMES_LOG.open() as f:
+            for line in f:
+                try:
+                    rows.append(json.loads(line))
+                except json.JSONDecodeError:
+                    continue
+    except OSError:
+        return ""
+    if not rows:
+        return ""
+
+    # Today's records (UTC)
+    today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    today_rows = [r for r in rows if r.get("enriched_at", "").startswith(today_str)]
+
+    # Stats: count R outcomes per side
+    long_outcomes = []
+    short_outcomes = []
+    for r in rows:
+        lo = r.get("long_outcome") or {}
+        so = r.get("short_outcome") or {}
+        if lo.get("outcome_R") is not None:
+            long_outcomes.append((lo["outcome_R"], r))
+        if so.get("outcome_R") is not None:
+            short_outcomes.append((so["outcome_R"], r))
+
+    all_outcomes = long_outcomes + short_outcomes
+    if not all_outcomes:
+        return ""
+
+    n_total = len(all_outcomes)
+    n_today = len(today_rows)
+    r_vals = [r for r, _ in all_outcomes]
+    sum_r = sum(r_vals)
+    wins = sum(1 for r in r_vals if r > 0.5)
+    losses = sum(1 for r in r_vals if r < -0.5)
+    win_rate = wins / n_total if n_total else 0
+
+    msg = []
+    msg.append("")
+    msg.append(f"<b>🔬 Indicator Signals Pipeline</b>")
+    msg.append(f"  Total outcomes acumulados: <b>{n_total}</b>")
+    if n_today > 0:
+        msg.append(f"  Novos hoje: {n_today}")
+    msg.append(f"  Wins / Losses: {wins} / {losses} (WR={win_rate:.0%})")
+    msg.append(f"  Sum R: <b>{sum_r:+.2f}R</b>")
+
+    # Top 3 wins + top 3 losses
+    all_outcomes_sorted = sorted(all_outcomes, key=lambda x: x[0], reverse=True)
+    top_wins = all_outcomes_sorted[:3]
+    top_losses = all_outcomes_sorted[-3:][::-1]
+
+    if top_wins and top_wins[0][0] > 0.5:
+        msg.append("")
+        msg.append("  <i>Top wins:</i>")
+        for r, rec in top_wins:
+            if r <= 0.5: break
+            sym = rec.get("base_symbol", "?")
+            tf = rec.get("timeframe", "?")
+            ind = rec.get("indicator_name", "?").replace("_", " ")
+            sig = rec.get("signal_type", "?")
+            msg.append(f"  +{r:.1f}R  {sym} TF{tf} | {ind} {sig[:20]}")
+
+    if top_losses and top_losses[0][0] < -0.5:
+        msg.append("")
+        msg.append("  <i>Top losses:</i>")
+        for r, rec in top_losses:
+            if r >= -0.5: break
+            sym = rec.get("base_symbol", "?")
+            tf = rec.get("timeframe", "?")
+            ind = rec.get("indicator_name", "?").replace("_", " ")
+            sig = rec.get("signal_type", "?")
+            msg.append(f"  {r:.1f}R  {sym} TF{tf} | {ind} {sig[:20]}")
+
+    msg.append("")
+    msg.append("  <i>Detalhes: report_indicator_edge.py --save</i>")
+    return "\n".join(msg)
+
+
 def main():
     started_at = datetime.now(timezone.utc)
     day_str = started_at.strftime("%Y-%m-%d")
@@ -293,17 +389,28 @@ def main():
         daily_log.write(f"  Missed winners: {len(outliers['missed_winners'])}\n")
         daily_log.write(f"  Wrong promotions: {len(outliers['wrong_promotions'])}\n")
 
-    # Send Telegram (only if we evaluated something OR there's an issue)
+    # Send Telegram
+    # 2026-05-18 B.1: indicator_signals appendix sent even if D2R had 0 new records
+    indicator_summary = build_indicator_outcomes_summary()
+
     if stats["n_new"] > 0:
         msg = build_telegram_message(stats, outliers, new_records)
+        if indicator_summary:
+            msg = msg + "\n" + indicator_summary
         try:
             send_telegram(msg)
         except Exception as e:
             with log_path.open("a") as f:
                 f.write(f"Telegram send error: {e}\n")
-    else:
-        # Optional: send "no new events" once per week as heartbeat
-        pass
+    elif indicator_summary:
+        # D2R sem novos, mas indicator pipeline tem outcomes — manda só o indicator block
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        msg = f"<b>🤖 D2R Daily — {today}</b>\n\nSem novos eventos D2R hoje.\n{indicator_summary}"
+        try:
+            send_telegram(msg)
+        except Exception as e:
+            with log_path.open("a") as f:
+                f.write(f"Telegram send error: {e}\n")
 
 
 if __name__ == "__main__":

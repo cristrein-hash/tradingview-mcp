@@ -19,17 +19,52 @@ Usage:
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
 import argparse
+import fcntl
 import json
 import re
 import subprocess
 import sys
 import textwrap
+import time
 
 BASE_DIR = Path.home() / "tradingview-mcp"
 BRIDGE_DIR = BASE_DIR / "alert-bridge"
 LOG_DIR = BRIDGE_DIR / "logs"
 SIGNALS_LOG = LOG_DIR / "indicator_signals.jsonl"
 OUTCOMES_LOG = LOG_DIR / "indicator_signals_outcomes.jsonl"
+
+# 2026-05-18: CDP chart lock — same path as claude_recheck.py.
+# Prevents race condition when claude_recheck (webhook-driven) and
+# this enrichment script both invoke chart_set_symbol/timeframe.
+# Acquired per Claude batch; released between batches to allow
+# claude_recheck windows.
+CHART_LOCK_PATH = "/tmp/tradingview_chart.lock"
+CHART_LOCK_TIMEOUT_S = 600  # 10 min per batch (Claude may take 5+ min)
+
+
+def acquire_chart_lock(timeout_s=CHART_LOCK_TIMEOUT_S):
+    fd = open(CHART_LOCK_PATH, "w")
+    deadline = time.monotonic() + timeout_s
+    start = time.monotonic()
+    while True:
+        try:
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            return fd, round(time.monotonic() - start, 2)
+        except BlockingIOError:
+            if time.monotonic() >= deadline:
+                fd.close()
+                raise TimeoutError(f"chart lock timeout after {timeout_s}s")
+            time.sleep(0.5)
+
+
+def release_chart_lock(fd):
+    if fd is None:
+        return
+    try:
+        fcntl.flock(fd, fcntl.LOCK_UN)
+        fd.close()
+    except Exception:
+        pass
 
 # Bars window for outcome evaluation
 EVAL_BARS_AFTER = 20  # need at least 20 bars after signal to enrich
@@ -245,7 +280,10 @@ def parse_response(stdout: str):
 
 
 def run_claude_batch(prompt: str, timeout: int = 1200) -> dict:
-    """Run claude headless with MCP TradingView permissions."""
+    """Run claude headless with MCP TradingView permissions.
+    Acquires CDP chart lock for the duration of the call to prevent
+    race condition with claude_recheck/setup_watch_manager.
+    """
     cmd = [
         "claude",
         "-p",
@@ -253,18 +291,29 @@ def run_claude_batch(prompt: str, timeout: int = 1200) -> dict:
         "--allowedTools",
         "Read,mcp__tradingview__*"
     ]
+    lock_fd = None
     try:
-        result = subprocess.run(
-            cmd,
-            cwd=str(BASE_DIR),
-            text=True,
-            capture_output=True,
-            timeout=timeout,
-        )
-    except subprocess.TimeoutExpired:
-        return {"error": "timeout"}
-    except FileNotFoundError:
-        return {"error": "claude_cli_not_found"}
+        try:
+            lock_fd, wait_s = acquire_chart_lock(timeout_s=CHART_LOCK_TIMEOUT_S)
+            if wait_s > 0.5:
+                print(f"  (waited {wait_s}s for chart lock)")
+        except TimeoutError as e:
+            return {"error": f"chart_lock_timeout:{e}"}
+
+        try:
+            result = subprocess.run(
+                cmd,
+                cwd=str(BASE_DIR),
+                text=True,
+                capture_output=True,
+                timeout=timeout,
+            )
+        except subprocess.TimeoutExpired:
+            return {"error": "timeout"}
+        except FileNotFoundError:
+            return {"error": "claude_cli_not_found"}
+    finally:
+        release_chart_lock(lock_fd)
 
     if result.returncode != 0:
         return {"error": f"non_zero_exit:{result.returncode}", "stderr_tail": (result.stderr or "")[-300:]}

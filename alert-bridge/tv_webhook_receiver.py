@@ -1245,11 +1245,31 @@ def _persist_indicator_dedup_set(seen: set):
         print(json.dumps({"indicator_dedup_persist_error": str(exc)}, ensure_ascii=False), flush=True)
 
 
+def _normalize_indicator_parsed(parsed: dict) -> dict:
+    """Strip broker prefix (PEPPERSTONE:, VANTAGE:, OANDA:, etc.) defensively.
+
+    Protects downstream against TV alert() snapshot cache — alerts criados antes
+    de fix no Pine podem continuar enviando prefix. Mutates parsed in place.
+    """
+    for k in ("base_symbol", "symbol"):
+        v = parsed.get(k)
+        if isinstance(v, str) and ":" in v:
+            parsed[k] = v.split(":", 1)[-1]
+    reason = parsed.get("reason")
+    if isinstance(reason, str):
+        for prefix in ("PEPPERSTONE:", "VANTAGE:", "FOREXCOM:", "OANDA:", "FX:", "FX_IDC:"):
+            if prefix in reason:
+                reason = reason.replace(prefix, "")
+        parsed["reason"] = reason
+    return parsed
+
+
 def write_indicator_signal(event: dict, parsed: dict) -> dict:
     """Write indicator_signal payload to indicator_signals.jsonl with dedup hash.
 
     Returns dict with: written (bool), signal_hash (str), reason (str).
     """
+    _normalize_indicator_parsed(parsed)
     h = _compute_signal_hash(parsed)
     with _INDICATOR_DEDUP_LOCK:
         seen = _load_indicator_dedup_set()
