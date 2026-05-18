@@ -1,0 +1,1 @@
+{"symbol":"{{ticker}}","base_symbol":"XAGUSD","timeframe":"{{interval}}","alert_type":"indicator_signal","event":"indicator_fired","indicator_name":"RSI","signal_type":"Cross_Oversold_30","price":{{close}},"drawing_name":"INDICATOR_AUTO_SIGNAL","priority":"C","indicator_version":"tv_builtin_14","reason":"RSI Cross_Oversold_30 on XAGUSD"}

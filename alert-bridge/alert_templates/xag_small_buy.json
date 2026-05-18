@@ -1,0 +1,1 @@
+{"symbol":"{{ticker}}","base_symbol":"XAGUSD","timeframe":"{{interval}}","alert_type":"indicator_signal","event":"indicator_fired","indicator_name":"Market_Bubbles","signal_type":"Small_Buy","price":{{close}},"drawing_name":"INDICATOR_AUTO_SIGNAL","priority":"C","indicator_version":"leviathan_v1","reason":"Market Bubbles Small_Buy on XAGUSD"}
