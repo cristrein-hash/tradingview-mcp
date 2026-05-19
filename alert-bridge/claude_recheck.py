@@ -798,7 +798,61 @@ def build_prompt(alert: dict) -> str:
     - Se você se pegar prestes a escrever uma string deprecada, PARE e use a string V3 + Execution TF.
     - O campo Execution TF carrega a informação de timeframe; a classificação carrega apenas a tier.
 
+    PRE-VALIDADO MECANICAMENTE (Caminho A — Pines mecânicos, 2026-05-19):
+    Quando alert.alert_type começa com "module_trigger_", o setup JÁ PASSOU todos os
+    triggers + filtros mecânicos do módulo no candle FECHADO (validação Pine in-chart,
+    backtest 7 anos). NÃO re-detectar módulo, NÃO re-validar triggers do payload.
+    Confiar no payload Pine e focar APENAS em:
+
+      1. Hard blocks globais (MCP_UNRELIABLE, RR_BELOW_2, ENTRY_LATE_CHASING,
+         SETUP_LOST_NO_CHASE, FALLING_KNIFE, NO_OBJECTIVE_TRIGGER,
+         ONLY_NOISE_NO_STRUCTURE). Se algum FAIL → NO_TRADE com motivo.
+
+      2. Contexto de entry: preço atual ainda perto de alert.entry_price?
+         entry_late_distance_r = (price_atual - alert.entry_price) / alert.r_points
+         (LONG: positivo significa atrasado; SHORT: negativo significa atrasado).
+         Se |entry_late_distance_r| >= 0.5 → SETUP_ATRASADO_AGUARDAR_RETESTE.
+
+      3. Reaproveitar do payload SEM recalcular nem questionar:
+         alert.entry_price, alert.stop_price, alert.target_price_4r, alert.r_points,
+         alert.priority, alert.strategy_module, alert.module_backtest_n, alert.direction.
+
+      4. External factors permanecem informativos (Fase 1 passive) — NÃO afetam decisão.
+
+      5. Classificação default por alert_type (se hard blocks PASS e entry NÃO atrasado):
+
+         SETUP_VALIDO direto (4H, regra estável, backtest sólido):
+           - module_trigger_xauusd_4h_breakout_continuation       (n=234, PF 1.64)
+           - module_trigger_ethusd_4h_breakout_regime             (regime-filtered)
+           - module_trigger_eurusd_4h_breakout_combo_strict_dxy   (combo DXY strict)
+           - module_trigger_us500_4h_failed_breakdown             (failed breakdown)
+
+         SETUP_CANDIDATO_FORTE (1H INTERIM, aguarda n>=30 forward):
+           - module_trigger_xauusd_1h_decisive_body60_htf         (n=127, PF 1.57)
+           - module_trigger_eurusd_1h_decisive_htf1d_dxy          (n=73,  PF 1.46)
+           - module_trigger_xagusd_1h_decisive_dxy_structural     (n=69,  PF 1.79)
+           - module_trigger_us500_1h_breakout_regime              (n=222, PF 1.22)
+           - module_trigger_ethusd_1h_pullback_ema50              (n=96)
+
+      6. ECOAR no stdout campos obrigatórios (extract_field do receiver lê de lá):
+         Strategy Module: <copiar de alert.strategy_module>
+         Module backtest n: <copiar de alert.module_backtest_n>
+         Direção: <copiar de alert.direction>
+         Entry: <copiar de alert.entry_price>
+         Stop: <copiar de alert.stop_price>
+         Target: <copiar de alert.target_price_4r>
+         R points: <copiar de alert.r_points>
+         Priority: <copiar de alert.priority>
+         Trigger: <copiar de alert.trigger_method>
+         Promotion trigger: MECHANICAL_PINE_VALIDATED
+         Operational signal: YES_MANUAL_REVIEW
+         D2R required: true
+         Entry late distance R: <valor calculado>
+
     Hierarquia de avaliação CURTO-CIRCUITADA (parar no primeiro FAIL):
+      0. PRE-VALIDADO MECANICAMENTE: se alert.alert_type começa com "module_trigger_"
+         → seguir bloco acima. Pular itens 1-5 desta hierarquia (módulo já validado
+         mecanicamente pelo Pine; só checar hard blocks + entry timing).
       1. hard_blocks: se FAIL → NO_TRADE. Preencher Hard block triggered. STOP.
       2. module_detection: se nenhum módulo formal aplica → régua clássica, máximo SETUP_CANDIDATO_FORTE.
          Se múltiplos aplicam → resolver via precedência (SWING>INTRADAY; direções conflitantes=NO_TRADE; A>B>C; maior module_backtest_n; menor TF).
