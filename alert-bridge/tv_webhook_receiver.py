@@ -30,6 +30,24 @@ ENV_FILE = BASE_DIR / ".env"
 CLAUDE_RECHECK = BASE_DIR / "claude_recheck.py"
 STRATEGY_RULES_PATH = Path.home() / "tradingview-mcp" / "my-strategy" / "strategy_rules.json"
 
+# === Guard A (Fase 0.3 — 2026-05-19) ===
+# Detecção de regressão pós-migração 2026-05-17 (drawings → indicators).
+# Tipos abaixo NÃO devem reaparecer no webhook. Se aparecerem: contar + Telegram 1×/dia.
+# MIRROR: lista replicada em claude_recheck.py (Guard B). Manter sincronizadas.
+DEPRECATED_ALERT_TYPES = frozenset({
+    "monitor_zone",
+    "monitor_dynamic_bb_zone",
+    "monitor_trendline_lta",
+    "monitor_trendline_ltb",
+    "monitor_invalidation",
+    "monitor_dynamic_line",
+    "monitor_breakout",
+    "setup_watch_recheck",
+    "manual_d6b_create_alert",
+    "manual_d6b_create_price_alert",
+})
+DEPRECATED_COUNTER_PATH = LOG_DIR / "deprecated_alert_types_counter.json"
+
 LOG_DIR.mkdir(parents=True, exist_ok=True)
 
 # Watchlist gate (added 2026-05-14) — hard enforce allowed_symbols from strategy_rules.json
@@ -687,6 +705,69 @@ def _save_cf_counter(data: dict):
         p.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
     except Exception:
         pass
+
+
+# === Guard A helpers (Fase 0.3 — 2026-05-19) ===
+def _load_deprecated_counter() -> dict:
+    p = DEPRECATED_COUNTER_PATH
+    if not p.exists():
+        return {}
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+
+def _save_deprecated_counter(data: dict) -> None:
+    try:
+        DEPRECATED_COUNTER_PATH.parent.mkdir(parents=True, exist_ok=True)
+        DEPRECATED_COUNTER_PATH.write_text(
+            json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+    except Exception:
+        pass  # fail-silent; hot path não pode quebrar
+
+
+def guard_a_record_deprecated(alert_type: str, symbol: str) -> None:
+    """Conta tipo deprecated e dispara Telegram 1×/dia/tipo. Idempotente, fail-safe."""
+    try:
+        today_key = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        data = _load_deprecated_counter()
+        # purga buckets de dias != hoje (janela rolling ~24h UTC)
+        sent_map = data.get("telegram_sent", {})
+        data = {k: v for k, v in data.items() if k == today_key or k == "telegram_sent"}
+        data["telegram_sent"] = {k: v for k, v in sent_map.items() if k == today_key}
+        bucket = data.setdefault(today_key, {})
+        bucket[alert_type] = int(bucket.get(alert_type, 0)) + 1
+        sent_today = set(data["telegram_sent"].get(today_key, []))
+        first_today = alert_type not in sent_today
+        _save_deprecated_counter(data)
+        print(json.dumps({
+            "guard_a_deprecated_alert_type": True,
+            "alert_type": alert_type,
+            "symbol": symbol,
+            "count_today": bucket[alert_type],
+            "telegram_notified": first_today,
+        }, ensure_ascii=False), flush=True)
+        if first_today:
+            msg = (
+                f"⚠️ <b>[GUARD A] alert_type deprecated reapareceu</b>\n\n"
+                f"<b>Tipo:</b> {escape(alert_type)}\n"
+                f"<b>Símbolo:</b> {escape(symbol or 'n/a')}\n"
+                f"<b>Count hoje (UTC):</b> {bucket[alert_type]}\n"
+                f"<b>Origem:</b> tv_webhook_receiver.py do_POST\n"
+                f"<b>Esperado:</b> nenhum desde migração 2026-05-17.\n"
+                f"<i>Próximos eventos do mesmo tipo hoje serão silenciados.</i>"
+            )
+            try:
+                send_telegram(msg)
+                data["telegram_sent"].setdefault(today_key, []).append(alert_type)
+                _save_deprecated_counter(data)
+            except Exception as _tg_err:
+                print(json.dumps({"guard_a_telegram_error": str(_tg_err)}, ensure_ascii=False), flush=True)
+    except Exception as exc:
+        # NUNCA propaga: hot path proteção
+        print(json.dumps({"guard_a_internal_error": str(exc)}, ensure_ascii=False), flush=True)
 
 
 def check_telegram_cap_for_candidato_forte(base_symbol: str) -> tuple[bool, int, int]:
@@ -1605,6 +1686,15 @@ class Handler(BaseHTTPRequestHandler):
 
         with LOG_FILE.open("a", encoding="utf-8") as f:
             f.write(json.dumps(event, ensure_ascii=False) + "\n")
+
+        # === Guard A (Fase 0.3 — 2026-05-19): contador de alert_types deprecated ===
+        # Fail-safe (helper engole exceções). Hot path indicator_signal não dispara
+        # porque "indicator_signal" não está em DEPRECATED_ALERT_TYPES.
+        if isinstance(parsed, dict):
+            _at = str(parsed.get("alert_type") or "").strip()
+            if _at in DEPRECATED_ALERT_TYPES:
+                _sym = str(parsed.get("symbol") or "")
+                guard_a_record_deprecated(_at, _sym)
 
         # === Watchlist gate (2026-05-14) ===
         # Reject symbols not in strategy_rules.json::watchlist.allowed_symbols.

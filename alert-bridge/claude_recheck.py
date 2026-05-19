@@ -68,6 +68,24 @@ EURUSD_30M_BREAKOUT_DOC = STRATEGY_DIR / "research/experimental/eurusd_30m_long_
 LOG_DIR = BASE_DIR / "alert-bridge" / "logs"
 LOG_DIR.mkdir(parents=True, exist_ok=True)
 
+# === Guard B (Fase 0.3 — 2026-05-19) ===
+# Short-circuit pra alert_types deprecated pós-migração 2026-05-17 (drawings → indicators).
+# Evita spawn caro de claude headless + crashes latentes em build_prompt (ex: NameError
+# em f-string com {SYMBOL}_{DIR} literal — fixado 2026-05-19).
+# MIRROR: lista replicada em tv_webhook_receiver.py (Guard A). Manter sincronizadas.
+DEPRECATED_ALERT_TYPES = frozenset({
+    "monitor_zone",
+    "monitor_dynamic_bb_zone",
+    "monitor_trendline_lta",
+    "monitor_trendline_ltb",
+    "monitor_invalidation",
+    "monitor_dynamic_line",
+    "monitor_breakout",
+    "setup_watch_recheck",
+    "manual_d6b_create_alert",
+    "manual_d6b_create_price_alert",
+})
+
 DEFAULT_ALERT = {
     "symbol": "PEPPERSTONE:XAUUSD",
     "timeframe": "1H",
@@ -109,6 +127,26 @@ def build_test_response(alert: dict) -> str:
     Análise operacional: não executada, pois este alerta é apenas teste/conectividade.
     Ação tomada: nenhuma.
     Próxima ação: usar alert_type operacional para reavaliações reais.
+    """).strip()
+
+
+def is_deprecated_alert(alert: dict) -> bool:
+    """Detecta alert_type da era drawings (pré-migração 2026-05-17)."""
+    at = str(alert.get("alert_type", "")).strip()
+    return at in DEPRECATED_ALERT_TYPES
+
+
+def build_deprecated_short_circuit_response(alert: dict) -> str:
+    """Resposta inerte pra deprecated. Texto não casa critérios de should_send_*_to_telegram."""
+    at = alert.get("alert_type", "")
+    sym = alert.get("symbol", "")
+    return textwrap.dedent(f"""
+    DEPRECATED_SHORT_CIRCUIT
+    alert_type: {at}
+    symbol: {sym}
+    Motivo: alert_type da era drawings (pré-migração 2026-05-17). Não há análise operacional.
+    Ação tomada: nenhuma. Sinal já contabilizado pelo Guard A no receiver.
+    Ação esperada: remover origem (alerta TV ainda configurado ou script legado).
     """).strip()
 
 
@@ -736,7 +774,7 @@ def build_prompt(alert: dict) -> str:
         - BUBBLE_CLUSTER_GATE_LTF       — TF 15M/30M sem cluster → max OBSERVACAO
                                           (TF 1H+ liberado em 2026-05-15)
         - ASSET_DIRECTION_BLOCKED       — ex: XPT SHORT bloqueado, USOUSD SHORT bloqueado.
-                                          Use formato ASSET_DIRECTION_BLOCKED:{SYMBOL}_{DIR}.
+                                          Use formato ASSET_DIRECTION_BLOCKED:{{SYMBOL}}_{{DIR}}.
                                           Esses CAPS na classificação (max OBSERVACAO),
                                           NÃO bloqueiam fluxo. Reportar em Module checklist
                                           notes, não em Hard block triggered.
@@ -1488,6 +1526,21 @@ def main():
             "stdout": output,
             "stderr": "",
             "alert": alert
+        }
+        log_file.write_text(json.dumps(data, ensure_ascii=False, indent=2))
+        print(output)
+        return
+
+    if is_deprecated_alert(alert):
+        output = build_deprecated_short_circuit_response(alert)
+        data = {
+            "started_at": started,
+            "ok": True,
+            "mode": "deprecated_alert_short_circuit",
+            "alert_type": alert.get("alert_type", ""),
+            "stdout": output,
+            "stderr": "",
+            "alert": alert,
         }
         log_file.write_text(json.dumps(data, ensure_ascii=False, indent=2))
         print(output)
