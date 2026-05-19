@@ -57,6 +57,82 @@ def parse_dt(row):
         return None
 
 
+# === P0.2 (2026-05-19): External factors snapshot extraction ===
+# Extracts external_* fields from event's claude_stdout (where Claude echoed
+# the "Macro context" block) and attaches snapshot to R outcome record so
+# D2R analysis can correlate macro state with outcome without re-fetching.
+# Source: setup_research_log.jsonl event.claude_stdout (free text).
+# Fallback: returns {"extracted_from": "absent"} if no macro block present.
+
+_EXT_PATTERNS = {
+    "bias": re.compile(r"external_bias:\s*(\w+)"),
+    "risk_level": re.compile(r"external_risk_level:\s*(\w+)"),
+    "trade_validation": re.compile(r"external_trade_validation:\s*(\w+)"),
+    "long_validation": re.compile(r"external_long_validation:\s*(\w+)"),
+    "short_validation": re.compile(r"external_short_validation:\s*(\w+)"),
+    "primary_driver": re.compile(r"external_primary_driver:\s*([\w.]+)"),
+    "phase": re.compile(r"external_phase:\s*([\w._]+)"),
+    "schema_version": re.compile(r"external_schema_version:\s*([\w._]+)"),
+    "fetch_ok": re.compile(r"external_fetch_ok:\s*(True|False|true|false)"),
+    "stale": re.compile(r"external_stale:\s*(True|False|true|false)"),
+    "calendar_active": re.compile(r"external_calendar_active:\s*(True|False|true|false)"),
+    "calendar_risk_level": re.compile(r"external_calendar_risk_level:\s*(\w+)"),
+    "calendar_score": re.compile(r"external_calendar_score:\s*([\d.\-]+|null|None)"),
+    "vix": re.compile(r"external_vix:\s*([\d.\-]+|null|None)"),
+    "us10y_nominal": re.compile(r"external_us10y_nominal:\s*([\d.\-]+|null|None)"),
+    "us10y_real": re.compile(r"external_us10y_real:\s*([\d.\-]+|null|None)"),
+    "trade_weighted_usd": re.compile(r"external_trade_weighted_usd:\s*([\d.\-]+|null|None)"),
+    "confidence": re.compile(r"external_confidence:\s*([\d.\-]+|null|None)"),
+    "age_minutes": re.compile(r"external_age_minutes:\s*([\d.\-]+|null|None)"),
+    "context": re.compile(r"external_context:\s*([\w|_]+)"),
+}
+
+_EXT_LIST_PATTERNS = {
+    "risk_flags": re.compile(r'external_risk_flags:\s*\[([^\]]*)\]'),
+    "support_flags": re.compile(r'external_support_flags:\s*\[([^\]]*)\]'),
+}
+
+
+def extract_external_snapshot(event):
+    """Extract external_factors_v1.2 snapshot from event's claude_stdout text.
+
+    Returns dict with extracted fields + 'extracted_from' metadata.
+    If no macro block present: returns minimal stub with extracted_from='absent'.
+    """
+    stdout = event.get("claude_stdout") or ""
+    if "external_bias" not in stdout and "Macro context" not in stdout:
+        return {"extracted_from": "absent", "schema": "external_factors_v1.2"}
+
+    snap = {"extracted_from": "stdout_regex", "schema": "external_factors_v1.2"}
+    for name, pat in _EXT_PATTERNS.items():
+        m = pat.search(stdout)
+        if not m:
+            continue
+        val = m.group(1).strip()
+        if val in ("null", "None"):
+            val = None
+        elif val.lower() in ("true", "false"):
+            val = (val.lower() == "true")
+        else:
+            try:
+                val = float(val)
+            except ValueError:
+                pass
+        snap[name] = val
+
+    for fname, pat in _EXT_LIST_PATTERNS.items():
+        m = pat.search(stdout)
+        if not m:
+            continue
+        content = m.group(1).strip()
+        flags = re.findall(r'"([^"]+)"', content)
+        if not flags and content:
+            flags = [x.strip().strip('"').strip("'") for x in content.split(",") if x.strip()]
+        snap[fname] = flags
+
+    return snap
+
+
 def already_evaluated_ids():
     rows = load_jsonl(R_OUTCOME_LOG)
     return {r.get("event_id") for r in rows if r.get("event_id")}
@@ -299,6 +375,17 @@ def main():
 
     done = already_evaluated_ids()
     fresh = [r for r in rows if r.get("event_id") not in done]
+
+    # P0.2 (2026-05-19): attach external_factors snapshot to each fresh outcome
+    # so D2R analysis can correlate macro context with R outcome.
+    # Source: claude_stdout of the originating event in setup_research_log.
+    event_by_id = {e.get("event_id"): e for e in events if e.get("event_id")}
+    for r in fresh:
+        ev = event_by_id.get(r.get("event_id"))
+        if ev is not None:
+            r["external_factors_snapshot"] = extract_external_snapshot(ev)
+        else:
+            r["external_factors_snapshot"] = {"extracted_from": "no_source_event", "schema": "external_factors_v1.2"}
 
     if fresh:
         append_jsonl(R_OUTCOME_LOG, fresh)

@@ -1642,7 +1642,10 @@ def run_claude_recheck_background(event: dict):
             "returncode": result.returncode,
             "stdout": stdout,
             "stderr": stderr,
-            "alert_payload": payload
+            # P0.1 (2026-05-19): persist enriched payload (with external_factors)
+            # instead of raw payload, so downstream D2R/analysis can correlate
+            # external snapshot with outcome without re-fetching iMac state.
+            "alert_payload": payload_enriched
         }
 
         recheck_log = LOG_DIR / "claude_recheck_events.jsonl"
@@ -1701,7 +1704,8 @@ def run_claude_recheck_background(event: dict):
                 print(json.dumps({
                     "claude_recheck_suppressed": True,
                     "reason": telegram_reason,
-                    "alert_payload": payload
+                    # P0.1 consistency: enriched payload in suppressed log too
+                    "alert_payload": payload_enriched
                 }, ensure_ascii=False), flush=True)
         else:
             telegram_reason = "claude_recheck_failed"
