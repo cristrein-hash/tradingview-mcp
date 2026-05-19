@@ -44,7 +44,7 @@ STRATEGY_DIR = BASE_DIR / "my-strategy"
 RULES = STRATEGY_DIR / "strategy_rules.json"
 OP_PROMPT = STRATEGY_DIR / "operational_prompt.md"
 QUASE_VALIDO_DOC = STRATEGY_DIR / "research/experimental/intraday_quase_valido_experimental.md"
-DYNAMIC_BB_DOC = STRATEGY_DIR / "research/experimental/dynamic_intraday_bb_zones_D6.md"
+DYNAMIC_BB_DOC = STRATEGY_DIR / "research/experimental/parked/dynamic_intraday_bb_zones_D6.md"  # PARKED 2026-05-19 (Fase 0.4 sub-A)
 CANDIDATO_FORTE_DOC = STRATEGY_DIR / "research/experimental/setup_candidato_forte_policy.md"
 PROMOTION_POLICY_DOC = STRATEGY_DIR / "research/experimental/setup_promotion_policy_experimental.md"
 MODULE_AWARE_RULES_DOC = STRATEGY_DIR / "research/experimental/module_aware_global_rules_v3.md"
@@ -283,7 +283,6 @@ def build_prompt(alert: dict) -> str:
     {OP_PROMPT}
     {RULES}
     {QUASE_VALIDO_DOC}
-    {DYNAMIC_BB_DOC}
     {CANDIDATO_FORTE_DOC}
     {PROMOTION_POLICY_DOC}
     {MODULE_AWARE_RULES_DOC}
@@ -465,16 +464,13 @@ def build_prompt(alert: dict) -> str:
 
     - Pode criar alertas de monitoramento se permitido pelas regras existentes.
     - Pode desenhar marcações próprias AUTO_CLAUDE_ se permitido pelas regras.
-    - D6-A experimental: pode desenhar zonas dinâmicas AUTO_CLAUDE_DYNAMIC_ em 15M/30M conforme dynamic_intraday_bb_zones_D6.md.
-    - D6-A experimental: NÃO crie alertas automáticos para zonas AUTO_CLAUDE_DYNAMIC_ ainda; apenas sugira "candidata a alerta" quando fizer sentido.
-    - D6-A experimental: não delete desenhos, não delete alertas e não altere desenhos manuais do usuário.
     - Seja curto e operacional, pois a resposta será enviada ao Telegram.
 
     Regra experimental principal:
     Avalie se o alerta se enquadra como SETUP_CANDIDATO_FORTE conforme setup_candidato_forte_policy.md.
 
     Use SETUP_CANDIDATO_FORTE quando houver oportunidade assimétrica forte para revisão humana, com:
-    - zona ou linha operacional relevante AUTO_CLAUDE_ ou AUTO_CLAUDE_DYNAMIC_;
+    - zona ou linha operacional relevante AUTO_CLAUDE_;
     - preço tocando, entrando, reagindo ou muito próximo da zona/linha;
     - direção operacional clara;
     - stop técnico claro;
@@ -1452,38 +1448,6 @@ def build_prompt(alert: dict) -> str:
     - NÃO usar como Strategy Module. NÃO emitir SETUP_VALIDO_INTRADAY nem SETUP_CANDIDATO_FORTE sob este nome.
     - Substituído operacionalmente por EURUSD_4H_LONG_BREAKOUT_COMBO_STRICT_DXY (swing) e EURUSD_1H_LONG_DECISIVE_HTF1D_DXY (intraday).
     - Se o alerta originalmente foi marcado com este módulo: reclassificar para um dos 2 novos módulos ativos se os critérios aplicam, ou para SETUP_EM_OBSERVACAO/NO_TRADE caso contrário.
-
-    Regra experimental D6-A — zonas dinâmicas BB intraday:
-    - Avalie se há nova região BB/BigBeluga 15M, 30M ou 1H próxima do price action que mereça marcação dinâmica.
-    - Em scans D6-A, verifique explicitamente 1H, 30M e 15M; não avalie apenas o timeframe do alerta.
-    - Modo diário D6-A: quando 30M e 15M apontarem para a mesma região, priorize desenhar a zona 30M como zona principal de monitoramento.
-    - Use 15M como refinamento adicional somente se acrescentar precisão clara, reduzir stop, marcar borda ideal, capturar reentry pós-sweep ou se o usuário pedir foco explícito em precisão.
-    - Use 1H para contexto intraday maior, zonas amplas e níveis de decisão próximos do preço.
-    - Sobreposição com zonas 1H/4H/D é permitida quando a zona 15M/30M acrescenta precisão operacional.
-    - Além de zonas, pode desenhar linhas dinâmicas AUTO_CLAUDE_DYNAMIC_ quando houver função operacional clara: suporte, resistência, invalidação, breakout, breakdown, LTA/LTB local, reteste ou sweep/reentry.
-    - Para linhas, use nome AUTO_CLAUDE_DYNAMIC_<ATIVO>_<TF>_<TIPO>_LINE_<YYYYMMDD_HHMM>.
-    - Não redesenhe trendlines HTF principais já ajustadas manualmente pelo usuário; apenas acrescente linhas locais/dinâmicas necessárias.
-    - Prefira poucas linhas boas a muitas linhas fracas.
-    - D6-A Full Rebuild: se o usuário informar que removeu desenhos/alertas antigos ou pediu redesenho completo do ativo, reconstrua o mapa operacional em 4H, 1H, 30M e 15M.
-    - Em Full Rebuild, não limite o desenho apenas a zonas coladas no preço atual; desenhe zonas relevantes acima e abaixo que possam ser úteis nas próximas sessões.
-    - Em Full Rebuild, alvo normal é 6 a 10 objetos úteis, com máximo recomendado de 12 por ativo.
-    - Em Full Rebuild, 4H é mapa estrutural, 1H é contexto intraday amplo, 30M são zonas principais de alerta, 15M é refinamento/reentry/invalidação curta.
-    - Zona BB/BigBeluga visível apenas no indicador NÃO é duplicação; ela pode ser desenhada para virar objeto operacional monitorável.
-    - Premissa operacional: o MCP não lista/deleta desenhos de forma confiável; não dependa de draw_list para decidir.
-    - Se houver zona BB 15M/30M clara, próxima do preço e com utilidade operacional, desenhe AUTO_CLAUDE_DYNAMIC_ mesmo sem conseguir listar desenhos existentes.
-    - Duplicação visual é aceitável no experimento; o usuário fará limpeza manual de desenhos/alertas obsoletos.
-    - Nunca delete desenhos ou alertas.
-    - Se suspeitar duplicação, mencione "possível duplicação visual — limpeza manual", mas não deixe de desenhar uma zona útil por esse motivo.
-    - Se desenhar, use nome AUTO_CLAUDE_DYNAMIC_<ATIVO>_<TF>_<DEMAND/SUPPLY>_BB_<YYYYMMDD_HHMM>.
-    - Se a zona estiver dentro de zona HTF, pode usar sufixo _NESTED_.
-    - Nesta fase D6-A, não crie alerta automático para a zona dinâmica.
-    - Exceção D6-B: se alert_type="manual_d6b_create_alert" e houver target_drawing_name AUTO_CLAUDE_DYNAMIC_, pode tentar criar exatamente 1 alerta no desenho indicado.
-    - Exceção D6-B2: se alert_type="manual_d6b_create_price_alert", target_price estiver presente e target_drawing_name começar com AUTO_CLAUDE_DYNAMIC_, pode tentar criar exatamente 1 alerta por preço/borda da zona.
-    - D6-B/D6-B2 são apenas testes técnicos de alerta dinâmico; não são sinais de entrada e não autorizam trade.
-    - Em D6-B/D6-B2, não crie novos desenhos, não delete desenhos, não delete alertas e não crie mais de 1 alerta.
-    - Em D6-B/D6-B2, use alert_type futuro "monitor_dynamic_bb_zone" no payload do alerta.
-    - Se a zona for boa candidata a alerta futuro, mencione: "Candidata a alerta D6-B: sim".
-    - Se não houver nova zona dinâmica clara, não force desenho.
 
     Tarefa:
     1. Use o TradingView MCP para fazer health check.
