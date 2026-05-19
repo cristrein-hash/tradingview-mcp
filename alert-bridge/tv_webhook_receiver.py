@@ -876,6 +876,92 @@ def build_short_claude_recheck_message(stdout: str) -> str:
             "Canal TradingView → webhook → Claude → Telegram funcionando."
         )
 
+    # === MECHANICAL_PRE_VALIDATED branch (Caminho A — Fase 1, 2026-05-19) ===
+    # Disparado quando Claude eco "Promotion trigger: MECHANICAL_PINE_VALIDATED"
+    # no stdout (instruido no prompt operacional build_prompt). Significa que o
+    # setup veio de Pine mecanico com backtest 7y e os triggers ja foram validados
+    # in-chart; mensagem dedicada com entry/stop/target/R do payload.
+    if "MECHANICAL_PINE_VALIDATED" in stdout:
+        ativo = extract_field(stdout, "Ativo") or "não identificado"
+        timeframe = extract_field(stdout, "Timeframe") or ""
+        classificacao = extract_field(stdout, "Classificação") or "não informado"
+        modulo = extract_field(stdout, "Strategy Module") or ""
+        backtest_n = extract_field(stdout, "Module backtest n") or ""
+        direcao = extract_field(stdout, "Direção") or ""
+        entry = extract_field(stdout, "Entry") or ""
+        stop = extract_field(stdout, "Stop") or ""
+        target = extract_field(stdout, "Target") or ""
+        r_points = extract_field(stdout, "R points") or ""
+        priority = extract_field(stdout, "Priority") or ""
+        trigger_method = extract_field(stdout, "Trigger") or ""
+        entry_late = extract_field(stdout, "Entry late distance R") or ""
+        bloqueio = (
+            extract_field(stdout, "Bloqueio principal")
+            or extract_field(stdout, "Hard block triggered")
+            or ""
+        )
+        proxima = extract_field(stdout, "Próxima ação") or ""
+
+        ativo_short = ativo.replace("PEPPERSTONE:", "").replace("VANTAGE:", "")
+        tf_short = timeframe.split()[0] if timeframe else ""
+
+        upper_cls = classificacao.upper()
+        if "SETUP_VALIDO" in upper_cls and "INTRADAY" not in upper_cls:
+            title_emoji = "🎯"
+            label = "SETUP_VALIDO MECÂNICO"
+        elif "SETUP_VALIDO_INTRADAY" in upper_cls:
+            title_emoji = "🎯"
+            label = "SETUP_VALIDO_INTRADAY MECÂNICO"
+        elif "SETUP_CANDIDATO_FORTE" in upper_cls:
+            title_emoji = "🟠"
+            label = "SETUP_CANDIDATO_FORTE MECÂNICO (1H INTERIM)"
+        elif "SETUP_ATRASADO" in upper_cls:
+            title_emoji = "⏰"
+            label = "SETUP_ATRASADO — Pine válido, entry tarde"
+        elif "NO_TRADE" in upper_cls:
+            title_emoji = "🚫"
+            label = "NO_TRADE — Pine válido mas hard block FAIL"
+        else:
+            title_emoji = "🎯"
+            label = f"MECÂNICO — {classificacao}"
+
+        lines = [
+            f"{title_emoji} <b>[CLAUDE]</b> {escape(ativo_short)} {escape(tf_short)} — {escape(label)}",
+            "",
+        ]
+        if modulo:
+            lines.append(f"<b>Módulo:</b> {escape(compact_text(modulo, 100))}")
+        if backtest_n:
+            lines.append(f"<b>Backtest:</b> n={escape(backtest_n)}")
+        if direcao:
+            lines.append(f"<b>Direção:</b> {escape(direcao)}")
+        if priority:
+            lines.append(f"<b>Priority:</b> {escape(priority)}")
+
+        params = []
+        if entry:    params.append(f"<b>Entry:</b> {escape(entry)}")
+        if stop:     params.append(f"<b>Stop:</b> {escape(stop)}")
+        if target:   params.append(f"<b>Target:</b> {escape(target)}")
+        if r_points: params.append(f"<b>R:</b> {escape(r_points)}")
+        if params:
+            lines.append("")
+            lines.extend(params)
+
+        context = []
+        if trigger_method: context.append(f"<b>Trigger:</b> {escape(compact_text(trigger_method, 80))}")
+        if entry_late:     context.append(f"<b>Entry late R:</b> {escape(entry_late)}")
+        if context:
+            lines.append("")
+            lines.extend(context)
+
+        if bloqueio:
+            lines.extend(["", f"<b>Bloqueio:</b> {escape(compact_text(bloqueio, 190))}"])
+        if proxima:
+            lines.extend(["", f"<b>Próxima ação:</b>\n{escape(compact_text(proxima, 200))}"])
+
+        lines.extend(["", "<i>REVISÃO HUMANA — execução manual</i>"])
+        return "\n".join(lines)
+
     ativo = extract_field(stdout, "Ativo") or "não identificado"
     timeframe = extract_field(stdout, "Timeframe") or "não identificado"
     alert_type = extract_field(stdout, "Alert type") or "não informado"
