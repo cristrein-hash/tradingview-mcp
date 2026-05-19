@@ -150,6 +150,79 @@ def build_deprecated_short_circuit_response(alert: dict) -> str:
     """).strip()
 
 
+# ============================================================================
+# ZONE_TOUCH_SMC_INTERIM_PRESERVED — Fase 0.4 sub-B (2026-05-19)
+# ----------------------------------------------------------------------------
+# Texto original do módulo ATIVO INTERIM ZONE_TOUCH_SMC_CONVERGENT_LONG_INTERIM
+# (criado 2026-05-15, desativado 2026-05-19). Preservado fora da f-string do
+# prompt operacional para reaproveitamento futuro pelo Caminho C (zone-touch
+# baseado em indicators, não drawings). NÃO é executado nem lido pelo Claude.
+# ----------------------------------------------------------------------------
+#
+# Módulo ATIVO INTERIM — ZONE_TOUCH_SMC_CONVERGENT_LONG_INTERIM (criado 2026-05-15):
+# - Razão de existir: auditoria 2026-05-15 revelou ZERO SETUP_VALIDO emitidos
+#   historicamente. Causa: alertas TV são zone-touch (50/50), módulos formais
+#   exigem trigger mecânico (breakout/failed_breakdown/pullback). Interseção
+#   vazia. Este módulo cria CAMINHO B (zone-touch convergente) pra SETUP_VALIDO.
+# - Sample: n=0 backtest formal. Marcado INTERIM com revalidação.
+# - Direção: APENAS LONG nesta versão. SHORT requer adaptar Order Block bearish
+#   e ainda não foi testado.
+# - Aplicável quando alert_type in {monitor_dynamic_bb_zone, monitor_zone,
+#   monitor_trendline_lta, monitor_dynamic_line, setup_watch_recheck} E
+#   direção identificada = LONG E preço dentro/na borda da zona.
+#
+# Trigger (todos obrigatórios):
+#   T1. alert_type compatível (lista acima).
+#   T2. Direção LONG identificada com clareza.
+#   T3. Preço dentro ou na borda imediata da zona.
+#
+# Filtros obrigatórios (TODOS):
+#   F1. HTF bias alinhado: HTF 1D bullish E HTF 12H bullish (ambos: close > EMA50).
+#   F2. R:R estimado >= 2:1 com stop estrutural definido (não apenas ATR).
+#   F3. Hard blocks globais PASS (R:R, MCP, entry late, falling knife, etc.).
+#   F4. Entry NÃO atrasado: entry_late_distance_r < 0.5.
+#   F5. Zona AUTO_CLAUDE_ ou AUTO_CLAUDE_DYNAMIC_ válida no chart.
+#
+# Confluências fortes (mínimo 4 obrigatório — promoção a SETUP_VALIDO):
+#   C1. RSI extremo (sobrevenda <=30) OU recém saindo de sobrevenda com reação.
+#   C2. Divergência regular bullish (RSI vs preço).
+#   C3. CHoCH ou BOS bullish estrutural confirmado.
+#   C4. Sweep + reentry da liquidez (preço varreu low recente e recuperou).
+#   C5. Sinal NAS100 LONG ou NAS BOTTOM dentro/borda da zona.
+#   C6. Rejection close (candle com pavio inferior >=50% e close bullish).
+#   C7. Cluster Market Order Bubbles (NÃO obrigatório em TF 1H+ por regra de 2026-05-15).
+#   C8. Zona nested em HTF (BB 1H dentro de P3 4H, etc.).
+#   C9. V3d Order Block Leonardo (XAU/EUR/BTC 4H apenas, quando ativo).
+#
+# Stop técnico: abaixo da invalidação estrutural da zona (último fundo válido).
+# Target mínimo: 2R. Default R:R alvo 2.5R.
+#
+# Classificação:
+#   - 4+ confluências fortes + filtros F1-F5 PASS  -> SETUP_VALIDO (Direção: LONG)
+#   - 3 confluências + filtros PASS                -> SETUP_CANDIDATO_FORTE
+#   - <3 confluências                              -> SETUP_EM_OBSERVACAO
+#   - HTF não alinhado OU R:R<2                    -> SETUP_EM_OBSERVACAO ou NO_TRADE
+#
+# Output esperado quando promove a SETUP_VALIDO:
+#   Strategy Module: ZONE_TOUCH_SMC_CONVERGENT_LONG_INTERIM
+#   Module backtest n: 0 (INTERIM)
+#   Classificação: SETUP_VALIDO
+#   Direção: LONG
+#   Promotion trigger: DENSE_STRUCTURAL_CONFLUENCE
+#   Module checklist notes: listar as 4+ confluências em ordem
+#
+# CRITÉRIO INTERIM (revalidação):
+#   - n >= 30 trades shadow live com este módulo aplicado
+#   - PF >= 1.4 e win >= 45%
+#   - no_top5 >= 0 (robustez sem fat-tail)
+#   Se atingir critérios: módulo é promovido a estável (sem flag INTERIM).
+#   Se NÃO atingir em n=30: reverter módulo (volta a régua clássica).
+#
+# Risco de oversup: este módulo é abrangente. Em casos limítrofes (3-4 confluências
+# e contexto não ideal), preferir SETUP_CANDIDATO_FORTE em vez de SETUP_VALIDO.
+# ============================================================================
+
+
 def build_prompt(alert: dict) -> str:
     alert_type = alert.get("alert_type", "setup_recheck")
     # === External Market Factors block (Fase 1 Passive Logging — 2026-05-12) ===
@@ -739,10 +812,7 @@ def build_prompt(alert: dict) -> str:
 
     Hierarquia de avaliação CURTO-CIRCUITADA (parar no primeiro FAIL):
       1. hard_blocks: se FAIL → NO_TRADE. Preencher Hard block triggered. STOP.
-      2. module_detection: se nenhum módulo formal aplica:
-           a. Verificar se ZONE_TOUCH_SMC_CONVERGENT_LONG_INTERIM aplica (ver módulo abaixo).
-              Se SIM → seguir checklist desse módulo.
-           b. Se também NÃO aplica → régua clássica, máximo SETUP_CANDIDATO_FORTE.
+      2. module_detection: se nenhum módulo formal aplica → régua clássica, máximo SETUP_CANDIDATO_FORTE.
          Se múltiplos aplicam → resolver via precedência (SWING>INTRADAY; direções conflitantes=NO_TRADE; A>B>C; maior module_backtest_n; menor TF).
       3. module_checklist: se FAIL → SETUP_CANDIDATO_FORTE máximo. Preencher Module checklist failed on.
       4. promotion_trigger: se NONE → SETUP_CANDIDATO_FORTE máximo.
@@ -862,7 +932,7 @@ def build_prompt(alert: dict) -> str:
       A ÚNICA razão do downgrade; senão deixar NONE e mencionar em Module
       checklist notes):
         BUBBLE_CLUSTER_GATE_LTF       — apenas em TF 15M/30M
-        ASSET_DIRECTION_BLOCKED:{SYMBOL}_{LONG|SHORT}
+        ASSET_DIRECTION_BLOCKED:{{SYMBOL}}_{{LONG|SHORT}}
 
       Reserva:
         OTHER                         — só se NENHUM dos acima bate; detalhar em notes
@@ -880,67 +950,15 @@ def build_prompt(alert: dict) -> str:
     - Não coloque estes campos apenas em texto narrativo; escreva cada um em linha própria.
 
 
-    Módulo ATIVO INTERIM — ZONE_TOUCH_SMC_CONVERGENT_LONG_INTERIM (criado 2026-05-15):
-    - Razão de existir: auditoria 2026-05-15 revelou ZERO SETUP_VALIDO emitidos
-      historicamente. Causa: alertas TV são zone-touch (50/50), módulos formais
-      exigem trigger mecânico (breakout/failed_breakdown/pullback). Interseção
-      vazia. Este módulo cria CAMINHO B (zone-touch convergente) pra SETUP_VALIDO.
-    - Sample: n=0 backtest formal. Marcado INTERIM com revalidação.
-    - Direção: APENAS LONG nesta versão. SHORT requer adaptar Order Block bearish
-      e ainda não foi testado.
-    - Aplicável quando alert_type ∈ {monitor_dynamic_bb_zone, monitor_zone,
-      monitor_trendline_lta, monitor_dynamic_line, setup_watch_recheck} E
-      direção identificada = LONG E preço dentro/na borda da zona.
-
-    Trigger (todos obrigatórios):
-      T1. alert_type compatível (lista acima).
-      T2. Direção LONG identificada com clareza.
-      T3. Preço dentro ou na borda imediata da zona.
-
-    Filtros obrigatórios (TODOS):
-      F1. HTF bias alinhado: HTF 1D bullish E HTF 12H bullish (ambos: close > EMA50).
-      F2. R:R estimado >= 2:1 com stop estrutural definido (não apenas ATR).
-      F3. Hard blocks globais PASS (R:R, MCP, entry late, falling knife, etc.).
-      F4. Entry NÃO atrasado: entry_late_distance_r < 0.5.
-      F5. Zona AUTO_CLAUDE_ ou AUTO_CLAUDE_DYNAMIC_ válida no chart.
-
-    Confluências fortes (mínimo 4 obrigatório — promoção a SETUP_VALIDO):
-      C1. RSI extremo (sobrevenda <=30) OU recém saindo de sobrevenda com reação.
-      C2. Divergência regular bullish (RSI vs preço).
-      C3. CHoCH ou BOS bullish estrutural confirmado.
-      C4. Sweep + reentry da liquidez (preço varreu low recente e recuperou).
-      C5. Sinal NAS100 LONG ou NAS BOTTOM dentro/borda da zona.
-      C6. Rejection close (candle com pavio inferior >=50% e close bullish).
-      C7. Cluster Market Order Bubbles (NÃO obrigatório em TF 1H+ por regra de 2026-05-15).
-      C8. Zona nested em HTF (BB 1H dentro de P3 4H, etc.).
-      C9. V3d Order Block Leonardo (XAU/EUR/BTC 4H apenas, quando ativo).
-
-    Stop técnico: abaixo da invalidação estrutural da zona (último fundo válido).
-    Target mínimo: 2R. Default R:R alvo 2.5R.
-
-    Classificação:
-      - 4+ confluências fortes + filtros F1-F5 PASS → SETUP_VALIDO (Direção: LONG)
-      - 3 confluências + filtros PASS → SETUP_CANDIDATO_FORTE
-      - <3 confluências → SETUP_EM_OBSERVACAO
-      - HTF não alinhado OU R:R<2 → SETUP_EM_OBSERVACAO ou NO_TRADE
-
-    Output esperado quando promove a SETUP_VALIDO:
-      Strategy Module: ZONE_TOUCH_SMC_CONVERGENT_LONG_INTERIM
-      Module backtest n: 0 (INTERIM)
-      Classificação: SETUP_VALIDO
-      Direção: LONG
-      Promotion trigger: DENSE_STRUCTURAL_CONFLUENCE
-      Module checklist notes: listar as 4+ confluências em ordem
-
-    CRITÉRIO INTERIM (revalidação):
-      - n >= 30 trades shadow live com este módulo aplicado
-      - PF >= 1.4 e win >= 45%
-      - no_top5 >= 0 (robustez sem fat-tail)
-      Se atingir critérios: módulo é promovido a estável (sem flag INTERIM).
-      Se NÃO atingir em n=30: reverter módulo (volta a régua clássica).
-
-    Risco de oversup: este módulo é abrangente. Em casos limítrofes (3-4 confluências
-    e contexto não ideal), preferir SETUP_CANDIDATO_FORTE em vez de SETUP_VALIDO.
+    Módulo DEACTIVATED — ZONE_TOUCH_SMC_CONVERGENT_LONG_INTERIM (criado 2026-05-15, desativado 2026-05-19):
+    - Dependia de alert_types da era drawings (monitor_dynamic_bb_zone, monitor_zone,
+      monitor_trendline_lta, monitor_dynamic_line, setup_watch_recheck), todos
+      curto-circuitados pelo Guard A/B (Fase 0.3, commit 5555e8f).
+    - Sample live: 0 trades — input nunca chegou ao prompt pós-migração 2026-05-17.
+    - NÃO emitir SETUP_VALIDO sob este nome.
+    - Estrutura original preservada em comentário Python fora desta f-string
+      (procurar ZONE_TOUCH_SMC_INTERIM_PRESERVED no claude_recheck.py) para
+      reaproveitamento futuro (Caminho C com input indicators, não drawings).
 
     ═══════════════════════════════════════════════════════════════════════════
 
