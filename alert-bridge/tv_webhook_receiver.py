@@ -869,6 +869,23 @@ def compact_text(value: str, limit: int) -> str:
     return value[: max(0, limit - 1)].rstrip() + "…"
 
 
+# Pine emite timeframe em minutos ("240"="4H", "60"="1H", etc.) ou letras (D/W/M).
+# Cosmético: converter pra label humana no Telegram fmt mecânico.
+_TIMEFRAME_LABELS = {
+    "1": "1m", "3": "3m", "5": "5m", "15": "15m", "30": "30m",
+    "45": "45m", "60": "1H", "120": "2H", "180": "3H", "240": "4H",
+    "360": "6H", "480": "8H", "720": "12H",
+    "D": "1D", "1D": "1D", "W": "1W", "1W": "1W", "M": "1M", "1M": "1M",
+}
+
+
+def humanize_timeframe(tf: str) -> str:
+    if not tf:
+        return ""
+    tf_clean = tf.strip().upper()
+    return _TIMEFRAME_LABELS.get(tf_clean, tf_clean)
+
+
 def build_short_claude_recheck_message(stdout: str) -> str:
     if stdout.strip().startswith("TESTE RECEBIDO"):
         return (
@@ -903,7 +920,8 @@ def build_short_claude_recheck_message(stdout: str) -> str:
         proxima = extract_field(stdout, "Próxima ação") or ""
 
         ativo_short = ativo.replace("PEPPERSTONE:", "").replace("VANTAGE:", "")
-        tf_short = timeframe.split()[0] if timeframe else ""
+        tf_raw = timeframe.split()[0] if timeframe else ""
+        tf_short = humanize_timeframe(tf_raw)
 
         upper_cls = classificacao.upper()
         if "SETUP_VALIDO" in upper_cls and "INTRADAY" not in upper_cls:
