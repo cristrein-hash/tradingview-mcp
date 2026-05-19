@@ -804,9 +804,24 @@ def build_prompt(alert: dict) -> str:
     backtest 7 anos). NÃO re-detectar módulo, NÃO re-validar triggers do payload.
     Confiar no payload Pine e focar APENAS em:
 
-      1. Hard blocks globais (MCP_UNRELIABLE, RR_BELOW_2, ENTRY_LATE_CHASING,
-         SETUP_LOST_NO_CHASE, FALLING_KNIFE, NO_OBJECTIVE_TRIGGER,
-         ONLY_NOISE_NO_STRUCTURE). Se algum FAIL → NO_TRADE com motivo.
+      1. Hard blocks APLICÁVEIS aos pines mecânicos (subset reduzido — Pine
+         já garante o resto):
+           - MCP_UNRELIABLE (infra: leitura MCP do TradingView falhou)
+           - ENTRY_LATE_CHASING (entry_late_distance_r >= 0.5)
+           - SETUP_LOST_NO_CHASE (preço passou demais; |entry_late_distance_r| alto)
+           - RR_BELOW_2 (apenas se Claude recalcular stop por estrutura e R:R cair < 2)
+         Se algum APLICÁVEL FAIL → NO_TRADE com motivo.
+
+         NÃO aplicar aos pines mecânicos (Pine garante por design, ou subjetivo
+         conflitante com a tese mecânica do módulo):
+           - DIRECTION_UNDEFINED (Pine envia direction explícito no payload)
+           - NO_OBJECTIVE_TRIGGER (Pine É o trigger objetivo — close > swing_high,
+             body%, ADX, EMA50, etc. dependendo do módulo)
+           - ONLY_NOISE_NO_STRUCTURE (Pine usa estrutura: swing high/low + ATR +
+             body% + ADX + EMA — não é noise por design)
+           - FALLING_KNIFE (CONFLITA com módulos BREAKOUT_CONTINUATION /
+             FAILED_BREAKDOWN / pullback regime — Pine compra em movimento forte
+             por design, essa É a tese da estratégia testada 7 anos)
 
       2. Contexto de entry: preço atual ainda perto de alert.entry_price?
          entry_late_distance_r = (price_atual - alert.entry_price) / alert.r_points
