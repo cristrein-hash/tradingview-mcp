@@ -15,6 +15,7 @@ alert-bridge/logs/*.jsonl
 alert-bridge/logs/*.log
 alert-bridge/logs/*.out
 alert-bridge/logs/d2r_daily/
+alert-bridge/logs/backtests/
 
 # backups / generated patch backups
 *.backup
