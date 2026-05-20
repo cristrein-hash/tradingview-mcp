@@ -452,3 +452,105 @@ export async function getPineBoxes({ study_filter, verbose } = {}) {
   });
   return { success: true, study_count: studies.length, studies };
 }
+
+// 2026-05-19: getPineShapes — captura plotshape()/plotchar() data por bar via study.data().valueAt().
+// Diferente de pine_labels/boxes (que usam _primitivesCollection), shapes vivem na própria IndexedDataSet
+// do study, indexada por bar. Pra cada plot do tipo "shapes" ou "chars" no metaInfo, lê o slot
+// correspondente no array de cada bar; valor != 0 e != null/NaN indica ativação.
+//
+// Args:
+//   study_filter: substring do nome do study (opcional)
+//   max_bars: janela retroativa de bars a varrer (default 500, max 5000)
+//   include_inactive: se true, retorna TODOS os bars (até em vazios) — default false
+//
+// Output por study:
+//   {name, total_bars_evaluated, shape_plots: [{slot, plot_id, type, title}],
+//    activations_per_plot: {plot_id: count}, activations: [{bar_index, time, plot_id: value, ...}]}
+export async function getPineShapes({ study_filter, max_bars, include_inactive } = {}) {
+  const filter = study_filter || '';
+  const limit = Math.min(max_bars || 500, 5000);
+  const includeInactive = !!include_inactive;
+
+  const raw = await evaluate(`
+    (function() {
+      try {
+        var chart = window.TradingViewApi._activeChartWidgetWV.value()._chartWidget;
+        var model = chart.model();
+        var sources = model.model().dataSources();
+        var results = [];
+        var filter = ${safeString(filter)};
+        var limit = ${limit};
+        var includeInactive = ${includeInactive};
+
+        for (var si = 0; si < sources.length; si++) {
+          var s = sources[si];
+          if (!s.metaInfo) continue;
+          try {
+            var meta = s.metaInfo();
+            var name = meta.description || meta.shortDescription || '';
+            if (!name) continue;
+            if (filter && name.indexOf(filter) === -1) continue;
+
+            var plots = meta.plots || [];
+            var styles = meta.styles || {};
+
+            // Map plot order to array slot. Slot 0 = time. Each plot (any type) occupies 1 slot.
+            // We only capture shapes/chars plots; colorers/alertconditions skipped but counted for slot.
+            var shapeMap = [];
+            var arrayIdx = 1;
+            for (var pi = 0; pi < plots.length; pi++) {
+              var p = plots[pi];
+              if (p.type === 'shapes' || p.type === 'chars') {
+                var title = (styles[p.id] && styles[p.id].title) || p.id;
+                shapeMap.push({ slot: arrayIdx, plot_id: p.id, type: p.type, title: title });
+              }
+              arrayIdx++;
+            }
+
+            if (shapeMap.length === 0) continue;
+
+            var data = s.data();
+            if (!data || typeof data.valueAt !== 'function') continue;
+            var lastIdx = data.lastIndex();
+            var firstIdx = data.firstIndex();
+            var startIdx = Math.max(firstIdx, lastIdx - limit + 1);
+
+            var activations = [];
+            var slotCounts = {};
+            for (var ci = 0; ci < shapeMap.length; ci++) slotCounts[shapeMap[ci].plot_id] = 0;
+
+            for (var i = startIdx; i <= lastIdx; i++) {
+              var v = data.valueAt(i);
+              if (!v) continue;
+              var barHits = {};
+              for (var sj = 0; sj < shapeMap.length; sj++) {
+                var sm = shapeMap[sj];
+                var val = v[sm.slot];
+                if (val !== null && val !== undefined && !isNaN(val) && val !== 0) {
+                  barHits[sm.plot_id] = val;
+                  slotCounts[sm.plot_id]++;
+                }
+              }
+              if (Object.keys(barHits).length > 0 || includeInactive) {
+                activations.push({ bar_index: i, time: v[0], shapes: barHits });
+              }
+            }
+
+            results.push({
+              name: name,
+              total_bars_evaluated: (lastIdx - startIdx + 1),
+              shape_plots: shapeMap,
+              activations_per_plot: slotCounts,
+              activations: activations
+            });
+          } catch (e) { /* skip this study */ }
+        }
+        return results;
+      } catch (e) { return { _error: e.message }; }
+    })()
+  `);
+
+  if (!raw) return { success: true, study_count: 0, studies: [] };
+  if (raw._error) return { success: false, error: raw._error };
+  return { success: true, study_count: raw.length, studies: raw };
+}

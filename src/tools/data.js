@@ -83,4 +83,13 @@ export function registerDataTools(server) {
     try { return jsonResult(await core.getStudyValues()); }
     catch (err) { return jsonResult({ success: false, error: err.message }, true); }
   });
+
+  server.tool('data_get_pine_shapes', 'Read plotshape()/plotchar() activations per bar from Pine indicators (Market Bubbles, NAS signals, custom shape plots). Returns per-bar activations of each shape plot (binary 1/0 or numeric values). Use study_filter to target a specific indicator. max_bars sets retroactive window (default 500, max 5000).', {
+    study_filter: z.string().optional().describe('Substring to match study name (e.g., "Bubbles", "NAS"). Omit for all.'),
+    max_bars: z.coerce.number().optional().describe('Max bars to scan retroactively (default 500, max 5000)'),
+    include_inactive: z.coerce.boolean().optional().describe('If true, return ALL bars including inactive ones (default false — only bars with at least one shape activation)'),
+  }, async ({ study_filter, max_bars, include_inactive }) => {
+    try { return jsonResult(await core.getPineShapes({ study_filter, max_bars, include_inactive })); }
+    catch (err) { return jsonResult({ success: false, error: err.message }, true); }
+  });
 }
