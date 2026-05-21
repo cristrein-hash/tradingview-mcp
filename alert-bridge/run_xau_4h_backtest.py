@@ -154,11 +154,12 @@ def capture_bar(client: MCPClient, bar_index: int):
     sv = client.call_tool("data_get_study_values")
     snap["study_values"] = sv.get("studies") if isinstance(sv, dict) else None
 
-    pb = client.call_tool("data_get_pine_boxes")
+    pb = client.call_tool("data_get_pine_boxes", {"verbose": True})
     snap["pine_boxes"] = pb.get("studies") if isinstance(pb, dict) else None
 
     # max_labels=500 pra capturar TODO histórico do NAS (era 10, perdia 98%)
-    pl = client.call_tool("data_get_pine_labels", {"max_labels": 500})
+    # verbose=True pra incluir x (bar_index TV) — necessário pra timing dos labels
+    pl = client.call_tool("data_get_pine_labels", {"max_labels": 500, "verbose": True})
     snap["pine_labels"] = pl.get("studies") if isinstance(pl, dict) else None
 
     # 2026-05-19: nova tool data_get_pine_shapes captura Bubbles (plotshape) bar-a-bar.
@@ -191,6 +192,7 @@ def main():
     parser.add_argument("--resume", action="store_true", help="Continue do último checkpoint")
     parser.add_argument("--dry-run", action="store_true", help="Init+1 bar e sai")
     parser.add_argument("--no-restore-chart", action="store_true", help="Skip restore chart no final")
+    parser.add_argument("--suffix", default="", help="Suffix pro output filename (ex: _v2)")
     args = parser.parse_args()
 
     if not PAUSE_FLAG.exists():
@@ -201,7 +203,7 @@ def main():
     BACKTESTS_DIR.mkdir(parents=True, exist_ok=True)
     today_iso = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     sym_short = args.symbol.split(":")[-1]
-    out_basename = f"{sym_short}_{args.timeframe}_{args.date}_to_{today_iso}"
+    out_basename = f"{sym_short}_{args.timeframe}_{args.date}_to_{today_iso}{args.suffix}"
     out_jsonl = BACKTESTS_DIR / f"{out_basename}.jsonl"
     checkpoint_path = BACKTESTS_DIR / f"{out_basename}.checkpoint.json"
 
