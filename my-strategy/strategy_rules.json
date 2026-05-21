@@ -1532,51 +1532,5 @@
       }
     },
     "shadow_to_active_criteria": "Switch from shadow to active routing when: (a) >=30 new live alerts classified V4, (b) D2R win rate for SETUP_CONFIRMED_ENTRY >= 70%, (c) no regression in operational flow."
-  },
-  "oracle_score_shadow": {
-    "_status": "SHADOW MODE since 2026-05-14 — logged but does not affect Telegram routing or operational decisions",
-    "_basis": "D2R Oracle investigation 2026-05-14: 34 trades with setup_valid_retro=True had 100% win rate, +99R total, avg +2.91R. Three forward-available features discriminate Oracle from Control (tradeable but retro=False) by 29-34pp.",
-    "score_definition": {
-      "+1 if sweep+reentry mentioned": "delta +29pp Oracle vs Control (n=22/34 oracle vs 11/31 control)",
-      "+1 if CHoCH or BOS mentioned": "delta +30pp when combined with sweep+reentry",
-      "+1 if RSI extreme mentioned": "delta +34pp when combined with sweep+reentry — STRONGEST"
-    },
-    "counting_rule": "Count only when concept is AFFIRMATIVELY described as present in the setup. Negations (\"RSI not extreme\") = 0 points for that condition.",
-    "performance_observed_phase2": {
-      "baseline_n137": {
-        "avg_r": 0.85,
-        "win_pct": 53,
-        "total_r": 115.96
-      },
-      "score_0": {
-        "n": 3,
-        "avg_r": 2.33,
-        "win_pct": 33,
-        "note": "sample too small"
-      },
-      "score_1": {
-        "n": 28,
-        "avg_r": 0.66,
-        "win_pct": 50
-      },
-      "score_2": {
-        "n": 71,
-        "avg_r": 0.47,
-        "win_pct": 48
-      },
-      "score_3": {
-        "n": 35,
-        "avg_r": 1.64,
-        "win_pct": 69,
-        "note": "GOLD STANDARD — proposed threshold"
-      }
-    },
-    "shadow_to_active_criteria": "Switch from shadow to active gate when: (a) >=30 new live alerts with oracle_score logged, (b) Score=3 cohort maintains win% >=65% prospectively, (c) Score>=2 maintains avg R >=0.5R.",
-    "interaction_with_v4_shadow": "When Oracle Score=3 AND classification_v4_shadow=SETUP_CONFIRMED_ENTRY, expected hit rate is even higher (intersection of two independent signals). Track this combination separately during validation period.",
-    "forward_predictors_discarded": {
-      "bubble_cluster_alone": "NOT discriminating — Oracle 88% vs Control 90%. Bubbles WITHOUT sweep+reentry actually NEGATIVE (-29pp).",
-      "NAS100_signal": "NOT discriminating — Oracle 94% vs Control 97%.",
-      "zone_nested_HTF": "mildly negative — Control has slightly more."
-    }
   }
 }

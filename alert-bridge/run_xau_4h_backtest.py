@@ -168,6 +168,12 @@ def capture_bar(client: MCPClient, bar_index: int):
     ps = client.call_tool("data_get_pine_shapes", {"study_filter": "Bubbles", "max_bars": 20})
     snap["pine_shapes_bubbles"] = ps.get("studies") if isinstance(ps, dict) else None
 
+    # 2026-05-21: pine_lines pra LuxAlgo SMC (structure lines, EQH/EQL lines, HTF levels)
+    # + TradingFinder CVD (lines conectando pivots em divergence)
+    # + UAlgo CVD (lines pra Reg/Hid/Abs divergences)
+    pll = client.call_tool("data_get_pine_lines", {"verbose": True})
+    snap["pine_lines"] = pll.get("studies") if isinstance(pll, dict) else None
+
     ohlcv = client.call_tool("data_get_ohlcv", {"count": 40, "summary": False})
     if isinstance(ohlcv, dict):
         snap["ohlcv_last_40_bars"] = ohlcv.get("last_5_bars") or ohlcv.get("bars")

@@ -33,9 +33,20 @@ function buildGraphicsJS(collectionName, mapKey, filter) {
             if (outer) {
               var inner = outer.get('${mapKey}');
               if (inner) {
+                var seen = {};
+                // Normal collection (overlay=false)
                 var coll = inner.get(false);
                 if (coll && coll._primitivesDataById && coll._primitivesDataById.size > 0) {
-                  coll._primitivesDataById.forEach(function(v, id) { items.push({id: id, raw: v}); });
+                  coll._primitivesDataById.forEach(function(v, id) {
+                    if (!seen[id]) { items.push({id: id, raw: v}); seen[id] = true; }
+                  });
+                }
+                // Overlay collection (overlay=true) — captures force_overlay=true primitives
+                var coll_overlay = inner.get(true);
+                if (coll_overlay && coll_overlay._primitivesDataById && coll_overlay._primitivesDataById.size > 0) {
+                  coll_overlay._primitivesDataById.forEach(function(v, id) {
+                    if (!seen[id]) { items.push({id: id, raw: v}); seen[id] = true; }
+                  });
                 }
               }
             }
@@ -442,7 +453,7 @@ export async function getPineBoxes({ study_filter, verbose } = {}) {
       const v = item.raw;
       const high = v.y1 != null && v.y2 != null ? Math.round(Math.max(v.y1, v.y2) * 100) / 100 : null;
       const low = v.y1 != null && v.y2 != null ? Math.round(Math.min(v.y1, v.y2) * 100) / 100 : null;
-      if (verbose) allBoxes.push({ id: item.id, high, low, x1: v.x1, x2: v.x2, borderColor: v.c, bgColor: v.bc });
+      if (verbose) allBoxes.push({ id: item.id, high, low, x1: v.x1, x2: v.x2, borderColor: v.c, bgColor: v.bc, text: v.t || null });
       if (high != null && low != null) { const key = high + ':' + low; if (!seen[key]) { zones.push({ high, low }); seen[key] = true; } }
     }
     zones.sort((a, b) => b.high - a.high);

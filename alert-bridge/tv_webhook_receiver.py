@@ -1101,16 +1101,8 @@ def build_setup_research_record(
 
     classification = extract_field(stdout, "Classificação")
     classification_v4 = extract_field(stdout, "Classificação V4")  # SHADOW MODE 2026-05-14
-    oracle_score_raw = extract_field(stdout, "Oracle Score")  # SHADOW MODE 2026-05-14 — pre-flight check 0-3
-    # Coerce to int if numeric, else None
-    try:
-        oracle_score = int(str(oracle_score_raw).strip()) if oracle_score_raw and str(oracle_score_raw).strip().isdigit() else None
-        if oracle_score is not None and not (0 <= oracle_score <= 3):
-            oracle_score = None
-    except (ValueError, AttributeError):
-        oracle_score = None
 
-    # V3D SHADOW (2026-05-15) — Leonardo OB structural, APENAS XAUUSD 4H
+    # V3D SHADOW (2026-05-15) — Leonardo OB structural, XAUUSD + EURUSD 4H
     v3d_asset = extract_field(stdout, "V3d shadow asset")
     v3d_event_present_raw = extract_field(stdout, "V3d shadow event present")
     v3d_event_type = extract_field(stdout, "V3d shadow event type")
@@ -1136,28 +1128,6 @@ def build_setup_research_record(
     mtf_aligned_raw = extract_field(stdout, "MTF shadow aligned")
     mtf_applicable = _bool_or_none(mtf_applicable_raw)
     mtf_aligned = _bool_or_none(mtf_aligned_raw)
-
-    # BUBBLES + NAS SHADOW (2026-05-15) — structured logging
-    def _int_or_none(s):
-        if not s:
-            return None
-        s = str(s).strip().replace('+', '')
-        try:
-            return int(s)
-        except (ValueError, TypeError):
-            return None
-    def _float_or_none(s):
-        if not s or str(s).strip().lower() in ('n/a', 'na', 'none', '-'):
-            return None
-        try:
-            return float(str(s).strip())
-        except (ValueError, TypeError):
-            return None
-    bubble_cluster_count = _int_or_none(extract_field(stdout, "Bubble cluster count"))
-    bubble_cluster_distance_r = _float_or_none(extract_field(stdout, "Bubble cluster distance R"))
-    nas_signal_active = extract_field(stdout, "NAS signal active")
-    nas_signal_recent_bars = _int_or_none(extract_field(stdout, "NAS signal recent bars"))
-    direction_intended = extract_field(stdout, "Direction intended")
 
     direction = extract_field(stdout, "Direção") or extract_field(stdout, "Direção possível")
     health = extract_field(stdout, "Health")
@@ -1188,9 +1158,7 @@ def build_setup_research_record(
 
         "classification": classification,
         "classification_v4_shadow": classification_v4,  # SHADOW MODE 2026-05-14 — new naming scheme, not yet routed to Telegram
-        "oracle_score_shadow": oracle_score,  # SHADOW MODE 2026-05-14 — int 0-3 or None; pre-flight check
-        "oracle_score_raw": oracle_score_raw,  # raw string for audit (in case parsing fails)
-        # V3D SHADOW (2026-05-15) — Leonardo OB structural, only XAUUSD 4H
+        # V3D SHADOW (2026-05-15) — Leonardo OB structural, XAUUSD + EURUSD 4H
         "v3d_shadow_asset": v3d_asset,
         "v3d_shadow_event_present": v3d_event_present,
         "v3d_shadow_event_type": v3d_event_type,
@@ -1202,12 +1170,6 @@ def build_setup_research_record(
         "mtf_shadow_applicable": mtf_applicable,
         "mtf_shadow_htf_used": mtf_htf_used,
         "mtf_shadow_aligned": mtf_aligned,
-        # BUBBLES + NAS SHADOW (2026-05-15) — structured logging for forward validation
-        "bubble_cluster_count": bubble_cluster_count,
-        "bubble_cluster_distance_r": bubble_cluster_distance_r,
-        "nas_signal_active": nas_signal_active,
-        "nas_signal_recent_bars": nas_signal_recent_bars,
-        "direction_intended": direction_intended,
         "direction": direction,
         "health": health,
         "summary": summary,

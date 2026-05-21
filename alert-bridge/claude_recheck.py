@@ -192,7 +192,7 @@ def build_deprecated_short_circuit_response(alert: dict) -> str:
 #   C6. Rejection close (candle com pavio inferior >=50% e close bullish).
 #   C7. Cluster Market Order Bubbles (NÃO obrigatório em TF 1H+ por regra de 2026-05-15).
 #   C8. Zona nested em HTF (BB 1H dentro de P3 4H, etc.).
-#   C9. V3d Order Block Leonardo (XAU/EUR/BTC 4H apenas, quando ativo).
+#   C9. V3d Order Block Leonardo (XAU/EUR 4H apenas, quando ativo).
 #
 # Stop técnico: abaixo da invalidação estrutural da zona (último fundo válido).
 # Target mínimo: 2R. Default R:R alvo 2.5R.
@@ -579,48 +579,9 @@ def build_prompt(alert: dict) -> str:
     ═══════════════════════════════════════════════════════════════════════════
 
     ═══════════════════════════════════════════════════════════════════════════
-    ORACLE SCORE SHADOW (2026-05-14 — paralelo a V3 e V4, NÃO substitui)
+    V3D SHADOW — Leonardo OB estrutural (atualizado 2026-05-15 — XAUUSD, EURUSD em TF=240/4H)
     ═══════════════════════════════════════════════════════════════════════════
-    Em PARALELO a Classificação V3 e V4, emita também um Oracle Score 0-3 que
-    reflete o pre-flight check do "oráculo" identificado em D2R: 34 trades com
-    setup_valid_retro=True tiveram 100% win rate, +99R total, avg +2.91R.
-
-    Os 3 preditores forward-disponíveis mais fortes (D2R n=137 tradeable):
-      +1 ponto: sweep + reentry mencionado no reasoning (delta +29pp Oracle vs Control)
-      +1 ponto: CHoCH ou BOS mencionado (delta +30pp combinado com sweep)
-      +1 ponto: RSI extremo (oversold/overbought/sobrevenda/sobrecompra) (delta +34pp combinado)
-
-    REGRA DE CONTABILIZAÇÃO:
-      - Só contar se o conceito ESTIVER DE FATO PRESENTE no setup (não apenas
-        mencionado para negar). Ex: "RSI 50, não em sobrecompra" → 0 pontos.
-        Mas "RSI 78 saindo de sobrecompra" → +1 ponto.
-      - Se você está afirmativamente descrevendo o conceito como ativo → conta.
-      - Se está apenas listando que faltam → não conta.
-
-    PERFORMANCE OBSERVADA no dataset (D2R n=137 tradeable, sem USDJPY):
-      - Score 0:  n=3,  avg +2.33R, 33% win  (sample muito pequeno)
-      - Score 1:  n=28, avg +0.66R, 50% win
-      - Score 2:  n=71, avg +0.47R, 48% win
-      - Score 3:  n=35, avg +1.64R, 69% win  ⭐ GOLD STANDARD
-      - Baseline: n=137, avg +0.85R, 53% win
-
-    REGRA DE SHADOW MODE:
-      - Oracle Score é LOGADO mas NÃO altera Telegram routing nem decisões.
-      - Quando combinado com V4 = SETUP_CONFIRMED_ENTRY, expectativa é hit-rate
-        ainda mais alto (interseção dos dois sinais).
-      - Validação prospectiva em 1-2 semanas: se Score=3 mantiver win ≥65%
-        forward, vira gate adicional para Telegram routing.
-
-    OUTPUT OBRIGATÓRIO atualizado — agora TRÊS linhas no fim da resposta:
-      Classificação: <uma das 7 strings V3>
-      Classificação V4: <NO_TRADE_V4 | SETUP_INFO_ONLY | SETUP_ZONE_WATCH | SETUP_CONFIRMED_ENTRY>
-      Oracle Score: <0 | 1 | 2 | 3>
-    ═══════════════════════════════════════════════════════════════════════════
-
-    ═══════════════════════════════════════════════════════════════════════════
-    V3D SHADOW — Leonardo OB estrutural (atualizado 2026-05-15 — XAUUSD, EURUSD, BTCUSD em TF=240/4H)
-    ═══════════════════════════════════════════════════════════════════════════
-    APLICAR para alertas em XAUUSD, EURUSD ou BTCUSD com timeframe=240 (4H).
+    APLICAR para alertas em XAUUSD ou EURUSD com timeframe=240 (4H).
     Para outros ativos ou TFs, emitir todos os campos V3d como N/A.
 
     Evidência empírica (backtest 7.4 anos, audit SMC6 2026-05-15):
@@ -629,12 +590,8 @@ def build_prompt(alert: dict) -> str:
     - EURUSD 4H: V3d n=45, +25.75R, win 53%, PF 2.65, Sharpe 2.26 — FORTE.
       Combinado com mech: +172% R, Sharpe +1.10, MaxDD MELHORA. V3d cobre 2021
       e 2022 (anos onde mech praticamente não disparou). Overlap 8.5%.
-    - BTCUSD 4H: V3d n=44, +16.77R, win 47.7%, PF 2.04, Sharpe 1.57 (5.4y).
-      DESCOBERTA NOVA — BTC não tem módulo mecânico hoje; V3d é candidato único.
-      Edge concentrado em regime bull (2024: +12.39R Z=+1.99). Sem 2024 fica
-      marginal (+4.38R, Sharpe 0.53) — operar com cautela em regimes chop.
-
     Ativos onde V3d NÃO se aplica (auditados, perdedores em backtest):
+    - BTCUSD 4H: DEACTIVATED 2026-05-21 no cleanup (fora do foco XAU-only)
     - ETHUSD 4H: V3d -13.69R, Sharpe -2.41 (falha em bear cripto)
     - XAGUSD 4H: V3d -3.67R, Sharpe -0.44 (estrutura SMC ruidosa)
     - XPTUSD/US500 4H: marginais e dependentes de 1 ano outlier
@@ -657,13 +614,13 @@ def build_prompt(alert: dict) -> str:
        - R_pts = entry - stop
 
     REGRA DE SHADOW:
-      - V3d é APENAS LOGADO. NÃO altera classificação V3, V4, Oracle ou Telegram.
+      - V3d é APENAS LOGADO. NÃO altera classificação V3, V4 ou Telegram.
       - Validação forward: D2R comparará outcomes V3d com mecânico.
       - Critério promoção a operacional: 30+ trades V3d shadow com PF≥1.4 e
         no_top5≥0.
 
     OUTPUT V3D OBRIGATÓRIO — adicionar 7 linhas:
-      V3d shadow asset: <XAUUSD | EURUSD | BTCUSD | N/A>
+      V3d shadow asset: <XAUUSD | EURUSD | N/A>
       V3d shadow event present: <true | false | N/A>
       V3d shadow event type: <BOS_BULL | CHOCH_BULL | NONE | N/A>
       V3d shadow OB zone: <"low-top" | N/A>
@@ -722,55 +679,6 @@ def build_prompt(alert: dict) -> str:
       MTF shadow applicable: <true | false>
       MTF shadow HTF used: <1D | 4H | N/A>
       MTF shadow aligned: <true | false | N/A>
-    ═══════════════════════════════════════════════════════════════════════════
-
-    ═══════════════════════════════════════════════════════════════════════════
-    BUBBLES + NAS SHADOW — logging estruturado (2026-05-15)
-    ═══════════════════════════════════════════════════════════════════════════
-    APLICAR para TODOS os alertas (qualquer ativo + TF). Captura estruturada
-    de Market Order Bubbles e NAS TOP/BOTTOM signals pra cross-check forward
-    com outcomes D2R.
-
-    Motivação: D2R Phase 1 (n=57) sugeriu que cluster bubbles correlaciona
-    com +36R; análise Phase 2 (n=208, parse de texto livre) deu sinal oposto
-    OU viés de seleção. Parser regex falhou em 75% dos casos (texto livre).
-    Logging estruturado permite responder definitivamente: bubbles/NAS
-    adicionam edge real OU é viés operacional?
-
-    CAPTURAR via leitura do chart (data_get_pine_labels, draw_list, etc.):
-
-    1. BUBBLE CLUSTER:
-       - Contar shapes/bubbles visíveis na região do entry (entry ± 0.5×ATR)
-       - bubble_cluster_count: int (0 se nenhuma; 5+ aceitável)
-       - bubble_cluster_distance_r: float (distância em R do bubble mais
-         próximo até entry_ideal; 0 = no preço; negativo = abaixo entry)
-
-    2. NAS TOP/BOTTOM:
-       - Verificar se NAS_TOP_SIGNAL ou NAS_BOTTOM_SIGNAL disparou nos
-         últimos 5 candles do TF do alerta
-       - nas_signal_active: "top" | "bottom" | "none"
-       - nas_signal_recent_bars: int (quantos bars atrás disparou; 0 = candle atual; -1 = N/A)
-
-    3. DIREÇÃO INTENDIDA:
-       - direction_intended: "LONG" | "SHORT" | "UNCLEAR"
-       - Necessária pra separar NAS TOP (sinal SHORT) de NAS BOTTOM (LONG)
-         em análise estatística futura. Sem isso, mistura LONG+SHORT polui dados.
-
-    REGRA DE SHADOW:
-      - APENAS logado. NÃO altera classificação V3/V4/Telegram.
-      - A lógica vigente do prompt (BUBBLE CLUSTER GATE obrigatório pra
-        SETUP_CANDIDATO_FORTE) PERMANECE — esses campos coexistem.
-      - Validação forward: após n≥30 por módulo, cruzar bubble_cluster_count
-        e nas_signal_active com r_outcome do D2R por módulo (XAU 4H, EUR 4H,
-        etc.). Se cluster_count≥3 tiver Sharpe superior a count<3 em pelo
-        menos 2 módulos com n≥30, promover a filtro Grade A/B.
-
-    OUTPUT BUBBLES+NAS OBRIGATÓRIO — adicionar 5 linhas:
-      Bubble cluster count: <0 | 1 | 2 | 3 | 4 | 5+>
-      Bubble cluster distance R: <número | N/A>
-      NAS signal active: <top | bottom | none>
-      NAS signal recent bars: <0 | 1 | 2 | 3 | 4 | 5 | -1 (N/A)>
-      Direction intended: <LONG | SHORT | UNCLEAR>
     ═══════════════════════════════════════════════════════════════════════════
 
     REGRA PREVALECENTE — VOCABULÁRIO ESTRITO V3 (esta seção prevalece sobre qualquer outra):

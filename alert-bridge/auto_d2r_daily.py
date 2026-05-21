@@ -389,28 +389,35 @@ def main():
         daily_log.write(f"  Missed winners: {len(outliers['missed_winners'])}\n")
         daily_log.write(f"  Wrong promotions: {len(outliers['wrong_promotions'])}\n")
 
-    # Send Telegram
-    # 2026-05-18 B.1: indicator_signals appendix sent even if D2R had 0 new records
-    indicator_summary = build_indicator_outcomes_summary()
+    # Send Telegram — DESABILITADO 2026-05-21 por decisão Cris.
+    # Backfill D2R + indicator outcomes continuam acumulando em logs;
+    # consulta via weekly_review.py (domingo 09:00) e queries ad-hoc.
+    # Para reabilitar: setar env var D2R_TELEGRAM_ENABLED=1.
+    import os
+    telegram_enabled = os.environ.get("D2R_TELEGRAM_ENABLED", "0") == "1"
 
-    if stats["n_new"] > 0:
-        msg = build_telegram_message(stats, outliers, new_records)
-        if indicator_summary:
-            msg = msg + "\n" + indicator_summary
-        try:
-            send_telegram(msg)
-        except Exception as e:
-            with log_path.open("a") as f:
-                f.write(f"Telegram send error: {e}\n")
-    elif indicator_summary:
-        # D2R sem novos, mas indicator pipeline tem outcomes — manda só o indicator block
-        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        msg = f"<b>🤖 D2R Daily — {today}</b>\n\nSem novos eventos D2R hoje.\n{indicator_summary}"
-        try:
-            send_telegram(msg)
-        except Exception as e:
-            with log_path.open("a") as f:
-                f.write(f"Telegram send error: {e}\n")
+    if telegram_enabled:
+        indicator_summary = build_indicator_outcomes_summary()
+        if stats["n_new"] > 0:
+            msg = build_telegram_message(stats, outliers, new_records)
+            if indicator_summary:
+                msg = msg + "\n" + indicator_summary
+            try:
+                send_telegram(msg)
+            except Exception as e:
+                with log_path.open("a") as f:
+                    f.write(f"Telegram send error: {e}\n")
+        elif indicator_summary:
+            today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+            msg = f"<b>🤖 D2R Daily — {today}</b>\n\nSem novos eventos D2R hoje.\n{indicator_summary}"
+            try:
+                send_telegram(msg)
+            except Exception as e:
+                with log_path.open("a") as f:
+                    f.write(f"Telegram send error: {e}\n")
+    else:
+        with log_path.open("a") as f:
+            f.write(f"Telegram skipped (D2R_TELEGRAM_ENABLED!=1)\n")
 
 
 if __name__ == "__main__":
