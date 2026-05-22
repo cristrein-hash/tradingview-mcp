@@ -159,6 +159,60 @@ def format_calendar_warning(ext):
     return f"\n⚠️ CALENDAR ALERT: {name}{when_str} (risk={level})"
 
 
+# === WebSearch macro check sob demanda (complementa iMac calendar) ===
+# Invocado APENAS quando estratégia match. Custo: ~$0.03/match × ~25 matches/ano = ~$1/ano.
+# Latência: 10-15s por match. Cached em memória pelo bar_iso (1 search por bar mesmo
+# com múltiplas estratégias matching).
+
+_macro_check_cache = {}  # bar_iso -> string
+WEBSEARCH_TIMEOUT_S = 90
+
+
+def get_macro_events_check(bar_iso):
+    """Invoca Claude headless com WebSearch pra checar eventos US high-impact próximos 24h.
+
+    Retorna string formatada (ex: "FOMC Decision em 4h") ou empty se NONE/erro.
+    Cacheado por bar_iso (in-memory na execução atual).
+    """
+    if bar_iso in _macro_check_cache:
+        return _macro_check_cache[bar_iso]
+
+    prompt = (
+        "Use WebSearch para responder: há algum dos seguintes eventos US high-impact "
+        "agendado nas próximas 24 horas a partir de agora? "
+        "Lista: FOMC Decision, FOMC Minutes, US CPI, US PCE, US GDP, US NFP "
+        "(Non-Farm Payrolls), ECB Decision, ISM Manufacturing PMI, ISM Services PMI, US PPI. "
+        "Responda em UMA linha apenas, NO formato exato:\n"
+        "  NONE\n"
+        "ou:\n"
+        "  <nome do evento> em <X>h\n"
+        "Sem texto adicional, sem explicação. Apenas a linha de resposta."
+    )
+
+    try:
+        result = subprocess.run(
+            ["claude", "-p", prompt, "--allowedTools", "WebSearch"],
+            text=True, capture_output=True, timeout=WEBSEARCH_TIMEOUT_S
+        )
+        output = (result.stdout or "").strip()
+        # Parse: pega primeira linha não vazia
+        first_line = next((l for l in output.split("\n") if l.strip()), "")
+        if "NONE" in first_line.upper() or not first_line:
+            res = ""
+        else:
+            res = first_line[:120]
+        _macro_check_cache[bar_iso] = res
+        return res
+    except subprocess.TimeoutExpired:
+        print(f"[WARN] WebSearch macro check timeout ({WEBSEARCH_TIMEOUT_S}s)")
+        _macro_check_cache[bar_iso] = ""
+        return ""
+    except Exception as e:
+        print(f"[WARN] WebSearch macro check failed: {e}")
+        _macro_check_cache[bar_iso] = ""
+        return ""
+
+
 class MCPClient:
     def __init__(self):
         self.proc = None; self._req_id = 0
@@ -635,9 +689,14 @@ def evaluate_and_dispatch(mcp, trigger_source, dispatch_telegram=True):
         if matched:
             matched_list.append(name)
             msg = fmt_fn(state)
+            # WebSearch macro check sob demanda (cached por bar_iso)
+            macro_event = get_macro_events_check(bar_iso)
+            if macro_event:
+                msg = msg + f"\n⚠️ MACRO (24h): {macro_event}"
             print(f"\n=== MATCH {name} ===\n{msg}\n")
             if dispatch_telegram:
                 send_telegram(msg)
+            entry["macro_event_check"] = macro_event
             append_jsonl(STRATEGY_SIGNALS_JSONL, entry)
         else:
             print(f"  [no match] {name}: {', '.join(reasons)}")

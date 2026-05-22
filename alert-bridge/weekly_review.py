@@ -205,24 +205,64 @@ def check_mtf_gate():
 
 
 def check_external_factors():
-    """External Factors v1.2 — schema flatten (prefixo external_*) + calendar history (P0.3)."""
+    """External Factors v1.2 — schema flatten (prefixo external_*) + P0.3 heurística melhor.
+
+    P0.3 ALERT triggers (apenas se):
+      (a) Log stale: último record v1.2 > 48h atrás (recheck pipeline desconectado)
+      (b) iMac live diverge do log: iMac mostra calendar_active=True mas log tem 0
+          (significa receiver não está persistindo corretamente)
+    Senão: silent OK. calendar_active=0 sozinho é OK se não houve evento na janela.
+    """
     records = read_jsonl(SETUP_RESEARCH_LOG)
     n_v12 = 0
     n_cal_active = 0
     n_recent = 0
     n_fetch_ok = 0
+    last_record_ts = None
     for r in records:
         sv = r.get("external_schema_version", "") or ""
         if "v1.2" in sv or "v1_2" in sv:
             n_v12 += 1
+            ts = parse_iso(r.get("evaluated_at") or r.get("received_at"))
+            if ts and (last_record_ts is None or ts > last_record_ts):
+                last_record_ts = ts
             if r.get("external_calendar_active") is True:
                 n_cal_active += 1
             if r.get("external_fetch_ok") is True:
                 n_fetch_ok += 1
-            if is_recent(parse_iso(r.get("evaluated_at") or r.get("received_at"))):
+            if is_recent(ts):
                 n_recent += 1
+
+    # Log staleness
+    log_stale_hours = None
+    if last_record_ts:
+        log_stale_hours = (datetime.now(timezone.utc) - last_record_ts).total_seconds() / 3600
+
+    # iMac live cross-check (timeout 3s, fallback silent)
+    imac_live_calendar_active = None
+    imac_live_error = None
+    try:
+        from urllib.request import Request, urlopen
+        url = "http://192.168.1.90:8765/XAUUSD.json"
+        req = Request(url, method="GET")
+        with urlopen(req, timeout=3) as resp:
+            xau = json.loads(resp.read().decode())
+        cr = xau.get("calendar_risk") or {}
+        imac_live_calendar_active = bool(cr.get("active"))
+    except Exception as e:
+        imac_live_error = str(e)[:60]
+
+    # P0.3 nova lógica
+    p03_alert = False
+    p03_reason = None
+    if log_stale_hours is not None and log_stale_hours > 48:
+        p03_alert = True
+        p03_reason = f"log stale {log_stale_hours:.1f}h (recheck pipeline parado)"
+    elif imac_live_calendar_active is True and n_cal_active == 0 and n_v12 >= 50:
+        p03_alert = True
+        p03_reason = "iMac live calendar_active=True mas log mostra 0 (receiver desconectado?)"
+
     cal_pct = fmt_pct(n_cal_active, n_v12)
-    p03_alert = (n_v12 >= 50 and n_cal_active == 0 and n_fetch_ok >= 30)
     return {
         "name": "External Factors v1.2",
         "n_total": n_v12,
@@ -232,6 +272,10 @@ def check_external_factors():
         "calendar_active_pct": cal_pct,
         "target_n": 50,
         "p03_alert": p03_alert,
+        "p03_reason": p03_reason,
+        "log_stale_hours": log_stale_hours,
+        "imac_live_calendar_active": imac_live_calendar_active,
+        "imac_live_error": imac_live_error,
         "status": "PRONTO" if n_v12 >= 50 else "COLETANDO",
     }
 
@@ -361,8 +405,10 @@ def format_telegram(checks):
     emoji = format_status_emoji(c["status"])
     lines.append(f"{emoji} *{c['name']}*")
     lines.append(f"  n={c['n_total']}/{c['target_n']} · fetch_ok={c['n_fetch_ok']} · cal_active={c['n_calendar_active']} ({c['calendar_active_pct']})")
+    if c.get("log_stale_hours") is not None:
+        lines.append(f"  log stale {c['log_stale_hours']:.1f}h · iMac live cal_active={c.get('imac_live_calendar_active')}")
     if c["p03_alert"]:
-        lines.append(f"  ⚠️ P0.3 ALERT: calendar_active=0 em {c['n_fetch_ok']} fetches OK → verificar iMac config")
+        lines.append(f"  ⚠️ P0.3 ALERT: {c.get('p03_reason','')}")
     lines.append("")
 
     # 6. Enrich v2
