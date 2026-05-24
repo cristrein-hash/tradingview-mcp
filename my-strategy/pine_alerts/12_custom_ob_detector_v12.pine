@@ -1,0 +1,401 @@
+//@version=5
+// CUSTOM_OB_DETECTOR — alert source (v12 — added ts_signal pra dedup hash correto no receiver)
+// v12 CHANGE (2026-05-23): build_payload agora inclui "ts_signal" no JSON com
+// timestamp ISO do bar (str.format_time(time, ..., "UTC")). Necessário porque
+// o dedup hash do receiver depende de ts_signal pra discriminar signals temporalmente.
+// Sem isso, todas as repetições da mesma combinação (symbol×tf×indicator×signal_type)
+// viram duplicatas e são bloqueadas (bug discovered 2026-05-22, perdeu 88.8% dataset).
+//
+// PRESERVADO de v11: text="DEMAND"/"SUPPLY" identifier nas boxes.
+// Replica a lógica real do BigBeluga: state machine de market structure
+// com ms.trend / ms.choch / ms.bos / ms.loc. OB criado em events de BOS/CHoCH,
+// não em pivots puros. OB candle = extremo desde ms.loc (não última vela oposta).
+// ATR-extended coords (Length mode). Mitigation Close/Wick/Avg.
+// Created 2026-05-18 (v10) / Updated 2026-05-21 (v11 — text "DEMAND"/"SUPPLY" no canto pra leitura direta via MCP)
+
+indicator("Custom OB Detector v11 — Alert", overlay=true, max_boxes_count=500, max_lines_count=50, max_bars_back=5000)
+
+// === Types ===
+type marketstate
+    int   start    = 0
+    int   trend    = 0
+    float choch    = na
+    float bos      = na
+    int   loc      = 0
+    float main     = na
+    int   temp     = 0
+
+type ob_data
+    box   bx
+    bool  is_bull
+    float top
+    float btm
+    int   created_bar
+    int   ob_id
+    int   state      // 0=fresh, 1=touched, 2=mitigated, 3=violated
+
+// === Inputs ===
+mslen           = input.int(3, "Pivot length (BB=5, lower=more zones)", minval=2, maxval=20, group="Structure")
+obmode          = input.string("Length", "OB box mode", options=["Length", "Full"], group="OB Coords", tooltip="Length: ATR-extended (igual BB). Full: candle inteiro.")
+atr_extend_len  = input.int(200, "ATR length for extension", minval=10, maxval=500, group="OB Coords")
+atr_extend_mult = input.float(1.0, "ATR multiplier (BB default=1.0)", minval=0.0, maxval=2.0, step=0.1, group="OB Coords")
+obmiti          = input.string("Close", "Mitigation mode", options=["Close", "Wick", "Avg"], group="Mitigation")
+obshowbb        = input.bool(false, "Keep boxes visible after mitigation (breaker mode)", group="Mitigation")
+oblast          = input.int(8, "Show last N OBs per direction", minval=1, maxval=30, group="Display")
+max_total_obs   = input.int(40, "Max OBs in memory per direction", minval=10, maxval=100, group="Display")
+max_ob_age_bars = input.int(800, "Auto-delete OB after N bars", minval=100, maxval=3000, group="Display")
+overlap_check   = input.bool(true, "Filter overlapping OBs", group="Display")
+overlap_mode    = input.string("Recent", "Overlap mode (BB default Recent)", options=["Recent", "Old"], group="Display", tooltip="Recent: novo OB substitui antigo. Old: novo é rejeitado se overlaps existente.")
+show_text_label = input.bool(true, "Show DEMAND/SUPPLY text in box corner", group="Display", tooltip="v11: marca cada box com texto pequeno DEMAND (bull) ou SUPPLY (bear) pra leitura direta via API/MCP")
+
+// Colors
+bull_color      = input.color(color.green,  "Bull OB (demand)", group="Visual")
+bear_color      = input.color(color.orange, "Bear OB (supply)", group="Visual")
+alpha_fresh     = input.int(70, "Fresh alpha", minval=0, maxval=95, group="Visual")
+alpha_touched   = input.int(80, "Touched alpha", minval=0, maxval=95, group="Visual")
+alpha_mitig     = input.int(90, "Mitigated alpha", minval=0, maxval=99, group="Visual")
+
+// === State ===
+var marketstate ms = marketstate.new()
+var array<ob_data> bull_obs = array.new<ob_data>()
+var array<ob_data> bear_obs = array.new<ob_data>()
+
+atr_ext = ta.atr(atr_extend_len)
+
+// === Pivots ===
+ph = ta.pivothigh(high, mslen, mslen)
+pl = ta.pivotlow(low, mslen, mslen)
+
+// === Find extreme since loc ===
+// Returns idx (offset from bar_index) of max high or min low between loc and current
+find_extreme(_loc, _use_max) =>
+    bars_span = math.min(bar_index - _loc, 500)  // cap pra evitar buffer overflow
+    idx = 0
+    if bars_span > 0
+        if _use_max
+            max_val = high[0]
+            for i = 0 to bars_span
+                if high[i] > max_val
+                    max_val := high[i]
+                    idx := i
+        else
+            min_val = low[0]
+            for i = 0 to bars_span
+                if low[i] < min_val
+                    min_val := low[i]
+                    idx := i
+    idx
+
+// === Compute OB coords (Length mode = ATR-extended) ===
+ob_coords_bull(idx) =>
+    if obmode == "Length"
+        atr_at = atr_ext[idx] * atr_extend_mult
+        ext_top = low[idx] + atr_at
+        clamped_top = ext_top > high[idx] ? high[idx] : ext_top
+        [clamped_top, low[idx]]
+    else
+        [high[idx], low[idx]]
+
+ob_coords_bear(idx) =>
+    if obmode == "Length"
+        atr_at = atr_ext[idx] * atr_extend_mult
+        ext_btm = high[idx] - atr_at
+        clamped_btm = ext_btm < low[idx] ? low[idx] : ext_btm
+        [high[idx], clamped_btm]
+    else
+        [high[idx], low[idx]]
+
+// === Overlap check (BigBeluga-style: any overlap, ALL states) ===
+// Returns: true if new OB should be REJECTED (Old mode), or
+// removes overlapping existing OBs and returns false (Recent mode)
+overlaps_existing(new_top, new_bot, obs_arr) =>
+    reject_new = false
+    if array.size(obs_arr) > 0 and overlap_check
+        i = array.size(obs_arr) - 1
+        while i >= 0
+            o = array.get(obs_arr, i)
+            // Check overlap with ALL states (mitigated/violated boxes also block)
+            has_overlap = false
+            if new_bot > o.btm and new_bot < o.top
+                has_overlap := true
+            if new_top < o.top and new_bot > o.btm
+                has_overlap := true
+            if new_top > o.top and new_bot < o.btm
+                has_overlap := true
+            if new_top < o.top and new_top > o.btm
+                has_overlap := true
+            if has_overlap
+                if overlap_mode == "Recent"
+                    box.delete(o.bx)
+                    array.remove(obs_arr, i)
+                else
+                    reject_new := true
+                    break
+            i := i - 1
+    reject_new
+
+// === Build alert payload ===
+build_payload(sig_type, ob_id, ob_h, ob_l, age, direction_s) =>
+    sym = syminfo.tickerid
+    parts = str.split(sym, ":")
+    base_sym = array.size(parts) > 1 ? array.get(parts, 1) : sym
+    tf = timeframe.period
+    ts_iso = str.format_time(time, "yyyy-MM-dd'T'HH:mm:ss'Z'", "UTC")
+    "{" + "\"symbol\":\"" + sym + "\"," + "\"base_symbol\":\"" + base_sym + "\"," + "\"timeframe\":\"" + tf + "\"," + "\"alert_type\":\"indicator_signal\"," + "\"event\":\"indicator_fired\"," + "\"indicator_name\":\"Custom_OB_Detector\"," + "\"signal_type\":\"" + sig_type + "\"," + "\"ts_signal\":\"" + ts_iso + "\"," + "\"price\":" + str.tostring(close, "#.#####") + "," + "\"ob_id\":" + str.tostring(ob_id) + "," + "\"ob_high\":" + str.tostring(ob_h, "#.#####") + "," + "\"ob_low\":" + str.tostring(ob_l, "#.#####") + "," + "\"ob_age_bars\":" + str.tostring(age) + "," + "\"direction\":\"" + direction_s + "\"," + "\"drawing_name\":\"INDICATOR_AUTO_SIGNAL\"," + "\"priority\":\"C\"," + "\"indicator_version\":\"custom_ob_v12\"," + "\"reason\":\"OB " + sig_type + " on " + base_sym + " TF " + tf + "\"" + "}"
+
+// === Create OB ===
+create_bull_ob(idx, color_in) =>
+    [ob_top, ob_bot] = ob_coords_bull(idx)
+    rej_same = overlaps_existing(ob_top, ob_bot, bull_obs)
+    rej_cross = overlaps_existing(ob_top, ob_bot, bear_obs)
+    if not rej_same and not rej_cross
+        if array.size(bull_obs) >= max_total_obs
+            old = array.get(bull_obs, 0)
+            box.delete(old.bx)
+            array.shift(bull_obs)
+        box_text  = show_text_label ? "DEMAND" : ""
+        text_clr  = show_text_label ? color.new(bull_color, 30) : color.new(color.white, 100)
+        b = box.new(bar_index - idx, ob_top, bar_index, ob_bot, bgcolor=color.new(bull_color, alpha_fresh), border_color=color.new(bull_color, 40), extend=extend.right, text=box_text, text_size=size.tiny, text_halign=text.align_left, text_valign=text.align_top, text_color=text_clr)
+        new_ob = ob_data.new(b, true, ob_top, ob_bot, bar_index, time[idx], 0)
+        array.push(bull_obs, new_ob)
+        alert(build_payload("new_ob_bullish", time[idx], ob_top, ob_bot, 0, "bull"), alert.freq_once_per_bar_close)
+
+create_bear_ob(idx, color_in) =>
+    [ob_top, ob_bot] = ob_coords_bear(idx)
+    rej_same = overlaps_existing(ob_top, ob_bot, bear_obs)
+    rej_cross = overlaps_existing(ob_top, ob_bot, bull_obs)
+    if not rej_same and not rej_cross
+        if array.size(bear_obs) >= max_total_obs
+            old = array.get(bear_obs, 0)
+            box.delete(old.bx)
+            array.shift(bear_obs)
+        box_text  = show_text_label ? "SUPPLY" : ""
+        text_clr  = show_text_label ? color.new(bear_color, 30) : color.new(color.white, 100)
+        b = box.new(bar_index - idx, ob_top, bar_index, ob_bot, bgcolor=color.new(bear_color, alpha_fresh), border_color=color.new(bear_color, 40), extend=extend.right, text=box_text, text_size=size.tiny, text_halign=text.align_left, text_valign=text.align_top, text_color=text_clr)
+        new_ob = ob_data.new(b, false, ob_top, ob_bot, bar_index, time[idx], 0)
+        array.push(bear_obs, new_ob)
+        alert(build_payload("new_ob_bearish", time[idx], ob_top, ob_bot, 0, "bear"), alert.freq_once_per_bar_close)
+
+// === Cross detection ===
+var float up_track = na
+var float dn_track = na
+crossup = false
+crossdn = false
+
+if na(up_track)
+    up_track := high
+if na(dn_track)
+    dn_track := low
+
+if high > up_track
+    up_track := high
+    dn_track := low
+    crossup := true
+
+if low < dn_track
+    up_track := high
+    dn_track := low
+    crossdn := true
+
+// === State Machine ===
+if barstate.isconfirmed
+    // Init
+    if ms.start == 0
+        ms.start := 1
+        ms.choch := low
+        ms.bos := high
+        ms.loc := bar_index
+        ms.main := high
+        ms.temp := bar_index
+
+    // Phase 1: waiting for first BOS or CHoCH to establish trend
+    else if ms.start == 1
+        // Bull CHoCH: close >= ms.bos
+        if close >= ms.bos
+            idbear = find_extreme(ms.loc, true)
+            create_bear_ob(idbear, bear_color)
+            ms.trend := 1
+            ms.choch := ms.choch
+            ms.bos := na
+            ms.start := 2
+            ms.loc := bar_index
+            ms.main := high
+            ms.temp := ms.loc
+        // Bear CHoCH: close <= ms.choch
+        else if close <= ms.choch
+            idbull = find_extreme(ms.loc, false)
+            create_bull_ob(idbull, bull_color)
+            ms.trend := -1
+            ms.choch := ms.bos
+            ms.bos := na
+            ms.start := 2
+            ms.loc := bar_index
+            ms.main := low
+            ms.temp := ms.loc
+
+    // Phase 2: trend running
+    else if ms.start == 2
+        // EVERY pivot in phase 2 creates an OB candidate (overlap filter dedupe)
+        if not na(ph)
+            create_bear_ob(mslen, bear_color)
+        if not na(pl)
+            create_bull_ob(mslen, bull_color)
+        if ms.trend == -1
+            // Bear trend: track lowest as ms.main
+            if low <= ms.main
+                ms.main := low
+                ms.temp := bar_index
+            // ms.bos set if crossup and 2 bullish candles
+            if na(ms.bos)
+                if crossup and close > open and close[1] > open[1]
+                    ms.bos := ms.main
+                    ms.loc := ms.temp
+            // BOS continuation (close <= ms.bos in bear means rejection of resistance)
+            if not na(ms.bos) and close <= ms.bos
+                idbear = find_extreme(ms.loc, true)
+                create_bear_ob(idbear, bear_color)
+                id_now = find_extreme(ms.loc, true)
+                ms.bos := na
+                ms.choch := high[id_now]
+                ms.loc := bar_index - id_now
+            // CHoCH reversal: close >= ms.choch
+            else if close >= ms.choch
+                idbull = find_extreme(ms.loc, false)
+                create_bull_ob(idbull, bull_color)
+                id_now = find_extreme(ms.loc, false)
+                if na(ms.bos)
+                    ms.choch := low[id_now]
+                else
+                    ms.choch := ms.bos
+                ms.bos := na
+                ms.main := high
+                ms.trend := 1
+                ms.loc := bar_index
+                ms.temp := ms.loc
+
+        else if ms.trend == 1
+            // Bull trend: track highest as ms.main
+            if high >= ms.main
+                ms.main := high
+                ms.temp := bar_index
+            if na(ms.bos)
+                if crossdn and close < open and close[1] < open[1]
+                    ms.bos := ms.main
+                    ms.loc := ms.temp
+            // BOS continuation (close >= ms.bos in bull means support held)
+            if not na(ms.bos) and close >= ms.bos
+                idbull = find_extreme(ms.loc, false)
+                create_bull_ob(idbull, bull_color)
+                id_now = find_extreme(ms.loc, false)
+                ms.bos := na
+                ms.choch := low[id_now]
+                ms.loc := bar_index - id_now
+            // CHoCH reversal: close <= ms.choch
+            else if close <= ms.choch
+                idbear = find_extreme(ms.loc, true)
+                create_bear_ob(idbear, bear_color)
+                id_now = find_extreme(ms.loc, true)
+                if na(ms.bos)
+                    ms.choch := high[id_now]
+                else
+                    ms.choch := ms.bos
+                ms.bos := na
+                ms.main := low
+                ms.trend := -1
+                ms.loc := bar_index
+                ms.temp := ms.loc
+
+// === Lifecycle bull OBs ===
+mitigation_trigger_bull(ob_top, ob_bot, ob_avg) =>
+    if obmiti == "Close"
+        math.min(close, open) < ob_bot
+    else if obmiti == "Wick"
+        low < ob_bot
+    else
+        low < ob_avg
+
+mitigation_trigger_bear(ob_top, ob_bot, ob_avg) =>
+    if obmiti == "Close"
+        math.max(close, open) > ob_top
+    else if obmiti == "Wick"
+        high > ob_top
+    else
+        high > ob_avg
+
+if array.size(bull_obs) > 0 and barstate.isconfirmed
+    i = array.size(bull_obs) - 1
+    while i >= 0
+        o = array.get(bull_obs, i)
+        age = bar_index - o.created_bar
+        if age > max_ob_age_bars
+            box.delete(o.bx)
+            array.remove(bull_obs, i)
+            i := i - 1
+            continue
+        if o.state == 3
+            i := i - 1
+            continue
+        ob_avg = math.avg(o.top, o.btm)
+        if mitigation_trigger_bull(o.top, o.btm, ob_avg)
+            if obshowbb
+                box.set_bgcolor(o.bx, color.new(bull_color, alpha_mitig))
+                o.state := 3
+                alert(build_payload("ob_bullish_violated", o.ob_id, o.top, o.btm, age, "bull"), alert.freq_once_per_bar_close)
+            else
+                box.delete(o.bx)
+                array.remove(bull_obs, i)
+                alert(build_payload("ob_bullish_violated", o.ob_id, o.top, o.btm, age, "bull"), alert.freq_once_per_bar_close)
+                i := i - 1
+                continue
+            i := i - 1
+            continue
+        if o.state == 1 and close > o.top
+            box.set_bgcolor(o.bx, color.new(bull_color, alpha_mitig))
+            o.state := 2
+            alert(build_payload("ob_bullish_mitigated", o.ob_id, o.top, o.btm, age, "bull"), alert.freq_once_per_bar_close)
+            i := i - 1
+            continue
+        if o.state == 0 and low <= o.top and high >= o.btm
+            box.set_bgcolor(o.bx, color.new(bull_color, alpha_touched))
+            o.state := 1
+            alert(build_payload("ob_bullish_touched", o.ob_id, o.top, o.btm, age, "bull"), alert.freq_once_per_bar_close)
+        i := i - 1
+
+if array.size(bear_obs) > 0 and barstate.isconfirmed
+    i = array.size(bear_obs) - 1
+    while i >= 0
+        o = array.get(bear_obs, i)
+        age = bar_index - o.created_bar
+        if age > max_ob_age_bars
+            box.delete(o.bx)
+            array.remove(bear_obs, i)
+            i := i - 1
+            continue
+        if o.state == 3
+            i := i - 1
+            continue
+        ob_avg = math.avg(o.top, o.btm)
+        if mitigation_trigger_bear(o.top, o.btm, ob_avg)
+            if obshowbb
+                box.set_bgcolor(o.bx, color.new(bear_color, alpha_mitig))
+                o.state := 3
+                alert(build_payload("ob_bearish_violated", o.ob_id, o.top, o.btm, age, "bear"), alert.freq_once_per_bar_close)
+            else
+                box.delete(o.bx)
+                array.remove(bear_obs, i)
+                alert(build_payload("ob_bearish_violated", o.ob_id, o.top, o.btm, age, "bear"), alert.freq_once_per_bar_close)
+                i := i - 1
+                continue
+            i := i - 1
+            continue
+        if o.state == 1 and close < o.btm
+            box.set_bgcolor(o.bx, color.new(bear_color, alpha_mitig))
+            o.state := 2
+            alert(build_payload("ob_bearish_mitigated", o.ob_id, o.top, o.btm, age, "bear"), alert.freq_once_per_bar_close)
+            i := i - 1
+            continue
+        if o.state == 0 and low <= o.top and high >= o.btm
+            box.set_bgcolor(o.bx, color.new(bear_color, alpha_touched))
+            o.state := 1
+            alert(build_payload("ob_bearish_touched", o.ob_id, o.top, o.btm, age, "bear"), alert.freq_once_per_bar_close)
+        i := i - 1
