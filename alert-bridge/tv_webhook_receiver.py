@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from urllib.parse import urlencode
 from urllib.request import urlopen, Request
@@ -26,6 +26,7 @@ WATCHLIST_REJECTIONS_LOG = LOG_DIR / "watchlist_rejections.jsonl"
 # 2026-05-17: passive indicator signal logging (separate channel, no claude_recheck)
 INDICATOR_SIGNALS_LOG = LOG_DIR / "indicator_signals.jsonl"
 INDICATOR_SIGNALS_DEDUP_INDEX = LOG_DIR / "indicator_signals_dedup_index.json"
+SCHEMA_WARNINGS_LOG = LOG_DIR / "schema_warnings.jsonl"
 ENV_FILE = BASE_DIR / ".env"
 CLAUDE_RECHECK = BASE_DIR / "claude_recheck.py"
 STRATEGY_RULES_PATH = Path.home() / "tradingview-mcp" / "my-strategy" / "strategy_rules.json"
@@ -84,6 +85,46 @@ def load_env():
                 k, v = line.split("=", 1)
                 env[k.strip()] = v.strip()
     return env
+
+
+def _validate_schema_shadow(parsed):
+    """Schema enforcement Fase 1 SHADOW — returns list of issue strings (empty = OK).
+    Não rejeita nada; só sinaliza pra weekly_review."""
+    issues = []
+    if not isinstance(parsed, dict):
+        issues.append("payload_not_dict")
+        return issues
+
+    alert_type = parsed.get("alert_type")
+    symbol = parsed.get("symbol") or parsed.get("ticker")
+    timeframe = parsed.get("timeframe")
+
+    if not alert_type:
+        issues.append("missing_alert_type")
+    if not symbol:
+        issues.append("missing_symbol_or_ticker")
+    if not timeframe:
+        issues.append("missing_timeframe")
+
+    if alert_type == "indicator_signal":
+        if not (parsed.get("indicator_name") or parsed.get("indicator")):
+            issues.append("indicator_signal_missing_indicator_name")
+        if not (parsed.get("signal_type") or parsed.get("signal") or parsed.get("event")):
+            issues.append("indicator_signal_missing_signal_type")
+        if "ts_signal" in parsed and not parsed.get("ts_signal"):
+            issues.append("indicator_signal_empty_ts_signal")
+
+    elif isinstance(alert_type, str) and alert_type.startswith("module_trigger_"):
+        if not parsed.get("symbol"):
+            issues.append("module_trigger_missing_symbol")
+        if not parsed.get("timeframe"):
+            issues.append("module_trigger_missing_timeframe")
+        if not (parsed.get("price") or parsed.get("price_at_alert")):
+            issues.append("module_trigger_missing_price")
+        if not (parsed.get("event") or parsed.get("reason")):
+            issues.append("module_trigger_missing_event_or_reason")
+
+    return issues
 
 
 def split_text(text: str, limit: int = 3800):
@@ -1725,17 +1766,86 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if self.path == "/health":
+            def _file_info(p):
+                return {
+                    "exists": p.exists(),
+                    "last_modified": (
+                        datetime.fromtimestamp(p.stat().st_mtime, tz=timezone.utc).isoformat()
+                        if p.exists() else None
+                    )
+                }
+
+            claude_recheck_events_log = LOG_DIR / "claude_recheck_events.jsonl"
+
+            dedup_size = 0
+            if INDICATOR_SIGNALS_DEDUP_INDEX.exists():
+                try:
+                    with INDICATOR_SIGNALS_DEDUP_INDEX.open() as f:
+                        data = json.load(f)
+                    if isinstance(data, (list, dict)):
+                        dedup_size = len(data)
+                except Exception:
+                    dedup_size = 0
+
+            tv_info  = _file_info(LOG_FILE)
+            ind_info = _file_info(INDICATOR_SIGNALS_LOG)
+            srl_info = _file_info(SETUP_RESEARCH_LOG)
+            cre_info = _file_info(claude_recheck_events_log)
+            sw_info  = _file_info(SCHEMA_WARNINGS_LOG)
+
+            sw_24h_count = 0
+            if SCHEMA_WARNINGS_LOG.exists():
+                try:
+                    _cutoff = datetime.now(timezone.utc) - timedelta(hours=24)
+                    with SCHEMA_WARNINGS_LOG.open() as f:
+                        for line in f:
+                            try:
+                                _rec = json.loads(line)
+                                _t = datetime.fromisoformat(_rec.get("received_at", ""))
+                                if _t >= _cutoff:
+                                    sw_24h_count += 1
+                            except Exception:
+                                continue
+                except Exception:
+                    sw_24h_count = 0
+
             self._send(200, {
                 "ok": True,
                 "service": "tv_webhook_receiver",
-                "claude_recheck": CLAUDE_RECHECK.exists()
+                "claude_recheck": CLAUDE_RECHECK.exists(),
+                "secret_configured": SECRET != "local-test" and len(SECRET) >= 20,
+                "legacy_endpoint_enabled": False,
+                "logs": {
+                    "tradingview_alerts_exists": tv_info["exists"],
+                    "tradingview_alerts_last_modified": tv_info["last_modified"],
+                    "indicator_signals_exists": ind_info["exists"],
+                    "indicator_signals_last_modified": ind_info["last_modified"],
+                    "setup_research_log_exists": srl_info["exists"],
+                    "setup_research_log_last_modified": srl_info["last_modified"],
+                    "claude_recheck_events_exists": cre_info["exists"],
+                    "claude_recheck_events_last_modified": cre_info["last_modified"],
+                },
+                "dedup": {
+                    "indicator_signals_dedup_index_exists": INDICATOR_SIGNALS_DEDUP_INDEX.exists(),
+                    "indicator_signals_dedup_index_size": dedup_size,
+                },
+                "runtime": {
+                    "receiver_pid": os.getpid(),
+                    "pause_flag_present": Path("/tmp/claude_recheck.paused").exists(),
+                },
+                "schema": {
+                    "schema_enforcement_mode": "shadow",
+                    "schema_warnings_exists": sw_info["exists"],
+                    "schema_warnings_last_modified": sw_info["last_modified"],
+                    "schema_warnings_recent_count_24h": sw_24h_count,
+                }
             })
             return
         self._send(404, {"ok": False, "error": "not_found"})
 
     def do_POST(self):
-        expected_path = f"/webhook/{SECRET}"
-        if self.path != expected_path:
+        new_path = f"/webhook/{SECRET}"
+        if self.path != new_path:
             self._send(403, {"ok": False, "error": "forbidden"})
             return
 
@@ -1750,12 +1860,33 @@ class Handler(BaseHTTPRequestHandler):
         event = {
             "received_at": datetime.now(timezone.utc).isoformat(),
             "source": "tradingview",
-            "path": self.path,
+            "path": "/webhook/<SECRET_REDACTED>",
             "payload": parsed
         }
 
         with LOG_FILE.open("a", encoding="utf-8") as f:
             f.write(json.dumps(event, ensure_ascii=False) + "\n")
+
+        # === Schema enforcement Fase 1 SHADOW (2026-05-24) ===
+        # Não rejeita — só loga warnings estruturados em logs/schema_warnings.jsonl
+        try:
+            _issues = _validate_schema_shadow(parsed)
+            if _issues:
+                _warning = {
+                    "received_at": event["received_at"],
+                    "schema_shadow_warning": True,
+                    "issues": _issues,
+                    "alert_type": parsed.get("alert_type") if isinstance(parsed, dict) else None,
+                    "symbol": (parsed.get("symbol") or parsed.get("ticker")) if isinstance(parsed, dict) else None,
+                    "timeframe": parsed.get("timeframe") if isinstance(parsed, dict) else None,
+                    "path_sanitized": "/webhook/<SECRET_REDACTED>",
+                    "payload_keys": sorted(list(parsed.keys())) if isinstance(parsed, dict) else [],
+                    "action": "allowed_shadow_mode",
+                }
+                with SCHEMA_WARNINGS_LOG.open("a", encoding="utf-8") as f:
+                    f.write(json.dumps(_warning, ensure_ascii=False) + "\n")
+        except Exception:
+            pass
 
         # === Guard A (Fase 0.3 — 2026-05-19): contador de alert_types deprecated ===
         # Fail-safe (helper engole exceções). Hot path indicator_signal não dispara
@@ -1865,7 +1996,7 @@ class Handler(BaseHTTPRequestHandler):
 
 def main():
     server = ThreadingHTTPServer((HOST, PORT), Handler)
-    print(f"Receiver ativo em http://{HOST}:{PORT}/webhook/{SECRET}", flush=True)
+    print(f"Receiver ativo em http://{HOST}:{PORT}/webhook/<SECRET_REDACTED>", flush=True)
     print(f"Health check: http://{HOST}:{PORT}/health", flush=True)
     print(f"Log: {LOG_FILE}", flush=True)
     print("Telegram: habilitado via .env" if ENV_FILE.exists() else "Telegram: .env não encontrado", flush=True)

@@ -36,6 +36,13 @@ SETUP_R_OUTCOME_LOG = LOG_DIR / "setup_r_outcome_log.jsonl"
 INDICATOR_OUTCOMES_LOG = LOG_DIR / "indicator_signals_outcomes.jsonl"
 STRATEGY_EVAL_LOG = LOG_DIR / "strategy_eval_log.jsonl"
 STRATEGY_SIGNALS_LOG = LOG_DIR / "strategy_signals.jsonl"
+SCHEMA_WARNINGS_LOG = LOG_DIR / "schema_warnings.jsonl"
+INDICATOR_SIGNALS_LOG = LOG_DIR / "indicator_signals.jsonl"
+TV_WEBHOOK_RECEIVER_STDOUT_GLOB = "tv_webhook_receiver_stdout.log*"
+LAUNCHD_TV_RECEIVER_STDOUT_GLOB = "launchd_tv_receiver_stdout.log*"
+RECEIVER_HEALTH_URL = "http://127.0.0.1:8787/health"
+RECEIVER_LOCALTEST_URL = "http://127.0.0.1:8787/webhook/local-test"
+INFRA_CUTOVER_DATE = datetime(2026, 5, 24, tzinfo=timezone.utc)
 
 # Critério institucional (memory feedback_sample_gate_for_rules)
 SAMPLE_GATE_DIRECTIONAL = 30
@@ -54,7 +61,7 @@ LOOKBACK_DAYS = 7
 
 
 def load_env():
-    env_path = BASE_DIR / ".env"
+    env_path = BASE_DIR / "alert-bridge" / ".env"
     env = {}
     if not env_path.exists(): return env
     for line in env_path.read_text().splitlines():
@@ -365,12 +372,164 @@ def check_d2r_growth():
 
 # ─── Telegram formatter ────────────────────────────────────────────────────
 
+def check_template_schema_dedup():
+    """Template / Schema / Dedup Health — Fase 1 shadow.
+    Lê schema_warnings.jsonl, /health do receiver, e procura sinais críticos."""
+    from collections import Counter
+    name = "Template / Schema / Dedup Health"
+
+    # --- Schema warnings 24h / 7d + top issues + alert_types ---
+    warns = read_jsonl(SCHEMA_WARNINGS_LOG)
+    now = datetime.now(timezone.utc)
+    n_24h = 0
+    n_7d = 0
+    issue_counter = Counter()
+    alert_type_counter = Counter()
+    for w in warns:
+        ts = parse_iso(w.get("received_at"))
+        if ts is None:
+            continue
+        if ts >= now - timedelta(hours=24):
+            n_24h += 1
+        if ts >= now - timedelta(days=7):
+            n_7d += 1
+            for issue in (w.get("issues") or []):
+                issue_counter[issue] += 1
+            at = w.get("alert_type") or "<null>"
+            alert_type_counter[at] += 1
+    top_issues = issue_counter.most_common(5)
+    top_alert_types = alert_type_counter.most_common(5)
+
+    # --- Indicator signals (proxy de "written") ---
+    ind_signals = read_jsonl(INDICATOR_SIGNALS_LOG)
+    n_ind_7d = 0
+    for s in ind_signals:
+        ts = parse_iso(s.get("ts_signal") or s.get("received_at") or s.get("ts"))
+        if ts is not None and ts >= now - timedelta(days=7):
+            n_ind_7d += 1
+    accept_rate_pct = None
+    if (n_ind_7d + n_7d) > 0:
+        accept_rate_pct = 100.0 * n_ind_7d / (n_ind_7d + n_7d)
+
+    # --- /health do receiver ---
+    health = None
+    try:
+        with urlopen(RECEIVER_HEALTH_URL, timeout=5) as resp:
+            health = json.loads(resp.read().decode())
+    except Exception:
+        pass
+
+    # --- /webhook/local-test status (esperado 403) ---
+    localtest_status = None
+    try:
+        req = Request(RECEIVER_LOCALTEST_URL, data=b"{}",
+                      headers={"Content-Type": "application/json"}, method="POST")
+        with urlopen(req, timeout=5) as resp:
+            localtest_status = resp.status
+    except Exception as e:
+        # urllib raises HTTPError for 4xx; capture code
+        localtest_status = getattr(e, "code", None)
+
+    # --- Grep legacy_endpoint_used SÓ em stdout logs ATIVOS (sem .bak) ---
+    # .bak contém histórico pré-cutover (falsos positivos). Logs ativos foram
+    # criados pelo launchd/kickstart pós-cutover, portanto qualquer match é real.
+    legacy_after_cutover = 0
+    for path in (LOG_DIR / "tv_webhook_receiver_stdout.log",
+                 LOG_DIR / "launchd_tv_receiver_stdout.log"):
+        if not path.exists():
+            continue
+        try:
+            with path.open(errors="replace") as f:
+                for line in f:
+                    if "legacy_endpoint_used" in line:
+                        legacy_after_cutover += 1
+        except Exception:
+            continue
+
+    # --- Secret em logs (sem expor valor) ---
+    secret_leak_count = 0
+    env = load_env()
+    secret = env.get("TV_WEBHOOK_SECRET", "")
+    if secret and len(secret) >= 20:
+        try:
+            for path in LOG_DIR.rglob("*"):
+                if not path.is_file():
+                    continue
+                try:
+                    with path.open("rb") as f:
+                        if secret.encode() in f.read():
+                            secret_leak_count += 1
+                except Exception:
+                    continue
+        except Exception:
+            pass
+
+    # --- Derived statuses ---
+    schema_mode = (health or {}).get("schema", {}).get("schema_enforcement_mode") if health else None
+    legacy_enabled = (health or {}).get("legacy_endpoint_enabled") if health else None
+
+    # FAIL conditions
+    fail_reasons = []
+    if legacy_after_cutover > 0:
+        fail_reasons.append(f"legacy_endpoint_used={legacy_after_cutover}_post_cutover")
+    if secret_leak_count > 0:
+        fail_reasons.append(f"secret_in_logs={secret_leak_count}")
+    if localtest_status not in (403, None):
+        fail_reasons.append(f"local_test_status={localtest_status}_not_403")
+    if legacy_enabled is True:
+        fail_reasons.append("legacy_endpoint_enabled_true")
+    # spike: > 50 warnings/24h é alto
+    if n_24h > 50:
+        fail_reasons.append(f"schema_warnings_spike_24h={n_24h}")
+    # missing ts_signal: > 20% das últ 7d é grave (regressão pós-migração)
+    empty_ts = issue_counter.get("indicator_signal_empty_ts_signal", 0)
+    if n_ind_7d > 0 and empty_ts > 0.20 * n_ind_7d:
+        fail_reasons.append(f"empty_ts_signal_pct_high={empty_ts}/{n_ind_7d}")
+
+    # WARN conditions
+    warn_reasons = []
+    if health is None:
+        warn_reasons.append("receiver_health_unreachable")
+    if 0 < n_24h <= 50:
+        warn_reasons.append(f"schema_warnings_24h={n_24h}")
+    if schema_mode and schema_mode != "shadow":
+        warn_reasons.append(f"schema_mode={schema_mode}_not_shadow")
+
+    if fail_reasons:
+        status = "FAIL"
+    elif warn_reasons:
+        status = "WARN"
+    else:
+        status = "OK"
+
+    return {
+        "name": name,
+        "status": status,
+        "fail_reasons": fail_reasons,
+        "warn_reasons": warn_reasons,
+        "n_24h": n_24h,
+        "n_7d": n_7d,
+        "top_issues": top_issues,
+        "top_alert_types": top_alert_types,
+        "n_ind_signals_7d": n_ind_7d,
+        "accept_rate_pct": accept_rate_pct,
+        "localtest_status": localtest_status,
+        "legacy_after_cutover": legacy_after_cutover,
+        "secret_leak_count": secret_leak_count,
+        "schema_mode": schema_mode,
+        "legacy_enabled": legacy_enabled,
+    }
+
+
 def format_status_emoji(status):
     return {
         "OPERACIONAL": "🟢",
         "COLETANDO": "🟡",
         "PRAZO PRÓXIMO": "🟠",
         "PRONTO": "✅",
+        "OK": "🟢",
+        "WARN": "🟡",
+        "FAIL": "🔴",
     }.get(status, "⚪")
 
 
@@ -437,6 +596,29 @@ def format_telegram(checks):
     lines.append(f"  mediana/dia={c['median_per_day']} · pico={c['max_day']} (backfill se >>mediana)")
     lines.append("")
 
+    # 9. Template / Schema / Dedup Health (infra)
+    c = checks["infra"]
+    emoji = format_status_emoji(c["status"])
+    lines.append(f"{emoji} *{c['name']}* [{c['status']}]")
+    lines.append(f"  warnings 24h={c['n_24h']} · 7d={c['n_7d']}")
+    if c["accept_rate_pct"] is not None:
+        lines.append(f"  indicator_signals 7d={c['n_ind_signals_7d']} · accept~{c['accept_rate_pct']:.1f}%")
+    else:
+        lines.append(f"  indicator_signals 7d={c['n_ind_signals_7d']}")
+    lines.append(f"  receiver: schema_mode={c['schema_mode']} · legacy_enabled={c['legacy_enabled']} · /local-test={c['localtest_status']} (expect 403)")
+    lines.append(f"  legacy_after_cutover={c['legacy_after_cutover']} · secret_in_logs={c['secret_leak_count']}")
+    if c["top_issues"]:
+        top_str = ", ".join(f"{iss}({n})" for iss, n in c["top_issues"][:3])
+        lines.append(f"  top_issues_7d: {top_str}")
+    if c["top_alert_types"]:
+        top_at = ", ".join(f"{at}({n})" for at, n in c["top_alert_types"][:3])
+        lines.append(f"  alert_types_com_warning_7d: {top_at}")
+    if c["fail_reasons"]:
+        lines.append(f"  🔴 FAIL: {'; '.join(c['fail_reasons'])}")
+    if c["warn_reasons"]:
+        lines.append(f"  🟡 WARN: {'; '.join(c['warn_reasons'])}")
+    lines.append("")
+
     # Pendências críticas (do MEMORY/Tasks)
     lines.append("─" * 30)
     lines.append("🔴 *Pendências críticas* (manuais)")
@@ -458,6 +640,7 @@ def run_all_checks():
         "enrich": check_enrich_v2(),
         "xau_4h": check_xau_4h_monitor(),
         "d2r": check_d2r_growth(),
+        "infra": check_template_schema_dedup(),
     }
 
 

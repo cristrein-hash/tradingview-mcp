@@ -78,7 +78,7 @@ def release_chart_lock(fd):
 
 
 def load_env():
-    env_path = BASE_DIR / ".env"
+    env_path = BASE_DIR / "alert-bridge" / ".env"
     env = {}
     if not env_path.exists(): return env
     for line in env_path.read_text().splitlines():
