@@ -40,6 +40,7 @@ def release_chart_lock(fd):
         pass
 
 BASE_DIR = Path.home() / "tradingview-mcp"
+CLAUDE_CLI = str(Path.home() / ".local" / "bin" / "claude")  # path absoluto: LaunchAgent não herda PATH do shell
 STRATEGY_DIR = BASE_DIR / "my-strategy"
 RULES = STRATEGY_DIR / "strategy_rules.json"
 OP_PROMPT = STRATEGY_DIR / "operational_prompt.md"
@@ -1500,7 +1501,7 @@ def main():
     prompt = build_prompt(alert)
 
     cmd = [
-        "claude",
+        CLAUDE_CLI,
         "-p",
         prompt,
         "--allowedTools",
