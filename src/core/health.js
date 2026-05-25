@@ -5,6 +5,44 @@ import { getClient, getTargetInfo, evaluate } from '../connection.js';
 import { existsSync } from 'fs';
 import { execSync, spawn } from 'child_process';
 
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+// Run a shell command, returning trimmed stdout or '' on any failure.
+function shTrim(cmd) {
+  try { return execSync(cmd, { timeout: 5000 }).toString().trim(); } catch { return ''; }
+}
+
+// True if the PID is still alive (signal 0 probes without killing).
+function pidAlive(pid) {
+  try { process.kill(Number(pid), 0); return true; } catch { return false; }
+}
+
+// PIDs holding the CDP port LISTEN socket — the main TradingView process.
+function cdpListenerPids(port, platform) {
+  if (platform === 'win32') {
+    const out = shTrim(`netstat -ano -p tcp | findstr LISTENING | findstr :${port}`);
+    const pids = new Set();
+    out.split(/\r?\n/).forEach(l => { const m = l.trim().match(/(\d+)\s*$/); if (m) pids.add(m[1]); });
+    return [...pids];
+  }
+  const out = shTrim(`lsof -ti tcp:${port} -sTCP:LISTEN`);
+  return out ? out.split(/\s+/).filter(Boolean) : [];
+}
+
+// GET a CDP HTTP endpoint with a hard timeout; resolves to body string or null.
+async function cdpHttpGet(port, path) {
+  const http = await import('http');
+  return new Promise((resolve) => {
+    const req = http.get(`http://localhost:${port}${path}`, (res) => {
+      let data = '';
+      res.on('data', (chunk) => data += chunk);
+      res.on('end', () => resolve(data));
+    });
+    req.on('error', () => resolve(null));
+    req.setTimeout(3000, () => { req.destroy(); resolve(null); });
+  });
+}
+
 export async function healthCheck() {
   await getClient();
   const target = await getTargetInfo();
@@ -212,40 +250,81 @@ export async function launch({ port, kill_existing } = {}) {
   }
 
   if (killFirst) {
-    try {
-      if (platform === 'win32') execSync('taskkill /F /IM TradingView.exe', { timeout: 5000 });
-      else execSync('pkill -f TradingView', { timeout: 5000 });
-      await new Promise(r => setTimeout(r, 1500));
-    } catch { /* may not be running */ }
+    // Identify the instance actually serving CDP (the port listener), falling
+    // back to the binary path. A wedged instance keeps the listener alive.
+    let oldPids = cdpListenerPids(cdpPort, platform);
+    if (oldPids.length === 0 && platform !== 'win32') {
+      const out = shTrim(`pgrep -f ${JSON.stringify(tvPath)}`);
+      oldPids = out ? out.split(/\s+/).filter(Boolean) : [];
+    }
+
+    if (oldPids.length > 0) {
+      // 1) Graceful SIGTERM.
+      if (platform === 'win32') shTrim('taskkill /IM TradingView.exe');
+      else for (const pid of oldPids) { try { process.kill(Number(pid), 'SIGTERM'); } catch { /* gone */ } }
+      for (let i = 0; i < 12 && oldPids.some(pidAlive); i++) await sleep(500); // up to 6s
+
+      // 2) Escalate to SIGKILL for survivors (a wedged process may ignore SIGTERM).
+      const survivors = oldPids.filter(pidAlive);
+      if (survivors.length > 0) {
+        if (platform === 'win32') shTrim('taskkill /F /IM TradingView.exe');
+        else for (const pid of survivors) { try { process.kill(Number(pid), 'SIGKILL'); } catch { /* gone */ } }
+        for (let i = 0; i < 10 && survivors.some(pidAlive); i++) await sleep(500); // up to 5s
+      }
+
+      // 3) Hard requirement: never relaunch while the old instance is alive.
+      const stillAlive = oldPids.filter(pidAlive);
+      if (stillAlive.length > 0) {
+        throw new Error(`Failed to kill existing TradingView (pids still alive: ${stillAlive.join(', ')}). Kill manually and retry.`);
+      }
+
+      // 4) Confirm the CDP port is free so we don't attach to a zombie socket.
+      for (let i = 0; i < 10 && cdpListenerPids(cdpPort, platform).length > 0; i++) await sleep(500);
+      const portHolders = cdpListenerPids(cdpPort, platform);
+      if (portHolders.length > 0) {
+        throw new Error(`TradingView killed but port ${cdpPort} still has a listener (pids: ${portHolders.join(', ')}). Refusing to relaunch onto a stale socket.`);
+      }
+    }
   }
 
   const child = spawn(tvPath, [`--remote-debugging-port=${cdpPort}`], { detached: true, stdio: 'ignore' });
   child.unref();
 
-  for (let i = 0; i < 15; i++) {
-    await new Promise(r => setTimeout(r, 1000));
-    try {
-      const http = await import('http');
-      const ready = await new Promise((resolve) => {
-        http.get(`http://localhost:${cdpPort}/json/version`, (res) => {
-          let data = '';
-          res.on('data', (chunk) => data += chunk);
-          res.on('end', () => resolve(data));
-        }).on('error', () => resolve(null));
-      });
-      if (ready) {
-        const info = JSON.parse(ready);
-        return {
-          success: true, platform, binary: tvPath, pid: child.pid,
-          cdp_port: cdpPort, cdp_url: `http://localhost:${cdpPort}`,
-          browser: info.Browser, user_agent: info['User-Agent'],
-        };
-      }
-    } catch { /* retry */ }
+  // Wait for the CDP HTTP endpoint to come up.
+  let version = null;
+  for (let i = 0; i < 20; i++) {
+    await sleep(1000);
+    const body = await cdpHttpGet(cdpPort, '/json/version');
+    if (body) { try { version = JSON.parse(body); break; } catch { /* not ready */ } }
+  }
+  if (!version) {
+    return {
+      success: false, platform, binary: tvPath, pid: child.pid, cdp_port: cdpPort, cdp_ready: false,
+      error: `TradingView relaunched (pid ${child.pid}) but CDP did not respond on port ${cdpPort} within 20s.`,
+    };
+  }
+
+  // Wait for the chart page target to appear (the chart finishes loading).
+  let chartTarget = null;
+  for (let i = 0; i < 40; i++) {
+    const body = await cdpHttpGet(cdpPort, '/json/list');
+    if (body) {
+      try {
+        const targets = JSON.parse(body);
+        chartTarget = targets.find(t => t.type === 'page' && /tradingview\.com\/chart/i.test(t.url)) || null;
+        if (chartTarget) break;
+      } catch { /* not ready */ }
+    }
+    await sleep(1000);
   }
 
   return {
-    success: true, platform, binary: tvPath, pid: child.pid, cdp_port: cdpPort, cdp_ready: false,
-    warning: 'TradingView launched but CDP not responding yet. It may still be loading. Try tv_health_check in a few seconds.',
+    success: true, platform, binary: tvPath, pid: child.pid,
+    cdp_port: cdpPort, cdp_url: `http://localhost:${cdpPort}`,
+    browser: version.Browser, user_agent: version['User-Agent'],
+    cdp_ready: true,
+    chart_target_found: !!chartTarget,
+    chart_target_url: chartTarget?.url || null,
+    ...(chartTarget ? {} : { warning: `CDP is up on port ${cdpPort} but no chart target appeared within 40s — the chart may still be loading.` }),
   };
 }
