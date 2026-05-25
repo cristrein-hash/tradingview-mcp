@@ -13,7 +13,22 @@ import json
 from datetime import datetime, timezone
 from statistics import mean
 
-BASE = Path(__file__).parent.parent
+def repo_root():
+    """Resolve the tradingview-mcp repo root robustly (survives file moves)."""
+    import os
+    from pathlib import Path as _Path
+    env = os.environ.get("TVMCP_ROOT")
+    if env and _Path(env).expanduser().is_dir():
+        return _Path(env).expanduser().resolve()
+    cur = _Path(__file__).resolve().parent
+    for d in (cur, *cur.parents):
+        if (d / ".git").exists() or (d / "src" / "server.js").exists() \
+           or ((d / "alert-bridge").is_dir() and (d / "my-strategy").is_dir()):
+            return d
+    raise RuntimeError(f"TVMCP repo root not found from {__file__}; set TVMCP_ROOT or run inside the repo")
+
+
+BASE = repo_root()
 JSONL_DIR = BASE / "alert-bridge" / "logs" / "backtests"
 WINDOWS = [
     ("W1_2023H1","XAUUSD_240_2023-01-19_to_2026-05-21_v6.jsonl"),

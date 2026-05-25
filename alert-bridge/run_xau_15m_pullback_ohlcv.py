@@ -42,10 +42,25 @@ import sys
 import threading
 import time
 
-BASE_DIR = Path(__file__).parent.parent
+def repo_root():
+    """Resolve the tradingview-mcp repo root robustly (survives file moves)."""
+    import os
+    from pathlib import Path as _Path
+    env = os.environ.get("TVMCP_ROOT")
+    if env and _Path(env).expanduser().is_dir():
+        return _Path(env).expanduser().resolve()
+    cur = _Path(__file__).resolve().parent
+    for d in (cur, *cur.parents):
+        if (d / ".git").exists() or (d / "src" / "server.js").exists() \
+           or ((d / "alert-bridge").is_dir() and (d / "my-strategy").is_dir()):
+            return d
+    raise RuntimeError(f"TVMCP repo root not found from {__file__}; set TVMCP_ROOT or run inside the repo")
+
+
+BASE_DIR = repo_root()
 MCP_SERVER_PATH = BASE_DIR / "src" / "server.js"
 NODE_BIN = "/opt/homebrew/bin/node"
-BACKTESTS_DIR = Path(__file__).parent / "logs" / "backtests"
+BACKTESTS_DIR = BASE_DIR / "alert-bridge" / "logs" / "backtests"
 PAUSE_FLAG = Path("/tmp/claude_recheck.paused")
 
 DEFAULT_SYMBOL = "PEPPERSTONE:XAUUSD"
