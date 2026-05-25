@@ -1,6 +1,6 @@
 # Operational Inventory
 
-> Snapshot as-of **2026-05-25** (updated after Camada 6A.2 — external-factors heartbeat path foundation + supervision).
+> Snapshot as-of **2026-05-25** (updated after Camada 6A.3 — weekly_review path foundation).
 > Verified by live inspection (`launchctl`, import/spawn graph, path references).
 > This is a **map**, not a change plan — see [Next Phases](#11-next-phases).
 > No secrets are recorded here.
@@ -128,6 +128,7 @@ All LaunchAgent-referenced scripts + **their log paths** + production config:
 - ✅ **Camada 6A.2 — `external_factors_heartbeat.py` path foundation + supervision** (code commit `c5ebcc1`).
   - **Path:** `repo_root()` helper applied; `BASE_DIR = repo_root() / "alert-bridge"` (preserves the original `__file__.parent` semantics — logs/.env/state stay under `alert-bridge/`, now move-safe). Validated via `--once` (status=ok); `.env` not modified.
   - **Supervision fix:** this was an **unsupervised manual `--daemon`** that had been **down since 10:30Z** (same event that killed the cloudflared tunnel). Put under new LaunchAgent **`com.cristrein.external-factors-heartbeat`** (RunAtLoad + KeepAlive, `--daemon --sleep 900`, logs in `alert-bridge/logs/launchd_external_factors_heartbeat_*`). Now `state=running`, first check `status=ok`, stderr clean. The plist is in `~/Library/LaunchAgents/` (not versioned). Receiver + public `/health` unaffected.
+- ✅ **Camada 6A.3 — `weekly_review.py` path foundation** (commit `8025f8a`). `repo_root()` helper applied: `BASE_DIR = repo_root()`, `LOG_DIR = repo_root() / "alert-bridge" / "logs"` (same semantics today, now move-safe). The `weekly-review` LaunchAgent (Sun 09:00, `--mode cron`) was **not touched or restarted** — it picks up the change on its next scheduled run. Validated: py_compile OK; BASE_DIR/LOG_DIR resolve correctly; `--mode once` exit 0, no traceback, **no Telegram sent**; `.env` not modified.
 
 ## 11. Next Phases
 
@@ -138,8 +139,8 @@ All LaunchAgent-referenced scripts + **their log paths** + production config:
 Remaining — require explicit authorization:
 1. **Path foundation rollout (rest of 6A)** — extend the `repo_root()` helper to the remaining `__file__`-relative scripts before any physical move:
    - ~~**6A.2** `external_factors_heartbeat.py`~~ → done (`c5ebcc1`) + now supervised.
-   - **6A.3** `weekly_review.py` (monitoring LaunchAgent — validate via `kickstart`).
-   - **6A.4** `monitor_xau_4h_strategies.py` (live daemon — dedicated window + smoke).
+   - ~~**6A.3** `weekly_review.py`~~ → done (`8025f8a`); agent not restarted (picks up on next Sun run).
+   - **6A.4** `monitor_xau_4h_strategies.py` (live daemon — dedicated window + smoke). **Last remaining script.**
    - Family-B (`Path.home()/...`) scripts: optional conversion for portability; does not block moves.
 2. **Physical restructure** — the big one, only after path foundation: move LaunchAgent-referenced scripts/configs into a cleaner layout in a maintenance window, editing each plist's absolute paths in lockstep (`bootout` → move → edit `<string>` → `bootstrap` → validate), one agent at a time, with rollback.
 
