@@ -1,6 +1,6 @@
 # Operational Inventory
 
-> Snapshot as-of **2026-05-25** (updated after Camada 5C — small legacy orphan logs archived).
+> Snapshot as-of **2026-05-25** (updated after Camada 5D — retention automation + first safe apply).
 > Verified by live inspection (`launchctl`, import/spawn graph, path references).
 > This is a **map**, not a change plan — see [Next Phases](#11-next-phases).
 > No secrets are recorded here.
@@ -114,6 +114,12 @@ All LaunchAgent-referenced scripts + **their log paths** + production config:
   - ⚠️ **Quality flag:** `XAUUSD_240_2026-03-19_..._v6.jsonl` has an **incomplete last record** (`replay_current_date=None`).
   - **Future option (not now):** reversible `gzip` of the 8 v6 (~1.35 GB → est. ~150–270 MB) if space becomes a problem again.
 - ✅ **Camada 5C — small legacy orphan logs archived** — moved 7 frozen, gitignored, orphan logs (no writer, no live consumer) from `alert-bridge/logs/` to `backups/legacy_logs/` (~8.3 MB): `claude_monitor_events.jsonl`, `claude_intraday_monitor_events.jsonl`, `claude_monitor_last.json`, `claude_intraday_monitor_last.json`, `launchd_monitor.log`, `launchd_intraday_monitor.log`, `watch_manager.out`. Move only (reversible); `backups/` is gitignored → no commit for the move. Active receiver/pipeline jsonl, dedup_index, active launchd logs untouched; receiver `/health` OK. Note: `watch_manager.out` was a stale stdout of the still-present `setup_watch_manager.py` (which now writes to `setup_watch_log.jsonl`/`setup_watch_state.json`, not `.out`).
+- ✅ **Camada 5D — retention automation** (commit `194ada6`). `scripts/archive_old_files.py` gained three opt-in modes, **dry-run by default (act only with `--apply`)**, **not** part of `all` so the `archive-weekly` LaunchAgent is unchanged:
+  - `backtests` — per-window keep top `BACKTEST_KEEP_VERSIONS` (=1, the max); prune superseded `_vN.jsonl` + orphaned `*.checkpoint.json`. Unversioned dumps always protected.
+  - `launchd` — copytruncate `launchd_*.log` above `LAUNCHD_CAP_MB` (=5), inode-preserving; never deletes.
+  - `bak-prune` — delete `backups/bak_archive/` entries older than `BAK_RETENTION_DAYS` (=90).
+  - Hard protections (all new modes): only gitignored files (`git check-ignore`), skip open handles (`lsof`), never the max version per window or unversioned files.
+  - **First safe `--apply`**: removed **32 orphan `.checkpoint.json`** (v2/v3/v4/v5 of already-deleted dumps). **v6 (8 .jsonl + 8 checkpoints) and 7 unversioned `.jsonl` preserved**; 0 `.jsonl` deleted; receiver `/health` OK. All removed files were gitignored → no commit for the deletion.
 
 ## 11. Next Phases
 
@@ -122,7 +128,8 @@ All LaunchAgent-referenced scripts + **their log paths** + production config:
 > Legacy Claude-monitor bundle is now **fully archived** (scripts + configs + plists). `xau-4h-monitor-cron` is intentionally KEPT. The live `monitor_xau_4h` ecosystem is untouched.
 
 Remaining — require explicit authorization:
-1. **Retention automation** — extend `archive_old_files.py` (or a new prune script): backtest version/window pruning, launchd-log truncation, `bak_archive` aging. Not built yet.
-2. **Physical restructure** — only after the above, and only in a maintenance window with lockstep plist edits.
+1. **Physical restructure** — the big one: move LaunchAgent-referenced scripts/configs into a cleaner layout. Only in a maintenance window, editing the 10 plists' absolute paths in lockstep (`bootout` → move → edit `<string>` → `bootstrap` → validate), one agent at a time, with rollback.
+
+> Retention automation exists (Camada 5D); future `--apply` of `launchd`/`bak-prune` is wired but currently no-op (nothing over the thresholds). Optionally wire the new modes into a schedule later (would touch a LaunchAgent → separate authorization).
 
 > v6 backtest window policy is **decided** (Camada 5B): keep all 8 uncompressed; gzip is a reversible future option only.
