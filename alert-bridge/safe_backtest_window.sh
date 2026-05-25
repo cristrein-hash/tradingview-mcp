@@ -47,12 +47,15 @@ safe_backtest_window.sh — controlled TradingView/MCP backtest maintenance wind
                        smoke (run_xau_15m_pullback_ohlcv.py --months 1 --dry-run), then restore.
   --collect [--months N]  Same maintenance window, but run a REAL OHLCV collection
                        (run_xau_15m_pullback_ohlcv.py --months N; default N=3, no dry-run).
-  --replay-smoke       Short Replay-based FEATURE smoke: 80 bars of XAUUSD 15M from ~90d ago
-                       (run_xau_15m_replay_backtest.py --bars 80 --date <90d>), then restore.
-  --replay-collect --start-date YYYY-MM-DD --end-date YYYY-MM-DD
-                       REAL Replay feature collection for a closed window (e.g. one month):
-                       run_xau_15m_replay_backtest.py --start-date S --end-date E (safety cap
+  --replay-smoke [--timeframe 15|30|60] [--symbol SYM]
+                       Short Replay-based FEATURE smoke: 80 bars from ~90d ago
+                       (run_xau_replay_feature_collect.py --bars 80 --date <90d>), then restore.
+                       Defaults: --symbol PEPPERSTONE:XAUUSD --timeframe 15.
+  --replay-collect --start-date YYYY-MM-DD --end-date YYYY-MM-DD [--timeframe 15|30|60] [--symbol SYM]
+                       REAL Replay feature collection for a closed window (e.g. one quarter):
+                       run_xau_replay_feature_collect.py --start-date S --end-date E (safety cap
                        ${REPLAY_COLLECT_CAP} bars), then restore.
+                       Defaults: --symbol PEPPERSTONE:XAUUSD --timeframe 15.
   --help               Show this help.
 
 A bare invocation (no args) prints this usage and runs nothing.
@@ -66,7 +69,9 @@ MODE=""
 MONTHS=3
 START_DATE=""
 END_DATE=""
-REPLAY_COLLECT_CAP=8000   # safety cap of bars for a windowed replay collect (1mo 15M ~2000, 3mo ~6000)
+SYMBOL="PEPPERSTONE:XAUUSD"   # default; overridable for replay modes
+TIMEFRAME="15"                # default; allowed for replay modes: 15|30|60
+REPLAY_COLLECT_CAP=8000   # safety cap of bars for a windowed replay collect (3mo 15M ~5700, 30M ~2900, 1H ~1450)
 while [ $# -gt 0 ]; do
   case "$1" in
     --smoke)          MODE="smoke" ;;
@@ -76,6 +81,8 @@ while [ $# -gt 0 ]; do
     --months)         shift; MONTHS="${1:-}" ;;
     --start-date)     shift; START_DATE="${1:-}" ;;
     --end-date)       shift; END_DATE="${1:-}" ;;
+    --symbol)         shift; SYMBOL="${1:-}" ;;
+    --timeframe)      shift; TIMEFRAME="${1:-}" ;;
     --full)    echo "ERRO: --full não autorizado neste script. Use --smoke / --collect / --replay-smoke / --replay-collect." >&2; exit 2 ;;
     -h|--help) usage; exit 0 ;;
     *) echo "ERRO: argumento desconhecido: $1" >&2; usage >&2; exit 2 ;;
@@ -83,6 +90,14 @@ while [ $# -gt 0 ]; do
   shift
 done
 if [ -z "$MODE" ]; then usage >&2; exit 2; fi
+# --symbol/--timeframe only apply to replay modes; validate timeframe is one of 15|30|60.
+if [ "$MODE" = "replay-smoke" ] || [ "$MODE" = "replay-collect" ]; then
+  case "$TIMEFRAME" in
+    15|30|60) : ;;
+    *) echo "ERRO: --timeframe inválido: '${TIMEFRAME}' (permitido: 15 | 30 | 60)" >&2; exit 2 ;;
+  esac
+  if [ -z "$SYMBOL" ]; then echo "ERRO: --symbol vazio" >&2; exit 2; fi
+fi
 if [ "$MODE" = "collect" ]; then
   if ! printf '%s' "$MONTHS" | grep -qE '^[0-9]+$' || [ "$MONTHS" -lt 1 ]; then
     echo "ERRO: --months precisa ser inteiro >= 1 (recebido: '${MONTHS}')" >&2; exit 2
@@ -231,13 +246,13 @@ elif [ "$MODE" = "collect" ]; then
   if [ $RUN_RC -eq 0 ]; then log "COLLECT PASS (exit_code=0)"; else log "COLLECT FAIL (exit_code=$RUN_RC)"; fi
 elif [ "$MODE" = "replay-smoke" ]; then
   REPLAY_DATE=$(date -v-90d +%Y-%m-%d)
-  log "=========== REPLAY-SMOKE (80 bars XAUUSD 15M, replay desde ${REPLAY_DATE}) ==========="
-  ( cd "$ALERT_DIR" && python3 -u run_xau_15m_replay_backtest.py --bars 80 --date "$REPLAY_DATE" )
+  log "=========== REPLAY-SMOKE (80 bars ${SYMBOL} ${TIMEFRAME}m, replay desde ${REPLAY_DATE}) ==========="
+  ( cd "$ALERT_DIR" && python3 -u run_xau_replay_feature_collect.py --symbol "$SYMBOL" --timeframe "$TIMEFRAME" --bars 80 --date "$REPLAY_DATE" )
   RUN_RC=$?
   if [ $RUN_RC -eq 0 ]; then log "REPLAY-SMOKE PASS (exit_code=0)"; else log "REPLAY-SMOKE FAIL (exit_code=$RUN_RC)"; fi
 elif [ "$MODE" = "replay-collect" ]; then
-  log "=========== REPLAY-COLLECT (XAUUSD 15M, ${START_DATE} -> ${END_DATE}, cap ${REPLAY_COLLECT_CAP} bars) ==========="
-  ( cd "$ALERT_DIR" && python3 -u run_xau_15m_replay_backtest.py --start-date "$START_DATE" --end-date "$END_DATE" --bars "$REPLAY_COLLECT_CAP" )
+  log "=========== REPLAY-COLLECT (${SYMBOL} ${TIMEFRAME}m, ${START_DATE} -> ${END_DATE}, cap ${REPLAY_COLLECT_CAP} bars) ==========="
+  ( cd "$ALERT_DIR" && python3 -u run_xau_replay_feature_collect.py --symbol "$SYMBOL" --timeframe "$TIMEFRAME" --start-date "$START_DATE" --end-date "$END_DATE" --bars "$REPLAY_COLLECT_CAP" )
   RUN_RC=$?
   if [ $RUN_RC -eq 0 ]; then log "REPLAY-COLLECT PASS (exit_code=0)"; else log "REPLAY-COLLECT FAIL (exit_code=$RUN_RC)"; fi
 fi

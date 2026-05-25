@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""run_xau_15m_replay_backtest.py — per-bar FEATURE collector for XAUUSD 15M via TradingView Replay.
+"""run_xau_replay_feature_collect.py — per-bar FEATURE collector for any symbol/timeframe via TradingView Replay.
+
+Timeframe-agnostic: pass --timeframe (15|30|60|… chart resolution string) and --symbol.
+Defaults to PEPPERSTONE:XAUUSD 15M. (Renamed from run_xau_15m_replay_backtest.py; the
+capture logic is unchanged and already validated on the XAU 15M 3-month block.)
 
 WHY REPLAY (not scroll + data_get_ohlcv): data_get_ohlcv reads only the loaded recent
 bars and chart_scroll_to_date does NOT fetch deep history (see run_xau_15m_pullback_ohlcv.py,
@@ -7,7 +11,7 @@ which only ever collected ~7 days). Replay mode (replay_start + replay_step) act
 loads/advances historical bars, so each step exposes the chart's full indicator/signal
 state AT that historical bar — the basis for a decision-feature dataset.
 
-Mirrors the proven run_xau_4h_backtest.py capture pattern, at 15M. Reliability > speed.
+Mirrors the proven run_xau_4h_backtest.py capture pattern. Reliability > speed.
 
 Per-bar features captured (recorded as null + flagged in _feature_availability when a
 source is unavailable — NEVER faked):
@@ -16,10 +20,13 @@ source is unavailable — NEVER faked):
   pine_shapes (Bubbles), pine_lines.
 
 USAGE — ALWAYS inside the safe_backtest_window.sh maintenance window (never bare python):
-  --date YYYY-MM-DD   replay start date (default: ~90 days ago)
-  --bars N            total bars to capture (default 80 = smoke)
+  --symbol SYM        chart symbol (default PEPPERSTONE:XAUUSD)
+  --timeframe TF      chart resolution string: 15|30|60 (default 15)
+  --start-date YYYY-MM-DD  replay start date (alias --date; default ~90 days ago)
+  --end-date YYYY-MM-DD    stop once replay reaches this date (--bars then a safety cap)
+  --bars N            total bars to capture (default 80 = smoke) OR safety cap with --end-date
   --checkpoint-every  checkpoint frequency (default 20)
-  --resume            continue from the last checkpoint
+  --resume            continue from the last checkpoint (same live replay only)
   --dry-run           init + 1 bar then exit
 Requires /tmp/claude_recheck.paused (set by the maintenance window).
 """
