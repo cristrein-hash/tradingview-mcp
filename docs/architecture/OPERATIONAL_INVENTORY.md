@@ -1,6 +1,6 @@
 # Operational Inventory
 
-> Snapshot as-of **2026-05-25** (updated after Camada 5B — v6 retention policy decided: KEEP all 8).
+> Snapshot as-of **2026-05-25** (updated after Camada 5C — small legacy orphan logs archived).
 > Verified by live inspection (`launchctl`, import/spawn graph, path references).
 > This is a **map**, not a change plan — see [Next Phases](#11-next-phases).
 > No secrets are recorded here.
@@ -113,6 +113,7 @@ All LaunchAgent-referenced scripts + **their log paths** + production config:
   - All 8 classified **KEEP_FOR_REASON** — useful for cross-regime comparison/future backtests; deleting any loses unique data. None referenced by live code; no open handles.
   - ⚠️ **Quality flag:** `XAUUSD_240_2026-03-19_..._v6.jsonl` has an **incomplete last record** (`replay_current_date=None`).
   - **Future option (not now):** reversible `gzip` of the 8 v6 (~1.35 GB → est. ~150–270 MB) if space becomes a problem again.
+- ✅ **Camada 5C — small legacy orphan logs archived** — moved 7 frozen, gitignored, orphan logs (no writer, no live consumer) from `alert-bridge/logs/` to `backups/legacy_logs/` (~8.3 MB): `claude_monitor_events.jsonl`, `claude_intraday_monitor_events.jsonl`, `claude_monitor_last.json`, `claude_intraday_monitor_last.json`, `launchd_monitor.log`, `launchd_intraday_monitor.log`, `watch_manager.out`. Move only (reversible); `backups/` is gitignored → no commit for the move. Active receiver/pipeline jsonl, dedup_index, active launchd logs untouched; receiver `/health` OK. Note: `watch_manager.out` was a stale stdout of the still-present `setup_watch_manager.py` (which now writes to `setup_watch_log.jsonl`/`setup_watch_state.json`, not `.out`).
 
 ## 11. Next Phases
 
@@ -121,8 +122,7 @@ All LaunchAgent-referenced scripts + **their log paths** + production config:
 > Legacy Claude-monitor bundle is now **fully archived** (scripts + configs + plists). `xau-4h-monitor-cron` is intentionally KEPT. The live `monitor_xau_4h` ecosystem is untouched.
 
 Remaining — require explicit authorization:
-1. **Small legacy orphans** — `claude_*_events.jsonl` + `launchd_[intraday_]monitor.log` (~5.4 MB, frozen 2026-05-20) from the archived monitors: gzip or archive.
-2. **Retention automation** — extend `archive_old_files.py` (or a new prune script): backtest version/window pruning, launchd-log truncation, `bak_archive` aging. Not built yet.
-3. **Physical restructure** — only after the above, and only in a maintenance window with lockstep plist edits.
+1. **Retention automation** — extend `archive_old_files.py` (or a new prune script): backtest version/window pruning, launchd-log truncation, `bak_archive` aging. Not built yet.
+2. **Physical restructure** — only after the above, and only in a maintenance window with lockstep plist edits.
 
 > v6 backtest window policy is **decided** (Camada 5B): keep all 8 uncompressed; gzip is a reversible future option only.
