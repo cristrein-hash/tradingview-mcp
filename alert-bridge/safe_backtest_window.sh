@@ -46,7 +46,7 @@ safe_backtest_window.sh — controlled TradingView/MCP backtest maintenance wind
   --smoke              Pause production, hard-restart TradingView, validate CDP, run a SHORT
                        smoke (run_xau_15m_pullback_ohlcv.py --months 1 --dry-run), then restore.
   --collect [--months N]  Same maintenance window, but run a REAL OHLCV collection
-                       (run_xau_15m_pullback_ohlcv.py --months N --resume; default N=3, no dry-run).
+                       (run_xau_15m_pullback_ohlcv.py --months N; default N=3, no dry-run).
   --help               Show this help.
 
 A bare invocation (no args) prints this usage and runs nothing.
