@@ -66,7 +66,7 @@ MODE=""
 MONTHS=3
 START_DATE=""
 END_DATE=""
-REPLAY_COLLECT_CAP=5000   # safety cap of bars for a windowed replay collect (1 month 15M ~2000)
+REPLAY_COLLECT_CAP=8000   # safety cap of bars for a windowed replay collect (1mo 15M ~2000, 3mo ~6000)
 while [ $# -gt 0 ]; do
   case "$1" in
     --smoke)          MODE="smoke" ;;
