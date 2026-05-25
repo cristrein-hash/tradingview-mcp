@@ -43,31 +43,43 @@ usage() {
   cat <<EOF
 safe_backtest_window.sh — controlled TradingView/MCP backtest maintenance window
 
-  --smoke   Pause production, hard-restart TradingView, validate CDP, run a SHORT
-            smoke (run_xau_15m_pullback_ohlcv.py --months 1 --dry-run), then restore.
-  --help    Show this help.
+  --smoke              Pause production, hard-restart TradingView, validate CDP, run a SHORT
+                       smoke (run_xau_15m_pullback_ohlcv.py --months 1 --dry-run), then restore.
+  --collect [--months N]  Same maintenance window, but run a REAL OHLCV collection
+                       (run_xau_15m_pullback_ohlcv.py --months N --resume; default N=3, no dry-run).
+  --help               Show this help.
 
-Full backtest is intentionally NOT available here (requires a future explicit flag).
-The receiver, its LaunchAgent, alerts, and secrets are never touched.
+A bare invocation (no args) prints this usage and runs nothing.
+--full is intentionally rejected. The receiver, its LaunchAgent, alerts, and secrets are never touched.
+Production is always restored via the EXIT trap.
 EOF
 }
 
 # ---------------------------------------------------------------- args
 MODE=""
-for arg in "$@"; do
-  case "$arg" in
-    --smoke) MODE="smoke" ;;
-    --full)  echo "ERRO: --full não autorizado neste script. Use apenas --smoke." >&2; exit 2 ;;
+MONTHS=3
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --smoke)   MODE="smoke" ;;
+    --collect) MODE="collect" ;;
+    --months)  shift; MONTHS="${1:-}" ;;
+    --full)    echo "ERRO: --full não autorizado neste script. Use --smoke ou --collect." >&2; exit 2 ;;
     -h|--help) usage; exit 0 ;;
-    *) echo "ERRO: argumento desconhecido: $arg" >&2; usage >&2; exit 2 ;;
+    *) echo "ERRO: argumento desconhecido: $1" >&2; usage >&2; exit 2 ;;
   esac
+  shift
 done
 if [ -z "$MODE" ]; then usage >&2; exit 2; fi
+if [ "$MODE" = "collect" ]; then
+  if ! printf '%s' "$MONTHS" | grep -qE '^[0-9]+$' || [ "$MONTHS" -lt 1 ]; then
+    echo "ERRO: --months precisa ser inteiro >= 1 (recebido: '${MONTHS}')" >&2; exit 2
+  fi
+fi
 
 # ---------------------------------------------------------------- state (for restore)
 DAEMON_STOPPED=0
 CRON_STOPPED=0
-SMOKE_RC=1
+RUN_RC=1
 RESTORED=0
 
 is_loaded() { launchctl list 2>/dev/null | grep -q "$1"; }
@@ -168,13 +180,18 @@ echo "  health -> $HEALTH"
 if [ $HRC -ne 0 ]; then log "!! CDP não saudável — abortando (restore via trap)"; exit 4; fi
 log "CDP OK"
 
-# 7) run the SHORT smoke
+# 7) run the requested operation (inside the maintenance window; trap restores either way)
 if [ "$MODE" = "smoke" ]; then
   log "=========== SMOKE (1 mês, dry-run) ==========="
   ( cd "$ALERT_DIR" && python3 -u run_xau_15m_pullback_ohlcv.py --months 1 --dry-run )
-  SMOKE_RC=$?
-  if [ $SMOKE_RC -eq 0 ]; then log "SMOKE PASS (exit_code=0)"; else log "SMOKE FAIL (exit_code=$SMOKE_RC)"; fi
+  RUN_RC=$?
+  if [ $RUN_RC -eq 0 ]; then log "SMOKE PASS (exit_code=0)"; else log "SMOKE FAIL (exit_code=$RUN_RC)"; fi
+elif [ "$MODE" = "collect" ]; then
+  log "=========== COLLECT (real, ${MONTHS} mês/meses, no dry-run, --resume) ==========="
+  ( cd "$ALERT_DIR" && python3 -u run_xau_15m_pullback_ohlcv.py --months "$MONTHS" --resume )
+  RUN_RC=$?
+  if [ $RUN_RC -eq 0 ]; then log "COLLECT PASS (exit_code=0)"; else log "COLLECT FAIL (exit_code=$RUN_RC)"; fi
 fi
 
 # restore_production runs here via trap EXIT
-exit $SMOKE_RC
+exit $RUN_RC
