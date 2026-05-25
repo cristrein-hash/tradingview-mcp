@@ -1,6 +1,6 @@
 # Operational Inventory
 
-> Snapshot as-of **2026-05-25** (updated after Camada 5D — retention automation + first safe apply).
+> Snapshot as-of **2026-05-25** (updated after Camada 6A.1 — repo-root path foundation in backtest scripts).
 > Verified by live inspection (`launchctl`, import/spawn graph, path references).
 > This is a **map**, not a change plan — see [Next Phases](#11-next-phases).
 > No secrets are recorded here.
@@ -120,6 +120,10 @@ All LaunchAgent-referenced scripts + **their log paths** + production config:
   - `bak-prune` — delete `backups/bak_archive/` entries older than `BAK_RETENTION_DAYS` (=90).
   - Hard protections (all new modes): only gitignored files (`git check-ignore`), skip open handles (`lsof`), never the max version per window or unversioned files.
   - **First safe `--apply`**: removed **32 orphan `.checkpoint.json`** (v2/v3/v4/v5 of already-deleted dumps). **v6 (8 .jsonl + 8 checkpoints) and 7 unversioned `.jsonl` preserved**; 0 `.jsonl` deleted; receiver `/health` OK. All removed files were gitignored → no commit for the deletion.
+- ✅ **Camada 6A.1 — path foundation (backtest/manual scripts)** (commit `a1f4a79`). Replaced fragile `Path(__file__).parent.parent` with an inline `repo_root()` helper in the 4 manual/backtest scripts: `run_xau_15m_pullback_ohlcv.py`, `run_xau_4h_backtest.py`, `draw_xau_4h_trades.py`, `find_dream_demands.py`.
+  - `repo_root()` prefers `TVMCP_ROOT`, else walks up for markers (`.git` / `src/server.js` / `alert-bridge`+`my-strategy`), else raises a clear error. `BASE_DIR`/`BACKTESTS_DIR` now anchor to it → these 4 **survive a future physical move** (resolves the coupling-(B) problem for them).
+  - On the current layout the helper is a functional no-op (resolves to the repo root, same as before). Validated: `repo_root()` → `/Users/cristrein/tradingview-mcp`; smoke `safe_backtest_window.sh --smoke` PASS; production restored (receiver OK, pause flag absent, zero orphan server.js).
+  - ⚠️ **Scripts with a LaunchAgent are NOT yet migrated** to `repo_root()` (still use `__file__`-relative or `Path.home()`): `monitor_xau_4h_strategies.py`, `weekly_review.py`, and the Family-B `Path.home()/...` scripts. Moving any of those physically still requires a code edit first.
 
 ## 11. Next Phases
 
@@ -128,7 +132,12 @@ All LaunchAgent-referenced scripts + **their log paths** + production config:
 > Legacy Claude-monitor bundle is now **fully archived** (scripts + configs + plists). `xau-4h-monitor-cron` is intentionally KEPT. The live `monitor_xau_4h` ecosystem is untouched.
 
 Remaining — require explicit authorization:
-1. **Physical restructure** — the big one: move LaunchAgent-referenced scripts/configs into a cleaner layout. Only in a maintenance window, editing the 10 plists' absolute paths in lockstep (`bootout` → move → edit `<string>` → `bootstrap` → validate), one agent at a time, with rollback.
+1. **Path foundation rollout (rest of 6A)** — extend the `repo_root()` helper to the remaining `__file__`-relative scripts before any physical move:
+   - **6A.2** `external_factors_heartbeat.py` (confirm how it's invoked first).
+   - **6A.3** `weekly_review.py` (monitoring LaunchAgent — validate via `kickstart`).
+   - **6A.4** `monitor_xau_4h_strategies.py` (live daemon — dedicated window + smoke).
+   - Family-B (`Path.home()/...`) scripts: optional conversion for portability; does not block moves.
+2. **Physical restructure** — the big one, only after path foundation: move LaunchAgent-referenced scripts/configs into a cleaner layout in a maintenance window, editing each plist's absolute paths in lockstep (`bootout` → move → edit `<string>` → `bootstrap` → validate), one agent at a time, with rollback.
 
 > Retention automation exists (Camada 5D); future `--apply` of `launchd`/`bak-prune` is wired but currently no-op (nothing over the thresholds). Optionally wire the new modes into a schedule later (would touch a LaunchAgent → separate authorization).
 
