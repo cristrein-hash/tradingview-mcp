@@ -1,6 +1,6 @@
 # Operational Inventory
 
-> Snapshot as-of **2026-05-25** (updated after Camada 4B.1c — legacy bundle archived; `xau-4h-monitor-cron` KEPT).
+> Snapshot as-of **2026-05-25** (updated after backtest retention cleanup — ~1.72 GB freed).
 > Verified by live inspection (`launchctl`, import/spawn graph, path references).
 > This is a **map**, not a change plan — see [Next Phases](#11-next-phases).
 > No secrets are recorded here.
@@ -106,6 +106,7 @@ All LaunchAgent-referenced scripts + **their log paths** + production config:
 - ✅ **Camada 4B.3** — legacy monitor target configs (`monitor_targets[_intraday].json`) archived to the same dir; gitignored runtime states deleted; stale `.gitignore` lines removed. Bundle closed in-repo.
 - ✅ **Camada 4B.1b** — the 2 unloaded `claude-*` plists moved from `~/Library/LaunchAgents/` to `backups/launchagents_archive/` (gitignored; not versioned). Active agents (`tv-webhook-receiver`, `cloudflared-tunnel`, `xau-4h-monitor-daemon`) unchanged; receiver + public `/health` OK.
 - ✅ **Camada 4B.1c** — `xau-4h-monitor-cron` decision: **KEEP** (unloaded, not archived). Reason: fallback/reference for the XAU 4H monitor's cron mode; its target script `monitor_xau_4h_strategies.py` is live and must not be touched. Documentation-only decision; plist left in place.
+- ✅ **Backtest retention cleanup** — removed superseded backtest dumps `XAUUSD_240_*_v2/v3/v4/v5.jsonl` (32 files) + 4 empty orphan launchd logs (`launchd_[intraday_]stdout/stderr.log`). **~1.72 GB freed**; `logs/backtests/` 3.1 GB → 1.4 GB. **v6 (8 files) kept as the current base**; unversioned dumps preserved (incl. `XAUUSD_240_2025-11-19_to_2026-05-19.jsonl`, hardcoded in `draw_xau_4h_trades.py`). All deleted files were gitignored/untracked → no commit. Active jsonl / dedup_index / active launchd logs / `backups/` untouched.
 
 ## 11. Next Phases
 
@@ -114,5 +115,7 @@ All LaunchAgent-referenced scripts + **their log paths** + production config:
 > Legacy Claude-monitor bundle is now **fully archived** (scripts + configs + plists). `xau-4h-monitor-cron` is intentionally KEPT. The live `monitor_xau_4h` ecosystem is untouched.
 
 Remaining — require explicit authorization:
-1. **Decide backups / log retention** — `backups/` (~6.9 MB) and `alert-bridge/logs/` (~3.1 GB): define retention policy (`archive-weekly` agent may already cover part of this).
-2. **Physical restructure** — only after the above, and only in a maintenance window with lockstep plist edits.
+1. **v6 window policy** — `logs/backtests/` holds 8 overlapping v6 windows (~1.35 GB); the longest (`2023-01-19_to_2026-05-21`) is a superset of the other 7. Decide whether to keep only the canonical window(s).
+2. **Small legacy orphans** — `claude_*_events.jsonl` + `launchd_[intraday_]monitor.log` (~5.4 MB, frozen 2026-05-20) from the archived monitors: gzip or archive.
+3. **Retention automation** — extend `archive_old_files.py` (or a new prune script): backtest version/window pruning, launchd-log truncation, `bak_archive` aging. Not built yet.
+4. **Physical restructure** — only after the above, and only in a maintenance window with lockstep plist edits.
