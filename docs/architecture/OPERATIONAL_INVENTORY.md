@@ -1,6 +1,6 @@
 # Operational Inventory
 
-> Snapshot as-of **2026-05-25** (updated after Camada 4B.1a — legacy monitors archived).
+> Snapshot as-of **2026-05-25** (updated after Camada 4B.3 — legacy monitor bundle closed in-repo).
 > Verified by live inspection (`launchctl`, import/spawn graph, path references).
 > This is a **map**, not a change plan — see [Next Phases](#11-next-phases).
 > No secrets are recorded here.
@@ -71,6 +71,8 @@ Scheduled or indirectly invoked data pipeline.
   - `run_claude_monitor.sh`, `run_claude_intraday_monitor.sh` (their wrappers)
   - `monitor_state_helpers.py` — legacy-adjacent: imported **only** by the two monitors above; moved with them to preserve the co-located import. NOT used by the live `monitor_xau_4h`.
 - No live code imports any of these (two docstring mentions in `monitor_xau_4h_strategies.py` and `weekly_review.py` are descriptive only — `weekly_review` defines its own `send_telegram`).
+- **Config bundle (Camada 4B.3, commit pending):** `monitor_targets.json` + `monitor_targets_intraday.json` `git mv`'d into the same archive dir; the gitignored runtime states (`monitor_targets[_intraday]_state.json`) were deleted and their `.gitignore` lines removed.
+- ⚠️ **Reactivation note:** these scripts use an **absolute** path (`Path.home()/"tradingview-mcp"/"alert-bridge"/...`), not `__file__`-relative. Reactivating a monitor would require restoring its `monitor_targets*.json` to the original `alert-bridge/` root path — the archived copy will not be found in place.
 - **Their plists remain unloaded and NOT yet moved** — see [Next Phases](#11-next-phases).
 
 ---
@@ -101,14 +103,14 @@ All LaunchAgent-referenced scripts + **their log paths** + production config:
 - ✅ **Camada 3** — strategy candidate packets versioned (`my-strategy/strategies/candidates/`, commit `c6b355a`).
 - ✅ **Camada 4A** — 35 XAU one-off research scripts archived to `alert-bridge/research/archive/analyze_xau/` (commit `9810bf2`).
 - ✅ **Camada 4B.1a** — 5 legacy Claude monitor scripts archived to `alert-bridge/archive/legacy_monitors/` (commit `afbbd63`). Plists not yet moved.
+- ✅ **Camada 4B.3** — legacy monitor target configs (`monitor_targets[_intraday].json`) archived to the same dir; gitignored runtime states deleted; stale `.gitignore` lines removed. Bundle closed in-repo (plists still pending, 4B.1b).
 
 ## 11. Next Phases
 
-**Done:** ~~Version `my-strategy/strategies/`~~ (Camada 3, `c6b355a`) · ~~Archive one-offs~~ (Camada 4A, `9810bf2`) · ~~Archive legacy monitor **scripts**~~ (Camada 4B.1a, `afbbd63`).
+**Done:** ~~Version `my-strategy/strategies/`~~ (Camada 3, `c6b355a`) · ~~Archive one-offs~~ (Camada 4A, `9810bf2`) · ~~Archive legacy monitor **scripts**~~ (Camada 4B.1a, `afbbd63`) · ~~Archive legacy monitor **configs** + state/gitignore cleanup~~ (Camada 4B.3).
 
 Remaining — require explicit authorization:
-1. **Move the 2 `claude-*` plists** (4B.1b) — `claude-monitor`, `claude-intraday-monitor` are unloaded and their scripts are now archived; move the `.plist` files out of `~/Library/LaunchAgents/` (e.g., `backups/launchagents_archive/`). Touches LaunchAgents → separate authorization.
+1. **Move the 2 `claude-*` plists** (4B.1b) — `claude-monitor`, `claude-intraday-monitor` are unloaded and their scripts/configs are now archived; move the `.plist` files out of `~/Library/LaunchAgents/` (e.g., `backups/launchagents_archive/`). Touches LaunchAgents → separate authorization.
 2. **Decide `xau-4h-monitor-cron`** (4B.1c) — unloaded, but points to the **live** `monitor_xau_4h_strategies.py` (cron variant of an active script, not dead code). Recommended: KEEP as reference. Do not touch the live script.
-3. **Review `monitor_targets*.json` + `.gitignore`** — `monitor_targets.json` / `monitor_targets_intraday.json` (config consumed by the now-archived monitors) and the related `.gitignore` lines for `*_state.json` are now orphaned; decide whether to archive the config too and prune the stale ignore entries.
-4. **Decide backups / log retention** — `backups/` (~6.9 MB) and `alert-bridge/logs/` (~3.1 GB): define retention policy (`archive-weekly` agent may already cover part of this).
-5. **Physical restructure** — only after the above, and only in a maintenance window with lockstep plist edits.
+3. **Decide backups / log retention** — `backups/` (~6.9 MB) and `alert-bridge/logs/` (~3.1 GB): define retention policy (`archive-weekly` agent may already cover part of this).
+4. **Physical restructure** — only after the above, and only in a maintenance window with lockstep plist edits.

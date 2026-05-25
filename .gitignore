@@ -39,10 +39,6 @@ alert-bridge/logs/*counter*.json
 # generated backtest outputs - keep source scripts/reports only if intentionally added
 my-strategy/research/backtests/**/all_summaries.json
 
-# 2026-05-18: runtime state of monitor targets (claude_monitor + claude_intraday_monitor)
-alert-bridge/monitor_targets_state.json
-alert-bridge/monitor_targets_intraday_state.json
-
 # 2026-05-25: local scratch artifacts (regenerable runtime temp dirs + stray test file)
 .cache_eval/
 .tmp_enrich/
