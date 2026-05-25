@@ -47,6 +47,8 @@ safe_backtest_window.sh — controlled TradingView/MCP backtest maintenance wind
                        smoke (run_xau_15m_pullback_ohlcv.py --months 1 --dry-run), then restore.
   --collect [--months N]  Same maintenance window, but run a REAL OHLCV collection
                        (run_xau_15m_pullback_ohlcv.py --months N; default N=3, no dry-run).
+  --replay-smoke       Short Replay-based FEATURE smoke: 80 bars of XAUUSD 15M from ~90d ago
+                       (run_xau_15m_replay_backtest.py --bars 80 --date <90d>), then restore.
   --help               Show this help.
 
 A bare invocation (no args) prints this usage and runs nothing.
@@ -60,9 +62,10 @@ MODE=""
 MONTHS=3
 while [ $# -gt 0 ]; do
   case "$1" in
-    --smoke)   MODE="smoke" ;;
-    --collect) MODE="collect" ;;
-    --months)  shift; MONTHS="${1:-}" ;;
+    --smoke)         MODE="smoke" ;;
+    --collect)       MODE="collect" ;;
+    --replay-smoke)  MODE="replay-smoke" ;;
+    --months)        shift; MONTHS="${1:-}" ;;
     --full)    echo "ERRO: --full não autorizado neste script. Use --smoke ou --collect." >&2; exit 2 ;;
     -h|--help) usage; exit 0 ;;
     *) echo "ERRO: argumento desconhecido: $1" >&2; usage >&2; exit 2 ;;
@@ -206,6 +209,12 @@ elif [ "$MODE" = "collect" ]; then
   ( cd "$ALERT_DIR" && python3 -u run_xau_15m_pullback_ohlcv.py --months "$MONTHS" )
   RUN_RC=$?
   if [ $RUN_RC -eq 0 ]; then log "COLLECT PASS (exit_code=0)"; else log "COLLECT FAIL (exit_code=$RUN_RC)"; fi
+elif [ "$MODE" = "replay-smoke" ]; then
+  REPLAY_DATE=$(date -v-90d +%Y-%m-%d)
+  log "=========== REPLAY-SMOKE (80 bars XAUUSD 15M, replay desde ${REPLAY_DATE}) ==========="
+  ( cd "$ALERT_DIR" && python3 -u run_xau_15m_replay_backtest.py --bars 80 --date "$REPLAY_DATE" )
+  RUN_RC=$?
+  if [ $RUN_RC -eq 0 ]; then log "REPLAY-SMOKE PASS (exit_code=0)"; else log "REPLAY-SMOKE FAIL (exit_code=$RUN_RC)"; fi
 fi
 
 # restore_production runs here via trap EXIT
