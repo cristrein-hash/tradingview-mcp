@@ -55,6 +55,8 @@ OHLCV_CHUNK_BARS = 500
 PER_CALL_TIMEOUT_S = 60
 INIT_TIMEOUT_S = 20
 HEALTH_TIMEOUT_S = 15
+# chart_set_symbol reloads the chart and can take ~10.6s; give restore headroom.
+RESTORE_TIMEOUT_S = 30
 INTER_CHUNK_SLEEP_S = 0.5
 CHECKPOINT_EVERY_CHUNKS = 5
 DEFAULT_SMOKE_TIMEOUT_S = 120
@@ -479,11 +481,11 @@ def main():
         if not args.no_restore_chart and original_symbol:
             try:
                 _tool_logged(client, "chart_set_symbol",
-                             {"symbol": original_symbol}, timeout=10,
+                             {"symbol": original_symbol}, timeout=RESTORE_TIMEOUT_S,
                              label="chart_set_symbol[restore]")
                 if original_tf:
                     _tool_logged(client, "chart_set_timeframe",
-                                 {"timeframe": original_tf}, timeout=10,
+                                 {"timeframe": original_tf}, timeout=RESTORE_TIMEOUT_S,
                                  label="chart_set_timeframe[restore]")
                 _log(f"    chart restaurado: {original_symbol} {original_tf}")
             except Exception as e:
