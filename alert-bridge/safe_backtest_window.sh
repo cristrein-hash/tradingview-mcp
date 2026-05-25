@@ -189,8 +189,11 @@ if [ "$MODE" = "smoke" ]; then
   RUN_RC=$?
   if [ $RUN_RC -eq 0 ]; then log "SMOKE PASS (exit_code=0)"; else log "SMOKE FAIL (exit_code=$RUN_RC)"; fi
 elif [ "$MODE" = "collect" ]; then
-  log "=========== COLLECT (real, ${MONTHS} mês/meses, no dry-run, --resume) ==========="
-  ( cd "$ALERT_DIR" && python3 -u run_xau_15m_pullback_ohlcv.py --months "$MONTHS" --resume )
+  log "=========== COLLECT (real, ${MONTHS} mês/meses, no dry-run) ==========="
+  # No --resume: each window does a TradingView hard restart (chart resets to the saved
+  # layout), so the chart symbol/timeframe setup MUST run every time. --resume skips that
+  # setup (run_xau_15m_pullback_ohlcv.py:391) and would abort at the chunk-0 guard.
+  ( cd "$ALERT_DIR" && python3 -u run_xau_15m_pullback_ohlcv.py --months "$MONTHS" )
   RUN_RC=$?
   if [ $RUN_RC -eq 0 ]; then log "COLLECT PASS (exit_code=0)"; else log "COLLECT FAIL (exit_code=$RUN_RC)"; fi
 fi
