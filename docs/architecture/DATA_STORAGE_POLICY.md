@@ -53,15 +53,38 @@ A local file may be deleted **only after** ALL of:
 - 5× 4H unversioned `_to_2026-05-20` + their checkpoints (~65 MB) — archived externally first.
 - 15M smoke artifacts (`*_80bars*`, scroll-collector `15m_ohlcv_*`, ~15 MB) — test artifacts, not archived.
 
+## Historical collection plan (multi-TF, in progress)
+Build a robust per-timeframe historical base **before** validating XAU strategies. RAW kept
+**complete** (no payload reduction). Replay only — **no external source**. Collected in
+**3-month blocks, one at a time**, always via `safe_backtest_window.sh` (maintenance window).
+After each block: validate file → `gzip` lossless to external → SHA256(orig) → SHA256(gz) →
+`gzip -t` → roundtrip SHA256 → manifest → **explicit approval** → delete local. **A block does
+not start until the previous one is validated and archived.**
+
+| TF | Coverage | Blocks (3-mo each) | Status |
+|---|---|---|---|
+| XAU 15M | 1 year | 2025-05-25→08-25 · 08-25→11-25 · 11-25→2026-02-25 | pending (+ 2026-02-25→05-25 ✅ archived) |
+| XAU 30M | 1 year | 4 blocks: 2025-05-25 → 2026-05-25 | pending |
+| XAU 1H | 2 years | 8 blocks: 2024-05-25 → 2026-05-25 | pending |
+
+- Collector: **`alert-bridge/run_xau_replay_feature_collect.py`** (TF-agnostic; `--symbol`/`--timeframe 15|30|60`).
+- Per-TF **smoke first** (80 bars) and confirm all feature sources return data before any real block:
+  `safe_backtest_window.sh --replay-smoke --timeframe 15|30|60`.
+- Real block: `safe_backtest_window.sh --replay-collect --timeframe T --start-date S --end-date E`.
+- Estimated cold size added: ~0.9 GB gz total (15M ~130 MB/block, 30M ~65 MB, 1H ~33 MB). Peak local
+  transient is one block (~1 GB for 15M) — bounded by the serialized, archive-before-next rule.
+- ⚠️ Each block pauses the XAU 4H daemon for the whole run (15M 3-mo ≈ 1.6–2.4 h); calibrate from the smoke.
+
 ## Pending decisions
 1. **Lote 2 — the 8 v6 4H (~1.35 GB):** move to external requires resolving the
    `find_dream_demands.py` dependency. Options: (a) keep local; (b) update `find_dream_demands.py`
    to read from external/gzip; (c) restore-on-demand mechanism. **Not decided.**
 2. **`backups/` (~15 MB):** low-priority candidate for external (`legacy_logs`/`legacy_archives`/`backups`).
-3. **Next practical step:** build an analysis/extractor for the external XAU 15M dataset, OR
-   continue replay collection by month/block — per operator decision.
+3. **Next practical step:** run the multi-TF collection plan above (smokes → block 1), then build an
+   analysis/extractor for the accumulated external dataset — per operator decision.
 
 ## Reminders
-- The replay feature collector is `alert-bridge/run_xau_15m_replay_backtest.py`; windowed runs go
-  through `safe_backtest_window.sh --replay-collect --start-date S --end-date E` (maintenance window).
+- The replay feature collector is `alert-bridge/run_xau_replay_feature_collect.py`; windowed runs go
+  through `safe_backtest_window.sh --replay-collect --timeframe T --start-date S --end-date E`
+  (maintenance window). Default symbol/timeframe stays PEPPERSTONE:XAUUSD 15M.
 - Restore a cold dataset when needed: `gunzip -c <external>.gz > <local>` (lossless; verify SHA256).
