@@ -21,10 +21,25 @@ from urllib.request import Request, urlopen
 from urllib.parse import urlencode
 import argparse, fcntl, json, subprocess, sys, time
 
-BASE_DIR = Path(__file__).parent.parent
+def repo_root():
+    """Resolve the tradingview-mcp repo root robustly (survives file moves)."""
+    import os
+    from pathlib import Path as _Path
+    env = os.environ.get("TVMCP_ROOT")
+    if env and _Path(env).expanduser().is_dir():
+        return _Path(env).expanduser().resolve()
+    cur = _Path(__file__).resolve().parent
+    for d in (cur, *cur.parents):
+        if (d / ".git").exists() or (d / "src" / "server.js").exists() \
+           or ((d / "alert-bridge").is_dir() and (d / "my-strategy").is_dir()):
+            return d
+    raise RuntimeError(f"TVMCP repo root not found from {__file__}; set TVMCP_ROOT or run inside the repo")
+
+
+BASE_DIR = repo_root()
 MCP_SERVER_PATH = BASE_DIR / "src" / "server.js"
 NODE_BIN = "/opt/homebrew/bin/node"
-LOG_DIR = Path(__file__).parent / "logs"
+LOG_DIR = repo_root() / "alert-bridge" / "logs"
 SIGNALS_JSONL = LOG_DIR / "indicator_signals.jsonl"
 STRATEGY_SIGNALS_JSONL = LOG_DIR / "strategy_signals.jsonl"
 EVAL_LOG_JSONL = LOG_DIR / "strategy_eval_log.jsonl"
