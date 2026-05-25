@@ -1,6 +1,6 @@
 # Operational Inventory
 
-> Snapshot as-of **2026-05-25** (updated after Camada 6A.3 — weekly_review path foundation).
+> Snapshot as-of **2026-05-25** (updated after Camada 6A.4 — path foundation rollout complete; only physical restructure remains).
 > Verified by live inspection (`launchctl`, import/spawn graph, path references).
 > This is a **map**, not a change plan — see [Next Phases](#11-next-phases).
 > No secrets are recorded here.
@@ -129,6 +129,7 @@ All LaunchAgent-referenced scripts + **their log paths** + production config:
   - **Path:** `repo_root()` helper applied; `BASE_DIR = repo_root() / "alert-bridge"` (preserves the original `__file__.parent` semantics — logs/.env/state stay under `alert-bridge/`, now move-safe). Validated via `--once` (status=ok); `.env` not modified.
   - **Supervision fix:** this was an **unsupervised manual `--daemon`** that had been **down since 10:30Z** (same event that killed the cloudflared tunnel). Put under new LaunchAgent **`com.cristrein.external-factors-heartbeat`** (RunAtLoad + KeepAlive, `--daemon --sleep 900`, logs in `alert-bridge/logs/launchd_external_factors_heartbeat_*`). Now `state=running`, first check `status=ok`, stderr clean. The plist is in `~/Library/LaunchAgents/` (not versioned). Receiver + public `/health` unaffected.
 - ✅ **Camada 6A.3 — `weekly_review.py` path foundation** (commit `8025f8a`). `repo_root()` helper applied: `BASE_DIR = repo_root()`, `LOG_DIR = repo_root() / "alert-bridge" / "logs"` (same semantics today, now move-safe). The `weekly-review` LaunchAgent (Sun 09:00, `--mode cron`) was **not touched or restarted** — it picks up the change on its next scheduled run. Validated: py_compile OK; BASE_DIR/LOG_DIR resolve correctly; `--mode once` exit 0, no traceback, **no Telegram sent**; `.env` not modified.
+- ✅ **Camada 6A.4 — `monitor_xau_4h_strategies.py` path foundation** (commit `a29239c`). `repo_root()` helper applied: `BASE_DIR = repo_root()`, `LOG_DIR = repo_root() / "alert-bridge" / "logs"` (`MCP_SERVER_PATH`/`env_path` follow; `CHART_LOCK_PATH` absolute, unchanged). **No-op on current layout**, now move-safe. The **live `xau-4h-monitor-daemon` (pid 58236) was NOT restarted** — keeps old code in memory, converges on next natural restart; no behavioral divergence (no-op). Plists untouched (script path unchanged). Validated **non-invasively** (py_compile + path resolution only; no MCP spawn, no chart, no daemon touch). **Path-foundation rollout for `__file__`-relative scripts is now complete.**
 
 ## 11. Next Phases
 
@@ -137,11 +138,9 @@ All LaunchAgent-referenced scripts + **their log paths** + production config:
 > Legacy Claude-monitor bundle is now **fully archived** (scripts + configs + plists). `xau-4h-monitor-cron` is intentionally KEPT. The live `monitor_xau_4h` ecosystem is untouched.
 
 Remaining — require explicit authorization:
-1. **Path foundation rollout (rest of 6A)** — extend the `repo_root()` helper to the remaining `__file__`-relative scripts before any physical move:
-   - ~~**6A.2** `external_factors_heartbeat.py`~~ → done (`c5ebcc1`) + now supervised.
-   - ~~**6A.3** `weekly_review.py`~~ → done (`8025f8a`); agent not restarted (picks up on next Sun run).
-   - **6A.4** `monitor_xau_4h_strategies.py` (live daemon — dedicated window + smoke). **Last remaining script.**
-   - Family-B (`Path.home()/...`) scripts: optional conversion for portability; does not block moves.
+1. ✅ **Path foundation rollout (6A) — COMPLETE** for `__file__`-relative scripts: 6A.1 (4 backtest/manual, `a1f4a79`), 6A.2 (`external_factors_heartbeat`, `c5ebcc1` + supervision), 6A.3 (`weekly_review`, `8025f8a`), 6A.4 (`monitor_xau_4h_strategies`, `a29239c`).
+   - **Optional, deferred:** functional `--mode once` test of `monitor_xau_4h` inside a maintenance window (bootout daemon → run → bootstrap) — not required (patch is a no-op).
+   - **Optional:** Family-B (`Path.home()/...`) scripts → `repo_root()` for portability; does not block moves.
 2. **Physical restructure** — the big one, only after path foundation: move LaunchAgent-referenced scripts/configs into a cleaner layout in a maintenance window, editing each plist's absolute paths in lockstep (`bootout` → move → edit `<string>` → `bootstrap` → validate), one agent at a time, with rollback.
 
 > Retention automation exists (Camada 5D); future `--apply` of `launchd`/`bak-prune` is wired but currently no-op (nothing over the thresholds). Optionally wire the new modes into a schedule later (would touch a LaunchAgent → separate authorization).
