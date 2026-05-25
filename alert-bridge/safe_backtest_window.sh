@@ -49,6 +49,10 @@ safe_backtest_window.sh — controlled TradingView/MCP backtest maintenance wind
                        (run_xau_15m_pullback_ohlcv.py --months N; default N=3, no dry-run).
   --replay-smoke       Short Replay-based FEATURE smoke: 80 bars of XAUUSD 15M from ~90d ago
                        (run_xau_15m_replay_backtest.py --bars 80 --date <90d>), then restore.
+  --replay-collect --start-date YYYY-MM-DD --end-date YYYY-MM-DD
+                       REAL Replay feature collection for a closed window (e.g. one month):
+                       run_xau_15m_replay_backtest.py --start-date S --end-date E (safety cap
+                       ${REPLAY_COLLECT_CAP} bars), then restore.
   --help               Show this help.
 
 A bare invocation (no args) prints this usage and runs nothing.
@@ -60,13 +64,19 @@ EOF
 # ---------------------------------------------------------------- args
 MODE=""
 MONTHS=3
+START_DATE=""
+END_DATE=""
+REPLAY_COLLECT_CAP=5000   # safety cap of bars for a windowed replay collect (1 month 15M ~2000)
 while [ $# -gt 0 ]; do
   case "$1" in
-    --smoke)         MODE="smoke" ;;
-    --collect)       MODE="collect" ;;
-    --replay-smoke)  MODE="replay-smoke" ;;
-    --months)        shift; MONTHS="${1:-}" ;;
-    --full)    echo "ERRO: --full não autorizado neste script. Use --smoke ou --collect." >&2; exit 2 ;;
+    --smoke)          MODE="smoke" ;;
+    --collect)        MODE="collect" ;;
+    --replay-smoke)   MODE="replay-smoke" ;;
+    --replay-collect) MODE="replay-collect" ;;
+    --months)         shift; MONTHS="${1:-}" ;;
+    --start-date)     shift; START_DATE="${1:-}" ;;
+    --end-date)       shift; END_DATE="${1:-}" ;;
+    --full)    echo "ERRO: --full não autorizado neste script. Use --smoke / --collect / --replay-smoke / --replay-collect." >&2; exit 2 ;;
     -h|--help) usage; exit 0 ;;
     *) echo "ERRO: argumento desconhecido: $1" >&2; usage >&2; exit 2 ;;
   esac
@@ -76,6 +86,16 @@ if [ -z "$MODE" ]; then usage >&2; exit 2; fi
 if [ "$MODE" = "collect" ]; then
   if ! printf '%s' "$MONTHS" | grep -qE '^[0-9]+$' || [ "$MONTHS" -lt 1 ]; then
     echo "ERRO: --months precisa ser inteiro >= 1 (recebido: '${MONTHS}')" >&2; exit 2
+  fi
+fi
+if [ "$MODE" = "replay-collect" ]; then
+  for d in "$START_DATE" "$END_DATE"; do
+    if ! printf '%s' "$d" | grep -qE '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'; then
+      echo "ERRO: --replay-collect exige --start-date e --end-date no formato YYYY-MM-DD (recebido start='${START_DATE}' end='${END_DATE}')" >&2; exit 2
+    fi
+  done
+  if ! printf '%s\n%s\n' "$START_DATE" "$END_DATE" | sort -c 2>/dev/null; then
+    echo "ERRO: --start-date ($START_DATE) deve ser <= --end-date ($END_DATE)" >&2; exit 2
   fi
 fi
 
@@ -215,6 +235,11 @@ elif [ "$MODE" = "replay-smoke" ]; then
   ( cd "$ALERT_DIR" && python3 -u run_xau_15m_replay_backtest.py --bars 80 --date "$REPLAY_DATE" )
   RUN_RC=$?
   if [ $RUN_RC -eq 0 ]; then log "REPLAY-SMOKE PASS (exit_code=0)"; else log "REPLAY-SMOKE FAIL (exit_code=$RUN_RC)"; fi
+elif [ "$MODE" = "replay-collect" ]; then
+  log "=========== REPLAY-COLLECT (XAUUSD 15M, ${START_DATE} -> ${END_DATE}, cap ${REPLAY_COLLECT_CAP} bars) ==========="
+  ( cd "$ALERT_DIR" && python3 -u run_xau_15m_replay_backtest.py --start-date "$START_DATE" --end-date "$END_DATE" --bars "$REPLAY_COLLECT_CAP" )
+  RUN_RC=$?
+  if [ $RUN_RC -eq 0 ]; then log "REPLAY-COLLECT PASS (exit_code=0)"; else log "REPLAY-COLLECT FAIL (exit_code=$RUN_RC)"; fi
 fi
 
 # restore_production runs here via trap EXIT

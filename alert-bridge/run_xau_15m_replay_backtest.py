@@ -130,8 +130,12 @@ def main():
     p = argparse.ArgumentParser(description="XAU 15M per-bar feature collector via TradingView Replay")
     p.add_argument("--symbol", default=DEFAULT_SYMBOL)
     p.add_argument("--timeframe", default=DEFAULT_TIMEFRAME)
-    p.add_argument("--date", default=None, help="Replay start date YYYY-MM-DD (default ~90d ago)")
-    p.add_argument("--bars", type=int, default=DEFAULT_BARS)
+    p.add_argument("--date", "--start-date", dest="date", default=None,
+                   help="Replay START date YYYY-MM-DD (default ~90d ago)")
+    p.add_argument("--end-date", dest="end_date", default=None,
+                   help="Stop once replay reaches this date YYYY-MM-DD (window mode; --bars is then a safety cap)")
+    p.add_argument("--bars", type=int, default=DEFAULT_BARS,
+                   help="Bar count (fixed when no --end-date) OR safety cap (with --end-date)")
     p.add_argument("--checkpoint-every", type=int, default=CHECKPOINT_EVERY)
     p.add_argument("--resume", action="store_true")
     p.add_argument("--dry-run", action="store_true", help="init + 1 bar then exit")
@@ -142,6 +146,14 @@ def main():
     if args.date is None:
         args.date = (datetime.now(timezone.utc) - timedelta(days=90)).strftime("%Y-%m-%d")
 
+    end_epoch = None
+    if args.end_date:
+        try:
+            end_epoch = int(datetime.fromisoformat(args.end_date).replace(tzinfo=timezone.utc).timestamp())
+        except Exception:
+            print(f"ERRO: --end-date inválida: {args.end_date} (use YYYY-MM-DD)", file=sys.stderr)
+            return 1
+
     if not PAUSE_FLAG.exists():
         print(f"ERRO: pause flag não encontrada: {PAUSE_FLAG}", file=sys.stderr)
         print("Rode dentro do maintenance window (safe_backtest_window.sh).", file=sys.stderr)
@@ -149,7 +161,10 @@ def main():
 
     BACKTESTS_DIR.mkdir(parents=True, exist_ok=True)
     sym_short = args.symbol.split(":")[-1]
-    out_basename = f"{sym_short}_{args.timeframe}m_replay_{args.date}_{args.bars}bars{args.suffix}"
+    if args.end_date:
+        out_basename = f"{sym_short}_{args.timeframe}m_replay_{args.date}_to_{args.end_date}{args.suffix}"
+    else:
+        out_basename = f"{sym_short}_{args.timeframe}m_replay_{args.date}_{args.bars}bars{args.suffix}"
     out_jsonl = BACKTESTS_DIR / f"{out_basename}.jsonl"
     checkpoint_path = BACKTESTS_DIR / f"{out_basename}.checkpoint.json"
 
@@ -209,15 +224,19 @@ def main():
         else:
             _log("RESUME: assumindo replay já ativo (se não, abortar e rodar sem --resume).")
 
-        bars_to_run = args.bars - start_bar
+        cap = args.bars  # fixed count (no --end-date) or safety cap (with --end-date)
         if args.dry_run:
-            bars_to_run = min(1, bars_to_run)
+            cap = start_bar + 1
             _log("DRY-RUN: capturando só 1 bar")
 
         mode = "a" if start_bar > 0 else "w"
-        _log(f"Loop {bars_to_run} bars (de {start_bar} a {start_bar + bars_to_run - 1})...")
+        if end_epoch:
+            _log(f"Loop até end-date {args.end_date} (safety cap {cap} bars), de bar {start_bar}...")
+        else:
+            _log(f"Loop {cap - start_bar} bars (de {start_bar} a {cap - 1})...")
         with out_jsonl.open(mode, encoding="utf-8") as f:
-            for i in range(start_bar, start_bar + bars_to_run):
+            i = start_bar
+            while i < cap:
                 guard = client.call_tool("chart_get_state")
                 if guard.get("symbol") != args.symbol or guard.get("resolution") != args.timeframe:
                     err = (f"CHART MUDOU NO BAR {i}: esperado {args.symbol} {args.timeframe}, "
@@ -239,6 +258,7 @@ def main():
                 f.flush()
                 bars_done += 1
 
+                cur = snap.get("replay_current_date")
                 if snap.get("replay_current_dt"):
                     last_dt = snap["replay_current_dt"]
                     if first_dt is None:
@@ -246,22 +266,30 @@ def main():
                 for k, v in (snap.get("_feature_availability") or {}).items():
                     avail_agg[k] = avail_agg.get(k, 0) + (1 if v else 0)
 
-                if i < start_bar + bars_to_run - 1:
-                    step = client.call_tool("replay_step")
-                    if not isinstance(step, dict) or not step.get("success"):
-                        _log(f"  WARN replay_step bar {i}: {step}")
-
                 if (i + 1) % 10 == 0 or i == start_bar:
-                    _log(f"  bar {i + 1}/{args.bars} | replay_dt={snap.get('replay_current_dt')} "
-                         f"| {snap.get('elapsed_s')}s")
+                    _log(f"  bar {i + 1} | replay_dt={snap.get('replay_current_dt')} | {snap.get('elapsed_s')}s")
 
                 if (i + 1) % args.checkpoint_every == 0:
                     checkpoint_path.write_text(json.dumps({
                         "last_bar_completed": i, "out_jsonl": str(out_jsonl),
-                        "symbol": args.symbol, "timeframe": args.timeframe, "date": args.date,
+                        "symbol": args.symbol, "timeframe": args.timeframe,
+                        "date": args.date, "end_date": args.end_date,
                         "updated_at": datetime.now(timezone.utc).isoformat(),
                     }, indent=2))
                     _log(f"  → checkpoint bar {i}")
+
+                # stop conditions: reached end-date, or hit the (safety) cap
+                if end_epoch and cur and cur >= end_epoch:
+                    _log(f"  atingiu end-date {args.end_date} no bar {i} — encerrando")
+                    break
+                if i + 1 >= cap:
+                    if end_epoch:
+                        _log(f"  !! safety cap {cap} bars atingido ANTES da end-date {args.end_date} — aumente --bars")
+                    break
+                step = client.call_tool("replay_step")
+                if not isinstance(step, dict) or not step.get("success"):
+                    _log(f"  WARN replay_step bar {i}: {step}")
+                i += 1
 
         _log("Loop completo.")
 
