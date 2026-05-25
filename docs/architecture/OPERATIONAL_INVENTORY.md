@@ -1,6 +1,6 @@
 # Operational Inventory
 
-> Snapshot as-of **2026-05-25** (updated after Camada 4B.3 — legacy monitor bundle closed in-repo).
+> Snapshot as-of **2026-05-25** (updated after Camada 4B.1b — legacy monitor bundle fully archived, incl. plists).
 > Verified by live inspection (`launchctl`, import/spawn graph, path references).
 > This is a **map**, not a change plan — see [Next Phases](#11-next-phases).
 > No secrets are recorded here.
@@ -26,12 +26,12 @@ under `/Users/cristrein/tradingview-mcp/`.
 | `com.cristrein.archive-weekly` | `alert-bridge/scripts/archive_old_files.py` | Sun 04:00 | Maintenance: archive old files |
 | `com.cristrein.weekly-review` | `alert-bridge/weekly_review.py` | Sun 09:00 | Monitoring: weekly review/health |
 
-### Unloaded (3 — plist present, NOT in `launchctl list`)
+### Unloaded
 | Label | Script | Note |
 |---|---|---|
-| `com.cristrein.claude-monitor` | `run_claude_monitor.sh` → `claude_monitor.py` | Legacy, superseded by `monitor_xau_4h`. **Script archived** (Camada 4B.1a, `afbbd63`); plist still points to the old path but is unloaded — pending plist decision. |
-| `com.cristrein.claude-intraday-monitor` | `run_claude_intraday_monitor.sh` → `claude_intraday_monitor.py` | Legacy. **Script archived** (`afbbd63`); plist unloaded, old path — pending decision. |
-| `com.cristrein.xau-4h-monitor-cron` | `monitor_xau_4h_strategies.py` (cron variant) | Disabled; daemon variant runs instead. **Same live script** — only the cron plist is unloaded. |
+| `com.cristrein.claude-monitor` | `run_claude_monitor.sh` → `claude_monitor.py` | Legacy. Script archived (4B.1a, `afbbd63`); **plist file ARCHIVED** (Camada 4B.1b) — moved out of `~/Library/LaunchAgents/` to `backups/launchagents_archive/` (gitignored). |
+| `com.cristrein.claude-intraday-monitor` | `run_claude_intraday_monitor.sh` → `claude_intraday_monitor.py` | Legacy. Script archived (`afbbd63`); **plist file ARCHIVED** (4B.1b) to `backups/launchagents_archive/`. |
+| `com.cristrein.xau-4h-monitor-cron` | `monitor_xau_4h_strategies.py` (cron variant) | Disabled; daemon variant runs instead. **Same live script** — only the cron plist is unloaded. **Plist KEPT** in `~/Library/LaunchAgents/` (not touched). |
 
 ---
 
@@ -103,14 +103,16 @@ All LaunchAgent-referenced scripts + **their log paths** + production config:
 - ✅ **Camada 3** — strategy candidate packets versioned (`my-strategy/strategies/candidates/`, commit `c6b355a`).
 - ✅ **Camada 4A** — 35 XAU one-off research scripts archived to `alert-bridge/research/archive/analyze_xau/` (commit `9810bf2`).
 - ✅ **Camada 4B.1a** — 5 legacy Claude monitor scripts archived to `alert-bridge/archive/legacy_monitors/` (commit `afbbd63`). Plists not yet moved.
-- ✅ **Camada 4B.3** — legacy monitor target configs (`monitor_targets[_intraday].json`) archived to the same dir; gitignored runtime states deleted; stale `.gitignore` lines removed. Bundle closed in-repo (plists still pending, 4B.1b).
+- ✅ **Camada 4B.3** — legacy monitor target configs (`monitor_targets[_intraday].json`) archived to the same dir; gitignored runtime states deleted; stale `.gitignore` lines removed. Bundle closed in-repo.
+- ✅ **Camada 4B.1b** — the 2 unloaded `claude-*` plists moved from `~/Library/LaunchAgents/` to `backups/launchagents_archive/` (gitignored; not versioned). Active agents (`tv-webhook-receiver`, `cloudflared-tunnel`, `xau-4h-monitor-daemon`) unchanged; receiver + public `/health` OK.
 
 ## 11. Next Phases
 
-**Done:** ~~Version `my-strategy/strategies/`~~ (Camada 3, `c6b355a`) · ~~Archive one-offs~~ (Camada 4A, `9810bf2`) · ~~Archive legacy monitor **scripts**~~ (Camada 4B.1a, `afbbd63`) · ~~Archive legacy monitor **configs** + state/gitignore cleanup~~ (Camada 4B.3).
+**Done:** ~~Version `my-strategy/strategies/`~~ (Camada 3, `c6b355a`) · ~~Archive one-offs~~ (Camada 4A, `9810bf2`) · ~~Archive legacy monitor **scripts**~~ (Camada 4B.1a, `afbbd63`) · ~~Archive legacy monitor **configs** + state/gitignore cleanup~~ (Camada 4B.3) · ~~Archive the 2 `claude-*` **plists**~~ (Camada 4B.1b).
+
+> Legacy Claude-monitor bundle is now **fully archived** (scripts + configs + plists). The live `monitor_xau_4h` ecosystem is untouched.
 
 Remaining — require explicit authorization:
-1. **Move the 2 `claude-*` plists** (4B.1b) — `claude-monitor`, `claude-intraday-monitor` are unloaded and their scripts/configs are now archived; move the `.plist` files out of `~/Library/LaunchAgents/` (e.g., `backups/launchagents_archive/`). Touches LaunchAgents → separate authorization.
-2. **Decide `xau-4h-monitor-cron`** (4B.1c) — unloaded, but points to the **live** `monitor_xau_4h_strategies.py` (cron variant of an active script, not dead code). Recommended: KEEP as reference. Do not touch the live script.
-3. **Decide backups / log retention** — `backups/` (~6.9 MB) and `alert-bridge/logs/` (~3.1 GB): define retention policy (`archive-weekly` agent may already cover part of this).
-4. **Physical restructure** — only after the above, and only in a maintenance window with lockstep plist edits.
+1. **Decide `xau-4h-monitor-cron`** (4B.1c) — unloaded, but points to the **live** `monitor_xau_4h_strategies.py` (cron variant of an active script, not dead code). Recommended: KEEP as reference. Do not touch the live script.
+2. **Decide backups / log retention** — `backups/` (~6.9 MB) and `alert-bridge/logs/` (~3.1 GB): define retention policy (`archive-weekly` agent may already cover part of this).
+3. **Physical restructure** — only after the above, and only in a maintenance window with lockstep plist edits.
