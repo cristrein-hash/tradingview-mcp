@@ -173,8 +173,10 @@ echo "  launch -> $LAUNCH"
 if [ $LRC -ne 0 ]; then log "!! FALHA no restart do TradingView — abortando (restore via trap)"; exit 3; fi
 
 # 6) validate CDP command channel (not just HTTP)
-log "validando CDP (cdp_connected + api_available)..."
-HEALTH=$("$NODE_BIN" -e "import('$REPO_DIR/src/core/health.js').then(async h=>{try{const r=await h.healthCheck();console.log(JSON.stringify({cdp:r.cdp_connected,api:r.api_available,sym:r.chart_symbol,tf:r.chart_resolution}));process.exit((r.cdp_connected&&r.api_available)?0:4);}catch(e){console.log(JSON.stringify({error:e.message}));process.exit(4);}})")
+log "validando CDP (poll de cdp_connected + api_available, até ~36s)..."
+# After a TV hard restart the chart target appears before window.TradingViewApi
+# finishes initializing, so a single immediate check races. Poll until ready.
+HEALTH=$("$NODE_BIN" -e "import('$REPO_DIR/src/core/health.js').then(async h=>{const deadline=Date.now()+36000;let last={};let n=0;while(Date.now()<deadline){n++;try{const r=await h.healthCheck();last={try:n,cdp:r.cdp_connected,api:r.api_available,sym:r.chart_symbol,tf:r.chart_resolution};if(r.cdp_connected&&r.api_available){console.log(JSON.stringify(last));process.exit(0);}}catch(e){last={try:n,error:e.message};}await new Promise(rs=>setTimeout(rs,3000));}console.log(JSON.stringify(last));process.exit(4);})")
 HRC=$?
 echo "  health -> $HEALTH"
 if [ $HRC -ne 0 ]; then log "!! CDP não saudável — abortando (restore via trap)"; exit 4; fi
