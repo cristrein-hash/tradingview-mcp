@@ -7,6 +7,7 @@
 
 Primary host: **MacBook** (receiver, cloudflared, TradingView, MCP, monitors, all LaunchAgents).
 The **iMac** runs only the External Factors bridge. See [README.md](./README.md).
+Cold storage (external HD) hot/cold split + archive procedure: see [DATA_STORAGE_POLICY.md](./DATA_STORAGE_POLICY.md).
 
 ---
 
@@ -129,6 +130,7 @@ All LaunchAgent-referenced scripts + **their log paths** + production config:
   - **Path:** `repo_root()` helper applied; `BASE_DIR = repo_root() / "alert-bridge"` (preserves the original `__file__.parent` semantics — logs/.env/state stay under `alert-bridge/`, now move-safe). Validated via `--once` (status=ok); `.env` not modified.
   - **Supervision fix:** this was an **unsupervised manual `--daemon`** that had been **down since 10:30Z** (same event that killed the cloudflared tunnel). Put under new LaunchAgent **`com.cristrein.external-factors-heartbeat`** (RunAtLoad + KeepAlive, `--daemon --sleep 900`, logs in `alert-bridge/logs/launchd_external_factors_heartbeat_*`). Now `state=running`, first check `status=ok`, stderr clean. The plist is in `~/Library/LaunchAgents/` (not versioned). Receiver + public `/health` unaffected.
 - ✅ **Camada 6A.3 — `weekly_review.py` path foundation** (commit `8025f8a`). `repo_root()` helper applied: `BASE_DIR = repo_root()`, `LOG_DIR = repo_root() / "alert-bridge" / "logs"` (same semantics today, now move-safe). The `weekly-review` LaunchAgent (Sun 09:00, `--mode cron`) was **not touched or restarted** — it picks up the change on its next scheduled run. Validated: py_compile OK; BASE_DIR/LOG_DIR resolve correctly; `--mode once` exit 0, no traceback, **no Telegram sent**; `.env` not modified.
+- ✅ **External cold storage** (HD `GUTS_ LACIE`, `/Volumes/GUTS_ LACIE/TradingData/`) — see [DATA_STORAGE_POLICY.md](./DATA_STORAGE_POLICY.md). Cold archive of RAW XAU 15M 3-month replay (~130 MB `.gz`, gzip+roundtrip validated) + 5× 4H unversioned `_to_2026-05-20` dumps (~1.9 MB `.gz`) + checkpoints + manifests. Locals removed **only after** SHA256(orig)+SHA256(gz)+`gzip -t`+roundtrip+manifest+explicit approval (~65 MB + 1.06 GB freed). 15M smoke artifacts removed (not archived). **Production must not break if the HD is disconnected** — nothing live depends on it. **Kept local by live dependency:** 8× v6 4H (`find_dream_demands.py`), `XAUUSD_240_2025-11-19_to_2026-05-19.jsonl` (`draw_xau_4h_trades.py`). **Policy: never reduce RAW payload; gzip OK (lossless).**
 - ✅ **Camada 6A.4 — `monitor_xau_4h_strategies.py` path foundation** (commit `a29239c`). `repo_root()` helper applied: `BASE_DIR = repo_root()`, `LOG_DIR = repo_root() / "alert-bridge" / "logs"` (`MCP_SERVER_PATH`/`env_path` follow; `CHART_LOCK_PATH` absolute, unchanged). **No-op on current layout**, now move-safe. The **live `xau-4h-monitor-daemon` (pid 58236) was NOT restarted** — keeps old code in memory, converges on next natural restart; no behavioral divergence (no-op). Plists untouched (script path unchanged). Validated **non-invasively** (py_compile + path resolution only; no MCP spawn, no chart, no daemon touch). **Path-foundation rollout for `__file__`-relative scripts is now complete.**
 
 ## 11. Next Phases
