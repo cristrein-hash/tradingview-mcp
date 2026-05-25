@@ -165,21 +165,31 @@ if pgrep -f "$SERVER_JS" >/dev/null 2>&1; then
 fi
 log "server.js mortos (restantes: $(pgrep -f "$SERVER_JS" 2>/dev/null | wc -l | tr -d ' '))"
 
-# 5) hard-restart TradingView via the hardened launch() (kills wedged instance for real)
-log "reiniciando TradingView (hard restart, port $CDP_PORT)..."
-LAUNCH=$("$NODE_BIN" -e "import('$REPO_DIR/src/core/health.js').then(async h=>{try{const r=await h.launch({port:$CDP_PORT,kill_existing:true});console.log(JSON.stringify(r));process.exit(r.success?0:3);}catch(e){console.log(JSON.stringify({success:false,error:e.message}));process.exit(3);}})")
-LRC=$?
-echo "  launch -> $LAUNCH"
-if [ $LRC -ne 0 ]; then log "!! FALHA no restart do TradingView — abortando (restore via trap)"; exit 3; fi
+# Reusable CDP/API health poll (node-side). $1 = deadline ms. Exit 0 if cdp&&api, else 4.
+cdp_poll() {
+  "$NODE_BIN" -e "import('$REPO_DIR/src/core/health.js').then(async h=>{const deadline=Date.now()+$1;let last={};let n=0;while(Date.now()<deadline){n++;try{const r=await h.healthCheck();last={try:n,cdp:r.cdp_connected,api:r.api_available,sym:r.chart_symbol,tf:r.chart_resolution};if(r.cdp_connected&&r.api_available){console.log(JSON.stringify(last));process.exit(0);}}catch(e){last={try:n,error:e.message};}await new Promise(rs=>setTimeout(rs,3000));}console.log(JSON.stringify(last));process.exit(4);})"
+}
 
-# 6) validate CDP command channel (not just HTTP)
-log "validando CDP (poll de cdp_connected + api_available, até ~36s)..."
-# After a TV hard restart the chart target appears before window.TradingViewApi
-# finishes initializing, so a single immediate check races. Poll until ready.
-HEALTH=$("$NODE_BIN" -e "import('$REPO_DIR/src/core/health.js').then(async h=>{const deadline=Date.now()+36000;let last={};let n=0;while(Date.now()<deadline){n++;try{const r=await h.healthCheck();last={try:n,cdp:r.cdp_connected,api:r.api_available,sym:r.chart_symbol,tf:r.chart_resolution};if(r.cdp_connected&&r.api_available){console.log(JSON.stringify(last));process.exit(0);}}catch(e){last={try:n,error:e.message};}await new Promise(rs=>setTimeout(rs,3000));}console.log(JSON.stringify(last));process.exit(4);})")
-HRC=$?
+# 5) check CDP/API health; hard-restart TradingView ONLY if it is NOT healthy.
+# A hard restart leaves the chart freshly-loaded, where chart_set_symbol races
+# (observed: tf applies, symbol stays). If CDP/API is already healthy we keep the
+# stable instance — the restart only exists to clear a wedged CDP.
+log "checando CDP/API (poll curto, até ~12s)..."
+HEALTH=$(cdp_poll 12000); HRC=$?
 echo "  health -> $HEALTH"
-if [ $HRC -ne 0 ]; then log "!! CDP não saudável — abortando (restore via trap)"; exit 4; fi
+if [ $HRC -eq 0 ]; then
+  log "CDP/API saudável — PULANDO hard restart (instância estável)"
+else
+  log "CDP/API unhealthy — hard restart do TradingView (port $CDP_PORT)..."
+  LAUNCH=$("$NODE_BIN" -e "import('$REPO_DIR/src/core/health.js').then(async h=>{try{const r=await h.launch({port:$CDP_PORT,kill_existing:true});console.log(JSON.stringify(r));process.exit(r.success?0:3);}catch(e){console.log(JSON.stringify({success:false,error:e.message}));process.exit(3);}})")
+  LRC=$?
+  echo "  launch -> $LAUNCH"
+  if [ $LRC -ne 0 ]; then log "!! FALHA no restart do TradingView — abortando (restore via trap)"; exit 3; fi
+  log "revalidando CDP (poll, até ~36s)..."
+  HEALTH=$(cdp_poll 36000); HRC=$?
+  echo "  health -> $HEALTH"
+  if [ $HRC -ne 0 ]; then log "!! CDP não saudável após restart — abortando (restore via trap)"; exit 4; fi
+fi
 log "CDP OK"
 
 # 7) run the requested operation (inside the maintenance window; trap restores either way)
