@@ -1,7 +1,8 @@
 # Operational Inventory
 
-> Snapshot as-of **2026-05-25**. Verified by live inspection (`launchctl`, import/spawn graph,
-> path references). This is a **map**, not a change plan — see [Next Phases](#11-next-phases).
+> Snapshot as-of **2026-05-25** (updated after Camada 4A — XAU one-offs archived).
+> Verified by live inspection (`launchctl`, import/spawn graph, path references).
+> This is a **map**, not a change plan — see [Next Phases](#11-next-phases).
 > No secrets are recorded here.
 
 Primary host: **MacBook** (receiver, cloudflared, TradingView, MCP, monitors, all LaunchAgents).
@@ -57,8 +58,11 @@ Scheduled or indirectly invoked data pipeline.
 - `alert-bridge/run_xau_4h_backtest.py`, `poc_scan_xau_4h.py`, `draw_xau_4h_trades.py`, `find_dream_demands.py`, `run_d2r_backfill.py`.
 - `alert-bridge/report_indicator_edge.py`, `run_research_cycle.py`, `research_status.py` — research/reporting; ad-hoc (not scheduled) — confirm before final classification.
 
-## 6. ONE-OFF scripts (completed research — ~36 files)
-- `alert-bridge/analyze_xau_*.py` (all). **None referenced by any LaunchAgent.** Strongest candidates for a future `research/` folder.
+## 6. ONE-OFF scripts (completed research — 35 files) — ARCHIVED
+- **Archived 2026-05-25 (Camada 4A, commit `9810bf2`)** via `git mv` to
+  `alert-bridge/research/archive/analyze_xau/` — 35 `analyze_xau_*.py` scripts, content unchanged.
+- No longer in the `alert-bridge/` root. None were referenced by any LaunchAgent or live code
+  (only a docstring comment naming a non-existent file); scripts are self-contained (stdlib-only).
 
 ## 7. LEGACY_UNLOADED scripts
 - `alert-bridge/claude_monitor.py`, `claude_intraday_monitor.py`.
@@ -79,7 +83,7 @@ All LaunchAgent-referenced scripts + **their log paths** + production config:
 
 ## 9. Absolute-path risks
 - **All 10 plists** hardcode `/Users/cristrein/tradingview-mcp/...` — moving any referenced file/log **silently** breaks the agent.
-- Scripts that hardcode the repo path: `analyze_xau_4h_backtest.py`, `auto_d2r_daily.py`, `safe_backtest_window.sh`.
+- Scripts that hardcode the repo path: `auto_d2r_daily.py`, `safe_backtest_window.sh` (and the now-archived `research/archive/analyze_xau/analyze_xau_4h_backtest.py`).
 - `ops/start_trading_stack.sh` uses `$HOME/tradingview-mcp`.
 - **Rule:** any physical move of a referenced file requires editing the plist in lockstep (`bootout` → move → edit `<string>` → `bootstrap` → validate), one agent at a time, with rollback.
 
@@ -90,10 +94,15 @@ All LaunchAgent-referenced scripts + **their log paths** + production config:
 - ✅ **receiver LaunchAgent** `com.cristrein.tv-webhook-receiver` — canonical receiver path via `start_receiver.sh` (loads `.env`, real secret).
 - ✅ **`/webhook/local-test` blocked** — legacy endpoint returns **403** (`legacy_endpoint_enabled:false`).
 - ✅ **MCP hardening** — `connection.js` CDP timeouts; `tv_launch` real hard restart; `chart_scroll_to_date` fixed; backtest restore timeout widened to 30s.
+- ✅ **Camada 3** — strategy candidate packets versioned (`my-strategy/strategies/candidates/`, commit `c6b355a`).
+- ✅ **Camada 4A** — 35 XAU one-off research scripts archived to `alert-bridge/research/archive/analyze_xau/` (commit `9810bf2`).
 
 ## 11. Next Phases
-Not started — require explicit authorization.
-1. **Version `my-strategy/strategies/`** — the two candidate packets are untracked; they are design artifacts and should be committed.
-2. **Archive one-offs** — move the ~36 `analyze_xau_*.py` to `research/` (none are LaunchAgent-referenced).
-3. **Catalog legacy** — formally decide the fate of `claude_monitor*` + their 3 unloaded plists (keep as reference vs archive). Confirm no intent to reactivate before archiving.
+
+**Done:** ~~Version `my-strategy/strategies/`~~ (Camada 3, `c6b355a`) · ~~Archive one-offs~~ (Camada 4A, `9810bf2`).
+
+Remaining — require explicit authorization:
+1. **Catalog legacy** — formally decide the fate of `claude_monitor*` / `claude_intraday_monitor*` / `monitor_state_helpers.py` + their unloaded plists (keep as reference vs archive). Confirm no intent to reactivate before archiving.
+2. **Review unloaded plists** — `claude-monitor`, `claude-intraday-monitor`, `xau-4h-monitor-cron` (present but unloaded): keep, archive, or remove.
+3. **Decide backups / log retention** — `backups/` (~6.9 MB) and `alert-bridge/logs/` (~3.1 GB): define retention policy (`archive-weekly` agent may already cover part of this).
 4. **Physical restructure** — only after the above, and only in a maintenance window with lockstep plist edits.
