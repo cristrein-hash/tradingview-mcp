@@ -1,6 +1,6 @@
 # Operational Inventory
 
-> Snapshot as-of **2026-05-25** (updated after Camada 6A.1 — repo-root path foundation in backtest scripts).
+> Snapshot as-of **2026-05-25** (updated after Camada 6A.2 — external-factors heartbeat path foundation + supervision).
 > Verified by live inspection (`launchctl`, import/spawn graph, path references).
 > This is a **map**, not a change plan — see [Next Phases](#11-next-phases).
 > No secrets are recorded here.
@@ -15,11 +15,12 @@ The **iMac** runs only the External Factors bridge. See [README.md](./README.md)
 All plists live in `~/Library/LaunchAgents/com.cristrein.*.plist` and reference **absolute paths**
 under `/Users/cristrein/tradingview-mcp/`.
 
-### Loaded (7)
+### Loaded (8)
 | Label | Script | Trigger | Role |
 |---|---|---|---|
 | `com.cristrein.tv-webhook-receiver` | `alert-bridge/start_receiver.sh` (→ `tv_webhook_receiver.py`) | RunAtLoad (resident) | Webhook receiver; `/health`, `/webhook/<secret>` |
 | `com.cristrein.cloudflared-tunnel` | `/opt/homebrew/bin/cloudflared tunnel run tradingview-webhook` | RunAtLoad + **KeepAlive** | Public ingress tunnel (created 2026-05-25) |
+| `com.cristrein.external-factors-heartbeat` | `alert-bridge/external_factors_heartbeat.py --daemon --sleep 900` | RunAtLoad + **KeepAlive** | External-factors heartbeat (created 2026-05-25; was an unsupervised manual daemon, down since 10:30Z) |
 | `com.cristrein.xau-4h-monitor-daemon` | `alert-bridge/monitor_xau_4h_strategies.py --mode daemon` | RunAtLoad (resident) | XAU 4H strategy monitor (event-driven) |
 | `com.cristrein.enrich-indicator-outcomes` | `alert-bridge/enrich_indicator_outcomes.py` | daily 03:00 | Pipeline: enrich indicator outcomes |
 | `com.cristrein.d2r-daily` | `alert-bridge/auto_d2r_daily.py` | daily 04:00 | Pipeline: D2R daily |
@@ -124,6 +125,9 @@ All LaunchAgent-referenced scripts + **their log paths** + production config:
   - `repo_root()` prefers `TVMCP_ROOT`, else walks up for markers (`.git` / `src/server.js` / `alert-bridge`+`my-strategy`), else raises a clear error. `BASE_DIR`/`BACKTESTS_DIR` now anchor to it → these 4 **survive a future physical move** (resolves the coupling-(B) problem for them).
   - On the current layout the helper is a functional no-op (resolves to the repo root, same as before). Validated: `repo_root()` → `/Users/cristrein/tradingview-mcp`; smoke `safe_backtest_window.sh --smoke` PASS; production restored (receiver OK, pause flag absent, zero orphan server.js).
   - ⚠️ **Scripts with a LaunchAgent are NOT yet migrated** to `repo_root()` (still use `__file__`-relative or `Path.home()`): `monitor_xau_4h_strategies.py`, `weekly_review.py`, and the Family-B `Path.home()/...` scripts. Moving any of those physically still requires a code edit first.
+- ✅ **Camada 6A.2 — `external_factors_heartbeat.py` path foundation + supervision** (code commit `c5ebcc1`).
+  - **Path:** `repo_root()` helper applied; `BASE_DIR = repo_root() / "alert-bridge"` (preserves the original `__file__.parent` semantics — logs/.env/state stay under `alert-bridge/`, now move-safe). Validated via `--once` (status=ok); `.env` not modified.
+  - **Supervision fix:** this was an **unsupervised manual `--daemon`** that had been **down since 10:30Z** (same event that killed the cloudflared tunnel). Put under new LaunchAgent **`com.cristrein.external-factors-heartbeat`** (RunAtLoad + KeepAlive, `--daemon --sleep 900`, logs in `alert-bridge/logs/launchd_external_factors_heartbeat_*`). Now `state=running`, first check `status=ok`, stderr clean. The plist is in `~/Library/LaunchAgents/` (not versioned). Receiver + public `/health` unaffected.
 
 ## 11. Next Phases
 
@@ -133,7 +137,7 @@ All LaunchAgent-referenced scripts + **their log paths** + production config:
 
 Remaining — require explicit authorization:
 1. **Path foundation rollout (rest of 6A)** — extend the `repo_root()` helper to the remaining `__file__`-relative scripts before any physical move:
-   - **6A.2** `external_factors_heartbeat.py` (confirm how it's invoked first).
+   - ~~**6A.2** `external_factors_heartbeat.py`~~ → done (`c5ebcc1`) + now supervised.
    - **6A.3** `weekly_review.py` (monitoring LaunchAgent — validate via `kickstart`).
    - **6A.4** `monitor_xau_4h_strategies.py` (live daemon — dedicated window + smoke).
    - Family-B (`Path.home()/...`) scripts: optional conversion for portability; does not block moves.
