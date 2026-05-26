@@ -140,3 +140,14 @@ Before proposing ANY code change to production files (`alert-bridge/*.py`, promp
 **Architectural changes require the Plan agent.** When the change touches prompt operacional, strategy module, webhook routing, pipeline logic, or schema of logs/events: invoke `Agent` with `subagent_type=Plan` BEFORE writing code. Plan agent is specialized for design — it forces premise verification that fast-fix mode skips.
 
 This discipline exists because on 2026-05-18 a fix was proposed and implemented for the "Caminho B" (Zone Touch SMC) path in the operational prompt before discovering the drawings channel (`monitor_zone`, `monitor_dynamic_bb_zone`, etc.) had been silent for 3+ days post-indicators migration. The fix targeted dead architecture, had to be reverted, and eroded trust. **Skipping these 4 questions = repeating that mistake.**
+
+## Workflow Orchestration (added 2026-05-26)
+
+Complements — does not replace — the Karpathy rules in `alert-bridge/CLAUDE.md`, the Pre-Change Discipline above, and the project memory protocols (`PRINCIPAL_1` / `PRINCIPAL_2`). Only the missing deltas are listed here.
+
+- **Plan before non-trivial work.** Any task with 3+ steps or a design decision requires a short, checkable plan and scope confirmation before implementation. Architectural changes still require the Plan agent. Plan the VERIFICATION, not only the build. If reality diverges from the plan, stop and re-plan instead of pushing forward.
+- **Subagents for fan-out, not for depth.** Use subagents for broad search, parallel research, and independent analysis to keep the main context clean — one focused task per subagent. Exception: faithful code replication still requires direct source reading in chunks; `Explore` is too shallow for that (`PRINCIPAL_2.E`).
+- **Track progress on multi-step work.** For long tasks, maintain a visible task list and update status as work progresses. Summarize what changed at each step.
+- **Verification before “done”.** Never mark work complete without demonstrating it works: run the test, open the resulting log/file, confirm the real record, and compare before/after when relevant. This extends `PRINCIPAL_2.A`.
+- **Autonomy is bounded.** Within already-authorized scope and with clear evidence (logs, failing test, deterministic error), proceed without asking for confirmation on every micro-step. However, consequential actions, irreversible changes, production impact, new code, deletions, data movement, LaunchAgents, secrets, and scope changes still require Pre-Change Discipline and explicit authorization. Never “fix autonomously” outside the approved scope.
+- **Prefer the simplest robust solution.** Choose the simplest change that actually addresses root cause. Do not over-engineer, but also do not ship fragile shortcuts.
