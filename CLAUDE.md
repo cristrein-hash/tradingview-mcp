@@ -214,3 +214,33 @@ Before any Replay collection:
 For operational tasks, keep output concise and separated: what was checked; what changed; what was not touched; PASS/FAIL; production restore status; next action requiring user authorization.
 
 Never continue into the next destructive, long-running, or operationally risky step without explicit user confirmation.
+
+## Plugin & Skill Routing Policy (added 2026-05-27)
+
+At session start, inventory available skills/plugins/MCPs, but **do not use all of them blindly**. Available ≠ used. Do not use every plugin on every task. Before acting, pick only the relevant skills/plugins, declare which and why.
+
+Routing rules:
+- **replay-backtest-manager** — TradingView Replay collection, `safe_backtest_window.sh`, RAW datasets, gzip, manifests, HD externo, production restore.
+- **trading-system-operator** — receiver, cloudflared, LaunchAgents, external factors, daemon status, health checks.
+- **incident-response** — when failures, hangs, outages, MCP/CDP issues, orphan `server.js`, or unsafe loops occur.
+- **repo-governance-cleanup** — archive, retention, storage, git hygiene, docs, safe cleanup.
+- **strategy-research-analyst** — hypotheses, expectancy, backtest interpretation, candidate packets, multi-timeframe research.
+- **sequential-thinking** (MCP) — complex planning, architecture decisions, multi-step reasoning, or when uncertainty is high.
+- **superpowers** (plugin) — only for brainstorming, subagent fan-out, or complex architectural exploration. Do NOT use during active Replay collection, production incidents, or simple linear tasks.
+- **code-review** (plugin) — before/after meaningful code changes, especially before commits touching scripts, data pipelines, or production-adjacent code.
+- **code-simplifier** (plugin) — only for deliberate refactoring/simplification after expected behavior is clear and tests/validation are known.
+- **skill-creator** (plugin) — when creating, auditing, or improving Claude skills.
+
+Default behavior:
+- Simple operational task → no plugin unless needed.
+- Risky production task → prefer incident-response or trading-system-operator.
+- Data collection → prefer replay-backtest-manager.
+- Code change → sequential-thinking for the plan, code-review before commit.
+- Research/backtesting → strategy-research-analyst.
+
+Superpowers policy:
+- Keep installed. Do NOT use by default.
+- Use only when the user asks for broad ideation, subagents, multiple competing approaches, or architectural exploration.
+- **Never spawn broad subagent fan-out while Replay collection, enrich, or production-sensitive processes are running.**
+
+Before using any plugin/tool: state which one will be used; state why it is relevant; state whether it touches production; ask for confirmation if the action is risky, long-running, destructive, or production-adjacent.
