@@ -151,3 +151,66 @@ Complements — does not replace — the Karpathy rules in `alert-bridge/CLAUDE.
 - **Verification before “done”.** Never mark work complete without demonstrating it works: run the test, open the resulting log/file, confirm the real record, and compare before/after when relevant. This extends `PRINCIPAL_2.A`.
 - **Autonomy is bounded.** Within already-authorized scope and with clear evidence (logs, failing test, deterministic error), proceed without asking for confirmation on every micro-step. However, consequential actions, irreversible changes, production impact, new code, deletions, data movement, LaunchAgents, secrets, and scope changes still require Pre-Change Discipline and explicit authorization. Never “fix autonomously” outside the approved scope.
 - **Prefer the simplest robust solution.** Choose the simplest change that actually addresses root cause. Do not over-engineer, but also do not ship fragile shortcuts.
+
+## Session Bootstrap & Skill Selection
+
+How every session should start and how to choose skills. Workflow Orchestration above = *how to think/work*; this = *how to begin each session and pick the right skills*.
+
+### 1. Read current state before acting
+At the start of every new session, or before any operational task, read the current state before suggesting commands or changes. Relevant files:
+- `CLAUDE.md`
+- `alert-bridge/CLAUDE.md` (if present)
+- `docs/architecture/OPERATIONAL_INVENTORY.md`
+- `docs/architecture/DATA_STORAGE_POLICY.md`
+- `docs/architecture/SESSION_STATE_BEFORE_XAU_15M_BACKTEST.md` (if still relevant)
+- latest `git status`
+- latest `git log --oneline -5`
+
+Do not assume memory alone is sufficient. Confirm current repo/system state.
+
+### 2. Inventory available skills
+Before selecting skills, inventory all available Claude Code skills from both locations:
+```bash
+find ~/.claude/skills -maxdepth 2 -name SKILL.md 2>/dev/null | sort
+find skills -maxdepth 2 -name SKILL.md 2>/dev/null | sort
+```
+Read the `name` and `description` fields. **Do not load all skills blindly** — select the relevant ones based on the task.
+
+### 3. Select skills based on task
+User-level operational skills (`~/.claude/skills/`):
+- **replay-backtest-manager** — TradingView Replay collection, `safe_backtest_window.sh`, XAU 15M/30M/1H datasets, external cold storage, gzip, manifests, checksums, production restore.
+- **trading-system-operator** — receiver, cloudflared, LaunchAgents, external factors, Telegram, health checks, daemon status, preflight, operational status.
+- **incident-response** — failures, hangs, outages, unsafe loops, public webhook issues, MCP/CDP failures, orphan `server.js`, restore-first workflows.
+- **repo-governance-cleanup** — repo cleanup, archive decisions, retention, cold storage, git hygiene, documentation, safe deletion/migration.
+- **strategy-research-analyst** — datasets/research logs → strategy hypotheses, expectancy analysis, candidate packets, promotion gates, multi-timeframe research plans.
+
+Project skills (`skills/`): **chart-analysis**, **pine-develop**, **replay-practice**, **strategy-report**, **multi-symbol-scan**.
+
+If new skills exist, consider their description and select appropriately. Before acting, explicitly state: which skills are being applied; why they're relevant; which state docs were read; whether the task touches production.
+
+### 4. Safety defaults before operations
+Before any operational command, evaluate whether the task touches: receiver; cloudflared; external factors; XAU monitor daemon; enrich/evaluator; TradingView/MCP/CDP; LaunchAgents; secrets; data deletion/migration.
+
+Safety defaults:
+- Never expose `.env`, tokens, webhook secrets, or secret URLs.
+- Never start the receiver directly with `python3`.
+- Never run TradingView Replay collection outside `safe_backtest_window.sh`.
+- Never run multiple collection blocks without explicit user authorization.
+- Never delete local RAW before external gzip + SHA256 + `gzip -t` + roundtrip + manifest + explicit approval.
+- If something fails, restore production first, then diagnose.
+- If reality diverges from the plan, stop and re-plan.
+
+### 5. Replay-specific preflight
+Before any Replay collection:
+- Confirm `enrich_indicator_outcomes.py` and `OUTCOME EVALUATOR` are absent (or explicitly stopped with user authorization).
+- Clean orphan `server.js` processes.
+- Confirm receiver `/health` OK.
+- Confirm public `/health` returns 200.
+- Confirm pause flag absent.
+- Confirm XAU monitor daemon loaded.
+- Ask the user to confirm TradingView chart symbol, timeframe, and indicators manually.
+
+### 6. Response format
+For operational tasks, keep output concise and separated: what was checked; what changed; what was not touched; PASS/FAIL; production restore status; next action requiring user authorization.
+
+Never continue into the next destructive, long-running, or operationally risky step without explicit user confirmation.
