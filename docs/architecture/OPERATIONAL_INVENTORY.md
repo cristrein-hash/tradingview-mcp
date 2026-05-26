@@ -57,6 +57,7 @@ Scheduled or indirectly invoked data pipeline.
 
 ## 5. RESEARCH / BACKTEST scripts (manual tools — safe to move)
 - `alert-bridge/run_xau_replay_feature_collect.py` — **TF-agnostic** per-bar feature collector via Replay (`--symbol`/`--timeframe 15|30|60`); renamed from `run_xau_15m_replay_backtest.py` (2026-05-25). Run only through `safe_backtest_window.sh --replay-smoke|--replay-collect`. Drives the multi-TF historical plan — see [DATA_STORAGE_POLICY.md](./DATA_STORAGE_POLICY.md).
+- `scripts/build_dataset_registry.py` — generates/validates the **Dataset Registry** [`docs/data/dataset_registry.json`](../data/dataset_registry.json) (catalog/rollup of external RAW datasets; reads manifests, validates gzip+sha, read-only on the HD). The registry is the authoritative inventory consumed by the future extractor/analyzer.
 - `alert-bridge/run_xau_15m_pullback_ohlcv.py` — OHLCV collector (stabilized 2026-05-25; deprecated for deep history — Replay collector supersedes it).
 - `alert-bridge/run_xau_4h_backtest.py`, `poc_scan_xau_4h.py`, `draw_xau_4h_trades.py`, `find_dream_demands.py`, `run_d2r_backfill.py`.
 - `alert-bridge/report_indicator_edge.py`, `run_research_cycle.py`, `research_status.py` — research/reporting; ad-hoc (not scheduled) — confirm before final classification.

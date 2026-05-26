@@ -32,13 +32,19 @@ A local file may be deleted **only after** ALL of:
 ```
 
 ## Current external contents (cold, validated)
-| What | External path | Status |
-|---|---|---|
-| **RAW XAU 15M — 1 YEAR COMPLETE (4 contiguous blocks, ~23,555 bars, ~528 MB gz)** | `raw_replay/XAUUSD/15M/XAUUSD_15m_replay_{2025-05-25→08-25, 08-25→11-25, 11-25→2026-02-25}.jsonl.gz` + `..._2026-02-25_to_2026-05-25_rerun_customOBbaseline.jsonl.gz` | gzip+roundtrip 4/4 ✓ · 4 manifests ✓ · **all locals removed** |
-| ↳ **Source of truth for 2026-02-25→05-25** | `..._rerun_customOBbaseline.jsonl.gz` | re-collected with the validated Custom OB baseline (`v11 — Alert` in pine_boxes) |
-| ↳ **Old pre-baseline 2026-02-25→05-25 (PRESERVED, do not delete)** | `raw_replay/XAUUSD/15M/superseded/` (`.gz` + manifest + `SUPERSEDED_CANDIDATE.txt`) | superseded by the rerun; kept for audit |
-| 5× 4H pre-v6 unversioned dumps (`_to_2026-05-20`) | `backtests/XAUUSD/4H/*.jsonl.gz` (~1.9 MB) + 5 checkpoints | gzip+roundtrip 5/5 ✓ · consolidated manifest ✓ · **locals removed** |
-| Manifests | `manifests/` | per-file + consolidated (path/size/sha256 original+gz, roundtrip) |
+
+**The authoritative inventory is the Dataset Registry** → [`docs/data/dataset_registry.json`](../data/dataset_registry.json),
+generated/validated by `scripts/build_dataset_registry.py` (scans `manifests/` + `raw_replay/XAUUSD/`,
+confirms each `.gz` + `gzip -t` + sha256==manifest, records divergences as warnings). **Do not
+re-list the detailed inventory here** — query the registry. The per-file manifests under `manifests/`
+(and `superseded/`) remain the primary integrity source; the registry is the rollup.
+
+Snapshot (as of 2026-05-26 — see registry for the source of truth):
+- **XAU 15M** — 1 year, 4 active blocks + 1 superseded (the pre-baseline `2026-02-25→05-25`, kept in `raw_replay/XAUUSD/15M/superseded/`). Source of truth for that window is `..._rerun_customOBbaseline.jsonl.gz`.
+- **XAU 30M** — 2 years, 4 active blocks (6-month each).
+- **XAU 1H** — 2 years, 3 active blocks (year 1 = 2 semesters, year 2 = 1 annual block).
+- 5× 4H pre-v6 unversioned dumps in `backtests/XAUUSD/4H/` (outside `raw_replay/`, not in the registry).
+- All RAW locals removed; baseline = Custom OB v11 + LuxAlgo SMC + NAS Top Bottom + Market Order Bubbles + RSI.
 
 ## Current local state (`alert-bridge/logs/backtests/`, ~1.3 GB)
 **Kept on MacBook (HOT or live dependency):**
