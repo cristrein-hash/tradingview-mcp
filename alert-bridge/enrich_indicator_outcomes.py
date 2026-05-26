@@ -21,7 +21,9 @@ from datetime import datetime, timezone, timedelta
 import argparse
 import fcntl
 import json
+import os
 import re
+import signal
 import subprocess
 import sys
 import textwrap
@@ -392,10 +394,47 @@ def parse_response(stdout: str):
         return None
 
 
+def _kill_process_group(proc) -> None:
+    """Kill a Popen and its WHOLE process group so the claude CLI's MCP server
+    (node src/server.js) grandchild is never left orphaned. Relies on the Popen
+    having been started with start_new_session=True (child PGID == child PID).
+    Safe to call when proc is None or already dead. Logs cleanup without secrets.
+    """
+    if proc is None:
+        return
+    pgid = proc.pid  # == PGID because Popen used start_new_session=True
+
+    def _signal_group(sig) -> bool:
+        try:
+            os.killpg(pgid, sig)
+            return True
+        except (ProcessLookupError, PermissionError, OSError):
+            return False  # group already gone
+
+    if not _signal_group(signal.SIGTERM):
+        return
+    try:
+        proc.wait(timeout=5)
+    except (subprocess.TimeoutExpired, Exception):
+        pass
+    # SIGKILL the group to catch any lingering grandchild (e.g. the MCP server.js)
+    _signal_group(signal.SIGKILL)
+    try:
+        proc.wait(timeout=2)
+    except (subprocess.TimeoutExpired, Exception):
+        pass
+    print("  [cleanup] claude process group terminated")
+
+
 def run_claude_batch(prompt: str, timeout: int = 1200) -> dict:
     """Run claude headless with MCP TradingView permissions.
     Acquires CDP chart lock for the duration of the call to prevent
     race condition with claude_recheck/setup_watch_manager.
+
+    The claude CLI spawns its MCP server (node src/server.js) as a child; without
+    its own process group that grandchild is orphaned on timeout/exit. We start
+    claude in a new session (own PGID) and kill the whole group in finally, so no
+    server.js is left behind. Evaluation logic and output schema are unchanged.
     """
     cmd = [
         "claude",
@@ -405,6 +444,10 @@ def run_claude_batch(prompt: str, timeout: int = 1200) -> dict:
         "Read,mcp__tradingview__*"
     ]
     lock_fd = None
+    proc = None
+    rc = None
+    stdout = ""
+    stderr = ""
     try:
         try:
             lock_fd, wait_s = acquire_chart_lock(timeout_s=CHART_LOCK_TIMEOUT_S)
@@ -414,26 +457,32 @@ def run_claude_batch(prompt: str, timeout: int = 1200) -> dict:
             return {"error": f"chart_lock_timeout:{e}"}
 
         try:
-            result = subprocess.run(
+            proc = subprocess.Popen(
                 cmd,
                 cwd=str(BASE_DIR),
                 text=True,
-                capture_output=True,
-                timeout=timeout,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                start_new_session=True,  # own process group -> grandchildren killable
             )
-        except subprocess.TimeoutExpired:
-            return {"error": "timeout"}
         except FileNotFoundError:
             return {"error": "claude_cli_not_found"}
+
+        try:
+            stdout, stderr = proc.communicate(timeout=timeout)
+            rc = proc.returncode
+        except subprocess.TimeoutExpired:
+            return {"error": "timeout"}
     finally:
+        _kill_process_group(proc)  # claude + its MCP server.js, no orphans
         release_chart_lock(lock_fd)
 
-    if result.returncode != 0:
-        return {"error": f"non_zero_exit:{result.returncode}", "stderr_tail": (result.stderr or "")[-300:]}
+    if rc != 0:
+        return {"error": f"non_zero_exit:{rc}", "stderr_tail": (stderr or "")[-300:]}
 
-    parsed = parse_response(result.stdout)
+    parsed = parse_response(stdout)
     if parsed is None:
-        return {"error": "parse_failed", "stdout_tail": result.stdout[-500:]}
+        return {"error": "parse_failed", "stdout_tail": stdout[-500:]}
     return parsed
 
 
