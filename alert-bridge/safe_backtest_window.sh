@@ -47,11 +47,11 @@ safe_backtest_window.sh — controlled TradingView/MCP backtest maintenance wind
                        smoke (run_xau_15m_pullback_ohlcv.py --months 1 --dry-run), then restore.
   --collect [--months N]  Same maintenance window, but run a REAL OHLCV collection
                        (run_xau_15m_pullback_ohlcv.py --months N; default N=3, no dry-run).
-  --replay-smoke [--timeframe 15|30|60] [--symbol SYM]
+  --replay-smoke [--timeframe 15|30|60|240] [--symbol SYM]
                        Short Replay-based FEATURE smoke: 80 bars from ~90d ago
                        (run_xau_replay_feature_collect.py --bars 80 --date <90d>), then restore.
                        Defaults: --symbol PEPPERSTONE:XAUUSD --timeframe 15.
-  --replay-collect --start-date YYYY-MM-DD --end-date YYYY-MM-DD [--timeframe 15|30|60] [--symbol SYM]
+  --replay-collect --start-date YYYY-MM-DD --end-date YYYY-MM-DD [--timeframe 15|30|60|240] [--symbol SYM]
                        REAL Replay feature collection for a closed window (e.g. one quarter):
                        run_xau_replay_feature_collect.py --start-date S --end-date E (safety cap
                        ${REPLAY_COLLECT_CAP} bars), then restore.
@@ -70,7 +70,7 @@ MONTHS=3
 START_DATE=""
 END_DATE=""
 SYMBOL="PEPPERSTONE:XAUUSD"   # default; overridable for replay modes
-TIMEFRAME="15"                # default; allowed for replay modes: 15|30|60
+TIMEFRAME="15"                # default; allowed for replay modes: 15|30|60|240
 REPLAY_COLLECT_CAP=8000   # safety cap of bars for a windowed replay collect (3mo 15M ~5700, 30M ~2900, 1H ~1450)
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -90,11 +90,11 @@ while [ $# -gt 0 ]; do
   shift
 done
 if [ -z "$MODE" ]; then usage >&2; exit 2; fi
-# --symbol/--timeframe only apply to replay modes; validate timeframe is one of 15|30|60.
+# --symbol/--timeframe only apply to replay modes; validate timeframe is one of 15|30|60|240.
 if [ "$MODE" = "replay-smoke" ] || [ "$MODE" = "replay-collect" ]; then
   case "$TIMEFRAME" in
-    15|30|60) : ;;
-    *) echo "ERRO: --timeframe inválido: '${TIMEFRAME}' (permitido: 15 | 30 | 60)" >&2; exit 2 ;;
+    15|30|60|240) : ;;
+    *) echo "ERRO: --timeframe inválido: '${TIMEFRAME}' (permitido: 15 | 30 | 60 | 240)" >&2; exit 2 ;;
   esac
   if [ -z "$SYMBOL" ]; then echo "ERRO: --symbol vazio" >&2; exit 2; fi
 fi
