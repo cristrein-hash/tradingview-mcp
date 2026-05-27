@@ -49,8 +49,8 @@ RAW_ROOT = EXTERNAL_ROOT / "raw_replay" / "XAUUSD"
 MANIFEST_DIR = EXTERNAL_ROOT / "manifests"
 OUT_PATH = repo_root() / "docs" / "data" / "dataset_registry.json"
 
-TF_LABEL = {"15": "15M", "30": "30M", "60": "1H"}
-TF_MINUTES = {"15M": 15, "30M": 30, "1H": 60}
+TF_LABEL = {"15": "15M", "30": "30M", "60": "1H", "240": "4H"}
+TF_MINUTES = {"15M": 15, "30M": 30, "1H": 60, "4H": 240, "1D": 1440}
 COLLECTOR = "run_xau_replay_feature_collect.py"
 WINDOW_MODE = "replay-collect"
 
@@ -101,10 +101,15 @@ def build_entry(gz: Path, warnings: list) -> dict:
     if not m_path:
         warnings.append(f"{gz.name}: manifest NOT FOUND")
 
-    # timeframe from filename (15m/30m/60m)
+    # timeframe from filename (15m/30m/60m/240m → minutes; 1D/D → daily)
     mm = re.search(r"_(\d+)m_replay", gz.name)
-    tf_res = mm.group(1) if mm else None
-    tf_label = TF_LABEL.get(tf_res, tf_res)
+    if mm:
+        tf_res = mm.group(1)
+        tf_label = TF_LABEL.get(tf_res, tf_res)
+    else:
+        dm_ = re.search(r"_(1D|D)_replay", gz.name)
+        tf_res = dm_.group(1) if dm_ else None
+        tf_label = "1D" if dm_ else None
 
     # nominal window from filename
     wm = re.search(r"_(\d{4}-\d{2}-\d{2})_to_(\d{4}-\d{2}-\d{2})", gz.name)
