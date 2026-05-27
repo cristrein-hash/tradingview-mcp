@@ -47,11 +47,11 @@ safe_backtest_window.sh — controlled TradingView/MCP backtest maintenance wind
                        smoke (run_xau_15m_pullback_ohlcv.py --months 1 --dry-run), then restore.
   --collect [--months N]  Same maintenance window, but run a REAL OHLCV collection
                        (run_xau_15m_pullback_ohlcv.py --months N; default N=3, no dry-run).
-  --replay-smoke [--timeframe 15|30|60|240] [--symbol SYM]
+  --replay-smoke [--timeframe 15|30|60|240|1D] [--symbol SYM]
                        Short Replay-based FEATURE smoke: 80 bars from ~90d ago
                        (run_xau_replay_feature_collect.py --bars 80 --date <90d>), then restore.
                        Defaults: --symbol PEPPERSTONE:XAUUSD --timeframe 15.
-  --replay-collect --start-date YYYY-MM-DD --end-date YYYY-MM-DD [--timeframe 15|30|60|240] [--symbol SYM]
+  --replay-collect --start-date YYYY-MM-DD --end-date YYYY-MM-DD [--timeframe 15|30|60|240|1D] [--symbol SYM]
                        REAL Replay feature collection for a closed window (e.g. one quarter):
                        run_xau_replay_feature_collect.py --start-date S --end-date E (safety cap
                        ${REPLAY_COLLECT_CAP} bars), then restore.
@@ -70,7 +70,7 @@ MONTHS=3
 START_DATE=""
 END_DATE=""
 SYMBOL="PEPPERSTONE:XAUUSD"   # default; overridable for replay modes
-TIMEFRAME="15"                # default; allowed for replay modes: 15|30|60|240
+TIMEFRAME="15"                # default; allowed for replay modes: 15|30|60|240|1D (D accepted, normalized to 1D)
 REPLAY_COLLECT_CAP=8000   # safety cap of bars for a windowed replay collect (3mo 15M ~5700, 30M ~2900, 1H ~1450)
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -90,13 +90,17 @@ while [ $# -gt 0 ]; do
   shift
 done
 if [ -z "$MODE" ]; then usage >&2; exit 2; fi
-# --symbol/--timeframe only apply to replay modes; validate timeframe is one of 15|30|60|240.
+# --symbol/--timeframe only apply to replay modes; validate timeframe is one of 15|30|60|240|1D ("D" accepted, normalized to 1D).
 if [ "$MODE" = "replay-smoke" ] || [ "$MODE" = "replay-collect" ]; then
   case "$TIMEFRAME" in
-    15|30|60|240) : ;;
-    *) echo "ERRO: --timeframe inválido: '${TIMEFRAME}' (permitido: 15 | 30 | 60 | 240)" >&2; exit 2 ;;
+    15|30|60|240|D|1D) : ;;
+    *) echo "ERRO: --timeframe inválido: '${TIMEFRAME}' (permitido: 15 | 30 | 60 | 240 | 1D)" >&2; exit 2 ;;
   esac
+  # TradingView's chart.resolution() reports daily as "1D"; accept "D" but normalize so the collector's chart guard matches
+  if [ "$TIMEFRAME" = "D" ]; then TIMEFRAME="1D"; fi
   if [ -z "$SYMBOL" ]; then echo "ERRO: --symbol vazio" >&2; exit 2; fi
+  # label for logs: numeric TFs are minutes ("240m"); daily "1D" kept as-is
+  if printf '%s' "$TIMEFRAME" | grep -qE '^[0-9]+$'; then TF_LABEL="${TIMEFRAME}m"; else TF_LABEL="$TIMEFRAME"; fi
 fi
 if [ "$MODE" = "collect" ]; then
   if ! printf '%s' "$MONTHS" | grep -qE '^[0-9]+$' || [ "$MONTHS" -lt 1 ]; then
@@ -245,13 +249,14 @@ elif [ "$MODE" = "collect" ]; then
   RUN_RC=$?
   if [ $RUN_RC -eq 0 ]; then log "COLLECT PASS (exit_code=0)"; else log "COLLECT FAIL (exit_code=$RUN_RC)"; fi
 elif [ "$MODE" = "replay-smoke" ]; then
-  REPLAY_DATE=$(date -v-90d +%Y-%m-%d)
-  log "=========== REPLAY-SMOKE (80 bars ${SYMBOL} ${TIMEFRAME}m, replay desde ${REPLAY_DATE}) ==========="
+  # 80 bars are stepped FORWARD: daily needs a deeper start (~80 trading days ≈ 112d) to stay in history
+  if [ "$TIMEFRAME" = "1D" ]; then REPLAY_DATE=$(date -v-200d +%Y-%m-%d); else REPLAY_DATE=$(date -v-90d +%Y-%m-%d); fi
+  log "=========== REPLAY-SMOKE (80 bars ${SYMBOL} ${TF_LABEL}, replay desde ${REPLAY_DATE}) ==========="
   ( cd "$ALERT_DIR" && python3 -u run_xau_replay_feature_collect.py --symbol "$SYMBOL" --timeframe "$TIMEFRAME" --bars 80 --date "$REPLAY_DATE" )
   RUN_RC=$?
   if [ $RUN_RC -eq 0 ]; then log "REPLAY-SMOKE PASS (exit_code=0)"; else log "REPLAY-SMOKE FAIL (exit_code=$RUN_RC)"; fi
 elif [ "$MODE" = "replay-collect" ]; then
-  log "=========== REPLAY-COLLECT (${SYMBOL} ${TIMEFRAME}m, ${START_DATE} -> ${END_DATE}, cap ${REPLAY_COLLECT_CAP} bars) ==========="
+  log "=========== REPLAY-COLLECT (${SYMBOL} ${TF_LABEL}, ${START_DATE} -> ${END_DATE}, cap ${REPLAY_COLLECT_CAP} bars) ==========="
   ( cd "$ALERT_DIR" && python3 -u run_xau_replay_feature_collect.py --symbol "$SYMBOL" --timeframe "$TIMEFRAME" --start-date "$START_DATE" --end-date "$END_DATE" --bars "$REPLAY_COLLECT_CAP" )
   RUN_RC=$?
   if [ $RUN_RC -eq 0 ]; then log "REPLAY-COLLECT PASS (exit_code=0)"; else log "REPLAY-COLLECT FAIL (exit_code=$RUN_RC)"; fi

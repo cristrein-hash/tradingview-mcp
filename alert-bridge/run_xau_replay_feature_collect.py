@@ -168,10 +168,12 @@ def main():
 
     BACKTESTS_DIR.mkdir(parents=True, exist_ok=True)
     sym_short = args.symbol.split(":")[-1]
+    # timeframe label for filenames: numeric TFs are minutes ("240m"); non-numeric (e.g. daily "D") kept as-is
+    tf_label = f"{args.timeframe}m" if str(args.timeframe).isdigit() else str(args.timeframe)
     if args.end_date:
-        out_basename = f"{sym_short}_{args.timeframe}m_replay_{args.date}_to_{args.end_date}{args.suffix}"
+        out_basename = f"{sym_short}_{tf_label}_replay_{args.date}_to_{args.end_date}{args.suffix}"
     else:
-        out_basename = f"{sym_short}_{args.timeframe}m_replay_{args.date}_{args.bars}bars{args.suffix}"
+        out_basename = f"{sym_short}_{tf_label}_replay_{args.date}_{args.bars}bars{args.suffix}"
     out_jsonl = BACKTESTS_DIR / f"{out_basename}.jsonl"
     checkpoint_path = BACKTESTS_DIR / f"{out_basename}.checkpoint.json"
 
