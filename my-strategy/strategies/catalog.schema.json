@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tradingview-mcp/my-strategy/strategies/catalog.schema.json",
+  "title": "Strategy Catalog v1",
+  "description": "Canonical single source of truth for strategies. Two orthogonal axes: validation_status (methodological strength) and deployment_status (operational reality). LIVE != VALIDATED. Close-only never validates. Purely descriptive: changing this file does NOT change system behaviour.",
+  "type": "object",
+  "required": ["_meta", "strategies"],
+  "additionalProperties": false,
+  "properties": {
+    "_meta": {
+      "type": "object",
+      "required": ["schema_version", "generated_at", "generator", "source_audit_date"],
+      "properties": {
+        "schema_version": {"type": "string"},
+        "generated_at": {"type": "string"},
+        "generator": {"type": "string"},
+        "source_audit_date": {"type": "string"},
+        "notes": {"type": "string"},
+        "enums": {"type": "object"},
+        "uniqueness_rule": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "strategies": {
+      "type": "array",
+      "items": {"$ref": "#/definitions/entry"}
+    }
+  },
+  "definitions": {
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id", "archetype", "family_origin", "symbol", "timeframe", "direction",
+        "validation_status", "current_deployment_status", "recommended_deployment_status",
+        "deployment_confidence", "risk_level", "requires_human_decision", "evidence"
+      ],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[A-Z0-9_]+$"},
+        "archetype": {
+          "type": "string",
+          "enum": [
+            "DECISIVE_BREAKOUT_CONTINUATION",
+            "LIQUIDITY_SWEEP_REVERSAL",
+            "PULLBACK_RECLAIM",
+            "REVERSAL_CAPITULATION",
+            "ZONE_REJECTION"
+          ]
+        },
+        "family_origin": {"type": "string", "enum": ["A", "B", "C"]},
+        "symbol": {"type": "string"},
+        "timeframe": {"type": "string"},
+        "direction": {"type": "string", "enum": ["LONG", "SHORT", "BOTH"]},
+        "validation_status": {
+          "type": "string",
+          "enum": [
+            "VALIDATED", "ACTIVE_CANDIDATE", "RESEARCH", "REFERENCE_ONLY",
+            "REJECTED", "LEGACY_ARCHIVE", "UNKNOWN_NEEDS_DECISION"
+          ]
+        },
+        "current_deployment_status": {"$ref": "#/definitions/deployment_enum"},
+        "recommended_deployment_status": {"$ref": "#/definitions/deployment_enum"},
+        "deployment_evidence": {"type": "string"},
+        "deployment_confidence": {"type": "string", "enum": ["confirmed", "inferred", "unknown"]},
+        "risk_level": {"type": "string", "enum": ["LOW", "MEDIUM", "HIGH"]},
+        "requires_human_decision": {"type": "boolean"},
+        "next_action": {"type": "string"},
+        "evidence": {
+          "type": "object",
+          "required": ["method"],
+          "additionalProperties": true,
+          "properties": {
+            "method": {"type": "string", "enum": ["close_only_d2r", "replay_real_rt", "forward", "none"]},
+            "n": {"type": ["integer", "null"]},
+            "pf": {"type": ["number", "null"]},
+            "win_rate": {"type": ["number", "null"]},
+            "avg_R_close_only": {"type": ["number", "null"]},
+            "r_no_top5": {"type": ["number", "null"]},
+            "span_years": {"type": ["number", "null"]},
+            "real_stop_target": {"type": "boolean"},
+            "mfe_mae": {"type": "boolean"},
+            "regime_segmented": {"type": "boolean"},
+            "dataset_ref": {"type": ["string", "null"]},
+            "registry_manifest": {"type": ["string", "null"]},
+            "lookahead_free": {"type": "boolean"}
+          }
+        },
+        "rules": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "entry": {"type": "string"},
+            "stop": {"type": "string"},
+            "target": {"type": "string"},
+            "invalidation": {"type": "string"},
+            "triggers": {"type": "array", "items": {"type": "string"}}
+          }
+        },
+        "reliability": {"type": "string"},
+        "candidate_packet": {"type": ["string", "null"]},
+        "supersedes": {"type": "array", "items": {"type": "string"}},
+        "superseded_by": {"type": ["string", "null"]},
+        "notes": {"type": "string"}
+      }
+    },
+    "deployment_enum": {
+      "type": "string",
+      "enum": ["LIVE", "LIVE_CONTEXT", "LIVE_DORMANT", "SHADOW", "WATCH_ONLY", "DISABLED", "NOT_DEPLOYED"]
+    }
+  }
+}
