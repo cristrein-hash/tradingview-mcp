@@ -1,17 +1,19 @@
 {
   "_meta": {
-    "generated_at": "2026-05-27T05:21:11.274621+00:00",
+    "generated_at": "2026-05-27T14:05:53.116610+00:00",
     "generated_by": "scripts/build_dataset_registry.py",
     "external_root": "/Volumes/GUTS_ LACIE/TradingData",
     "primary_integrity_source": "per-file manifests under TradingData/manifests (and superseded/)",
     "integrity_validated": "gzip -t + sha256(gz)==manifest, per entry",
     "feature_availability_note": "per-bar availability NOT deep-scanned; derived from manifest notes only",
-    "dataset_count": 16,
+    "dataset_count": 20,
     "counts_by_tf_status": {
       "15M_active": 8,
       "15M_superseded": 1,
       "30M_active": 4,
-      "1H_active": 3
+      "1H_active": 3,
+      "4H_active": 3,
+      "1D_active": 1
     },
     "warnings": []
   },
@@ -594,6 +596,152 @@
       "series_order": 3,
       "status": "active",
       "notes": "1H block 1 of 4 (6-month blocks, 2-year plan). Local original retained until deletion approval.",
+      "_integrity": {
+        "exists": true,
+        "gzip_t": true,
+        "sha256_match": true
+      }
+    },
+    {
+      "symbol": "XAUUSD",
+      "timeframe": "4H",
+      "start_date": "2016-05-25",
+      "end_date": "2020-01-01",
+      "replay_range_real": {
+        "start": "2016-05-24",
+        "end": "2020-01-02"
+      },
+      "bars": 5557,
+      "raw_gz_path": "TradingData/raw_replay/XAUUSD/4H/XAUUSD_240m_replay_2016-05-25_to_2020-01-01.jsonl.gz",
+      "manifest_path": "TradingData/manifests/XAUUSD_240m_replay_2016-05-25_to_2020-01-01_manifest.txt",
+      "sha256_original": "903f24db4e8acae6aca63f3798cb0c0765f468bef5c84159326b8499695c8853",
+      "sha256_gz": "d3e05aca5783d152ac63caa6e49e2e78f3df9752ba3a566e641dac9a826266aa",
+      "original_size_bytes": 1078829237,
+      "gz_size_bytes": 127604830,
+      "collected_at": "2026-05-27T09:14:51Z",
+      "feature_baseline": "Custom OB Detector v11 — Alert (baseline), LuxAlgo SMC, NAS Top Bottom, Market Order Bubbles, RSI",
+      "feature_availability": {
+        "per_bar_deep_scanned": false,
+        "source": "manifest",
+        "summary": "bar_index 0 empty pine_boxes/pine_lines (legit first replay bar)"
+      },
+      "known_gaps": [
+        "bar_index 0: pine_boxes/pine_lines empty (legit first replay bar)"
+      ],
+      "collector": "run_xau_replay_feature_collect.py",
+      "window_mode": "replay-collect",
+      "series_group": "XAUUSD_4H",
+      "series_order": 1,
+      "status": "active",
+      "notes": "XAU 4H block 1 of 3. Local original retained until deletion approval.",
+      "_integrity": {
+        "exists": true,
+        "gzip_t": true,
+        "sha256_match": true
+      }
+    },
+    {
+      "symbol": "XAUUSD",
+      "timeframe": "4H",
+      "start_date": "2020-01-01",
+      "end_date": "2023-01-01",
+      "replay_range_real": {
+        "start": "2019-12-31T23:59:59",
+        "end": "2023-01-03T02:59:59 UTC"
+      },
+      "bars": 4636,
+      "raw_gz_path": "TradingData/raw_replay/XAUUSD/4H/XAUUSD_240m_replay_2020-01-01_to_2023-01-01.jsonl.gz",
+      "manifest_path": "TradingData/manifests/XAUUSD_240m_replay_2020-01-01_to_2023-01-01_manifest.txt",
+      "sha256_original": "d620fdf80b83ebae21e78a34b350b4a6f48a2c4c6daf40c4974f559902f3955f",
+      "sha256_gz": "c173cd132e56a09089c0f8ea17fe48ace7680c4bfafecdc791c79f6438387dd6",
+      "original_size_bytes": 921832525,
+      "gz_size_bytes": 109244065,
+      "collected_at": "2026-05-27T10:58:46Z",
+      "feature_baseline": "Custom OB Detector v11 — Alert (baseline), LuxAlgo SMC, NAS Top Bottom, Market Order Bubbles, RSI (all 5 confirmed by name)",
+      "feature_availability": {
+        "per_bar_deep_scanned": false,
+        "source": "manifest",
+        "summary": "not recorded in manifest (integrity validated via gzip+sha)"
+      },
+      "known_gaps": [],
+      "collector": "run_xau_replay_feature_collect.py",
+      "window_mode": "replay-collect",
+      "series_group": "XAUUSD_4H",
+      "series_order": 2,
+      "status": "active",
+      "notes": "XAU 4H block 2 of 3. Local original retained until deletion approval.",
+      "_integrity": {
+        "exists": true,
+        "gzip_t": true,
+        "sha256_match": true
+      }
+    },
+    {
+      "symbol": "XAUUSD",
+      "timeframe": "4H",
+      "start_date": "2023-01-03",
+      "end_date": "2026-05-25",
+      "replay_range_real": {
+        "start": "2023-01-02T23:59:59",
+        "end": "2026-05-25T01:59:59 UTC"
+      },
+      "bars": 5242,
+      "raw_gz_path": "TradingData/raw_replay/XAUUSD/4H/XAUUSD_240m_replay_2023-01-03_to_2026-05-25.jsonl.gz",
+      "manifest_path": "TradingData/manifests/XAUUSD_240m_replay_2023-01-03_to_2026-05-25_manifest.txt",
+      "sha256_original": "2edf8f068da498f64b7cc5397427b14aab591dabead07eac3a0372a1863a1226",
+      "sha256_gz": "f2e78a824d0a27afaa5e3dc4378d1903a893538f34499d20cd680155293390b8",
+      "original_size_bytes": 1048958968,
+      "gz_size_bytes": 125206310,
+      "collected_at": "2026-05-27T12:50:19Z",
+      "feature_baseline": "Custom OB Detector v11 — Alert (baseline), LuxAlgo SMC, NAS Top Bottom, Market Order Bubbles, RSI (all 5 confirmed by name)",
+      "feature_availability": {
+        "per_bar_deep_scanned": false,
+        "source": "manifest",
+        "summary": "not recorded in manifest (integrity validated via gzip+sha)"
+      },
+      "known_gaps": [],
+      "collector": "run_xau_replay_feature_collect.py",
+      "window_mode": "replay-collect",
+      "series_group": "XAUUSD_4H",
+      "series_order": 3,
+      "status": "active",
+      "notes": "XAU 4H block 3 of 3. Local original retained until deletion approval.",
+      "_integrity": {
+        "exists": true,
+        "gzip_t": true,
+        "sha256_match": true
+      }
+    },
+    {
+      "symbol": "XAUUSD",
+      "timeframe": "1D",
+      "start_date": "2012-06-19",
+      "end_date": "2026-05-25",
+      "replay_range_real": {
+        "start": "2012-06-19T00:00:00",
+        "end": "2026-05-25T20:58:59 UTC"
+      },
+      "bars": 3602,
+      "raw_gz_path": "TradingData/raw_replay/XAUUSD/1D/XAUUSD_1D_replay_2012-06-19_to_2026-05-25.jsonl.gz",
+      "manifest_path": "TradingData/manifests/XAUUSD_1D_replay_2012-06-19_to_2026-05-25_manifest.txt",
+      "sha256_original": "ab6e73a040819ae935fea38a36c0f64e75aa9d832cd1d9b3396c09d3ea7214ef",
+      "sha256_gz": "590c949789de015c7381f3bea5ac29e4fb18ef2fcf8e108457c781ce54a32cc1",
+      "original_size_bytes": 471362266,
+      "gz_size_bytes": 57662313,
+      "collected_at": "2026-05-27T13:50:05Z",
+      "feature_baseline": "Custom OB Detector v11 — Alert (baseline), LuxAlgo SMC, NAS Top Bottom, Market Order Bubbles, RSI (all 5 confirmed by name)",
+      "feature_availability": {
+        "per_bar_deep_scanned": false,
+        "source": "manifest",
+        "summary": "not recorded in manifest (integrity validated via gzip+sha)"
+      },
+      "known_gaps": [],
+      "collector": "run_xau_replay_feature_collect.py",
+      "window_mode": "replay-collect",
+      "series_group": "XAUUSD_1D",
+      "series_order": 1,
+      "status": "active",
+      "notes": "XAUUSD 1D deep macro/regime base, single block. Local original retained until deletion approval.",
       "_integrity": {
         "exists": true,
         "gzip_t": true,
