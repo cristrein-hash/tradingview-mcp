@@ -24,7 +24,7 @@ A local file may be deleted **only after** ALL of:
 ## External layout
 ```
 /Volumes/GUTS_ LACIE/TradingData/
-  raw_replay/XAUUSD/{15M,30M,1H}/   # gzipped raw replay feature dumps
+  raw_replay/XAUUSD/{15M,30M,1H,4H,1D}/  # gzipped raw replay feature dumps
   backtests/XAUUSD/{15M,30M,1H,4H}/ # gzipped historical backtest dumps
   slim_features/...  legacy_logs/  legacy_archives/  backups/
   manifests/                        # one manifest per archived file/batch
@@ -39,10 +39,13 @@ confirms each `.gz` + `gzip -t` + sha256==manifest, records divergences as warni
 re-list the detailed inventory here** — query the registry. The per-file manifests under `manifests/`
 (and `superseded/`) remain the primary integrity source; the registry is the rollup.
 
-Snapshot (as of 2026-05-26 — see registry for the source of truth):
-- **XAU 15M** — 1 year, 4 active blocks + 1 superseded (the pre-baseline `2026-02-25→05-25`, kept in `raw_replay/XAUUSD/15M/superseded/`). Source of truth for that window is `..._rerun_customOBbaseline.jsonl.gz`.
+Snapshot (as of 2026-05-27 — see registry for the source of truth; 20 datasets, 0 warnings, all integrity-validated):
+- **XAU 15M** — 2 years, 8 active blocks (3-month each) + 1 superseded (the pre-baseline `2026-02-25→05-25`, kept in `raw_replay/XAUUSD/15M/superseded/`; source of truth for that window is `..._rerun_customOBbaseline.jsonl.gz`).
 - **XAU 30M** — 2 years, 4 active blocks (6-month each).
 - **XAU 1H** — 2 years, 3 active blocks (year 1 = 2 semesters, year 2 = 1 annual block).
+- **XAU 4H** — ~10 years deep (macro/regime context), 3 active blocks: `2016-05-25→2020-01-01` · `2020-01-01→2023-01-01` · `2023-01-03→2026-05-25`.
+- **XAU 1D** — ~14 years deep (macro/regime context), 1 active block: `2012-06-19→2026-05-25`.
+- Slim features (1-row-per-bar, derived/regenerable) extracted to `slim_features/XAUUSD/{15M,4H,1D}/` via `scripts/extract_replay_features_v1.py`. Derived layer — RAW `.gz` + manifests remain the source of truth.
 - 5× 4H pre-v6 unversioned dumps in `backtests/XAUUSD/4H/` (outside `raw_replay/`, not in the registry).
 - All RAW locals removed; baseline = Custom OB v11 + LuxAlgo SMC + NAS Top Bottom + Market Order Bubbles + RSI.
 
