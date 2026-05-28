@@ -48,8 +48,8 @@ CHART_LOCK_PATH = "/tmp/tradingview_chart.lock"
 # alert (see catalog.json):
 #   - discr_sweep / discr_base: XAU_4H_REVERSAL_DISCRETIONARY = WATCH_ONLY (RESEARCH, small n)
 #   - capitulation: XAU_4H_REVERSAL_CAPITULATION = REJECTED by canonical revalidation v2 (PF 0.47); recommended DISABLED
-# demand_breakout stays LIVE.
-NO_TELEGRAM_DISPATCH = {"discr_sweep", "discr_base", "capitulation"}
+#   - demand_breakout: XAU_4H_DEMAND_BREAKOUT = REJECTED 2026-05-29 by visual auction-theory review; recommended DISABLED
+NO_TELEGRAM_DISPATCH = {"discr_sweep", "discr_base", "capitulation", "demand_breakout"}
 CHART_LOCK_TIMEOUT_S = 120
 PER_CALL_TIMEOUT_S = 60
 
