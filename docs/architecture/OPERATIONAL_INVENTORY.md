@@ -191,3 +191,70 @@ Remaining — require explicit authorization:
   fallback only inside explicit safe windows, output manifest/provenance. Not
   scheduled.
 - **Rollback** (if ever needed): `cp backups/launchagents_archive/com.cristrein.enrich-indicator-outcomes.plist.deprecated_2026-05-28 ~/Library/LaunchAgents/com.cristrein.enrich-indicator-outcomes.plist && launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.cristrein.enrich-indicator-outcomes.plist` — but this restores the buggy behaviour and is not recommended.
+
+## 13. Outcome Automation Moratorium — 2026-05-28
+
+**Status:** active. Lifted only by explicit operator authorization once the
+**Signal Outcome Lab** (redesigned outcome layer) is built and a clean
+replacement dataset is available.
+
+### Rationale
+- `enrich_indicator_outcomes.py` was decommissioned (section 12).
+- `alert-bridge/logs/indicator_signals_outcomes.jsonl` was quarantined to
+  `*.contaminated_pre_pepperstone_fix_2026-05-28` (manifest at
+  `alert-bridge/logs/indicator_signals_outcomes.quarantine_manifest_2026-05-28.json`).
+- Three downstream consumers (`auto_d2r_daily.py`, `report_indicator_edge.py`,
+  `weekly_review.py::check_enrich_v2`) were patched (commit `d23b71d`) to detect
+  the quarantined sibling and emit the structured marker
+  `OUTCOMES_UNAVAILABLE_DECOMMISSIONED_ENRICH` instead of misleading "no edge"
+  / "still collecting" output.
+- The moratorium goes one step further: **temporarily unload the LaunchAgent
+  that runs the outcomes-dependent daily Telegram report**, so no automated
+  message goes out claiming a meaningful state while the outcome layer is
+  being redesigned.
+
+### Per-LaunchAgent disposition (post-2026-05-28)
+
+| LaunchAgent | Script | Outcomes dependency | Disposition | Notes |
+|---|---|---|---|---|
+| `com.cristrein.enrich-indicator-outcomes` | `enrich_indicator_outcomes.py` | writer (now decommissioned) | **REMOVED** (section 12) | plist archived; do not bootstrap |
+| `com.cristrein.d2r-daily` | `auto_d2r_daily.py` | reads outcomes for Telegram appendix B.1 | **PAUSED (moratorium)** | unloaded via `launchctl bootout`; plist remains at `~/Library/LaunchAgents/` but inactive; backup at `backups/launchagents_archive/com.cristrein.d2r-daily.plist.paused_moratorium_2026-05-28` |
+| `com.cristrein.weekly-review` | `weekly_review.py` | 1 check of N (`check_enrich_v2`) reads outcomes; other checks (receiver health, secret leak, schema warnings, module status) are independent | **KEPT (with patch)** | patch `d23b71d` makes `check_enrich_v2` report `OUTCOMES_UNAVAILABLE_DECOMMISSIONED_ENRICH`; the other valuable health checks remain active |
+| `com.cristrein.archive-weekly` | `archive_old_files.py --mode=all` | none | **KEPT** | log archival only; does not read outcomes |
+| `com.cristrein.xau-4h-monitor-cron` | `monitor_xau_4h_strategies.py --mode cron` | none | **KEPT** | strategy monitor; does not read outcomes |
+| `com.cristrein.xau-4h-monitor-daemon` | `monitor_xau_4h_strategies.py --mode daemon` | none | **KEPT** | strategy monitor; does not read outcomes |
+| `com.cristrein.tv-webhook-receiver` | `start_receiver.sh` → `tv_webhook_receiver.py` | none | **KEPT** | signal journal; does not read outcomes |
+| `com.cristrein.cloudflared-tunnel` | cloudflared | none | **KEPT** | public ingress |
+| `com.cristrein.external-factors-heartbeat` | `external_factors_heartbeat.py` | none | **KEPT** | external data |
+
+Manual scripts that consume outcomes (no LaunchAgent):
+- `report_indicator_edge.py` — patched (`d23b71d`) to emit
+  `OUTCOMES_UNAVAILABLE_DECOMMISSIONED_ENRICH` report instead of "no matched
+  pairs" when the outcomes file is quarantined. Safe to invoke manually; it
+  will print the explanatory report rather than fake-empty results.
+
+### Cross-references
+- Active log mutation policy: `docs/architecture/LOG_MUTATION_POLICY.md`.
+- Future: `INDICATOR_SIGNAL_POLICY.md` (provider/whitelist policy formalized;
+  not yet authored at moratorium start).
+- Future: Signal Outcome Lab design doc (architecture + provider hard gate +
+  unified chart lock + canonical-slim-first + manifest/provenance — not yet
+  authored).
+
+### Rollback / re-enable
+
+Lift the moratorium **only** when:
+1. The Signal Outcome Lab is designed, built, and validated.
+2. A clean outcomes dataset is produced (or stub policy is approved).
+3. Operator explicitly authorizes re-enabling each paused LaunchAgent.
+
+Re-enable command for `com.cristrein.d2r-daily` (when authorized):
+```
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.cristrein.d2r-daily.plist
+launchctl list | grep d2r-daily      # confirm loaded
+```
+
+If the moratorium is escalated to also pause `weekly-review`, the same pattern
+applies; the script is multi-purpose so reactivation may also be partial
+(e.g. re-enable cron but keep `check_enrich_v2` returning the structured
+marker until outcomes are real).
