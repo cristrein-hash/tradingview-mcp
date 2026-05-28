@@ -1,0 +1,303 @@
+{
+  "strategy_id": "XAU_4H_DEMAND_BREAKOUT",
+  "revalidation_version": "v2",
+  "generated_at": "2026-05-28T02:36:24.983661+00:00",
+  "provenance": {
+    "code_commit": "698c708677f62e2a4039d9c8c69959875a67e128",
+    "config_path": "my-strategy/research/revalidation/XAU_4H_DEMAND_BREAKOUT/v2/config.json",
+    "inputs": {
+      "4H": {
+        "registry_entries": [
+          {
+            "registry_entry": "XAUUSD_4H_2016-05-25",
+            "start_date": "2016-05-25",
+            "end_date": "2020-01-01",
+            "rows_in_file": 5557
+          },
+          {
+            "registry_entry": "XAUUSD_4H_2020-01-01",
+            "start_date": "2020-01-01",
+            "end_date": "2023-01-01",
+            "rows_in_file": 4636
+          },
+          {
+            "registry_entry": "XAUUSD_4H_2023-01-03",
+            "start_date": "2023-01-03",
+            "end_date": "2026-05-25",
+            "rows_in_file": 5242
+          }
+        ],
+        "raw_paths": [
+          "TradingData/raw_replay/XAUUSD/4H/XAUUSD_240m_replay_2016-05-25_to_2020-01-01.jsonl.gz",
+          "TradingData/raw_replay/XAUUSD/4H/XAUUSD_240m_replay_2020-01-01_to_2023-01-01.jsonl.gz",
+          "TradingData/raw_replay/XAUUSD/4H/XAUUSD_240m_replay_2023-01-03_to_2026-05-25.jsonl.gz"
+        ],
+        "bars": 15187,
+        "dedup_extra_dropped": 248,
+        "null_bct_dropped": 0
+      }
+    },
+    "horizon_definition": "walk [entry_bar, entry_bar+time_limit_bars-1]; time-limit exit at close of last bar"
+  },
+  "phase1_reconciliation": {
+    "canonical_funnel": {
+      "window_84": {
+        "signals_total": 58,
+        "signals_2023_2026": 15,
+        "close_only_H10": {
+          "n": 15,
+          "win_from_entry_pct": 73.33,
+          "win_from_signal_close_pct": 73.33
+        },
+        "close_only_H20": {
+          "n": 15,
+          "win_from_entry_pct": 66.67,
+          "win_from_signal_close_pct": 66.67
+        }
+      },
+      "window_40": {
+        "signals_total": 79,
+        "signals_2023_2026": 24,
+        "close_only_H10": {
+          "n": 24,
+          "win_from_entry_pct": 66.67,
+          "win_from_signal_close_pct": 66.67
+        },
+        "close_only_H20": {
+          "n": 24,
+          "win_from_entry_pct": 62.5,
+          "win_from_signal_close_pct": 62.5
+        }
+      }
+    },
+    "v6_dump_comparison": {
+      "diagnostics": {
+        "files": 8,
+        "records_total": 4320,
+        "records_with_ohlcv": 4320,
+        "records_with_cob_boxes": 4315,
+        "records_in_zone": 625,
+        "records_nas_in_band": 674,
+        "records_dist14_in_band": 1603,
+        "records_with_forming_last": 3962,
+        "signal_records": 37,
+        "unique_signal_epochs": 27
+      },
+      "signal_epochs_count": 27,
+      "timestamp_overlap": {
+        "canonical_w40_signals": 79,
+        "v6_signals": 27,
+        "intersection": 17,
+        "only_canonical": 62,
+        "only_v6": 10
+      },
+      "v6_signal_epochs_sample": [
+        "2023-01-23T03:00:00+00:00",
+        "2023-07-20T14:00:00+00:00",
+        "2023-07-21T02:00:00+00:00",
+        "2023-08-24T10:00:00+00:00",
+        "2023-08-24T14:00:00+00:00",
+        "2023-08-24T18:00:00+00:00",
+        "2023-08-24T22:00:00+00:00",
+        "2023-09-04T10:00:00+00:00",
+        "2023-09-04T14:00:00+00:00",
+        "2024-01-31T07:00:00+00:00"
+      ]
+    },
+    "legacy_targets": {
+      "win_rate": 0.838,
+      "n": 80,
+      "avg_R_close_only": 2.43,
+      "sum_R": 194.57,
+      "metric": "close_only_H20"
+    },
+    "reconciliation_status": "LEGACY_NOT_REPRODUCIBLE"
+  },
+  "signal_funnel": {
+    "raw_candidate_bars_inside_demand_zone": 2536,
+    "canonical_w84_total_signals": 58,
+    "canonical_w40_total_signals": 79,
+    "v6_signal_epochs": 27,
+    "r_real_trades_primary_stop": 52,
+    "right_censored": 0
+  },
+  "aggregate": {
+    "n": 52,
+    "win_pct": 26.92,
+    "avg_r": -0.1923,
+    "median_r": -1.0,
+    "sum_r": -10.0,
+    "profit_factor": 0.7368,
+    "max_losing_streak": 11,
+    "sum_r_ex_top5": -20.0,
+    "sum_r_ex_top10": -30.0,
+    "mfe_r_mean": 1.8028,
+    "mae_r_mean": -3.9604,
+    "exit_reason_mix": {
+      "target": 14,
+      "stop": 38,
+      "time_limit": 0
+    }
+  },
+  "by_regime": {
+    "pre_covid": {
+      "n": 23,
+      "win_pct": 34.78,
+      "avg_r": 0.0435,
+      "median_r": -1.0,
+      "sum_r": 1.0,
+      "profit_factor": 1.0667
+    },
+    "inflation_bear_macro": {
+      "n": 12,
+      "win_pct": 25.0,
+      "avg_r": -0.25,
+      "median_r": -1.0,
+      "sum_r": -3.0,
+      "profit_factor": 0.6667
+    },
+    "covid": {
+      "n": 4,
+      "win_pct": 0.0,
+      "avg_r": -1.0,
+      "median_r": -1.0,
+      "sum_r": -4.0,
+      "profit_factor": 0.0
+    },
+    "gold_bull_recent": {
+      "n": 13,
+      "win_pct": 23.08,
+      "avg_r": -0.3077,
+      "median_r": -1.0,
+      "sum_r": -4.0,
+      "profit_factor": 0.6
+    },
+    "_total": {
+      "n": 52,
+      "win_pct": 26.92,
+      "avg_r": -0.1923,
+      "median_r": -1.0,
+      "sum_r": -10.0,
+      "profit_factor": 0.7368
+    },
+    "_ex_covid": {
+      "n": 48,
+      "win_pct": 29.17,
+      "avg_r": -0.125,
+      "median_r": -1.0,
+      "sum_r": -6.0,
+      "profit_factor": 0.8235
+    },
+    "_covid_only": {
+      "n": 4,
+      "win_pct": 0.0,
+      "avg_r": -1.0,
+      "median_r": -1.0,
+      "sum_r": -4.0,
+      "profit_factor": 0.0
+    }
+  },
+  "by_cost": {
+    "0": {
+      "sum_net_r": -10.0,
+      "avg_net_r": -0.1923,
+      "win_pct": 26.92
+    },
+    "0.2": {
+      "sum_net_r": -17.1859,
+      "avg_net_r": -0.3305,
+      "win_pct": 26.92
+    },
+    "0.5": {
+      "sum_net_r": -27.9649,
+      "avg_net_r": -0.5378,
+      "win_pct": 26.92
+    }
+  },
+  "by_target": {
+    "1R": {
+      "n": 52,
+      "win_pct": 30.77,
+      "avg_r": -0.3846,
+      "sum_r": -20.0,
+      "exit_mix": {
+        "target": 16,
+        "stop": 36,
+        "time_limit": 0
+      }
+    },
+    "2R": {
+      "n": 52,
+      "win_pct": 26.92,
+      "avg_r": -0.1923,
+      "sum_r": -10.0,
+      "exit_mix": {
+        "target": 14,
+        "stop": 38,
+        "time_limit": 0
+      }
+    },
+    "3R": {
+      "n": 52,
+      "win_pct": 19.23,
+      "avg_r": -0.2308,
+      "sum_r": -12.0,
+      "exit_mix": {
+        "target": 10,
+        "stop": 42,
+        "time_limit": 0
+      }
+    }
+  },
+  "by_stop_variant": {
+    "demand_zone_low": {
+      "n": 52,
+      "win_pct": 26.92,
+      "avg_r": -0.1923,
+      "median_r": -1.0,
+      "sum_r": -10.0,
+      "profit_factor": 0.7368
+    },
+    "structural_3_low": {
+      "n": 50,
+      "win_pct": 16.0,
+      "avg_r": -0.52,
+      "median_r": -1.0,
+      "sum_r": -26.0,
+      "profit_factor": 0.381
+    },
+    "atr_1_5": {
+      "n": 42,
+      "win_pct": 35.71,
+      "avg_r": -0.084,
+      "median_r": -1.0,
+      "sum_r": -3.5278,
+      "profit_factor": 0.8655
+    }
+  },
+  "validations": {
+    "no_future_leak": true,
+    "entry_is_next_bar_open": true,
+    "all_stop_distance_positive": true,
+    "report_generated": true,
+    "technically_valid": true
+  },
+  "decision": {
+    "result_status": "fail",
+    "recommended_catalog_transition": {
+      "validation_status": "REJECTED",
+      "deployment_status": "DISABLED/NOT_DEPLOYED"
+    },
+    "rationale": "avg_R=-0.1923, PF=0.7368 — no edge.",
+    "reconciliation_status": "LEGACY_NOT_REPRODUCIBLE"
+  },
+  "warnings": [
+    "LEGACY_NOT_REPRODUCIBLE: canonical close-only != legacy 83.8%; merit verdict capped at 'pass' (no VALIDATED)."
+  ],
+  "output": {
+    "trades_path": "/Users/cristrein/tradingview-mcp/my-strategy/research/revalidation/XAU_4H_DEMAND_BREAKOUT/v2/trades.jsonl",
+    "trades_lines": 144,
+    "report_path": "/Users/cristrein/tradingview-mcp/my-strategy/research/revalidation/XAU_4H_DEMAND_BREAKOUT/v2/report.json",
+    "summary_path": "/Users/cristrein/tradingview-mcp/my-strategy/research/revalidation/XAU_4H_DEMAND_BREAKOUT/v2/summary.md"
+  }
+}
