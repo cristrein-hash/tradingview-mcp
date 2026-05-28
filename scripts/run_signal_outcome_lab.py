@@ -1005,12 +1005,25 @@ def main(argv=None):
         for rec in demo_records:
             tf = str(rec.get("timeframe"))
             specs = HORIZONS.get(tf, [])
+            # When the legacy signal had direction_classified=ambiguous, the
+            # split (long + short) records would otherwise share an outcome_id
+            # (signal_hash + horizon_spec_id + data_source_resolution are all
+            # identical between the two). Per MVP §12, the synthesized
+            # direction is carried in horizon_spec_id for ambiguous splits to
+            # keep outcome_ids distinct. Non-ambiguous signals keep their
+            # spec_id clean to honor the doc's wording literally.
+            is_ambiguous_split = rec.get("direction_classified") == "ambiguous"
             for record, direction in expand_for_directions(rec):
                 if direction is None:
                     continue
                 for spec in specs:
+                    local_spec = (
+                        {**spec, "spec_id": f"{spec['spec_id']}:{direction}"}
+                        if is_ambiguous_split else spec
+                    )
                     computed_outcomes.append(
-                        compute_outcome(record, direction, spec, run_id=run_id)
+                        compute_outcome(record, direction, local_spec,
+                                        run_id=run_id)
                     )
     else:
         run_id = args.run_id or (
