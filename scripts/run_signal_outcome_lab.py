@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Signal Outcome Lab — MVP skeleton (Patch 3).
+Signal Outcome Lab — MVP (Patch 4: real outcome computation for XAU backfill).
 
 References:
   docs/architecture/SIGNAL_OUTCOME_LAB.md
@@ -17,13 +17,18 @@ MVP scope (frozen 2026-05-28):
       backfill_from_quarantine     — read-only over the 330 quarantined
                                      legacy outcomes; XAUUSD recoverable.
 
-This is a skeleton:
-  - --dry-run is the default (and the only allowed mode in this patch).
-  - --write is intentionally REJECTED here. Real writes land in a later
-    authorized patch.
-  - compute_outcome_skeleton() is defined but NOT called in dry-run.
-  - No directory is created. No file is written. No log is mutated.
-  - The Signal Journal and the quarantine file are read-only inputs.
+Patch 4 status:
+  - compute_outcome() is now implemented (real computation from canonical slim).
+  - In dry-run + backfill mode, the script selects demo records (1 per TF when
+    max_signals <= 3) and includes computed outcomes inline in the report.
+  - write_outputs() is implemented but only executes when --write is passed.
+  - This patch authorizes only dry-run on the 3 hand-picked signals. Bulk runs
+    and --write executions require separate explicit authorization.
+
+Hard rules (always honored):
+  - No TradingView / MCP / chart calls. Ever.
+  - Inputs (Signal Journal, quarantine file) are read-only.
+  - Output dir is created ONLY on --write. Never on dry-run.
 """
 
 import argparse
@@ -31,6 +36,7 @@ import collections
 import datetime as dt
 import hashlib
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -73,6 +79,10 @@ SLIM_FILENAME_RE = re.compile(
     r"(?P<suffix>[_A-Za-z0-9]*)\.jsonl(?:\.gz)?$"
 )
 
+# Verdict tolerances per MVP §10.
+CLOSE_AGREE_PCT = 0.005   # |diff_pct| < 0.5% of new_entry → AGREES
+ENTRY_DIVERGE_RATIO = 0.10  # |entry_diff| / legacy_entry > 10% → SIGN (provider contamination)
+
 # ---------------------------------------------------------------------------
 # Small helpers.
 # ---------------------------------------------------------------------------
@@ -112,13 +122,7 @@ def is_test_or_synthetic(rec):
 
 
 def slim_coverage(symbol, tf):
-    """
-    Probe canonical slim files for (symbol, timeframe) using filename metadata.
-
-    Reads NO file content; only the directory listing. Returns:
-        {"ok": True, "dir": str, "files": [...], "overall_start": str, "overall_end": str}
-        {"ok": False, "reason": str}
-    """
+    """Probe canonical slim files by filename metadata (no file read)."""
     if symbol != "XAUUSD":
         return {"ok": False, "reason": f"symbol {symbol} not in MVP scope"}
     slim_tf = TF_TO_SLIM_DIR.get(str(tf))
@@ -132,7 +136,10 @@ def slim_coverage(symbol, tf):
         m = SLIM_FILENAME_RE.match(f.name)
         if not m:
             continue
-        files.append({"name": f.name, "start": m.group("start"), "end": m.group("end")})
+        files.append(
+            {"name": f.name, "path": str(f),
+             "start": m.group("start"), "end": m.group("end")}
+        )
     if not files:
         return {"ok": False, "reason": f"no slim files in {d}"}
     return {
@@ -144,12 +151,102 @@ def slim_coverage(symbol, tf):
     }
 
 
+def locate_slim_file_for(tf, ts_signal):
+    """Return Path of the slim file whose date range covers ts_signal, else None."""
+    if ts_signal is None:
+        return None
+    cov = slim_coverage("XAUUSD", tf)
+    if not cov.get("ok"):
+        return None
+    sig_date = ts_signal.date().isoformat()
+    for fmeta in cov["files"]:
+        if fmeta["start"] <= sig_date <= fmeta["end"]:
+            return Path(fmeta["path"])
+    return None
+
+
 def outcome_id(signal_hash, evaluator_version, horizon_spec_id, data_source_resolution):
     """Idempotency id per MVP §12."""
     payload = (
         f"{signal_hash}|{evaluator_version}|{horizon_spec_id}|{data_source_resolution}"
     )
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16]
+
+
+# ---------------------------------------------------------------------------
+# Slim file IO — read-only with per-run caching.
+# ---------------------------------------------------------------------------
+
+_FILE_CACHE = {}
+_SHA_CACHE = {}
+
+
+def load_slim_file_cached(path):
+    """Load and parse all bars; sort by bar_close_time ascending. Cached per run."""
+    sp = str(path)
+    if sp in _FILE_CACHE:
+        return _FILE_CACHE[sp]
+    bars = []
+    with open(path, "r", encoding="utf-8") as fh:
+        for line in fh:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                d = json.loads(line)
+            except Exception:
+                continue
+            if "bar_close_time" not in d:
+                continue
+            bars.append(d)
+    bars.sort(key=lambda b: b["bar_close_time"])
+    _FILE_CACHE[sp] = bars
+    return bars
+
+
+def sha256_file_cached(path):
+    """SHA256 of file content. Cached per run."""
+    sp = str(path)
+    if sp in _SHA_CACHE:
+        return _SHA_CACHE[sp]
+    h = hashlib.sha256()
+    with open(path, "rb") as fh:
+        for chunk in iter(lambda: fh.read(65536), b""):
+            h.update(chunk)
+    _SHA_CACHE[sp] = h.hexdigest()
+    return _SHA_CACHE[sp]
+
+
+def find_entry_bar_index(bars, ts_signal, tf_min):
+    """
+    Locate the index of the SIGNAL BAR — the bar whose close coincides with or
+    just precedes ts_signal.
+
+    Convention (matches the legacy enrich, see enrichment_notes "TV close used
+    per rule"): when a signal arrives at ts_signal, the relevant signal bar is
+    the one that JUST closed at or before ts_signal. The entry price is that
+    bar's close. The "horizon" bars are taken strictly AFTER (so close_plus_1
+    = close of the next bar, etc.).
+
+    Formula: target_close = floor(ts_signal / tf_sec) * tf_sec
+    (the largest bar_close_time <= sig_epoch).
+    """
+    if ts_signal is None or not bars:
+        return None
+    tf_sec = tf_min * 60
+    sig_epoch = int(ts_signal.timestamp())
+    target_close = (sig_epoch // tf_sec) * tf_sec
+    lo, hi = 0, len(bars) - 1
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        bct = bars[mid].get("bar_close_time")
+        if bct == target_close:
+            return mid
+        elif bct < target_close:
+            lo = mid + 1
+        else:
+            hi = mid - 1
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -160,24 +257,337 @@ def outcome_id(signal_hash, evaluator_version, horizon_spec_id, data_source_reso
 def preflight(args):
     """Return (ok, errors). Aborts the run on any failure."""
     errs = []
-    # Gate 1: drive mounted.
     if not DRIVE_ROOT.exists():
         errs.append(f"drive not mounted: {DRIVE_ROOT}")
-    # Gate 2: slim XAU exists.
     if not (SLIM_ROOT / "XAUUSD").exists():
         errs.append(f"slim_features/XAUUSD missing: {SLIM_ROOT / 'XAUUSD'}")
-    # Gates 6/7: symbol restriction.
     if args.symbol != "XAUUSD":
         errs.append(f"symbol {args.symbol} not in MVP scope (allowed: XAUUSD)")
-    # Gate 5: input file by mode.
     if args.mode == "fresh_from_signal_journal":
         if not SIGNAL_JOURNAL.exists():
             errs.append(f"signal journal missing: {SIGNAL_JOURNAL}")
     elif args.mode == "backfill_from_quarantine":
         if not QUARANTINE_FILE.exists():
             errs.append(f"quarantine file missing: {QUARANTINE_FILE}")
-    # Gates 4/8/9: structural — this skeleton makes ZERO chart/MCP calls.
     return (len(errs) == 0, errs)
+
+
+# ---------------------------------------------------------------------------
+# Outcome computation (real).
+# ---------------------------------------------------------------------------
+
+
+def compute_outcome(quarantine_record, direction, horizon_spec, run_id=None):
+    """
+    Compute one outcome record for a (quarantine_record, direction, horizon_spec).
+
+    Real computation from canonical slim only. No chart, no MCP.
+    """
+    tf = str(quarantine_record.get("timeframe"))
+    ts = parse_iso(quarantine_record.get("ts_signal"))
+    horizon_bars = horizon_spec["bars"]
+    spec_id = horizon_spec["spec_id"]
+    signal_hash = quarantine_record.get("signal_hash", "")
+    base = quarantine_record.get("base_symbol")
+
+    base_record = _outcome_skeleton(
+        quarantine_record, direction, horizon_spec, spec_id, run_id
+    )
+
+    if base != "XAUUSD":
+        base_record["outcome_status"] = "SKIPPED_UNSUPPORTED_SYMBOL"
+        base_record["errors"].append(f"base_symbol {base} not in MVP scope")
+        return base_record
+
+    if direction not in ("long", "short"):
+        base_record["outcome_status"] = "UNKNOWN"
+        base_record["errors"].append(f"invalid direction: {direction}")
+        return base_record
+
+    slim_path = locate_slim_file_for(tf, ts)
+    if slim_path is None:
+        base_record["outcome_status"] = "UNKNOWN"
+        base_record["errors"].append("no canonical slim file covers ts_signal date")
+        return base_record
+
+    bars = load_slim_file_cached(slim_path)
+    sha = sha256_file_cached(slim_path)
+
+    try:
+        tf_min = int(tf)
+    except Exception:
+        base_record["outcome_status"] = "UNKNOWN"
+        base_record["errors"].append(f"unparseable timeframe: {tf}")
+        return base_record
+
+    entry_idx = find_entry_bar_index(bars, ts, tf_min)
+    if entry_idx is None:
+        base_record["outcome_status"] = "UNKNOWN"
+        base_record["errors"].append("entry bar not found in slim file")
+        return base_record
+
+    if entry_idx + horizon_bars >= len(bars):
+        base_record["outcome_status"] = "UNKNOWN"
+        base_record["errors"].append(
+            f"insufficient future bars after entry: have "
+            f"{len(bars) - entry_idx - 1}, need {horizon_bars}"
+        )
+        return base_record
+
+    entry_bar = bars[entry_idx]
+    future_bars = bars[entry_idx + 1 : entry_idx + 1 + horizon_bars]
+
+    entry_price = float(entry_bar["close"])
+    close_after_horizon = float(future_bars[-1]["close"])
+
+    highs = [float(b["high"]) for b in future_bars]
+    lows = [float(b["low"]) for b in future_bars]
+
+    if direction == "long":
+        mfe_price = max(highs)
+        mfe_abs = mfe_price - entry_price
+        mae_price = min(lows)
+        mae_abs = mae_price - entry_price  # negative
+        if close_after_horizon > entry_price:
+            directional = "long_close_above_entry"
+        elif close_after_horizon < entry_price:
+            directional = "long_close_below_entry"
+        else:
+            directional = "long_close_equal_entry"
+    else:  # short
+        mfe_price = min(lows)
+        mfe_abs = entry_price - mfe_price
+        mae_price = max(highs)
+        mae_abs = entry_price - mae_price  # negative
+        if close_after_horizon < entry_price:
+            directional = "short_close_below_entry"
+        elif close_after_horizon > entry_price:
+            directional = "short_close_above_entry"
+        else:
+            directional = "short_close_equal_entry"
+
+    return_pct = (close_after_horizon - entry_price) / entry_price if entry_price else 0.0
+    mfe_pct = mfe_abs / entry_price if entry_price else 0.0
+    mae_pct = mae_abs / entry_price if entry_price else 0.0
+
+    data_resolution = f"canonical_slim_v2|{sha}"
+    oid = outcome_id(signal_hash, EVALUATOR_VERSION, spec_id, data_resolution)
+
+    legacy_ref, diff = compare_legacy_vs_new(
+        quarantine_record, direction, entry_price, close_after_horizon, future_bars
+    )
+
+    base_record.update({
+        "outcome_id": oid,
+        "outcome_status": "CLEAN",
+        "data_source": "canonical_slim_v2",
+        "data_source_ref": f"{slim_path.name}:rows[{entry_idx}..{entry_idx + horizon_bars}]",
+        "data_source_sha256": sha,
+        "entry_price": entry_price,
+        "close_after_horizon": close_after_horizon,
+        "mfe": {"price": mfe_price, "abs": mfe_abs, "pct": mfe_pct, "R": None},
+        "mae": {"price": mae_price, "abs": mae_abs, "pct": mae_pct, "R": None},
+        "return_pct": return_pct,
+        "directional_result": directional,
+        "hit_result": "not_applicable",
+        "legacy_outcome_ref": legacy_ref,
+        "old_vs_new_diff": diff,
+    })
+    base_record["provenance"].update({
+        "data_window_from": entry_bar.get("ts"),
+        "data_window_to": future_bars[-1].get("ts"),
+        "data_bars_observed": len(future_bars),
+        "data_bars_expected": horizon_bars,
+        "entry_bar_index": entry_idx,
+        "entry_bar_close_time_epoch": entry_bar.get("bar_close_time"),
+    })
+    return base_record
+
+
+def _outcome_skeleton(qrec, direction, horizon_spec, spec_id, run_id):
+    """Bare outcome record template; populated with defaults; modified per status."""
+    return {
+        "outcome_id": None,
+        "signal_hash": qrec.get("signal_hash"),
+        "signal_provenance": "quarantine_legacy_2026-05-28",
+        "run_id": run_id,
+        "evaluator_version": EVALUATOR_VERSION,
+        "evaluated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "base_symbol": qrec.get("base_symbol"),
+        "symbol": f"{ALLOWED_PROVIDER}:{qrec.get('base_symbol')}",
+        "provider": ALLOWED_PROVIDER,
+        "timeframe": str(qrec.get("timeframe")),
+        "ts_signal": qrec.get("ts_signal"),
+        "indicator_name": qrec.get("indicator_name"),
+        "signal_type": qrec.get("signal_type"),
+        "direction": direction,
+        "horizon": {"bars": horizon_spec["bars"],
+                    "tf": str(qrec.get("timeframe")),
+                    "spec_id": spec_id},
+        "data_source": "none",
+        "data_source_ref": None,
+        "data_source_sha256": None,
+        "provider_status": "ok",
+        "legacy_provider_status": "contaminated_pre_pepperstone_fix",
+        "outcome_status": "UNKNOWN",
+        "entry_price": None,
+        "stop_price": None,
+        "target_price": None,
+        "close_after_horizon": None,
+        "mfe": None,
+        "mae": None,
+        "return_pct": None,
+        "directional_result": None,
+        "hit_result": "not_applicable",
+        "legacy_outcome_ref": None,
+        "old_vs_new_diff": None,
+        "errors": [],
+        "warnings": [],
+        "provenance": {
+            "signal_source_path": str(QUARANTINE_FILE),
+            "raw_symbol_observed": qrec.get("base_symbol"),
+            "horizon_bars_used": horizon_spec["bars"],
+            "data_window_from": None,
+            "data_window_to": None,
+            "data_bars_observed": 0,
+            "data_bars_expected": horizon_spec["bars"],
+            "atr_source": "legacy_quarantine" if qrec.get("atr_at_signal") is not None else "unavailable",
+            "chart_lock_holder": None,
+        },
+    }
+
+
+def compare_legacy_vs_new(qrec, direction, new_entry, new_close_20, future_bars):
+    """Build legacy_outcome_ref and old_vs_new_diff per MVP §10."""
+    legacy_entry = qrec.get("entry_price")
+    legacy_snapshots = qrec.get("snapshots") or {}
+    legacy_close_20 = legacy_snapshots.get("close_plus_20")
+
+    # Canonical snapshots aligned with legacy convention.
+    canonical_snaps = {
+        "close_plus_1":  float(future_bars[0]["close"])  if len(future_bars) > 0  else None,
+        "close_plus_5":  float(future_bars[4]["close"])  if len(future_bars) > 4  else None,
+        "close_plus_10": float(future_bars[9]["close"])  if len(future_bars) > 9  else None,
+        "close_plus_20": float(future_bars[19]["close"]) if len(future_bars) > 19 else None,
+    }
+
+    legacy_ref = {
+        "file": QUARANTINE_FILE.name,
+        "enriched_at": qrec.get("enriched_at"),
+        "bars_evaluated": qrec.get("bars_evaluated"),
+        "snapshots_legacy": legacy_snapshots,
+        "outcome_for_direction": qrec.get(f"{direction}_outcome"),
+    }
+
+    diff = {
+        "legacy_entry":            legacy_entry,
+        "new_entry":               new_entry,
+        "entry_diff_abs":          None,
+        "entry_diff_ratio":        None,
+        "legacy_close_plus_20":    legacy_close_20,
+        "new_close_plus_20":       canonical_snaps["close_plus_20"],
+        "close_plus_20_diff_abs":  None,
+        "close_plus_20_diff_pct_of_new_entry": None,
+        "canonical_snapshots":     canonical_snaps,
+        "verdict":                 "NEW_INCOMPLETE",
+    }
+
+    if canonical_snaps["close_plus_20"] is None:
+        diff["verdict"] = "NEW_INCOMPLETE"
+        return legacy_ref, diff
+
+    legacy_outcome = legacy_ref["outcome_for_direction"]
+    if not isinstance(legacy_outcome, dict):
+        diff["verdict"] = "LEGACY_INCOMPLETE"
+        return legacy_ref, diff
+
+    if legacy_entry is None or legacy_close_20 is None:
+        diff["verdict"] = "LEGACY_INCOMPLETE"
+        return legacy_ref, diff
+
+    # Entry contamination check.
+    diff["entry_diff_abs"] = new_entry - legacy_entry
+    diff["entry_diff_ratio"] = (new_entry - legacy_entry) / max(abs(legacy_entry), 1e-12)
+    if abs(diff["entry_diff_ratio"]) > ENTRY_DIVERGE_RATIO:
+        diff["verdict"] = "OUTCOME_DIVERGES_SIGN"
+        diff["close_plus_20_diff_abs"] = canonical_snaps["close_plus_20"] - legacy_close_20
+        diff["close_plus_20_diff_pct_of_new_entry"] = (
+            diff["close_plus_20_diff_abs"] / max(abs(new_entry), 1e-12)
+        )
+        diff["reason"] = "entry_price_provider_divergence_above_threshold"
+        return legacy_ref, diff
+
+    diff["close_plus_20_diff_abs"] = canonical_snaps["close_plus_20"] - legacy_close_20
+    diff["close_plus_20_diff_pct_of_new_entry"] = (
+        diff["close_plus_20_diff_abs"] / max(abs(new_entry), 1e-12)
+    )
+
+    if abs(diff["close_plus_20_diff_pct_of_new_entry"]) < CLOSE_AGREE_PCT:
+        diff["verdict"] = "OUTCOME_AGREES"
+        return legacy_ref, diff
+
+    legacy_move = legacy_close_20 - legacy_entry
+    new_move = new_close_20 - new_entry
+    if (legacy_move > 0) != (new_move > 0):
+        diff["verdict"] = "OUTCOME_DIVERGES_SIGN"
+    else:
+        diff["verdict"] = "OUTCOME_DIVERGES_MAGNITUDE"
+    return legacy_ref, diff
+
+
+# ---------------------------------------------------------------------------
+# Demo selection — used in dry-run reporting for small batches.
+# ---------------------------------------------------------------------------
+
+
+def select_demo_records(xau_records, target_n):
+    """
+    Pick demo records for inline computation in dry-run.
+
+    For target_n <= 3: prefer 1 per TF (15, 30, 60) in that order.
+    For target_n > 3:  take first target_n records as found.
+
+    Within each TF, prefer non-ambiguous direction + atr present.
+    """
+    if target_n is None or target_n > 3:
+        return xau_records[: (target_n or len(xau_records))]
+    picks = []
+    seen_tfs = set()
+    for tf_pref in ("15", "30", "60"):
+        if len(picks) >= target_n:
+            break
+        # Prefer non-ambiguous with ATR.
+        best = None
+        for r in xau_records:
+            if str(r.get("timeframe")) != tf_pref:
+                continue
+            if r.get("atr_at_signal") is None:
+                continue
+            d = r.get("direction_classified")
+            if d in ("long", "short"):
+                best = r
+                break
+            if best is None and d == "ambiguous":
+                best = r
+        if best is not None and tf_pref not in seen_tfs:
+            picks.append(best)
+            seen_tfs.add(tf_pref)
+    return picks[:target_n]
+
+
+def expand_for_directions(record):
+    """For a quarantine record, yield (record, direction) pairs.
+
+    Ambiguous splits into two yields (long + short), per MVP §5.
+    """
+    d = record.get("direction_classified")
+    if d == "ambiguous":
+        yield (record, "long")
+        yield (record, "short")
+    elif d in ("long", "short"):
+        yield (record, d)
+    else:
+        yield (record, None)  # will be UNKNOWN
 
 
 # ---------------------------------------------------------------------------
@@ -259,9 +669,7 @@ def plan_fresh(args):
         "skipped_reasons": dict(skipped),
         "by_timeframe": dict(by_tf),
         "canonical_coverage": _cov_summary(coverage),
-        "maturity_summary": {
-            f"{tf}/{status}": n for (tf, status), n in mature.items()
-        },
+        "maturity_summary": {f"{tf}/{status}": n for (tf, status), n in mature.items()},
     }
 
 
@@ -347,6 +755,8 @@ def plan_backfill(args):
         "planned_outcomes_count_with_ambiguous_split": planned_outcomes,
         "signal_hash_matched_in_signal_journal": len(matched),
         "canonical_coverage": _cov_summary(coverage),
+        # demo selection used downstream for inline outcome computation
+        "_xau_records_for_demo": xau_records,
     }
 
 
@@ -366,26 +776,140 @@ def _cov_summary(coverage):
 
 
 # ---------------------------------------------------------------------------
-# Outcome computation — DEFINED but NOT called in skeleton.
+# Write path — fully implemented; only fires when --write is passed.
 # ---------------------------------------------------------------------------
 
 
-def compute_outcome_skeleton(signal, slim_bars, horizon_bars, direction):
+def write_outputs(report, computed_outcomes, output_dir, run_id, mode, args):
     """
-    Skeleton outcome computation. NOT called in dry-run.
+    Persist outcomes + manifest + log to disk. Caller has guaranteed --write.
 
-    Future patches (under explicit authorization) will implement:
-      - locate entry bar by ts_signal
-      - take `horizon_bars` closed bars after
-      - compute close_after_horizon, MFE, MAE, return_pct, directional_result
-      - attach data_source_sha256, data_window, provenance
-      - emit per the MVP §11 schema
+    Writes ONLY under output_dir/<run_id>/ and the shared
+    output_dir/outcomes_current.jsonl. Never modifies inputs.
     """
-    raise NotImplementedError(
-        "compute_outcome_skeleton is intentionally not implemented in this "
-        "skeleton patch (Patch 3). Real outcome computation lands in a later "
-        "authorized patch."
+    run_dir = Path(output_dir) / run_id
+    run_dir.mkdir(parents=True, exist_ok=True)
+
+    outcomes_path = run_dir / f"outcomes_{run_id}.jsonl"
+    manifest_path = run_dir / f"outcomes_{run_id}.manifest.json"
+    log_path = run_dir / f"outcomes_{run_id}.log"
+    current_path = Path(output_dir) / "outcomes_current.jsonl"
+
+    # outcomes_<run_id>.jsonl (one record per line, atomic via append).
+    with open(outcomes_path, "w", encoding="utf-8") as fh:
+        for o in computed_outcomes:
+            fh.write(json.dumps(o, default=str) + "\n")
+
+    # Manifest.
+    status_counts = collections.Counter(o.get("outcome_status") for o in computed_outcomes)
+    verdict_counts = collections.Counter(
+        (o.get("old_vs_new_diff") or {}).get("verdict") for o in computed_outcomes
     )
+    manifest = {
+        "run_id": run_id,
+        "mode": mode,
+        "symbol": args.symbol,
+        "evaluator_version": EVALUATOR_VERSION,
+        "created_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "host": os.uname().nodename,
+        "max_signals": args.max_signals,
+        "outcomes_count": len(computed_outcomes),
+        "status_counts": dict(status_counts),
+        "verdict_counts": dict(verdict_counts),
+        "output_paths": {
+            "outcomes_jsonl": str(outcomes_path),
+            "manifest_json": str(manifest_path),
+            "run_log": str(log_path),
+            "outcomes_current": str(current_path),
+        },
+        "input_summary": report.get("plan"),
+    }
+    with open(manifest_path, "w", encoding="utf-8") as fh:
+        json.dump(manifest, fh, indent=2, default=str)
+
+    # Run log (forensic).
+    with open(log_path, "w", encoding="utf-8") as fh:
+        fh.write(json.dumps(report, indent=2, default=str))
+
+    # Atomic rollup of outcomes_current.jsonl (CLEAN only, dedup by outcome_id).
+    existing = {}
+    if current_path.exists():
+        with open(current_path, "r", encoding="utf-8") as fh:
+            for line in fh:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    d = json.loads(line)
+                except Exception:
+                    continue
+                oid = d.get("outcome_id")
+                if oid:
+                    existing[oid] = d
+    for o in computed_outcomes:
+        if o.get("outcome_status") == "CLEAN" and o.get("outcome_id"):
+            existing[o["outcome_id"]] = o
+    tmp = current_path.with_suffix(current_path.suffix + ".tmp")
+    with open(tmp, "w", encoding="utf-8") as fh:
+        for o in existing.values():
+            fh.write(json.dumps(o, default=str) + "\n")
+    tmp.replace(current_path)
+
+    # Mode B extras.
+    written = {
+        "outcomes_jsonl": str(outcomes_path),
+        "manifest_json": str(manifest_path),
+        "run_log": str(log_path),
+        "outcomes_current": str(current_path),
+    }
+
+    if mode == "backfill_from_quarantine":
+        report_md = run_dir / "legacy_comparison_report.md"
+        with open(report_md, "w", encoding="utf-8") as fh:
+            fh.write(_render_legacy_comparison_md(computed_outcomes, run_id, manifest))
+        skipped_path = run_dir / "skipped_signals.jsonl"
+        with open(skipped_path, "w", encoding="utf-8") as fh:
+            # Non-XAU pending are recorded as skipped at file-level.
+            for base, n in (report.get("plan") or {}).get("non_xau_pending", {}).items():
+                fh.write(json.dumps({
+                    "base_symbol": base,
+                    "count_pending": n,
+                    "outcome_status": "PENDING_NO_CANONICAL_DATA",
+                    "reason": "no canonical slim for base outside XAUUSD in MVP",
+                }) + "\n")
+        written["legacy_comparison_report"] = str(report_md)
+        written["skipped_signals"] = str(skipped_path)
+
+    return written
+
+
+def _render_legacy_comparison_md(computed_outcomes, run_id, manifest):
+    lines = []
+    lines.append(f"# Legacy Comparison Report — {run_id}")
+    lines.append("")
+    lines.append(f"Generated: {manifest.get('created_at')}")
+    lines.append(f"Outcomes computed: {manifest.get('outcomes_count')}")
+    lines.append("")
+    lines.append("## Verdict distribution")
+    lines.append("")
+    for v, n in (manifest.get("verdict_counts") or {}).items():
+        lines.append(f"- `{v}`: {n}")
+    lines.append("")
+    lines.append("## Per-record details")
+    lines.append("")
+    for o in computed_outcomes:
+        diff = o.get("old_vs_new_diff") or {}
+        lines.append(
+            f"- `{o.get('signal_hash')}` "
+            f"TF={o.get('timeframe')} dir={o.get('direction')} "
+            f"verdict=**{diff.get('verdict')}**  "
+            f"legacy_entry={diff.get('legacy_entry')} "
+            f"new_entry={o.get('entry_price')} "
+            f"legacy_close+20={diff.get('legacy_close_plus_20')} "
+            f"new_close+20={diff.get('new_close_plus_20')}"
+        )
+    lines.append("")
+    return "\n".join(lines)
 
 
 # ---------------------------------------------------------------------------
@@ -397,7 +921,7 @@ def build_argparser():
     p = argparse.ArgumentParser(
         prog="run_signal_outcome_lab",
         description=(
-            "Signal Outcome Lab — MVP skeleton "
+            "Signal Outcome Lab — MVP "
             "(XAU-only, canonical-slim-only, no chart, dry-run default)."
         ),
     )
@@ -410,20 +934,17 @@ def build_argparser():
                    help="MVP allows only XAUUSD; other values rejected by pre-flight.")
     p.add_argument("--evaluator-version", default=EVALUATOR_VERSION)
     p.add_argument("--run-id", default=None,
-                   help="Required when --write is implemented; ignored in dry-run if omitted.")
+                   help="Required when --write is used; auto-generated in dry-run.")
     p.add_argument("--max-signals", type=int, default=None)
     p.add_argument("--output-dir", default=str(DEFAULT_OUTPUT_DIR),
-                   help="Where outputs would land if --write were implemented.")
+                   help="Where outputs land when --write is set.")
     p.add_argument("--signals-from", default=None, help="ISO8601; reserved.")
     p.add_argument("--signals-to", default=None, help="ISO8601; reserved.")
     p.add_argument("--verbose", action="store_true")
     p.add_argument("--dry-run", action="store_true", default=False,
                    help="(default) Plan-only; no writes. Explicit alias for clarity.")
     p.add_argument("--write", action="store_true", default=False,
-                   help="(NOT IMPLEMENTED in skeleton; the run will exit non-zero.)")
-    p.add_argument("--i-understand-this-is-not-implemented",
-                   action="store_true", default=False,
-                   help="Acknowledgment placeholder; still rejected in this patch.")
+                   help="Enable real writes. Outputs land under --output-dir/<run-id>/.")
     return p
 
 
@@ -431,15 +952,7 @@ def main(argv=None):
     parser = build_argparser()
     args = parser.parse_args(argv)
 
-    # Skeleton: always dry-run; reject --write unconditionally.
     args.dry_run = not args.write
-    if not args.dry_run:
-        print(
-            "ERROR: --write is not implemented in this skeleton (Patch 3). "
-            "Run with --dry-run (default).",
-            file=sys.stderr,
-        )
-        return 2
 
     ok, errs = preflight(args)
     base_summary = {
@@ -448,7 +961,7 @@ def main(argv=None):
         "symbol": args.symbol,
         "evaluator_version": args.evaluator_version,
         "run_id": args.run_id,
-        "dry_run": True,
+        "dry_run": args.dry_run,
         "max_signals": args.max_signals,
         "output_dir_planned": args.output_dir,
         "preflight_ok": ok,
@@ -461,13 +974,37 @@ def main(argv=None):
 
     if args.mode == "fresh_from_signal_journal":
         plan = plan_fresh(args)
+        xau_records = []  # fresh inline outcome computation deferred to a later patch
     else:
         plan = plan_backfill(args)
+        xau_records = plan.pop("_xau_records_for_demo", [])
 
-    run_id = args.run_id or (
-        f"{args.mode.split('_')[0]}-DRYRUN-"
-        f"{dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H-%M-%SZ')}"
-    )
+    # Compute outcomes when in backfill + max-signals is small (demo path).
+    computed_outcomes = []
+    if args.mode == "backfill_from_quarantine":
+        demo_records = select_demo_records(xau_records, args.max_signals)
+        run_id = args.run_id or (
+            f"{args.mode.split('_')[0]}-"
+            f"{'WRITE' if args.write else 'DRYRUN'}-"
+            f"{dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H-%M-%SZ')}"
+        )
+        for rec in demo_records:
+            tf = str(rec.get("timeframe"))
+            specs = HORIZONS.get(tf, [])
+            for record, direction in expand_for_directions(rec):
+                if direction is None:
+                    continue
+                for spec in specs:
+                    computed_outcomes.append(
+                        compute_outcome(record, direction, spec, run_id=run_id)
+                    )
+    else:
+        run_id = args.run_id or (
+            f"{args.mode.split('_')[0]}-"
+            f"{'WRITE' if args.write else 'DRYRUN'}-"
+            f"{dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H-%M-%SZ')}"
+        )
+
     output_paths_planned = {
         "outcomes_jsonl":   f"{args.output_dir}/{run_id}/outcomes_{run_id}.jsonl",
         "manifest_json":    f"{args.output_dir}/{run_id}/outcomes_{run_id}.manifest.json",
@@ -482,17 +1019,50 @@ def main(argv=None):
             f"{args.output_dir}/{run_id}/skipped_signals.jsonl"
         )
 
+    # Brief view of computed outcomes for non-verbose mode.
+    def _outcome_brief(o):
+        diff = o.get("old_vs_new_diff") or {}
+        return {
+            "outcome_id": o.get("outcome_id"),
+            "signal_hash": o.get("signal_hash"),
+            "timeframe": o.get("timeframe"),
+            "direction": o.get("direction"),
+            "outcome_status": o.get("outcome_status"),
+            "entry_price_new": o.get("entry_price"),
+            "close_after_horizon": o.get("close_after_horizon"),
+            "return_pct": o.get("return_pct"),
+            "mfe_abs": (o.get("mfe") or {}).get("abs"),
+            "mae_abs": (o.get("mae") or {}).get("abs"),
+            "directional_result": o.get("directional_result"),
+            "data_source_ref": o.get("data_source_ref"),
+            "data_source_sha256_prefix": (o.get("data_source_sha256") or "")[:16],
+            "old_vs_new_diff_verdict": diff.get("verdict"),
+            "entry_diff_ratio": diff.get("entry_diff_ratio"),
+            "close_plus_20_diff_abs": diff.get("close_plus_20_diff_abs"),
+            "errors": o.get("errors"),
+        }
+
     report = {
         "summary": base_summary,
         "plan": plan,
         "output_paths_planned": output_paths_planned,
+        "computed_outcomes_count": len(computed_outcomes),
+        "computed_outcomes_brief": [_outcome_brief(o) for o in computed_outcomes],
+        "computed_outcomes_full": computed_outcomes if args.verbose else None,
         "files_written_this_run": 0,
         "note": (
             "Dry-run only. No files were created; no log was modified; "
-            "no chart was touched. compute_outcome_skeleton() is defined "
-            "but intentionally not called in this skeleton."
+            "no chart was touched." if args.dry_run else
+            "Real-write run. Files written under output-dir/<run-id>/."
         ),
     }
+
+    if args.write:
+        written = write_outputs(report, computed_outcomes,
+                                args.output_dir, run_id, args.mode, args)
+        report["files_written_this_run"] = len(written)
+        report["files_written"] = written
+
     print(json.dumps(report, indent=2, default=str))
     return 0
 
