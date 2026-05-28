@@ -258,3 +258,163 @@ If the moratorium is escalated to also pause `weekly-review`, the same pattern
 applies; the script is multi-purpose so reactivation may also be partial
 (e.g. re-enable cron but keep `check_enrich_v2` returning the structured
 marker until outcomes are real).
+
+## 14. Current Signal Outcomes Rollup — 2026-05-28
+
+**Status:** technical rollup only. Consumers **NOT reactivated**. The
+moratorium of §13 remains in effect for all consumer LaunchAgents and
+scripts.
+
+This section documents the first clean outcomes dataset produced by the
+Signal Outcome Lab MVP (see `SIGNAL_OUTCOME_LAB.md` and
+`SIGNAL_OUTCOME_LAB_MVP.md`).
+
+### Artifact paths
+
+| Path | Content |
+|---|---|
+| `alert-bridge/logs/signal_outcomes_lab/outcomes_current.jsonl` | rollup of 72 CLEAN XAUUSD outcomes (deduped by `outcome_id`) |
+| `alert-bridge/logs/signal_outcomes_lab/outcomes_current.manifest.json` | provenance manifest (source run, SHAs, scope, consumer status) |
+
+### Provenance
+
+| Field | Value |
+|---|---|
+| `source_run` | `backfill_2026-05-28_xau_full_v2` (Patch 8) |
+| `source_outcomes_path` | `alert-bridge/logs/signal_outcomes_lab/backfill_2026-05-28_xau_full_v2/outcomes_backfill_2026-05-28_xau_full_v2.jsonl` |
+| `source_outcomes_sha256` | `76db3fd4c92d5ab3b932a47c7c4648a54c8907c93c34ba7ddb7397a9ae8a2f4c` |
+| `current_outcomes_sha256` | `76db3fd4c92d5ab3b932a47c7c4648a54c8907c93c34ba7ddb7397a9ae8a2f4c` |
+| `evaluator_version` | `v0.1.0` |
+| `created_at` | 2026-05-28T15:20:57+00:00 |
+
+Source and current SHAs are identical because all 72 source records were
+already CLEAN with distinct `outcome_id`s; the rollup is a byte-identical
+copy. Future rollup updates (additional runs landing) may differ.
+
+### Scope
+
+| Field | Value |
+|---|---|
+| `scope` | `XAUUSD_ONLY` |
+| `symbol` | `PEPPERSTONE:XAUUSD` only |
+| `provider` | `PEPPERSTONE` only |
+| `outcomes_count` | 72 |
+| `distinct_outcome_ids` | 72 |
+| `status_counts` | `{CLEAN: 72}` (100%) |
+
+### Verdict counts (inherited from source run)
+
+| Verdict | Count | % |
+|---|---|---|
+| `OUTCOME_AGREES` | 53 | 74% |
+| `LEGACY_INCOMPLETE` | 16 | 22% |
+| `OUTCOME_DIVERGES_SIGN` | 2 | 3% |
+| `OUTCOME_DIVERGES_MAGNITUDE` | 1 | 1% |
+
+### Non-XAU population (NOT in `outcomes_current.jsonl`)
+
+| `base_symbol` | Count | Status |
+|---|---|---|
+| ETHUSD | 94 | `PENDING_NO_CANONICAL_DATA` |
+| EURUSD | 62 | `PENDING_NO_CANONICAL_DATA` |
+| US500 | 61 | `PENDING_NO_CANONICAL_DATA` |
+| XAGUSD | 59 | `PENDING_NO_CANONICAL_DATA` |
+| **Total non-XAU** | **276** | |
+
+These 276 non-XAU records from the quarantine file are NOT part of
+`outcomes_current.jsonl`. They remain dormant until canonical slim data
+exists for their bases. The dormant population is recorded in the source
+run's `skipped_signals.jsonl`.
+
+### Consumer status (still per moratorium §13 — NOT reactivated)
+
+| Consumer | Status | Behaviour today |
+|---|---|---|
+| `auto_d2r_daily.py` | `NOT_REPOINTED` | still emits `OUTCOMES_UNAVAILABLE_DECOMMISSIONED_ENRICH` |
+| `weekly_review.py::check_enrich_v2` | `NOT_REPOINTED` | still emits the same marker |
+| `report_indicator_edge.py` | `NOT_REPOINTED` | manual; still emits the same marker against quarantine state |
+| `com.cristrein.d2r-daily` LaunchAgent | `PAUSED` (moratorium) | unloaded; will not run until reactivation |
+| `com.cristrein.enrich-indicator-outcomes` LaunchAgent | `DECOMMISSIONED` (§12) | plist archived; permanent |
+
+### Important interpretation
+
+1. **`outcomes_current.jsonl` is a TECHNICAL rollup only**, not yet an
+   operational source for automated reports. Reactivation of any consumer
+   requires an explicit separate patch with its own authorization,
+   validation, and rollback plan.
+2. **Scope coverage is partial by design.** Only XAUUSD has canonical slim
+   data; ~84% of the legacy signal universe (non-XAU) is intentionally not
+   represented. Consumers MUST NOT interpret "smaller dataset than legacy"
+   as "less edge"; they MUST filter by `base_symbol == "XAUUSD"` or
+   otherwise honor the `coverage_scope` marker before drawing conclusions.
+3. **Three records have non-AGREES verdicts.** Specifically:
+   - 1 `OUTCOME_DIVERGES_SIGN` from chart cross-instrument contamination
+     (`signal_hash=2c37af21a28c7b67`, entry_diff_ratio ~5859%). Canonical
+     computation is the source of truth; the legacy outcome was wrong.
+   - 1 `OUTCOME_DIVERGES_SIGN` from genuine provider quote divergence with
+     sign flip (`signal_hash=a314f98760171eff`). Directional conclusion is
+     debatable between providers; documented as known edge case.
+   - 1 `OUTCOME_DIVERGES_MAGNITUDE` from genuine provider quote divergence
+     (`signal_hash=79bdd947bcf6f797`). Direction agrees, magnitude differs.
+4. **16 records are `LEGACY_INCOMPLETE`** — canonical has data, legacy did
+   not compute `close_plus_20` snapshots. These records are CLEAN and
+   usable; the verdict reflects only the absence of a legacy comparison.
+
+### How to read `outcomes_current.jsonl`
+
+- Line-delimited JSON, one outcome per line.
+- All records have `outcome_status == "CLEAN"`.
+- Schema follows `SIGNAL_OUTCOME_LAB_MVP.md` §11.
+- Source identification: `signal_provenance` field. All 72 records carry
+  `quarantine_legacy_2026-05-28` (backfill source). Future fresh-mode
+  rollups would add `signal_journal_v2`.
+- Audit trail per record: `data_source_ref` (slim file + row range) +
+  `data_source_sha256` (slim file hash).
+- Each outcome carries `legacy_outcome_ref` (legacy snapshot reference for
+  audit only) and `old_vs_new_diff` (comparison metadata).
+
+### Update policy
+
+`outcomes_current.jsonl` is updated by either:
+
+1. **Re-running the Lab with `--write` (without `--no-current-rollup`).**
+   This atomically replaces the file with the dedup-by-`outcome_id` union
+   of all CLEAN outcomes from the run plus prior CLEAN outcomes from the
+   existing rollup.
+2. **A dedicated promotion of an approved run** (as done in Patch 9):
+   read a specific approved run, filter CLEAN, dedup by `outcome_id`,
+   atomic-mv into `outcomes_current.jsonl`, update
+   `outcomes_current.manifest.json`.
+
+Both pathways update `outcomes_current.manifest.json` to record source
+provenance. The file follows `LOG_MUTATION_POLICY.md` discipline:
+the Lab is the sole writer; atomic-mv is used (no concurrent writer
+exists by design).
+
+### Cross-references
+
+- `SIGNAL_OUTCOME_LAB.md` — parent architecture.
+- `SIGNAL_OUTCOME_LAB_MVP.md` — MVP contract (§9 outcomes_current policy,
+  §11 outcome schema, §10 verdict enum).
+- `INDICATOR_SIGNAL_POLICY.md` — provider whitelist enforced at Signal
+  Journal write time.
+- `LOG_MUTATION_POLICY.md` — atomic-mv pattern for outcomes_current.
+- §12 — enrich decommission.
+- §13 — outcome automation moratorium (still in effect).
+
+### Rollback
+
+`outcomes_current.jsonl` can be removed without affecting source run
+directories (which retain their immutable artifacts). To roll back:
+
+```bash
+ts=$(date -u +%Y%m%dT%H%M%SZ)
+mv alert-bridge/logs/signal_outcomes_lab/outcomes_current.jsonl \
+   alert-bridge/logs/signal_outcomes_lab/outcomes_current.jsonl.rolled_back_${ts}
+mv alert-bridge/logs/signal_outcomes_lab/outcomes_current.manifest.json \
+   alert-bridge/logs/signal_outcomes_lab/outcomes_current.manifest.json.rolled_back_${ts}
+```
+
+The Patch 6 source run (with the historical `outcome_id` collision bug)
+and the Patch 8 v2 source run (with the bug fix) remain immutable for
+audit.
