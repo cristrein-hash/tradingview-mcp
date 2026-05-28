@@ -303,7 +303,26 @@ def check_external_factors():
 
 
 def check_enrich_v2():
-    """Enrich v2 — n outcomes com outcomes_by_atr_mult (lente B). Desde 2026-05-19."""
+    """Enrich v2 — n outcomes com outcomes_by_atr_mult (lente B). Desde 2026-05-19.
+
+    Patched 2026-05-28: enrich was DECOMMISSIONED on 2026-05-28 (OANDA contamination
+    via chart_set_symbol with bare tickers). When the outcomes file is missing AND
+    a quarantined sibling exists, report DECOMMISSIONED_QUARANTINED status instead
+    of 'COLETANDO' which would mislead the reader into expecting more data.
+    """
+    if not INDICATOR_OUTCOMES_LOG.exists():
+        quar = list(LOG_DIR.glob(INDICATOR_OUTCOMES_LOG.name + ".contaminated_pre_pepperstone_fix_*"))
+        if quar:
+            return {
+                "name": "Enrich v2 (4 lentes B/C/D/E)",
+                "n_total": 0,
+                "n_last_7d": 0,
+                "days_to_deadline": None,
+                "status": "OUTCOMES_UNAVAILABLE_DECOMMISSIONED_ENRICH",
+                "note": (f"enrich decommissioned 2026-05-28; outcomes quarantined to "
+                         f"{quar[0].name}. Awaiting Signal Outcome Lab redesign. "
+                         f"See OPERATIONAL_INVENTORY.md section 12."),
+            }
     records = read_jsonl(INDICATOR_OUTCOMES_LOG)
     n_total = sum(1 for r in records if r.get("outcomes_by_atr_mult"))
     n_recent = sum(1 for r in records

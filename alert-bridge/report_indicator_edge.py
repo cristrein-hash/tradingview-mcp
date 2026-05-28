@@ -290,6 +290,34 @@ def main():
     p.add_argument("--save", action="store_true", help="Salva report em arquivo MD timestamped")
     args = p.parse_args()
 
+    # 2026-05-28: detect quarantined outcomes (enrich decommissioned). Distinguish
+    # "no matched pairs" (real empty edge) from "outcomes file quarantined".
+    if not OUTCOMES_LOG.exists():
+        quar = list(LOG_DIR.glob(OUTCOMES_LOG.name + ".contaminated_pre_pepperstone_fix_*"))
+        if quar:
+            report = (
+                "# Indicator Edge Report\n\n"
+                "**OUTCOMES_UNAVAILABLE_DECOMMISSIONED_ENRICH**\n\n"
+                f"The outcomes file is quarantined: `{quar[0].name}`.\n\n"
+                "The enrich pipeline (`com.cristrein.enrich-indicator-outcomes`) was "
+                "decommissioned on 2026-05-28 because it called `chart_set_symbol` with "
+                "bare tickers (no provider prefix); TradingView resolved bare tickers to "
+                "OANDA (default provider) instead of PEPPERSTONE, silently contaminating "
+                "all generated outcomes. The quarantined file is preserved for audit.\n\n"
+                "This edge report will be regenerable once the Signal Outcome Lab "
+                "(redesigned outcome layer with provider hard gate + unified lock + "
+                "canonical-slim-first) is built and a clean dataset is produced.\n\n"
+                "See: `docs/architecture/OPERATIONAL_INVENTORY.md` (Decommissioned "
+                "Components), `docs/architecture/LOG_MUTATION_POLICY.md`.\n"
+            )
+            print(report)
+            if args.save:
+                REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+                fname = f"edge_report_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}.md"
+                path = REPORTS_DIR / fname
+                path.write_text(report)
+                print(f"\n_Saved: {path}_")
+            return 0
     matched, signals_total, outcomes_total = load_matched()
     report = build_report(matched, signals_total, outcomes_total, args)
     print(report)

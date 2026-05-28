@@ -232,8 +232,21 @@ def build_telegram_message(stats, outliers, new_records):
 # === B.1 (2026-05-18): indicator_signals outcomes appendix ===
 def build_indicator_outcomes_summary():
     """Read indicator_signals_outcomes.jsonl and produce compact summary block
-    for Telegram daily message. Returns "" if file empty/missing."""
+    for Telegram daily message. Returns "" if file empty/missing.
+
+    Patched 2026-05-28: when the outcomes file is missing AND a quarantined
+    sibling exists, emit an explicit OUTCOMES_UNAVAILABLE banner instead of
+    a silent omission. Prevents the daily Telegram from looking like 'still
+    collecting' when in fact the enrich pipeline was decommissioned.
+    """
     if not INDICATOR_SIGNALS_OUTCOMES_LOG.exists():
+        # Detect quarantined sibling (enrich decommissioned 2026-05-28)
+        quar = list(INDICATOR_SIGNALS_OUTCOMES_LOG.parent.glob(
+            INDICATOR_SIGNALS_OUTCOMES_LOG.name + ".contaminated_pre_pepperstone_fix_*"))
+        if quar:
+            return ("\n📋 <b>Indicator outcomes:</b> OUTCOMES_UNAVAILABLE_DECOMMISSIONED_ENRICH\n"
+                    f"Outcomes file quarantined ({quar[0].name}); enrich pipeline "
+                    "decommissioned 2026-05-28 (OANDA contamination). Awaiting Signal Outcome Lab.")
         return ""
     rows = []
     try:
