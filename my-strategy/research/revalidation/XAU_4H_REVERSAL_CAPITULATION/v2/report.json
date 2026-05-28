@@ -1,0 +1,249 @@
+{
+  "strategy_id": "XAU_4H_REVERSAL_CAPITULATION",
+  "revalidation_version": "v2",
+  "generated_at": "2026-05-28T01:02:32.146081+00:00",
+  "provenance": {
+    "code_commit": "ce2abd6db6f5d2841b03a35a767b91cf02067ae3",
+    "config_path": "my-strategy/research/revalidation/XAU_4H_REVERSAL_CAPITULATION/v2/config.json",
+    "inputs": {
+      "4H": {
+        "registry_entries": [
+          {
+            "registry_entry": "XAUUSD_4H_2016-05-25",
+            "start_date": "2016-05-25",
+            "end_date": "2020-01-01",
+            "rows_in_file": 5557
+          },
+          {
+            "registry_entry": "XAUUSD_4H_2020-01-01",
+            "start_date": "2020-01-01",
+            "end_date": "2023-01-01",
+            "rows_in_file": 4636
+          },
+          {
+            "registry_entry": "XAUUSD_4H_2023-01-03",
+            "start_date": "2023-01-03",
+            "end_date": "2026-05-25",
+            "rows_in_file": 5242
+          }
+        ],
+        "raw_paths": [
+          "TradingData/raw_replay/XAUUSD/4H/XAUUSD_240m_replay_2016-05-25_to_2020-01-01.jsonl.gz",
+          "TradingData/raw_replay/XAUUSD/4H/XAUUSD_240m_replay_2020-01-01_to_2023-01-01.jsonl.gz",
+          "TradingData/raw_replay/XAUUSD/4H/XAUUSD_240m_replay_2023-01-03_to_2026-05-25.jsonl.gz"
+        ],
+        "dedup_extra_dropped": 248,
+        "bars": 15187
+      },
+      "1D": {
+        "registry_entries": [
+          {
+            "registry_entry": "XAUUSD_1D_2012-06-19",
+            "start_date": "2012-06-19",
+            "end_date": "2026-05-25",
+            "rows_in_file": 3602
+          }
+        ],
+        "raw_paths": [
+          "TradingData/raw_replay/XAUUSD/1D/XAUUSD_1D_replay_2012-06-19_to_2026-05-25.jsonl.gz"
+        ],
+        "dedup_extra_dropped": 151,
+        "bars": 3451
+      }
+    },
+    "horizon_definition": "walk [entry_bar, entry_bar+time_limit_bars-1]; time-limit exit at close of last bar"
+  },
+  "atr_validation": {
+    "recompute_vs_slim_atr14": {
+      "n": 15153,
+      "median": 3.722315873766869e-08,
+      "p95": 0.05413216192330564,
+      "max": 0.6404180890444858
+    },
+    "recompute_vs_slim_ratio": {
+      "n": 15067,
+      "median": 4.7142180438006607e-07,
+      "p95": 0.05255348863554789,
+      "max": 0.6406734742823239
+    },
+    "slim_atr14_vs_wilder": {
+      "n": 15154,
+      "median": 0.05332369181379634,
+      "p95": 0.1667313720668549,
+      "max": 0.4877703023275189
+    },
+    "note": "boundary warm-up disagreements expected (recompute over concatenated series vs per-block extraction). slim is the source of truth; recompute confirms the legacy SMA formula and refutes Wilder.",
+    "legacy_formula_confirmed": true
+  },
+  "signal_funnel": {
+    "raw_nas_events": 452,
+    "signals_primary": 74,
+    "signals_event_only": 57,
+    "trades_after_no_overlap": 36,
+    "right_censored": 0
+  },
+  "aggregate": {
+    "n": 36,
+    "win_pct": 33.33,
+    "avg_r": -0.3145,
+    "median_r": -1.0,
+    "sum_r": -11.322,
+    "profit_factor": 0.4731,
+    "max_losing_streak": 7,
+    "sum_r_ex_top5": -18.8599,
+    "sum_r_ex_top10": -21.1354,
+    "mfe_r_mean": 0.7819,
+    "mae_r_mean": -1.0416,
+    "exit_reason_mix": {
+      "target": 2,
+      "stop": 21,
+      "time_limit": 13
+    }
+  },
+  "by_regime": {
+    "covid": {
+      "n": 5,
+      "win_pct": 20.0,
+      "avg_r": -0.5141,
+      "median_r": -1.0,
+      "sum_r": -2.5707,
+      "profit_factor": 0.1869
+    },
+    "gold_bull_recent": {
+      "n": 7,
+      "win_pct": 42.86,
+      "avg_r": 0.2699,
+      "median_r": -0.2138,
+      "sum_r": 1.8895,
+      "profit_factor": 1.5879
+    },
+    "inflation_bear_macro": {
+      "n": 13,
+      "win_pct": 46.15,
+      "avg_r": -0.2735,
+      "median_r": -1.0,
+      "sum_r": -3.5554,
+      "profit_factor": 0.4921
+    },
+    "pre_covid": {
+      "n": 11,
+      "win_pct": 18.18,
+      "avg_r": -0.6441,
+      "median_r": -1.0,
+      "sum_r": -7.0854,
+      "profit_factor": 0.1264
+    },
+    "_total": {
+      "n": 36,
+      "win_pct": 33.33,
+      "avg_r": -0.3145,
+      "median_r": -1.0,
+      "sum_r": -11.322,
+      "profit_factor": 0.4731
+    },
+    "_ex_covid": {
+      "n": 31,
+      "win_pct": 35.48,
+      "avg_r": -0.2823,
+      "median_r": -1.0,
+      "sum_r": -8.7513,
+      "profit_factor": 0.5224
+    },
+    "_covid_only": {
+      "n": 5,
+      "win_pct": 20.0,
+      "avg_r": -0.5141,
+      "median_r": -1.0,
+      "sum_r": -2.5707,
+      "profit_factor": 0.1869
+    }
+  },
+  "by_cost": {
+    "0": {
+      "sum_net_r": -11.322,
+      "avg_net_r": -0.3145,
+      "win_pct": 33.33
+    },
+    "0.2": {
+      "sum_net_r": -11.7505,
+      "avg_net_r": -0.3264,
+      "win_pct": 33.33
+    },
+    "0.5": {
+      "sum_net_r": -12.3925,
+      "avg_net_r": -0.3442,
+      "win_pct": 33.33
+    }
+  },
+  "by_target": {
+    "1R": {
+      "n": 36,
+      "win_pct": 41.67,
+      "avg_r": -0.1876,
+      "sum_r": -6.7537,
+      "exit_mix": {
+        "target": 10,
+        "stop": 18,
+        "time_limit": 8
+      }
+    },
+    "2R": {
+      "n": 36,
+      "win_pct": 33.33,
+      "avg_r": -0.3145,
+      "sum_r": -11.322,
+      "exit_mix": {
+        "target": 2,
+        "stop": 21,
+        "time_limit": 13
+      }
+    },
+    "3R": {
+      "n": 36,
+      "win_pct": 33.33,
+      "avg_r": -0.2948,
+      "sum_r": -10.6145,
+      "exit_mix": {
+        "target": 1,
+        "stop": 21,
+        "time_limit": 14
+      }
+    }
+  },
+  "mode_comparison": {
+    "primary": {
+      "signals": 74,
+      "trades": 36,
+      "skipped_overlap": 38,
+      "skipped_nonpositive_risk": 0,
+      "skipped_no_entry_bar": 0
+    },
+    "event_only": {
+      "signals": 57,
+      "trades": 26,
+      "skipped_overlap": 31,
+      "skipped_nonpositive_risk": 0,
+      "skipped_no_entry_bar": 0
+    },
+    "delta_signals": 17,
+    "legacy_n_reference": 86,
+    "approximates_legacy_better": "primary"
+  },
+  "validations": {
+    "no_future_leak": true,
+    "future_leak_rsi_count": 0,
+    "entry_is_next_bar_open": true,
+    "all_stop_distance_positive": true,
+    "report_generated": true,
+    "technically_valid": true
+  },
+  "decision": {
+    "result_status": "fail",
+    "recommended_catalog_transition": {
+      "validation_status": "REJECTED",
+      "deployment_status": "DISABLED/NOT_DEPLOYED"
+    },
+    "rationale": "avg_R=-0.3145, PF=0.4731 — no edge."
+  },
+  "warnings": []
+}
