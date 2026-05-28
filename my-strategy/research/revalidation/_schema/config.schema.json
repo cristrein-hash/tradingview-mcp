@@ -1,76 +1,76 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "revalidation/config.schema.json",
-  "title": "Strategy Revalidation config",
-  "description": "Contract for every revalidation config.json. config.json is the SINGLE source of parameters the backtest script reads. methodology.md references it, never duplicates values.",
+  "title": "Strategy Revalidation config (unified)",
+  "description": "ONE contract for every revalidation config.json, so strategies don't fragment into incompatible shapes. config.json is the single source of parameters the backtest script reads; methodology.md references it. COMMON (required for all): identity (strategy_id/revalidation_version/symbol/base_tf/direction), inputs, signal, entry, stop, targets, time_limit_bars, intrabar, costs_usd_roundtrip, trade_generation, regimes, reconciliation, decision_gates. STRATEGY-SPECIFIC: signal CONDITIONS live inside `signal` (intentionally open) and anything else unique goes under `strategy_specific`. The root is closed (additionalProperties:false) so no stray top-level keys can appear. Layout is FLAT (execution params at top level, not nested) so a single backtest-reading pattern works for all strategies and existing scripts stay valid.",
   "type": "object",
-  "additionalProperties": true,
+  "additionalProperties": false,
   "required": [
-    "strategy_id", "revalidation_version", "symbol", "base_tf",
+    "strategy_id", "revalidation_version", "symbol", "base_tf", "direction",
     "inputs", "signal", "entry", "stop", "targets", "time_limit_bars",
-    "intrabar", "costs_usd_roundtrip", "trade_generation", "regimes", "decision_gates"
+    "intrabar", "costs_usd_roundtrip", "trade_generation", "regimes",
+    "reconciliation", "decision_gates"
   ],
   "properties": {
     "_schema": { "type": "string", "description": "informational path to this schema" },
+    "_note": { "type": "string", "description": "free-text note for humans" },
     "strategy_id": { "type": "string", "description": "must match catalog.json strategy id" },
     "revalidation_version": { "type": "string", "pattern": "^v[0-9]+$" },
     "symbol": { "type": "string" },
     "base_tf": { "type": "string", "enum": ["15M", "30M", "1H", "4H", "1D"] },
     "context_tf": { "type": "array", "items": { "type": "string", "enum": ["15M", "30M", "1H", "4H", "1D"] } },
+    "direction": { "type": "string", "enum": ["long", "short", "both"] },
     "inputs": {
       "type": "object",
+      "description": "canonical data source. COMMON.",
       "required": ["source", "registry", "slim_schema_version"],
+      "additionalProperties": true,
       "properties": {
         "source": { "type": "string" },
         "join": { "type": "string" },
         "registry": { "type": "string" },
         "feature_extractor": { "type": "string" },
+        "legacy_dumps_glob": { "type": "string" },
         "slim_schema_version": { "type": "integer", "const": 2 }
       }
     },
     "signal": {
       "type": "object",
-      "required": ["direction", "modes", "official_mode"],
+      "description": "COMMON core {direction, summary}; CONDITIONS are strategy-specific (additionalProperties allowed). Document the rule in `summary`.",
+      "required": ["direction", "summary"],
+      "additionalProperties": true,
       "properties": {
         "direction": { "type": "string", "enum": ["long", "short"] },
-        "nas_event_field": { "type": "string" },
-        "nas_recent_field": { "type": "string" },
-        "nas_recent_bars_field": { "type": "string" },
-        "nas_recency_max_bars": { "type": "integer", "minimum": 0 },
-        "atr_ratio_field": { "type": "string" },
-        "atr_ratio_min": { "type": "number" },
-        "rsi_1d_field": { "type": "string" },
-        "rsi_1d_max": { "type": "number" },
-        "rsi_1d_join": { "type": "string" },
-        "modes": {
-          "type": "object",
-          "required": ["primary", "sensitivity"],
-          "properties": {
-            "primary": { "type": "string" },
-            "sensitivity": { "type": "string" }
-          }
-        },
+        "summary": { "type": "string" },
+        "modes": { "type": "object" },
         "official_mode": { "type": "string", "enum": ["primary", "sensitivity"] }
       }
     },
     "entry": {
       "type": "object",
       "required": ["fill"],
+      "additionalProperties": true,
       "properties": { "fill": { "type": "string", "enum": ["next_bar_open"] } }
     },
     "stop": {
       "type": "object",
-      "required": ["structural_lookback_bars", "atr_field", "atr_mult", "rule"],
+      "description": "COMMON core {rule}; strategy-specific stop params allowed (atr_field/atr_mult/structural_lookback_bars/primary/sensitivity).",
+      "required": ["rule"],
+      "additionalProperties": true,
       "properties": {
+        "rule": { "type": "string" },
+        "primary": { "type": "string" },
+        "primary_field": { "type": "string" },
+        "sensitivity": { "type": "array", "items": { "type": "string" } },
         "structural_lookback_bars": { "type": "integer", "minimum": 1 },
         "atr_field": { "type": "string" },
-        "atr_mult": { "type": "number", "exclusiveMinimum": 0 },
-        "rule": { "type": "string" }
+        "atr_mult": { "type": "number", "exclusiveMinimum": 0 }
       }
     },
     "targets": {
       "type": "object",
       "required": ["r_multiples", "primary_r"],
+      "additionalProperties": false,
       "properties": {
         "r_multiples": { "type": "array", "items": { "type": "number", "exclusiveMinimum": 0 }, "minItems": 1 },
         "primary_r": { "type": "number", "exclusiveMinimum": 0 }
@@ -81,34 +81,60 @@
     "costs_usd_roundtrip": { "type": "array", "items": { "type": "number", "minimum": 0 }, "minItems": 1 },
     "trade_generation": {
       "type": "object",
-      "required": ["no_overlap", "max_trades_per_nas_event", "cooldown_bars"],
+      "description": "COMMON core {no_overlap, cooldown_bars}; per-strategy dedup allowed (max_trades_per_nas_event, one_trade_per_episode, episode_definition).",
+      "required": ["no_overlap", "cooldown_bars"],
+      "additionalProperties": true,
       "properties": {
         "no_overlap": { "type": "boolean" },
+        "cooldown_bars": { "type": "integer", "minimum": 0 },
         "max_trades_per_nas_event": { "type": "integer", "minimum": 1 },
-        "cooldown_bars": { "type": "integer", "minimum": 0 }
+        "one_trade_per_episode": { "type": "boolean" },
+        "episode_definition": { "type": "string" }
       }
     },
     "regimes": {
       "type": "object",
       "required": ["by", "buckets", "aggregate_views"],
+      "additionalProperties": false,
       "properties": {
         "by": { "type": "string" },
         "buckets": { "type": "object" },
         "aggregate_views": { "type": "array", "items": { "type": "string" } }
       }
     },
+    "reconciliation": {
+      "type": "object",
+      "description": "COMMON: every revalidation must declare how it reconciles with the legacy claim. `method` is required; legacy targets / horizons / dump comparison / gating are strategy-specific.",
+      "required": ["method"],
+      "additionalProperties": true,
+      "properties": {
+        "method": { "type": "string" },
+        "legacy_targets": { "type": "object" },
+        "close_only_horizons": { "type": "array", "items": { "type": "integer" } },
+        "compare_legacy_dumps": { "type": "boolean" },
+        "legacy_window": { "type": "string" },
+        "require_reproduction_before_r_real": { "type": "boolean" },
+        "on_reproduction_failure": { "type": "string" }
+      }
+    },
     "decision_gates": {
       "type": "object",
       "required": ["min_n_needs_more_data", "min_n_candidate", "pf_min"],
+      "additionalProperties": true,
       "properties": {
         "min_n_needs_more_data": { "type": "integer", "minimum": 1 },
         "min_n_candidate": { "type": "integer", "minimum": 1 },
         "pf_min": { "type": "number", "exclusiveMinimum": 0 },
         "require_avg_r_positive": { "type": "boolean" },
         "require_ex_covid_positive": { "type": "boolean" },
-        "require_ex_top5_positive": { "type": "boolean" }
+        "require_ex_top5_positive": { "type": "boolean" },
+        "no_VALIDATED_without_r_real": { "type": "boolean" }
       }
     },
-    "right_censoring": { "type": "object" }
+    "right_censoring": { "type": "object" },
+    "strategy_specific": {
+      "type": "object",
+      "description": "Controlled escape hatch for parameters that don't fit the common blocks. Anything here is documented and intentional; the root stays closed so nothing leaks at top level."
+    }
   }
 }

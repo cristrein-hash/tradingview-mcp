@@ -1,10 +1,11 @@
 {
-  "_note": "DEMAND_BREAKOUT v2 revalidation config. Shape is strategy-specific (legacy V0+V3' reconstruction with reconciliation/r_real/overlap blocks). The lab _schema/config.schema.json is currently CAPITULATION-shaped and would need generalization to formally validate this config; it is NOT modified in this patch. config.json is the single source of parameters the future backtest script reads; methodology.md references it.",
+  "_note": "DEMAND_BREAKOUT v2 revalidation config. Conforms to the unified flat revalidation schema (_schema/config.schema.json). Legacy V0+V3' reconstruction. config.json is the single source of parameters the future backtest script reads; methodology.md references it. Strategy-specific signal conditions live inside `signal`; the root stays closed.",
+  "_schema": "../../_schema/config.schema.json",
   "strategy_id": "XAU_4H_DEMAND_BREAKOUT",
   "revalidation_version": "v2",
   "symbol": "PEPPERSTONE:XAUUSD",
   "base_tf": "4H",
-  "data_source": "canonical_slim_4H",
+  "direction": "long",
   "inputs": {
     "source": "canonical_slim_4H",
     "registry": "docs/data/dataset_registry.json",
@@ -14,7 +15,7 @@
   },
   "signal": {
     "direction": "long",
-    "legacy_rule": "V0+V3': inside_demand_zone AND nas_dist_ema_atr in [1.0,2.0] AND dist_14d_pct in [-1.0,0.0]",
+    "summary": "V0+V3': inside_demand_zone AND nas_dist_ema_atr in [1.0,2.0] AND dist_14d_pct in [-1.0,0.0]. Entry is INSIDE the demand zone; 'breakout' = near the 14d high while in-zone (not close>zone-high nor close>swing_high). No Bubbles/RSI/SMC.",
     "inside_demand_zone_required": true,
     "inside_demand_zone_field": "inside_demand_zone",
     "nas_dist_field": "nas_dist_ema_atr",
@@ -32,33 +33,30 @@
     "custom_ob_state_filter": "none",
     "custom_ob_state_note": "legacy used presence only (IN_OB_ZONE); fresh/touched/mitigated is a sensitivity variant, not the legacy rule"
   },
-  "reconciliation": {
-    "close_only_horizons": [10, 20],
-    "compare_legacy_dumps": true,
-    "legacy_window": "2023-2026",
-    "legacy_targets": {"win_rate": 0.838, "n": 80, "avg_R_close_only": 2.43, "sum_R": 194.57},
-    "require_legacy_signal_reproduction_before_r_real": true,
-    "on_reproduction_failure": "STOP and audit; classify as signal/data mismatch before any merit decision"
+  "entry": {
+    "fill": "next_bar_open"
   },
-  "r_real": {
-    "entry": "next_bar_open",
-    "stop_primary": "demand_zone_low",
-    "stop_primary_field": "nearest_demand_low",
-    "stop_sensitivity": ["structural_3_low", "atr_1_5"],
-    "atr_field": "atr14_sma_tr",
-    "atr_mult": 1.5,
+  "stop": {
+    "rule": "primary: below demand zone (nearest_demand_low); sensitivities: min(low[i-2..i]) and entry - 1.5*atr14_sma_tr",
+    "primary": "demand_zone_low",
+    "primary_field": "nearest_demand_low",
+    "sensitivity": ["structural_3_low", "atr_1_5"],
     "structural_lookback_bars": 3,
-    "targets_r": [1, 2, 3],
-    "primary_target_r": 2,
-    "time_limit_bars": 20,
-    "intrabar": "stop_first",
-    "costs_usd_roundtrip": [0.0, 0.20, 0.50]
+    "atr_field": "atr14_sma_tr",
+    "atr_mult": 1.5
   },
-  "overlap": {
+  "targets": {
+    "r_multiples": [1, 2, 3],
+    "primary_r": 2
+  },
+  "time_limit_bars": 20,
+  "intrabar": "stop_first",
+  "costs_usd_roundtrip": [0.0, 0.20, 0.50],
+  "trade_generation": {
     "no_overlap": true,
+    "cooldown_bars": 0,
     "one_trade_per_episode": true,
-    "episode_definition": "TBD in script after observing clusters: contiguous run of full-signal bars and/or bars sharing the same demand zone",
-    "cooldown_bars": 0
+    "episode_definition": "TBD in script after observing clusters: contiguous run of full-signal bars and/or bars sharing the same demand zone"
   },
   "regimes": {
     "by": "entry_year",
@@ -70,8 +68,16 @@
     },
     "aggregate_views": ["total", "ex_covid", "covid_only", "by_regime"]
   },
+  "reconciliation": {
+    "method": "reproduce_legacy_close_only_then_compare_v6_dumps_before_r_real",
+    "legacy_targets": {"win_rate": 0.838, "n": 80, "avg_R_close_only": 2.43, "sum_R": 194.57, "metric": "close_only_H20"},
+    "close_only_horizons": [10, 20],
+    "compare_legacy_dumps": true,
+    "legacy_window": "2023-2026",
+    "require_reproduction_before_r_real": true,
+    "on_reproduction_failure": "STOP and audit; classify as signal/data mismatch before any merit decision"
+  },
   "decision_gates": {
-    "philosophy": "2-stage (technical validity then merit), per _schema/DECISION_FLOW.md and STATUS_TAXONOMY.md",
     "min_n_needs_more_data": 20,
     "min_n_candidate": 30,
     "pf_min": 1.3,
