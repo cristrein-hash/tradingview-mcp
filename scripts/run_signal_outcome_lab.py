@@ -832,36 +832,45 @@ def write_outputs(report, computed_outcomes, output_dir, run_id, mode, args):
         fh.write(json.dumps(report, indent=2, default=str))
 
     # Atomic rollup of outcomes_current.jsonl (CLEAN only, dedup by outcome_id).
-    existing = {}
-    if current_path.exists():
-        with open(current_path, "r", encoding="utf-8") as fh:
-            for line in fh:
-                line = line.strip()
-                if not line:
-                    continue
-                try:
-                    d = json.loads(line)
-                except Exception:
-                    continue
-                oid = d.get("outcome_id")
-                if oid:
-                    existing[oid] = d
-    for o in computed_outcomes:
-        if o.get("outcome_status") == "CLEAN" and o.get("outcome_id"):
-            existing[o["outcome_id"]] = o
-    tmp = current_path.with_suffix(current_path.suffix + ".tmp")
-    with open(tmp, "w", encoding="utf-8") as fh:
-        for o in existing.values():
-            fh.write(json.dumps(o, default=str) + "\n")
-    tmp.replace(current_path)
+    # SKIPPED when --no-current-rollup is set (small validation writes).
+    no_current = getattr(args, "no_current_rollup", False)
+    if not no_current:
+        existing = {}
+        if current_path.exists():
+            with open(current_path, "r", encoding="utf-8") as fh:
+                for line in fh:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    try:
+                        d = json.loads(line)
+                    except Exception:
+                        continue
+                    oid = d.get("outcome_id")
+                    if oid:
+                        existing[oid] = d
+        for o in computed_outcomes:
+            if o.get("outcome_status") == "CLEAN" and o.get("outcome_id"):
+                existing[o["outcome_id"]] = o
+        tmp = current_path.with_suffix(current_path.suffix + ".tmp")
+        with open(tmp, "w", encoding="utf-8") as fh:
+            for o in existing.values():
+                fh.write(json.dumps(o, default=str) + "\n")
+        tmp.replace(current_path)
 
     # Mode B extras.
     written = {
         "outcomes_jsonl": str(outcomes_path),
         "manifest_json": str(manifest_path),
         "run_log": str(log_path),
-        "outcomes_current": str(current_path),
     }
+    if not no_current:
+        written["outcomes_current"] = str(current_path)
+    else:
+        written["outcomes_current_skipped_reason"] = (
+            "--no-current-rollup set; small validation write, "
+            "outcomes_current.jsonl intentionally not created/updated"
+        )
 
     if mode == "backfill_from_quarantine":
         report_md = run_dir / "legacy_comparison_report.md"
@@ -945,6 +954,11 @@ def build_argparser():
                    help="(default) Plan-only; no writes. Explicit alias for clarity.")
     p.add_argument("--write", action="store_true", default=False,
                    help="Enable real writes. Outputs land under --output-dir/<run-id>/.")
+    p.add_argument("--no-current-rollup", action="store_true", default=False,
+                   help="When --write is set, do NOT create or update "
+                        "outcomes_current.jsonl. Used for small validation "
+                        "writes that should not become a consumer-visible "
+                        "operational dataset.")
     return p
 
 
