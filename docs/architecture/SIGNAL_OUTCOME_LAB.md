@@ -100,7 +100,7 @@ The Lab consumes (read-only):
 | Canonical slim features | `slim_features/<SYMBOL>/<TF>/*.jsonl` (writer: `scripts/extract_replay_features.py`) | primary OHLCV/features source when available |
 | Cross-TF analytics | `slim_features/<SYMBOL>/cross_tf/*.jsonl.gz` (writer: `scripts/build_crosstf_dataset.py`) | optional context for multi-timeframe outcomes |
 | RAW replay (cold) | `/Volumes/GUTS_ LACIE/TradingData/raw_replay/...` | secondary; only via slim feature extraction, not direct |
-| Quarantined legacy outcomes | `*.contaminated_pre_pepperstone_fix_2026-05-28` | audit-only (OANDA vs PEPPERSTONE comparison, section 10); never operational input |
+| Quarantined legacy outcomes | `*.contaminated_pre_pepperstone_fix_2026-05-28` | Mode B input (`backfill_from_quarantine`); produces `legacy_comparison_report.md` as byproduct (see `SIGNAL_OUTCOME_LAB_MVP.md` §3, §10). Never authoritative for operational outcomes |
 | TradingView live chart (last resort) | via MCP `data_get_ohlcv` etc. | only inside chart-window-exclusive context |
 
 The Signal Journal is the **only authoritative source of which signals exist**.
@@ -336,18 +336,31 @@ Notes:
 ## 10. Relationship to quarantined legacy outcomes
 
 `alert-bridge/logs/indicator_signals_outcomes.jsonl.contaminated_pre_pepperstone_fix_2026-05-28`
-(330 records) is **preserved** but treated as **not authoritative**.
+(330 records) is **preserved** but classified as
+**QUARANTINED_LEGACY_REFERENCE**: the records inside provide signal
+provenance only; the legacy outcomes inside are not source of truth.
 
 Permitted use:
-- **Audit comparison** (section 12 phase 2): a stratified sample is recomputed
-  via the Lab once it exists; for each pair (legacy_outcome, lab_outcome) the
-  classification (`SAFE_TO_USE_DIRECTIONAL` / `NEEDS_REGENERATION` /
-  `QUARANTINE_ONLY` / `UNKNOWN`) informs a single `audit_report_2026-05-28.md`
-  document (not a programmatic feedback into operational outcomes).
-- **Historical reference** only. The quarantine file is `read` access; never
-  modified, moved, or deleted by the Lab.
+
+- **Backfill recovery (Mode B of the MVP).** For XAUUSD records (54 of 330),
+  the Lab reads the quarantine file as input to `backfill_from_quarantine`,
+  recomputes outcomes under PEPPERSTONE / canonical-slim, attaches the legacy
+  outcome as `legacy_outcome_ref` (audit reference only), and emits an
+  `old_vs_new_diff` verdict per record. The aggregated artifact is
+  `legacy_comparison_report.md` (Mode B byproduct); this artifact
+  **supersedes** the originally-planned standalone
+  `audit_report_2026-05-28.md`. See `SIGNAL_OUTCOME_LAB_MVP.md` §3, §10, §17.
+- **Pending preservation (non-XAU).** For the 276 non-XAU records (XAGUSD,
+  ETHUSD, US500, EURUSD), no canonical slim exists in the MVP; they are
+  recorded in `skipped_signals.jsonl` with
+  `outcome_status = PENDING_NO_CANONICAL_DATA` and remain dormant until
+  canonical coverage is extended (no separate audit phase against them is
+  planned).
+- **Historical reference** only beyond the above. The quarantine file is
+  `read` access; never modified, moved, or deleted by the Lab.
 
 Forbidden use:
+
 - ❌ Feeding directly into `outcomes_current.jsonl`.
 - ❌ Being interpreted as evidence of edge in strategy decisions.
 - ❌ Promotion to CLEAN without recomputation under the Lab's gates.
@@ -386,17 +399,35 @@ of the Lab's run manifest).
 
 | Phase | Deliverable | Status |
 |---|---|---|
-| **0** | Design doc (this file) | **DONE** (2026-05-28) |
-| **1** | `INDICATOR_SIGNAL_POLICY.md` — formalize PEPPERSTONE/whitelist policy, list of forbidden providers, expansion process | pending — must precede Phase 2 |
-| **2** | Audit OANDA vs PEPPERSTONE on stratified sample of the 330 quarantined records — produce `audit_report_2026-05-28.md` with per-record classification + aggregate per-symbol divergence statistics. Audit runs **read-only** on quarantine file plus a small chart window (under all gates of section 8) | pending Phase 1 |
-| **3** | Lab MVP — `scripts/run_signal_outcome_lab.py` manual batch only; canonical-slim-first; provider hard gate; lock-aware. No LaunchAgent. Validation against a few hand-picked signals before any bulk run | pending Phase 2 |
-| **4** | Regenerate outcomes for the subset of legacy signals where the audit (Phase 2) says regeneration is meaningful; do **not** regenerate `SAFE_TO_USE_DIRECTIONAL` entries blindly; do **not** import from quarantine into operational outcomes | pending Phase 3 |
+| **0** | Parent design doc (this file) | **DONE** (2026-05-28, commit `9d2516c`) |
+| **1** | `INDICATOR_SIGNAL_POLICY.md` — formalize PEPPERSTONE/whitelist policy, list of forbidden providers, expansion process | **DONE** (2026-05-28, commit `8a6b7d6`) |
+| **2** | `SIGNAL_OUTCOME_LAB_MVP.md` — MVP contract: XAU-only, canonical-slim-only, manual batch, two modes (`fresh_from_signal_journal`, `backfill_from_quarantine`); schema v0.1.0; CLI shape; pre-flight gates; test plan (3 hand-picked XAU signals); acceptance criteria. **Absorbs the originally-planned OANDA-vs-PEPPERSTONE audit into Mode B byproduct** (`legacy_comparison_report.md` supersedes the previously-planned `audit_report_2026-05-28.md`) | **DONE** (2026-05-28, commit `2b67707`) |
+| **3** | MVP implementation — `scripts/run_signal_outcome_lab.py` dual-mode batch tool per the MVP contract. Includes: `fresh_from_signal_journal` (forward processing of valid PEPPERSTONE:XAUUSD signals from the Signal Journal); `backfill_from_quarantine` (recovers 54 of 330 quarantined XAUUSD signals under canonical-slim, producing `legacy_comparison_report.md` as the comparison artifact); validation against the 3 hand-picked signals (per MVP §15) before any bulk run. No LaunchAgent. No chart. Provider hard gate enforced | pending Phase 2 |
+| **4** | Bulk backfill execution + review of `legacy_comparison_report.md` — execute Mode B over the full 54 XAUUSD quarantine set; review verdict distribution (`OUTCOME_AGREES` / `OUTCOME_DIVERGES_MAGNITUDE` / `OUTCOME_DIVERGES_SIGN` / `LEGACY_INCOMPLETE` / `NEW_INCOMPLETE` / `NOT_COMPARABLE`); decide whether any selective regeneration beyond Mode B output is warranted. Do **not** regenerate `OUTCOME_AGREES` entries blindly; do **not** import from quarantine into operational outcomes | pending Phase 3 |
 | **5** | Consumers read clean outcomes — point `auto_d2r_daily.py`, `report_indicator_edge.py`, and `weekly_review.py::check_enrich_v2` at `outcomes_current.jsonl`. Validate each in isolation before re-enabling | pending Phase 4 |
 | **6** | Re-enable `com.cristrein.d2r-daily` — `launchctl bootstrap`; verify the daily Telegram now shows real outcome content (not the `OUTCOMES_UNAVAILABLE_*` banner) | pending Phase 5 |
 | **7** | (Optional) Schedule the Lab — if and only if a sufficiently safe schedule + unified lock + window-exclusivity story exists. Default: stays manual | pending Phase 6 |
 
 Each phase requires explicit operator authorization. No phase auto-starts the
 next.
+
+**Note on the original Phase 2 (OANDA-vs-PEPPERSTONE audit).** The original
+roadmap (this file at commit `9d2516c`) listed a separate audit phase whose
+deliverable was `audit_report_2026-05-28.md`. The MVP contract
+(`SIGNAL_OUTCOME_LAB_MVP.md`, commit `2b67707`) restructures that work:
+
+- For **XAUUSD** (54 records), the comparison is produced automatically as a
+  byproduct of Mode B (`backfill_from_quarantine`); the per-record verdict is
+  emitted in `old_vs_new_diff`; the aggregated artifact is
+  `legacy_comparison_report.md`. This replaces `audit_report_2026-05-28.md`.
+- For **non-XAU** (276 records), no canonical slim exists; the records are
+  preserved as `PENDING_NO_CANONICAL_DATA` and no audit against them is
+  produced under the MVP. Future expansion of canonical coverage (separate
+  workstream) would extend the comparison.
+
+Phase 2 in the current roadmap is therefore the **MVP contract document**, not
+a separate audit. The audit work proper happens inside Phase 3 (Mode B
+implementation) and Phase 4 (bulk execution + review).
 
 ## 13. Out of scope
 
@@ -406,7 +437,9 @@ This document does **not** cover:
   separate authorization).
 - Creation or restoration of any LaunchAgent for the Lab (Phase 7 only, if
   ever).
-- Regeneration of outcomes (Phase 4 only, with its own authorization).
+- Bulk regeneration of outcomes (Phase 4 only, with its own authorization;
+  small-scale validation regeneration happens inside Phase 3 per the MVP
+  contract test plan).
 - Visual audit of strategies (separate workstream;
   `safe_backtest_window.sh` and the existing draw scripts).
 - Changes to `strategy_rules.json` or `catalog.json` beyond what the
@@ -419,14 +452,20 @@ This document does **not** cover:
 
 ## 14. Cross-references
 
+- `docs/architecture/SIGNAL_OUTCOME_LAB_MVP.md` — Phase 2 deliverable; MVP
+  contract concretizing this design (XAU-only, canonical-slim-only,
+  dual-mode: `fresh_from_signal_journal` + `backfill_from_quarantine`).
+  Authoritative for implementation scope; absorbs the originally-planned
+  OANDA-vs-PEPPERSTONE audit into Mode B byproduct.
+- `docs/architecture/INDICATOR_SIGNAL_POLICY.md` — Phase 1 deliverable;
+  operator-facing reference for the PEPPERSTONE/whitelist policy, synthetic
+  test markers, and the two-gate defense in the receiver.
 - `docs/architecture/OPERATIONAL_INVENTORY.md` — section 12 (enrich
   decommissioned), section 13 (outcome automation moratorium).
 - `docs/architecture/LOG_MUTATION_POLICY.md` — append-only log discipline; the
   Lab's outputs are subject to this policy.
 - `docs/architecture/DATA_STORAGE_POLICY.md` — cold storage rules for canonical
   inputs (RAW / manifests / slim_features).
-- (future) `docs/architecture/INDICATOR_SIGNAL_POLICY.md` — Phase 1; will be
-  the operator-facing reference for the PEPPERSTONE/whitelist policy.
 - `alert-bridge/tv_webhook_receiver.py::_normalize_indicator_parsed` /
   `_write_indicator_quarantine` / `write_indicator_signal` — current Signal
   Journal behaviour the Lab depends on.
