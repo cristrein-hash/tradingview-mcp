@@ -44,10 +44,12 @@ SIGNALS_JSONL = LOG_DIR / "indicator_signals.jsonl"
 STRATEGY_SIGNALS_JSONL = LOG_DIR / "strategy_signals.jsonl"
 EVAL_LOG_JSONL = LOG_DIR / "strategy_eval_log.jsonl"
 CHART_LOCK_PATH = "/tmp/tradingview_chart.lock"
-# WATCH_ONLY (2026-05-27): strategies still computed + logged but MUST NOT dispatch a live Telegram
-# alert because they are not VALIDATED in the new standard (RESEARCH, small n). See catalog.json
-# XAU_4H_REVERSAL_DISCRETIONARY (recommended_deployment_status=WATCH_ONLY). CAPITULATION / demand_breakout stay LIVE.
-WATCH_ONLY_NO_TELEGRAM = {"discr_sweep", "discr_base"}
+# NO_TELEGRAM_DISPATCH: strategies still computed + logged but MUST NOT dispatch a live Telegram
+# alert (see catalog.json):
+#   - discr_sweep / discr_base: XAU_4H_REVERSAL_DISCRETIONARY = WATCH_ONLY (RESEARCH, small n)
+#   - capitulation: XAU_4H_REVERSAL_CAPITULATION = REJECTED by canonical revalidation v2 (PF 0.47); recommended DISABLED
+# demand_breakout stays LIVE.
+NO_TELEGRAM_DISPATCH = {"discr_sweep", "discr_base", "capitulation"}
 CHART_LOCK_TIMEOUT_S = 120
 PER_CALL_TIMEOUT_S = 60
 
@@ -713,11 +715,11 @@ def evaluate_and_dispatch(mcp, trigger_source, dispatch_telegram=True):
             if macro_event:
                 msg = msg + f"\n⚠️ MACRO (24h): {macro_event}"
             print(f"\n=== MATCH {name} ===\n{msg}\n")
-            # WATCH_ONLY: suppress Telegram for unvalidated discretionary reversal; keep computing/logging.
-            if dispatch_telegram and name not in WATCH_ONLY_NO_TELEGRAM:
+            # Suppress Telegram for strategies in NO_TELEGRAM_DISPATCH (WATCH_ONLY or REJECTED); keep computing/logging.
+            if dispatch_telegram and name not in NO_TELEGRAM_DISPATCH:
                 send_telegram(msg)
-            elif name in WATCH_ONLY_NO_TELEGRAM:
-                print(f"  [WATCH_ONLY] {name}: matched — Telegram suppressed (not VALIDATED, see catalog.json).")
+            elif name in NO_TELEGRAM_DISPATCH:
+                print(f"  [NO_TELEGRAM] {name}: matched — Telegram suppressed (see catalog.json).")
             entry["macro_event_check"] = macro_event
             append_jsonl(STRATEGY_SIGNALS_JSONL, entry)
         else:
