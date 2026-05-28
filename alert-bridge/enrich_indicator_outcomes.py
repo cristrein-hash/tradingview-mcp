@@ -1,5 +1,44 @@
 #!/usr/bin/env python3
 """
+================================================================================
+DEPRECATED 2026-05-28 — DO NOT RUN.
+================================================================================
+LaunchAgent `com.cristrein.enrich-indicator-outcomes` was DECOMMISSIONED on
+2026-05-28. The plist was removed from ~/Library/LaunchAgents/ and archived to
+backups/launchagents_archive/com.cristrein.enrich-indicator-outcomes.plist.deprecated_2026-05-28.
+
+Why this script is deprecated:
+- It called chart_set_symbol with bare tickers (no provider prefix). TradingView
+  resolved bare tickers to OANDA (default provider) instead of PEPPERSTONE,
+  silently contaminating all generated outcomes.
+- A single batch held /tmp/tradingview_chart.lock for hours (Claude headless
+  timeouts), interfering with visual audits and other chart consumers.
+- The architecture mixed signal collection (realtime, no chart) with outcome
+  evaluation (post-hoc, chart-bound) in a way that did not respect provider
+  policy nor lock discipline.
+
+State of outputs:
+- indicator_signals_outcomes.jsonl (330 entries pre-decommission) is preserved
+  and treated as `contaminated_pre_pepperstone_fix` until a redesigned outcome
+  layer audits and regenerates the NEEDS_REGENERATION/QUARANTINE subset.
+
+Replacement:
+- A new "Signal Outcome Lab" will be designed separately with: batch/manual
+  execution (no scheduled LaunchAgent initially), provider hard gate
+  (PEPPERSTONE-only), unified chart lock with other chart consumers
+  (monitor/draws/replay/visual-audit), canonical-slim-first read path, fall back
+  to live chart only inside an explicit safe window, output manifest/provenance
+  (raw_symbol, normalized_symbol, provider, source).
+
+DO NOT bootstrap the LaunchAgent. DO NOT execute this script. The code below is
+preserved for reference only (signal-readiness logic, R-multiple framework, etc.
+may inform the future Signal Outcome Lab design).
+
+See: docs/architecture/OPERATIONAL_INVENTORY.md (Decommissioned Components).
+================================================================================
+
+Historical description (PRE-DEPRECATION):
+
 enrich_indicator_outcomes.py — pos-processa indicator_signals.jsonl
 adicionando outcomes (R-multiple hipotético) usando Claude headless + TV MCP.
 
@@ -12,7 +51,7 @@ Estratégia:
 - Dedup: skip signals já presentes em outcomes (por signal_hash)
 - Append-only em indicator_signals_outcomes.jsonl
 
-Usage:
+Usage (DEPRECATED — do not run):
   python3 enrich_indicator_outcomes.py [--batch-size 15] [--dry-run] [--limit N]
 """
 

@@ -1433,16 +1433,77 @@ def _persist_indicator_dedup_set(seen: set):
         print(json.dumps({"indicator_dedup_persist_error": str(exc)}, ensure_ascii=False), flush=True)
 
 
-def _normalize_indicator_parsed(parsed: dict) -> dict:
-    """Strip broker prefix (PEPPERSTONE:, VANTAGE:, OANDA:, etc.) defensively.
+ALLOWED_PROVIDER = "PEPPERSTONE"
 
-    Protects downstream against TV alert() snapshot cache — alerts criados antes
-    de fix no Pine podem continuar enviando prefix. Mutates parsed in place.
+# Operational whitelist (2026-05-28). Symbols outside this set emit
+# `unknown_base_symbol:<BASE>` warning; we DO NOT silently treat them as allowed.
+# USOUSD kept for petroleum macro/geopolitical context. BTCUSD/XPTUSD/USDJPY removed.
+KNOWN_BASE_SYMBOLS = {
+    "XAUUSD",
+    "XAGUSD",
+    "ETHUSD",
+    "US500",
+    "EURUSD",
+    "USOUSD",
+}
+
+
+def _normalize_indicator_parsed(parsed: dict) -> dict:
+    """Normalize symbol to canonical PEPPERSTONE:<BASE>.
+
+    Inverted 2026-05-28: prior version REMOVED broker prefix, causing downstream
+    chart_set_symbol to receive bare tickers that TradingView resolved to OANDA
+    (default provider) — outcomes contamination. The fix: always emit PEPPERSTONE
+    prefix in `symbol`; keep `base_symbol` clean (no prefix) for internal grouping
+    and dedup hash. Hard rule: PEPPERSTONE-only.
+
+    Mutates parsed in place. Adds:
+      - raw_symbol: original TV-supplied symbol/ticker (audit trail).
+      - base_symbol: uppercase ticker without provider.
+      - symbol: 'PEPPERSTONE:<BASE>' (canonical operational form).
+      - provider: 'PEPPERSTONE' (fixed).
+      - normalization_method: one of
+          'added_pepperstone_prefix' | 'kept_pepperstone' |
+          'replaced_<provider>_with_pepperstone' | 'empty_symbol'
+      - _normalize_warning: ';'-joined warnings (only if any).
     """
-    for k in ("base_symbol", "symbol"):
-        v = parsed.get(k)
-        if isinstance(v, str) and ":" in v:
-            parsed[k] = v.split(":", 1)[-1]
+    raw_symbol = parsed.get("symbol") or parsed.get("ticker") or ""
+    if not raw_symbol:
+        parsed["raw_symbol"] = ""
+        parsed["base_symbol"] = ""
+        parsed["symbol"] = ""
+        parsed["provider"] = ALLOWED_PROVIDER
+        parsed["normalization_method"] = "empty_symbol"
+        parsed["_normalize_warning"] = "empty_symbol"
+        return parsed
+
+    if ":" in raw_symbol:
+        incoming_provider, base = raw_symbol.split(":", 1)
+        incoming_provider = incoming_provider.upper()
+        base = base.upper()
+    else:
+        incoming_provider = None
+        base = raw_symbol.upper()
+
+    parsed["raw_symbol"] = raw_symbol
+    parsed["base_symbol"] = base
+    parsed["symbol"] = f"{ALLOWED_PROVIDER}:{base}"
+    parsed["provider"] = ALLOWED_PROVIDER
+
+    warnings = []
+    if incoming_provider is None:
+        parsed["normalization_method"] = "added_pepperstone_prefix"
+    elif incoming_provider == ALLOWED_PROVIDER:
+        parsed["normalization_method"] = "kept_pepperstone"
+    else:
+        parsed["normalization_method"] = f"replaced_{incoming_provider.lower()}_with_pepperstone"
+        warnings.append(f"replaced_provider:{incoming_provider}->{ALLOWED_PROVIDER}")
+    if base not in KNOWN_BASE_SYMBOLS:
+        warnings.append(f"unknown_base_symbol:{base}")
+    if warnings:
+        parsed["_normalize_warning"] = ";".join(warnings)
+
+    # Clean broker prefix from free-text `reason` field (preserved from prior logic).
     reason = parsed.get("reason")
     if isinstance(reason, str):
         for prefix in ("PEPPERSTONE:", "VANTAGE:", "FOREXCOM:", "OANDA:", "FX:", "FX_IDC:"):
