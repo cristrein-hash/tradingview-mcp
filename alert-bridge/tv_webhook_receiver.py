@@ -26,6 +26,7 @@ WATCHLIST_REJECTIONS_LOG = LOG_DIR / "watchlist_rejections.jsonl"
 # 2026-05-17: passive indicator signal logging (separate channel, no claude_recheck)
 INDICATOR_SIGNALS_LOG = LOG_DIR / "indicator_signals.jsonl"
 INDICATOR_SIGNALS_DEDUP_INDEX = LOG_DIR / "indicator_signals_dedup_index.json"
+INDICATOR_SIGNALS_QUARANTINE = LOG_DIR / "indicator_signals_quarantined.jsonl"  # 2026-05-28: hard whitelist gate
 SCHEMA_WARNINGS_LOG = LOG_DIR / "schema_warnings.jsonl"
 ENV_FILE = BASE_DIR / ".env"
 CLAUDE_RECHECK = BASE_DIR / "claude_recheck.py"
@@ -1435,8 +1436,10 @@ def _persist_indicator_dedup_set(seen: set):
 
 ALLOWED_PROVIDER = "PEPPERSTONE"
 
-# Operational whitelist (2026-05-28). Symbols outside this set emit
-# `unknown_base_symbol:<BASE>` warning; we DO NOT silently treat them as allowed.
+# Operational whitelist (2026-05-28). HARD GATE: symbols outside this set are
+# REJECTED (validation_status='rejected_unauthorized_symbol') and routed to
+# the quarantine log by write_indicator_signal. They DO NOT get an operational
+# `symbol=PEPPERSTONE:<BASE>` value (we will not silently invent authorization).
 # USOUSD kept for petroleum macro/geopolitical context. BTCUSD/XPTUSD/USDJPY removed.
 KNOWN_BASE_SYMBOLS = {
     "XAUUSD",
@@ -1449,31 +1452,41 @@ KNOWN_BASE_SYMBOLS = {
 
 
 def _normalize_indicator_parsed(parsed: dict) -> dict:
-    """Normalize symbol to canonical PEPPERSTONE:<BASE>.
+    """Normalize symbol to canonical PEPPERSTONE:<BASE> with HARD WHITELIST GATE.
 
     Inverted 2026-05-28: prior version REMOVED broker prefix, causing downstream
     chart_set_symbol to receive bare tickers that TradingView resolved to OANDA
-    (default provider) — outcomes contamination. The fix: always emit PEPPERSTONE
-    prefix in `symbol`; keep `base_symbol` clean (no prefix) for internal grouping
-    and dedup hash. Hard rule: PEPPERSTONE-only.
+    (default provider). Hardened 2026-05-28: unauthorized base_symbols are now
+    REJECTED rather than normalized with a warning — they get routed to the
+    quarantine log by write_indicator_signal and never enter the operational
+    signal stream.
 
     Mutates parsed in place. Adds:
-      - raw_symbol: original TV-supplied symbol/ticker (audit trail).
-      - base_symbol: uppercase ticker without provider.
-      - symbol: 'PEPPERSTONE:<BASE>' (canonical operational form).
-      - provider: 'PEPPERSTONE' (fixed).
-      - normalization_method: one of
-          'added_pepperstone_prefix' | 'kept_pepperstone' |
-          'replaced_<provider>_with_pepperstone' | 'empty_symbol'
-      - _normalize_warning: ';'-joined warnings (only if any).
+      - raw_symbol            : original TV-supplied symbol/ticker (audit trail).
+      - base_symbol           : uppercase ticker without provider (always set).
+      - symbol                : 'PEPPERSTONE:<BASE>' if base in whitelist, ELSE '' (rejected).
+      - provider              : 'PEPPERSTONE' if accepted, ELSE '' (rejected).
+      - normalization_method  : 'added_pepperstone_prefix' | 'kept_pepperstone' |
+                                'replaced_<provider>_with_pepperstone' |
+                                'empty_symbol' | 'rejected'
+      - validation_status     : 'valid' | 'rejected_unauthorized_symbol' |
+                                'rejected_empty_symbol'
+      - validation_reason     : human-readable rejection reason (only if rejected).
+      - _normalize_warning    : ';'-joined warnings (e.g. replaced_provider:...).
+
+    write_indicator_signal MUST check validation_status before computing dedup
+    hash or writing to indicator_signals.jsonl. Rejected signals go to
+    INDICATOR_SIGNALS_QUARANTINE only.
     """
     raw_symbol = parsed.get("symbol") or parsed.get("ticker") or ""
     if not raw_symbol:
         parsed["raw_symbol"] = ""
         parsed["base_symbol"] = ""
         parsed["symbol"] = ""
-        parsed["provider"] = ALLOWED_PROVIDER
+        parsed["provider"] = ""
         parsed["normalization_method"] = "empty_symbol"
+        parsed["validation_status"] = "rejected_empty_symbol"
+        parsed["validation_reason"] = "empty symbol/ticker in payload"
         parsed["_normalize_warning"] = "empty_symbol"
         return parsed
 
@@ -1487,8 +1500,24 @@ def _normalize_indicator_parsed(parsed: dict) -> dict:
 
     parsed["raw_symbol"] = raw_symbol
     parsed["base_symbol"] = base
+
+    # HARD WHITELIST GATE: reject if base not in operational whitelist.
+    if base not in KNOWN_BASE_SYMBOLS:
+        parsed["symbol"] = ""                     # do NOT emit operational symbol
+        parsed["provider"] = ""                   # do NOT claim PEPPERSTONE for unauthorized
+        parsed["normalization_method"] = "rejected"
+        parsed["validation_status"] = "rejected_unauthorized_symbol"
+        parsed["validation_reason"] = f"base_symbol '{base}' not in operational whitelist"
+        warn = f"unauthorized_base_symbol:{base}"
+        if incoming_provider and incoming_provider != ALLOWED_PROVIDER:
+            warn = f"unauthorized_provider_and_symbol:{incoming_provider}:{base}"
+        parsed["_normalize_warning"] = warn
+        return parsed
+
+    # Base is whitelisted — normalize provider to PEPPERSTONE.
     parsed["symbol"] = f"{ALLOWED_PROVIDER}:{base}"
     parsed["provider"] = ALLOWED_PROVIDER
+    parsed["validation_status"] = "valid"
 
     warnings = []
     if incoming_provider is None:
@@ -1498,8 +1527,6 @@ def _normalize_indicator_parsed(parsed: dict) -> dict:
     else:
         parsed["normalization_method"] = f"replaced_{incoming_provider.lower()}_with_pepperstone"
         warnings.append(f"replaced_provider:{incoming_provider}->{ALLOWED_PROVIDER}")
-    if base not in KNOWN_BASE_SYMBOLS:
-        warnings.append(f"unknown_base_symbol:{base}")
     if warnings:
         parsed["_normalize_warning"] = ";".join(warnings)
 
@@ -1513,12 +1540,49 @@ def _normalize_indicator_parsed(parsed: dict) -> dict:
     return parsed
 
 
+def _write_indicator_quarantine(event: dict, parsed: dict) -> None:
+    """Append a rejected signal to the quarantine log for audit. Best-effort;
+    errors are logged but never raised."""
+    try:
+        INDICATOR_SIGNALS_QUARANTINE.parent.mkdir(parents=True, exist_ok=True)
+        with INDICATOR_SIGNALS_QUARANTINE.open("a", encoding="utf-8") as f:
+            f.write(json.dumps({
+                "ts_received": event.get("received_at", ""),
+                "raw_symbol": parsed.get("raw_symbol", ""),
+                "base_symbol": parsed.get("base_symbol", ""),
+                "validation_status": parsed.get("validation_status"),
+                "validation_reason": parsed.get("validation_reason"),
+                "_normalize_warning": parsed.get("_normalize_warning"),
+                "raw_event": event,
+            }, ensure_ascii=False) + "\n")
+    except Exception as exc:
+        print(json.dumps({"quarantine_write_error": str(exc)}, ensure_ascii=False), flush=True)
+
+
 def write_indicator_signal(event: dict, parsed: dict) -> dict:
     """Write indicator_signal payload to indicator_signals.jsonl with dedup hash.
 
     Returns dict with: written (bool), signal_hash (str), reason (str).
+    Rejected signals (validation_status='rejected_*') are diverted to the
+    quarantine log; no dedup hash is computed/persisted for them and they NEVER
+    enter indicator_signals.jsonl as operational signals.
     """
     _normalize_indicator_parsed(parsed)
+    # HARD WHITELIST GATE — divert rejected signals to quarantine; do NOT pollute
+    # dedup index or the operational signals JSONL.
+    vstatus = parsed.get("validation_status", "")
+    if vstatus.startswith("rejected"):
+        _write_indicator_quarantine(event, parsed)
+        return {
+            "written": False,
+            "signal_hash": "",
+            "reason": vstatus,
+            "validation_status": vstatus,
+            "validation_reason": parsed.get("validation_reason"),
+            "base_symbol": parsed.get("base_symbol", ""),
+            "raw_symbol": parsed.get("raw_symbol", ""),
+            "_normalize_warning": parsed.get("_normalize_warning"),
+        }
     h = _compute_signal_hash(parsed)
     with _INDICATOR_DEDUP_LOCK:
         seen = _load_indicator_dedup_set()

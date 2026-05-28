@@ -173,8 +173,18 @@ Remaining — require explicit authorization:
 - **Receiver fix (paired patch)**: `tv_webhook_receiver.py::_normalize_indicator_parsed`
   was inverted on the same date — now ADDS `PEPPERSTONE:` prefix (instead of
   removing it) and emits `raw_symbol` / `base_symbol` / `symbol` / `provider` /
-  `normalization_method` / `_normalize_warning` fields. Operational whitelist:
+  `normalization_method` / `validation_status` / `validation_reason` /
+  `_normalize_warning` fields. Operational whitelist:
   `XAUUSD, XAGUSD, ETHUSD, US500, EURUSD, USOUSD` (BTCUSD/XPTUSD/USDJPY removed).
+  **HARD WHITELIST GATE**: symbols whose `base_symbol` is outside the whitelist
+  (or empty payload) are REJECTED with `validation_status='rejected_unauthorized_symbol'`
+  (or `'rejected_empty_symbol'`); `write_indicator_signal` diverts them to
+  `alert-bridge/logs/indicator_signals_quarantined.jsonl` (with full `raw_event`
+  preserved for audit) and they **never enter** the operational
+  `indicator_signals.jsonl` nor pollute the dedup index. Unauthorized providers
+  (OANDA/VANTAGE/FOREXCOM/etc.) are accepted only if their base is in the
+  whitelist (normalized to `PEPPERSTONE:<BASE>` + warning); otherwise the entire
+  signal is rejected.
 - **Replacement**: future "Signal Outcome Lab" — batch/manual (no scheduled
   LaunchAgent initially), PEPPERSTONE hard gate, unified chart lock with
   monitor/draws/replay/visual-audit, canonical-slim-first read path, live chart
