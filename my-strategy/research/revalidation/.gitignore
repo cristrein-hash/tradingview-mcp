@@ -1,0 +1,5 @@
+# Strategy Revalidation Lab — ignore bulk per-trade outputs.
+# These are deterministically regenerable from config.json + canonical data +
+# the code commit recorded in report.json. Everything else (methodology, config,
+# report, summary, schemas) is tracked as auditable evidence.
+**/trades.jsonl

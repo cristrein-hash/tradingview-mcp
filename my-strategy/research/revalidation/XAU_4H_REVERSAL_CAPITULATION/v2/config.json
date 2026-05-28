@@ -1,0 +1,76 @@
+{
+  "_schema": "../../_schema/config.schema.json",
+  "strategy_id": "XAU_4H_REVERSAL_CAPITULATION",
+  "revalidation_version": "v2",
+  "symbol": "PEPPERSTONE:XAUUSD",
+  "base_tf": "4H",
+  "context_tf": ["1D"],
+  "inputs": {
+    "source": "canonical_slim_4H+1D",
+    "join": "reuse scripts/build_crosstf_dataset.py (as-of backward on close_epoch; no future leak)",
+    "registry": "docs/data/dataset_registry.json",
+    "feature_extractor": "scripts/extract_replay_features.py",
+    "slim_schema_version": 2
+  },
+  "signal": {
+    "direction": "long",
+    "nas_event_field": "nas_label_long_event",
+    "nas_recent_field": "nas_label_long_recent",
+    "nas_recent_bars_field": "nas_label_recent_long_bars",
+    "nas_recency_max_bars": 5,
+    "atr_ratio_field": "atr14_sma30_ratio",
+    "atr_ratio_min": 1.3,
+    "rsi_1d_field": "rsi",
+    "rsi_1d_max": 50,
+    "rsi_1d_join": "as_of_close_epoch",
+    "modes": {
+      "primary": "per NAS event e (nas_label_long_event), first 4H candle c in [e, e+5] where full conjunction holds: nas_label_long_recent && nas_label_recent_long_bars<=5 && atr14_sma30_ratio>1.3 && rsi_1d_asof<50",
+      "sensitivity": "event_only: full conjunction holds at the NAS event candle e"
+    },
+    "official_mode": "primary"
+  },
+  "entry": {
+    "fill": "next_bar_open"
+  },
+  "stop": {
+    "structural_lookback_bars": 3,
+    "atr_field": "atr14_sma_tr",
+    "atr_mult": 1.5,
+    "rule": "min(min(low[i-2],low[i-1],low[i]), entry - 1.5*atr14_sma_tr)"
+  },
+  "targets": {
+    "r_multiples": [1, 2, 3],
+    "primary_r": 2
+  },
+  "time_limit_bars": 20,
+  "intrabar": "stop_first",
+  "costs_usd_roundtrip": [0.0, 0.20, 0.50],
+  "trade_generation": {
+    "no_overlap": true,
+    "max_trades_per_nas_event": 1,
+    "cooldown_bars": 0
+  },
+  "regimes": {
+    "by": "entry_year",
+    "buckets": {
+      "2016-2019": "pre_covid",
+      "2020": "covid",
+      "2021-2022": "inflation_bear_macro",
+      "2023-2026": "gold_bull_recent"
+    },
+    "aggregate_views": ["total", "ex_covid", "covid_only", "by_regime"]
+  },
+  "decision_gates": {
+    "min_n_needs_more_data": 20,
+    "min_n_candidate": 30,
+    "pf_min": 1.3,
+    "require_avg_r_positive": true,
+    "require_ex_covid_positive": true,
+    "require_ex_top5_positive": true
+  },
+  "right_censoring": {
+    "policy": "resolve_at_last_close",
+    "flag": "right_censored",
+    "report_count": true
+  }
+}

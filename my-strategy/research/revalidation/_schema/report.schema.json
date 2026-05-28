@@ -1,0 +1,122 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "revalidation/report.schema.json",
+  "title": "Strategy Revalidation report",
+  "description": "Shared, cross-strategy-comparable report contract. Every revalidation produces a report.json with this shape so strategies can later be compared on identical axes (expectancy, PF, sample, regime robustness, exit mix) and for redundancy/overlap analysis.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "strategy_id", "revalidation_version", "generated_at", "provenance",
+    "signal_funnel", "aggregate", "by_regime", "by_cost",
+    "mode_comparison", "validations", "decision", "warnings"
+  ],
+  "properties": {
+    "strategy_id": { "type": "string" },
+    "revalidation_version": { "type": "string" },
+    "generated_at": { "type": "string" },
+    "provenance": {
+      "type": "object",
+      "description": "everything needed to reproduce this result",
+      "required": ["code_commit", "config_path", "inputs"],
+      "properties": {
+        "code_commit": { "type": "string" },
+        "builder_commit": { "type": "string" },
+        "config_path": { "type": "string" },
+        "inputs": {
+          "type": "object",
+          "description": "registry entries + raw/slim paths actually used, per TF"
+        }
+      }
+    },
+    "signal_funnel": {
+      "type": "object",
+      "description": "how many candidates survive each stage",
+      "required": ["raw_nas_events", "signals_primary", "signals_event_only", "trades_after_no_overlap"],
+      "properties": {
+        "raw_nas_events": { "type": "integer" },
+        "signals_primary": { "type": "integer" },
+        "signals_event_only": { "type": "integer" },
+        "trades_after_no_overlap": { "type": "integer" },
+        "right_censored": { "type": "integer" }
+      }
+    },
+    "aggregate": {
+      "type": "object",
+      "description": "headline metrics for the official mode + primary target",
+      "required": ["n", "win_pct", "avg_r", "median_r", "sum_r", "profit_factor",
+                   "max_losing_streak", "sum_r_ex_top5", "sum_r_ex_top10",
+                   "mfe_r_mean", "mae_r_mean", "exit_reason_mix"],
+      "properties": {
+        "n": { "type": "integer" },
+        "win_pct": { "type": "number" },
+        "avg_r": { "type": "number" },
+        "median_r": { "type": "number" },
+        "sum_r": { "type": "number" },
+        "profit_factor": { "type": ["number", "null"] },
+        "max_losing_streak": { "type": "integer" },
+        "sum_r_ex_top5": { "type": "number" },
+        "sum_r_ex_top10": { "type": "number" },
+        "mfe_r_mean": { "type": "number" },
+        "mae_r_mean": { "type": "number" },
+        "exit_reason_mix": { "type": "object" }
+      }
+    },
+    "by_regime": {
+      "type": "object",
+      "description": "keyed by regime label + the aggregate views (total/ex_covid/covid_only)"
+    },
+    "by_cost": {
+      "type": "object",
+      "description": "keyed by cost (usd round-trip): net aggregate per cost"
+    },
+    "by_target": {
+      "type": "object",
+      "description": "optional: aggregate per R target (1R/2R/3R)"
+    },
+    "mode_comparison": {
+      "type": "object",
+      "required": ["primary", "event_only", "delta_signals", "approximates_legacy_better"],
+      "properties": {
+        "primary": { "type": "object" },
+        "event_only": { "type": "object" },
+        "delta_signals": { "type": "integer" },
+        "legacy_n_reference": { "type": ["integer", "null"] },
+        "approximates_legacy_better": { "type": "string" }
+      }
+    },
+    "validations": {
+      "type": "object",
+      "description": "STAGE 1 technical validity gate; all must pass before metrics are interpretable",
+      "required": ["no_future_leak", "entry_is_next_bar_open", "all_stop_distance_positive", "report_generated"],
+      "properties": {
+        "no_future_leak": { "type": "boolean" },
+        "entry_is_next_bar_open": { "type": "boolean" },
+        "all_stop_distance_positive": { "type": "boolean" },
+        "report_generated": { "type": "boolean" },
+        "technically_valid": { "type": "boolean" }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "description": "STAGE 2 merit verdict; RECOMMENDATION only — lab never writes catalog",
+      "required": ["result_status", "recommended_catalog_transition", "rationale"],
+      "properties": {
+        "result_status": {
+          "type": "string",
+          "enum": ["pass", "fail", "inconclusive", "needs_more_data",
+                   "candidate_for_VALIDATED", "reject_or_downgrade"]
+        },
+        "recommended_catalog_transition": {
+          "type": "object",
+          "properties": {
+            "validation_status": { "type": "string" },
+            "deployment_status": { "type": "string" },
+            "note": { "type": "string" }
+          }
+        },
+        "rationale": { "type": "string" }
+      }
+    },
+    "warnings": { "type": "array", "items": { "type": "string" } }
+  }
+}
