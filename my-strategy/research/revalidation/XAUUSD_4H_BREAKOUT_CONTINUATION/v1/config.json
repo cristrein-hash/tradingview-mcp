@@ -1,0 +1,99 @@
+{
+  "_note": "BREAKOUT_CONTINUATION v1 revalidation config. Single official config: S_full_trend_htf (winning combo from 2026-05-12 audit sweep). No parameter sweep, no reconciliation against trade-level legacy (legacy CSV is aggregate-only — sweep stats, not trades). Strategy spec frozen from my-strategy/research/experimental/xauusd_4h_long_breakout_continuation_regime_filtered.md + my-strategy/pine_alerts/01_xauusd_4h_breakout_continuation.pine.",
+  "_schema": "../../_schema/config.schema.json",
+  "strategy_id": "XAUUSD_4H_BREAKOUT_CONTINUATION",
+  "revalidation_version": "v1",
+  "symbol": "PEPPERSTONE:XAUUSD",
+  "base_tf": "4H",
+  "direction": "long",
+  "inputs": {
+    "source": "canonical_slim_4H",
+    "registry": "docs/data/dataset_registry.json",
+    "feature_extractor": "scripts/extract_replay_features.py",
+    "slim_schema_version": 2
+  },
+  "signal": {
+    "direction": "long",
+    "summary": "Triggers: close>swing_high(10)[1] AND close>open AND body_pct>=0.5 AND rsi(14)>rsi_ma. Filters (all required): ADX(14)>=20 AND close>EMA(200) AND EMA(50)>EMA(200) AND EMA(50)_now>EMA(50)_5bars_ago AND ATR(14)>SMA(ATR14,20). Sanity: low-0.5*ATR yields positive risk and risk<=5*ATR.",
+    "trigger_swing_lookback": 10,
+    "trigger_body_pct_min": 0.5,
+    "trigger_rsi_field": "rsi_above_ma",
+    "trigger_close_above_swing_field": "close_above_swing_high_10",
+    "filter_adx_min": 20,
+    "filter_ema_fast": 50,
+    "filter_ema_slow": 200,
+    "filter_ema_slope_lookback": 5,
+    "filter_atr_ma_period": 20,
+    "atr_field": "atr14_wilder",
+    "atr_ma_method": "sma_of_atr14_wilder",
+    "ema_method": "ema_close",
+    "adx_method": "wilder_di"
+  },
+  "entry": {
+    "fill": "next_bar_open"
+  },
+  "stop": {
+    "rule": "structural: stop = low_signal_bar - 0.5 * atr14_wilder; sanity: 0 < risk <= 5*atr14_wilder",
+    "primary": "structural_low_05atr",
+    "stop_atr_mult": 0.5,
+    "atr_field": "atr14_wilder",
+    "sanity_risk_max_atr_mult": 5
+  },
+  "targets": {
+    "r_multiples": [1, 2, 4],
+    "primary_r": 4
+  },
+  "time_limit_bars": 24,
+  "intrabar": "stop_first",
+  "costs_usd_roundtrip": [0.0, 0.20, 0.50],
+  "trade_generation": {
+    "no_overlap": true,
+    "cooldown_bars": 0,
+    "one_trade_per_episode": true,
+    "episode_definition": "Signal episode is single bar (no episode aggregation); no-overlap enforced by skipping signals whose bar <= last_exit_bar"
+  },
+  "regimes": {
+    "by": "entry_year",
+    "buckets": {
+      "2016-2018": "pre_covid",
+      "2019": "bull_pre_covid",
+      "2020": "covid_rally",
+      "2021": "chop_post_covid",
+      "2022": "chop_inflation_bear",
+      "2023": "chop_macro",
+      "2024-2026": "bull_recent"
+    },
+    "aggregate_views": ["total", "by_regime"]
+  },
+  "reconciliation": {
+    "method": "skipped_no_trade_level_legacy_available",
+    "legacy_aggregate_csv": "my-strategy/research/backtests/xauusd_audit_20260512/XAUUSD_4H_breakout_regime_filter_sweep.csv",
+    "legacy_winning_config": "S_full_trend_htf",
+    "legacy_winning_evidence": {"n": 234, "total_net_r": 64.57, "avg_net_r": 0.276, "pf": 1.64, "win_rate": 0.286},
+    "legacy_trade_level_dump_available": false,
+    "require_reproduction_before_r_real": false,
+    "on_reproduction_failure": "n/a — comparison is aggregate vs aggregate only"
+  },
+  "right_censoring": {
+    "policy": "mark right_censored=true when exit_reason=time_limit AND exit_bar==entry_bar+time_limit_bars-1"
+  },
+  "decision_gates": {
+    "primary_r": 4,
+    "win_rate_min_total": 0.20,
+    "pf_min_total": 1.2,
+    "avg_R_min_total": 0.10,
+    "require_real_stop_target": true,
+    "require_regime_segmentation": true,
+    "require_lookahead_free": true,
+    "note": "Loose gates — purpose of v1 is to make trades.jsonl plotable for visual auction-theory review, not to bless promotion. Promotion gates set elsewhere if/when this passes visual."
+  },
+  "strategy_specific": {
+    "be_move_at_plus_1r": true,
+    "be_move_rule": "When highs from entry_bar onwards reach entry + 1*risk on any prior bar, move stop to entry for subsequent bars (no lookahead within the bar where the +1R cross happens — move applies on the NEXT bar's stop check).",
+    "trailing": false,
+    "max_hold_bars": 24,
+    "time_limit_exit_price": "close_of_bar_entry_plus_max_hold_minus_1",
+    "warmup_bars": 200,
+    "filter_set_id": "S_full_trend_htf"
+  }
+}

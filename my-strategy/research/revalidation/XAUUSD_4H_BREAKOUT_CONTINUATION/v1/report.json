@@ -1,0 +1,87 @@
+{
+  "strategy_id": "XAUUSD_4H_BREAKOUT_CONTINUATION",
+  "version": "v1",
+  "config_id": "S_full_trend_htf",
+  "generated_at": "2026-05-29T00:10:54.936206+00:00",
+  "git_commit": "5c34af2172847cdc06ae32209dc5302f8c2e964d",
+  "method": "replay_real_rt_canonical_slim",
+  "data_source": "/Volumes/GUTS_ LACIE/TradingData",
+  "h4_bars_loaded": 15187,
+  "first_bar_iso": "2016-05-24T18:00:00+00:00",
+  "last_bar_iso": "2026-05-22T18:00:00+00:00",
+  "warmup_bars": 200,
+  "signals_count": 261,
+  "trades_count": 115,
+  "win_rate": 0.3043,
+  "avg_R": 0.2198,
+  "total_R": 25.2778,
+  "pf": 1.479,
+  "exit_reasons": {
+    "stop_be": 25,
+    "stop": 52,
+    "time_limit": 29,
+    "target": 9
+  },
+  "be_moved_count": 57,
+  "right_censored_count": 29,
+  "by_regime": {
+    "pre_covid": {
+      "n": 22,
+      "R": 2.0931,
+      "win": 7,
+      "avg_R": 0.0951,
+      "win_rate": 0.3182
+    },
+    "bull_pre_covid": {
+      "n": 14,
+      "R": 7.4608,
+      "win": 5,
+      "avg_R": 0.5329,
+      "win_rate": 0.3571
+    },
+    "covid_rally": {
+      "n": 10,
+      "R": 3.6343,
+      "win": 2,
+      "avg_R": 0.3634,
+      "win_rate": 0.2
+    },
+    "chop_post_covid": {
+      "n": 8,
+      "R": -1.0,
+      "win": 1,
+      "avg_R": -0.125,
+      "win_rate": 0.125
+    },
+    "chop_inflation_bear": {
+      "n": 11,
+      "R": -5.1522,
+      "win": 2,
+      "avg_R": -0.4684,
+      "win_rate": 0.1818
+    },
+    "chop_macro": {
+      "n": 10,
+      "R": 1.8222,
+      "win": 3,
+      "avg_R": 0.1822,
+      "win_rate": 0.3
+    },
+    "bull_recent": {
+      "n": 40,
+      "R": 16.4196,
+      "win": 15,
+      "avg_R": 0.4105,
+      "win_rate": 0.375
+    }
+  },
+  "legacy_aggregate_comparison": {
+    "legacy_n": 234,
+    "legacy_pf": 1.64,
+    "legacy_win_rate": 0.286,
+    "legacy_total_net_r": 64.57,
+    "note": "Aggregate-vs-aggregate informational comparison only \u2014 legacy lacks trade-level dump."
+  },
+  "primary_r": 4,
+  "max_hold_bars": 24
+}
