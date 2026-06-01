@@ -380,9 +380,9 @@
       "current_values": {
         "XAUUSD_4H_LONG_BREAKOUT_CONTINUATION_REGIME_FILTERED": 234,
         "XAUUSD_4H_LONG_REJECTION_SWING": "DEACTIVATED em 2026-05-12 — backtest profundo mostrou edge negativo (-59.3R em 7.4y); substituído por XAUUSD_4H_LONG_BREAKOUT_CONTINUATION_REGIME_FILTERED",
-        "XAUUSD_1H_LONG_DECISIVE_BODY60_HTF": 127,
+        "XAUUSD_1H_LONG_DECISIVE_BODY60_HTF": "DEACTIVATED em 2026-06-01 — visual auction-theory review rejected (n=25 sample on PEPPERSTONE:XAUUSD 1H, 2024-01 → 2026-05). Entries appear late and chasing extension; mechanically similar to XAUUSD_4H_BREAKOUT_CONTINUATION mas pior alinhamento auction-theory. Mechanical edge (PF 1.57, no_top10 +2.50R) insuficiente sem contexto auction-aware. NÃO usar como Strategy Module. NÃO emitir SETUP_VALIDO_INTRADAY nem SETUP_CANDIDATO_FORTE sob este nome.",
         "XAGUSD_1H_LONG_DECISIVE_DXY_STRUCTURAL": 69,
-        "XAUUSD_1H_LONG_REJECTION_EXECUTION": "DEACTIVATED em 2026-05-12 — audit profundo confirmou sem edge (PF 1.04, avg +0.017R, no_top5 -5.38R em n=1338). Substituído operacionalmente por XAUUSD_1H_LONG_DECISIVE_BODY60_HTF.",
+        "XAUUSD_1H_LONG_REJECTION_EXECUTION": "DEACTIVATED em 2026-05-12 — audit profundo confirmou sem edge (PF 1.04, avg +0.017R, no_top5 -5.38R em n=1338). Originalmente substituído por XAUUSD_1H_LONG_DECISIVE_BODY60_HTF, mas esse sucessor foi DEACTIVATED em 2026-06-01 por visual review. Sem substituto LONG 1H ativo para XAUUSD.",
         "XAUUSD_INTRADAY_BB_CONFLUENCE_EXECUTION": "não declarado — forward-test apenas; depende de zonas BB",
         "US500_4H_LONG_FAILED_BREAKDOWN_REGIME": 45,
         "US500_1H_LONG_BREAKOUT_REGIME_FILTERED": 222,

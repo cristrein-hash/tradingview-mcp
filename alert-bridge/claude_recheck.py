@@ -51,7 +51,7 @@ PROMOTION_POLICY_DOC = STRATEGY_DIR / "research/experimental/setup_promotion_pol
 MODULE_AWARE_RULES_DOC = STRATEGY_DIR / "research/experimental/module_aware_global_rules_v3.md"
 XAUUSD_4H_SWING_DOC = STRATEGY_DIR / "research/experimental/xauusd_4h_long_rejection_swing.md"  # DEACTIVATED — kept for history
 XAUUSD_4H_BREAKOUT_REGIME_DOC = STRATEGY_DIR / "research/experimental/xauusd_4h_long_breakout_continuation_regime_filtered.md"  # ACTIVE (substitui 4H_LONG_REJECTION_SWING)
-XAUUSD_1H_DECISIVE_DOC = STRATEGY_DIR / "research/experimental/xauusd_1h_long_decisive_body60_htf.md"  # ACTIVE — SETUP_CANDIDATO_FORTE intraday
+XAUUSD_1H_DECISIVE_DOC = STRATEGY_DIR / "research/experimental/xauusd_1h_long_decisive_body60_htf.md"  # DEACTIVATED 2026-06-01 — visual auction-theory review (kept for history)
 XAGUSD_1H_DECISIVE_DXY_DOC = STRATEGY_DIR / "research/experimental/xagusd_1h_long_decisive_dxy_structural.md"  # ACTIVE — SETUP_CANDIDATO_FORTE intraday + DXY structural
 XAUUSD_1H_EXECUTION_DOC = STRATEGY_DIR / "research/experimental/xauusd_1h_long_rejection_execution.md"  # DEACTIVATED — kept for history
 XAUUSD_INTRADAY_BB_DOC = STRATEGY_DIR / "research/experimental/xauusd_intraday_bb_confluence_execution.md"
@@ -752,11 +752,11 @@ def build_prompt(alert: dict) -> str:
            - module_trigger_us500_4h_failed_breakdown             (failed breakdown)
 
          SETUP_CANDIDATO_FORTE (1H INTERIM, aguarda n>=30 forward):
-           - module_trigger_xauusd_1h_decisive_body60_htf         (n=127, PF 1.57)
            - module_trigger_eurusd_1h_decisive_htf1d_dxy          (n=73,  PF 1.46)
            - module_trigger_xagusd_1h_decisive_dxy_structural     (n=69,  PF 1.79)
            - module_trigger_us500_1h_breakout_regime              (n=222, PF 1.22)
            - module_trigger_ethusd_1h_pullback_ema50              (n=96)
+         (XAUUSD_1H_LONG_DECISIVE_BODY60_HTF removido 2026-06-01 — visual auction-theory review rejected; sem substituto LONG 1H ativo para XAUUSD)
 
       6. ECOAR no stdout campos obrigatórios (extract_field do receiver lê de lá):
          Strategy Module: <copiar de alert.strategy_module>
@@ -972,44 +972,13 @@ def build_prompt(alert: dict) -> str:
     - Se o alerta originalmente foi marcado com este módulo, reclassificar como SETUP_CANDIDATO_FORTE (régua clássica) ou avaliar XAUUSD_4H_LONG_BREAKOUT_CONTINUATION_REGIME_FILTERED se os critérios dele se aplicam.
 
 
-    Módulo ATIVO — XAUUSD_1H_LONG_DECISIVE_BODY60_HTF (INTRADAY — default SETUP_CANDIDATO_FORTE):
-    - Avalie se o alerta pertence a este módulo: PEPPERSTONE:XAUUSD + TF 1H + LONG breakout multi-HTF.
-    - Backtest n=127 trades / 2.36y (2024-01 → 2026-05). PF 1.57, win 44.9%, avg +0.213R, max losing streak 9. no_top5 +14.75R, no_top10 +2.50R (ambos positivos — robustez confirmada).
-    - **Default classification é SETUP_CANDIDATO_FORTE** — NÃO promover automaticamente a SETUP_VALIDO_INTRADAY até validação ao vivo (30+ trades reais, avg_r > +0.15, PF > 1.40, no_top5 ainda positivo).
-    - Só pode ser classificado SETUP_CANDIDATO_FORTE quando TODOS os filtros abaixo passarem em candle 1H FECHADO:
-      Trigger (5 obrigatórios):
-        1. close > swing_high(10) — rompimento da máxima dos últimos 10 candles 1H;
-        2. close > open (candle bullish);
-        3. body_pct >= 0.6 (corpo >= 60% do range);
-        4. range >= 1.2 × ATR(14) (barra de amplitude expandida);
-        5. RSI(14) > RSI-based MA (momentum alinhado).
-      Filtros técnicos de regime (3 obrigatórios):
-        6. close > EMA(200) no 1H;
-        7. EMA(50) > EMA(200) no 1H;
-        8. ATR(14) > ATR_MA(20).
-      Filtros HTF (2 obrigatórios):
-        9. HTF 1D close > HTF 1D EMA(50);
-        10. HTF 4H close > HTF 4H EMA(50).
-    - **IMPORTANTE — body 60% é específico de XAU**, NÃO confundir com body 70% do EURUSD/V2. Audit comprovou que body 70% é restritivo demais para XAU.
-    - HTF 12H NÃO é filtro neste módulo (audit mostrou redundância com HTF1D+HTF4H).
-    - Filtro DXY: PENDENTE para v1.1 (não obrigatório na v1.0). Quando ativado, seguirá padrão dos módulos EURUSD com pull MCP.
-    - Stop / gestão padrão:
-      Stop = low − 0.5 × ATR(14). Rejeitar se R > 5 × ATR(14).
-      Target = 2.5R fixo. BE após +1R. Trailing desabilitado. Max hold = 20 candles 1H.
-    - Output template:
-      Strategy Module: XAUUSD_1H_LONG_DECISIVE_BODY60_HTF
-      Module backtest n: 127
-      Trigger: breakout swhi10 + body >= 0.6 + range >= 1.2×ATR + RSI > MA
-      Execution TF: 60
-      Promotion status: KEEP_AS_CANDIDATO_FORTE
-      D2R required: true
-      Classificação: SETUP_CANDIDATO_FORTE
-      Direção: LONG
-    - Priority A: todos 10 filtros passam + entrada não atrasada + leitura MCP confiável.
-    - Priority B: 10 filtros passam mas entrada um pouco atrasada OU leitura MCP com 1 incerteza.
-    - Frequência intraday moderada (~1.07 trade/sem, ~4.58/mês). Pode haver semanas sem sinal.
-    - SHORT em XAUUSD não tem edge confirmado — NÃO classificar SHORT por este módulo.
-    - Substitui operacionalmente o módulo legacy XAUUSD_1H_LONG_REJECTION_EXECUTION (DEACTIVATED).
+    Módulo DESATIVADO — XAUUSD_1H_LONG_DECISIVE_BODY60_HTF:
+    - DEACTIVATED em 2026-06-01 após visual auction-theory review (n=25 sample em PEPPERSTONE:XAUUSD 1H, 2024-01 → 2026-05).
+    - Backtest mecânico era positivo (n=127, PF 1.57, win 44.9%, avg +0.213R, no_top5 +14.75R, no_top10 +2.50R), mas revisão visual mostrou entradas tardias e em contexto já esticado — muito mecanizado, parecido com XAUUSD_4H_BREAKOUT_CONTINUATION mas pior alinhamento auction-theory.
+    - NÃO usar como Strategy Module. NÃO emitir SETUP_VALIDO_INTRADAY nem SETUP_CANDIDATO_FORTE sob este nome.
+    - Se o alerta originalmente foi marcado com este módulo: reclassificar para SETUP_EM_OBSERVACAO/NO_TRADE. Sem substituto LONG 1H ativo para XAUUSD.
+    - Pine #05 mantida em arquivo (não usar para novos alertas). Audit CSV e Pine preservados em my-strategy/.
+    - Substituiu (e foi substituído por nenhum) o módulo legacy XAUUSD_1H_LONG_REJECTION_EXECUTION (também DEACTIVATED em 2026-05-12).
 
     Módulo ATIVO — XAGUSD_1H_LONG_DECISIVE_DXY_STRUCTURAL (INTRADAY — default SETUP_CANDIDATO_FORTE):
     - Avalie se o alerta pertence a este módulo: PEPPERSTONE:XAGUSD + TF 1H + LONG decisive breakout + DXY estrutural bearish.
@@ -1069,7 +1038,7 @@ def build_prompt(alert: dict) -> str:
     - Backtest n=1338, PF 1.04, avg +0.017R, win 17.4%, no_top5 -5.38R — edge fat-tail dependente, inexistente.
     - Forward-test live havia rodado n=21 (insuficiente para validar antes do audit).
     - NÃO usar como Strategy Module. NÃO emitir SETUP_VALIDO_INTRADAY nem SETUP_CANDIDATO_FORTE sob este nome.
-    - Se o alerta originalmente foi marcado com este módulo: reclassificar para XAUUSD_1H_LONG_DECISIVE_BODY60_HTF se os critérios deste módulo se aplicam, ou para SETUP_EM_OBSERVACAO/NO_TRADE caso contrário.
+    - Se o alerta originalmente foi marcado com este módulo: reclassificar para SETUP_EM_OBSERVACAO/NO_TRADE. (Sucessor XAUUSD_1H_LONG_DECISIVE_BODY60_HTF também foi DEACTIVATED em 2026-06-01 por visual review; sem substituto LONG 1H ativo para XAUUSD.)
 
 
     Módulo experimental separado — XAUUSD_INTRADAY_BB_CONFLUENCE_EXECUTION:

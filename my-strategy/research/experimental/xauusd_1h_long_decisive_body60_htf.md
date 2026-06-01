@@ -1,6 +1,6 @@
 # XAUUSD_1H_LONG_DECISIVE_BODY60_HTF
 
-**Status:** active (criado em 2026-05-12)
+**Status:** **REJECTED** 2026-06-01 por visual auction-theory review (ver seção final). Criado em 2026-05-12 como active; rejeitado antes de qualquer revalidation canonical.
 **Asset:** PEPPERSTONE:XAUUSD
 **Timeframe:** 1H
 **Direction:** LONG only
@@ -176,3 +176,37 @@ Substitui operacionalmente (legacy): `XAUUSD_1H_LONG_REJECTION_EXECUTION` (rejec
 | Data | Versão | Mudança |
 |---|---|---|
 | 2026-05-12 | v1.0 | Criação. Sample n=127 / 2.36y. PF 1.57, win 44.9%, no_top5 +14.75, no_top10 +2.50. Default SETUP_CANDIDATO_FORTE até validação ao vivo. DXY filter pendente para v1.1. |
+| 2026-06-01 | v1.0 → REJECTED | Visual auction-theory review descartou a estratégia. Ver seção 16 abaixo. |
+
+## 16. Visual review decision — rejected
+
+**Data:** 2026-06-01
+**Método:** plotagem visual de 25 trades em `PEPPERSTONE:XAUUSD` 1H (proxy CSV usado: `XAU_1H_body60+HTF1D+HTF4H_target3.0R` — variante #1 do sweep; entries equivalentes à variante oficial `target_2.5R`, target visual desenhado em 2.5R).
+**Sample:** 9 targets + 5 stops + 6 timeouts positivos + 5 timeouts negativos (dedup, distribuição temporal 2024-01-30 → 2026-05-11).
+**Resultado:** **REJECTED**.
+
+### Conclusão visual
+
+A revisão visual mostrou uma estratégia muito parecida com a `XAUUSD_4H_BREAKOUT_CONTINUATION`, porém **ainda mais mecanizada/tardia**:
+
+- **Entradas tardias / chasing extension** — muitos breakouts entram com o preço já esticado em relação a swing high e EMAs.
+- **Contexto auction frequentemente ruim** — compras em premium / topo de extensão, sem absorção vendedora prévia clara.
+- **Pouca diferenciação visual** entre winners e losers — winners aparentam ser produtos de continuidade do trend macro, não de quality de setup local.
+- **Mecânica robusta no backtest (PF 1.57, no_top10 +2.50R) NÃO se traduz** em assinatura auction-aware visualmente reconhecível.
+
+### Decisão operacional
+
+- **Não seguir** para canonical revalidation v1.
+- **Não promover** para `SETUP_VALIDO_INTRADAY` em nenhum cenário.
+- **Suprimir emissão** de `SETUP_CANDIDATO_FORTE` por este módulo no `claude_recheck.py` (patch aplicado 2026-06-01).
+- **Manter** Pine `pine_alerts/05_xauusd_1h_decisive_body60_htf.pine` em arquivo para histórico — **não usar para novos alertas**.
+- **Manter** audit dir `research/backtests/xauusd_1h_audit_20260512/` em arquivo (sem deletar CSV/script/report).
+
+### Princípio orientador
+
+Próximas estratégias 1H em XAUUSD devem ser **desenhadas a partir de tese auction-theory** (premium/discount, initiative/responsive, acceptance/rejection, absorption/defense, exhaustion, location) — não derivadas de sweeps mecânicos de parâmetros. Mecânica é validação, não geradora.
+
+### Estado dos predecessores
+
+- `XAUUSD_1H_LONG_REJECTION_EXECUTION` (DEACTIVATED 2026-05-12) — predecessor mecânico desta estratégia, também rejeitado.
+- **Sem substituto LONG 1H ativo para XAUUSD após esta rejeição.**
