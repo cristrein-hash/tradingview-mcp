@@ -1,0 +1,124 @@
+{
+  "_note": "XAUUSD_INTRADAY_BB_CONFLUENCE — Historical Lab v1. Single hypothesis (ZONE_REJECTION_v1). No parameter sweep. BB = BigBeluga zones (canonical slim representation via Custom OB). Purpose: answer 'does the BigBeluga zone-rejection thesis have a raw historical edge?' before any forward test or operational promotion.",
+  "_schema": "../../_schema/config.schema.json",
+  "strategy_id": "XAUUSD_INTRADAY_BB_CONFLUENCE",
+  "config_id": "ZONE_REJECTION_v1",
+  "lab_version": "v1",
+  "symbol": "PEPPERSTONE:XAUUSD",
+  "base_tf": "15M",
+  "structure_tfs": ["1H", "4H"],
+  "macro_tf": "1D",
+  "direction": "BIDIRECTIONAL",
+  "inputs": {
+    "source": "canonical_slim_15M_30M_1H_4H_1D",
+    "slim_base_path": "/Volumes/GUTS_ LACIE/TradingData/slim_features/XAUUSD",
+    "registry": "docs/data/dataset_registry.json",
+    "slim_schema_version": 2,
+    "data_window_15M_bottleneck": "2024-05-24 → 2026-05-25"
+  },
+  "zone_definition": {
+    "primary_source": "custom_ob_demand_active / custom_ob_supply_active",
+    "fields_used": [
+      "custom_ob_demand_active",
+      "custom_ob_supply_active",
+      "nearest_demand_high",
+      "nearest_demand_low",
+      "nearest_supply_high",
+      "nearest_supply_low",
+      "nearest_demand_dist",
+      "nearest_supply_dist"
+    ],
+    "rationale": "Custom OB is the slim's canonical implementation of BigBeluga-style supply/demand zones. No explicit 'bigbeluga_zone_*' fields exist; SMC OB (smc_nearest_bullish_ob_* / smc_nearest_bearish_ob_*) is the fallback alternative, not used in v1.",
+    "zone_lookup": "parent 1H bar OR parent 4H bar (whichever zone edge is closer to current 15M close, via abs(distance)); never both",
+    "no_lookahead": "bisect_right(parent_ts, child_ts) - 1"
+  },
+  "signal": {
+    "long_trigger": {
+      "summary": "Bar 15M entrou em DEMAND zone (1H ou 4H) e fechou bullish.",
+      "rules_all_required": [
+        "zone selected from parent 1H or 4H (zone_type == DEMAND)",
+        "bar.low <= zone_high  (entered)",
+        "bar.close > zone_low  (did not break zone)",
+        "bar.close > bar.open  (bullish close)",
+        "body_pct >= 0.30      (body at least 30% of range)"
+      ]
+    },
+    "short_trigger": {
+      "summary": "Bar 15M entrou em SUPPLY zone (1H ou 4H) e fechou bearish.",
+      "rules_all_required": [
+        "zone selected from parent 1H or 4H (zone_type == SUPPLY)",
+        "bar.high >= zone_low  (entered)",
+        "bar.close < zone_high (did not break zone)",
+        "bar.close < bar.open  (bearish close)",
+        "body_pct >= 0.30"
+      ]
+    },
+    "sanity": [
+      "atr14_wilder not null at signal bar",
+      "risk > 0",
+      "risk <= 8 * atr14_wilder (otherwise zone too wide; skip)"
+    ]
+  },
+  "entry": {
+    "fill": "close_of_signal_bar (proxied as bar i+1 open in reporting, but entry_price = close[i])",
+    "direction": "LONG or SHORT"
+  },
+  "stop": {
+    "long_rule": "zone_low - 0.1 * atr14_wilder_15M",
+    "short_rule": "zone_high + 0.1 * atr14_wilder_15M",
+    "buffer_atr_mult": 0.1
+  },
+  "targets": {
+    "target_1_R": 1.0,
+    "target_2_R": 2.0,
+    "primary_R": 2.0,
+    "be_move": false,
+    "trailing": false
+  },
+  "outcome": {
+    "primary_timeout_bars_15M": 20,
+    "secondary_timeout_bars_15M": 40,
+    "intrabar_check_order": "stop_first",
+    "fields_recorded": [
+      "R_multiple",
+      "MFE_R",
+      "MAE_R",
+      "bars_held",
+      "exit_iso",
+      "exit_price",
+      "exit_reason",
+      "secondary_40bar_R",
+      "secondary_40bar_exit_reason"
+    ]
+  },
+  "trade_generation": {
+    "no_overlap": true,
+    "cooldown_bars": 0,
+    "one_trade_per_episode": true,
+    "episode_definition": "Signal episode = single 15M bar. No-overlap enforced by skipping signals whose bar <= last_exit_bar."
+  },
+  "regimes": {
+    "by": "entry_year",
+    "buckets": {
+      "2024-2026": "bull_recent"
+    },
+    "note": "Window is 2024-05 → 2026-05 — entirely inside the bull_recent regime. No regime variation possible in this lab."
+  },
+  "diagnostic_fields": {
+    "rsi_context": ["bull_confirmation", "bear_divergence", "neutral_no_trigger", "overextended", "exhaustion", "unclear"],
+    "bubble_context": ["none", "absorption_base", "continuation_support", "climax_top", "rejection_supply", "unclear"],
+    "location_quality": ["good", "acceptable", "bad", "unclear"],
+    "supply_overhead_15m": ["none", "moderate", "strong", "unclear"],
+    "demand_below_15m": ["none", "moderate", "strong", "unclear"],
+    "entry_timing": ["early", "good", "late", "chase", "unclear"],
+    "_note": "All diagnostic only. NOT used as filters in v1."
+  },
+  "what_v1_does_NOT_do": [
+    "No parameter sweep",
+    "No filter selection",
+    "No threshold tuning",
+    "No multi-config comparison",
+    "No promotion decision",
+    "No operational change"
+  ]
+}
