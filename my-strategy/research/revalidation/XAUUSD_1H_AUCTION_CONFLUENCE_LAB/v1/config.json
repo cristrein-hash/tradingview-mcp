@@ -1,0 +1,142 @@
+{
+  "_note": "XAUUSD_1H_AUCTION_CONFLUENCE_LAB v1. Five archetypes tested separately on the 1H slim, mapping each indicator (Custom OB / SMC / NAS / Bubbles / RSI) to an explicit auction-theory function. BB = BigBeluga (Custom OB as canonical proxy). No parameter sweep, no filter selection, no operational promotion.",
+  "_schema": "../../_schema/config.schema.json",
+  "strategy_id": "XAUUSD_1H_AUCTION_CONFLUENCE_LAB",
+  "config_id": "AUCTION_v1",
+  "lab_version": "v1",
+  "symbol": "PEPPERSTONE:XAUUSD",
+  "base_tf": "1H",
+  "structure_tfs": ["1H", "4H"],
+  "macro_tf": "1D",
+  "direction": "BIDIRECTIONAL",
+  "inputs": {
+    "source": "canonical_slim_1H_4H_1D",
+    "slim_base_path": "/Volumes/GUTS_ LACIE/TradingData/slim_features/XAUUSD",
+    "registry": "docs/data/dataset_registry.json",
+    "slim_schema_version": 2,
+    "data_window_1H_bottleneck": "2024-05-24 → 2026-05-25"
+  },
+  "archetypes": {
+    "A1_DEMAND_ABSORPTION_LONG": {
+      "thesis": "Price enters demand zone, recent sell pressure is present, but the market reclaims above the zone high (absorption).",
+      "trigger_summary": [
+        "parent 1H or 4H DEMAND zone exists (Custom OB)",
+        "1H bar.low <= zone_high (entered)",
+        "sell pressure recent: bubble_sell_recent OR nas_label_short_event in last 5 bars",
+        "reclaim: bar.close > zone_high",
+        "bullish close (close > open) and body_pct >= 0.4",
+        "rsi > 30 (not in deep exhaustion)"
+      ]
+    },
+    "A2_CLEAN_DEMAND_REJECTION_LONG": {
+      "thesis": "Price touches demand zone and rejects cleanly with no recent seller activity and no buy climax.",
+      "trigger_summary": [
+        "parent 1H or 4H DEMAND zone exists",
+        "1H bar.low <= zone_high (entered) AND close > zone_low (didn't break)",
+        "NO sell pressure: NOT bubble_sell_recent AND nas_label_short_event=0 in last 5 bars",
+        "NO buy climax: NOT bubble_buy_recent",
+        "supply far overhead: nearest_supply_dist > 2*ATR_1H OR null",
+        "bullish close AND body_pct >= 0.4"
+      ]
+    },
+    "A3_BAD_FALLING_KNIFE_LONG": {
+      "thesis": "Diagnostic negative class. Price enters demand but seller pressure persists and there is no reclaim, with bear structural bias.",
+      "trigger_summary": [
+        "parent 1H or 4H DEMAND zone, bar entered the zone",
+        "bubble_sell_recent OR nas_label_short_event in last 5 bars",
+        "NO reclaim: bar.close <= zone_high",
+        "location_quality in {bad, unclear}",
+        "SMC bear bias: BOS bear recent OR CHoCH bear recent"
+      ]
+    },
+    "A4_SUPPLY_REJECTION_SHORT": {
+      "thesis": "Price reaches supply zone and rejects cleanly; 1D macro regime NOT confirmed bullish.",
+      "trigger_summary": [
+        "parent 1H or 4H SUPPLY zone exists",
+        "1H bar.high >= zone_low (entered) AND close < zone_high (didn't break)",
+        "NO buy pressure: NOT bubble_buy_recent AND nas_label_long_event=0 in last 5 bars",
+        "NO sell climax: NOT bubble_sell_recent",
+        "demand far below: nearest_demand_dist > 2*ATR_1H OR null",
+        "bearish close AND body_pct >= 0.4",
+        "1D regime NOT bullish (NOT D1a)"
+      ]
+    },
+    "A5_BAD_SHORT_IN_BULL_REGIME": {
+      "thesis": "Diagnostic negative class. Same as A4 but 1D macro regime IS bullish (D1a), so short is fighting the tape.",
+      "trigger_summary": [
+        "same trigger as A4 (supply zone rejection)",
+        "AND 1D regime bullish: close_1D > EMA200_1D AND EMA50_1D > EMA200_1D (D1a definition)"
+      ]
+    }
+  },
+  "indicator_roles": {
+    "custom_ob_zones": "location / zone / price-of-interest (BigBeluga proxy)",
+    "smc_bos_choch_ob": "structure / acceptance / character change",
+    "nas_top_bottom": "exhaustion / defense / local pressure",
+    "market_order_bubbles": "aggressor pressure / absorption or climax candidate",
+    "rsi": "confirmation / divergence / exhaustion / context-only"
+  },
+  "zone_definition": {
+    "primary_source": "Custom OB (custom_ob_demand_active / custom_ob_supply_active)",
+    "fields_used": [
+      "custom_ob_demand_active",
+      "custom_ob_supply_active",
+      "nearest_demand_high",
+      "nearest_demand_low",
+      "nearest_supply_high",
+      "nearest_supply_low",
+      "nearest_demand_dist",
+      "nearest_supply_dist"
+    ],
+    "rationale": "Custom OB is the canonical slim representation of BigBeluga-style supply/demand zones. SMC OB fields are NOT used as the primary zone source in v1.",
+    "zone_lookup": "1H bar uses its OWN Custom OB fields for 1H-source zones; for 4H zones, parent 4H bar via bisect_right(ts) - 1; the zone whose edge is closer to current 1H close is picked.",
+    "no_lookahead": true
+  },
+  "entry": {"fill": "close_of_signal_bar"},
+  "stop": {
+    "long_rule": "zone_low - 0.1 * atr14_wilder_1H",
+    "short_rule": "zone_high + 0.1 * atr14_wilder_1H",
+    "buffer_atr_mult": 0.1
+  },
+  "targets": {
+    "target_1_R": 1.0,
+    "target_2_R": 2.0,
+    "primary_R": 2.0,
+    "be_move": false,
+    "trailing": false
+  },
+  "outcome": {
+    "primary_timeout_bars_1H": 20,
+    "intrabar_check_order": "stop_first",
+    "fields_recorded": [
+      "R_multiple", "MFE_R", "MAE_R", "bars_held",
+      "exit_iso", "exit_price", "exit_reason", "acceptance_quality"
+    ]
+  },
+  "trade_generation": {
+    "no_overlap_per_direction": true,
+    "one_trade_per_signal_bar_per_direction": true
+  },
+  "regimes": {
+    "by": "entry_year",
+    "buckets": {"2024-2026": "bull_recent"},
+    "note": "Window is 2024-05 → 2026-05 — entirely inside bull_recent. By construction, every SHORT in this window classifies as A5 because 1D regime is bullish throughout."
+  },
+  "diagnostic_fields": {
+    "rsi_context": ["bull_confirmation", "bear_divergence", "neutral_no_trigger", "overextended", "exhaustion", "unclear"],
+    "location_quality": ["good", "acceptable", "bad", "unclear"],
+    "supply_overhead": ["none", "moderate", "strong", "unclear"],
+    "demand_below": ["none", "moderate", "strong", "unclear"],
+    "acceptance_quality": ["accepted", "rejected", "pending"],
+    "entry_timing": ["early", "good", "late", "chase", "unclear"]
+  },
+  "what_v1_does_NOT_do": [
+    "No parameter sweep",
+    "No filter selection",
+    "No threshold tuning",
+    "No multi-config comparison",
+    "No promotion decision",
+    "No operational change",
+    "No forward test reactivation"
+  ]
+}
