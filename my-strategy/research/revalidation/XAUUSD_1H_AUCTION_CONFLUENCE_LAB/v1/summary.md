@@ -127,3 +127,122 @@
 - All archetypes use the same entry/stop/target rule (entry=close, stop=zone edge ± 0.1×ATR_1H, target=2R, timeout=20 1H bars).
 - No-overlap is per-direction (LONG and SHORT can run concurrently).
 - v1 has no parameter sweep, no filter selection, no threshold tuning.
+
+---
+
+## Corrective regime diagnosis (added 2026-06-01)
+
+Post-publication audit found that the regime treatment in v1 is conceptually
+too coarse and the per-archetype conclusions need re-reading. The script
+and `report.json` aggregates are **not changed** (the run is reproducible
+as-is); only this corrective interpretation is appended.
+
+### What was inadequate
+
+1. **`regime_for_year(y >= 2024) = "bull_recent"`** is a single bucket for
+   the entire 2-year window. 100% of trades (295/295) carry the same
+   `regime_1d` value. **It does not discriminate intraday phases**
+   (markup, continuation, pullback, correction, distribution).
+
+2. **`d1a_1d_bullish=True` in 295/295 trades.** D1a (`close_1D > EMA200_1D
+   AND EMA50_1D > EMA200_1D`) is structurally TRUE across the whole window
+   because gold rallied from ~$2k to ~$5k+ without breaking EMA200_1D.
+   D1a cannot separate trades in this dataset.
+
+3. **A4 is empty as a side-effect of (2).** The script's split
+   `A5 if d1a_bullish else A4` always selected A5. A4 emptiness is NOT
+   evidence that supply-rejection setups were not captured — it is a
+   regime-rule artefact.
+
+4. **The label `A5_BAD_SHORT_IN_BULL_REGIME` is misleading.** A5 ended
+   with `total_R = +1.28` (essentially flat over n=64) rather than the
+   negative edge the "BAD" prefix implies. A more accurate descriptive
+   label is `SHORT_IN_D1A_BULL_FRAME` (non-normative).
+
+### What discriminates in this window (4H phase)
+
+Recomputed post-hoc using 4H EMA50 / EMA200 / ATR-expansion (no slim
+change required; computed in the diagnosis script):
+
+| 4H phase | n | %  |
+|---|---:|---:|
+| `bull_pullback`        | 82 | 28% |
+| `bear_or_distribution` | 67 | 23% |
+| `bull_continuation`    | 66 | 22% |
+| `bull_markup`          | 65 | 22% |
+| `unclear`              | 15 |  5% |
+
+The 4H slim has 4 meaningfully distinct phases across the same window
+where 1D EMA-based regime is monotonically bullish.
+
+### Period split (entry_iso)
+
+| Period | n | wr | totR | PF |
+|---|---:|---:|---:|---:|
+| 2024-05 → 2024-12 | 92 | 0.500 | **+24.76** | **1.600** |
+| 2025-01 → 2025-12 | 144 | 0.375 | **−5.98** | 0.929 |
+| 2026-01 → 2026-05 | 59 | 0.492 | **+16.28** | 1.561 |
+
+The aggregate total_R = +35.06 is dominated by 2024-H2 and 2026-H1.
+**2025 was net negative.** Edge stability across calendar periods is not
+demonstrated.
+
+### Conclusions corrected
+
+| v1 claim | Corrected reading |
+|---|---|
+| "Window 100% bull_recent regime" | **Replace:** "Window 100% D1a-bullish (1D EMAs stacked) but 4H has 4 distinct phases. Bucket-by-year is a label, not a regime classifier for intraday." |
+| "A4 structurally empty" | **Replace:** "A4 empty by regime-rule choice (D1a=True everywhere). Not evidence that supply rejection setups are absent." |
+| "A5 = bad short class" | **Replace:** "A5 ended flat (+1.28R, n=64). Rename conceptually to `SHORT_IN_D1A_BULL_FRAME` (descriptive)." |
+| "Edge = +35.06R / PF 1.228 aggregate" | **Qualify:** "+24.76R in 2024-H2 and +16.28R in 2026-H1; **−5.98R in 2025**. Aggregate hides per-period instability." |
+
+### Conclusions that remain valid
+
+- **A2_CLEAN_DEMAND_REJECTION_LONG** retains the strongest per-archetype
+  signal: PF 1.586 aggregate, survives 4H-phase cross-tab (markup 2.57,
+  continuation 1.26, pullback 1.39, distribution 1.62).
+- **SELL bubble recent correlates with worse LONGs** (PF 0.973 vs 1.432).
+  Consistent with prior labs (BB Confluence v1, BREAKOUT_CONTINUATION 4H).
+- **NAS SHORT label recent in last 15 bars** discriminates SHORT outcomes
+  positively (PF 1.62 in n=16, NAS-confirmed SHORTs).
+
+### Conclusions suspended
+
+- **A1_DEMAND_ABSORPTION_LONG** edge: collapses in 2025 (PF 0.88, −5.44R)
+  while positive in 2024 and 2026. Cannot claim aggregate edge.
+- **"SHORTs cannot work in this window"**: per-period, 2024-H2 and
+  2026-H1 SHORTs are positive (PF 1.23 and 1.91 respectively); only
+  2025 SHORTs are negative (PF 0.67). The aggregate flat outcome is
+  the average of opposite sub-regimes.
+- **Edge stability**: 2025 negative result raises overfit concern. A
+  walk-forward by 4H phase or quarter is required before any further
+  conclusion.
+
+### What must change before v2
+
+1. **Regime must be dynamic per trade**, not bucket-by-year. Primary
+   discriminator should be 4H phase (markup / continuation / pullback /
+   correction / distribution / unclear), not 1D EMAs in this window.
+2. **Rename A5** descriptively (`SHORT_IN_D1A_BULL_FRAME`) and introduce
+   a **regime-agnostic A4** that fires for every supply rejection. Use
+   4H phase as a post-hoc cross-tab, not a precondition.
+3. **Walk-forward by quarter or by 4H phase** required before any
+   archetype is treated as having edge.
+4. **Validate A2 specifically per sub-period** before declaring it
+   robust. So far it appears robust but the 2026-H1 sub-bucket showed
+   negative R (n=6, totR −1.55, PF 0.61) — small but worth flagging.
+5. **Consider whether 2025 should be carved out** if the hypothesis
+   becomes "system works in markup OR correction, NOT in slow
+   continuation". That would be honest segmentation, not overfit, IF
+   stated up-front.
+
+### What this corrective section is NOT
+
+- It is **not** a re-run of the lab. Numbers in the aggregate tables
+  above are unchanged. The 295 trades in `trades.jsonl` are not
+  re-classified.
+- It is **not** a v2. No new script, no new archetype definitions are
+  shipped here.
+- It is **not** a promotion decision. The lab remains diagnostic-only.
+
+This corrective interpretation is the prerequisite for any future v2.

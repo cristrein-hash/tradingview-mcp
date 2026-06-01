@@ -180,7 +180,13 @@ limitation, not a script bug.
 ## 12. Known limitations
 
 - 2-year window only (1H slim bottleneck).
-- All trades in one macro regime (`bull_recent`) → A4 empty, A5 dominates SHORTs.
+- **Regime treatment is inadequate (see §13 corrective).** Bucket-by-year
+  (`regime_for_year`) yields a single label `bull_recent` for all 295
+  trades. D1a (`close_1D > EMA200 AND EMA50 > EMA200`) is structurally
+  TRUE in 100% of signal bars in this window because gold went $2k → $5k+
+  without breaking EMA200_1D. **Neither label discriminates intraday
+  phases.** A4 emptiness is an artefact of the D1a regime rule, not a
+  signal absence.
 - Custom OB ≠ literal BigBeluga indicator; it is the slim's canonical proxy.
 - `acceptance_quality` is outcome-derived (cheating for diagnostic purposes
   only — should not be treated as a real-time signal).
@@ -189,3 +195,50 @@ limitation, not a script bug.
 - No cost overlay; R is gross.
 - A3 sample expected to be small (intentional — A3 is a tight negative
   class).
+- **Edge stability across calendar periods is not demonstrated** (2024-H2
+  positive, 2025 net negative, 2026-H1 positive). Aggregate hides this.
+
+## 13. Corrective regime diagnosis (added 2026-06-01)
+
+Post-publication audit. The numbers in §11 outputs are unchanged; only
+the interpretation is qualified.
+
+### Findings
+
+1. **`regime_for_year(y >= 2024) = "bull_recent"`** is a single bucket; it
+   is a label, not a regime classifier for intraday work.
+2. **D1a is TRUE in 295/295 trades.** The 1D EMA stacking holds throughout
+   the gold rally; D1a cannot separate trades in this dataset.
+3. **A4 vs A5 is regime-rule dependent.** With D1a = True everywhere, the
+   `if d_bull: A5 else A4` branch always selects A5. A4 emptiness is not
+   evidence of absent supply rejection setups.
+4. **A5 should be read descriptively**, not normatively. The "BAD" prefix
+   prejudges the outcome. A5 actually finished flat (+1.28 R, n=64), not
+   destructive. Suggested re-label: `SHORT_IN_D1A_BULL_FRAME`.
+5. **4H phase IS a discriminator in this window.** Recomputed post-hoc
+   using 4H EMA50/EMA200 + ATR-expansion: 22% `bull_markup`, 22%
+   `bull_continuation`, 28% `bull_pullback`, 23% `bear_or_distribution`,
+   5% `unclear`. Per-archetype performance varies across phases.
+
+### Required changes before v2
+
+- **Regime dynamic per trade**, not bucket-by-year. Primary discriminator
+  is 4H phase, not 1D EMAs.
+- Rename A5 descriptively. Add a regime-agnostic A4 that fires for any
+  supply rejection trigger; record 4H phase post-hoc.
+- Walk-forward by 4H phase or by quarter before claiming archetype edge.
+- Validate A2 specifically per sub-period (it appears robust aggregate +
+  per-phase, but 2026-H1 sub-bucket showed −1.55 R in n=6 — small but
+  worth flagging).
+- Consider explicit segmentation if the hypothesis becomes "works in
+  markup OR correction, not in slow continuation".
+
+### What this corrective section is NOT
+
+- Not a re-run. `trades.jsonl` and aggregate tables in `report.json` are
+  unchanged.
+- Not a v2.
+- Not a promotion decision. v1 remains diagnostic-only.
+
+See `summary.md` "Corrective regime diagnosis" section for the
+period-split and 4H-phase tables.

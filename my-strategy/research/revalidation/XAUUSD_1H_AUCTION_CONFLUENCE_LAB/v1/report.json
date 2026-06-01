@@ -722,5 +722,150 @@
         "hit_stop": 36
       }
     }
+  },
+  "corrective_regime_diagnosis": {
+    "added_at": "2026-06-01",
+    "purpose": "Post-publication audit: the regime treatment in v1 is conceptually too coarse and per-archetype conclusions need re-reading. Numbers in this report are unchanged; this block adds the corrective interpretation only.",
+    "findings": {
+      "regime_for_year_collapses_to_single_bucket": "All 295 trades classified as 'bull_recent' (y >= 2024). Bucket-by-year is a label, not an intraday regime classifier.",
+      "d1a_1d_bullish_true_everywhere": "close_1D > EMA200_1D AND EMA50_1D > EMA200_1D is TRUE in 295/295 trades. The gold rally 2024-2026 kept 1D EMAs stacked throughout. D1a cannot discriminate trades in this dataset.",
+      "a4_emptiness_is_a_regime_rule_artefact": "The 'if d_bull: A5 else A4' branch always selected A5 because d_bull=True in 100% of signal bars. A4 emptiness is NOT evidence that supply-rejection setups were absent; it is a rule-driven outcome.",
+      "a5_label_is_misleading": "A5 finished total_R=+1.28 in n=64 (essentially flat) rather than the negative edge the 'BAD' prefix implies. Suggested descriptive rename: SHORT_IN_D1A_BULL_FRAME (non-normative).",
+      "4h_phase_is_the_discriminator": "Recomputed post-hoc from 4H slim using EMA50/EMA200 + ATR_4H expansion: 22% bull_markup, 22% bull_continuation, 28% bull_pullback, 23% bear_or_distribution, 5% unclear. 4H phase varies meaningfully even while 1D EMAs are monotonically bullish."
+    },
+    "period_split": {
+      "2024-05_to_2024-12": {
+        "n": 92,
+        "win_rate": 0.5,
+        "total_R": 24.76,
+        "PF": 1.6,
+        "long_n": 65,
+        "long_totR": 21.73,
+        "long_PF": 1.78,
+        "short_n": 27,
+        "short_totR": 3.03,
+        "short_PF": 1.227
+      },
+      "2025-01_to_2025-12": {
+        "n": 144,
+        "win_rate": 0.375,
+        "total_R": -5.98,
+        "PF": 0.929,
+        "long_n": 117,
+        "long_totR": 0.3,
+        "long_PF": 1.005,
+        "short_n": 27,
+        "short_totR": -6.28,
+        "short_PF": 0.668
+      },
+      "2026-01_to_2026-05": {
+        "n": 59,
+        "win_rate": 0.492,
+        "total_R": 16.28,
+        "PF": 1.561,
+        "long_n": 49,
+        "long_totR": 11.75,
+        "long_PF": 1.489,
+        "short_n": 10,
+        "short_totR": 4.53,
+        "short_PF": 1.906
+      }
+    },
+    "aggregate_caveat": "Aggregate total_R=+35.06 is dominated by 2024-H2 and 2026-H1. 2025 was net negative (-5.98 R). Edge stability across calendar periods is NOT demonstrated.",
+    "shorts_re_evaluation_by_4h_phase": {
+      "bull_markup": {
+        "n": 11,
+        "win_rate": 0.545,
+        "total_R": 3.97,
+        "PF": 1.794
+      },
+      "bull_continuation": {
+        "n": 21,
+        "win_rate": 0.238,
+        "total_R": -6.55,
+        "PF": 0.561
+      },
+      "bull_pullback": {
+        "n": 15,
+        "win_rate": 0.333,
+        "total_R": -0.67,
+        "PF": 0.929
+      },
+      "bear_or_distribution": {
+        "n": 11,
+        "win_rate": 0.364,
+        "total_R": 0.38,
+        "PF": 1.063
+      },
+      "unclear": {
+        "n": 6,
+        "win_rate": 0.667,
+        "total_R": 4.14,
+        "PF": 3.072
+      }
+    },
+    "a2_robustness_by_4h_phase": {
+      "bull_markup": {
+        "n": 19,
+        "win_rate": 0.579,
+        "total_R": 11.01,
+        "PF": 2.567
+      },
+      "bull_continuation": {
+        "n": 14,
+        "win_rate": 0.429,
+        "total_R": 1.94,
+        "PF": 1.259
+      },
+      "bull_pullback": {
+        "n": 20,
+        "win_rate": 0.45,
+        "total_R": 3.78,
+        "PF": 1.389
+      },
+      "bear_or_distribution": {
+        "n": 17,
+        "win_rate": 0.471,
+        "total_R": 5.02,
+        "PF": 1.615
+      },
+      "unclear": {
+        "n": 4,
+        "win_rate": 0.25,
+        "total_R": -1.0,
+        "PF": 0.667
+      }
+    },
+    "conclusions_corrected": {
+      "remove_or_weaken": [
+        "Window 100% bull_recent regime: replace with 'Window 100% D1a-bullish but 4H has 4 distinct phases'.",
+        "A4 structurally empty: replace with 'A4 empty by regime-rule choice; not evidence of absent supply rejection setups'.",
+        "A5 = bad short class: A5 flat (+1.28 R); rename SHORT_IN_D1A_BULL_FRAME (descriptive).",
+        "Aggregate +35.06 R / PF 1.228: qualify with per-period breakdown (2024-H2 +24.76, 2025 -5.98, 2026-H1 +16.28)."
+      ],
+      "remain_valid": [
+        "A2_CLEAN_DEMAND_REJECTION_LONG retains strongest per-archetype signal (PF 1.586 aggregate; survives 4H-phase cross-tab).",
+        "SELL bubble recent correlates with worse LONG outcomes (PF 0.973 vs 1.432).",
+        "NAS SHORT label in last 15 bars positively discriminates SHORT outcomes (PF 1.62 in n=16)."
+      ],
+      "suspended_pending_v2": [
+        "A1_DEMAND_ABSORPTION_LONG edge: collapses in 2025 (PF 0.88, -5.44 R) \u2014 cannot claim aggregate edge.",
+        "Shorts cannot work in bull regime: per-period 2024-H2 (PF 1.23) and 2026-H1 (PF 1.91) are positive; only 2025 negative.",
+        "Edge stability: walk-forward by quarter or 4H phase required before any archetype is treated as having edge."
+      ]
+    },
+    "required_changes_before_v2": [
+      "Dynamic regime per trade (4H phase, not bucket-by-year).",
+      "Rename A5 descriptively (SHORT_IN_D1A_BULL_FRAME).",
+      "Introduce regime-agnostic A4 that fires for every supply rejection; 4H phase as post-hoc cross-tab, not precondition.",
+      "Walk-forward by quarter or by 4H phase.",
+      "Validate A2 per sub-period (2026-H1 sub-bucket showed -1.55 R in n=6; small but worth flagging).",
+      "Consider explicit segmentation (works in markup OR correction, not slow continuation) IF stated up-front, not post-hoc."
+    ],
+    "what_this_block_is_NOT": [
+      "Not a re-run; trades.jsonl and aggregate tables are unchanged.",
+      "Not a v2.",
+      "Not a promotion decision. v1 remains diagnostic-only."
+    ]
   }
 }
