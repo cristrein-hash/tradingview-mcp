@@ -1041,36 +1041,38 @@ def build_prompt(alert: dict) -> str:
     - Se o alerta originalmente foi marcado com este módulo: reclassificar para SETUP_EM_OBSERVACAO/NO_TRADE. (Sucessor XAUUSD_1H_LONG_DECISIVE_BODY60_HTF também foi DEACTIVATED em 2026-06-01 por visual review; sem substituto LONG 1H ativo para XAUUSD.)
 
 
-    Módulo experimental separado — XAUUSD_INTRADAY_BB_CONFLUENCE_EXECUTION:
+    Módulo experimental separado — XAUUSD_INTRADAY_BB_CONFLUENCE_EXECUTION
+    (RESEARCH / NOT_DEPLOYED — sem pipeline de outcomes ativo desde 2026-04-30):
+    - **Status atual:** RESEARCH, NOT_DEPLOYED (catalog 2026-06-01). Forward-test parado em 2026-04-30
+      com 0 outcomes mensurados em 31 observações. **Não há pipeline de coleta de outcomes ativo hoje.**
+    - **Limite máximo de classificação** enquanto não houver outcomes ativos:
+      `INTRADAY_EM_OBSERVACAO` ou `INTRADAY_QUASE_VALIDO 🟡 — REVISÃO HUMANA`.
+      **NÃO emitir** `SETUP_VALIDO_INTRADAY` nem `SETUP_CANDIDATO_FORTE_INTRADAY` sob este módulo,
+      independentemente da qualidade visual da confluência. Reativação exige decisão de produto sobre
+      pipeline de outcomes (entry/stop/target/exit/R-realizado).
+    - **Não emitir entrada automática.** Toda mensagem deve carregar a marca explícita
+      "NÃO É ENTRADA AUTOMÁTICA — REVISÃO HUMANA".
     - Avalie explicitamente se o alerta pertence ao módulo XAUUSD_INTRADAY_BB_CONFLUENCE_EXECUTION.
-    - Este módulo é separado dos módulos XAUUSD_4H_LONG_REJECTION_SWING e XAUUSD_1H_LONG_REJECTION_EXECUTION.
-    - Este módulo usa hierarquia multi-timeframe:
-      4H = contexto maior / zonas estruturais;
-      1H = zona principal de decisão;
-      30M = setup / reação / candidato forte;
+    - Este módulo é separado dos módulos XAUUSD_4H_LONG_REJECTION_SWING (REJECTED legacy) e
+      XAUUSD_1H_LONG_REJECTION_EXECUTION (DEACTIVATED legacy).
+    - Tese auction-style mantida (BigBeluga zones + multi-TF):
+      4H = contexto maior / zonas estruturais (premium/discount HTF);
+      1H = zona principal de decisão (BigBeluga supply/demand);
+      30M = setup / reação / qualidade de rejeição ou reclaim;
       15M = gatilho de execução / refinamento / invalidação curta.
-    - Direções permitidas: LONG e SHORT.
-    - Não classifique como SETUP_VALIDO_INTRADAY apenas por toque em zona, RSI, NAS, bubble ou confluência isolada.
-    - Para SETUP_CANDIDATO_FORTE_INTRADAY:
-      precisa haver zona 4H/1H relevante, preço reagindo, 30M formando setup, stop/R:R plausíveis, mas 15M ainda pode estar incompleto.
-    - Para SETUP_VALIDO_INTRADAY:
-      precisa haver contexto válido, reação 30M, gatilho 15M confirmado, stop técnico claro, R:R >= 2:1 e entrada não atrasada.
-    - Gatilhos válidos:
-      REJECTION_CLOSE;
-      SWEEP_REENTRY;
-      CHOCH_BOS;
-      BREAKOUT_RETEST;
-      RETEST_HOLD;
-      NAS_SIGNAL_AT_ZONE.
-    - Dense confluence sozinho não é SETUP_VALIDO_INTRADAY.
-    - Se o preço já se afastou demais da entrada ideal, marque Entrada atrasada: SIM e não persiga; aguarde retest.
+    - Direções permitidas (apenas para classificação observacional): LONG e SHORT.
+    - Gatilhos auction-aware reconhecidos como referência de qualidade (não promovem nada hoje):
+      REJECTION_CLOSE; SWEEP_REENTRY; CHOCH_BOS; BREAKOUT_RETEST; RETEST_HOLD; NAS_SIGNAL_AT_ZONE.
+    - Dense confluence sozinha NUNCA é setup válido — esta era a regra anterior e segue valendo.
+    - Se o preço já se afastou demais da entrada ideal, marque "Entrada atrasada: SIM" e não persiga; aguarde retest.
     - Se este módulo for relevante, use:
       Strategy Module: XAUUSD_INTRADAY_BB_CONFLUENCE_EXECUTION
       Intraday Context: 4H / 1H
       Setup TF: 30M
       Execution TF: 15M
-      Priority: A/B/C
-    - Deixe claro: módulo intraday multi-timeframe, execução manual, forward-test experimental, medir em D2R.
+      Classificação: INTRADAY_EM_OBSERVACAO  ou  INTRADAY_QUASE_VALIDO 🟡 — REVISÃO HUMANA
+      Priority: A/B/C  (sinalização de qualidade da confluência, NÃO autoriza entrada)
+    - Deixe claro na saída: "módulo em pesquisa; sem outcomes ativos; reativação depende de pipeline D2R aprovado".
 
 
     Módulo ATIVO — US500_4H_LONG_FAILED_BREAKDOWN_REGIME (substitui US500_4H_LONG_PULLBACK_REJECTION em 2026-05-12):
