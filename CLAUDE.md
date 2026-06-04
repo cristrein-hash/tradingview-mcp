@@ -22,6 +22,7 @@ Use `study_filter` parameter to target a specific indicator by name substring (e
 ### "Give me price data"
 - `data_get_ohlcv` with `summary: true` → compact stats (high, low, range, change%, avg volume, last 5 bars)
 - `data_get_ohlcv` without summary → all bars (use `count` to limit, default 100)
+- `data_get_ohlcv` with `from_time`/`to_time` (unix epoch seconds) → paginate historical bars by time window. Iterates full in-memory buffer. Requires chart history loaded first (user scroll). Used for cross-asset coverage (DXY, US10Y, BTC, XAG, etc.) over multi-year backtests.
 - `quote_get` → single latest price snapshot
 
 ### "Analyze my chart" (full report workflow)
