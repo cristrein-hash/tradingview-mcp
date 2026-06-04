@@ -3,11 +3,13 @@ import { jsonResult } from './_format.js';
 import * as core from '../core/data.js';
 
 export function registerDataTools(server) {
-  server.tool('data_get_ohlcv', 'Get OHLCV bar data from the chart. Use summary=true for compact stats instead of all bars (saves context).', {
-    count: z.coerce.number().optional().describe('Number of bars to retrieve (max 500, default 100)'),
+  server.tool('data_get_ohlcv', 'Get OHLCV bar data from the chart. Use summary=true for compact stats instead of all bars (saves context). Optionally pass from_time and/or to_time (unix epoch seconds) to fetch a historical range — useful for paginating older data when the user has manually scrolled the chart back to load history.', {
+    count: z.coerce.number().optional().describe('Number of bars to retrieve (max 500, default 100). When using from_time/to_time this is the cap on result size.'),
     summary: z.coerce.boolean().optional().describe('Return summary stats (high, low, open, close, avg volume, range) instead of all bars — much smaller output'),
-  }, async ({ count, summary }) => {
-    try { return jsonResult(await core.getOhlcv({ count, summary })); }
+    from_time: z.coerce.number().optional().describe('Optional: only return bars with time >= from_time (unix epoch seconds). When set, function iterates full in-memory bar buffer instead of last N.'),
+    to_time: z.coerce.number().optional().describe('Optional: only return bars with time <= to_time (unix epoch seconds). Use with from_time for a precise historical window.'),
+  }, async ({ count, summary, from_time, to_time }) => {
+    try { return jsonResult(await core.getOhlcv({ count, summary, from_time, to_time })); }
     catch (err) { return jsonResult({ success: false, error: err.message }, true); }
   });
 

@@ -70,24 +70,54 @@ function buildGraphicsJS(collectionName, mapKey, filter) {
   `;
 }
 
-export async function getOhlcv({ count, summary } = {}) {
+export async function getOhlcv({ count, summary, from_time, to_time } = {}) {
   const limit = Math.min(count || 100, MAX_OHLCV_BARS);
+  const useTimeRange = (from_time !== undefined && from_time !== null) || (to_time !== undefined && to_time !== null);
+  const fromT = (from_time !== undefined && from_time !== null) ? Number(from_time) : null;
+  const toT = (to_time !== undefined && to_time !== null) ? Number(to_time) : null;
   let data;
   try {
-    data = await evaluate(`
-      (function() {
-        var bars = ${BARS_PATH};
-        if (!bars || typeof bars.lastIndex !== 'function') return null;
-        var result = [];
-        var end = bars.lastIndex();
-        var start = Math.max(bars.firstIndex(), end - ${limit} + 1);
-        for (var i = start; i <= end; i++) {
-          var v = bars.valueAt(i);
-          if (v) result.push({time: v[0], open: v[1], high: v[2], low: v[3], close: v[4], volume: v[5] || 0});
-        }
-        return {bars: result, total_bars: bars.size(), source: 'direct_bars'};
-      })()
-    `);
+    if (useTimeRange) {
+      // Time-range mode: iterate full bars in memory, filter by time, cap at limit
+      data = await evaluate(`
+        (function() {
+          var bars = ${BARS_PATH};
+          if (!bars || typeof bars.lastIndex !== 'function') return null;
+          var result = [];
+          var first = bars.firstIndex();
+          var last = bars.lastIndex();
+          var fromT = ${fromT === null ? 'null' : fromT};
+          var toT = ${toT === null ? 'null' : toT};
+          var cap = ${limit};
+          for (var i = first; i <= last; i++) {
+            var v = bars.valueAt(i);
+            if (!v) continue;
+            var t = v[0];
+            if (fromT !== null && t < fromT) continue;
+            if (toT !== null && t > toT) continue;
+            result.push({time: t, open: v[1], high: v[2], low: v[3], close: v[4], volume: v[5] || 0});
+            if (result.length >= cap) break;
+          }
+          return {bars: result, total_bars: bars.size(), source: 'time_range'};
+        })()
+      `);
+    } else {
+      // Default mode: last N bars (original behavior, unchanged)
+      data = await evaluate(`
+        (function() {
+          var bars = ${BARS_PATH};
+          if (!bars || typeof bars.lastIndex !== 'function') return null;
+          var result = [];
+          var end = bars.lastIndex();
+          var start = Math.max(bars.firstIndex(), end - ${limit} + 1);
+          for (var i = start; i <= end; i++) {
+            var v = bars.valueAt(i);
+            if (v) result.push({time: v[0], open: v[1], high: v[2], low: v[3], close: v[4], volume: v[5] || 0});
+          }
+          return {bars: result, total_bars: bars.size(), source: 'direct_bars'};
+        })()
+      `);
+    }
   } catch { data = null; }
 
   if (!data || !data.bars || data.bars.length === 0) {
