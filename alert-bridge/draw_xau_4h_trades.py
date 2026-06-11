@@ -31,6 +31,7 @@ from datetime import datetime, timezone
 from statistics import mean
 import argparse
 import json
+import math
 import subprocess
 import sys
 import time
@@ -62,6 +63,19 @@ TIMEFRAME = "240"
 HORIZON_BARS = 10  # exit
 TARGET_R_MULT = 2.7  # média histórica do top combo H=10
 STOP_R_MULT = 1.0
+MINTICK = 0.01  # XAUUSD (Pepperstone)
+
+
+def price_to_ticks_offset(entry_price, level_price, mintick=MINTICK):
+    """TradingView long/short_position: stopLevel/profitLevel são OFFSETS EM TICKS a partir
+    do entry, NÃO preços absolutos (descoberto 2026-06-11 — preços absolutos passados nesses
+    campos produzem níveis ~entry±preço/100). Arredonda para tick inteiro (int round)."""
+    if not (isinstance(mintick, (int, float)) and math.isfinite(mintick) and mintick > 0):
+        raise ValueError(f"mintick inválido: {mintick!r}")
+    for v in (entry_price, level_price):
+        if not (isinstance(v, (int, float)) and math.isfinite(v)):
+            raise ValueError(f"preço inválido: {v!r}")
+    return int(round(abs(level_price - entry_price) / mintick))
 
 
 class MCPClient:
@@ -283,8 +297,8 @@ def main():
                 "point": {"time": c['entry_time'], "price": c['entry_price']},
                 "point2": {"time": c['exit_time'], "price": c['target_price']},
                 "overrides": json.dumps({
-                    "stopLevel": c['stop_price'],
-                    "profitLevel": c['target_price'],
+                    "stopLevel": price_to_ticks_offset(c['entry_price'], c['stop_price']),
+                    "profitLevel": price_to_ticks_offset(c['entry_price'], c['target_price']),
                 })
             })
             if r1.get('success'):
