@@ -232,6 +232,16 @@ Remaining — require explicit authorization:
 - **8 dumps v6 (`XAUUSD_240_*_v6.jsonl`) + unversioned `XAUUSD_240_2025-11-19_to_2026-05-19.jsonl`:** **KEEP / DO_NOT_GZIP_OR_DELETE sem bloco próprio.** O unversioned é hardcoded em `draw_xau_4h_trades.py` (protegido pelo tool). Cada v6 é janela única (§10, Camada 5B = KEEP ALL 8).
 - **Opção futura (bloco próprio, com autorização):** gzip dos 8 v6 (reversível, ~1.1G recuperável) — exige checksums + `gunzip -t` + roundtrip + confirmar que nada vivo lê os v6 descomprimidos. NÃO executar fora de bloco dedicado.
 
+### 2026-06-14 — Auditoria de exposição real recheck/Telegram (read-only)
+- **Veredito: SEM LIVE_RISK imediato.** A segurança hoje é por **camadas dormentes** (pause flag + daemon dormant + canal de estratégia dormente desde 2026-05-24 + raw alerts suprimidos), **não** por arquitetura limpa.
+- **DEMAND_BREAKOUT, CAPITULATION, `discr_sweep`/`discr_base`:** sem rota viva — computadas pelo monitor (agora dormant/arquivado) e bloqueadas por `NO_TELEGRAM_DISPATCH` (lista hardcoded em `monitor_xau_4h_strategies.py:52`). Se o monitor for reativado, Telegram **continua suprimido** por essa lista (precisaria também sair da lista para emitir). Risco: NO_LIVE_ROUTE.
+- **BREAKOUT_CONTINUATION / `claude_recheck.py:931` (`Módulo ATIVO`):** **DORMANT_BUT_DANGEROUS_IF_REACTIVATED.** Produziria `SETUP_VALIDO` (= "always sent, no cap" ao Telegram, `tv_webhook_receiver.py:419`) **se** a pause flag fosse removida **E** chegasse um alerta no canal de estratégia. Hoje bloqueado pela pause flag (receiver pula o thread de recheck quando `/tmp/claude_recheck.paused` existe) + canal dormente + raw suprimido.
+- **Antes de QUALQUER retomada operacional (ordem obrigatória):**
+  1. neutralizar `recheck:931` / `BREAKOUT_CONTINUATION` ativo (emitiria SETUP_VALIDO sem promoção validada);
+  2. reconciliar `catalog.json` `current_deployment_status` das REJECTED/RESEARCH ainda marcadas `LIVE` (DEMAND_BREAKOUT, CAPITULATION, DISCRETIONARY) → DISABLED/WATCH;
+  3. substituir `NO_TELEGRAM_DISPATCH` hardcoded por **permissão central** no futuro Strategy Registry (rota só existe se o status autorizar).
+- **NÃO remover a pause flag nem reativar recheck/daemon** antes dos 3 itens acima. As três condições dormentes não devem ser revertidas sem neutralizar recheck:931 primeiro.
+
 ## 13. Outcome Automation Moratorium — 2026-05-28
 
 **Status:** active. Lifted only by explicit operator authorization once the
