@@ -24,7 +24,7 @@ under `/Users/cristrein/tradingview-mcp/`.
 | `com.cristrein.external-factors-heartbeat` | `alert-bridge/external_factors_heartbeat.py --daemon --sleep 900` | RunAtLoad + **KeepAlive** | External-factors heartbeat (created 2026-05-25). ⚠️ **CANCELLED 2026-06-14 — bootout + plist archived; see §12 (2026-06-14 entry). Now unloaded, do not reactivate.** |
 | `com.cristrein.xau-4h-monitor-daemon` | `alert-bridge/monitor_xau_4h_strategies.py --mode daemon` | RunAtLoad (resident) | XAU 4H strategy monitor (event-driven) |
 | `com.cristrein.enrich-indicator-outcomes` | `alert-bridge/enrich_indicator_outcomes.py` | daily 03:00 | Pipeline: enrich indicator outcomes |
-| `com.cristrein.d2r-daily` | `alert-bridge/auto_d2r_daily.py` | daily 04:00 | Pipeline: D2R daily |
+| `com.cristrein.d2r-daily` | `alert-bridge/auto_d2r_daily.py` | daily 04:00 | Pipeline: D2R daily. ⚠️ **PAUSED/MORATORIUM 2026-06-14 — re-bootout + plist archived; see §12 (2026-06-14 entry) + §13. Now unloaded, do not reactivate até Outcome Engine limpo.** |
 | `com.cristrein.archive-weekly` | `alert-bridge/scripts/archive_old_files.py` | Sun 04:00 | Maintenance: archive old files |
 | `com.cristrein.weekly-review` | `alert-bridge/weekly_review.py` | Sun 09:00 | Monitoring: weekly review/health |
 
@@ -201,6 +201,14 @@ Remaining — require explicit authorization:
 - **Código/logs NÃO deletados:** `alert-bridge/external_factors_heartbeat.py` + `alert-bridge/logs/external_factors_heartbeat_state.json` + `logs/launchd_external_factors_heartbeat_*` permanecem intactos (preservados; ainda não inventariados para delete).
 - **Próxima etapa para delete completo:** inventariar refs/código/logs `external_factors` (grep imports / LaunchAgents / scripts) e montar lista explícita de delete, com backup/checksum + aprovação explícita.
 - **Rollback** (se necessário, NÃO recomendado): `mv backups/launchagents_archive/com.cristrein.external-factors-heartbeat.plist.cancelled_2026-06-14 ~/Library/LaunchAgents/com.cristrein.external-factors-heartbeat.plist && launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.cristrein.external-factors-heartbeat.plist`.
+
+### 2026-06-14 — `com.cristrein.d2r-daily` (re-PAUSED / MORATORIUM / DO_NOT_REACTIVATE até Outcome Engine limpo)
+- **d2r-daily = PAUSED / MORATORIUM / DO_NOT_REACTIVATE** até existir um Outcome Engine limpo. A camada atual de outcomes/reporting não é confiável para o novo core (lê outcomes contaminados/quarantined — ver §13).
+- **Contexto (drift):** o moratório original (§13, 2026-05-28) fez bootout, mas o agente foi encontrado **re-carregado** (divergência live↔doc) na reconciliação de 2026-06-14. Re-pausado persistentemente nesta data.
+- **Ação 2026-06-14:** `launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.cristrein.d2r-daily.plist` + plist movido (não deletado) para `backups/launchagents_archive/com.cristrein.d2r-daily.plist.paused_moratorium_2026-06-14`.
+  - SHA256 (origem=destino, verificado): `a68e67eb40f29b650d406b6a26cce31137cda1074e67021bc1aceb8a9a86151d`.
+- **Estado pós-ação:** `launchctl list` ausente; plist fora de `~/Library/LaunchAgents/` (não recarrega em login/reboot). Código `auto_d2r_daily.py` + logs **NÃO deletados** (preservados). Backup do moratório original (`...paused_moratorium_2026-05-28`) também preservado.
+- **Rollback** (só quando Outcome Engine limpo + autorização explícita): `mv backups/launchagents_archive/com.cristrein.d2r-daily.plist.paused_moratorium_2026-06-14 ~/Library/LaunchAgents/com.cristrein.d2r-daily.plist && launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.cristrein.d2r-daily.plist`.
 
 ## 13. Outcome Automation Moratorium — 2026-05-28
 
