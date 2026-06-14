@@ -22,7 +22,7 @@ under `/Users/cristrein/tradingview-mcp/`.
 | `com.cristrein.tv-webhook-receiver` | `alert-bridge/start_receiver.sh` (→ `tv_webhook_receiver.py`) | RunAtLoad (resident) | Webhook receiver; `/health`, `/webhook/<secret>` |
 | `com.cristrein.cloudflared-tunnel` | `/opt/homebrew/bin/cloudflared tunnel run tradingview-webhook` | RunAtLoad + **KeepAlive** | Public ingress tunnel (created 2026-05-25) |
 | `com.cristrein.external-factors-heartbeat` | `alert-bridge/external_factors_heartbeat.py --daemon --sleep 900` | RunAtLoad + **KeepAlive** | External-factors heartbeat (created 2026-05-25). ⚠️ **CANCELLED 2026-06-14 — bootout + plist archived; see §12 (2026-06-14 entry). Now unloaded, do not reactivate.** |
-| `com.cristrein.xau-4h-monitor-daemon` | `alert-bridge/monitor_xau_4h_strategies.py --mode daemon` | RunAtLoad (resident) | XAU 4H strategy monitor (event-driven). ⚠️ **UNLOADED/DORMANT (verificado 2026-06-14) — ausente do launchctl, sem processo vivo; plist ainda em ~/Library/LaunchAgents. DO_NOT_LOAD sem autorização (controla chart via MCP/CDP). See §12 (2026-06-14 entry).** |
+| `com.cristrein.xau-4h-monitor-daemon` | `alert-bridge/monitor_xau_4h_strategies.py --mode daemon` | RunAtLoad (resident) | XAU 4H strategy monitor (event-driven). ⚠️ **DORMANT PERSISTENTE (2026-06-14) — unloaded, sem processo; plist ARQUIVADO (movido p/ backups/launchagents_archive). DO_NOT_LOAD sem autorização (controla chart via MCP/CDP). See §12 (2026-06-14 entry).** |
 | `com.cristrein.enrich-indicator-outcomes` | `alert-bridge/enrich_indicator_outcomes.py` | daily 03:00 | Pipeline: enrich indicator outcomes |
 | `com.cristrein.d2r-daily` | `alert-bridge/auto_d2r_daily.py` | daily 04:00 | Pipeline: D2R daily. ⚠️ **PAUSED/MORATORIUM 2026-06-14 — re-bootout + plist archived; see §12 (2026-06-14 entry) + §13. Now unloaded, do not reactivate até Outcome Engine limpo.** |
 | `com.cristrein.archive-weekly` | `alert-bridge/scripts/archive_old_files.py` | Sun 04:00 | Maintenance: archive old files |
@@ -33,7 +33,7 @@ under `/Users/cristrein/tradingview-mcp/`.
 |---|---|---|
 | `com.cristrein.claude-monitor` | `run_claude_monitor.sh` → `claude_monitor.py` | Legacy. Script archived (4B.1a, `afbbd63`); **plist file ARCHIVED** (Camada 4B.1b) — moved out of `~/Library/LaunchAgents/` to `backups/launchagents_archive/` (gitignored). |
 | `com.cristrein.claude-intraday-monitor` | `run_claude_intraday_monitor.sh` → `claude_intraday_monitor.py` | Legacy. Script archived (`afbbd63`); **plist file ARCHIVED** (4B.1b) to `backups/launchagents_archive/`. |
-| `com.cristrein.xau-4h-monitor-cron` | `monitor_xau_4h_strategies.py` (cron variant) | Unloaded. **Decision: KEEP** (Camada 4B.1c) — kept in `~/Library/LaunchAgents/` as a fallback/reference for the cron mode of the XAU 4H monitor. It points to the **live** `monitor_xau_4h_strategies.py`, which must NOT be touched. Not archived. |
+| `com.cristrein.xau-4h-monitor-cron` | `monitor_xau_4h_strategies.py` (cron variant) | Unloaded. **Decision: KEEP** (Camada 4B.1c) — kept in `~/Library/LaunchAgents/` as a fallback/reference for the cron mode of the XAU 4H monitor. It points to the **live** `monitor_xau_4h_strategies.py`, which must NOT be touched. ⚠️ **ARCHIVED 2026-06-14 — dormant persistente (plist movido p/ backups/launchagents_archive); see §12 (2026-06-14 entry).** |
 
 ---
 
@@ -210,11 +210,14 @@ Remaining — require explicit authorization:
 - **Estado pós-ação:** `launchctl list` ausente; plist fora de `~/Library/LaunchAgents/` (não recarrega em login/reboot). Código `auto_d2r_daily.py` + logs **NÃO deletados** (preservados). Backup do moratório original (`...paused_moratorium_2026-05-28`) também preservado.
 - **Rollback** (só quando Outcome Engine limpo + autorização explícita): `mv backups/launchagents_archive/com.cristrein.d2r-daily.plist.paused_moratorium_2026-06-14 ~/Library/LaunchAgents/com.cristrein.d2r-daily.plist && launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.cristrein.d2r-daily.plist`.
 
-### 2026-06-14 — `com.cristrein.xau-4h-monitor-daemon` + cron (UNLOADED / DORMANT — reconciliação doc↔live)
-- **Estado real (verificado 2026-06-14):** `xau-4h-monitor-daemon` e `xau-4h-monitor-cron` estão **UNLOADED / DORMANT** — ausentes do `launchctl list`, **sem processo** `monitor_xau_4h_strategies` vivo. Ambos os plists permanecem em `~/Library/LaunchAgents/` (NÃO arquivados, NÃO movidos).
-- **Divergência corrigida:** este inventário (§1) descrevia o daemon como "Loaded (resident)" — estava desatualizado. Agora reflete o estado real dormant (provável unload durante a pausa da pesquisa BPT/XAU).
-- **DO_NOT_LOAD sem autorização explícita:** carregar o daemon/cron pode **controlar o chart via MCP/CDP** (spawna `server.js`, troca símbolo/TF, desenha) → conflita com pesquisa/visual audit/plotagens. Não fazer `bootstrap` sem autorização.
-- **Status estratégico INALTERADO:** apenas o estado de carga foi documentado; nenhuma decisão de estratégia mudou. Código `monitor_xau_4h_strategies.py` + ambos os plists preservados (não deletados, não movidos).
+### 2026-06-14 — `com.cristrein.xau-4h-monitor-daemon` + cron (DORMANT PERSISTENTE / DO_NOT_LOAD)
+- **Estado real (verificado 2026-06-14):** ambos **UNLOADED / DORMANT** — ausentes do `launchctl list`, **sem processo** `monitor_xau_4h_strategies` vivo. (Reconciliou divergência: §1 antes dizia "Loaded (resident)".)
+- **Tornado persistente (2026-06-14):** os 2 plists foram **arquivados** (move, NÃO deletados) de `~/Library/LaunchAgents/` para `backups/launchagents_archive/` — impede recarga automática em login/reboot (antes, com `RunAtLoad`, voltariam). NÃO é cancelamento definitivo nem delete de código.
+  - `com.cristrein.xau-4h-monitor-daemon.plist.dormant_2026-06-14` · SHA256 `483769f020c761ef74137481fc7bfddfcfd46057f526fb842b4e233383aec0b2`.
+  - `com.cristrein.xau-4h-monitor-cron.plist.dormant_2026-06-14` · SHA256 `419c1631c92f6d5c291761cd3f21846c2ff3786d3c1296958a9dd69b814a8510`.
+- **DO_NOT_LOAD sem autorização explícita:** carregar o daemon/cron **controla o chart via MCP/CDP** (spawna `server.js`, troca símbolo/TF, desenha) → conflita com pesquisa/visual audit/plotagens.
+- **Status estratégico INALTERADO:** só o estado de carga mudou; nenhuma decisão de estratégia. Código `monitor_xau_4h_strategies.py` preservado (não tocado, não deletado).
+- **Rollback** (exige mover plists de volta + autorização explícita): `mv backups/launchagents_archive/com.cristrein.xau-4h-monitor-daemon.plist.dormant_2026-06-14 ~/Library/LaunchAgents/com.cristrein.xau-4h-monitor-daemon.plist && launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.cristrein.xau-4h-monitor-daemon.plist` (idem para o cron).
 
 ## 13. Outcome Automation Moratorium — 2026-05-28
 
