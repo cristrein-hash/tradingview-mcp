@@ -21,7 +21,7 @@ under `/Users/cristrein/tradingview-mcp/`.
 |---|---|---|---|
 | `com.cristrein.tv-webhook-receiver` | `alert-bridge/start_receiver.sh` (→ `tv_webhook_receiver.py`) | RunAtLoad (resident) | Webhook receiver; `/health`, `/webhook/<secret>` |
 | `com.cristrein.cloudflared-tunnel` | `/opt/homebrew/bin/cloudflared tunnel run tradingview-webhook` | RunAtLoad + **KeepAlive** | Public ingress tunnel (created 2026-05-25) |
-| `com.cristrein.external-factors-heartbeat` | `alert-bridge/external_factors_heartbeat.py --daemon --sleep 900` | RunAtLoad + **KeepAlive** | External-factors heartbeat (created 2026-05-25; was an unsupervised manual daemon, down since 10:30Z) |
+| `com.cristrein.external-factors-heartbeat` | `alert-bridge/external_factors_heartbeat.py --daemon --sleep 900` | RunAtLoad + **KeepAlive** | External-factors heartbeat (created 2026-05-25). ⚠️ **CANCELLED 2026-06-14 — bootout + plist archived; see §12 (2026-06-14 entry). Now unloaded, do not reactivate.** |
 | `com.cristrein.xau-4h-monitor-daemon` | `alert-bridge/monitor_xau_4h_strategies.py --mode daemon` | RunAtLoad (resident) | XAU 4H strategy monitor (event-driven) |
 | `com.cristrein.enrich-indicator-outcomes` | `alert-bridge/enrich_indicator_outcomes.py` | daily 03:00 | Pipeline: enrich indicator outcomes |
 | `com.cristrein.d2r-daily` | `alert-bridge/auto_d2r_daily.py` | daily 04:00 | Pipeline: D2R daily |
@@ -191,6 +191,16 @@ Remaining — require explicit authorization:
   fallback only inside explicit safe windows, output manifest/provenance. Not
   scheduled.
 - **Rollback** (if ever needed): `cp backups/launchagents_archive/com.cristrein.enrich-indicator-outcomes.plist.deprecated_2026-05-28 ~/Library/LaunchAgents/com.cristrein.enrich-indicator-outcomes.plist && launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.cristrein.enrich-indicator-outcomes.plist` — but this restores the buggy behaviour and is not recommended.
+
+### 2026-06-14 — `com.cristrein.external-factors-heartbeat` (CANCELLED / DO_NOT_REACTIVATE)
+- **External Factors = CANCELLED / DO_NOT_REACTIVATE.** Decisão do operador: External Factors está cancelado e não deve ser reativado. (O bridge iMac já estava decommissionado — §05 `05_SYSTEM_ARCHITECTURE` — e o heartbeat MacBook agora também foi cancelado; antes havia divergência live↔doc, agora reconciliada.)
+- **Heartbeat MacBook parado** via `launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.cristrein.external-factors-heartbeat.plist` (2026-06-14). KeepAlive não ressuscita após bootout.
+- **Plist arquivado** (move, NÃO deletado) para `backups/launchagents_archive/com.cristrein.external-factors-heartbeat.plist.cancelled_2026-06-14`.
+  - SHA256 (origem=destino, verificado): `7950421ead2f9e5804163bf1917d9ea30fbfb6d89ccb367c625119f5b7ab72b0`.
+- **Estado pós-ação:** `launchctl list` ausente; processo `external_factors_heartbeat` ausente. Não recarrega em login/reboot (plist fora de `~/Library/LaunchAgents/`).
+- **Código/logs NÃO deletados:** `alert-bridge/external_factors_heartbeat.py` + `alert-bridge/logs/external_factors_heartbeat_state.json` + `logs/launchd_external_factors_heartbeat_*` permanecem intactos (preservados; ainda não inventariados para delete).
+- **Próxima etapa para delete completo:** inventariar refs/código/logs `external_factors` (grep imports / LaunchAgents / scripts) e montar lista explícita de delete, com backup/checksum + aprovação explícita.
+- **Rollback** (se necessário, NÃO recomendado): `mv backups/launchagents_archive/com.cristrein.external-factors-heartbeat.plist.cancelled_2026-06-14 ~/Library/LaunchAgents/com.cristrein.external-factors-heartbeat.plist && launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.cristrein.external-factors-heartbeat.plist`.
 
 ## 13. Outcome Automation Moratorium — 2026-05-28
 
