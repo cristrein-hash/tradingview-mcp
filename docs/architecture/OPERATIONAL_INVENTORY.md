@@ -219,6 +219,12 @@ Remaining — require explicit authorization:
 - **Status estratégico INALTERADO:** só o estado de carga mudou; nenhuma decisão de estratégia. Código `monitor_xau_4h_strategies.py` preservado (não tocado, não deletado).
 - **Rollback** (exige mover plists de volta + autorização explícita): `mv backups/launchagents_archive/com.cristrein.xau-4h-monitor-daemon.plist.dormant_2026-06-14 ~/Library/LaunchAgents/com.cristrein.xau-4h-monitor-daemon.plist && launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.cristrein.xau-4h-monitor-daemon.plist` (idem para o cron).
 
+### 2026-06-14 — Pause flag `/tmp/claude_recheck.paused` (INTENTIONAL_PAUSE / RESEARCH_CLEANUP_WINDOW)
+- **Estado:** pause flag **presente** em `/tmp/claude_recheck.paused` (intencional, mantida durante a janela de pesquisa/cleanup BPT/XAU + re-arquitetura). `claude_recheck` está pausado.
+- **DO_NOT_REMOVE sem autorização explícita:** não remover a flag nesta fase — removê-la reativa o caminho de recheck.
+- **Retomar recheck = ação SEPARADA:** exige autorização explícita + checagem prévia (receiver `/health` OK, public `/health` 200, cloudflared vivo, zero orphan `server.js`).
+- **Nota:** com o canal legacy de strategy-alert dormente desde 2026-05-24, a pausa não afeta fluxo operacional ativo hoje; é salvaguarda durante a re-arquitetura. Não criar/recriar a flag por automação — só o operador.
+
 ## 13. Outcome Automation Moratorium — 2026-05-28
 
 **Status:** active. Lifted only by explicit operator authorization once the
