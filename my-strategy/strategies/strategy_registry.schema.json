@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "strategy_registry.schema.json",
+  "title": "Strategy Registry",
+  "description": "Patch 1 (design-only) schema for the single source of truth of strategy status and route permission. Not populated, not connected to runtime. See docs/strategy_governance/STRATEGY_REGISTRY_SPEC.md.",
+  "type": "object",
+  "required": ["registry_version", "generated_at", "strategies"],
+  "additionalProperties": false,
+  "properties": {
+    "registry_version": { "type": "string" },
+    "generated_at": { "type": "string", "description": "ISO timestamp" },
+    "notes": { "type": "string" },
+    "strategies": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/strategy" }
+    }
+  },
+  "$defs": {
+    "strategy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id", "symbol", "timeframe", "direction", "status",
+        "validation_status", "deployment_permission", "notification_permissions",
+        "raw_source_map_status", "lookahead_audit_status"
+      ],
+      "properties": {
+        "id": { "type": "string", "description": "unique stable id" },
+        "symbol": { "type": "string" },
+        "timeframe": { "type": "string" },
+        "direction": { "enum": ["LONG", "SHORT", "BOTH", "CONTEXT"] },
+        "status": {
+          "enum": ["RESEARCH", "WATCH_ONLY", "LIVE_REVIEW", "DISABLED", "REJECTED", "ARCHIVED"]
+        },
+        "validation_status": {
+          "enum": ["UNVALIDATED", "NEEDS_AUDIT", "VALIDATED", "REJECTED"]
+        },
+        "deployment_permission": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Derived from status; enforced centrally. execution always false this phase.",
+          "required": ["execution"],
+          "properties": {
+            "execution": { "const": false }
+          }
+        },
+        "notification_permissions": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Central route permissions. telegram_urgent always false this phase.",
+          "required": ["log", "watch_note", "telegram_review", "telegram_urgent"],
+          "properties": {
+            "log": { "type": "boolean" },
+            "watch_note": { "type": "boolean" },
+            "telegram_review": { "type": "boolean" },
+            "telegram_urgent": { "const": false }
+          }
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "paths/links to RAW-traced backtest/validation evidence"
+        },
+        "raw_source_map_status": {
+          "enum": ["MISSING", "PARTIAL", "COMPLETE"]
+        },
+        "lookahead_audit_status": {
+          "enum": ["PENDING", "PASSED", "FAILED", "NOT_REQUIRED"]
+        },
+        "strategy_module_ref": {
+          "type": ["string", "null"],
+          "description": "path to the strategy module implementing the contract"
+        },
+        "outcome_spec_ref": {
+          "type": ["string", "null"]
+        },
+        "legacy_refs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "pointers to legacy catalog/rules/recheck/pine for traceability"
+        },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}
