@@ -62,7 +62,7 @@ Cada: precisa backup/checksum? · dependência produção? · aprovação? (todo
 - **`eval_tmp/_b_*.json`** — backtest scratch non-XAU · backup: não · dep: não · ação: delete após inventário.
 - **Backups redundantes** (6× `operational_prompt.md.backup.*` + 3× `strategy_rules.json.backup.*` + `strategy_rules.backup_*.json`) — ruído de versão (git versiona) · backup: git · dep: não (não lidos) · ação: confirmar git history→delete.
 - **Pine alerts não-XAU** (`pine_alerts/02,03,04,06,07,08,09*.pine`) + **`05_body60`** — legacy/rejeitado fora do core · backup: arquivar · dep: verificar alerta TV ativo · ação: arquivar→delete.
-- **`bars_US500_30.json`** (root, untracked) — órfão · backup: não · dep: não · ação: confirmar não-ref→delete.
+- **`bars_US500_30.json`** (root, untracked) — órfão · **DELETED 2026-06-14** (untracked; SHA256 pré-delete `0da04072792ac69856a417853eb7156a1519656a14e8b70b44b70c3345f45ba0`; zero dependência de produção; era citado só neste register).
 - **`backups/screenshots_archive` (7.5M), `backups/bak_archive` (5.5M)** — possivelmente obsoletos · backup: é backup · dep: não · ação: amostrar→decidir.
 - **Blocos stale de config** (`strategy_rules.json` BODY60 "active" ~530, rejection-execution replacement ~408) — config morta · backup: git · dep: lido como JSON ref · ação: patch governança 1-a-1 (NÃO nesta fase).
 
