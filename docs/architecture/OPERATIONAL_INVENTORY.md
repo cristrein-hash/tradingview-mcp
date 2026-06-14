@@ -225,6 +225,13 @@ Remaining — require explicit authorization:
 - **Retomar recheck = ação SEPARADA:** exige autorização explícita + checagem prévia (receiver `/health` OK, public `/health` 200, cloudflared vivo, zero orphan `server.js`).
 - **Nota:** com o canal legacy de strategy-alert dormente desde 2026-05-24, a pausa não afeta fluxo operacional ativo hoje; é salvaguarda durante a re-arquitetura. Não criar/recriar a flag por automação — só o operador.
 
+### 2026-06-14 — `alert-bridge/logs/` retention checkpoint (inventário + limpeza mínima)
+- **Tamanho:** `alert-bridge/logs/` ≈ **1.4G**, dos quais ≈ **1.3G são `backtests/`** (8 dumps v6 + 1 unversioned). Os logs/journals reais somam ~50MB.
+- **Journals ativos = KEEP:** `indicator_signals.jsonl`, `tradingview_alerts.jsonl`, `indicator_signals_dedup_index.json`, `claude_recheck_events.jsonl`, `launchd_tv_receiver_stdout.log` + logs modificados recentemente. Não tocar.
+- **Limpeza mínima executada (2026-06-14):** removidos **4 `*.checkpoint.json` órfãos** (≤321B cada, sem `.jsonl` correspondente) via `archive_old_files.py --mode backtests --apply`. SHA256 pré-delete registrados na sessão. **Nenhum `.jsonl` foi tocado** (`.jsonl` em backtests 9→9). Arquivos eram untracked/gitignored → sem commit da deleção.
+- **8 dumps v6 (`XAUUSD_240_*_v6.jsonl`) + unversioned `XAUUSD_240_2025-11-19_to_2026-05-19.jsonl`:** **KEEP / DO_NOT_GZIP_OR_DELETE sem bloco próprio.** O unversioned é hardcoded em `draw_xau_4h_trades.py` (protegido pelo tool). Cada v6 é janela única (§10, Camada 5B = KEEP ALL 8).
+- **Opção futura (bloco próprio, com autorização):** gzip dos 8 v6 (reversível, ~1.1G recuperável) — exige checksums + `gunzip -t` + roundtrip + confirmar que nada vivo lê os v6 descomprimidos. NÃO executar fora de bloco dedicado.
+
 ## 13. Outcome Automation Moratorium — 2026-05-28
 
 **Status:** active. Lifted only by explicit operator authorization once the
