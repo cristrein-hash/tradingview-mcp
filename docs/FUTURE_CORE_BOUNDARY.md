@@ -118,3 +118,14 @@ Cada: precisa backup/checksum? · dependência produção? · aprovação? (todo
 Não fazer agora: nenhum delete (só registrado como candidato) · nenhuma remoção de rota técnica · nenhum refactor amplo · nenhum patch de config. Cada uma dessas é fase seguinte com autorização própria.
 
 **Boundary Rule final:** este arquivo define a fronteira, não autoriza execução. Toda transição de balde (especialmente DELETE_CANDIDATE→delete e remoção de rota técnica de estratégias QUARANTINE) exige inventário + backup/checksum quando aplicável + **aprovação explícita do Cris**.
+
+## 12. Candidates/ Directory Classification (refinada 2026-06-14)
+
+Inventário read-only dos 4 diretórios `my-strategy/strategies/candidates/` (todos **untracked**; nenhum deletado/movido/versionado nesta etapa).
+
+1. **`candidates/regime_classifier_v3/`** (2.6M) — **REVIEW_LATER / NEEDS_SHIFT1_AUDIT.** Útil como input de regime (BULL/TRANSITION/BEAR, macro_broken); usa OHLC/MA (não SLIM/pine_boxes), MAS tem bias residual/look-ahead reportado (~10.68%). Não pode validar core antes de audit ORIG-vs-SHIFT1. É o input do gate L2.
+2. **`candidates/xau_4h_caminho_b_long/`** (1.5M) — **QUARANTINE.** Caminho B antigo contaminado por SLIM/proxy (slim inflava ~10×); lições preservadas em `LEGACY_KNOWLEDGE_REGISTER.md`; não validar.
+3. **`candidates/xau_4h_reversal_v1_4g_rws_a6/`** (2.0M) — **QUARANTINE / SUPERSEDED.** Caminho A antigo, contaminado/superseded por a6_a7; manter só como histórico até decisão futura.
+4. **`candidates/xau_4h_reversal_v1_4g_rws_a6_a7/`** (180K, 1 arq) — **PROTECTED_REFERENCE / CORE_CANDIDATE_INPUT / NEEDS_LOOKAHEAD_AUDIT.** É a ponte usada pelo XAU 4H LONG / L2-BPT, mas o detector base ainda precisa audit de look-ahead antes de virar core real. **NÃO chamar de FUTURE_CORE ainda.**
+
+**Nota:** nenhum candidate directory deve ser deletado, movido ou promovido sem etapa própria. O próximo passo técnico para `a6_a7` é **audit de look-ahead/SHIFT1**, NÃO promoção.
