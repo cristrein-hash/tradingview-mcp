@@ -149,15 +149,13 @@ Extração de **valor funcional** do legacy (não migração de código). O quê
 - `acquire/release_chart_lock`, `get_macro_events_check` (`monitor`) — só se o core novo dirigir chart/macro (não no headless atual).
 
 **KEEP_REFERENCE:**
-- Vocabulário de rejection reasons do recheck: `NO_TRADE`, `RR_BELOW_2`, `ENTRY_LATE_CHASING`, `FALLING_KNIFE`, `ASSET_DIRECTION_BLOCKED`, `NO_OBJECTIVE_TRIGGER` — boa taxonomia para human-review/journal `reason`.
-- Linguagem de risco universal em `strategy_rules.json`: `min_risk_reward`, `target_risk_reward_range`, `human_confirmation_required`, `accepted_price_structures`, `risk_per_trade_guidance`.
+- Linguagem de risco em `strategy_rules.json`: `accepted_price_structures`, `risk_per_trade_guidance` — apenas referência. (Os hard blocks/rejection reasons antigos foram CANCELADOS — ver DO_NOT_REUSE / LEGACY_ONLY.)
 - 4 specs de governança (Registry/Module Contract/Notification/Outcome) — espinha de design; extrair conceito mínimo, **não** construir framework pesado agora.
 - Signal Outcome Lab (`outcomes_current.jsonl` CLEAN) — seed do outcome engine.
 
 **MIGRATE_CAREFULLY** (valor existe, mas acoplado — extrair como módulo puro, sem trazer o acoplamento):
 - normalização+whitelist+quarantine (acoplada a globals/logs do receiver).
 - `fmt_*` (acoplados ao shape do `state` do monitor) — re-derivar limpo p/ o schema do candidato novo.
-- hard gates (vivem como texto no prompt do recheck) — re-expressar como **regras de código explícitas** no core novo, NÃO como prompt de LLM.
 
 **DO_NOT_REUSE** (contaminam o core novo):
 - `strategy_rules.json` monólito como fonte runtime.
@@ -166,3 +164,4 @@ Extração de **valor funcional** do legacy (não migração de código). O quê
 - dispatch automático por match (loop do daemon do monitor) — substituído por allowlist default-deny + revisão humana.
 - status antigos do `catalog.json` como fonte runtime; estratégias contaminadas.
 - daemon loop + acoplamento chart/MCP.
+- **Hard blocks / rejection reasons antigos = LEGACY_ONLY (CANCELADOS 2026-06-15, decisão do usuário):** `NO_TRADE`, `RR_BELOW_2`, `FALLING_KNIFE`, `ENTRY_LATE_CHASING`, `ASSET_DIRECTION_BLOCKED`, `human_confirmation_required`, `min_risk_reward`, `target_rr`. NÃO migrar, NÃO usar como vocabulário do novo sistema. _Old hard-block/recheck vocabulary is intentionally not part of the new core unless explicitly re-authorized._
