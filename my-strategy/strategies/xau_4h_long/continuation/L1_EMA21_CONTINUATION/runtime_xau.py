@@ -9,9 +9,9 @@ journal, notify). NÃO duplica a lógica do gate-base.
 Modos: --dry-run (default) | --once | --send-telegram (opt-in real). XAU-only. Sem scheduler,
 sem daemon, sem LaunchAgent, sem broker, sem MCP de gestão de trade.
 
-Decisão honesta: regime D-1 (regime_B_v3) é PRÉ-CONDIÇÃO. Se o feed de regime não cobrir D-1
-(hoje termina 2026-05-25), a barra live retorna no_candidate/regime_feed_stale → SEM Telegram.
-Emissão operacional live exige o feed de regime live (próximo bloco).
+Regime D-1 = regime_L1_v4 (fonte EXPLÍCITA nova; regime legacy v1 B/regime_B_v3 = IRRECUPERÁVEL,
+não-autoridade). Se o feed regime_L1_v4 não cobrir D-1 recente → no_candidate/regime_l1_v4_stale.
+Com regime_L1_v4 fresco, avalia normalmente (regime != BULL → no_candidate; BULL → segue gate).
 """
 import json, sys, argparse, hashlib, subprocess
 from pathlib import Path
@@ -28,34 +28,23 @@ CORE = REPO / "my-strategy" / "core"
 sys.path.insert(0, str(CORE))
 from group_model_xau import GROUPS, telegram_allowed  # noqa: E402
 
-REGIME = REPO / "my-strategy/strategies/candidates/regime_classifier_v3/regime_B_v3_classifications.jsonl"
+# Regime D-1 = regime_L1_v4 (fonte EXPLÍCITA nova). O regime legacy v1 B/regime_B_v3 foi
+# declarado IRRECUPERÁVEL (ver core/regime/README.md) e NÃO é mais autoridade operacional.
+REGIME_L1V4 = REPO / "my-strategy/core/regime_l1/regime_l1_v4_classifications.jsonl"
+sys.path.insert(0, str(REPO / "my-strategy/core/regime_l1"))
+from regime_l1_v4 import latest_state_before  # noqa: E402
 CONSUMER = "L1_EMA21_CONTINUATION"
 GROUP = "XAU_240"
 RSI_VS_MA_THR = -9.35
 
 
 def regime_d1_state(bar_time_unix):
-    """Lê regime_B_v3 (jsonl) p/ a última classificação ANTES de bar_time (D-1 causal).
-    Retorna (state|None, stale: bool). stale=True se o feed não cobrir o dia anterior."""
-    if bar_time_unix is None or not REGIME.exists():
+    """Lê regime_L1_v4 p/ a última classificação ANTES de bar_time (D-1 causal).
+    Retorna (state|None, stale: bool). stale se o feed não cobrir D-1 recente."""
+    if bar_time_unix is None or not REGIME_L1V4.exists():
         return None, True
-    last_t = last_s = None
-    for ln in REGIME.read_text().splitlines():
-        ln = ln.strip()
-        if not ln:
-            continue
-        try:
-            r = json.loads(ln); ts = r.get("ts")
-            t = int(datetime.fromisoformat(ts[:19]).replace(tzinfo=timezone.utc).timestamp())
-        except Exception:
-            continue
-        if t < bar_time_unix:
-            last_t, last_s = t, r.get("v3_state")
-    if last_t is None:
-        return None, True
-    # stale se a última classificação disponível é > 2 dias antes da barra (feed defasado)
-    stale = (bar_time_unix - last_t) > 2 * 86400
-    return last_s, stale
+    cls = [json.loads(l) for l in REGIME_L1V4.read_text().splitlines() if l.strip()]
+    return latest_state_before(cls, bar_time_unix)
 
 
 def signal_hash(symbol, tf, ts_iso):
@@ -92,7 +81,7 @@ def evaluate(snapshot):
     reg, stale = regime_d1_state(bt)
     if reg is None or stale:
         return {**base, "operational": False, "exhaustion_gate": None,
-                "state": "no_candidate", "reason": f"regime_feed_stale(last<{reg}>,stale={stale})"}
+                "state": "no_candidate", "reason": f"regime_l1_v4_stale(last<{reg}>,stale={stale})"}
     if reg != "BULL":
         return {**base, "operational": False, "exhaustion_gate": None,
                 "state": "no_candidate", "reason": f"regime_d1={reg}_not_BULL"}
