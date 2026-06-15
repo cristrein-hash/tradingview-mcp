@@ -141,7 +141,7 @@ Extração de **valor funcional** do legacy (não migração de código). O quê
 - **Lição catalog:** 2 eixos ortogonais `validation_status` (metodológico) vs `deployment_status` (operacional) — já refletido em L1 `STRATEGY.md`. Campos úteis de metadata: id/archetype/symbol/tf/direction/validation/deployment/requires_human_decision.
 - Padrão `/health` (ok + secret_configured sem expor segredo) — observabilidade do core novo.
 
-**REUSE_LATER** (só quando Production v2 runtime existir):
+**REUSE_LATER** (só quando Production v2 runtime/live input existir; extrair como **módulo puro**, sem trazer o acoplamento de receiver/monitor):
 - `_normalize_indicator_parsed` + `ALLOWED_PROVIDER` whitelist HARD GATE (`receiver:1437/1454`) — símbolo → `PEPPERSTONE:<BASE>` com whitelist; rejeita não-autorizado (não inventa autorização).
 - quarantine pattern (`_write_indicator_quarantine`, `receiver:1543`) — rejeitar-para-log-de-auditoria em vez de drop silencioso.
 - dedup idempotente (`_load/_persist_indicator_dedup_set`, `receiver:1415/1429`) — ingestão sem duplicar.
@@ -153,9 +153,7 @@ Extração de **valor funcional** do legacy (não migração de código). O quê
 - 4 specs de governança (Registry/Module Contract/Notification/Outcome) — espinha de design; extrair conceito mínimo, **não** construir framework pesado agora.
 - Signal Outcome Lab (`outcomes_current.jsonl` CLEAN) — seed do outcome engine.
 
-**MIGRATE_CAREFULLY** (valor existe, mas acoplado — extrair como módulo puro, sem trazer o acoplamento):
-- normalização+whitelist+quarantine (acoplada a globals/logs do receiver).
-- `fmt_*` (acoplados ao shape do `state` do monitor) — re-derivar limpo p/ o schema do candidato novo.
+_(itens REUSE_LATER são acoplados ao receiver/monitor → extrair como módulo puro e re-derivado, nunca importar o original.)_
 
 **DO_NOT_REUSE** (contaminam o core novo):
 - `strategy_rules.json` monólito como fonte runtime.
@@ -164,4 +162,10 @@ Extração de **valor funcional** do legacy (não migração de código). O quê
 - dispatch automático por match (loop do daemon do monitor) — substituído por allowlist default-deny + revisão humana.
 - status antigos do `catalog.json` como fonte runtime; estratégias contaminadas.
 - daemon loop + acoplamento chart/MCP.
-- **Hard blocks / rejection reasons antigos = LEGACY_ONLY (CANCELADOS 2026-06-15, decisão do usuário):** `NO_TRADE`, `RR_BELOW_2`, `FALLING_KNIFE`, `ENTRY_LATE_CHASING`, `ASSET_DIRECTION_BLOCKED`, `human_confirmation_required`, `min_risk_reward`, `target_rr`. NÃO migrar, NÃO usar como vocabulário do novo sistema. _Old hard-block/recheck vocabulary is intentionally not part of the new core unless explicitly re-authorized._
+- **Hard blocks / rejection reasons antigos = LEGACY_ONLY (CANCELADOS 2026-06-15, decisão do usuário):** `NO_TRADE`, `RR_BELOW_2`, `FALLING_KNIFE`, `ENTRY_LATE_CHASING`, `ASSET_DIRECTION_BLOCKED`, `human_confirmation_required`, `min_risk_reward`, `target_rr`. NÃO migrar, NÃO usar como vocabulário do novo sistema, **NÃO transformar em enum novo, NÃO usar em `scanner`/`journal`/`outcome`/`telegram_draft`**. _Old hard-block/recheck vocabulary is intentionally not part of the new core unless explicitly re-authorized._
+
+**Resumo prático (TL;DR):**
+- **Presta agora:** padrão `append_jsonl`, `event_id`/`signal_hash`, `/health`, princípio **outcome RAW-read-only**, conceito `validation_status × deployment_status` (só como documentação).
+- **Presta depois (runtime novo):** symbol normalization, provider whitelist, quarantine, dedup idempotente, safe webhook parsing, `fmt_*` como **draft renderer** — extraídos como módulo puro.
+- **Nunca entra no core:** monólito `strategy_rules` runtime, auto-promotion / `SETUP_VALIDO` / LLM-classify do recheck, dispatch por match, chart/MCP acoplado à produção, status antigos do `catalog` como runtime, **e todos os hard blocks cancelados acima**.
+- **Princípio:** o novo sistema permanece simples — `scanner → journal → outcome → telegram_draft`. Não recriar framework, não recriar vocabulário legacy.
