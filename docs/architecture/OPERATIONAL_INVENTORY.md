@@ -272,6 +272,15 @@ Inventário read-only de produção + peso, comparado entrada-a-entrada com as e
 - **Nenhuma alteração operacional.** Esta entrada é o registro read-only; produção segue intocada.
 - Decisão seguinte (quando autorizada): escolher entre **(B) cleanup explícito por item** (gzip gated dos v6 / inventariar o snapshot `before_synthetic_cleanup` para delete, com protocolo checksum+roundtrip+manifest+aprovação) **ou (C) desenho do Production v2** — esta bloqueada até a exposure do `recheck:931` ser neutralizada (3 itens da entrada de exposição). Produção só depois do terreno limpo e compreendido.
 
+### 2026-06-15 — `recheck:931` / BREAKOUT_CONTINUATION NEUTRALIZADO (item 1/3 da exposição)
+
+- **Ação:** patch mínimo reversível em `alert-bridge/claude_recheck.py` (1 arquivo, 4+/12−). O bloco do prompt operacional `XAUUSD_4H_LONG_BREAKOUT_CONTINUATION_REGIME_FILTERED` (recheck:931) foi marcado **NEUTRALIZADO**: header "Módulo ATIVO" → "Módulo NEUTRALIZADO 2026-06-15"; instrução de emissão `Classificação: SETUP_VALIDO` / `Promotion status: PROMOTE_TO_SETUP_VALIDO` substituída por **"NÃO emitir SETUP_VALIDO; no máximo SETUP_CANDIDATO_FORTE para revisão humana, ou NO_TRADE"**. Trigger/filtros/backtest preservados só para referência (Production v2).
+- **Por quê:** era o único ponto de emissão de SETUP_VALIDO desse módulo legacy (`DORMANT_BUT_DANGEROUS_IF_REACTIVATED`). Agora, mesmo se a pause flag fosse removida e chegasse um alerta no canal, o módulo **não pode mais promover SETUP_VALIDO** (= "always sent" ao Telegram via `tv_webhook_receiver.py:419`).
+- **Sem efeito em runtime:** `claude_recheck` é **spawn on-demand** (sem processo resident) → próximo spawn usa o código novo, **sem restart do receiver**. Pause flag continua presente; canal de estratégia dormente. A mudança só **RESTRINGE** (remove uma rota de emissão), nunca habilita.
+- **Validação:** `py_compile` PASS · grep confirma 0 emissão de SETUP_VALIDO no bloco · diff só em `claude_recheck.py` · health read-only: receiver ok (PID 841), cloudflared vivo (PID 1033), pause flag PRESENTE, XAU daemon/cron dormant. Não tocado: receiver, monitor, strategy_rules, catalog, Telegram, LaunchAgents, v6, logs vivos.
+- **Reversível:** `git revert` do commit restaura o bloco "Módulo ATIVO".
+- **Exposição restante (itens 2 e 3, NÃO feitos aqui):** (2) reconciliar `catalog.json` REJECTED/RESEARCH ainda `LIVE`; (3) substituir `NO_TELEGRAM_DISPATCH` hardcoded por permissão central no Strategy Registry. Continuam pendentes; **não remover pause flag / reativar** antes deles.
+
 ## 13. Outcome Automation Moratorium — 2026-05-28
 
 **Status:** active. Lifted only by explicit operator authorization once the

@@ -928,7 +928,8 @@ def build_prompt(alert: dict) -> str:
 
     ═══════════════════════════════════════════════════════════════════════════
 
-    Módulo ATIVO — XAUUSD_4H_LONG_BREAKOUT_CONTINUATION_REGIME_FILTERED (substitui o antigo 4H_LONG_REJECTION_SWING em 2026-05-12):
+    Módulo NEUTRALIZADO 2026-06-15 (legacy, pré Production v2) — XAUUSD_4H_LONG_BREAKOUT_CONTINUATION_REGIME_FILTERED (substituía o antigo 4H_LONG_REJECTION_SWING em 2026-05-12):
+    - ⚠️ NEUTRALIZADO: NÃO emitir SETUP_VALIDO nem PROMOTE_TO_SETUP_VALIDO sob este módulo. Exposição legacy desativada (recheck:931) aguardando Production v2 / Strategy Registry. Trigger/filtros/backtest abaixo preservados SÓ para referência futura, não para emissão.
     - Backtest 234 trades / 7.4 anos: total net +64.57R @ 0.05R spread, avg +0.276R, PF 1.64, max losing streak 16.
     - Avalie explicitamente se o alerta pertence a este módulo antes de outros XAUUSD swing.
     - Só pode ser considerado quando TODOS os critérios abaixo são verdadeiros:
@@ -951,17 +952,8 @@ def build_prompt(alert: dict) -> str:
     - Target: 4R fixo. BE após +1R. Sem trailing default. Max hold 24 candles 4H.
     - Não classifique este módulo para SHORT (XAUUSD SHORT não tem edge sistemático).
     - Não classifique em 1H/30M/15M.
-    - Se todos os critérios passam:
-      Strategy Module: XAUUSD_4H_LONG_BREAKOUT_CONTINUATION_REGIME_FILTERED
-      Module backtest n: 234
-      Classificação: SETUP_VALIDO
-      Direção: LONG
-      Execution TF: 240
-      Trigger: MOMENTUM_CONTINUATION
-      Promotion status: PROMOTE_TO_SETUP_VALIDO
-      Operational signal: YES_MANUAL_REVIEW
-      D2R required: true
-      Priority: A (todos os 5 filtros passam confortavelmente: ADX > 25, ATR > 1.2×MA, etc.) ou B (passam marginalmente).
+    - Se todos os critérios passam: NÃO emitir SETUP_VALIDO (módulo NEUTRALIZADO 2026-06-15, legacy pré Production v2).
+      No máximo classificar SETUP_CANDIDATO_FORTE para revisão humana, ou NO_TRADE. NUNCA usar Promotion status PROMOTE_TO_SETUP_VALIDO para este módulo.
     - Se 1+ filtro falha mas trigger passa: classificar SETUP_CANDIDATO_FORTE e indicar em Module checklist notes qual filtro falhou.
     - Se trigger falha: NÃO usar este módulo.
 
