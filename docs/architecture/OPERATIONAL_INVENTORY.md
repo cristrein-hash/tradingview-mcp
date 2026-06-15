@@ -242,6 +242,36 @@ Remaining — require explicit authorization:
   3. substituir `NO_TELEGRAM_DISPATCH` hardcoded por **permissão central** no futuro Strategy Registry (rota só existe se o status autorizar).
 - **NÃO remover a pause flag nem reativar recheck/daemon** antes dos 3 itens acima. As três condições dormentes não devem ser revertidas sem neutralizar recheck:931 primeiro.
 
+### 2026-06-15 — Inventário reconciliado (read-only) — comparação vs 2026-06-14
+
+Inventário read-only de produção + peso, comparado entrada-a-entrada com as entradas de 2026-06-14 acima. **Veredito: ALINHADO, sem drift, sem regressão.** Nenhuma alteração operacional executada. Esta entrada **persiste a reconciliação e corrige rótulos perigosos**.
+
+**1. Produção — alinhada (idêntica a 2026-06-14):**
+- receiver **VIVO** PID 841 (LaunchAgent `com.cristrein.tv-webhook-receiver`, único plist ativo em `~/Library/LaunchAgents/`).
+- cloudflared **VIVO** PID 1033 (`tradingview-webhook`).
+- `external-factors-heartbeat` = **CANCELLED** (ausente do `launchctl`).
+- `d2r-daily` = **PAUSED / MORATORIUM** (ausente).
+- `xau-4h-monitor-daemon` + cron = **DORMANT PERSISTENTE** (sem processo `monitor_xau_4h_strategies` vivo; confirmado `pgrep` vazio).
+- pause flag `/tmp/claude_recheck.paused` = **PRESENTE / INTENTIONAL** (mtime 2026-06-14 00:31).
+- `recheck:931` / BREAKOUT_CONTINUATION = **exposure ainda PENDENTE / DORMANT_BUT_DANGEROUS_IF_REACTIVATED** (inalterado; fix em 3 itens da entrada de exposição acima continua válido).
+- **Sem drift:** diferente de 2026-06-14 (que encontrou `d2r-daily` re-carregado divergindo do doc), em 2026-06-15 daemon/d2r/external estão todos confirmados dormant. Estado live↔doc estável.
+
+**2. Correções de classificação (rótulos perigosos corrigidos):**
+- **`node src/server.js` PID 7043** (uptime ~5d11h) = **MCP de uma sessão Claude paralela** (filho do PID 7033 `claude --model claude-fable-5`). **NÃO é orphan perigoso** — instância única, alinhado com §8 ("`src/server.js` spawned by Claude's MCP"); não é o caminho do daemon dormant. (Nota: há uma sessão Claude fable-5 ativa há ~5d segurando o MCP; não tocada.)
+- **8 dumps v6 (`alert-bridge/logs/backtests/XAUUSD_240_*_v6.jsonl`)** = **KEEP / DO_NOT_GZIP_OR_DELETE por enquanto.** Corrige um rótulo intermediário "ARCHIVE_CANDIDATE" que era frouxo demais. Canônico (§10 Camada 5B + §12 retention): cada v6 é janela única de 540 bars **com dependência de código vivo** (`find_dream_demands.py` lê os 8; `draw_xau_4h_trades.py` lê o unversioned `XAUUSD_240_2025-11-19_to_2026-05-19.jsonl`). gzip (~1.1G recuperável) é **opção futura gated** (checksums + `gunzip -t` + roundtrip + aprovação), nunca archive casual.
+- **`alert-bridge/logs/indicator_signals.jsonl`** (~16M) = **SOURCE_OF_TRUTH** (event journal FUTURE_CORE).
+- **`alert-bridge/logs/indicator_signals.jsonl.before_synthetic_cleanup_2026-05-28`** (~2.9M) = **UNKNOWN — NÃO DELETAR.** Ainda não inventariado (refs/consumidores não checados); status pendente, não é DELETE_CANDIDATE confirmado.
+- **RAW externo** (`/Volumes/GUTS_ LACIE/TradingData/`) = **SOURCE_OF_TRUTH** (cold storage; produção não depende dele).
+
+**3. Peso do sistema:**
+- **Repo enxuto:** `.git` ≈ 3.3M; conteúdo tracked é pequeno (maiores tracked ~88K: `tv_webhook_receiver.py`, `claude_recheck.py`, `strategy_rules.json` 80K).
+- **Peso grande está em gitignored / local / external:** `alert-bridge/logs/` ≈ 1.4G (≈ 1.34G = 8 dumps v6, **gitignored**); `backups/` 29M; RAW no HD externo. Nada disso polui o repositório.
+- **Nada grande deve ser movido/deletado agora.** Os candidatos a peso têm dependência viva (v6) ou status pendente (snapshot). Liberar espaço exige bloco dedicado com aprovação por item.
+
+**4. Próxima menor ação segura:**
+- **Nenhuma alteração operacional.** Esta entrada é o registro read-only; produção segue intocada.
+- Decisão seguinte (quando autorizada): escolher entre **(B) cleanup explícito por item** (gzip gated dos v6 / inventariar o snapshot `before_synthetic_cleanup` para delete, com protocolo checksum+roundtrip+manifest+aprovação) **ou (C) desenho do Production v2** — esta bloqueada até a exposure do `recheck:931` ser neutralizada (3 itens da entrada de exposição). Produção só depois do terreno limpo e compreendido.
+
 ## 13. Outcome Automation Moratorium — 2026-05-28
 
 **Status:** active. Lifted only by explicit operator authorization once the
