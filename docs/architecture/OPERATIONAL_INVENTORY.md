@@ -281,6 +281,19 @@ Inventário read-only de produção + peso, comparado entrada-a-entrada com as e
 - **Reversível:** `git revert` do commit restaura o bloco "Módulo ATIVO".
 - **Exposição restante (itens 2 e 3, NÃO feitos aqui):** (2) reconciliar `catalog.json` REJECTED/RESEARCH ainda `LIVE`; (3) substituir `NO_TELEGRAM_DISPATCH` hardcoded por permissão central no Strategy Registry. Continuam pendentes; **não remover pause flag / reativar** antes deles.
 
+### 2026-06-15 — `catalog.json` reconciliado (item 2/3 da exposição)
+
+- **Ação:** patch mínimo em `my-strategy/strategies/catalog.json` (4+/4−, só `current_deployment_status`). Alinhado `current` → `recommended` (alvo já decidido no catalog) nas 4 divergências live-like claras:
+  - `XAU_4H_DEMAND_BREAKOUT` (REJECTED): **LIVE → DISABLED**.
+  - `XAU_4H_REVERSAL_CAPITULATION` (REJECTED): **LIVE → DISABLED**.
+  - `XAU_4H_REVERSAL_DISCRETIONARY` (RESEARCH): **LIVE → WATCH_ONLY**.
+  - `XAUUSD_INTRADAY_BB_CONFLUENCE` (RESEARCH, forward test parado ~2026-04-30): **SHADOW → NOT_DEPLOYED**.
+- **Zero impacto em runtime:** o `_meta` do catalog declara que ele é **PURELY DESCRIPTIVE — nenhum consumidor o lê; editar não muda comportamento do sistema**. Reconciliação documental. Monitor XAU está dormant (não despacha), Telegram suprimido por `NO_TELEGRAM_DISPATCH` — a verdade live deixou de ser `LIVE`.
+- **Não tocado:** `validation_status`, nomes, métricas, histórico, `recommended_deployment_status`, e nenhum outro campo. Não tocado: strategy_rules, claude_recheck, receiver, monitor, Telegram, LaunchAgents, pause flag.
+- **Residual NÃO patcheado (sem divergência interna current==recommended; exige decisão humana, não reconciliação):** `US500_1H_BREAKOUT_REGIME_FILTERED` (RESEARCH @ LIVE_DORMANT) e `ETHUSD_1H_PULLBACK_EMA50_REGIME` (RESEARCH @ LIVE_DORMANT) — a tensão está no próprio `recommended=LIVE_DORMANT`, não em current vs recommended. Flag para decisão futura (RESEARCH idealmente não fica em status live-like, mas é dormant: 0 ocorrências, recheck path neutralizado/pausado).
+- **Validação:** JSON parse OK · todos `current_deployment_status` dentro do enum `deployment_enum` · diff só em `catalog.json` · health read-only: receiver ok (841), cloudflared vivo (1033), pause flag PRESENTE, XAU dormant.
+- **Exposição restante:** item 3 (substituir `NO_TELEGRAM_DISPATCH` por permissão central no Strategy Registry) continua pendente. **Não remover pause flag / reativar** antes dele.
+
 ## 13. Outcome Automation Moratorium — 2026-05-28
 
 **Status:** active. Lifted only by explicit operator authorization once the
