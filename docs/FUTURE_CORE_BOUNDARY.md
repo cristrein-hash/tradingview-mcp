@@ -130,3 +130,39 @@ Inventário read-only dos 4 diretórios `my-strategy/strategies/candidates/` (to
 4. **`candidates/xau_4h_reversal_v1_4g_rws_a6_a7/`** (180K, 1 arq) — **PROTECTED_REFERENCE / CORE_CANDIDATE_INPUT / NEEDS_LOOKAHEAD_AUDIT.** É a ponte usada pelo XAU 4H LONG / L2-BPT, mas o detector base ainda precisa audit de look-ahead antes de virar core real. **NÃO chamar de FUTURE_CORE ainda.**
 
 **Nota:** nenhum candidate directory deve ser deletado, movido ou promovido sem etapa própria. O próximo passo técnico para `a6_a7` é **audit de look-ahead/SHIFT1**, NÃO promoção.
+
+## 13. Reusable Legacy Primitives — REUSE map (2026-06-15)
+
+Extração de **valor funcional** do legacy (não migração de código). O quê presta para o core novo, sem carregar o monólito. Nenhum código movido/alterado; arquivos centrais intactos.
+
+**REUSE_NOW** (seguro, simples; já em uso ou portável trivial):
+- `append_jsonl(path, obj)` (`monitor:628`) — writer JSONL append-only. Já reusado em `journal.py`/`outcome.py`.
+- `_compute_signal_hash` (`receiver:1405`, sha256[:16] de chave canônica) + `event_id` pattern (`receiver:1184`, `{received_at}_{symbol}_{tf}_{alert_type}`) — id estável de sinal/evento.
+- **Lição catalog:** 2 eixos ortogonais `validation_status` (metodológico) vs `deployment_status` (operacional) — já refletido em L1 `STRATEGY.md`. Campos úteis de metadata: id/archetype/symbol/tf/direction/validation/deployment/requires_human_decision.
+- Padrão `/health` (ok + secret_configured sem expor segredo) — observabilidade do core novo.
+
+**REUSE_LATER** (só quando Production v2 runtime existir):
+- `_normalize_indicator_parsed` + `ALLOWED_PROVIDER` whitelist HARD GATE (`receiver:1437/1454`) — símbolo → `PEPPERSTONE:<BASE>` com whitelist; rejeita não-autorizado (não inventa autorização).
+- quarantine pattern (`_write_indicator_quarantine`, `receiver:1543`) — rejeitar-para-log-de-auditoria em vez de drop silencioso.
+- dedup idempotente (`_load/_persist_indicator_dedup_set`, `receiver:1415/1429`) — ingestão sem duplicar.
+- `send_telegram` + `fmt_*` (`monitor:117/585-628`) — como **renderers de DRAFT** (já conceito em `telegram_draft.py`); envio live só via permissão do Registry.
+- `acquire/release_chart_lock`, `get_macro_events_check` (`monitor`) — só se o core novo dirigir chart/macro (não no headless atual).
+
+**KEEP_REFERENCE:**
+- Vocabulário de rejection reasons do recheck: `NO_TRADE`, `RR_BELOW_2`, `ENTRY_LATE_CHASING`, `FALLING_KNIFE`, `ASSET_DIRECTION_BLOCKED`, `NO_OBJECTIVE_TRIGGER` — boa taxonomia para human-review/journal `reason`.
+- Linguagem de risco universal em `strategy_rules.json`: `min_risk_reward`, `target_risk_reward_range`, `human_confirmation_required`, `accepted_price_structures`, `risk_per_trade_guidance`.
+- 4 specs de governança (Registry/Module Contract/Notification/Outcome) — espinha de design; extrair conceito mínimo, **não** construir framework pesado agora.
+- Signal Outcome Lab (`outcomes_current.jsonl` CLEAN) — seed do outcome engine.
+
+**MIGRATE_CAREFULLY** (valor existe, mas acoplado — extrair como módulo puro, sem trazer o acoplamento):
+- normalização+whitelist+quarantine (acoplada a globals/logs do receiver).
+- `fmt_*` (acoplados ao shape do `state` do monitor) — re-derivar limpo p/ o schema do candidato novo.
+- hard gates (vivem como texto no prompt do recheck) — re-expressar como **regras de código explícitas** no core novo, NÃO como prompt de LLM.
+
+**DO_NOT_REUSE** (contaminam o core novo):
+- `strategy_rules.json` monólito como fonte runtime.
+- auto-promotion / `SETUP_VALIDO` automático do recheck (neutralizado).
+- prompt monolítico / classificação por LLM do recheck.
+- dispatch automático por match (loop do daemon do monitor) — substituído por allowlist default-deny + revisão humana.
+- status antigos do `catalog.json` como fonte runtime; estratégias contaminadas.
+- daemon loop + acoplamento chart/MCP.
