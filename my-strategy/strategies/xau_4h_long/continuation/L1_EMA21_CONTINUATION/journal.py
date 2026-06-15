@@ -43,6 +43,8 @@ def main():
     ap.add_argument("--broker", default=None, help="broker (camada futura; ex.: PEPPERSTONE)")
     ap.add_argument("--broker-order-id", default=None, help="id de ordem do broker (camada futura)")
     ap.add_argument("--monitoring-mode", default=None, help="modo de monitoramento (camada futura; ex.: MCP_CHART)")
+    ap.add_argument("--signal-sent", action="store_true",
+                    help="marca que a notificação Telegram REAL foi enviada (signal_channel=TELEGRAM_LIVE)")
     args = ap.parse_args()
 
     raw = sys.stdin.read().strip()
@@ -68,6 +70,7 @@ def main():
     # NÃO envia Telegram; só registra que o candidato foi gerado. Decisão humana vem
     # depois como evento separado, ligado pelo mesmo signal_hash.
     if args.event == "signal_emitted":
+        sent = bool(args.signal_sent)
         write_line({
             "event_type": "signal_emitted",
             "signal_hash": cand.get("signal_hash"),
@@ -76,11 +79,14 @@ def main():
             "symbol": cand.get("symbol"),
             "timeframe": cand.get("timeframe"),
             "candidate_timestamp": cand.get("timestamp"),
+            "operational": cand.get("operational"),
+            "exhaustion_gate": cand.get("exhaustion_gate"),
+            "state": cand.get("state"),
             "signal_generated": True,
-            "signal_sent": False,
-            "signal_channel": "TELEGRAM_DRAFT",
-            "telegram_allowed": False,
-            "dry_run": True,
+            "signal_sent": sent,
+            "signal_channel": "TELEGRAM_LIVE" if sent else "TELEGRAM_DRAFT",
+            "telegram_allowed": sent,
+            "dry_run": not sent,
         })
         return 0
 
@@ -108,8 +114,10 @@ def main():
         "timeframe": cand.get("timeframe"),
         "candidate_timestamp": cand.get("timestamp"),
         "candidate": cand.get("candidate"),
+        "operational": cand.get("operational"),
+        "exhaustion_gate": cand.get("exhaustion_gate"),
+        "rsi_vs_ma": cand.get("rsi_vs_ma"),
         "review_required": cand.get("review_required", True),
-        "block_or_review_flags": cand.get("block_or_review"),
         "human_decision": args.decision,
         "reason": args.reason,
         "reviewed_by": args.reviewed_by,

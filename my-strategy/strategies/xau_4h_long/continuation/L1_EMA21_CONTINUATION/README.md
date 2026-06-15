@@ -5,15 +5,20 @@ Ver `STRATEGY.md` (regra + métricas) e `MANIFEST.md` (proveniência).
 
 ## O que é
 Estratégia de **continuação de alta no XAUUSD 4H**, dentro de tendência estabelecida (EMA21/SMA50,
-regime D-1 BULL, BOS, zona de demanda Custom OB, F5 volume calmo). Um **scanner** gera o candidato;
-a **decisão final é humana**. O filtro `vol_entry_z≥1.993 OR rsi_vs_ma≤−9.35` sinaliza **exaustão**
-(BLOCK/REVIEW), confirmado visualmente. **Não é mecânica total, não é automação.**
+regime D-1 BULL, BOS, zona de demanda Custom OB, F5 volume calmo). Um **scanner** gera o candidato base
+e aplica o **gate de exaustão automático `rsi_vs_ma <= -9.35`** (RSI-only; o leg de volume foi REMOVIDO
+2026-06-15 — ver STRATEGY.md). Se o gate dispara → `state=blocked_exhaustion`, **não-operacional**, sem
+notificação. Se não dispara → candidato **operacional** → notificação Telegram imediata. **A revisão
+humana filtra só a ENTRADA**, nunca o gate nem o sinal.
 
-## Fluxo mínimo (offline, headless)
+## Fluxo (scanner com gate + notifier real)
 ```
-scanner.py  →  journal.py  →  outcome.py  →  telegram_draft.py
-(candidato)    (KEEP/BLOCK)    (R post-hoc)    (rascunho, NÃO envia)
+scanner.py (base + RSI gate)  →  [operacional?]  →  telegram_notify.py (candidate notification, allowlist L1)
+                                       ↓ humano revisa chart e decide ENTRADA
+                                  journal.py (signal_emitted + human_review_decision)  →  outcome.py (R post-hoc)
 ```
+- **`telegram_notify.py`** envia a notificação real (allowlist = `L1_EMA21_CONTINUATION`; default dry-run; `--send` envia; só candidato `operational`). Mensagem = "CANDIDATE — revise o chart", **nunca** ordem de entrada.
+- **`telegram_draft.py`** = render offline (não envia). `outcome.py` mede THEORETICAL/REAL.
 
 ### Fluxo de sinal imediato (alvo, ativação futura autorizada)
 O sinal Telegram deve ser **imediato quando o candidato/alarm é emitido** — é uma

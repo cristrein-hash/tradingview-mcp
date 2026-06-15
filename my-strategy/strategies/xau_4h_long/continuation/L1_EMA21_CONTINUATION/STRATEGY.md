@@ -38,16 +38,19 @@ indicadores que repintam (OB/SMC) usam SHIFT1.
 
 ---
 
-## Regra final de BLOCK / REVIEW (aprovada)
+## Regra final — GATE de exaustão (RSI-only, AUTOMÁTICO) — decisão do usuário 2026-06-15
 ```
-BLOCK / REVIEW  if  vol_entry_z >= 1.993  OR  rsi_vs_ma <= -9.35
+exhaustion_gate  if  rsi_vs_ma <= -9.35     (AUTOMÁTICO — bloqueia o candidato)
 ```
-- `vol_entry_z` = z-score do volume da barra de entrada vs média móvel de 50 barras.
-  ≥1.993 = entrada em **barra de clímax de volume (>2σ)** = blow-off / exaustão.
 - `rsi_vs_ma` = RSI menos sua própria MA. ≤ −9.35 = **divergência bearish no topo** da continuação.
-- Confirmado **visualmente** pelo usuário como bloqueio de **exaustão real**.
-- **Uso human-discretionary:** flag de REVIEW/bloqueio. O operador confirma no chart antes de
-  descartar o candidato. Não é gate automático.
+- **É GATE AUTOMÁTICO**, não flag: se `exhaustion_gate=true`, o scanner emite `state=blocked_exhaustion`
+  e o candidato **NÃO é operacional** → **não gera candidate notification**.
+- **A revisão humana filtra apenas a ENTRADA**, nunca o gate nem o envio do sinal.
+- **🔴 Leg de volume REMOVIDO (2026-06-15):** `vol_entry_z>=1.993` foi eliminado por (1) ser artefato
+  de uma matriz de análise bugada (auditoria abaixo) e (2) ser estruturalmente morto sob o gate-base F5
+  (`vol_ratio_med50<=1.0` ⇒ volume de entrada ≤ mediana ⇒ vol_entry_z sempre negativo ⇒ leg de spike
+  nunca dispara). A regra canônica é **RSI-only**.
+- Comparação usa valor arredondado exibido: `round(rsi_vs_ma,2) <= -9.35`.
 - **Convenção de precisão (2026-06-15):** o flag compara o valor **arredondado** exibido
   (`round(vol_entry_z,3) >= 1.993`, `round(rsi_vs_ma,2) <= -9.35`), fiel à análise aprovada
   (que usou valores arredondados) e garantindo que o flag exibido = flag aplicado. Threshold

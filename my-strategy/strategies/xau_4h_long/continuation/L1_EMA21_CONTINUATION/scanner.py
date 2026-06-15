@@ -8,7 +8,8 @@ NÃO faz: Telegram, envio, MCP/chart, daemon, journal, outcome, backtest, escrit
 Read-only sobre a fonte RAW/canonical já usada no rebuild_v3.
 
 Regra-base = gate idêntico ao rebuild_v2/rebuild_l1_ema21_a_f5_v2.py (close-only-causal, SHIFT1).
-Flags BLOCK/REVIEW = vol_entry_z>=1.993 OR rsi_vs_ma<=-9.35 (filtro aprovado, human-discretionary).
+Gate de exaustão = RSI-only AUTOMÁTICO: rsi_vs_ma <= -9.35 -> state=blocked_exhaustion (não-operacional).
+(O leg de volume vol_entry_z>=1.993 foi REMOVIDO 2026-06-15 — ver STRATEGY.md auditoria.)
 
 Uso:
   python3 scanner.py                 # avalia o ÚLTIMO bar do RAW canônico
@@ -35,7 +36,11 @@ ATR_MIN, ATR_MAX = 0.004, 0.030
 BODY_MIN, F5_MAX, RET5_MIN = 0.35, 1.0, -0.04
 OB_TOL, MA_TOL = 0.001, 0.002
 # flags BLOCK/REVIEW aprovados (congelados)
-VOL_Z_THR, RSI_VS_MA_THR = 1.993, -9.35
+# Gate de exaustão = RSI-only (2026-06-15). O leg de volume (vol_entry_z>=1.993) foi
+# REMOVIDO: era artefato de uma matriz de análise bugada E estruturalmente morto sob o
+# gate-base F5 (vol_ratio_med50<=1.0 garante volume de entrada <= mediana -> vol_entry_z
+# sempre negativo). Ver STRATEGY.md (auditoria 2026-06-15).
+RSI_VS_MA_THR = -9.35
 
 
 def _f(x):
@@ -167,16 +172,10 @@ def main():
         if V[i] / vmed > F5_MAX: return False, "F5_vol_ratio>1.0"
         return True, "PASS"
 
-    def flags(i):
-        """Flags BLOCK/REVIEW (filtro aprovado). vol_entry_z + rsi_vs_ma no bar de entrada i."""
-        vz = None
-        if i - 50 >= 0:
-            window = V[i - 50:i]
-            mu = statistics.fmean(window); sd = statistics.pstdev(window)
-            vz = (V[i] - mu) / sd if sd else 0.0
+    def rsi_vs_ma(i):
+        """rsi_vs_ma = RSI - RSI-based MA no bar de entrada i (divergência bearish no topo)."""
         rsi, rma = rsi_at.get(T[i], (None, None))
-        rvm = (rsi - rma) if (rsi is not None and rma is not None) else None
-        return vz, rvm
+        return (rsi - rma) if (rsi is not None and rma is not None) else None
 
     # selecionar bar alvo: --at <unixts> ou o último bar do RAW
     if at is not None:
@@ -190,12 +189,13 @@ def main():
         print(json.dumps({"error": "no_bars_in_raw"})); return
 
     passed, reason = gate_trace(i)
-    vz, rvm = flags(i)
-    # Flag compara o MESMO valor arredondado que é exibido (vol_entry_z 3 casas,
-    # rsi_vs_ma 2 casas) — garante display↔flag sempre consistente, fiel à análise
-    # aprovada (que usou valores arredondados). NÃO altera o threshold.
-    flag_vol = (vz is not None and round(vz, 3) >= VOL_Z_THR)
-    flag_rsi = (rvm is not None and round(rvm, 2) <= RSI_VS_MA_THR)
+    rvm = rsi_vs_ma(i)
+    # GATE de exaustão = RSI-only, AUTOMÁTICO. round(rsi_vs_ma,2) <= -9.35 bloqueia o candidato.
+    exhaustion_gate = (rvm is not None and round(rvm, 2) <= RSI_VS_MA_THR)
+    operational = bool(passed and not exhaustion_gate)
+    state = ("operational_candidate" if operational
+             else "blocked_exhaustion" if (passed and exhaustion_gate)
+             else "no_candidate")
 
     ts_iso = datetime.utcfromtimestamp(T[i]).isoformat()
     # signal_hash determinístico (mesmo padrão de input_normalization:
@@ -212,19 +212,14 @@ def main():
         "symbol": SYMBOL,
         "timeframe": TIMEFRAME,
         "timestamp": ts_iso,
-        "candidate": bool(passed),
-        "review_required": True,
-        "block_or_review": {
-            "vol_entry_z>=1.993": flag_vol,
-            "rsi_vs_ma<=-9.35": flag_rsi,
-            "any_flag": bool(flag_vol or flag_rsi),
-            "values": {
-                "vol_entry_z": round(vz, 3) if vz is not None else None,
-                "rsi_vs_ma": round(rvm, 2) if rvm is not None else None,
-            },
-        },
+        "candidate": bool(passed),                # regra-base passou
+        "exhaustion_gate": exhaustion_gate,       # RSI-only, AUTOMÁTICO (bloqueia)
+        "operational": operational,               # candidato operacional = base AND NOT gate
+        "state": state,                           # operational_candidate | blocked_exhaustion | no_candidate
+        "rsi_vs_ma": round(rvm, 2) if rvm is not None else None,
+        "review_required": True,                  # revisão humana = só ENTRADA, nunca o gate/sinal
         "automation_level": "SCANNER_ONLY",
-        "telegram_allowed": False,
+        "telegram_allowed": False,                # scanner não envia; o notifier decide o envio
     }
     if not passed:
         out["gate_reason"] = reason

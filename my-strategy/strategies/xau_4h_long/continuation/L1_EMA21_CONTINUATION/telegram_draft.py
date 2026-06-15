@@ -39,23 +39,15 @@ def main():
     tf = obj.get("timeframe", "240")
     ts = obj.get("candidate_timestamp", "?")
     decision = obj.get("human_decision", "BLOCK")
-    flags = obj.get("block_or_review_flags") or obj.get("block_or_review") or {}
     reason = obj.get("reason", "")
     # outcome fields (opcionais, se a linha for um outcome_result)
     r_result = obj.get("r_result"); result_status = obj.get("result_status")
 
-    def fmt_flags(fl):
-        if not isinstance(fl, dict):
-            return "  (sem flags)"
-        out = []
-        for k, v in fl.items():
-            if k == "values":
-                continue
-            out.append(f"  {'⚠️' if v else '·'} {k}: {v}")
-        vals = fl.get("values") or {}
-        if vals:
-            out.append(f"  valores: {json.dumps(vals, ensure_ascii=False)}")
-        return "\n".join(out) if out else "  (sem flags)"
+    def fmt_flags(_):
+        # gate de exaustão = RSI-only (volume leg removido 2026-06-15)
+        eg = obj.get("exhaustion_gate"); rvm = obj.get("rsi_vs_ma")
+        mark = "⚠️" if eg else "·"
+        return f"  {mark} exhaustion_gate (rsi_vs_ma<=-9.35): {eg} | rsi_vs_ma={rvm}"
 
     event_type = obj.get("event_type")
     lines = []
@@ -81,7 +73,7 @@ def main():
     if decision == "KEEP" and not entry_taken:
         lines.append("✅ KEEP / NO ENTRY RECORDED — candidato aprovado, SEM entrada real registrada")
         lines.append("Flags BLOCK/REVIEW (exaustão):")
-        lines.append(fmt_flags(flags))
+        lines.append(fmt_flags(None))
         lines.append("")
         lines.append("Entrada LONG (rascunho) — confirmar manualmente no chart antes de operar.")
     elif decision == "KEEP" and entry_taken:
@@ -90,11 +82,11 @@ def main():
         if obj.get("target_plan"): lines.append(f"alvo: {obj.get('target_plan')}")
         if obj.get("position_size"): lines.append(f"size: {obj.get('position_size')}")
         lines.append("Flags BLOCK/REVIEW (exaustão):")
-        lines.append(fmt_flags(flags))
+        lines.append(fmt_flags(None))
     else:
         lines.append(f"⛔ DECISÃO HUMANA: {decision} — NO SIGNAL / BLOCKED")
         lines.append("Flags BLOCK/REVIEW (exaustão):")
-        lines.append(fmt_flags(flags))
+        lines.append(fmt_flags(None))
         lines.append("")
         lines.append("Nenhum sinal de entrada gerado.")
     if reason:
