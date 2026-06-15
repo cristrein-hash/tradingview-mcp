@@ -304,6 +304,34 @@ Inventário read-only de produção + peso, comparado entrada-a-entrada com as e
 - **Reversível:** `git revert` restaura o denylist.
 - **Exposição: 3/3 itens neutralizados.** As 3 condições dormentes (pause flag + daemon dormant + canal dormente) seguem; **continuam NÃO reversíveis sem autorização explícita**. Reativar produção é frente separada (Production v2), não coberta aqui.
 
+### 2026-06-15 — Consolidação: fronteira do sistema novo (L1 offline) vs legado
+
+Marco de re-arquitetura. As 3 exposições legacy estão neutralizadas e o **primeiro módulo do core novo está completo e offline**. Esta entrada consolida estado novo + classifica legado + fixa o plano de limpeza. **Nada movido/deletado; produção intocada.**
+
+**1. Sistema novo — CONSOLIDADO (FUTURE_CORE realizado):** `my-strategy/strategies/xau_4h_long/continuation/L1_EMA21_CONTINUATION/` — 7 arquivos: `STRATEGY.md`, `MANIFEST.md`, `README.md`, `scanner.py`, `journal.py`, `outcome.py`, `telegram_draft.py` (commits 4e47402, 7263407, a4d1e5d, 6c65349, 4df7f04). Pipeline headless `scanner → journal → outcome → telegram_draft`. **100% offline:** grep confirma 0 `send_telegram`/daemon/loop; Telegram só draft (`telegram_allowed:false`); read-only sobre RAW; nenhuma escrita em produção/logs. **Não live, não daemon, não automático.**
+
+**2. Legado — classificação (sem mover):**
+| Componente | Classe |
+|---|---|
+| `receiver` (PID 841) + `cloudflared` (PID 1033) | **LEGACY_RUNTIME / KEEP_NOW** (vivos; mantêm ingestão; substituir só no Production v2) |
+| `claude_recheck.py` | **LEGACY_RUNTIME** (recheck:931 já neutralizado; spawn-on-demand; pausado) |
+| `monitor_xau_4h_strategies.py` | **LEGACY_RUNTIME / DORMANT** (Telegram default-deny; daemon dormant) |
+| `strategy_rules.json` | **LEGACY_RUNTIME / DO_NOT_TOUCH** (consumido pelo recheck; referência, não fundação) |
+| `catalog.json` | **RESEARCH_HISTORY** (descritivo, reconciliado; nenhum consumidor) |
+| `candidates/` (6.3M) | **RESEARCH_HISTORY** (estratégias legacy; ponte a6_a7 = CORE_CANDIDATE_INPUT, needs lookahead audit) |
+| `research/revalidation/` (4.2M) | **RESEARCH_HISTORY** (inclui a fonte da L1 = RESEARCH_VALID) |
+| `logs/backtests/` v6 (1.3G) | **SOURCE_OF_TRUTH / DO_NOT_TOUCH** (deps vivas; gzip só gated) |
+| RAW externo `GUTS_ LACIE` | **SOURCE_OF_TRUTH / DO_NOT_TOUCH** |
+| `backups/` (29M) | **RESEARCH_HISTORY / ARCHIVE** |
+
+**3. Logicamente aposentado (sem deletar):** recheck:931 neutralizado · catalog reconciliado · Telegram legacy default-deny · external-factors cancelado · d2r moratorium · XAU daemon/cron dormant. → Exposição live efetiva ≈ nula por desenho; segurança não depende mais de exceção frágil.
+
+**4. Plano de limpeza futura (nenhuma ação agora; cada item exige autorização):**
+- **Limpeza segura depois:** gzip gated dos 8 v6 (~1.1G recuperável, checksum+roundtrip+manifest); inventariar snapshot `before_synthetic_cleanup` (UNKNOWN→decisão); arquivar `backups/legacy_logs` antigos.
+- **Refactor depois:** Production v2 runtime (ligar scanner a dados ao vivo + permissão de envio via Strategy Registry alimentando a allowlist); substituir receiver/monitor/recheck por core novo **por partes**.
+- **Nunca tocar sem autorização:** RAW/v6 source-of-truth, pause flag, LaunchAgents, secrets, receiver/cloudflared vivos.
+- **Produção nova futura:** só após (a) lookahead audit do detector-ponte a6_a7, (b) Registry concedendo rota por status, (c) autorização explícita. Até lá o sistema permanece **dormant + default-deny**.
+
 ## 13. Outcome Automation Moratorium — 2026-05-28
 
 **Status:** active. Lifted only by explicit operator authorization once the
