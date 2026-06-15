@@ -18,8 +18,12 @@ from datetime import datetime, timezone
 
 def main():
     ap = argparse.ArgumentParser(description="Human-review journal for L1 scanner candidates.")
-    ap.add_argument("--decision", required=True, choices=["KEEP", "BLOCK"],
-                    help="decisão humana sobre o candidato")
+    ap.add_argument("--event", default="human_review_decision",
+                    choices=["signal_emitted", "human_review_decision"],
+                    help="signal_emitted = notificação de candidato (sem decisão); "
+                         "human_review_decision = decisão humana (exige --decision)")
+    ap.add_argument("--decision", default=None, choices=["KEEP", "BLOCK"],
+                    help="decisão humana (obrigatória só p/ event=human_review_decision)")
     ap.add_argument("--reason", default="", help="justificativa curta da decisão")
     ap.add_argument("--reviewed-by", default="human", help="quem revisou")
     ap.add_argument("--journal-path", default=None,
@@ -51,6 +55,40 @@ def main():
         print(f"error: invalid candidate JSON on stdin: {e}", file=sys.stderr)
         return 2
 
+    def write_line(obj):
+        rendered = json.dumps(obj, ensure_ascii=False)
+        if args.journal_path:
+            with open(args.journal_path, "a") as f:
+                f.write(rendered + "\n")
+            print(f"[journal] appended 1 line ({obj['event_type']}) -> {args.journal_path}")
+        else:
+            print(rendered)
+
+    # EVENTO 1: signal_emitted — notificação de candidato (append-only, não mutar).
+    # NÃO envia Telegram; só registra que o candidato foi gerado. Decisão humana vem
+    # depois como evento separado, ligado pelo mesmo signal_hash.
+    if args.event == "signal_emitted":
+        write_line({
+            "event_type": "signal_emitted",
+            "signal_hash": cand.get("signal_hash"),
+            "strategy": cand.get("strategy"),
+            "suite": cand.get("suite"),
+            "symbol": cand.get("symbol"),
+            "timeframe": cand.get("timeframe"),
+            "candidate_timestamp": cand.get("timestamp"),
+            "signal_generated": True,
+            "signal_sent": False,
+            "signal_channel": "TELEGRAM_DRAFT",
+            "telegram_allowed": False,
+            "dry_run": True,
+        })
+        return 0
+
+    # EVENTO 2: human_review_decision — exige --decision.
+    if not args.decision:
+        print("error: --decision is required for event=human_review_decision.", file=sys.stderr)
+        return 2
+
     # entry_taken=true exige no mínimo entry_ts + entry_price + stop_price.
     # (KEEP NÃO implica entrada; default entry_taken=false não exige nada.)
     if args.entry_taken:
@@ -63,6 +101,7 @@ def main():
 
     line = {
         "event_type": "human_review_decision",
+        "signal_hash": cand.get("signal_hash"),
         "strategy": cand.get("strategy"),
         "suite": cand.get("suite"),
         "symbol": cand.get("symbol"),
@@ -91,14 +130,7 @@ def main():
         "outcome_status": "PENDING",
     }
 
-    rendered = json.dumps(line, ensure_ascii=False)
-    if args.journal_path:
-        with open(args.journal_path, "a") as f:
-            f.write(rendered + "\n")
-        print(f"[journal] appended 1 line -> {args.journal_path}")
-    else:
-        # default seguro: sem caminho, não escreve — só mostra a linha
-        print(rendered)
+    write_line(line)
     return 0
 
 

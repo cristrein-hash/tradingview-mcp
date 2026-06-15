@@ -14,7 +14,7 @@ Uso:
   python3 scanner.py                 # avalia o ÚLTIMO bar do RAW canônico
   python3 scanner.py --at <unixts>   # avalia o bar daquele timestamp (dry-run/verificação)
 """
-import gzip, json, bisect, statistics, sys
+import gzip, json, bisect, statistics, sys, hashlib
 from collections import deque
 from datetime import datetime, timezone
 from pathlib import Path
@@ -194,12 +194,21 @@ def main():
     flag_vol = (vz is not None and vz >= VOL_Z_THR)
     flag_rsi = (rvm is not None and rvm <= RSI_VS_MA_THR)
 
+    ts_iso = datetime.utcfromtimestamp(T[i]).isoformat()
+    # signal_hash determinístico (mesmo padrão de input_normalization:
+    # sha256[:16] de ts|base|tf|indicator|signal_type). Liga candidato -> notificação
+    # -> decisão humana -> outcome.
+    base_symbol = SYMBOL.split(":")[-1]
+    _key = f"{ts_iso}|{base_symbol}|{TIMEFRAME}|L1_EMA21_CONTINUATION|continuation"
+    signal_hash = hashlib.sha256(_key.encode("utf-8")).hexdigest()[:16]
+
     out = {
         "strategy": "L1 · EMA21 CONTINUATION",
         "suite": "XAU 4H LONG — CONTINUATION",
+        "signal_hash": signal_hash,
         "symbol": SYMBOL,
         "timeframe": TIMEFRAME,
-        "timestamp": datetime.utcfromtimestamp(T[i]).isoformat(),
+        "timestamp": ts_iso,
         "candidate": bool(passed),
         "review_required": True,
         "block_or_review": {

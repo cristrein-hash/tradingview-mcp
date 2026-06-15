@@ -15,6 +15,18 @@ scanner.py  →  journal.py  →  outcome.py  →  telegram_draft.py
 (candidato)    (KEEP/BLOCK)    (R post-hoc)    (rascunho, NÃO envia)
 ```
 
+### Fluxo de sinal imediato (alvo, ativação futura autorizada)
+O sinal Telegram deve ser **imediato quando o candidato/alarm é emitido** — é uma
+**notificação de candidato** ("revise o chart"), NÃO uma ordem de entrada. A **revisão
+humana filtra a ENTRADA, não o envio do sinal**. Hoje tudo é draft (`telegram_allowed:false`);
+o envio real será ativado só em fase futura autorizada.
+
+O journal tem **dois eventos append-only ligados pelo mesmo `signal_hash`** (nunca mutados):
+1. `signal_emitted` — candidato gerado/notificado (signal_generated=true, signal_sent=false, signal_channel=TELEGRAM_DRAFT).
+2. `human_review_decision` — KEEP/BLOCK + `entry_taken` (a entrada real é registrada aqui, separada).
+
+`signal_hash` é gerado pelo scanner e propagado: candidato → notificação → decisão → outcome.
+
 ## Comandos básicos
 ```bash
 # 1. Scanner — gera candidato (último bar do RAW, ou --at <unixts>)

@@ -57,11 +57,25 @@ def main():
             out.append(f"  valores: {json.dumps(vals, ensure_ascii=False)}")
         return "\n".join(out) if out else "  (sem flags)"
 
+    event_type = obj.get("event_type")
     lines = []
     lines.append(f"📋 {suite}")
     lines.append(f"   {strategy}")
     lines.append(f"{symbol} · {tf} · {ts}")
     lines.append("")
+
+    # signal_emitted = NOTIFICAÇÃO DE CANDIDATO (não é ordem de entrada, não é trade validado)
+    if event_type == "signal_emitted":
+        lines.append("🔔 CANDIDATE NOTIFICATION — revise o chart")
+        lines.append("Candidato L1 gerado. NÃO é entrada aprovada nem trade validado.")
+        lines.append("A decisão de ENTRAR é humana e vem depois (journal: human_review_decision).")
+        if obj.get("signal_hash"):
+            lines.append(f"signal_hash: {obj.get('signal_hash')}")
+        lines.append("")
+        lines.append("status: DRAFT_ONLY / CANDIDATE_NOTIFICATION · telegram_allowed: false · NÃO ENVIADO")
+        print("\n".join(lines))
+        return 0
+
     entry_taken = bool(obj.get("entry_taken"))
     execution_mode = obj.get("execution_mode") or "NONE"
     if decision == "KEEP" and not entry_taken:
