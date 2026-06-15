@@ -294,6 +294,16 @@ Inventário read-only de produção + peso, comparado entrada-a-entrada com as e
 - **Validação:** JSON parse OK · todos `current_deployment_status` dentro do enum `deployment_enum` · diff só em `catalog.json` · health read-only: receiver ok (841), cloudflared vivo (1033), pause flag PRESENTE, XAU dormant.
 - **Exposição restante:** item 3 (substituir `NO_TELEGRAM_DISPATCH` por permissão central no Strategy Registry) continua pendente. **Não remover pause flag / reativar** antes dele.
 
+### 2026-06-15 — Telegram dispatch → default-deny allowlist (item 3/3 da exposição)
+
+- **Ação:** patch mínimo em `alert-bridge/monitor_xau_4h_strategies.py` (15+/10−). Substituído o **denylist** `NO_TELEGRAM_DISPATCH = {discr_sweep, discr_base, capitulation, demand_breakout}` (bloqueio-por-exceção) por uma **allowlist central default-deny** `TELEGRAM_DISPATCH_ALLOWLIST = set()` (vazia). Condição de envio invertida: `name not in NO_TELEGRAM_DISPATCH` → `name in TELEGRAM_DISPATCH_ALLOWLIST`.
+- **Por quê:** o denylist era default-INSEGURO — uma estratégia nova não adicionada à lista despacharia Telegram por omissão. Allowlist vazia = **default-deny**: nada despacha a menos que explicitamente permitido. Estritamente **mais restritivo** que antes (as 4 já estavam suprimidas; agora qualquer futura também fica). **L1 EMA21 Continuation NÃO foi adicionada** (scanner/human-review only, sem Telegram live).
+- **Permissão central simples, NÃO registry operacional:** é uma constante estática no próprio monitor (sem framework). A permissão por status via Strategy Registry continua design-only; quando existir, a allowlist passa a ser alimentada por ele.
+- **Sem efeito em runtime:** monitor **dormant** (sem processo) → próxima carga usa o código novo, **sem restart**. Nenhum novo envio habilitado; Telegram permanece OFF.
+- **Validação:** `py_compile` PASS · `TELEGRAM_DISPATCH_ALLOWLIST = set()` confirmado (default-deny) · único call-site `send_telegram` (monitor:720) está sob o gate · 0 referências órfãs a `NO_TELEGRAM_DISPATCH` em código · diff só no monitor · health read-only: receiver ok (841), cloudflared vivo (1033), pause flag PRESENTE, XAU dormant.
+- **Reversível:** `git revert` restaura o denylist.
+- **Exposição: 3/3 itens neutralizados.** As 3 condições dormentes (pause flag + daemon dormant + canal dormente) seguem; **continuam NÃO reversíveis sem autorização explícita**. Reativar produção é frente separada (Production v2), não coberta aqui.
+
 ## 13. Outcome Automation Moratorium — 2026-05-28
 
 **Status:** active. Lifted only by explicit operator authorization once the

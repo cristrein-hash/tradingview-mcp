@@ -44,12 +44,17 @@ SIGNALS_JSONL = LOG_DIR / "indicator_signals.jsonl"
 STRATEGY_SIGNALS_JSONL = LOG_DIR / "strategy_signals.jsonl"
 EVAL_LOG_JSONL = LOG_DIR / "strategy_eval_log.jsonl"
 CHART_LOCK_PATH = "/tmp/tradingview_chart.lock"
-# NO_TELEGRAM_DISPATCH: strategies still computed + logged but MUST NOT dispatch a live Telegram
-# alert (see catalog.json):
-#   - discr_sweep / discr_base: XAU_4H_REVERSAL_DISCRETIONARY = WATCH_ONLY (RESEARCH, small n)
-#   - capitulation: XAU_4H_REVERSAL_CAPITULATION = REJECTED by canonical revalidation v2 (PF 0.47); recommended DISABLED
-#   - demand_breakout: XAU_4H_DEMAND_BREAKOUT = REJECTED 2026-05-29 by visual auction-theory review; recommended DISABLED
-NO_TELEGRAM_DISPATCH = {"discr_sweep", "discr_base", "capitulation", "demand_breakout"}
+# TELEGRAM_DISPATCH_ALLOWLIST: central default-deny dispatch permission (2026-06-15).
+# Only strategy 'name's listed here may dispatch a live Telegram alert; anything NOT
+# listed is still computed + logged but SUPPRESSED. Replaces the prior NO_TELEGRAM_DISPATCH
+# denylist (block-by-exception) — safer because a newly-added strategy stays silent unless
+# explicitly permitted (default-deny). EMPTY today = nothing dispatches:
+#   - all 4 monitor strategies (discr_sweep, discr_base, capitulation, demand_breakout) are
+#     REJECTED/WATCH_ONLY in catalog.json → stay suppressed.
+#   - L1 EMA21 Continuation (USER_APPROVED_FINAL / HUMAN_DISCRETIONARY) is intentionally NOT
+#     added: scanner / human-review only, no live Telegram now.
+# Live dispatch stays OFF until the future Strategy Registry grants permission by status.
+TELEGRAM_DISPATCH_ALLOWLIST = set()
 CHART_LOCK_TIMEOUT_S = 120
 PER_CALL_TIMEOUT_S = 60
 
@@ -715,11 +720,11 @@ def evaluate_and_dispatch(mcp, trigger_source, dispatch_telegram=True):
             if macro_event:
                 msg = msg + f"\n⚠️ MACRO (24h): {macro_event}"
             print(f"\n=== MATCH {name} ===\n{msg}\n")
-            # Suppress Telegram for strategies in NO_TELEGRAM_DISPATCH (WATCH_ONLY or REJECTED); keep computing/logging.
-            if dispatch_telegram and name not in NO_TELEGRAM_DISPATCH:
+            # Default-deny: only strategies in TELEGRAM_DISPATCH_ALLOWLIST may dispatch; keep computing/logging.
+            if dispatch_telegram and name in TELEGRAM_DISPATCH_ALLOWLIST:
                 send_telegram(msg)
-            elif name in NO_TELEGRAM_DISPATCH:
-                print(f"  [NO_TELEGRAM] {name}: matched — Telegram suppressed (see catalog.json).")
+            else:
+                print(f"  [NO_TELEGRAM] {name}: matched — Telegram suppressed (default-deny; not in TELEGRAM_DISPATCH_ALLOWLIST).")
             entry["macro_event_check"] = macro_event
             append_jsonl(STRATEGY_SIGNALS_JSONL, entry)
         else:
