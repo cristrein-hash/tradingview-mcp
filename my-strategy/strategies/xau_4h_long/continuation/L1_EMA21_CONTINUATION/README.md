@@ -27,6 +27,11 @@ O journal tem **dois eventos append-only ligados pelo mesmo `signal_hash`** (nun
 
 `signal_hash` é gerado pelo scanner e propagado: candidato → notificação → decisão → outcome.
 
+**Identidade canônica (signal_hash vs ingestion_hash):**
+- **`signal_hash`** = hash do **scanner/candidato estratégico** (canônico). É o que `journal`, `outcome` e `telegram_draft` usam para ligar candidato → notificação → decisão → outcome.
+- **`ingestion_hash`** = hash do **`live_input_adapter`** (identidade do evento bruto recebido). Domínio separado, para gate/quarantine/dedup de ingestão — **não** substitui o `signal_hash` no pipeline L1.
+- Quando o runtime live ligar `adapter → scanner`, o `signal_hash` do scanner permanece a chave canônica do pipeline; o `ingestion_hash` fica só na camada de entrada.
+
 **Fluxo correto (alvo):**
 1. Candidato/alarm **emitido** (scanner / live_input_adapter → scanner).
 2. **Notificação Telegram imediata de candidato** ("L1 candidate — review chart"). *(hoje draft; ativação futura autorizada.)*
