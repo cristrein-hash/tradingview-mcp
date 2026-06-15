@@ -343,6 +343,31 @@ Audit de lixo óbvio/snapshots/logs/checkpoints/caches. **Resultado: nada qualif
 - **`d2r_caminho_a.log` (5.8K), `launchd_enrich_stdout.log` (5.5K) = ARCHIVE_SAFE** (logs congelados de agentes cancelado/moratório). NÃO movidos agora; ~11K, baixa prioridade — fase futura.
 - **Único ganho de espaço material continua sendo o gzip gated dos 8 v6 (~1.1G), frente separada com protocolo + autorização.** Cleanup Fase 1 não encontrou atalho seguro fora disso.
 
+### 2026-06-15 — Inventário do legacy lógico + classificação por grupo (+ delete de backups redundantes)
+
+Audit do legacy de regras/prompts/recheck/monitor/catalog/backups + delete só do lixo óbvio. **Produção intocada.**
+
+**Grupo 1 — centrais legacy (NÃO deletar/mover; só classificar):**
+- `alert-bridge/claude_recheck.py` (88K, tracked) — **LEGACY_RUNTIME** (spawn-on-demand; recheck:931 já NEUTRALIZADO; lê `strategy_rules.json` + `operational_prompt.md`). Migrar lógica boa (normalização/gates) ao core novo por partes; NUNCA importar o monólito inteiro.
+- `alert-bridge/monitor_xau_4h_strategies.py` (36K, tracked) — **LEGACY_RUNTIME / DORMANT** (Telegram default-deny allowlist; daemon dormant).
+- `my-strategy/strategy_rules.json` (78K, tracked) — **LEGACY_RUNTIME / DO_NOT_TOUCH** (consumido pelo recheck; referência, NÃO fundação).
+- `my-strategy/operational_prompt.md` (28K, tracked) — **LEGACY_RUNTIME** (consumido por `claude_recheck.py:46/284`).
+- `my-strategy/strategies/catalog.json` (36K, tracked) — **RESEARCH_HISTORY** (descritivo, reconciliado; nenhum consumidor).
+- `docs/strategy_governance/*` (4 specs) — **KEEP_REFERENCE / NEW_CORE design** (Registry/Module Contract/Notification/Outcome; design-only).
+- **Hard gates antigos:** vivem como texto no prompt de `claude_recheck.py` (NO_TRADE / hard blocks). Runtime só via recheck — hoje **pausado + recheck:931 neutralizado**. → **MIGRATE_LATER** (viram regras explícitas no core novo) ou morrem; não afetam runtime enquanto pause flag presente.
+- **Telegram antigo:** `send_telegram` + `fmt_*` no monitor, sob `TELEGRAM_DISPATCH_ALLOWLIST` (default-deny, vazia). Templates `fmt_*` = **KEEP_REFERENCE** (reusáveis p/ draft futuro); **não reativar** envio automático.
+
+**Grupo 2 — backups/snapshots:**
+- **DELETE_SAFE_NOW executado (2026-06-15):** 14 snapshots intermediários abr/27-28 (`operational_prompt.md.backup.*` ×6, `strategy_rules.json.backup.2026042[78]-*` ×7, `watchlist_scan_prompt.md.backup.*` ×1, ~172K). Todos IGNORED, sem ref em código, vivos TRACKED no git. Deleção não gerou mudança tracked.
+- **ARCHIVE_CANDIDATE (preservados, decisão futura):** `strategy_rules.backup_20260518_130015.json` (79K) + `strategy_rules.json.backup.20260521-cleanup` (80K) — snapshots recentes nomeados, possível rollback.
+- `backups/bak_archive/*.bak` (código/logs, 5.5M) = **KEEP** (rollback/auditoria); `backups/legacy_logs` (8.3M) = **ARCHIVE_CANDIDATE**; `backups/launchagents_archive` = **DO_NOT_TOUCH** (plists dormentes c/ SHA).
+
+**Grupo 3 — research histórico:** `candidates/` (6.3M), `research/revalidation/` (4.2M, inclui fonte da L1 = RESEARCH_VALID), `research/backtests/` (1.9M) — todos **RESEARCH_HISTORY** (estratégias legacy contaminadas = QUARANTINE; ponte a6_a7 = CORE_CANDIDATE_INPUT needs lookahead audit). Não tocar.
+
+**Grupo 4 — sistema novo:** `xau_4h_long/continuation/L1_EMA21_CONTINUATION/` (7 arquivos) — **NEW_CORE** (offline, consolidado).
+
+**Migrar futuramente p/ core novo:** normalização de eventos + hard gates explícitos (de `claude_recheck`), templates `fmt_*` (p/ draft), Signal Outcome Lab (→ outcome engine). **Nunca importar:** o monólito `claude_recheck.py`/`strategy_rules.json` inteiro.
+
 ## 13. Outcome Automation Moratorium — 2026-05-28
 
 **Status:** active. Lifted only by explicit operator authorization once the
