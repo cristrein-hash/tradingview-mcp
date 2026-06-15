@@ -62,12 +62,21 @@ def main():
     lines.append(f"   {strategy}")
     lines.append(f"{symbol} · {tf} · {ts}")
     lines.append("")
-    if decision == "KEEP":
-        lines.append("✅ DECISÃO HUMANA: KEEP — candidato de continuação aprovado p/ revisão")
+    entry_taken = bool(obj.get("entry_taken"))
+    execution_mode = obj.get("execution_mode") or "NONE"
+    if decision == "KEEP" and not entry_taken:
+        lines.append("✅ KEEP / NO ENTRY RECORDED — candidato aprovado, SEM entrada real registrada")
         lines.append("Flags BLOCK/REVIEW (exaustão):")
         lines.append(fmt_flags(flags))
         lines.append("")
         lines.append("Entrada LONG (rascunho) — confirmar manualmente no chart antes de operar.")
+    elif decision == "KEEP" and entry_taken:
+        lines.append("🟢 KEEP / REAL ENTRY RECORDED — entrada real registrada")
+        lines.append(f"execução: {execution_mode} · entry {obj.get('entry_price')} · stop {obj.get('stop_price')} · @ {obj.get('entry_ts')}")
+        if obj.get("target_plan"): lines.append(f"alvo: {obj.get('target_plan')}")
+        if obj.get("position_size"): lines.append(f"size: {obj.get('position_size')}")
+        lines.append("Flags BLOCK/REVIEW (exaustão):")
+        lines.append(fmt_flags(flags))
     else:
         lines.append(f"⛔ DECISÃO HUMANA: {decision} — NO SIGNAL / BLOCKED")
         lines.append("Flags BLOCK/REVIEW (exaustão):")

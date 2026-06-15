@@ -35,12 +35,38 @@ python3 scanner.py --at 1756317600 \
   | python3 telegram_draft.py
 ```
 
-## O que NÃO faz
+## candidate ≠ trade (verdade operacional)
+- **candidate ≠ trade** e **decisão humana ≠ entrada executada.** Um KEEP aprova o candidato; não significa que uma entrada real aconteceu.
+- `entry_taken=false` (default) → KEEP é só **candidato aprovado**; outcome é **teórico/monitorado** (`THEORETICAL_CANDIDATE`, entry/stop estruturais da estratégia).
+- `entry_taken=true` → houve **entrada real** (manual ou, no futuro, automatizada autorizada); outcome usa `entry_ts`/`entry_price`/`stop_price` reais (`REAL_MANUAL_ENTRY`).
+- `BLOCK` → `BLOCKED_NO_OUTCOME` (nunca gera trade outcome).
+
+### Registrar KEEP **sem** entrada (candidato aprovado)
+```bash
+python3 scanner.py --at <ts> | python3 journal.py --decision KEEP --reason "..." \
+  --reviewed-by cris --journal-path ./l1_journal.jsonl     # entry_taken=false (default)
+```
+### Registrar KEEP **com** entrada real (manual)
+```bash
+python3 scanner.py --at <ts> | python3 journal.py --decision KEEP --reviewed-by cris \
+  --entry-taken --execution-mode MANUAL \
+  --entry-ts 2025-08-27T18:00:00 --entry-price 3380.5 --stop-price 3350.0 \
+  --journal-path ./l1_journal.jsonl
+# outcome.py distingue automaticamente teórico vs real e mede cada um.
+```
+
+## Camadas de execução / monitoramento (FUTURAS, autorizadas — não ativadas aqui)
+`execution_mode` no journal: `NONE` | `MANUAL` | `MCP_MONITORED` | `BROKER_AUTHORIZED`.
+- **MCP/chart NÃO é proibido** — é camada controlada de **leitura visual e monitoramento** de trade aberto, quando autorizada (`MCP_MONITORED`). Não é motor operacional de acompanhamento por si só.
+- **Broker integration (ex.: Pepperstone) NÃO é proibida** — é camada **futura**, que pode executar/gerir trade só com **autorização explícita** (`BROKER_AUTHORIZED`, campos `broker`/`broker_order_id`).
+- **Nada é ativado silenciosamente.** Hoje todos os campos são apenas registrados no journal; nenhum MCP/broker/Telegram é conectado ou disparado.
+
+## O que NÃO faz (hoje)
 - **Não** é live. **Não** envia Telegram (apenas rascunho; `telegram_allowed: false`).
-- **Não** roda como daemon. **Não** executa ordens automaticamente.
-- **Não** toca MCP/chart, receiver, monitor, recheck, strategy_rules, catalog, registry, secrets.
-- Tudo headless e read-only sobre o RAW canônico; nenhuma escrita em produção/logs vivos.
+- **Não** roda como daemon. **Não** conecta MCP/broker nem executa ordens — essas são camadas futuras autorizadas, não ativas.
+- **Não** toca receiver, monitor, recheck, strategy_rules, catalog, registry, secrets.
+- Tudo headless; outcome read-only sobre o RAW canônico; nenhuma escrita em produção/logs vivos.
 
 ## Próximo (fora do escopo deste módulo)
-Ligar a produção (Production v2 runtime) e/ou permissão de envio via Strategy Registry são
-**frentes separadas**, com autorização explícita. Por enquanto: scanner → revisão humana → journal → outcome → draft.
+Ligar Production v2 runtime, permissão de envio via Strategy Registry, MCP monitoring autorizado e broker integration são
+**frentes separadas**, cada uma com autorização explícita. Por enquanto: scanner → revisão humana → journal → outcome → draft.

@@ -83,9 +83,10 @@ def main():
         if ln:
             try: rows.append(json.loads(ln))
             except Exception: pass
-    todo = [r for r in rows if r.get("human_decision") == "KEEP" and r.get("outcome_status") == "PENDING"]
+    todo = [r for r in rows if r.get("outcome_status") == "PENDING"
+            and r.get("human_decision") in ("KEEP", "BLOCK")]
     if not todo:
-        print("[outcome] no KEEP+PENDING rows to measure", file=sys.stderr); return 0
+        print("[outcome] no PENDING rows to measure", file=sys.stderr); return 0
 
     bars, zones_at = load_series()
     T = sorted(bars); idx = {t: i for i, t in enumerate(T)}; N = len(T)
@@ -108,16 +109,21 @@ def main():
         if not below: return None
         return max(below, key=lambda z: z[0])
 
-    def measure(i):
+    def measure(i, entry_override=None, stop_override=None):
         if i < 60 or ATR14[i - 1] is None:
             return {"result_status": "INSUFFICIENT_HISTORY"}
-        entry = C[i]
-        dz = demand_zone(i)
-        zlo = (dz[1] if dz else EMA21[i - 1])
-        sl = min(L[i], min(L[max(0, i - 4):i + 1]), zlo) - 0.1 * ATR14[i - 1]
-        Runit = entry - sl
-        if Runit < R_FLOOR_ATR * ATR14[i - 1]:
-            sl = entry - R_FLOOR_ATR * ATR14[i - 1]; Runit = entry - sl
+        if entry_override is not None and stop_override is not None:
+            # REAL_MANUAL_ENTRY: usa entry/stop reais do journal (não estruturais)
+            entry = entry_override; sl = stop_override; Runit = entry - sl
+        else:
+            # THEORETICAL_CANDIDATE: entry/stop estruturais (idêntico ao rebuild_v3)
+            entry = C[i]
+            dz = demand_zone(i)
+            zlo = (dz[1] if dz else EMA21[i - 1])
+            sl = min(L[i], min(L[max(0, i - 4):i + 1]), zlo) - 0.1 * ATR14[i - 1]
+            Runit = entry - sl
+            if Runit < R_FLOOR_ATR * ATR14[i - 1]:
+                sl = entry - R_FLOOR_ATR * ATR14[i - 1]; Runit = entry - sl
         if Runit <= 0:
             return {"result_status": "INVALID_STOP"}
         if i + 1 >= N:
@@ -147,35 +153,59 @@ def main():
             "bars_held": exit_i - i,
         }
 
+    def bar_index_for(ts):
+        if not ts:
+            return None
+        try:
+            et = int(datetime.fromisoformat(ts).replace(tzinfo=timezone.utc).timestamp())
+        except Exception:
+            return None
+        i = idx.get(et)
+        if i is None and T:
+            i = min(range(N), key=lambda k: abs(T[k] - et))
+        return i
+
     out_lines = []
     for r in todo:
-        ts = r.get("candidate_timestamp")
-        i = None
-        if ts:
-            try:
-                et = int(datetime.fromisoformat(ts).replace(tzinfo=timezone.utc).timestamp())
-                i = idx.get(et)
-                if i is None and T:
-                    i = min(range(N), key=lambda k: abs(T[k] - et))
-            except Exception:
-                i = None
-        m = measure(i) if i is not None else {"result_status": "TIMESTAMP_NOT_FOUND"}
-        line = {
+        decision = r.get("human_decision")
+        base = {
             "event_type": "outcome_result",
-            "strategy": r.get("strategy"),
-            "suite": r.get("suite"),
-            "symbol": r.get("symbol"),
-            "timeframe": r.get("timeframe"),
-            "candidate_timestamp": ts,
-            "human_decision": r.get("human_decision"),
-            "result_status": m.get("result_status"),
-            "r_result": m.get("r_result"),
-            "mfe_r": m.get("mfe_r"),
-            "mae_r": m.get("mae_r"),
-            "bars_held": m.get("bars_held"),
-            "outcome_source": "RAW_READ_ONLY",
-            "telegram_allowed": False,
+            "strategy": r.get("strategy"), "suite": r.get("suite"),
+            "symbol": r.get("symbol"), "timeframe": r.get("timeframe"),
+            "candidate_timestamp": r.get("candidate_timestamp"),
+            "human_decision": decision,
+            "outcome_source": "RAW_READ_ONLY", "telegram_allowed": False,
         }
+        # BLOCK não gera trade outcome
+        if decision == "BLOCK":
+            out_lines.append({**base, "outcome_mode": "BLOCKED", "result_status": "BLOCKED_NO_OUTCOME"})
+            continue
+
+        entry_taken = bool(r.get("entry_taken"))
+        if not entry_taken:
+            # THEORETICAL_CANDIDATE: entry teórico estrutural no bar do candidato
+            i = bar_index_for(r.get("candidate_timestamp"))
+            m = measure(i) if i is not None else {"result_status": "TIMESTAMP_NOT_FOUND"}
+            line = {**base, "outcome_mode": "THEORETICAL_CANDIDATE",
+                    "result_status": m.get("result_status"), "r_result": m.get("r_result"),
+                    "mfe_r": m.get("mfe_r"), "mae_r": m.get("mae_r"), "bars_held": m.get("bars_held")}
+        else:
+            # REAL_MANUAL_ENTRY: exige entry_ts + entry_price + stop_price
+            missing = [k for k in ("entry_ts", "entry_price", "stop_price") if r.get(k) in (None, "")]
+            if missing:
+                out_lines.append({**base, "outcome_mode": "REAL_MANUAL_ENTRY",
+                                  "result_status": "REJECTED_MISSING_EXECUTION_FIELDS",
+                                  "missing_fields": missing})
+                continue
+            i = bar_index_for(r.get("entry_ts"))
+            m = (measure(i, entry_override=float(r["entry_price"]), stop_override=float(r["stop_price"]))
+                 if i is not None else {"result_status": "ENTRY_TS_NOT_FOUND"})
+            line = {**base, "outcome_mode": "REAL_MANUAL_ENTRY",
+                    "execution_mode": r.get("execution_mode"),
+                    "entry_ts": r.get("entry_ts"), "entry_price": r.get("entry_price"),
+                    "stop_price": r.get("stop_price"),
+                    "result_status": m.get("result_status"), "r_result": m.get("r_result"),
+                    "mfe_r": m.get("mfe_r"), "mae_r": m.get("mae_r"), "bars_held": m.get("bars_held")}
         if m.get("exit_reason"):
             line["exit_reason"] = m["exit_reason"]
         out_lines.append(line)
