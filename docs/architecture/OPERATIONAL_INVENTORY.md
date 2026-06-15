@@ -332,6 +332,17 @@ Marco de re-arquitetura. As 3 exposições legacy estão neutralizadas e o **pri
 - **Nunca tocar sem autorização:** RAW/v6 source-of-truth, pause flag, LaunchAgents, secrets, receiver/cloudflared vivos.
 - **Produção nova futura:** só após (a) lookahead audit do detector-ponte a6_a7, (b) Registry concedendo rota por status, (c) autorização explícita. Até lá o sistema permanece **dormant + default-deny**.
 
+### 2026-06-15 — Cleanup Fase 1 (audit read-only — NENHUMA deleção executada)
+
+Audit de lixo óbvio/snapshots/logs/checkpoints/caches. **Resultado: nada qualificou como DELETE_SAFE com ganho material.** Nada movido/deletado; produção intocada. Registrado para evitar erro futuro de classificação.
+
+- **9 `*.checkpoint.json` em `logs/backtests/` = v6-PAIRED, NÃO órfãos → DO_NOT_TOUCH.** Cada um tem `.jsonl` par existente (8 v6 + 1 unversioned). ⚠️ Uma limpeza futura NÃO deve deletá-los como "órfãos" (os órfãos reais já foram removidos em 2026-06-14). São companheiros dos dumps v6 (que são SOURCE_OF_TRUTH/DO_NOT_TOUCH).
+- **Snapshots `indicator_signals*.jsonl.before_synthetic_cleanup_2026-05-28` (2.9M + 1.9K) = UNKNOWN_DO_NOT_TOUCH.** Sem ref em `.py`, mas mantêm status UNKNOWN (decisão humana antes de qualquer delete).
+- **`launchd_tv_receiver_std{out,err}.log` = LIVE_DO_NOT_TOUCH.** Abertos pelo receiver vivo (PID 841, fd 1u/2u).
+- **`backups/bak_archive/*.bak` (código/logs) = KEEP** (valor de rollback/auditoria). Os `*stderr*.bak` de 0B liberariam ~0 byte → não vale deletar.
+- **`d2r_caminho_a.log` (5.8K), `launchd_enrich_stdout.log` (5.5K) = ARCHIVE_SAFE** (logs congelados de agentes cancelado/moratório). NÃO movidos agora; ~11K, baixa prioridade — fase futura.
+- **Único ganho de espaço material continua sendo o gzip gated dos 8 v6 (~1.1G), frente separada com protocolo + autorização.** Cleanup Fase 1 não encontrou atalho seguro fora disso.
+
 ## 13. Outcome Automation Moratorium — 2026-05-28
 
 **Status:** active. Lifted only by explicit operator authorization once the
