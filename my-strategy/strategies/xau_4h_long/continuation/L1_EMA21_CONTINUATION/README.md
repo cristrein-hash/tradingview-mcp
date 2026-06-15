@@ -27,6 +27,20 @@ O journal tem **dois eventos append-only ligados pelo mesmo `signal_hash`** (nun
 
 `signal_hash` é gerado pelo scanner e propagado: candidato → notificação → decisão → outcome.
 
+**Fluxo correto (alvo):**
+1. Candidato/alarm **emitido** (scanner / live_input_adapter → scanner).
+2. **Notificação Telegram imediata de candidato** ("L1 candidate — review chart"). *(hoje draft; ativação futura autorizada.)*
+3. Humano **revisa o chart**.
+4. Humano **decide a entrada** (entrar / não entrar / monitorar).
+5. Journal registra `human_review_decision` (KEEP/BLOCK) e `entry_taken` true/false.
+6. Outcome mede `THEORETICAL_CANDIDATE` (sem entrada) ou `REAL_MANUAL_ENTRY` (entrada real).
+
+**Regras de princípio:**
+- **Telegram signal ≠ ordem de entrada.** A notificação diz "revise", nunca "entre comprado".
+- **A revisão humana filtra a ENTRADA, não o alerta** — o sinal é enviado sempre que há candidato; só a entrada é discricionária.
+- `MCP_MONITORED` (acompanhamento visual) e `BROKER_AUTHORIZED` (execução via broker) são **camadas futuras permitidas com autorização** — não ativadas.
+- **Nada live é ativado** neste estágio: sem Telegram real, sem receiver conectado, sem MCP/broker.
+
 ## Comandos básicos
 ```bash
 # 1. Scanner — gera candidato (último bar do RAW, ou --at <unixts>)
