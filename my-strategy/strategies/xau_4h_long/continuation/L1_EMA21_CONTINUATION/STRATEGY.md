@@ -51,8 +51,17 @@ BLOCK / REVIEW  if  vol_entry_z >= 1.993  OR  rsi_vs_ma <= -9.35
 - **Convenção de precisão (2026-06-15):** o flag compara o valor **arredondado** exibido
   (`round(vol_entry_z,3) >= 1.993`, `round(rsi_vs_ma,2) <= -9.35`), fiel à análise aprovada
   (que usou valores arredondados) e garantindo que o flag exibido = flag aplicado. Threshold
-  inalterado. (Auditoria confirmou que a borda não afeta os candidatos históricos testados — ex.:
-  #11 tem `vol_entry_z=-0.93`, não-flagado; #15 `rsi_vs_ma=-9.35`, flagado; #36/#38 não-flagados.)
+  inalterado.
+
+### 🔴 Auditoria 2026-06-15 — autoridade da regra + leg vol_entry_z MORTO
+
+Auditoria read-only de 100% dos 38 candidatos contra RAW/scanner canônico (fonte de verdade), reconciliando contra a matriz `/tmp` antiga (evidência histórica).
+
+- **Autoridade:** a regra é **FLAG human-discretionary de BLOCK/REVIEW, NÃO gate automático** (4 fontes oficiais concordam: STRATEGY/README/scanner/journal). O scanner emite `candidate=bool(passed)` da regra-base; os flags de exaustão são informativos e **não** suprimem o candidato. Comportamento **inalterado** nesta auditoria.
+- **🔴 Leg `vol_entry_z>=1.993` é ESTRUTURALMENTE INERTE (morto):** o gate-base **F5 exige `vol_ratio_med50 <= 1.0`** (volume de entrada ≤ mediana). Volume é right-skewed (mean > median) → **todo candidato L1 tem `vol_entry_z < 0` por construção** → o leg de spike `>=1.993` **nunca dispara**. Confirmado: 38/38 candidatos com vol_entry_z negativo no scanner canônico.
+- **Causa da divergência #11 (`SAME_TRADE_FIELD_MISMATCH` / `BUG_IN_OLD_ANALYSIS`):** mesmo trade/bar; matriz `/tmp` tinha a coluna `vol_entry_z` BUGADA (35/38 divergentes; #11 matriz=1.993 vs RAW=−0.93; #19 matriz=2.686 vs RAW=−0.38), enquanto `rsi_vs_ma` batia 100%. O scanner está correto; a matriz antiga (origem do leg vol) era inválida. **A regra congelada que "bloqueava #11/#19" via vol_entry_z era artefato da matriz bugada.**
+- **Flag operante canônico = `rsi_vs_ma <= -9.35` SOZINHO** → flaga #3, #15, #18, #32 (4 losers, **0 winners**, monumentais #36/#38 preservados). Se aplicado como gate: FULL-38 sumR 14.87→18.27, WR 31.6→35.3%, n→34.
+- **DECISÃO PENDENTE do usuário (não alterada unilateralmente):** o leg vol_entry_z está morto e foi derivado de dado bugado → re-validar/re-derivar o flag de exaustão como **rsi_vs_ma-only** sobre dados canônicos, OU manter como está (leg vol inofensivo porque nunca dispara). A regra segue `PROMISING_BUT_NEEDS_MORE_DATA`; esta auditoria reforça que precisa re-derivação canônica antes de qualquer promoção a gate.
 
 ---
 
