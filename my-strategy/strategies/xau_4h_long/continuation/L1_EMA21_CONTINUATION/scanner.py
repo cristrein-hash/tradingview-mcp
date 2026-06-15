@@ -191,8 +191,11 @@ def main():
 
     passed, reason = gate_trace(i)
     vz, rvm = flags(i)
-    flag_vol = (vz is not None and vz >= VOL_Z_THR)
-    flag_rsi = (rvm is not None and rvm <= RSI_VS_MA_THR)
+    # Flag compara o MESMO valor arredondado que é exibido (vol_entry_z 3 casas,
+    # rsi_vs_ma 2 casas) — garante display↔flag sempre consistente, fiel à análise
+    # aprovada (que usou valores arredondados). NÃO altera o threshold.
+    flag_vol = (vz is not None and round(vz, 3) >= VOL_Z_THR)
+    flag_rsi = (rvm is not None and round(rvm, 2) <= RSI_VS_MA_THR)
 
     ts_iso = datetime.utcfromtimestamp(T[i]).isoformat()
     # signal_hash determinístico (mesmo padrão de input_normalization:

@@ -48,6 +48,11 @@ BLOCK / REVIEW  if  vol_entry_z >= 1.993  OR  rsi_vs_ma <= -9.35
 - Confirmado **visualmente** pelo usuário como bloqueio de **exaustão real**.
 - **Uso human-discretionary:** flag de REVIEW/bloqueio. O operador confirma no chart antes de
   descartar o candidato. Não é gate automático.
+- **Convenção de precisão (2026-06-15):** o flag compara o valor **arredondado** exibido
+  (`round(vol_entry_z,3) >= 1.993`, `round(rsi_vs_ma,2) <= -9.35`), fiel à análise aprovada
+  (que usou valores arredondados) e garantindo que o flag exibido = flag aplicado. Threshold
+  inalterado. (Auditoria confirmou que a borda não afeta os candidatos históricos testados — ex.:
+  #11 tem `vol_entry_z=-0.93`, não-flagado; #15 `rsi_vs_ma=-9.35`, flagado; #36/#38 não-flagados.)
 
 ---
 
