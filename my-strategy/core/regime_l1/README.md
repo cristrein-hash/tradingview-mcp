@@ -30,7 +30,15 @@ TRANSITION  : caso contrário
 - Diagnóstico vs `regime_B_v3` (legacy, não-autoridade): ~51.6% concordância — **não se exige match** (regime novo e explícito).
 - Runtime `--once`: deixa de retornar `regime_feed_stale`; consome `regime_l1_v4`; se feed não cobrir D-1 recente → `regime_l1_v4_stale`.
 
-## Atualizar (frescor)
-Quando houver barras diárias novas: append em `xau_daily_l1v4.jsonl` (via MCP D read seguro) e re-rodar
-`python3 regime_l1_v4.py --daily xau_daily_l1v4.jsonl --out regime_l1_v4_classifications.jsonl`.
-**Bloco futuro:** automação segura desse refresh (sem scheduler/daemon até autorização).
+## Atualizar (frescor) — `refresh_regime_l1_v4.py` (sob demanda)
+Refresh incremental SOB DEMANDA via MCP D (read-only, restaura o chart). Default = dry-run.
+```bash
+python3 refresh_regime_l1_v4.py            # dry-run: current_last_date / target_d1 / missing_count
+python3 refresh_regime_l1_v4.py --write    # escreve só se houver barra fechada faltante; senão already_fresh
+```
+- Nunca usa barra diária incompleta (`date < today` + volume ≥ 0.3× mediana; senão hard stop).
+- Append-only + revalida monotonicidade/duplicata/OHLCV + reclassifica + grava manifest.
+- Não muda símbolo; restaura TF original ao final. Não envia Telegram. **Sem scheduler/daemon.**
+- `already_fresh` quando o dataset já cobre o último daily close confirmado.
+
+**Bloco futuro (com autorização):** agendamento contínuo do refresh + runtime no fechamento de cada 4H.
