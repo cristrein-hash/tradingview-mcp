@@ -25,6 +25,15 @@ O classificador v1 "B" (cascade/stage/breaks que gera `combined_score`/`state`) 
 Este bloco **sourceia a saída do v1 B do registro canônico** (offline, até 2026-05-25) — NÃO reconstrói a lógica do v1 B.
 **Estender o regime para dias novos (live) exige o v1 B** (reconstruir a lógica cascade/stage, ou recuperar o script) **+ dado diário fresco** (re-coleta 1D RAW ou leitura D live). Decisão do Bloco 2.
 
+## 🛑 v1 "B" — tentativa de recuperação (HARD STOP, 2026-06-16)
+- **Script original NÃO encontrado** (repo, git history, backups, safety pack, /tmp) — irrecuperável.
+- **Engenharia reversa contra o canônico:** o **agregador** do scoring reproduz 100% — `combined_score = cascade_score + vol_score`; `cascade_score = Σ(+1 break_bull / −1 break_bear por TF h4/d/w)`; `ma200_bull/bear = close ≷ ma_200`; `raw_state` = (BULL≥2 / BEAR≤−2 / TRANSITION). **Mas as ENTRADAS do agregador NÃO reproduzem:**
+  - `vol_score`: **~93%**, sem regra limpa sobre `atr_expansion_ratio` (ranges vol=0/vol=1 se sobrepõem) — definição extra desconhecida.
+  - **breaks `h4/d/w`**: não deriváveis dos dados disponíveis (h4 exige estrutura 4H ausente; d/w só ~97% de ma50). Lógica de break estrutural multi-TF desconhecida.
+  - `state`/`stage_dir`/`stage_n`: máquina de estágio não documentada (79%).
+- **Veredito:** reconstruir os breaks + vol_score exigiria **inventar** a lógica → vetado. **HARD STOP.** O `combined_score` (única entrada que o v2 consome) depende dessas peças irreprodutíveis, então **classificar dias novos NÃO é possível** a partir dos artefatos atuais.
+- **Para o Bloco 2 (decisão do usuário):** (a) recuperar o script v1 B original de outra fonte (fora deste repo/backups), OU (b) re-derivar a detecção de breaks estruturais multi-TF a partir de uma especificação canônica (não improviso), OU (c) substituir o regime D-1 por uma fonte de regime nova explicitamente aprovada. Sem (a)/(b)/(c) + dado fresco, o `runtime_xau.py` permanece corretamente em `regime_feed_stale`.
+
 ## Validar
 ```bash
 REG=my-strategy/strategies/candidates/regime_classifier_v3
