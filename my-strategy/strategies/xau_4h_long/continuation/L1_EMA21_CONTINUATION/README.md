@@ -20,6 +20,13 @@ scanner.py (base + RSI gate)  →  [operacional?]  →  telegram_notify.py (cand
 - **`telegram_notify.py`** envia a notificação real (allowlist = `L1_EMA21_CONTINUATION`; default dry-run; `--send` envia; só candidato `operational`). Mensagem = "CANDIDATE — revise o chart", **nunca** ordem de entrada.
 - **`telegram_draft.py`** = render offline (não envia). `outcome.py` mede THEORETICAL/REAL.
 
+## Runtime híbrido XAU-only (Production v2)
+`runtime_xau.py` lê o chart XAU 4H via MCP (`my-strategy/core/tv_read_adapter.py`, **read-only, nunca dirige o chart**), aplica o gate, e dispara candidate notification só para candidato OPERACIONAL. Grupos em `my-strategy/core/group_model_xau.py`: **XAU_240 ativo** (consumidor L1); **XAU_60 / XAU_15 RESERVADOS** (preparação multi-TF; sem estratégia aprovada, sem Telegram). XAU-only — sem multi-ativo.
+- Modos: `--once` · default **dry-run** · `--send-telegram` (opt-in real) · `--dedup-path` (1 envio por `signal_hash`).
+- **Autoridade do gate-base = scanner** (RAW). O runtime orquestra (regime/precondição, dedup, journal, notify) — não duplica a regra.
+- 🔴 **Dependência pendente p/ emissão LIVE:** o **regime D-1 (`regime_B_v3`)** é pré-condição e o feed termina **2026-05-25** → a barra live atual retorna `no_candidate / regime_feed_stale` (honesto, sem Telegram). **Emitir candidato operacional ao vivo exige o feed de regime live (próximo bloco).** Sem isso, o runtime lê o chart e decide corretamente, mas não emite.
+- Sem scheduler/daemon/LaunchAgent/broker/MCP-de-gestão neste estágio.
+
 ### Fluxo de sinal imediato (alvo, ativação futura autorizada)
 O sinal Telegram deve ser **imediato quando o candidato/alarm é emitido** — é uma
 **notificação de candidato** ("revise o chart"), NÃO uma ordem de entrada. A **revisão

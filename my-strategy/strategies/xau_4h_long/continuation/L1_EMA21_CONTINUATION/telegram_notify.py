@@ -24,7 +24,7 @@ from urllib.request import Request, urlopen
 ALLOWLIST = {"L1_EMA21_CONTINUATION"}
 STRATEGY_LABEL = "L1 · EMA21 CONTINUATION"
 SUITE = "XAU 4H LONG — CONTINUATION"
-TEST_BANNER = "TEST L1 CANDIDATE NOTIFICATION — DO NOT TRADE"
+TEST_BANNER = "TEST L1 XAU 4H RUNTIME CANDIDATE NOTIFICATION — DO NOT TRADE"
 
 # frases proibidas (guard de segurança da mensagem)
 FORBIDDEN = ("entre comprado", "entrada aprovada", "trade validado", "buy now", "comprar agora")
