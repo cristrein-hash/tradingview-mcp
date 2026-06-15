@@ -55,11 +55,20 @@ python3 scanner.py --at <ts> | python3 journal.py --decision KEEP --reviewed-by 
 # outcome.py distingue automaticamente teórico vs real e mede cada um.
 ```
 
-## Camadas de execução / monitoramento (FUTURAS, autorizadas — não ativadas aqui)
-`execution_mode` no journal: `NONE` | `MANUAL` | `MCP_MONITORED` | `BROKER_AUTHORIZED`.
-- **MCP/chart NÃO é proibido** — é camada controlada de **leitura visual e monitoramento** de trade aberto, quando autorizada (`MCP_MONITORED`). Não é motor operacional de acompanhamento por si só.
-- **Broker integration (ex.: Pepperstone) NÃO é proibida** — é camada **futura**, que pode executar/gerir trade só com **autorização explícita** (`BROKER_AUTHORIZED`, campos `broker`/`broker_order_id`).
-- **Nada é ativado silenciosamente.** Hoje todos os campos são apenas registrados no journal; nenhum MCP/broker/Telegram é conectado ou disparado.
+## Execution / Monitoring Modes (contrato)
+`execution_mode` no journal: `NONE` | `MANUAL` | `MCP_MONITORED` | `BROKER_AUTHORIZED`. **Nenhum ativa nada hoje** — são apenas registrados como verdade operacional no journal; nada é conectado/disparado silenciosamente.
+
+- **NONE** (default) — candidato aprovado **sem entrada** (`entry_taken=false`). Outcome = `THEORETICAL_CANDIDATE` (entry/stop estruturais).
+- **MANUAL** — humano entra manualmente. Journal registra `entry_ts`, `entry_price`, `stop_price`. Outcome = `REAL_MANUAL_ENTRY` (mede a entrada real).
+- **MCP_MONITORED** — humano autoriza Claude/AI a **acompanhar visualmente** o trade aberto via TDW/MCP/chart. MCP é **leitura/monitoramento**, NÃO execução por si só. Journal registra `execution_mode=MCP_MONITORED` + `monitoring_mode`. **Nenhuma ação operacional automática sem autorização.** Outcome = `REAL_MANUAL_ENTRY` (a entrada continua sendo a real registrada).
+- **BROKER_AUTHORIZED** — futuro Pepperstone/broker, **só com autorização explícita**. Journal registra `broker`, `broker_order_id`, `entry_price`, `stop_price`, `position_size`. **Nenhuma ordem enviada silenciosamente.**
+
+Notas do contrato:
+- **candidate ≠ trade** · **KEEP ≠ entrada executada.** `BLOCK` → `BLOCKED_NO_OUTCOME` (sem trade outcome).
+- `entry_taken=true` exige no mínimo `entry_ts`+`entry_price`+`stop_price` (senão `journal.py` rejeita e nada é escrito; outcome → `REJECTED_MISSING_EXECUTION_FIELDS`).
+- **Telegram = draft-only** (`telegram_allowed:false`) até autorização futura.
+- O **journal é a fonte de auditoria operacional**; dados de broker futuros podem virar fonte de execução **quando autorizado**.
+- **MCP/chart e broker NÃO são proibidos** — são **camadas autorizadas futuras**, hoje inertes (campos só registrados).
 
 ## O que NÃO faz (hoje)
 - **Não** é live. **Não** envia Telegram (apenas rascunho; `telegram_allowed: false`).

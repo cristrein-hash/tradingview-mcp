@@ -73,6 +73,7 @@ BLOCK / REVIEW  if  vol_entry_z >= 1.993  OR  rsi_vs_ma <= -9.35
   Monte Carlo coloca a contagem de regras limpas no acaso. O que sustenta a regra é
   **causalidade + robustez**, não a estatística de contagem.
 - **Telegram será formatado depois** (usando os modelos existentes), nunca antes de autorização.
+- **candidate ≠ trade · KEEP ≠ entrada.** Modos de execução/monitoramento (`NONE`/`MANUAL`/`MCP_MONITORED`/`BROKER_AUTHORIZED`) e regras de outcome teórico vs real estão no contrato em `README.md` (Execution / Monitoring Modes). MCP/chart e broker são camadas **autorizadas futuras**, hoje inertes — nada ativado silenciosamente.
 
 ---
 
