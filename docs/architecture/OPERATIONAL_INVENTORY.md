@@ -368,6 +368,15 @@ Audit do legacy de regras/prompts/recheck/monitor/catalog/backups + delete só d
 
 **Migrar futuramente p/ core novo:** normalização de eventos + hard gates explícitos (de `claude_recheck`), templates `fmt_*` (p/ draft), Signal Outcome Lab (→ outcome engine). **Nunca importar:** o monólito `claude_recheck.py`/`strategy_rules.json` inteiro.
 
+### 2026-06-16 — `com.cristrein.weekly-review` DECOMMISSIONED (reversível)
+
+- **Ação:** `launchctl bootout gui/$(id -u)` do LaunchAgent `com.cristrein.weekly-review`; plist **movida** (não deletada) para `backups/launchagents_archive/com.cristrein.weekly-review.plist.deprecated_2026-06-16`.
+- **Motivo:** `weekly_review.py --mode cron` era digest semanal de manutenção (NÃO sinal de trade) que (1) **falhava** (last exit code 1), (2) lia `strategy_eval_log`/`strategy_signals` do **monitor dormant** (stale), (3) **enviava Telegram no mesmo canal das notificações L1** (ruído/confusão). Ver `docs/LEGACY_TO_NEW_CORE_STRATEGIC_REVIEW.md` + `docs/LIVE_SIGNALS_STRATEGIC_VALUE_REVIEW.md`.
+- **Estado pós-ação:** ausente do `launchctl list`; não recarrega em login/reboot (plist fora de `~/Library/LaunchAgents/`). `weekly_review.py` e logs **NÃO deletados** (preservados).
+- **NÃO tocado:** `com.cristrein.xau-l1-cycle` (L1 scheduler, intacto), `archive-weekly`, receiver/cloudflared, event store `indicator_signals.jsonl` (vivo, source-of-truth), D2R/enrich (dormant), RAW. Sem Telegram enviado.
+- **Reversível:** `mv backups/launchagents_archive/com.cristrein.weekly-review.plist.deprecated_2026-06-16 ~/Library/LaunchAgents/com.cristrein.weekly-review.plist && launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.cristrein.weekly-review.plist`.
+- **Conceito futuro (não implementado):** **L1 health digest** (regime freshness, scheduler runs/exit, dedup anomalies, chart-restore failures, journal completeness) em **canal de manutenção Telegram SEPARADO** do canal de sinal. + forward outcome layer (ex-D2R) sobre o event store.
+
 ## 13. Outcome Automation Moratorium — 2026-05-28
 
 **Status:** active. Lifted only by explicit operator authorization once the
