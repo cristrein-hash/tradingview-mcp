@@ -82,7 +82,7 @@ Dados: features diárias por `core/regime/build_daily_features.py` (ma_50/ma_200
 - Detalhe: `docs/LIVE_SIGNALS_STRATEGIC_VALUE_REVIEW.md`, `docs/LEGACY_TO_NEW_CORE_STRATEGIC_REVIEW.md`.
 
 ## 11. XAU LEGACY KNOWLEDGE
-Índice repo-side: **`docs/XAU_LEGACY_KNOWLEDGE_INDEX.md`** + `my-strategy/strategies/xau_legacy_preservation_audit.md`. Famílias preservadas: L1 nova (operacional), continuation antiga (superseded), DEMAND_BREAKOUT (rejected), REVERSAL_CAPITULATION (rejected, PF 0.47 RAW), SWEEP/discretionary (watch), BB (revalidation), L2/BPT/Reason Atlas (research), regime_B v1/v2/v3 (morto, arquivado `dead_regime_B_v3/`), Caminho A/B (A invalidado look-ahead; B v1.5/v1.6 oficial em memory, não migrado), XAU 1H (pausado), XAU 15M/30M (potencial).
+Índice repo-side: **`docs/XAU_LEGACY_KNOWLEDGE_INDEX.md`** + `my-strategy/strategies/xau_legacy_preservation_audit.md`. Famílias preservadas: L1 nova (operacional), continuation antiga incl. **Caminho A L1 v1 F4+F5** (`SUPERSEDED_BY_L1 / KEEP_REFERENCE` — veredito 2026-06-16, deep dive `docs/XAU_4H_CAMINHO_A_L1_F4_F5_DEEP_DIVE.md` / 5a3aae9; não reabrir s/ hipótese nova), DEMAND_BREAKOUT (rejected), REVERSAL_CAPITULATION (rejected, PF 0.47 RAW), SWEEP/discretionary (watch), BB (revalidation), L2/BPT/Reason Atlas (research), regime_B v1/v2/v3 (morto, arquivado `dead_regime_B_v3/`), Caminho A/B (A invalidado look-ahead; B v1.5/v1.6 oficial em memory, não migrado), XAU 1H (pausado), XAU 15M/30M (potencial).
 - Preservação repo-side suficiente para arquivar legacy morto, MAS: não apagar RAW; não apagar research antes de inventário; **XAU 1H/15M/30M = KEEP_FOR_REVALIDATION**; DEMAND/CAPITULATION rejeitadas mas preservadas como conhecimento.
 
 ## 12. PLOTAGEM CANÔNICA / VISUAL REVIEW
