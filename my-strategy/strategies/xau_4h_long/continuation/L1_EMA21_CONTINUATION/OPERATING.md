@@ -1,5 +1,8 @@
 # OPERATING — XAU L1 (EMA21 Continuation) · ciclo operacional
 
+> **Referência canônica de contexto:** [`docs/BOOTSTRAP_REARCHITECTURE_CANONICAL_CONTEXT.md`](../../../../../docs/BOOTSTRAP_REARCHITECTURE_CANONICAL_CONTEXT.md) — estado completo da re-arquitetura, hard stops, legacy, regime, gate.
+> **Próxima frente (spec, design-only):** [`docs/FORWARD_OUTCOME_LAYER_SPEC.md`](../../../../../docs/FORWARD_OUTCOME_LAYER_SPEC.md) · [`docs/FORWARD_OUTCOME_LAYER_ROADMAP.md`](../../../../../docs/FORWARD_OUTCOME_LAYER_ROADMAP.md).
+
 Estratégia única ativa: **XAU 4H LONG — CONTINUATION / L1 · EMA21 CONTINUATION** · PEPPERSTONE:XAUUSD · 4H · LONG · `group_id: XAU_240`.
 XAU_60 / XAU_15 = **reservados, inativos, sem Telegram**. Sem multi-ativo. Sem broker. Sem ordem automática.
 
@@ -33,24 +36,28 @@ Estado/log do ciclo em `.runtime_state/l1_cycle.log` (não-legacy). Dedup em `.r
 A notificação diz **"CANDIDATE — revise o chart"** + `signal_hash`. **NÃO é "entre", não é "entrada aprovada", não é "trade validado".**
 **A entrada é 100% decisão humana.** Você confirma no chart e, se entrar, registra manualmente (journal `--entry-taken`).
 
-## Scheduler (`com.cristrein.xau-l1-cycle.plist`) — ⚠️ NÃO CARREGADO
-A plist existe como **template**, mas **NÃO foi carregada** (hard stop): a grade de fechamento 4H do XAU
-**desloca 1h com DST** (verão UTC 02/06/10/14/18/22 · inverno 03/07/11/15/19/23) e o `StartCalendarInterval`
-do launchd usa o **TZ local da máquina**. Carregar com horário desalinhado erraria os fechamentos metade do ano.
+## Scheduler (`com.cristrein.xau-l1-cycle.plist`) — ✅ CARREGADO E ATIVO
+A plist está **carregada e disparando** (confirmado em `launchctl list` + `.runtime_state/l1_cycle.log`).
+TZ da máquina = **Europe/Lisbon**, então a grade **local** é **DST-robusta**: o fechamento 4H do XAU mapeia
+para os **mesmos horários locais** o ano todo (verão UTC+1 / inverno UTC+0) → **03:05 / 07:05 / 11:05 / 15:05 / 19:05 / 23:05**
+(5 min pós-fechamento). `RunAtLoad=false` (só roda nos horários). Roda com `--send-telegram` (envia só se `operational_candidate`).
 
-**Antes de carregar (decisão sua):** confirmar o TZ da máquina e ajustar os horários da plist ao fechamento 4H
-real (ou usar abordagem DST-robusta). Só então:
+**Confirmar estado:**
+```bash
+launchctl list | grep xau-l1-cycle           # deve aparecer carregado
+tail -5 .runtime_state/l1_cycle.log           # últimos ciclos (status/state/notify)
+```
+**Pausar / descarregar (decisão sua):**
+```bash
+launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.cristrein.xau-l1-cycle.plist
+# rm ~/Library/LaunchAgents/com.cristrein.xau-l1-cycle.plist   # remover de vez (opcional)
+```
+**Recarregar (após pausar):**
 ```bash
 cp com.cristrein.xau-l1-cycle.plist ~/Library/LaunchAgents/
 launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.cristrein.xau-l1-cycle.plist
-launchctl list | grep xau-l1-cycle           # confirmar carregado
 ```
-**Pausar / descarregar:**
-```bash
-launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.cristrein.xau-l1-cycle.plist
-rm ~/Library/LaunchAgents/com.cristrein.xau-l1-cycle.plist   # remover de vez
-```
-O runner é **DST-agnóstico** (lê a barra live + dedup), então operação **manual** é segura agora mesmo, sem o scheduler.
+O runner é **DST-agnóstico** (lê a barra live + dedup), então a operação **manual** também é segura a qualquer momento.
 
 ## Não fazer
 Não tocar broker/Pepperstone · receiver/monitor/recheck/strategy_rules/catalog legacy · RAW/v6 · pause flag.
