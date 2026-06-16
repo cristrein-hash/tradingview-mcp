@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  LaunchAgent XAU L1 cycle — ⚠️ TEMPLATE, NÃO CARREGADO (2026-06-15).
-  Motivo do hard-stop: a grade de fechamento 4H do XAU DESLOCA 1h com DST
-  (verão UTC 02/06/10/14/18/22; inverno UTC 03/07/11/15/19/23). StartCalendarInterval
-  do launchd usa o TIMEZONE LOCAL da máquina — alinhar ao fechamento 4H exige confirmar
-  o TZ da máquina e tratar DST. NÃO carregar até isso estar confirmado (ver OPERATING.md).
-  Horários abaixo = grade de VERÃO em UTC + 3 min de atraso de segurança (AJUSTAR ao TZ real).
-  RunAtLoad=false. Logs próprios (não-legacy). Único para esta L1 (XAU_240).
+  LaunchAgent XAU L1 cycle — grade LOCAL Europe/Lisbon (DST-robusta), 2026-06-16.
+  TZ da máquina confirmada = Europe/Lisbon. O fechamento 4H do XAU em hora LOCAL de Lisboa é
+  FIXO o ano todo: verão (UTC+1) UTC 02/06/10/14/18/22 -> local 03/07/11/15/19/23;
+  inverno (UTC+0) UTC 03/07/11/15/19/23 -> local 03/07/11/15/19/23. launchd StartCalendarInterval
+  usa o TZ local -> horários 03:05/07:05/11:05/15:05/19:05/23:05 (5 min de atraso pós-fechamento).
+  RunAtLoad=false (só roda nos horários). Logs próprios (não-legacy). Único p/ esta L1 (XAU_240).
 -->
 <plist version="1.0">
 <dict>
@@ -22,12 +21,12 @@
   <key>RunAtLoad</key><false/>
   <key>StartCalendarInterval</key>
   <array>
-    <dict><key>Hour</key><integer>2</integer><key>Minute</key><integer>3</integer></dict>
-    <dict><key>Hour</key><integer>6</integer><key>Minute</key><integer>3</integer></dict>
-    <dict><key>Hour</key><integer>10</integer><key>Minute</key><integer>3</integer></dict>
-    <dict><key>Hour</key><integer>14</integer><key>Minute</key><integer>3</integer></dict>
-    <dict><key>Hour</key><integer>18</integer><key>Minute</key><integer>3</integer></dict>
-    <dict><key>Hour</key><integer>22</integer><key>Minute</key><integer>3</integer></dict>
+    <dict><key>Hour</key><integer>3</integer><key>Minute</key><integer>5</integer></dict>
+    <dict><key>Hour</key><integer>7</integer><key>Minute</key><integer>5</integer></dict>
+    <dict><key>Hour</key><integer>11</integer><key>Minute</key><integer>5</integer></dict>
+    <dict><key>Hour</key><integer>15</integer><key>Minute</key><integer>5</integer></dict>
+    <dict><key>Hour</key><integer>19</integer><key>Minute</key><integer>5</integer></dict>
+    <dict><key>Hour</key><integer>23</integer><key>Minute</key><integer>5</integer></dict>
   </array>
   <key>StandardOutPath</key>
   <string>/Users/cristrein/tradingview-mcp/my-strategy/strategies/xau_4h_long/continuation/L1_EMA21_CONTINUATION/.runtime_state/launchd_stdout.log</string>
