@@ -5,6 +5,8 @@
 
 > ⚠️ **Este bloco NÃO toca RAW.** Apenas lista a disponibilidade verificada por `ls` read-only e especifica o que precisa ser derivado/recomputado quando o rebuild for autorizado.
 
+> **🔄 Atualização v1.1 (2026-06-16) — feature mapping canônico resolvido.** Após auditar a CFEL (`scripts/extract_replay_features.py` schema v2 + `docs/data/FEATURE_EXTRACTION_POLICY.md`) e o backtest implementado (`scripts/backtest_xau_4h_breakout_continuation_v1.py`). Ver `docs/XAU_INDICATOR_FEATURE_MAPPING_CANONICAL_AUDIT.md` + `docs/XAU_4H_BREAKOUT_D1A_FEATURE_MAPPING_AUDIT.md`. Mudanças: **RSI/RSI_MA = study_values TV (não OHLCV recompute), hard stop levantado**; **ATR = `atr14_wilder` (campo CFEL, class=diagnostic) + ATR_MA20(SMA,20)**; **ADX = `adx_wilder` Python (backtest v1)**; **swing10 = `close[i]>max(high[i-10:i])` (CFEL `:419-423`)**; registry confirma RAW 4H 2016-2026 + 1D 2012-2026. **D1a 1D permanece o único blocker estrutural.**
+
 ---
 
 ## 0. Disponibilidade RAW verificada (read-only)
@@ -32,17 +34,17 @@
 | `close` | ✅ RAW direto | não | — | sim | não | finito, >0 |
 | `volume` | RAW **se existir** | não | — | sim | não | **não usado** por nenhum gate; só registrar se presente (não bloquear se ausente) |
 | `timestamp` | ✅ RAW direto | não | — | — | — | ordenado, passo 4H, UTC, bar **fechado** |
-| `ATR_14` | derivado | sim | TR = max(h−l, |h−pc|, |l−pc|); ATR14 = Wilder smooth (`ewm alpha=1/14`) | sim | não | >0; comparar vs `atr14` base do slim (reconciliar) |
-| `ADX_14` | derivado | sim | +DM/−DM Wilder; DI±=100·DMs/ATR; DX=100·|DI+−DI−|/(DI++DI−); ADX=Wilder-smooth(DX) | sim | não | 0–100; **fórmula a reconciliar** (sweep usa ewm sobre TR recomputado, não atr14 base) |
-| `EMA50` | derivado | sim | EMA de close, `alpha=2/51` | sim | não | converge após ~50 barras (warmup) |
-| `EMA200` | derivado | sim | EMA de close, `alpha=2/201` | sim | não | **warmup 200 barras** descartado |
-| `RSI_14` | derivado | sim | RSI Wilder de close, 14 | sim | não | 0–100 |
-| `RSI_MA` | derivado | **sim — ⚠️ definição ausente** | período + tipo de MA da RSI **NÃO formalizados** (slim entrega `rsi_above_ma` pronto; legacy lê coluna TV `'RSI-based MA'`) | sim | não | **HARD STOP** — definir período/tipo antes de usar T4 |
-| `swing10_high_prior` | derivado | sim | `highest(high, 10)[i-1]` = máx das 10 barras **estritamente anteriores** ao sinal | sim — usa `[i-1]` | implícito (i-1) | nunca incluir o bar de sinal |
+| `ATR_14` (**`atr14_wilder`**) | CFEL post_pass (`extract:404-414`) | sim | Wilder(TR,14); TR=max(h−l,|h−pc|,|l−pc|) | sim | não | >0; **breakout usa `atr14_wilder`** (CFEL class=diagnostic; `atr14_sma_tr`=oficial CFEL mas NÃO usado). Declarar divergência. |
+| `ATR_MA20` (R5) | Python (`backtest_v1:229`) | sim | `SMA(atr14_wilder, 20)` | sim | não | período 20 (≠ `atr14_sma30_ratio`); breakout-específico |
+| `ADX_14` (**`adx_wilder`**) | Python (`backtest_v1:84-140`) | sim | Wilder DMI→DI±→DX→Wilder-smooth(DX) | sim | não | **não é campo slim/study**. Adotar `adx_wilder` (v1) como canônico; 2ª impl ewm no sweep → reconciliar |
+| `EMA50` | Python (`backtest_v1:52,227`) | sim | EMA de close, `alpha=2/51` | sim | não | converge após ~50 barras (warmup) |
+| `EMA200` | Python (`backtest_v1:228`) | sim | EMA de close, `alpha=2/201` | sim | não | **warmup 200 barras** descartado |
+| `RSI` | **study_values TV** (`extract:283`) | **não — lido** | TV RSI(14) Wilder (default); `sv["Relative Strength Index"]["RSI"]` | sim | não | **CANONICAL_CONFIRMED HIGH** — não recomputar de OHLCV |
+| `RSI_MA` | **study_values TV** (`extract:284`) | **não — lido** | TV "RSI-based MA" (default SMA 14); `sv["Relative Strength Index"]["RSI-based MA"]` | sim | não | **RESOLVIDO (hard stop levantado)** — campo capturado, official HIGH; gate T4 = `rsi>rsi_ma` |
+| `swing10_high_prior` (**`close_above_swing_high_10`**) | CFEL post_pass (`extract:419-423`) | sim | `close[i] > max(high[i-10:i])` — máx das 10 barras **estritamente anteriores** (exclui o bar atual) | sim — usa i-10..i-1 | implícito | **CANONICAL_CONFIRMED** — rolling-high, NÃO fractal; ≡ `highest(high,10)[i-1]` |
 | `body` | derivado | sim | `abs(close − open)` | sim | não | ≥0 |
 | `range` | derivado | sim | `high − low` | sim | não | >0 (skip se =0) |
-| `body_ratio` | derivado | sim | `body / range` (= `body_pct`) | sim | não | 0–1; gate `≥0.5` |
-| `ATR_MA20` | derivado | sim | SMA de ATR14 sobre 20 barras | sim | não | usado em R5 |
+| `body_ratio` (**`body_pct`**) | CFEL post_pass (`extract:426`) | sim | `abs(C-O)/(H-L)` | sim | não | 0–1; gate `≥0.5`; official HIGH |
 | `EMA50_slope` | derivado | sim | `EMA50[i] − EMA50[i−5]` (>0 ⇒ R4 pass) | sim — usa `[i−5]` | não | sinal, não magnitude |
 
 ---
@@ -91,17 +93,22 @@ O `D1a` **não tem campo no slim** (nem flag 1D no `trades.jsonl` v1) — é pro
 
 ---
 
-## 5. Hard stops do RAW mapping
+## 5. Hard stops do RAW mapping (atualizado v1.1 — feature mapping resolvido)
 
-Parar (não rodar rebuild) se qualquer um:
+**RESOLVIDOS pela auditoria canônica (não bloqueiam mais V0-V5):**
+- ✅ **RSI_MA** — definido: study_values "RSI-based MA" (CFEL official HIGH). Hard stop **levantado**.
+- ✅ **swing10** — definido inequívoco: `close[i]>max(high[i-10:i])` (CFEL `:419-423`).
+- ✅ **Fórmula ATR** — `atr14_wilder` (CFEL) + ATR_MA20(SMA,20); divergência do ATR oficial CFEL **declarada** (não-blocker).
+- ✅ **Fórmula ADX** — `adx_wilder` Python (`backtest_v1:84`); reconciliar vs ewm do sweep (não-blocker).
+- ✅ **RAW 4H/1D** — registry confirma cobertura (4H 2016-2026; 1D 2012-2026).
 
-- [ ] **RAW 4H ou 1D ausente / cobertura insuficiente** (confirmar conteúdo dos diretórios na Rodada 1).
-- [ ] **Daily alignment não puder ser provado** causal (SHIFT1-audit do D1a falha ou é ambíguo).
-- [ ] **swing10 ambíguo** (não se conseguir garantir 10 barras estritamente anteriores).
-- [ ] **RSI_MA sem definição** (período/tipo) — bloqueia T4.
-- [ ] **Fórmula ADX/ATR não fechada** (reconciliação ewm/Wilder/atr14-base indefinida).
-- [ ] **Outcome engine não garante causalidade** (same-bar fill, BE com lookahead, stop/target ambíguos no mesmo bar).
+**REMANESCENTES (parar a variante que depende):**
+- [ ] **D1a — Daily alignment + mecanização (HARD STOP V6/V7).** Slim 1D não extraído; `latest_closed_daily` não provado; **SHIFT1-audit pendente**. V0-V5 NÃO afetados.
+- [ ] **Outcome engine causalidade** (same-bar fill, BE sem lookahead, stop/target stop-first) — a fixar na implementação.
+- [ ] **Cobertura slim v2 4H** com RSI study em todos os blocos 2016-2026 — confirmar na Rodada 1.
+
+> **Distinção SLIM:** o "slim proibido" é o **v1** (semântica errada). A **CFEL v2** (`extract_replay_features.py`) é o intérprete canônico oficial do RAW; campos `official_for_backtest` (RSI/RSI_MA/swing/body/ATR) usáveis com confiança declarada. RAW segue source-of-truth.
 
 ---
 
-*Read-only. Nenhum RAW lido/derivado neste bloco — apenas disponibilidade verificada por `ls`. Fórmulas extraídas de `regime_filter_test.py`, `methodology.md`, `config.json`. SLIM tratado só como reconciliação.*
+*Read-only. Nenhum RAW `.gz` aberto neste bloco — disponibilidade por `ls` + registry. Fórmulas rastreadas à CFEL (`extract_replay_features.py` v2), `backtest_xau_4h_breakout_continuation_v1.py`, `methodology.md`, `config.json`. v1.1 incorpora `docs/XAU_INDICATOR_FEATURE_MAPPING_CANONICAL_AUDIT.md`.*
