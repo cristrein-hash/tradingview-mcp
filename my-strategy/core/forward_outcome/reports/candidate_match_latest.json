@@ -1,0 +1,39 @@
+{
+  "metrics": {
+    "verdict": "insufficient_forward_sample",
+    "l1": {
+      "total_evaluations": 6,
+      "operational_candidates": 0,
+      "read_paths": [
+        "/Users/cristrein/tradingview-mcp/my-strategy/strategies/xau_4h_long/continuation/L1_EMA21_CONTINUATION/.runtime_state/l1_cycle.log"
+      ],
+      "parse_errors": 0
+    },
+    "xau240_live": {
+      "n": 140,
+      "range": {
+        "min": "2026-05-18T02:00:06.622513+00:00",
+        "max": "2026-06-16T02:00:00+00:00"
+      },
+      "by_indicator": {
+        "Market_Bubbles": 57,
+        "Custom_OB_Detector": 56,
+        "RSI": 19,
+        "NAS_TopBottom_Detector": 7,
+        "(vazio)": 1
+      },
+      "by_provider": {
+        "PEPPERSTONE": 90,
+        "(nenhum)": 50
+      }
+    },
+    "match_classification": {},
+    "live_signal_no_strategy_candidate": 140,
+    "match_window_minutes": 250,
+    "event_store_total_lines": 16454
+  },
+  "evals_states": {
+    "no_candidate": 6
+  },
+  "results": []
+}
