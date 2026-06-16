@@ -123,6 +123,26 @@ def read_xau_snapshot(timeframe="240"):
             elif isinstance(o, list):
                 for v in o: walk_boxes(v)
         walk_boxes(ob)
+        # study-values POR BAR (com timestamp) via data_get_study_values_at_bar — fonte causal do
+        # bar FECHADO (≠ data-window/forming). Alinhamento por TIME é feito no runtime.
+        def _series(filt, fields, count=8):
+            r = m.call("data_get_study_values_at_bar", {"study_filter": filt, "count": count})
+            out = []
+            for s in (r.get("studies") or []):
+                for b in (s.get("bars") or []):
+                    vals = b.get("values") or {}
+                    rec = {"time": b.get("time")}
+                    for key, alias in fields.items():
+                        v = vals.get(key)
+                        rec[alias] = (float(v) if isinstance(v, (int, float)) else
+                                      (lambda x: x if x is None else _num(x))(v))
+                    out.append(rec)
+            return out
+        def _num(x):
+            try: return float(str(x).replace(" ", "").replace(",", "").replace("−", "-"))
+            except Exception: return None
+        nas_series = _series("NAS", {"NAS_DISTANCE_FROM_EMA_ATR": "nas_dist"})
+        rsi_series = _series("Relative Strength", {"RSI": "rsi", "RSI-based MA": "rsi_ma"})
         return {
             "ok": True,
             "symbol": sym, "timeframe": res,
@@ -131,9 +151,11 @@ def read_xau_snapshot(timeframe="240"):
             "rsi": rsi, "rsi_ma": rma, "rsi_vs_ma": rsi_vs_ma,
             "nas_dist": nas_dist,
             "ob_zones": ob_zones,
+            "nas_series": nas_series,   # [{time, nas_dist}] por bar (fechado)
+            "rsi_series": rsi_series,   # [{time, rsi, rsi_ma}] por bar (fechado)
             "studies_present": names,
             "raw_refs": {"studies": "data_get_study_values", "boxes": "data_get_pine_boxes:Custom OB",
-                         "ohlcv": "data_get_ohlcv"},
+                         "ohlcv": "data_get_ohlcv", "study_at_bar": "data_get_study_values_at_bar"},
         }
     finally:
         m.stop()

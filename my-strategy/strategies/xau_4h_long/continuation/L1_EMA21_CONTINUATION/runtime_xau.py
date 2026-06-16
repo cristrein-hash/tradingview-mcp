@@ -80,23 +80,40 @@ def nas_from_history(bar_time):
     return val
 
 
-def build_live_series(snap, nas_im1):
-    """Constrói uma scanner.Series a partir do snapshot live (causal) p/ reusar scanner.evaluate.
-    NAS i-1 vem do histórico persistido (nunca o NAS atual). Retorna (S, last_idx) ou (None, motivo)."""
-    bars = snap.get("ohlcv_recent") or []
-    if len(bars) < 60:
+def align_study_values(eval_t, prev_t, nas_series, rsi_series):
+    """Alinha por TIMESTAMP (nunca índice): NAS do eval_bar e do bar fechado anterior; RSI do eval_bar.
+    source_time só é setado quando há match EXATO do time pedido. Retorna dict com values+source_times+status."""
+    nas_by_t = {r.get("time"): r.get("nas_dist") for r in (nas_series or []) if r.get("time") is not None}
+    rsi_by_t = {r.get("time"): (r.get("rsi"), r.get("rsi_ma")) for r in (rsi_series or []) if r.get("time") is not None}
+    nas_eval = nas_by_t.get(eval_t); nas_shift1 = nas_by_t.get(prev_t); rsi_eval = rsi_by_t.get(eval_t)
+    rsi_ok = bool(rsi_eval and rsi_eval[0] is not None and rsi_eval[1] is not None)
+    status = "ok" if (nas_eval is not None and nas_shift1 is not None and rsi_ok) else "incomplete"
+    return {
+        "nas_eval_value": nas_eval, "nas_eval_source_time": (eval_t if nas_eval is not None else None),
+        "nas_shift1_value": nas_shift1, "nas_shift1_source_time": (prev_t if nas_shift1 is not None else None),
+        "rsi_eval_value": rsi_eval, "rsi_eval_source_time": (eval_t if rsi_ok else None),
+        "alignment_status": status}
+
+
+def build_live_series(bars_closed, ob_zones, rsi_eval, nas_shift1):
+    """Constrói scanner.Series com OHLCV truncado ATÉ o eval_bar (último = eval_bar fechado).
+    rsi_eval=(rsi,rma) do eval_bar; nas_shift1=NAS do bar fechado anterior. Reusa scanner.evaluate.
+    Retorna (S, eval_idx) ou (None, motivo)."""
+    if len(bars_closed) < 60:
         return None, "insufficient_ohlcv(<60)"
-    zlist = [(z["high"], z["low"]) for z in (snap.get("ob_zones") or [])
+    zlist = [(z["high"], z["low"]) for z in (ob_zones or [])
              if isinstance(z.get("high"), (int, float)) and isinstance(z.get("low"), (int, float))]
     if not zlist:
         return None, "missing_ob_zones"
-    if snap.get("rsi") is None or snap.get("rsi_ma") is None:
-        return None, "missing_rsi"
+    if not (rsi_eval and rsi_eval[0] is not None and rsi_eval[1] is not None):
+        return None, "missing_rsi_eval"
+    if nas_shift1 is None:
+        return None, "missing_nas_shift1"
     S = scanner.Series()
-    S.T = [b["time"] for b in bars]; S.idx = {t: i for i, t in enumerate(S.T)}; S.N = len(S.T)
-    S.O = [b["open"] for b in bars]; S.H = [b["high"] for b in bars]
-    S.L = [b["low"] for b in bars]; S.C = [b["close"] for b in bars]
-    S.V = [b.get("volume") or 0 for b in bars]
+    S.T = [b["time"] for b in bars_closed]; S.idx = {t: i for i, t in enumerate(S.T)}; S.N = len(S.T)
+    S.O = [b["open"] for b in bars_closed]; S.H = [b["high"] for b in bars_closed]
+    S.L = [b["low"] for b in bars_closed]; S.C = [b["close"] for b in bars_closed]
+    S.V = [b.get("volume") or 0 for b in bars_closed]
     S.EMA21 = scanner.ema(S.C, 21); S.SMA50 = scanner.sma(S.C, 50)
     N = S.N; H = S.H; L = S.L; C = S.C
     TR = [H[0] - L[0]] + [max(H[i] - L[i], abs(H[i] - C[i - 1]), abs(L[i] - C[i - 1])) for i in range(1, N)]
@@ -104,11 +121,10 @@ def build_live_series(snap, nas_im1):
     if N >= 14:
         a = sum(TR[:14]) / 14; S.ATR14[13] = a
         for i in range(14, N): a = (a * 13 + TR[i]) / 14; S.ATR14[i] = a
-    i = N - 1  # último bar do snapshot = bar avaliado
-    # zonas OB atuais atribuídas ao bar i-1 (alvo do lookback causal demand_zone)
-    S.zones_at = {S.T[i - 1]: zlist}
-    S.rsi_at = {S.T[i]: (snap.get("rsi"), snap.get("rsi_ma"))}   # RSI do bar i (último fechado)
-    S.nas_at = {S.T[i - 1]: nas_im1}                              # NAS SHIFT1 (i-1) do histórico
+    i = N - 1  # último bar truncado = eval_bar (FECHADO)
+    S.zones_at = {S.T[i - 1]: zlist}                 # zonas OB p/ lookback demand_zone(i-1)
+    S.rsi_at = {S.T[i]: rsi_eval}                    # RSI do eval_bar (fechado, alinhado por time)
+    S.nas_at = {S.T[i - 1]: nas_shift1}              # NAS SHIFT1 = bar fechado anterior (alinhado por time)
     S.CLS = [json.loads(l) for l in REGIME_L1V4.read_text().splitlines() if l.strip()]
     return S, i
 
@@ -183,32 +199,30 @@ def evaluate(snapshot):
     base["signal_hash"] = signal_hash(sym, tf, base["candidate_timestamp"])
     base["bar_diagnostics"] = diag
 
-    # ALINHAMENTO DE STUDY-VALUE: rsi/nas do snapshot são do ÚLTIMO bar RETORNADO (realtime, se houver
-    # forming). Só correspondem ao eval_bar se NÃO houver forming excluído. Usar o study-value do
-    # forming para o eval_bar fechado seria LOOK-AHEAD → bloquear com razão precisa.
-    if forming_bar_excluded:
+    # ALINHAMENTO POR TIMESTAMP (nunca índice / nunca forming): study-values do bar FECHADO via
+    # data_get_study_values_at_bar. Exige match EXATO de time p/ NAS(eval), NAS(i-1) e RSI(eval).
+    al = align_study_values(eval_bar_time, previous_closed_bar_time,
+                            snapshot.get("nas_series"), snapshot.get("rsi_series"))
+    base["study_alignment"] = al
+    # fallback/debug (não substitui a tool): persiste o NAS do eval_bar fechado quando alinhado
+    if al["nas_eval_source_time"] == eval_bar_time and al["nas_eval_value"] is not None:
+        persist_feature(eval_bar_time, al["nas_eval_value"])
+    if not (al["nas_shift1_source_time"] == previous_closed_bar_time
+            and al["rsi_eval_source_time"] == eval_bar_time
+            and al["nas_eval_source_time"] == eval_bar_time):
         return {**base, "operational": False, "state": "blocked_missing_closed_bar_study_values",
-                "reason": (f"study-values do snapshot (rsi/nas) são do bar em formação "
-                           f"{returned_last_bar_time}, não do eval_bar fechado {eval_bar_time}; "
-                           f"sem study-value causal do bar fechado neste snapshot")}
+                "reason": (f"study-values não alinharam por time (eval={eval_bar_time}, "
+                           f"prev={previous_closed_bar_time}); status={al['alignment_status']}")}
 
-    # aqui: último bar RETORNADO == eval_bar (fechado) -> rsi/nas do snapshot alinham ao eval_bar
-    # 1) persistir o NAS do eval_bar (fechado) p/ ciclos futuros usarem como i-1.
-    persist_feature(eval_bar_time, snapshot.get("nas_dist"))
-    # 2) NAS SHIFT1 = NAS do bar fechado IMEDIATAMENTE ANTERIOR ao eval_bar — NUNCA o NAS atual
-    nas_im1 = nas_from_history(previous_closed_bar_time)
-    if nas_im1 is None:
-        return {**base, "operational": False, "state": "blocked_missing_nas_shift1",
-                "reason": f"sem NAS persistido p/ i-1 (bar_time={previous_closed_bar_time}); rode novamente após próximo fechamento"}
-
-    S, info = build_live_series(snapshot, nas_im1)
+    # truncar OHLCV ATÉ o eval_bar (descarta forming) -> eval_bar = último bar da série
+    S, info = build_live_series(bars[:closed_idx + 1], snapshot.get("ob_zones"),
+                                rsi_eval=al["rsi_eval_value"], nas_shift1=al["nas_shift1_value"])
     if S is None:
         return {**base, "operational": False, "state": "blocked_missing_base_rule_live_fields",
                 "reason": f"campos live insuficientes: {info}"}
 
-    # 4) MESMO gate do scanner (regime+base-rule+exhaustion+refined filter+SL/target)
+    # MESMO gate do scanner (regime+base-rule+exhaustion+refined filter+SL/target) sobre o eval_bar FECHADO
     out = scanner.evaluate(S, info)
-    # mapear saída do scanner -> contrato do runtime (preservando signal_hash canônico do runtime)
     return {**base,
             "operational": out["operational"],
             "exhaustion_gate": out["exhaustion_gate"],
@@ -218,7 +232,9 @@ def evaluate(snapshot):
             "entry_price": out.get("entry_price"),
             "stop_price": out.get("stop_price"),
             "target_price": out.get("target_price"),
-            "nas_dist_shift1": nas_im1,
+            "nas_eval_value": al["nas_eval_value"], "nas_eval_source_time": al["nas_eval_source_time"],
+            "nas_shift1_value": al["nas_shift1_value"], "nas_shift1_source_time": al["nas_shift1_source_time"],
+            "rsi_eval_value": al["rsi_eval_value"], "rsi_eval_source_time": al["rsi_eval_source_time"],
             "filter_trace": out.get("filter_trace"),
             "reason": out.get("gate_reason", out["state"])}
 
