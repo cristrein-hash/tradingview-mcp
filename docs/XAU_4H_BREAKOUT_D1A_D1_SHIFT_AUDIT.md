@@ -7,6 +7,8 @@
 
 ---
 
+> **🔄 Continuação (2026-06-16) — `docs/XAU_4H_BREAKOUT_D1A_EMA1D_SHIFT_AUDIT.md`:** os 3 pendentes deste doc foram resolvidos: EMA50_1D/EMA200_1D **gerados** do RAW 1D 2012 (`generated/xau_1d_ema_features.jsonl`); regra causal **refinada para `close_time ≤ bar_open`** (mais rigorosa que o date-shift, robusta ao open=22:00 UTC); **ORIG-vs-SHIFT rodado** sobre 15.434 barras 4H reais → ORIG vaza **83,3%**, CAUSAL **0 leaks**, **349 divergências de d1a_pass**. **D1a LIBERADO para design tests; V6/V7 liberados (condicional).** A regra date-shift D-1 deste doc é a aproximação; a `close_time≤bar_open` é a forma exata adotada.
+
 ## 1. Executive summary
 
 O pipeline 1D **existe** e foi localizado: `my-strategy/core/regime/build_daily_features.py` + `my-strategy/core/regime_l1/regime_l1_v4.py` + dados `xau_daily_l1v4.jsonl` (2597 barras, 2016-05-24→2026-06-15) + RAW 1D `XAUUSD_1D_replay_2012-06-19_to_2026-05-25.jsonl.gz` (3602 barras).

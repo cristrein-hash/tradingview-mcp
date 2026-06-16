@@ -54,10 +54,10 @@
 | Campo | Fonte RAW? | Derivado? | Fórmula | Causal? | SHIFT1? | Sanity check |
 |---|---|---|---|---|---|---|
 | `daily close` | ✅ RAW 1D direto | não | — | sim | **sim — último 1D fechado** | finito, >0; `ts`=open UTC, candle fecha D+1 (provado) |
-| `daily EMA50` | derivado de close 1D | **sim — A CONSTRUIR** | EMA close 1D, `alpha=2/51` | sim | herda do 1D fechado | ⚠️ pipeline tem **SMA** (`ma_50`), não EMA; precisa build EMA |
-| `daily EMA200` | derivado de close 1D | **sim — A CONSTRUIR** | EMA close 1D, `alpha=2/201` | sim | herda do 1D fechado | ⚠️ idem; **warmup 200 dias** → usar RAW 1D **2012** |
-| `daily timestamp` | ✅ RAW 1D direto | não | `ts`=open do candle (TradingView `bar.time`) | — | — | ordenado, passo diário, UTC; fins de semana ausentes |
-| `latest_closed_daily(eval)` | derivado | sim | **`date(daily) < date(eval_bar_4h_UTC)`** (date-shift D-1) — **NÃO** `midnight(ts)<bar_time` (PROD vaza intraday, provado) | **sim — CRÍTICO** | **sim** | ver `docs/XAU_4H_BREAKOUT_D1A_D1_SHIFT_AUDIT.md`: PROD `t<bar_time` vaza same-day em 04:00/08:00/12:00/20:00; CAUSAL 0 leaks |
+| `daily EMA50` | **GERADO** de RAW 1D | sim ✅ | EMA close 1D, `alpha=2/51` | sim | herda do 1D fechado | ✅ `generated/xau_1d_ema_features.jsonl` (3584 barras, warmup 2012) |
+| `daily EMA200` | **GERADO** de RAW 1D | sim ✅ | EMA close 1D, `alpha=2/201` | sim | herda do 1D fechado | ✅ warmup-ready 2013-04 (estável pré-2016); `warmup_ready` flag |
+| `daily timestamp` | ✅ RAW 1D direto | não | `time`=**open 22:00 UTC**; candle dura 24h, fecha 22:00 D+1, representa pregão D+1 | — | — | provado; `close_time=open+86400` |
+| `latest_closed_daily(eval)` | **IMPLEMENTADO+PROVADO** | sim ✅ | **`daily.close_time ≤ bar_open_4h`** (CAUSAL) — **NÃO** `open_time<bar_time` (PROD vaza 83,3%, provado) | **sim — CRÍTICO** | **sim** | `docs/XAU_4H_BREAKOUT_D1A_EMA1D_SHIFT_AUDIT.md`: 15.434 barras, ORIG leak 12.854 (83,3%), CAUSAL **0 leaks**, 349 d1a divergências |
 
 **Predicado D1a:** `close_1D > EMA200_1D AND EMA50_1D > EMA200_1D` no `latest_closed_daily_before_4h_bar`.
 **⚠️ Alinhamento 1D→4H é o ponto de maior risco** (precedente A1' SUPERTREND: "causal-by-construction" colapsou 88%→46% sob SHIFT1-audit). Implementação correta = `merge_asof(..., direction='backward')` **com** a coluna de tempo do 1D sendo o **close-time** do candle diário (não o open-time), garantindo que o D do próprio dia (ainda aberto às 04:00/08:00/12:00/16:00/20:00 UTC) **não** seja consultado.
@@ -102,8 +102,9 @@ O `D1a` **não tem campo no slim** (nem flag 1D no `trades.jsonl` v1) — é pro
 - ✅ **Fórmula ADX** — `adx_wilder` Python (`backtest_v1:84`); reconciliar vs ewm do sweep (não-blocker).
 - ✅ **RAW 4H/1D** — registry confirma cobertura (4H 2016-2026; 1D 2012-2026).
 
-**REMANESCENTES (parar a variante que depende):**
-- [ ] **D1a — HARD STOP V6/V7 (alinhamento PROVADO, implementação pendente).** Atualizado pelo `D1_SHIFT_AUDIT` (2026-06-16): pipeline 1D localizado (`build_daily_features.py`/`regime_l1_v4.py`/`xau_daily_l1v4.jsonl`); convenção `ts`=open UTC provada; regra causal `latest_closed_daily = date(daily)<date(eval)` definida e demonstrada (PROD `t<bar_time` **vaza** same-day intraday). **Falta:** (a) build `EMA50_1D/EMA200_1D` (pipeline só tem **SMA** `ma_50/ma_200`), warmup RAW 1D 2012; (b) implementar a regra causal; (c) **SHIFT1-audit empírico ORIG-vs-SHIFT**. V0-V5 NÃO afetados.
+**D1a — ✅ RESOLVIDO / LIBERADO p/ design tests** (`EMA1D_SHIFT_AUDIT`, 2026-06-16): (a) EMA50_1D/EMA200_1D **gerados** do RAW 1D 2012 (`generated/xau_1d_ema_features.jsonl`, warmup ok); (b) regra causal `latest_closed_daily = close_time≤bar_open` **implementada**; (c) **ORIG-vs-SHIFT audit rodado** — ORIG vaza 83,3%, CAUSAL 0 leaks, 349 d1a divergências. **V6/V7 liberados (condicional):** a implementação deve consumir a CAUSAL + este dataset e re-rodar SHIFT-audit trade-level. Caveat: close RAW vs produção mediana 1,72 (vintage, imaterial p/ direção).
+
+**REMANESCENTES (não-blocker p/ V6/V7):**
 - [ ] **Outcome engine causalidade** (same-bar fill, BE sem lookahead, stop/target stop-first) — a fixar na implementação.
 - [ ] **Cobertura slim v2 4H** com RSI study em todos os blocos 2016-2026 — confirmar na Rodada 1.
 

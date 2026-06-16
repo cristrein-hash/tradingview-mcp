@@ -3,3 +3,6 @@
 # the code commit recorded in report.json. Everything else (methodology, config,
 # report, summary, schemas) is tracked as auditable evidence.
 **/trades.jsonl
+
+# D1a generated EMA dataset (regenerable from RAW 1D via build_xau_1d_ema_features.py)
+**/generated/*.jsonl
