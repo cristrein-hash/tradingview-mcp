@@ -1,7 +1,8 @@
 # L1 · EMA21 CONTINUATION — módulo offline
 
-Parte da suite **XAU 4H LONG — CONTINUATION**. Status: **USER_APPROVED_FINAL · HUMAN_DISCRETIONARY · CONTINUATION**.
-Ver `STRATEGY.md` (regra + métricas) e `MANIFEST.md` (proveniência).
+Parte da suite **XAU 4H LONG — CONTINUATION**. Status: **governance USER_APPROVED_FINAL · HUMAN_DISCRETIONARY · CONTINUATION** · **evidence NOT_VALIDATED_OOS**.
+Ver `STRATEGY.md` (banner de RECLASSIFICAÇÃO 2026-06-16 = fonte canônica; regra + métricas) e `MANIFEST.md` (proveniência).
+> ⚠️ Números antigos = in-sample/research (não edge). Regime **split-brain**: scanner=`regime_B_v3` (morto), runtime live=`regime_l1_v4`. Gate é **RSI-only** (leg vol removido). Ver banner em `STRATEGY.md`.
 
 ## O que é
 Estratégia de **continuação de alta no XAUUSD 4H**, dentro de tendência estabelecida (EMA21/SMA50,
@@ -24,7 +25,7 @@ scanner.py (base + RSI gate)  →  [operacional?]  →  telegram_notify.py (cand
 `runtime_xau.py` lê o chart XAU 4H via MCP (`my-strategy/core/tv_read_adapter.py`, **read-only, nunca dirige o chart**), aplica o gate, e dispara candidate notification só para candidato OPERACIONAL. Grupos em `my-strategy/core/group_model_xau.py`: **XAU_240 ativo** (consumidor L1); **XAU_60 / XAU_15 RESERVADOS** (preparação multi-TF; sem estratégia aprovada, sem Telegram). XAU-only — sem multi-ativo.
 - Modos: `--once` · default **dry-run** · `--send-telegram` (opt-in real) · `--dedup-path` (1 envio por `signal_hash`).
 - **Autoridade do gate-base = scanner** (RAW). O runtime orquestra (regime/precondição, dedup, journal, notify) — não duplica a regra.
-- 🔴 **Dependência pendente p/ emissão LIVE:** o **regime D-1 (`regime_B_v3`)** é pré-condição e o feed termina **2026-05-25** → a barra live atual retorna `no_candidate / regime_feed_stale` (honesto, sem Telegram). **Emitir candidato operacional ao vivo exige o feed de regime live (próximo bloco).** Sem isso, o runtime lê o chart e decide corretamente, mas não emite.
+- 🔴 **Dependência pendente p/ emissão LIVE:** o runtime usa **regime D-1 = `regime_l1_v4`** (fresco via `refresh_regime_l1_v4.py`; o `regime_B_v3` citado em versões antigas está morto). Além disso, o runtime **ainda não confirma a base-rule estrutural completa (EMA/SMA/BOS/OB/F5) ao vivo** → marca `needs_base_confirmation` e **não emite `operational_candidate`**. Regime atual BEAR → `no_candidate` (honesto, sem Telegram). **Emitir candidato operacional ao vivo exige (1) regime BULL e (2) confirmação da base-rule live (próximo bloco técnico).**
 - Sem scheduler/daemon/LaunchAgent/broker/MCP-de-gestão neste estágio.
 
 ### Fluxo de sinal imediato (alvo, ativação futura autorizada)

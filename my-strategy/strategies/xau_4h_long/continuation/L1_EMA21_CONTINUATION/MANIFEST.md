@@ -8,15 +8,17 @@ Persistir a **primeira estratégia aprovada da nova arquitetura** de forma simpl
 e segura — **sem ligar produção** e sem criar complexidade desnecessária.
 
 Status declarado pelo usuário:
-- **USER_APPROVED_FINAL**
-- **HUMAN_DISCRETIONARY** (human-in-the-loop; scanner/base rule gera candidato, decisão final humana)
+- **governance_status: USER_APPROVED_FINAL · HUMAN_DISCRETIONARY** (human-in-the-loop; scanner/base rule gera candidato, decisão final humana)
+- **evidence_status: NOT_VALIDATED_OOS** (`PROMISING_BUT_NEEDS_MORE_DATA`)
 - **CONTINUATION** — não fully mechanical, não full automation.
 
-Regra final BLOCK/REVIEW aprovada e **confirmada visualmente** pelo usuário como bloqueio de
-exaustão real:
+> ⚠️ **ATUALIZAÇÃO 2026-06-16 — ver banner de RECLASSIFICAÇÃO em `STRATEGY.md`.** (a) Números desta era (FULL-38/KEEP-19/+32.6R) são **in-sample/research `NOT_VALIDATION`**, não prova de edge. (b) **Regime split-brain:** scanner=`regime_B_v3` (morto/legado), runtime live=`regime_l1_v4` → re-derivar sob regime live. (c) O leg `vol_entry_z` foi **removido** (morto + dado bugado); gate é **RSI-only**.
+
+Regra de exaustão **canônica atual (RSI-only)** — o leg de volume foi removido (2026-06-15):
 ```
-BLOCK / REVIEW  if  vol_entry_z >= 1.993  OR  rsi_vs_ma <= -9.35
+blocked_exhaustion  if  round(rsi_vs_ma, 2) <= -9.35
 ```
+> Histórico (NÃO usar): a regra originalmente registrada era `vol_entry_z >= 1.993 OR rsi_vs_ma <= -9.35`. O leg `vol_entry_z` é **estruturalmente morto sob F5 e foi derivado de matriz bugada** → eliminado. Mantido aqui só como registro do que mudou.
 
 ## Arquivos fonte usados (referência, não copiados)
 - `my-strategy/research/revalidation/XAU_4H_LONG_CONTINUATION_L1_EMA21_A_F5/rebuild_v3/trades.jsonl`

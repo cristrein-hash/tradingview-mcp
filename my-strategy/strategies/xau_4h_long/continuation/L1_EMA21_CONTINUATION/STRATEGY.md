@@ -2,10 +2,22 @@
 ## L1 · EMA21 CONTINUATION
 
 ## Status
-- **USER_APPROVED_FINAL**
-- **HUMAN_DISCRETIONARY**
+- **governance_status: USER_APPROVED_FINAL · HUMAN_DISCRETIONARY** (humano autorizou rodar; entrada é decisão humana)
+- **evidence_status: NOT_VALIDATED_OOS** (`PROMISING_BUT_NEEDS_MORE_DATA`)
 - **CONTINUATION**
 - Não é fully mechanical. Não executa automaticamente. Exige confirmação humana.
+
+---
+
+## ⚠️ RECLASSIFICAÇÃO 2026-06-16 (ler primeiro — supersede prosa conflitante abaixo)
+Este banner é a **fonte canônica** onde o texto histórico abaixo divergir.
+
+1. **governance ≠ evidence.** A L1 está **operacional por decisão humana** (USER_APPROVED_FINAL, human-discretionary) e por arquitetura segura. Isso **não** significa edge validado. **evidence_status = NOT_VALIDATED_OOS.**
+2. **Números antigos são in-sample / research, NÃO prova de edge.** FULL-38, **KEEP-19 (+32.6R)**, terços por ano = reconstruções `NOT_VALIDATION` / rótulo humano (Cris marcou winners olhando o chart). `mechanizable_now=false`, veredito `NEEDS_CAUSAL_FILTER_BEFORE_ANY_CLAIM`. **Não usar esses números como prova de edge.** O gate `rsi_vs_ma≤−9.35` "corta 0 winners" é **seleção in-sample** (threshold tunado sobre os mesmos n=38); os "monumentais" #36 +9.5R / #38 +6.53R **não são ≥20R**.
+3. **🔴 REGIME SPLIT-BRAIN.** O `scanner.py` (autoridade da base-rule que gerou os números acima) **ainda gateia em `regime_B_v3`**; o `runtime_xau.py` (caminho LIVE do scheduler) gateia em **`regime_l1_v4`**. São classificadores **diferentes** → **os números in-sample NÃO correspondem ao gate que roda ao vivo** e precisam ser **re-derivados sob `regime_l1_v4`**. `regime_B_v3` está declarado **morto como autoridade** (ver `core/regime_l1/regime_l1_v4.py`); sua presença no scanner é legado pendente de migração, não autoridade atual.
+4. **vol_entry_z é HISTÓRICO, não ativo.** O leg `vol_entry_z >= 1.993` foi **removido** (morto sob F5 **e** derivado de matriz bugada). O gate operacional é **RSI-only**. Qualquer texto abaixo que trate o leg de volume como parte ativa está **superseded**.
+5. **Base-rule live PENDENTE.** O runtime live confirma regime+RSI gate, mas **ainda não confirma a base-rule estrutural completa** (EMA/SMA/BOS/OB/F5) → marca `needs_base_confirmation` e **não emite `operational_candidate`** ao vivo. A L1 **não é fully mechanized** enquanto isso não existir.
+6. **Próximo bloco técnico (toca código — exige autorização):** unificar `scanner.py` + `runtime_xau.py` em `regime_l1_v4`; **re-derivar candidatos/números sob o regime live**; só então planejar gate manifest + RAW OOS.
 
 ---
 
@@ -23,7 +35,7 @@ quando provável exaustão deve fazer **bloquear ou revisar** a entrada.
 
 ## Base rule (resumida)
 - Ativo / TF: **XAUUSD 4H, LONG**.
-- Regime macro **D-1 = BULL** (regime_B_v3, consultado no dia anterior — causal, SHIFT1).
+- Regime macro **D-1 = BULL** (causal, SHIFT1). ⚠️ **SPLIT-BRAIN (ver banner):** o `scanner.py` ainda usa `regime_B_v3` (legado, morto como autoridade); o **runtime LIVE usa `regime_l1_v4`**. A autoridade atual é `regime_l1_v4`; números gerados sob `regime_B_v3` precisam re-derivação.
 - `close > EMA21 > SMA50` com **slopes** de EMA21/SMA50 positivos (continuação, não fundo).
 - **BOS causal** (estrutura de alta confirmada por barras já fechadas).
 - Toque em **zona de demanda Custom OB v11**.
