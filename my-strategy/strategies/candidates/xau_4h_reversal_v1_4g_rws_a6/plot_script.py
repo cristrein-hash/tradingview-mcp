@@ -1,7 +1,12 @@
 """Plot V1.4g-RWS trades 2023+ on chart with A6 distinction.
 - KEPT (A6 ✓): green long_position with R label
 - CUT (A6 ✗): magenta/purple long_position with ✗ overlay text
-Canonical format per reference_trade_plotting_canonical."""
+
+⚠️ DEPRECATED — DO NOT USE — BUG: stopLevel/profitLevel passados como PREÇO ABSOLUTO
+(linha ~23). O TradingView interpreta esses campos como OFFSETS EM TICKS, não preços.
+Plotar com este script produz stop/target-artefato. A6 é KEEP_REFERENCE (não operacional).
+Para qualquer plotagem nova, usar docs/CANONICAL_TRADE_PLOTTING.md +
+alert-bridge/draw_xau_4h_trades.py (price_to_ticks_offset). Mantido só como histórico."""
 import json, subprocess
 from datetime import datetime
 
@@ -19,7 +24,10 @@ def plot_trade(idx, t):
     stop = t["stop"]
     exit_price = t["exit_price"]
 
-    # Long position drawing (canonical format)
+    # Long position drawing
+    # 🔴 BUG (DEPRECATED): preço absoluto — o correto é TICKS:
+    #   "stopLevel": round((entry-stop)/0.01), "profitLevel": round((exit_price-entry)/0.01)
+    # Ver docs/CANONICAL_TRADE_PLOTTING.md. Não corrigido aqui (script reference-only/histórico).
     overrides = {"stopLevel": stop, "profitLevel": exit_price}
     cmd = ["node", "src/cli/index.js", "draw", "shape",
            "--type", "long_position",
