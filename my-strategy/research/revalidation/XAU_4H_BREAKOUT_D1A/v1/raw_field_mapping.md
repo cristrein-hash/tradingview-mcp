@@ -53,11 +53,11 @@
 
 | Campo | Fonte RAW? | Derivado? | Fórmula | Causal? | SHIFT1? | Sanity check |
 |---|---|---|---|---|---|---|
-| `daily close` | ✅ RAW 1D direto | não | — | sim | **sim — último 1D fechado** | finito, >0 |
-| `daily EMA50` | derivado de close 1D | sim | EMA close 1D, `alpha=2/51` | sim | herda do 1D fechado | warmup |
-| `daily EMA200` | derivado de close 1D | sim | EMA close 1D, `alpha=2/201` | sim | herda do 1D fechado | **warmup 200 dias** |
-| `daily timestamp` | ✅ RAW 1D direto | não | — | — | — | ordenado, passo diário, UTC |
-| `latest_closed_daily_before_4h_bar` | derivado | sim | para o bar 4H em `t`, o 1D com `close_time ≤ t` mais recente | **sim — CRÍTICO** | **sim** | **prova empírica obrigatória** (SHIFT1-audit): nunca o D em formação |
+| `daily close` | ✅ RAW 1D direto | não | — | sim | **sim — último 1D fechado** | finito, >0; `ts`=open UTC, candle fecha D+1 (provado) |
+| `daily EMA50` | derivado de close 1D | **sim — A CONSTRUIR** | EMA close 1D, `alpha=2/51` | sim | herda do 1D fechado | ⚠️ pipeline tem **SMA** (`ma_50`), não EMA; precisa build EMA |
+| `daily EMA200` | derivado de close 1D | **sim — A CONSTRUIR** | EMA close 1D, `alpha=2/201` | sim | herda do 1D fechado | ⚠️ idem; **warmup 200 dias** → usar RAW 1D **2012** |
+| `daily timestamp` | ✅ RAW 1D direto | não | `ts`=open do candle (TradingView `bar.time`) | — | — | ordenado, passo diário, UTC; fins de semana ausentes |
+| `latest_closed_daily(eval)` | derivado | sim | **`date(daily) < date(eval_bar_4h_UTC)`** (date-shift D-1) — **NÃO** `midnight(ts)<bar_time` (PROD vaza intraday, provado) | **sim — CRÍTICO** | **sim** | ver `docs/XAU_4H_BREAKOUT_D1A_D1_SHIFT_AUDIT.md`: PROD `t<bar_time` vaza same-day em 04:00/08:00/12:00/20:00; CAUSAL 0 leaks |
 
 **Predicado D1a:** `close_1D > EMA200_1D AND EMA50_1D > EMA200_1D` no `latest_closed_daily_before_4h_bar`.
 **⚠️ Alinhamento 1D→4H é o ponto de maior risco** (precedente A1' SUPERTREND: "causal-by-construction" colapsou 88%→46% sob SHIFT1-audit). Implementação correta = `merge_asof(..., direction='backward')` **com** a coluna de tempo do 1D sendo o **close-time** do candle diário (não o open-time), garantindo que o D do próprio dia (ainda aberto às 04:00/08:00/12:00/16:00/20:00 UTC) **não** seja consultado.
@@ -103,7 +103,7 @@ O `D1a` **não tem campo no slim** (nem flag 1D no `trades.jsonl` v1) — é pro
 - ✅ **RAW 4H/1D** — registry confirma cobertura (4H 2016-2026; 1D 2012-2026).
 
 **REMANESCENTES (parar a variante que depende):**
-- [ ] **D1a — Daily alignment + mecanização (HARD STOP V6/V7).** Slim 1D não extraído; `latest_closed_daily` não provado; **SHIFT1-audit pendente**. V0-V5 NÃO afetados.
+- [ ] **D1a — HARD STOP V6/V7 (alinhamento PROVADO, implementação pendente).** Atualizado pelo `D1_SHIFT_AUDIT` (2026-06-16): pipeline 1D localizado (`build_daily_features.py`/`regime_l1_v4.py`/`xau_daily_l1v4.jsonl`); convenção `ts`=open UTC provada; regra causal `latest_closed_daily = date(daily)<date(eval)` definida e demonstrada (PROD `t<bar_time` **vaza** same-day intraday). **Falta:** (a) build `EMA50_1D/EMA200_1D` (pipeline só tem **SMA** `ma_50/ma_200`), warmup RAW 1D 2012; (b) implementar a regra causal; (c) **SHIFT1-audit empírico ORIG-vs-SHIFT**. V0-V5 NÃO afetados.
 - [ ] **Outcome engine causalidade** (same-bar fill, BE sem lookahead, stop/target stop-first) — a fixar na implementação.
 - [ ] **Cobertura slim v2 4H** com RSI study em todos os blocos 2016-2026 — confirmar na Rodada 1.
 

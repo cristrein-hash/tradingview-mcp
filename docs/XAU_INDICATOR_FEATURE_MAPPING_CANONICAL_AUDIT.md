@@ -155,7 +155,9 @@
 
 ## 8. D1 alignment
 
-**Status: HARD_STOP_FOR_REBUILD (V6/V7) — regra definida, mecanização + prova pendentes.**
+**Status: HARD_STOP_FOR_REBUILD (V6/V7) — alinhamento PROVADO (`docs/XAU_4H_BREAKOUT_D1A_D1_SHIFT_AUDIT.md`, 2026-06-16); build EMA + implementação + SHIFT1-audit empírico pendentes.**
+
+> **Atualização D1_SHIFT_AUDIT:** pipeline 1D localizado; `ts`=open UTC provado; regra causal `latest_closed_daily = date(daily)<date(eval)` definida e demonstrada (0 leaks) — a regra de produção `latest_state_before` (`t<bar_time`) **vaza** o daily same-day em barras 4H intraday (provado em 7 testes de borda), segura só em live (arquivo exclui today). **Mismatch SMA/EMA:** pipeline tem `ma_50/ma_200` (SMA); D1a exige EMA50_1D/EMA200_1D (build pendente, warmup RAW 1D 2012).
 
 - **Regra canônica:** para cada 4H eval_bar em `t`, usar o **último 1D fechado** com `close_time ≤ t`. **Nunca** o D em formação.
 - **Predicado D1a:** `close_1D > EMA200_1D AND EMA50_1D > EMA200_1D` no daily fechado.
