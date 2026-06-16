@@ -144,7 +144,8 @@ def evaluate(snapshot):
     """Avalia a config APROVADA no live, reusando os gates do scanner sobre uma Series construída
     do snapshot. NAS SHIFT1 vem do histórico persistido (i-1), nunca do NAS atual. Sem proxy.
     Estados: operational_candidate / blocked_exhaustion / blocked_l1_refined_filter /
-             blocked_missing_nas_shift1 / blocked_missing_base_rule_live_fields / no_candidate."""
+             blocked_missing_nas_shift1 / blocked_missing_base_rule_live_fields /
+             blocked_missing_closed_bar_study_values / blocked_bar_not_closed / no_candidate."""
     sym = snapshot["symbol"]; tf = snapshot["timeframe"]
     bt = snapshot.get("bar_time")
     ts_iso = datetime.utcfromtimestamp(bt).isoformat() if bt else "?"
@@ -158,23 +159,47 @@ def evaluate(snapshot):
         return {**base, "operational": False, "state": "blocked_missing_base_rule_live_fields",
                 "reason": "ohlcv insuficiente p/ identificar i-1"}
 
-    # 0) GUARDA DE BAR-FECHADO (close-only-causal): o snapshot pode trazer o bar EM FORMAÇÃO como
-    # último (data_get_ohlcv inclui o realtime). NUNCA avaliar/persistir um bar incompleto — isso
-    # contaminaria o NAS SHIFT1 futuro. Bar 4H com time t fecha em t+14400; só prosseguir se fechado.
+    # 0) SELEÇÃO DA ÚLTIMA BARRA 4H FECHADA (close-only-causal). data_get_ohlcv inclui o realtime
+    # (bar em formação) como última; bar 4H com time t fecha em t+14400. eval_bar = última fechada.
     TF_SEC = 14400
     now = datetime.now(timezone.utc).timestamp()
-    if bt is None or now < bt + TF_SEC:
+    closed_idx = None
+    for k in range(len(bars) - 1, -1, -1):
+        t = bars[k].get("time")
+        if t is not None and now >= t + TF_SEC:
+            closed_idx = k; break
+    returned_last_bar_time = bars[-1].get("time")
+    if closed_idx is None:
         return {**base, "operational": False, "state": "blocked_bar_not_closed",
-                "reason": f"último bar {bt} ainda em formação (fecha em {None if bt is None else int(bt+TF_SEC)}, now {int(now)}); não avalio/persisto bar incompleto"}
+                "reason": f"nenhuma barra fechada na janela (returned_last={returned_last_bar_time}, now={int(now)})"}
+    eval_bar_time = bars[closed_idx].get("time")
+    previous_closed_bar_time = bars[closed_idx - 1].get("time") if closed_idx >= 1 else None
+    forming_bar_excluded = (closed_idx != len(bars) - 1)
+    diag = {"returned_last_bar_time": returned_last_bar_time, "eval_bar_time": eval_bar_time,
+            "previous_closed_bar_time": previous_closed_bar_time,
+            "forming_bar_excluded": forming_bar_excluded}
+    # candidate_timestamp = eval_bar (fechada), não o realtime
+    base["candidate_timestamp"] = datetime.utcfromtimestamp(eval_bar_time).isoformat()
+    base["signal_hash"] = signal_hash(sym, tf, base["candidate_timestamp"])
+    base["bar_diagnostics"] = diag
 
-    # 1) persistir o NAS do bar atual (i, JÁ FECHADO) p/ ciclos futuros usarem como i-1.
-    persist_feature(bt, snapshot.get("nas_dist"))
-    prev_bar_time = bars[-2].get("time")
-    # 3) NAS SHIFT1 (i-1) do histórico — NUNCA o NAS atual
-    nas_im1 = nas_from_history(prev_bar_time)
+    # ALINHAMENTO DE STUDY-VALUE: rsi/nas do snapshot são do ÚLTIMO bar RETORNADO (realtime, se houver
+    # forming). Só correspondem ao eval_bar se NÃO houver forming excluído. Usar o study-value do
+    # forming para o eval_bar fechado seria LOOK-AHEAD → bloquear com razão precisa.
+    if forming_bar_excluded:
+        return {**base, "operational": False, "state": "blocked_missing_closed_bar_study_values",
+                "reason": (f"study-values do snapshot (rsi/nas) são do bar em formação "
+                           f"{returned_last_bar_time}, não do eval_bar fechado {eval_bar_time}; "
+                           f"sem study-value causal do bar fechado neste snapshot")}
+
+    # aqui: último bar RETORNADO == eval_bar (fechado) -> rsi/nas do snapshot alinham ao eval_bar
+    # 1) persistir o NAS do eval_bar (fechado) p/ ciclos futuros usarem como i-1.
+    persist_feature(eval_bar_time, snapshot.get("nas_dist"))
+    # 2) NAS SHIFT1 = NAS do bar fechado IMEDIATAMENTE ANTERIOR ao eval_bar — NUNCA o NAS atual
+    nas_im1 = nas_from_history(previous_closed_bar_time)
     if nas_im1 is None:
         return {**base, "operational": False, "state": "blocked_missing_nas_shift1",
-                "reason": f"sem NAS persistido p/ i-1 (bar_time={prev_bar_time}); rode novamente após próximo fechamento"}
+                "reason": f"sem NAS persistido p/ i-1 (bar_time={previous_closed_bar_time}); rode novamente após próximo fechamento"}
 
     S, info = build_live_series(snapshot, nas_im1)
     if S is None:
