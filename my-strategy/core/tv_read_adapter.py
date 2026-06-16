@@ -90,25 +90,26 @@ def read_xau_snapshot(timeframe="240"):
         if missing:
             return _hard(f"indicadores necessários ausentes no chart: {missing}")
         # study_values -> RSI / RSI-based MA (estrutura variável -> varredura)
-        rsi = rma = None
-        svv = m.call("data_get_study_values", {"study_filter": "Relative Strength Index"})
+        rsi = rma = nas_dist = None
+        svv = m.call("data_get_study_values")  # todos os estudos (RSI + NAS + ...)
         # tenta extrair RSI / RSI-based MA de qualquer formato retornado
         def num(x):
             try: return float(str(x).replace(" ", "").replace(",", "").replace("−", "-"))
             except Exception: return None
         def walk(o):
-            nonlocal rsi, rma
+            nonlocal rsi, rma, nas_dist
             if isinstance(o, dict):
                 for k, v in o.items():
                     if isinstance(v, (dict, list)): walk(v)
                     elif k == "RSI": rsi = num(v)
                     elif k in ("RSI-based MA", "RSI-based_MA"): rma = num(v)
+                    elif k == "NAS_DISTANCE_FROM_EMA_ATR": nas_dist = num(v)
             elif isinstance(o, list):
                 for v in o: walk(v)
         walk(svv)
         rsi_vs_ma = (rsi - rma) if (rsi is not None and rma is not None) else None
         # OHLCV recente (audit/contexto)
-        oh = m.call("data_get_ohlcv", {"count": 5})
+        oh = m.call("data_get_ohlcv", {"count": 300})
         bars = oh.get("bars") or oh.get("ohlcv") or []
         bar_time = bars[-1].get("time") if bars else None
         # Custom OB zones
@@ -128,6 +129,7 @@ def read_xau_snapshot(timeframe="240"):
             "bar_time": bar_time,
             "ohlcv_recent": bars,
             "rsi": rsi, "rsi_ma": rma, "rsi_vs_ma": rsi_vs_ma,
+            "nas_dist": nas_dist,
             "ob_zones": ob_zones,
             "studies_present": names,
             "raw_refs": {"studies": "data_get_study_values", "boxes": "data_get_pine_boxes:Custom OB",
