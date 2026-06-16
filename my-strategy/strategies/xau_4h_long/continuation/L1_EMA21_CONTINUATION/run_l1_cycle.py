@@ -26,6 +26,24 @@ RUNTIME = HERE / "runtime_xau.py"
 STATE_DIR = HERE / ".runtime_state"
 DEDUP = STATE_DIR / "l1_dedup.txt"
 LOG = STATE_DIR / "l1_cycle.log"
+LOG_MAX_BYTES = 2_000_000   # ~2 MB
+LOG_BACKUPS = 3
+
+
+def _rotate_log():
+    """Rotação mínima sem dep externa: l1_cycle.log -> .1 -> .2 -> .3 (mantém 3 backups)."""
+    try:
+        if LOG.exists() and LOG.stat().st_size > LOG_MAX_BYTES:
+            oldest = LOG.with_suffix(LOG.suffix + f".{LOG_BACKUPS}")
+            if oldest.exists():
+                oldest.unlink()
+            for i in range(LOG_BACKUPS - 1, 0, -1):
+                src = LOG.with_suffix(LOG.suffix + f".{i}")
+                if src.exists():
+                    src.rename(LOG.with_suffix(LOG.suffix + f".{i + 1}"))
+            LOG.rename(LOG.with_suffix(LOG.suffix + ".1"))
+    except Exception:
+        pass  # rotação é best-effort; nunca derruba o ciclo
 
 
 def _run(argv):
@@ -65,7 +83,8 @@ def cycle(send_telegram=False):
         out = {"status": "OK", "refresh": refresh_status, "state": state,
                "telegram_real": bool(send_telegram), "notify_sent": notify.get("sent"),
                "notify_skip": notify.get("skip"), "signal_hash": cand.get("signal_hash")}
-    # log próprio (não-legacy)
+    # log próprio (não-legacy) com rotação mínima
+    _rotate_log()
     with open(LOG, "a") as f:
         f.write(json.dumps({"ts": ts, **out}, ensure_ascii=False) + "\n")
     return {"ts": ts, **out}

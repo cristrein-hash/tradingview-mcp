@@ -1,3 +1,9 @@
+> 🗄️ **ARCHIVE — REFERÊNCIA HISTÓRICA, NÃO-OPERACIONAL (2026-06-16).**
+> `regime_pipeline.py` aqui reproduz o **regime legacy morto** v2→v3 (`regime_B_v3`), declarado
+> IRRECUPERÁVEL. **NÃO é usado pela L1** — o regime operacional é `core/regime_l1/regime_l1_v4.py`.
+> Mantido só como diagnóstico/lição. O builder `build_daily_features.py` permanece **OPERACIONAL**
+> em `core/regime/` (usado por regime_l1_v4) e NÃO foi arquivado.
+
 # Regime pipeline (Production v2) — reconstrução offline canônica
 
 Reconstrução **offline, repo-local e validada** do pipeline de regime XAU usado como
