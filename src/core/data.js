@@ -494,6 +494,69 @@ export async function getPineBoxes({ study_filter, verbose } = {}) {
   return { success: true, study_count: studies.length, studies };
 }
 
+// 2026-06-16: getStudyValuesAtBar — valores de PLOT por bar (com timestamp) via study.data().valueAt().
+// Diferente de getStudyValues (que lê a data-window = bar corrente/forming, SEM bar-alignment), esta lê
+// a série indexada por bar do study: slot 0 = time, slots 1+ = cada plot na ordem. Permite alinhar a
+// um bar FECHADO específico pelo seu time (close-only-causal). Args: study_filter (substring), count
+// (últimos N bars, default 3, max 50). Output por study: {name, last_index, bars:[{bar_index,time,values}]}.
+export async function getStudyValuesAtBar({ study_filter, count } = {}) {
+  const filter = study_filter || '';
+  const n = Math.min(count || 3, 50);
+  const raw = await evaluate(`
+    (function() {
+      try {
+        var chart = window.TradingViewApi._activeChartWidgetWV.value()._chartWidget;
+        var model = chart.model();
+        var sources = model.model().dataSources();
+        var results = [];
+        var filter = ${safeString(filter)};
+        var n = ${n};
+        for (var si = 0; si < sources.length; si++) {
+          var s = sources[si];
+          if (!s.metaInfo) continue;
+          try {
+            var meta = s.metaInfo();
+            var name = meta.description || meta.shortDescription || '';
+            if (!name) continue;
+            if (filter && name.indexOf(filter) === -1) continue;
+            var plots = meta.plots || [];
+            var styles = meta.styles || {};
+            var slotMap = [];
+            var arrayIdx = 1;            // slot 0 = time; cada plot ocupa 1 slot na ordem
+            for (var pi = 0; pi < plots.length; pi++) {
+              var p = plots[pi];
+              var title = (styles[p.id] && styles[p.id].title) || p.id;
+              slotMap.push({ slot: arrayIdx, title: title });
+              arrayIdx++;
+            }
+            var data = s.data();
+            if (!data || typeof data.valueAt !== 'function') continue;
+            var lastIdx = data.lastIndex();
+            var firstIdx = data.firstIndex();
+            var startIdx = Math.max(firstIdx, lastIdx - n + 1);
+            var bars = [];
+            for (var i = startIdx; i <= lastIdx; i++) {
+              var v = data.valueAt(i);
+              if (!v) continue;
+              var vals = {};
+              for (var ci = 0; ci < slotMap.length; ci++) {
+                var sm = slotMap[ci];
+                var val = v[sm.slot];
+                if (val !== undefined && val !== null && !(typeof val === 'number' && isNaN(val))) vals[sm.title] = val;
+              }
+              bars.push({ bar_index: i, time: v[0], values: vals });
+            }
+            results.push({ name: name, last_index: lastIdx, bars: bars });
+          } catch (e) {}
+        }
+        return results;
+      } catch (e) { return { _error: String(e) }; }
+    })()
+  `);
+  return { success: true, studies: raw || [] };
+}
+
+
 // 2026-05-19: getPineShapes — captura plotshape()/plotchar() data por bar via study.data().valueAt().
 // Diferente de pine_labels/boxes (que usam _primitivesCollection), shapes vivem na própria IndexedDataSet
 // do study, indexada por bar. Pra cada plot do tipo "shapes" ou "chars" no metaInfo, lê o slot

@@ -86,6 +86,14 @@ export function registerDataTools(server) {
     catch (err) { return jsonResult({ success: false, error: err.message }, true); }
   });
 
+  server.tool('data_get_study_values_at_bar', 'Get indicator PLOT values PER BAR with timestamp for the last N bars (reads the study.data().valueAt(barIndex) series). Unlike data_get_study_values (data-window = current/forming bar, no bar alignment), this lets you read the value at a specific CLOSED bar by matching its time (close-only-causal). Use study_filter to target an indicator (e.g. "NAS", "Relative Strength").', {
+    study_filter: z.string().optional().describe('Substring to match study name (e.g., "NAS", "Relative Strength")'),
+    count: z.coerce.number().optional().describe('Last N bars to return (default 3, max 50)'),
+  }, async ({ study_filter, count }) => {
+    try { return jsonResult(await core.getStudyValuesAtBar({ study_filter, count })); }
+    catch (err) { return jsonResult({ success: false, error: err.message }, true); }
+  });
+
   server.tool('data_get_pine_shapes', 'Read plotshape()/plotchar() activations per bar from Pine indicators (Market Bubbles, NAS signals, custom shape plots). Returns per-bar activations of each shape plot (binary 1/0 or numeric values). Use study_filter to target a specific indicator. max_bars sets retroactive window (default 500, max 5000).', {
     study_filter: z.string().optional().describe('Substring to match study name (e.g., "Bubbles", "NAS"). Omit for all.'),
     max_bars: z.coerce.number().optional().describe('Max bars to scan retroactively (default 500, max 5000)'),
