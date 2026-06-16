@@ -1,0 +1,206 @@
+{
+  "n": 16454,
+  "meta": {
+    "path": "/Users/cristrein/tradingview-mcp/alert-bridge/logs/indicator_signals.jsonl",
+    "total_lines": 16454,
+    "parse_errors": 0,
+    "kept": 16454,
+    "filtered_out": 0,
+    "symbol_filter": null,
+    "since": null,
+    "limit": null
+  },
+  "range": {
+    "min": "2026-05-17T21:00:00.572031+00:00",
+    "max": "2026-06-16T08:00:00+00:00",
+    "span_days": 30,
+    "avg_signals_per_day": 548.5
+  },
+  "per_symbol": {
+    "ETHUSD": 4488,
+    "XAUUSD": 3307,
+    "XAGUSD": 2997,
+    "EURUSD": 2865,
+    "US500": 2794,
+    "(vazio)": 3
+  },
+  "per_provider": {
+    "PEPPERSTONE": 12892,
+    "(nenhum)": 3562
+  },
+  "per_indicator": {
+    "Custom_OB_Detector": 9195,
+    "Market_Bubbles": 3863,
+    "RSI": 2415,
+    "NAS_TopBottom_Detector": 976,
+    "(vazio)": 2,
+    "TEST": 2,
+    "TEST_PROVIDER_NORMALIZATION": 1
+  },
+  "per_timeframe": {
+    "15": 8722,
+    "30": 4603,
+    "60": 2333,
+    "240": 660,
+    "D": 135,
+    "4H": 1
+  },
+  "completeness": {
+    "has_timestamp": {
+      "count": 16454,
+      "pct": 100.0
+    },
+    "has_symbol": {
+      "count": 16454,
+      "pct": 100.0
+    },
+    "has_timeframe": {
+      "count": 16454,
+      "pct": 100.0
+    },
+    "has_source": {
+      "count": 16452,
+      "pct": 99.99
+    },
+    "has_signal_type": {
+      "count": 16452,
+      "pct": 99.99
+    },
+    "has_payload": {
+      "count": 16454,
+      "pct": 100.0
+    },
+    "has_ingestion_hash": {
+      "count": 16454,
+      "pct": 100.0
+    }
+  },
+  "duplicates": {
+    "by_ingestion_hash": 0,
+    "by_tuple_fallback": 0,
+    "records_without_hash": 0,
+    "total": 0,
+    "rate_pct": 0.0
+  },
+  "parse_errors": 0,
+  "top_days": {
+    "2026-06-05": 1090,
+    "2026-06-10": 1030,
+    "2026-06-15": 992,
+    "2026-05-28": 934,
+    "2026-06-02": 928
+  },
+  "per_hour_utc": {
+    "0": 588,
+    "1": 767,
+    "2": 750,
+    "3": 631,
+    "4": 671,
+    "5": 668,
+    "6": 709,
+    "7": 680,
+    "8": 630,
+    "9": 646,
+    "10": 687,
+    "11": 640,
+    "12": 834,
+    "13": 946,
+    "14": 883,
+    "15": 732,
+    "16": 656,
+    "17": 688,
+    "18": 610,
+    "19": 597,
+    "20": 556,
+    "21": 401,
+    "22": 855,
+    "23": 627
+  },
+  "xau_subset": {
+    "n": 3310,
+    "per_timeframe": {
+      "15": 1747,
+      "30": 922,
+      "60": 470,
+      "240": 140,
+      "D": 30,
+      "4H": 1
+    },
+    "per_indicator": {
+      "Custom_OB_Detector": 1644,
+      "Market_Bubbles": 1031,
+      "RSI": 402,
+      "NAS_TopBottom_Detector": 228,
+      "(vazio)": 2,
+      "TEST": 2,
+      "TEST_PROVIDER_NORMALIZATION": 1
+    },
+    "per_day_recent": {
+      "2026-06-09": 191,
+      "2026-06-10": 269,
+      "2026-06-11": 211,
+      "2026-06-12": 131,
+      "2026-06-14": 23,
+      "2026-06-15": 229,
+      "2026-06-16": 60
+    },
+    "recent": [
+      {
+        "ts_signal": "2026-06-16T07:00:00Z",
+        "symbol": "PEPPERSTONE:XAUUSD",
+        "tf": "60",
+        "indicator": "Custom_OB_Detector",
+        "signal_type": "ob_bearish_violated"
+      },
+      {
+        "ts_signal": "2026-06-16T07:15:00Z",
+        "symbol": "PEPPERSTONE:XAUUSD",
+        "tf": "15",
+        "indicator": "Market_Bubbles",
+        "signal_type": "Small_Buy"
+      },
+      {
+        "ts_signal": "2026-06-16T07:30:00Z",
+        "symbol": "PEPPERSTONE:XAUUSD",
+        "tf": "30",
+        "indicator": "Custom_OB_Detector",
+        "signal_type": "ob_bearish_violated"
+      },
+      {
+        "ts_signal": "2026-06-16T07:30:00Z",
+        "symbol": "PEPPERSTONE:XAUUSD",
+        "tf": "30",
+        "indicator": "Market_Bubbles",
+        "signal_type": "Small_Buy"
+      },
+      {
+        "ts_signal": "2026-06-16T07:30:00Z",
+        "symbol": "PEPPERSTONE:XAUUSD",
+        "tf": "30",
+        "indicator": "Custom_OB_Detector",
+        "signal_type": "new_ob_bullish"
+      },
+      {
+        "ts_signal": "2026-06-16T07:45:00Z",
+        "symbol": "PEPPERSTONE:XAUUSD",
+        "tf": "15",
+        "indicator": "Custom_OB_Detector",
+        "signal_type": "ob_bearish_violated"
+      },
+      {
+        "ts_signal": "2026-06-16T07:45:00Z",
+        "symbol": "PEPPERSTONE:XAUUSD",
+        "tf": "15",
+        "indicator": "Market_Bubbles",
+        "signal_type": "Medium_Buy"
+      },
+      {
+        "ts_signal": "2026-06-16T08:00:00Z",
+        "symbol": "PEPPERSTONE:XAUUSD",
+        "tf": "15",
+        "indicator": "Market_Bubbles",
+        "signal_type": "Medium_Buy"
+      }
+    ]
+  }
+}
