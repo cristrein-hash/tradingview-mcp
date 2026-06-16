@@ -154,6 +154,7 @@ def match(operational, xau240):
 def compute(operational, xau240, results, live_only, l1_meta, es_meta):
     import collections
     by_class = collections.Counter(r["classification"] for r in results)
+    anchor_kinds = collections.Counter(r.get("anchor_kind") for r in results)
     by_ind = collections.Counter(s.get("indicator_name") or "(vazio)" for s in xau240)
     by_prov = collections.Counter(s.get("provider") or "(nenhum)" for s in xau240)
     by_state = collections.Counter(e["state"] for e in (operational or []))
@@ -170,13 +171,18 @@ def compute(operational, xau240, results, live_only, l1_meta, es_meta):
                           "by_indicator": dict(by_ind.most_common()),
                           "by_provider": dict(by_prov.most_common())},
         "match_classification": dict(by_class),
+        "timestamp_anchor": {
+            "candidates_with_candidate_timestamp": sum(1 for c in operational if c.get("bar_ts")),
+            "candidates_using_cycle_proxy": sum(1 for c in operational if not c.get("bar_ts")),
+            "anchor_kinds_used": {k: v for k, v in anchor_kinds.items() if k},
+        },
         "live_signal_no_strategy_candidate": len(live_only),
         "match_window_minutes": int(MATCH_WINDOW.total_seconds() // 60),
         "event_store_total_lines": es_meta["total_lines"],
     }
 
 
-def render_md(m, evals_states):
+def render_md(m, evals_states, evals_bar_ts):
     L = []
     L.append("# Forward Candidate Matching — MVP Fase 2 (read-only, SEM R)")
     L.append("")
@@ -220,6 +226,14 @@ def render_md(m, evals_states):
     for k, v in (m["match_classification"] or {"(sem candidatos)": 0}).items():
         L.append(f"| {k} | {v} |")
     L.append(f"- `live_signal_no_strategy_candidate`: **{m['live_signal_no_strategy_candidate']}**")
+    ta = m["timestamp_anchor"]
+    L.append("")
+    L.append("## Qualidade do timestamp de match")
+    L.append(f"- Candidatos operacionais com **`candidate_timestamp` (bar exato):** {ta['candidates_with_candidate_timestamp']}  ·  "
+             f"usando **fallback `cycle_timestamp` (proxy):** {ta['candidates_using_cycle_proxy']}")
+    L.append(f"- Tipos de âncora usados: {ta['anchor_kinds_used'] or '(nenhum — sem candidatos operacionais)'}")
+    L.append(f"- Cobertura de `candidate_timestamp` nas avaliações L1 lidas: **{evals_bar_ts}/{m['l1']['total_evaluations']}** "
+             "(campo persistido a partir de 2026-06-16; ciclos antigos podem não tê-lo).")
     L.append("")
     L.append("## Limitações")
     L.append("- **Amostra forward insuficiente:** 0 candidatos operacionais (regime BEAR). Match real só "
@@ -250,10 +264,11 @@ def _main(argv=None):
     evals, operational, l1_meta = load_l1_candidates(args.l1_log, args.journal_path)
     import collections
     evals_states = dict(collections.Counter(e["state"] for e in evals))
+    evals_bar_ts = sum(1 for e in evals if e.get("bar_ts"))
     xau240, es_meta = load_xau_240(es)
     results, live_only = match(operational, xau240)
     m = compute(operational, xau240, results, live_only, l1_meta, es_meta)
-    md = render_md(m, evals_states)
+    md = render_md(m, evals_states, evals_bar_ts)
 
     if args.no_write:
         print(md)

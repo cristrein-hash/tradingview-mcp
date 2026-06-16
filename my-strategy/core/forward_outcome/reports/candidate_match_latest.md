@@ -7,8 +7,8 @@
 - O lado live está disponível e é mostrado abaixo (todos contam como `live_signal_no_strategy_candidate`).
 
 ## L1 (lado estratégico)
-- Ciclos/avaliações lidos: **6**  ·  candidatos OPERACIONAIS: **0**
-- Estados vistos: {'no_candidate': 6}
+- Ciclos/avaliações lidos: **7**  ·  candidatos OPERACIONAIS: **0**
+- Estados vistos: {'no_candidate': 7}
 - Fontes lidas: l1_cycle.log  ·  parse errors: 0
 
 ## XAU 240 (lado live / event store)
@@ -33,6 +33,11 @@
 |---|---|
 | (sem candidatos) | 0 |
 - `live_signal_no_strategy_candidate`: **140**
+
+## Qualidade do timestamp de match
+- Candidatos operacionais com **`candidate_timestamp` (bar exato):** 0  ·  usando **fallback `cycle_timestamp` (proxy):** 0
+- Tipos de âncora usados: (nenhum — sem candidatos operacionais)
+- Cobertura de `candidate_timestamp` nas avaliações L1 lidas: **1/7** (campo persistido a partir de 2026-06-16; ciclos antigos podem não tê-lo).
 
 ## Limitações
 - **Amostra forward insuficiente:** 0 candidatos operacionais (regime BEAR). Match real só será exercitado em janela BULL.

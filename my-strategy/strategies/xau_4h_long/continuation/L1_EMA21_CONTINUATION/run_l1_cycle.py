@@ -80,10 +80,16 @@ def cycle(send_telegram=False):
     if isinstance(cand.get("reason"), str) and "regime_l1_v4_stale" in cand.get("reason"):
         out = {"status": "STALE", "stage": "runtime", "reason": cand.get("reason")}
     else:
+        # `ts` (adicionado abaixo) = cycle_timestamp (quando o runner executou).
+        # `candidate_timestamp` = bar/candle avaliado pela estratégia (≠ cycle_timestamp);
+        # vem do runtime (`cand`), habilita match forward exato por bar (Forward Outcome Fase 2).
         out = {"status": "OK", "refresh": refresh_status, "state": state,
+               "symbol": cand.get("symbol"), "timeframe": cand.get("timeframe"),
+               "candidate_timestamp": cand.get("candidate_timestamp"),
+               "reason": cand.get("reason"),
                "telegram_real": bool(send_telegram), "notify_sent": notify.get("sent"),
                "notify_skip": notify.get("skip"), "signal_hash": cand.get("signal_hash")}
-    # log próprio (não-legacy) com rotação mínima
+    # log próprio (não-legacy) com rotação mínima. `ts` = cycle_timestamp.
     _rotate_log()
     with open(LOG, "a") as f:
         f.write(json.dumps({"ts": ts, **out}, ensure_ascii=False) + "\n")

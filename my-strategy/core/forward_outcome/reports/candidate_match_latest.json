@@ -2,7 +2,7 @@
   "metrics": {
     "verdict": "insufficient_forward_sample",
     "l1": {
-      "total_evaluations": 6,
+      "total_evaluations": 7,
       "operational_candidates": 0,
       "read_paths": [
         "/Users/cristrein/tradingview-mcp/my-strategy/strategies/xau_4h_long/continuation/L1_EMA21_CONTINUATION/.runtime_state/l1_cycle.log"
@@ -28,12 +28,17 @@
       }
     },
     "match_classification": {},
+    "timestamp_anchor": {
+      "candidates_with_candidate_timestamp": 0,
+      "candidates_using_cycle_proxy": 0,
+      "anchor_kinds_used": {}
+    },
     "live_signal_no_strategy_candidate": 140,
     "match_window_minutes": 250,
-    "event_store_total_lines": 16454
+    "event_store_total_lines": 16462
   },
   "evals_states": {
-    "no_candidate": 6
+    "no_candidate": 7
   },
   "results": []
 }
