@@ -58,6 +58,14 @@ my-strategy/strategies/candidates/regime_classifier_v3/xau_daily_with_features.j
 my-strategy/strategies/candidates/regime_classifier_v3/xau_weekly_with_features.jsonl
 my-strategy/strategies/candidates/xau_4h_reversal_v1_4g_rws_a6/v1_base_trades_2016_2026.jsonl
 
+# 2026-06-16: regime_L1_v4 LIVE/regenerated state — refresh_regime_l1_v4.py reescreve a cada ciclo
+#   do scheduler. Estado gerado (GENERATED_LIVE_STATE), NÃO source-of-truth. Código/README/schema
+#   ficam versionados; estes dados não. Snapshots só em bloco dedicado (manifest/checksum). Mantidos
+#   localmente (runtime lê os arquivos locais).
+my-strategy/core/regime_l1/xau_daily_l1v4.jsonl
+my-strategy/core/regime_l1/regime_l1_v4_classifications.jsonl
+my-strategy/core/regime_l1/xau_daily_l1v4.manifest.json
+
 # editor/OS caches
 __pycache__/
 *.pyc

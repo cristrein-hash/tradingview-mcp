@@ -15,10 +15,24 @@ TRANSITION  : caso contrário
 3 estados {BULL, TRANSITION, BEAR}. A L1 usa **regime D-1 == BULL** como gate-base de contexto (não é ordem de entrada).
 
 ## Arquivos
+**Versionados (código/docs — source-of-truth da lógica):**
+- `regime_l1_v4.py` — classificador + `latest_state_before()` (usado pelo runtime). **TRACK.**
+- `README.md` — este doc. **TRACK.**
+- `refresh_regime_l1_v4.py` — refresh incremental sob demanda. **TRACK.**
+
+**Estado live regenerado (`GENERATED_LIVE_STATE` — gitignored, NÃO versionado):**
 - `xau_daily_l1v4.jsonl` — OHLCV diário (histórico + barras frescas), append-only.
 - `xau_daily_l1v4.manifest.json` — fonte/símbolo/TF/range/sha.
-- `regime_l1_v4.py` — classificador + `latest_state_before()` (usado pelo runtime).
 - `regime_l1_v4_classifications.jsonl` — saída (ts + features + `regime_l1_v4`).
+
+### Política de versionamento (2026-06-16)
+Os 3 arquivos de dados acima são **estado live regenerado**: `refresh_regime_l1_v4.py --write` os reescreve a
+cada ciclo do scheduler (anexa o daily fechado). Por isso são **gitignored** (ver `.gitignore`) — versioná-los
+sujava o working tree a cada ciclo (`git status` modified) e não são source-of-truth (RAW é).
+- **Não são apagados:** existem localmente; o runtime **lê os arquivos locais**.
+- **Regenerar:** `python3 refresh_regime_l1_v4.py --write` (reconstrói/atualiza a partir do MCP D + histórico).
+- **Snapshot versionado:** só em **bloco dedicado** (com manifest/checksum), nunca por churn automático.
+- Removidos do índice git em 2026-06-16 via `git rm --cached` (mantidos no disco).
 
 ## Fonte de dados (2026-06-16)
 - Histórico OHLCV: extraído de `regime_classifier_v3/xau_daily_with_features.jsonl` (até 2026-05-25).
