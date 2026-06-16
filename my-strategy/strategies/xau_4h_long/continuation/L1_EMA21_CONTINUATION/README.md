@@ -2,7 +2,7 @@
 
 Parte da suite **XAU 4H LONG — CONTINUATION**. Status: **governance USER_APPROVED_FINAL · HUMAN_DISCRETIONARY · CONTINUATION** · **evidence NOT_VALIDATED_OOS**.
 Ver `STRATEGY.md` (banner de RECLASSIFICAÇÃO 2026-06-16 = fonte canônica; regra + métricas) e `MANIFEST.md` (proveniência).
-> ⚠️ Números antigos = in-sample/research (não edge). Regime **split-brain**: scanner=`regime_B_v3` (morto), runtime live=`regime_l1_v4`. Gate é **RSI-only** (leg vol removido). Ver banner em `STRATEGY.md`.
+> ⚠️ Números antigos = in-sample/research (não edge). Regime **unificado** (2026-06-16): scanner + runtime usam `regime_l1_v4`. Re-derivação sob regime live: 38/38 preservados + 25 novos candidatos → números antigos não representam o regime live; seguem research até RAW OOS. Gate é **RSI-only** (leg vol removido). Ver banner em `STRATEGY.md`.
 
 ## O que é
 Estratégia de **continuação de alta no XAUUSD 4H**, dentro de tendência estabelecida (EMA21/SMA50,

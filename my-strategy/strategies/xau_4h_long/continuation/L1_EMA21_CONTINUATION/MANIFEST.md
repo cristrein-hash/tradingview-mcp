@@ -12,7 +12,7 @@ Status declarado pelo usuário:
 - **evidence_status: NOT_VALIDATED_OOS** (`PROMISING_BUT_NEEDS_MORE_DATA`)
 - **CONTINUATION** — não fully mechanical, não full automation.
 
-> ⚠️ **ATUALIZAÇÃO 2026-06-16 — ver banner de RECLASSIFICAÇÃO em `STRATEGY.md`.** (a) Números desta era (FULL-38/KEEP-19/+32.6R) são **in-sample/research `NOT_VALIDATION`**, não prova de edge. (b) **Regime split-brain:** scanner=`regime_B_v3` (morto/legado), runtime live=`regime_l1_v4` → re-derivar sob regime live. (c) O leg `vol_entry_z` foi **removido** (morto + dado bugado); gate é **RSI-only**.
+> ⚠️ **ATUALIZAÇÃO 2026-06-16 — ver banner de RECLASSIFICAÇÃO em `STRATEGY.md`.** (a) Números desta era (FULL-38/KEEP-19/+32.6R) são **in-sample/research `NOT_VALIDATION`**, não prova de edge. (b) **Regime split-brain RESOLVIDO:** scanner unificado em `regime_l1_v4` (= runtime live). Re-derivação sob regime live: 38/38 preservados, **+25 candidatos novos (63 total)** → números antigos NÃO representam o regime live; seguem research até RAW OOS (`research/revalidation/.../rederive_regime_l1v4/`). (c) O leg `vol_entry_z` foi **removido** (morto + dado bugado); gate é **RSI-only**.
 
 Regra de exaustão **canônica atual (RSI-only)** — o leg de volume foi removido (2026-06-15):
 ```

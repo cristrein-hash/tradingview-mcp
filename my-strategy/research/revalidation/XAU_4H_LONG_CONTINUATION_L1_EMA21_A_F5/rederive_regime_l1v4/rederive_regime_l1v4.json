@@ -1,0 +1,125 @@
+{
+  "NOT_VALIDATION": true,
+  "note": "Re-derivação in-sample sob regime_l1_v4 (regime LIVE). Diagnóstico, NÃO prova de edge. RAW canônico read-only.",
+  "regime_source": "regime_l1_v4 (unificado com runtime_xau.py)",
+  "old_set": {
+    "source": "rebuild_v3/trades.jsonl (regime_B_v3)",
+    "n": 38
+  },
+  "new_set_regime_l1v4": {
+    "n_candidates": 63,
+    "operational": 59,
+    "blocked_exhaustion": 4
+  },
+  "comparison": {
+    "preserved": 38,
+    "removed_vs_old": 0,
+    "appeared_new": 25
+  },
+  "removed_timestamps": [],
+  "appeared_timestamps": [
+    "2020-01-29T23:00",
+    "2020-03-30T02:00",
+    "2020-12-06T23:00",
+    "2020-12-30T19:00",
+    "2021-06-02T18:00",
+    "2021-09-01T02:00",
+    "2021-09-01T18:00",
+    "2022-05-27T06:00",
+    "2022-05-29T22:00",
+    "2022-05-30T02:00",
+    "2022-12-20T19:00",
+    "2024-01-30T19:00",
+    "2024-01-31T23:00",
+    "2024-11-29T03:00",
+    "2025-01-02T19:00",
+    "2025-08-26T18:00",
+    "2025-11-09T23:00",
+    "2025-11-27T03:00",
+    "2025-12-05T03:00",
+    "2025-12-11T19:00",
+    "2025-12-16T23:00",
+    "2026-01-15T07:00",
+    "2026-01-20T07:00",
+    "2026-04-07T18:00",
+    "2026-04-10T10:00"
+  ],
+  "labeled_trades": {
+    "preserved_winners": [
+      {
+        "n": 1,
+        "ts": "2020-06-18T02:00",
+        "old_cls": "KEEP",
+        "old_R": 2.44,
+        "still_candidate": true,
+        "new_state": "operational_candidate",
+        "rsi_vs_ma": -0.56
+      },
+      {
+        "n": 11,
+        "ts": "2023-01-25T19:00",
+        "old_cls": "BLOCK_TOP",
+        "old_R": -1.1,
+        "still_candidate": true,
+        "new_state": "operational_candidate",
+        "rsi_vs_ma": 4.42
+      },
+      {
+        "n": 36,
+        "ts": "2025-08-27T18:00",
+        "old_cls": "KEEP",
+        "old_R": 9.5,
+        "still_candidate": true,
+        "new_state": "operational_candidate",
+        "rsi_vs_ma": 2.83
+      },
+      {
+        "n": 38,
+        "ts": "2025-09-25T18:00",
+        "old_cls": "KEEP",
+        "old_R": 6.53,
+        "still_candidate": true,
+        "new_state": "operational_candidate",
+        "rsi_vs_ma": -6.62
+      }
+    ],
+    "rsi_blocked_losers": [
+      {
+        "n": 3,
+        "ts": "2020-07-09T18:00",
+        "old_cls": "KEEP",
+        "old_R": -1.1,
+        "still_candidate": true,
+        "new_state": "blocked_exhaustion",
+        "rsi_vs_ma": -12.91
+      },
+      {
+        "n": 15,
+        "ts": "2023-10-23T22:00",
+        "old_cls": "BLOCK_TOP",
+        "old_R": -1.1,
+        "still_candidate": true,
+        "new_state": "blocked_exhaustion",
+        "rsi_vs_ma": -9.35
+      },
+      {
+        "n": 18,
+        "ts": "2024-04-10T22:00",
+        "old_cls": "KEEP",
+        "old_R": -0.1,
+        "still_candidate": true,
+        "new_state": "blocked_exhaustion",
+        "rsi_vs_ma": -11.32
+      },
+      {
+        "n": 32,
+        "ts": "2025-04-01T22:00",
+        "old_cls": "BLOCK_TOP",
+        "old_R": -1.1,
+        "still_candidate": true,
+        "new_state": "blocked_exhaustion",
+        "rsi_vs_ma": -12.39
+      }
+    ]
+  }
+}

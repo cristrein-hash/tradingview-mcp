@@ -2,7 +2,7 @@
 """Headless scanner — L1 · EMA21 CONTINUATION (suite XAU 4H LONG — CONTINUATION).
 
 Production v2, peça 1 (Scanner). Transforma a regra-base APROVADA da L1 num scanner PURO:
-gera candidato + flags BLOCK/REVIEW e imprime JSON no stdout. NADA além disso.
+gera candidato + flag BLOCK/REVIEW e imprime JSON no stdout. NADA além disso.
 
 NÃO faz: Telegram, envio, MCP/chart, daemon, journal, outcome, backtest, escrita de arquivo.
 Read-only sobre a fonte RAW/canonical já usada no rebuild_v3.
@@ -10,6 +10,11 @@ Read-only sobre a fonte RAW/canonical já usada no rebuild_v3.
 Regra-base = gate idêntico ao rebuild_v2/rebuild_l1_ema21_a_f5_v2.py (close-only-causal, SHIFT1).
 Gate de exaustão = RSI-only AUTOMÁTICO: rsi_vs_ma <= -9.35 -> state=blocked_exhaustion (não-operacional).
 (O leg de volume vol_entry_z>=1.993 foi REMOVIDO 2026-06-15 — ver STRATEGY.md auditoria.)
+
+Regime D-1 = **regime_l1_v4** (2026-06-16): UNIFICADO com runtime_xau.py via
+`latest_state_before`. O regime_B_v3 (legado, morto como autoridade) foi REMOVIDO do caminho L1.
+Funções de gate expostas a nível de módulo (build_series/gate_trace/...) para re-derivação reusar
+a MESMA lógica sem duplicação.
 
 Uso:
   python3 scanner.py                 # avalia o ÚLTIMO bar do RAW canônico
@@ -28,18 +33,18 @@ def _repo_root(p):
     return p.parents[5]
 REPO = _repo_root(HERE)
 RAW = "/Volumes/GUTS_ LACIE/TradingData/raw_replay/XAUUSD/4H/XAUUSD_4H_replay_2019-12_to_2026-current_SVP_LUX_RAW.jsonl.gz"
-REGIME = REPO / "my-strategy/strategies/candidates/regime_classifier_v3/regime_B_v3_classifications.jsonl"
+# Regime D-1 = regime_l1_v4 (UNIFICADO com runtime). regime_B_v3 NÃO entra no caminho L1.
+REGIME = REPO / "my-strategy/core/regime_l1/regime_l1_v4_classifications.jsonl"
+sys.path.insert(0, str(REPO / "my-strategy/core/regime_l1"))
+from regime_l1_v4 import latest_state_before  # noqa: E402  (mesma função do runtime_xau.py)
 
 SYMBOL, TIMEFRAME = "PEPPERSTONE:XAUUSD", "240"
 # regra-base (idêntica ao rebuild_v2 — NÃO alterar sem re-aprovar)
 ATR_MIN, ATR_MAX = 0.004, 0.030
 BODY_MIN, F5_MAX, RET5_MIN = 0.35, 1.0, -0.04
 OB_TOL, MA_TOL = 0.001, 0.002
-# flags BLOCK/REVIEW aprovados (congelados)
-# Gate de exaustão = RSI-only (2026-06-15). O leg de volume (vol_entry_z>=1.993) foi
-# REMOVIDO: era artefato de uma matriz de análise bugada E estruturalmente morto sob o
-# gate-base F5 (vol_ratio_med50<=1.0 garante volume de entrada <= mediana -> vol_entry_z
-# sempre negativo). Ver STRATEGY.md (auditoria 2026-06-15).
+# Gate de exaustão = RSI-only (2026-06-15). Leg de volume (vol_entry_z>=1.993) REMOVIDO
+# (artefato de matriz bugada E morto sob F5). Ver STRATEGY.md (auditoria 2026-06-15).
 RSI_VS_MA_THR = -9.35
 
 
@@ -100,111 +105,105 @@ def sma(s, n):
     return out
 
 
-def main():
-    at = None
-    if "--at" in sys.argv:
-        try: at = int(sys.argv[sys.argv.index("--at") + 1])
-        except Exception: pass
+class Series:
+    """Container das séries + features + regime (regime_l1_v4 classifications)."""
+    __slots__ = ("T", "idx", "N", "O", "H", "L", "C", "V", "EMA21", "SMA50",
+                 "ATR14", "zones_at", "rsi_at", "CLS")
 
+
+def build_series():
+    """Carrega RAW + computa indicadores + carrega classifications regime_l1_v4. Read-only."""
     bars, zones_at, rsi_at = load_series()
-    T = sorted(bars); idx = {t: i for i, t in enumerate(T)}; N = len(T)
-    O = [bars[t]["o"] for t in T]; H = [bars[t]["h"] for t in T]
-    L = [bars[t]["l"] for t in T]; C = [bars[t]["c"] for t in T]; V = [bars[t]["v"] for t in T]
-    EMA21 = ema(C, 21); SMA50 = sma(C, 50)
+    S = Series()
+    S.T = sorted(bars); S.idx = {t: i for i, t in enumerate(S.T)}; S.N = len(S.T)
+    S.O = [bars[t]["o"] for t in S.T]; S.H = [bars[t]["h"] for t in S.T]
+    S.L = [bars[t]["l"] for t in S.T]; S.C = [bars[t]["c"] for t in S.T]
+    S.V = [bars[t]["v"] for t in S.T]
+    S.EMA21 = ema(S.C, 21); S.SMA50 = sma(S.C, 50)
+    N = S.N; H = S.H; L = S.L; C = S.C
     TR = [H[0] - L[0]] + [max(H[i] - L[i], abs(H[i] - C[i - 1]), abs(L[i] - C[i - 1])) for i in range(1, N)]
-    ATR14 = [None] * N
+    S.ATR14 = [None] * N
     if N >= 14:
-        a = sum(TR[:14]) / 14; ATR14[13] = a
-        for i in range(14, N): a = (a * 13 + TR[i]) / 14; ATR14[i] = a
+        a = sum(TR[:14]) / 14; S.ATR14[13] = a
+        for i in range(14, N): a = (a * 13 + TR[i]) / 14; S.ATR14[i] = a
+    S.zones_at = zones_at; S.rsi_at = rsi_at
+    S.CLS = [json.loads(l) for l in open(REGIME) if l.strip()]
+    return S
 
-    reg = []
-    for l in open(REGIME):
-        r = json.loads(l); ts = r.get("ts")
-        try: t = int(datetime.fromisoformat(ts.replace("Z", "+00:00")).timestamp())
-        except Exception: t = int(datetime.strptime(ts[:10], "%Y-%m-%d").replace(tzinfo=timezone.utc).timestamp())
-        reg.append((t, r.get("v3_state")))
-    reg.sort(); RT = [t for t, _ in reg]
 
-    def regime_d1(et):
-        i = bisect.bisect_left(RT, et) - 1
-        while i > 0 and RT[i] >= et: i -= 1
-        return reg[i][1] if i >= 0 else None
+def regime_d1(S, et):
+    """Regime D-1 causal = último regime_l1_v4 com ts < et (idêntico ao runtime_xau.py)."""
+    state, _stale = latest_state_before(S.CLS, et)
+    return state
 
-    def demand_zone(i):
-        zs = zones_at.get(T[i - 1])
-        if not zs:
-            j = i - 1
-            while j >= 0 and T[j] not in zones_at: j -= 1
-            zs = zones_at.get(T[j]) if j >= 0 else None
-        if not zs: return None
-        cprev = C[i - 1]; below = [(hi, lo) for hi, lo in zs if hi < cprev]
-        if not below: return None
-        return max(below, key=lambda z: z[0])
 
-    def gate_trace(i):
-        """(passed, reason). Gate idêntico ao rebuild_v2 — close-only-causal."""
-        if i < 60: return False, "history"
-        if None in (EMA21[i - 1], SMA50[i - 1], ATR14[i - 1]) or i - 7 < 0 or SMA50[i - 7] is None:
-            return False, "indicators_none"
-        if regime_d1(T[i]) != "BULL": return False, "regime_d1_not_BULL"
-        if not (C[i - 1] > EMA21[i - 1]): return False, "close_prev<=EMA21"
-        if not (C[i - 1] > SMA50[i - 1]): return False, "close_prev<=SMA50"
-        if not (EMA21[i - 1] > EMA21[i - 4]): return False, "ema21_slope3<=0"
-        if not (SMA50[i - 1] > SMA50[i - 7]): return False, "sma50_slope6<=0"
-        hh20 = max(H[max(0, i - 21):i - 1])
-        if not (hh20 > max(C[max(0, i - 21):i - 1])): return False, "bos_fail"
-        atrr = ATR14[i - 1] / C[i - 1]
-        if not (ATR_MIN <= atrr <= ATR_MAX): return False, f"atr_ratio_oob({atrr:.4f})"
-        dz = demand_zone(i)
-        if dz is None: zhi = zlo = EMA21[i - 1]; tol = MA_TOL
-        else: zhi, zlo = dz; tol = OB_TOL
-        touched = (L[i] <= zhi * (1 + tol) and L[i] >= zlo * (1 - tol)) or \
-                  (L[i - 1] <= zhi * (1 + tol) and L[i - 1] >= zlo * (1 - tol)) or \
-                  (L[i] < zlo and C[i] > zhi)
-        if not touched: return False, "zone_not_touched"
-        if not (C[i] > zhi): return False, "close<=zone_high"
-        rng = H[i] - L[i]
-        if rng <= 0 or (C[i] - O[i]) / rng < BODY_MIN: return False, f"body_pct<{BODY_MIN}"
-        if not (C[i] > C[i - 1]): return False, "close<=prior"
-        if i - 5 < 0 or (C[i] / C[i - 5] - 1) <= RET5_MIN: return False, "ret5<=-4%"
-        vmed = statistics.median(V[i - 50:i]) if i - 50 >= 0 else None
-        if not vmed or vmed <= 0: return False, "vmed_none"
-        if V[i] / vmed > F5_MAX: return False, "F5_vol_ratio>1.0"
-        return True, "PASS"
+def demand_zone(S, i):
+    T, C, zones_at = S.T, S.C, S.zones_at
+    zs = zones_at.get(T[i - 1])
+    if not zs:
+        j = i - 1
+        while j >= 0 and T[j] not in zones_at: j -= 1
+        zs = zones_at.get(T[j]) if j >= 0 else None
+    if not zs: return None
+    cprev = C[i - 1]; below = [(hi, lo) for hi, lo in zs if hi < cprev]
+    if not below: return None
+    return max(below, key=lambda z: z[0])
 
-    def rsi_vs_ma(i):
-        """rsi_vs_ma = RSI - RSI-based MA no bar de entrada i (divergência bearish no topo)."""
-        rsi, rma = rsi_at.get(T[i], (None, None))
-        return (rsi - rma) if (rsi is not None and rma is not None) else None
 
-    # selecionar bar alvo: --at <unixts> ou o último bar do RAW
-    if at is not None:
-        i = idx.get(at)
-        if i is None and T:
-            i = min(range(N), key=lambda k: abs(T[k] - at))  # nearest
-    else:
-        i = N - 1
+def gate_trace(S, i):
+    """(passed, reason). Gate idêntico ao rebuild_v2 — close-only-causal. Regime via regime_l1_v4."""
+    T, O, H, L, C, V = S.T, S.O, S.H, S.L, S.C, S.V
+    EMA21, SMA50, ATR14 = S.EMA21, S.SMA50, S.ATR14
+    if i < 60: return False, "history"
+    if None in (EMA21[i - 1], SMA50[i - 1], ATR14[i - 1]) or i - 7 < 0 or SMA50[i - 7] is None:
+        return False, "indicators_none"
+    if regime_d1(S, T[i]) != "BULL": return False, "regime_d1_not_BULL"
+    if not (C[i - 1] > EMA21[i - 1]): return False, "close_prev<=EMA21"
+    if not (C[i - 1] > SMA50[i - 1]): return False, "close_prev<=SMA50"
+    if not (EMA21[i - 1] > EMA21[i - 4]): return False, "ema21_slope3<=0"
+    if not (SMA50[i - 1] > SMA50[i - 7]): return False, "sma50_slope6<=0"
+    hh20 = max(H[max(0, i - 21):i - 1])
+    if not (hh20 > max(C[max(0, i - 21):i - 1])): return False, "bos_fail"
+    atrr = ATR14[i - 1] / C[i - 1]
+    if not (ATR_MIN <= atrr <= ATR_MAX): return False, f"atr_ratio_oob({atrr:.4f})"
+    dz = demand_zone(S, i)
+    if dz is None: zhi = zlo = EMA21[i - 1]; tol = MA_TOL
+    else: zhi, zlo = dz; tol = OB_TOL
+    touched = (L[i] <= zhi * (1 + tol) and L[i] >= zlo * (1 - tol)) or \
+              (L[i - 1] <= zhi * (1 + tol) and L[i - 1] >= zlo * (1 - tol)) or \
+              (L[i] < zlo and C[i] > zhi)
+    if not touched: return False, "zone_not_touched"
+    if not (C[i] > zhi): return False, "close<=zone_high"
+    rng = H[i] - L[i]
+    if rng <= 0 or (C[i] - O[i]) / rng < BODY_MIN: return False, f"body_pct<{BODY_MIN}"
+    if not (C[i] > C[i - 1]): return False, "close<=prior"
+    if i - 5 < 0 or (C[i] / C[i - 5] - 1) <= RET5_MIN: return False, "ret5<=-4%"
+    vmed = statistics.median(V[i - 50:i]) if i - 50 >= 0 else None
+    if not vmed or vmed <= 0: return False, "vmed_none"
+    if V[i] / vmed > F5_MAX: return False, "F5_vol_ratio>1.0"
+    return True, "PASS"
 
-    if i is None or N == 0:
-        print(json.dumps({"error": "no_bars_in_raw"})); return
 
-    passed, reason = gate_trace(i)
-    rvm = rsi_vs_ma(i)
+def rsi_vs_ma(S, i):
+    """rsi_vs_ma = RSI - RSI-based MA no bar de entrada i (divergência bearish no topo)."""
+    rsi, rma = S.rsi_at.get(S.T[i], (None, None))
+    return (rsi - rma) if (rsi is not None and rma is not None) else None
+
+
+def evaluate(S, i):
+    """Avalia o bar i: retorna o dict de saída do scanner (candidato + gate + estado)."""
+    passed, reason = gate_trace(S, i)
+    rvm = rsi_vs_ma(S, i)
     # GATE de exaustão = RSI-only, AUTOMÁTICO. round(rsi_vs_ma,2) <= -9.35 bloqueia o candidato.
     exhaustion_gate = (rvm is not None and round(rvm, 2) <= RSI_VS_MA_THR)
     operational = bool(passed and not exhaustion_gate)
     state = ("operational_candidate" if operational
              else "blocked_exhaustion" if (passed and exhaustion_gate)
              else "no_candidate")
-
-    ts_iso = datetime.utcfromtimestamp(T[i]).isoformat()
-    # signal_hash determinístico (mesmo padrão de input_normalization:
-    # sha256[:16] de ts|base|tf|indicator|signal_type). Liga candidato -> notificação
-    # -> decisão humana -> outcome.
+    ts_iso = datetime.utcfromtimestamp(S.T[i]).isoformat()
     base_symbol = SYMBOL.split(":")[-1]
     _key = f"{ts_iso}|{base_symbol}|{TIMEFRAME}|L1_EMA21_CONTINUATION|continuation"
     signal_hash = hashlib.sha256(_key.encode("utf-8")).hexdigest()[:16]
-
     out = {
         "strategy": "L1 · EMA21 CONTINUATION",
         "suite": "XAU 4H LONG — CONTINUATION",
@@ -212,18 +211,38 @@ def main():
         "symbol": SYMBOL,
         "timeframe": TIMEFRAME,
         "timestamp": ts_iso,
-        "candidate": bool(passed),                # regra-base passou
-        "exhaustion_gate": exhaustion_gate,       # RSI-only, AUTOMÁTICO (bloqueia)
-        "operational": operational,               # candidato operacional = base AND NOT gate
-        "state": state,                           # operational_candidate | blocked_exhaustion | no_candidate
+        "candidate": bool(passed),
+        "exhaustion_gate": exhaustion_gate,
+        "operational": operational,
+        "state": state,
         "rsi_vs_ma": round(rvm, 2) if rvm is not None else None,
-        "review_required": True,                  # revisão humana = só ENTRADA, nunca o gate/sinal
+        "review_required": True,
         "automation_level": "SCANNER_ONLY",
-        "telegram_allowed": False,                # scanner não envia; o notifier decide o envio
+        "telegram_allowed": False,
     }
     if not passed:
         out["gate_reason"] = reason
-    print(json.dumps(out, ensure_ascii=False, indent=2))
+    return out
+
+
+def main():
+    at = None
+    if "--at" in sys.argv:
+        try: at = int(sys.argv[sys.argv.index("--at") + 1])
+        except Exception: pass
+
+    S = build_series()
+    if S.N == 0:
+        print(json.dumps({"error": "no_bars_in_raw"})); return
+
+    if at is not None:
+        i = S.idx.get(at)
+        if i is None:
+            i = min(range(S.N), key=lambda k: abs(S.T[k] - at))  # nearest
+    else:
+        i = S.N - 1
+
+    print(json.dumps(evaluate(S, i), ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":
