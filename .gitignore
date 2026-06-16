@@ -44,3 +44,4 @@ my-strategy/research/backtests/**/all_summaries.json
 .tmp_enrich/
 eval_tmp/
 test_write.txt
+**/.runtime_state/

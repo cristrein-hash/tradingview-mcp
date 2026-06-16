@@ -73,18 +73,18 @@ def refresh(write=False):
         # validação anti-barra-incompleta: volume >= 0.3 * mediana das anteriores
         vols = [r["volume"] for r in rows if r.get("volume")]
         med = statistics.median(vols) if vols else 0
+        # CONFIRMADA = date < today E volume não-anômalo. Barras date<today com volume baixo
+        # (ainda formando / sessão parcial) são EXCLUÍDAS (não-appended), NÃO causam hard stop.
         confirmed = [r for r in rows if r["ts"] < today and (not med or (r.get("volume") or 0) >= 0.3 * med)]
-        # detectar barra incompleta entre as date<today (volume anômalo)
-        suspicious = [r["ts"] for r in rows if r["ts"] < today and med and (r.get("volume") or 0) < 0.3 * med]
-        if suspicious:
-            return _hard(f"barra(s) com volume anômalo (possível incompleta): {suspicious}")
+        excluded_incomplete = [r["ts"] for r in rows if r["ts"] < today and med and (r.get("volume") or 0) < 0.3 * med]
         if not confirmed:
             return _hard("nenhuma barra confirmada (date<today) na leitura")
         target_d1 = confirmed[-1]["ts"]
         missing = [r for r in confirmed if r["ts"] > current_last]
         result = {"current_last_date": current_last, "target_d1": target_d1,
                   "missing_count": len(missing), "today": today,
-                  "missing_dates": [r["ts"] for r in missing]}
+                  "missing_dates": [r["ts"] for r in missing],
+                  "excluded_incomplete": excluded_incomplete}
         if not missing:
             result["status"] = "already_fresh"
             return result
