@@ -21,9 +21,20 @@ Default = **dry-run** (sem Telegram). Falha fechado: qualquer hard stop aborta s
 ## Rodar manualmente
 ```bash
 cd my-strategy/strategies/xau_4h_long/continuation/L1_EMA21_CONTINUATION
-python3 run_l1_cycle.py               # DRY-RUN (sem Telegram)
-python3 run_l1_cycle.py --send-telegram   # envia notificação SE houver operational_candidate
+python3 run_l1_cycle.py                    # DRY-RUN (sem Telegram), usa o chart como está
+python3 run_l1_cycle.py --send-telegram    # envia notificação SE houver operational_candidate
+python3 run_l1_cycle.py --manage-chart     # prepara chart PEPPERSTONE:XAUUSD/240 e RESTAURA depois
+python3 run_l1_cycle.py --manage-chart --leave-chart-240   # deixa o chart em 240 (não restaura)
 ```
+
+## `--manage-chart` (auto-chart 240) — usado pelo scheduler (2026-06-16)
+Sem isto, o runtime **hard-stopa** se o chart estiver em outro TF (ex.: 15M). Com `--manage-chart` o runner,
+via MCP (`src/server.js`), **lê → troca para PEPPERSTONE:XAUUSD/240 → roda a L1 → restaura o chart anterior**.
+- **NUNCA** dirige trade, desenha, toca broker, nem troca para outro símbolo. Lock-guard (`chart_op.lock`)
+  + checagem de coleta replay ativa evitam conflito simultâneo. Falha de confirmação = **HARD_STOP sem Telegram**.
+- Loga `chart_before` / `chart_used` / `chart_restore` no `l1_cycle.log`.
+- O **scheduler agora roda com `--manage-chart --send-telegram`** → a L1 opera no fechamento 4H mesmo se você
+  estiver usando o chart em 15M (ele troca por ~30s e devolve). Use `--leave-chart-240` só se quiser ficar em 240.
 Estado/log do ciclo em `.runtime_state/l1_cycle.log` (não-legacy). Dedup em `.runtime_state/l1_dedup.txt`.
 
 ## Interpretar a saída

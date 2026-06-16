@@ -1,0 +1,23 @@
+{
+  "OLD_count": 38,
+  "NEW_count": 63,
+  "BOTH": 38,
+  "OLD_ONLY": 0,
+  "NEW_ONLY": 25,
+  "winners_lost": 0,
+  "losers_removed": 0,
+  "new_unknown": 25,
+  "OLD_sumR_in_sample": 14.87,
+  "OLD_WR": 31.6,
+  "OLD_win": 12,
+  "OLD_loss": 26,
+  "OLD_PF": 1.76,
+  "NEW_sumR": "UNKNOWN (38 conhecidos + 25 sem R; não inventar)",
+  "new_only_regimeB_v3_states": {
+    "TRANSITION": 18,
+    "NO_DATA(>2026-05-25)": 3,
+    "BEAR": 2,
+    "BULL": 2
+  },
+  "NOT_VALIDATION": true
+}
