@@ -1,0 +1,19 @@
+{
+  "strategy_id": "XAU_4H_LONG_CONTINUATION_L1_EMA21_A_F5",
+  "rebuild": "v2",
+  "purpose": "Corrigir reconstrução infiel v1. Mudanças mínimas: (1) separar candidate-generation de trade-selection + salvar candidates_pre_cooldown; (2) cooldown como dedup LOCAL (não trade-active blocker global); (3) trace completo do bar monumental 2024-03-26. SEM teoria nova, SEM relaxar gate silenciosamente.",
+  "NOT_VALIDATION": true,
+  "inherits_from": "rebuild_v1/config.json (gates idênticos)",
+  "changes_vs_v1": {
+    "candidate_logging": "todos os bars que passam TODOS os gates -> candidates_pre_cooldown.jsonl (sem cooldown)",
+    "cooldown_v2": {"rule": "dedup local: pular candidato se dentro de K bars do ENTRY selecionado anterior (NÃO bloquear até exit)", "K_bars": 6, "ASSUMPTION": "K não documentado; 6 bars = 1 dia 4H, dedup mínimo de cluster adjacente; NÃO tunado para n=16"},
+    "monument_trace": "2024-03-26 (todos os bars 4H do dia) com pass/fail por gate"
+  },
+  "gates_identical_to_v1": true,
+  "NOTES_UNKNOWN": [
+    "Discrepância n=11 vs n=16 no original (variação de trigger não documentada).",
+    "regime_B_v3 bias residual ~10.68% (NEEDS_SHIFT1_AUDIT) herdado.",
+    "OB zone eligibility ASSUMPTION (sem label DEMAND/SUPPLY no RAW).",
+    "K_bars do dedup é ASSUMPTION (não tunado para reconciliar)."
+  ]
+}

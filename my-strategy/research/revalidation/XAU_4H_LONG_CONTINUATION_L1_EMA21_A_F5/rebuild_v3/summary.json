@@ -1,0 +1,16 @@
+{
+  "strategy_id": "XAU_4H_LONG_CONTINUATION_L1_EMA21_A_F5",
+  "rebuild": "v3",
+  "NOT_VALIDATION": true,
+  "change_vs_v2": "Removido o R_CEIL 1.5ATR abort (Cris: manter stop largo = respiro/RxR). Stop estrutural INALTERADO. Classes visuais do Cris aplicadas.",
+  "FULL_38": {"n": 38, "sumR": 14.9, "WR": 31.6, "avgR": 0.39, "maxDD": 7.9},
+  "KEEP_19": {"n": 19, "sumR": 32.6, "WR": 57.9, "avgR": 1.72, "maxDD": 1.3},
+  "BLOCK_TOP_17": {"n": 17, "sumR": -15.6, "WR": 5.9, "avgR": -0.92, "maxDD": 15.6},
+  "BLOCK_STOP_5": {"R": -1.1, "risk_atr": 4.05},
+  "REVIEW_31": {"R": -1.1},
+  "reconciliation_vs_documented": "KEEP(19) +32.6R/57.9% ~ documentado (n=16/+31.74R/43.8%) -> base rule + SL RECONSTRUIDOS FIELMENTE (a correcao do R_CEIL era o conserto).",
+  "DA_verdict": "NEEDS_CAUSAL_FILTER_BEFORE_ANY_CLAIM",
+  "DA_key_point": "KEEP +32.6R = ARTEFATO IN-SAMPLE (Cris rotulou vendo o resultado no chart). NAO e edge ate um filtro CAUSAL reproduzir o split. FULL-38 +14.9R/31.6%/avgR0.39 e a base mecanizavel honesta (fraca). Composto objetivo (nas_short20>=2 AND ext>=3) FALHA: pega 8/17 BLOCK_TOP e erra 6/19 KEEP (winners #9/#17/#18/#34/#36).",
+  "mechanizable_now": false,
+  "warning": "NOT_VALIDATION"
+}

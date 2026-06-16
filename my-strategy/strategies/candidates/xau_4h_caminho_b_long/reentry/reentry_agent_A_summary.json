@@ -1,0 +1,911 @@
+{
+  "meta": {
+    "agent": "A_targetstop",
+    "n_losers": 78,
+    "n_bars": 15435,
+    "baseline_recomputed": {
+      "label": "BASELINE_RECOMPUTED use_baseline_entry orig_2x fixR5 half",
+      "n": 78,
+      "n_no_touch": 9,
+      "n_invalid": 0,
+      "n_traded": 69,
+      "n_winners": 9,
+      "n_losers": 38,
+      "n_partial": 0,
+      "n_trail_win": 0,
+      "n_be": 0,
+      "n_timeout": 22,
+      "sumR_nominal": 7.0,
+      "sumR_adjusted": 3.5,
+      "win_rate": 0.13,
+      "mfe_mean": 2.08,
+      "mfe_median": 1.54,
+      "wait_mean": 26.2,
+      "wait_median": 10
+    },
+    "baseline_reported_sumR_nominal": 49,
+    "baseline_reported_sumR_adjusted": 24.5
+  },
+  "critical_caveats": [
+    "Baseline reported by source file: 18 wins \u00d7 5R + 41 losses \u00d7 -1R = +49R nominal, +24.5R adjusted at 0.5x size. This corresponds to: new stop = orig_risk \u00d7 2 (\u2248 \"orig_2.0\" stop_policy), target = fix_5R, size = 0.5x (half). Net $-risk per trade = 1.0\u00d7 original.",
+    "CAPITAL NORMALIZATION (critical for honest comparison): variants must be compared at constant $-risk-per-trade. Use field `sumR_normalized_to_1x_original_risk` for apples-to-apples vs reported baseline (+24.5R). capital_mult_per_trade_vs_original = stop_distance_multiplier \u00d7 size_multiplier vs original loser. Reported baseline cap_mult = 2.0 \u00d7 0.5 = 1.0.",
+    "My recomputed baseline (use_baseline_entry + orig_2.0 + fixR_5 + half) yields only +3.5R adjusted (vs reported +24.5R). Gap is because the original baseline counted MFE>=5R as a winning exit, while my walk treats stop-vs-target order conservatively (stop check before target intrabar). Variant comparisons are internally consistent \u2014 lifts reported here are honest deltas against MY own recomputed baseline, not vs the optimistic reported one.",
+    "9 of 78 losers have NO_TOUCH (no demand zone re-entry within 400 bars). Every variant inherits this floor \u2014 only 69/78 trade.",
+    "Sample size: 78 losers / 69 traded. Variant deltas of <5R sumR_adjusted are within noise. Top-tier variants (>30R lift) are robust. I tested ~135 variants \u2014 top single result has some over-fit risk."
+  ],
+  "baseline_reference": {
+    "reported_sumR_nominal": 49,
+    "reported_sumR_adjusted_half_size": 24.5,
+    "reported_winners": 18,
+    "reported_losers_after_reentry": 41,
+    "reported_no_exit_R": 10,
+    "reported_capital_mult_per_trade": 1.0,
+    "recomputed_via_my_pipeline": {
+      "label": "BASELINE_RECOMPUTED use_baseline_entry orig_2x fixR5 half",
+      "n": 78,
+      "n_no_touch": 9,
+      "n_invalid": 0,
+      "n_traded": 69,
+      "n_winners": 9,
+      "n_losers": 38,
+      "n_partial": 0,
+      "n_trail_win": 0,
+      "n_be": 0,
+      "n_timeout": 22,
+      "sumR_nominal": 7.0,
+      "sumR_adjusted": 3.5,
+      "win_rate": 0.13,
+      "mfe_mean": 2.08,
+      "mfe_median": 1.54,
+      "wait_mean": 26.2,
+      "wait_median": 10
+    },
+    "note": "Reported baseline appears to use MFE-touch-based exit counting (optimistic re intrabar fill order). My pipeline simulates conservative stop-before-target order; numbers internally consistent across variants."
+  },
+  "top10_by_raw_sumR_adjusted": [
+    {
+      "label": "COMBO orig_1.0 + trail_5_0.5 + equal",
+      "config": {
+        "label": "COMBO orig_1.0 + trail_5_0.5 + equal",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.0",
+        "exit_policy": "trail_5_0.5",
+        "size_policy": "equal"
+      },
+      "sumR_adjusted": 82.54,
+      "sumR_nominal": 82.54,
+      "capital_mult_per_trade_vs_original": 1.0,
+      "sumR_normalized_to_1x_original_risk": 82.54,
+      "n_winners": 0,
+      "n_partial": 0,
+      "n_losers": 51,
+      "n_timeout": 7,
+      "n_no_touch": 9,
+      "mfe_median": 1.22
+    },
+    {
+      "label": "COMBO orig_1.0 + trail_5_0.5 + atr_normalized",
+      "config": {
+        "label": "COMBO orig_1.0 + trail_5_0.5 + atr_normalized",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.0",
+        "exit_policy": "trail_5_0.5",
+        "size_policy": "atr_normalized"
+      },
+      "sumR_adjusted": 82.54,
+      "sumR_nominal": 82.54,
+      "capital_mult_per_trade_vs_original": 1.0,
+      "sumR_normalized_to_1x_original_risk": 82.54,
+      "n_winners": 0,
+      "n_partial": 0,
+      "n_losers": 51,
+      "n_timeout": 7,
+      "n_no_touch": 9,
+      "mfe_median": 1.22
+    },
+    {
+      "label": "COMBO orig_1.5 + trail_3_0.5 + equal",
+      "config": {
+        "label": "COMBO orig_1.5 + trail_3_0.5 + equal",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.5",
+        "exit_policy": "trail_3_0.5",
+        "size_policy": "equal"
+      },
+      "sumR_adjusted": 75.67,
+      "sumR_nominal": 75.67,
+      "capital_mult_per_trade_vs_original": 1.5,
+      "sumR_normalized_to_1x_original_risk": 50.45,
+      "n_winners": 0,
+      "n_partial": 0,
+      "n_losers": 40,
+      "n_timeout": 13,
+      "n_no_touch": 9,
+      "mfe_median": 1.35
+    },
+    {
+      "label": "COMBO orig_1.5 + BE_2_dyn_20 + equal",
+      "config": {
+        "label": "COMBO orig_1.5 + BE_2_dyn_20 + equal",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.5",
+        "exit_policy": "BE_2_dyn_20",
+        "size_policy": "equal"
+      },
+      "sumR_adjusted": 68.97,
+      "sumR_nominal": 68.97,
+      "capital_mult_per_trade_vs_original": 1.5,
+      "sumR_normalized_to_1x_original_risk": 45.98,
+      "n_winners": 2,
+      "n_partial": 0,
+      "n_losers": 36,
+      "n_timeout": 18,
+      "n_no_touch": 9,
+      "mfe_median": 1.35
+    },
+    {
+      "label": "COMBO orig_1.0 + trail_3_0.5 + equal",
+      "config": {
+        "label": "COMBO orig_1.0 + trail_3_0.5 + equal",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.0",
+        "exit_policy": "trail_3_0.5",
+        "size_policy": "equal"
+      },
+      "sumR_adjusted": 66.22,
+      "sumR_nominal": 66.22,
+      "capital_mult_per_trade_vs_original": 1.0,
+      "sumR_normalized_to_1x_original_risk": 66.22,
+      "n_winners": 0,
+      "n_partial": 0,
+      "n_losers": 47,
+      "n_timeout": 6,
+      "n_no_touch": 9,
+      "mfe_median": 1.22
+    },
+    {
+      "label": "COMBO orig_1.0 + trail_3_0.5 + atr_normalized",
+      "config": {
+        "label": "COMBO orig_1.0 + trail_3_0.5 + atr_normalized",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.0",
+        "exit_policy": "trail_3_0.5",
+        "size_policy": "atr_normalized"
+      },
+      "sumR_adjusted": 66.22,
+      "sumR_nominal": 66.22,
+      "capital_mult_per_trade_vs_original": 1.0,
+      "sumR_normalized_to_1x_original_risk": 66.22,
+      "n_winners": 0,
+      "n_partial": 0,
+      "n_losers": 47,
+      "n_timeout": 6,
+      "n_no_touch": 9,
+      "mfe_median": 1.22
+    },
+    {
+      "label": "COMBO orig_1.0 + BE_2_dyn_20 + equal",
+      "config": {
+        "label": "COMBO orig_1.0 + BE_2_dyn_20 + equal",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.0",
+        "exit_policy": "BE_2_dyn_20",
+        "size_policy": "equal"
+      },
+      "sumR_adjusted": 65.75,
+      "sumR_nominal": 65.75,
+      "capital_mult_per_trade_vs_original": 1.0,
+      "sumR_normalized_to_1x_original_risk": 65.75,
+      "n_winners": 2,
+      "n_partial": 0,
+      "n_losers": 44,
+      "n_timeout": 12,
+      "n_no_touch": 9,
+      "mfe_median": 1.22
+    },
+    {
+      "label": "COMBO orig_1.0 + BE_2_dyn_20 + atr_normalized",
+      "config": {
+        "label": "COMBO orig_1.0 + BE_2_dyn_20 + atr_normalized",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.0",
+        "exit_policy": "BE_2_dyn_20",
+        "size_policy": "atr_normalized"
+      },
+      "sumR_adjusted": 65.75,
+      "sumR_nominal": 65.75,
+      "capital_mult_per_trade_vs_original": 1.0,
+      "sumR_normalized_to_1x_original_risk": 65.75,
+      "n_winners": 2,
+      "n_partial": 0,
+      "n_losers": 44,
+      "n_timeout": 12,
+      "n_no_touch": 9,
+      "mfe_median": 1.22
+    },
+    {
+      "label": "COMBO orig_1.5 + trail_5_0.5 + equal",
+      "config": {
+        "label": "COMBO orig_1.5 + trail_5_0.5 + equal",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.5",
+        "exit_policy": "trail_5_0.5",
+        "size_policy": "equal"
+      },
+      "sumR_adjusted": 64.73,
+      "sumR_nominal": 64.73,
+      "capital_mult_per_trade_vs_original": 1.5,
+      "sumR_normalized_to_1x_original_risk": 43.15,
+      "n_winners": 0,
+      "n_partial": 0,
+      "n_losers": 45,
+      "n_timeout": 17,
+      "n_no_touch": 9,
+      "mfe_median": 1.35
+    },
+    {
+      "label": "COMBO orig_2.0 + trail_3_0.5 + equal",
+      "config": {
+        "label": "COMBO orig_2.0 + trail_3_0.5 + equal",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_2.0",
+        "exit_policy": "trail_3_0.5",
+        "size_policy": "equal"
+      },
+      "sumR_adjusted": 61.85,
+      "sumR_nominal": 61.85,
+      "capital_mult_per_trade_vs_original": 2.0,
+      "sumR_normalized_to_1x_original_risk": 30.93,
+      "n_winners": 0,
+      "n_partial": 0,
+      "n_losers": 35,
+      "n_timeout": 22,
+      "n_no_touch": 9,
+      "mfe_median": 1.54
+    }
+  ],
+  "top10_by_capital_normalized_sumR": [
+    {
+      "label": "COMBO orig_1.0 + trail_5_0.5 + equal",
+      "config": {
+        "label": "COMBO orig_1.0 + trail_5_0.5 + equal",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.0",
+        "exit_policy": "trail_5_0.5",
+        "size_policy": "equal"
+      },
+      "sumR_adjusted": 82.54,
+      "sumR_nominal": 82.54,
+      "capital_mult_per_trade_vs_original": 1.0,
+      "sumR_normalized_to_1x_original_risk": 82.54,
+      "n_winners": 0,
+      "n_partial": 0,
+      "n_losers": 51,
+      "n_timeout": 7,
+      "n_no_touch": 9,
+      "mfe_median": 1.22
+    },
+    {
+      "label": "COMBO orig_1.0 + trail_5_0.5 + atr_normalized",
+      "config": {
+        "label": "COMBO orig_1.0 + trail_5_0.5 + atr_normalized",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.0",
+        "exit_policy": "trail_5_0.5",
+        "size_policy": "atr_normalized"
+      },
+      "sumR_adjusted": 82.54,
+      "sumR_nominal": 82.54,
+      "capital_mult_per_trade_vs_original": 1.0,
+      "sumR_normalized_to_1x_original_risk": 82.54,
+      "n_winners": 0,
+      "n_partial": 0,
+      "n_losers": 51,
+      "n_timeout": 7,
+      "n_no_touch": 9,
+      "mfe_median": 1.22
+    },
+    {
+      "label": "COMBO orig_1.0 + trail_5_0.5 + half",
+      "config": {
+        "label": "COMBO orig_1.0 + trail_5_0.5 + half",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.0",
+        "exit_policy": "trail_5_0.5",
+        "size_policy": "half"
+      },
+      "sumR_adjusted_as_run": 41.27,
+      "capital_mult_per_trade_vs_original": 0.5,
+      "sumR_normalized_to_1x_original_risk": 82.54,
+      "n_winners": 0,
+      "n_partial": 0,
+      "n_losers": 51,
+      "n_timeout": 7,
+      "n_no_touch": 9,
+      "mfe_median": 1.22
+    },
+    {
+      "label": "COMBO orig_1.0 + trail_3_0.5 + equal",
+      "config": {
+        "label": "COMBO orig_1.0 + trail_3_0.5 + equal",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.0",
+        "exit_policy": "trail_3_0.5",
+        "size_policy": "equal"
+      },
+      "sumR_adjusted": 66.22,
+      "sumR_nominal": 66.22,
+      "capital_mult_per_trade_vs_original": 1.0,
+      "sumR_normalized_to_1x_original_risk": 66.22,
+      "n_winners": 0,
+      "n_partial": 0,
+      "n_losers": 47,
+      "n_timeout": 6,
+      "n_no_touch": 9,
+      "mfe_median": 1.22
+    },
+    {
+      "label": "COMBO orig_1.0 + trail_3_0.5 + atr_normalized",
+      "config": {
+        "label": "COMBO orig_1.0 + trail_3_0.5 + atr_normalized",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.0",
+        "exit_policy": "trail_3_0.5",
+        "size_policy": "atr_normalized"
+      },
+      "sumR_adjusted": 66.22,
+      "sumR_nominal": 66.22,
+      "capital_mult_per_trade_vs_original": 1.0,
+      "sumR_normalized_to_1x_original_risk": 66.22,
+      "n_winners": 0,
+      "n_partial": 0,
+      "n_losers": 47,
+      "n_timeout": 6,
+      "n_no_touch": 9,
+      "mfe_median": 1.22
+    },
+    {
+      "label": "COMBO orig_1.0 + trail_3_0.5 + half",
+      "config": {
+        "label": "COMBO orig_1.0 + trail_3_0.5 + half",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.0",
+        "exit_policy": "trail_3_0.5",
+        "size_policy": "half"
+      },
+      "sumR_adjusted_half": 33.11,
+      "capital_mult_per_trade_vs_original": 0.5,
+      "sumR_normalized_to_1x_original_risk": 66.22,
+      "n_winners": 0,
+      "n_partial": 0,
+      "n_losers": 47,
+      "n_timeout": 6,
+      "n_no_touch": 9,
+      "mfe_median": 1.22
+    },
+    {
+      "label": "COMBO orig_1.0 + BE_2_dyn_20 + half",
+      "config": {
+        "label": "COMBO orig_1.0 + BE_2_dyn_20 + half",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.0",
+        "exit_policy": "BE_2_dyn_20",
+        "size_policy": "half"
+      },
+      "sumR_adjusted_half": 32.88,
+      "capital_mult_per_trade_vs_original": 0.5,
+      "sumR_normalized_to_1x_original_risk": 65.76,
+      "n_winners": 2,
+      "n_partial": 0,
+      "n_losers": 44,
+      "n_timeout": 12,
+      "n_no_touch": 9,
+      "mfe_median": 1.22
+    },
+    {
+      "label": "COMBO orig_1.0 + BE_2_dyn_20 + equal",
+      "config": {
+        "label": "COMBO orig_1.0 + BE_2_dyn_20 + equal",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.0",
+        "exit_policy": "BE_2_dyn_20",
+        "size_policy": "equal"
+      },
+      "sumR_adjusted": 65.75,
+      "sumR_nominal": 65.75,
+      "capital_mult_per_trade_vs_original": 1.0,
+      "sumR_normalized_to_1x_original_risk": 65.75,
+      "n_winners": 2,
+      "n_partial": 0,
+      "n_losers": 44,
+      "n_timeout": 12,
+      "n_no_touch": 9,
+      "mfe_median": 1.22
+    },
+    {
+      "label": "COMBO orig_1.0 + BE_2_dyn_20 + atr_normalized",
+      "config": {
+        "label": "COMBO orig_1.0 + BE_2_dyn_20 + atr_normalized",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.0",
+        "exit_policy": "BE_2_dyn_20",
+        "size_policy": "atr_normalized"
+      },
+      "sumR_adjusted": 65.75,
+      "sumR_nominal": 65.75,
+      "capital_mult_per_trade_vs_original": 1.0,
+      "sumR_normalized_to_1x_original_risk": 65.75,
+      "n_winners": 2,
+      "n_partial": 0,
+      "n_losers": 44,
+      "n_timeout": 12,
+      "n_no_touch": 9,
+      "mfe_median": 1.22
+    },
+    {
+      "label": "COMBO orig_1.5 + trail_3_0.5 + equal",
+      "config": {
+        "label": "COMBO orig_1.5 + trail_3_0.5 + equal",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.5",
+        "exit_policy": "trail_3_0.5",
+        "size_policy": "equal"
+      },
+      "sumR_adjusted": 75.67,
+      "sumR_nominal": 75.67,
+      "capital_mult_per_trade_vs_original": 1.5,
+      "sumR_normalized_to_1x_original_risk": 50.45,
+      "n_winners": 0,
+      "n_partial": 0,
+      "n_losers": 40,
+      "n_timeout": 13,
+      "n_no_touch": 9,
+      "mfe_median": 1.35
+    }
+  ],
+  "top10_honest_HALF_sizing_only": [
+    {
+      "label": "COMBO orig_1.0 + trail_5_0.5 + half",
+      "config": {
+        "label": "COMBO orig_1.0 + trail_5_0.5 + half",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.0",
+        "exit_policy": "trail_5_0.5",
+        "size_policy": "half"
+      },
+      "sumR_adjusted_half": 41.27,
+      "capital_mult_per_trade_vs_original": 0.5,
+      "sumR_normalized_to_1x_original_risk": 82.54,
+      "n_winners": 0,
+      "n_partial": 0,
+      "n_losers": 51,
+      "n_timeout": 7,
+      "n_no_touch": 9,
+      "mfe_median": 1.22
+    },
+    {
+      "label": "COMBO orig_1.5 + trail_3_0.5 + half",
+      "config": {
+        "label": "COMBO orig_1.5 + trail_3_0.5 + half",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.5",
+        "exit_policy": "trail_3_0.5",
+        "size_policy": "half"
+      },
+      "sumR_adjusted_half": 37.84,
+      "capital_mult_per_trade_vs_original": 0.75,
+      "sumR_normalized_to_1x_original_risk": 50.45,
+      "n_winners": 0,
+      "n_partial": 0,
+      "n_losers": 40,
+      "n_timeout": 13,
+      "n_no_touch": 9,
+      "mfe_median": 1.35
+    },
+    {
+      "label": "COMBO orig_1.5 + BE_2_dyn_20 + half",
+      "config": {
+        "label": "COMBO orig_1.5 + BE_2_dyn_20 + half",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.5",
+        "exit_policy": "BE_2_dyn_20",
+        "size_policy": "half"
+      },
+      "sumR_adjusted_half": 34.48,
+      "capital_mult_per_trade_vs_original": 0.75,
+      "sumR_normalized_to_1x_original_risk": 45.97,
+      "n_winners": 2,
+      "n_partial": 0,
+      "n_losers": 36,
+      "n_timeout": 18,
+      "n_no_touch": 9,
+      "mfe_median": 1.35
+    },
+    {
+      "label": "COMBO orig_1.0 + trail_3_0.5 + half",
+      "config": {
+        "label": "COMBO orig_1.0 + trail_3_0.5 + half",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.0",
+        "exit_policy": "trail_3_0.5",
+        "size_policy": "half"
+      },
+      "sumR_adjusted_half": 33.11,
+      "capital_mult_per_trade_vs_original": 0.5,
+      "sumR_normalized_to_1x_original_risk": 66.22,
+      "n_winners": 0,
+      "n_partial": 0,
+      "n_losers": 47,
+      "n_timeout": 6,
+      "n_no_touch": 9,
+      "mfe_median": 1.22
+    },
+    {
+      "label": "COMBO orig_1.0 + BE_2_dyn_20 + half",
+      "config": {
+        "label": "COMBO orig_1.0 + BE_2_dyn_20 + half",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.0",
+        "exit_policy": "BE_2_dyn_20",
+        "size_policy": "half"
+      },
+      "sumR_adjusted_half": 32.88,
+      "capital_mult_per_trade_vs_original": 0.5,
+      "sumR_normalized_to_1x_original_risk": 65.76,
+      "n_winners": 2,
+      "n_partial": 0,
+      "n_losers": 44,
+      "n_timeout": 12,
+      "n_no_touch": 9,
+      "mfe_median": 1.22
+    },
+    {
+      "label": "COMBO orig_1.5 + trail_5_0.5 + half",
+      "config": {
+        "label": "COMBO orig_1.5 + trail_5_0.5 + half",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.5",
+        "exit_policy": "trail_5_0.5",
+        "size_policy": "half"
+      },
+      "sumR_adjusted_half": 32.37,
+      "capital_mult_per_trade_vs_original": 0.75,
+      "sumR_normalized_to_1x_original_risk": 43.16,
+      "n_winners": 0,
+      "n_partial": 0,
+      "n_losers": 45,
+      "n_timeout": 17,
+      "n_no_touch": 9,
+      "mfe_median": 1.35
+    },
+    {
+      "label": "trail_arm2R_lock50% | BASELINE_ENTRY | orig_2x | half",
+      "config": {
+        "label": "trail_arm2R_lock50% | BASELINE_ENTRY | orig_2x | half",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_2.0",
+        "exit_policy": "trail_2_0.5",
+        "size_policy": "half"
+      },
+      "sumR_adjusted_half": 31.35,
+      "capital_mult_per_trade_vs_original": 1.0,
+      "sumR_normalized_to_1x_original_risk": 31.35,
+      "n_winners": 0,
+      "n_partial": 0,
+      "n_losers": 33,
+      "n_timeout": 16,
+      "n_no_touch": 9,
+      "mfe_median": 1.54
+    },
+    {
+      "label": "trail_arm3R_lock50% | BASELINE_ENTRY | orig_2x | half",
+      "config": {
+        "label": "trail_arm3R_lock50% | BASELINE_ENTRY | orig_2x | half",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_2.0",
+        "exit_policy": "trail_3_0.5",
+        "size_policy": "half"
+      },
+      "sumR_adjusted_half": 30.92,
+      "capital_mult_per_trade_vs_original": 1.0,
+      "sumR_normalized_to_1x_original_risk": 30.92,
+      "n_winners": 0,
+      "n_partial": 0,
+      "n_losers": 35,
+      "n_timeout": 22,
+      "n_no_touch": 9,
+      "mfe_median": 1.54
+    },
+    {
+      "label": "COMBO orig_2.0 + trail_3_0.5 + half",
+      "config": {
+        "label": "COMBO orig_2.0 + trail_3_0.5 + half",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_2.0",
+        "exit_policy": "trail_3_0.5",
+        "size_policy": "half"
+      },
+      "sumR_adjusted_half": 30.92,
+      "capital_mult_per_trade_vs_original": 1.0,
+      "sumR_normalized_to_1x_original_risk": 30.92,
+      "n_winners": 0,
+      "n_partial": 0,
+      "n_losers": 35,
+      "n_timeout": 22,
+      "n_no_touch": 9,
+      "mfe_median": 1.54
+    },
+    {
+      "label": "COMBO orig_1.5 + asym_5_2_20 + half",
+      "config": {
+        "label": "COMBO orig_1.5 + asym_5_2_20 + half",
+        "entry_policy": "demand_low",
+        "stop_policy": "orig_1.5",
+        "exit_policy": "asym_5_2_20",
+        "size_policy": "half"
+      },
+      "sumR_adjusted_half": 30.12,
+      "capital_mult_per_trade_vs_original": 0.75,
+      "sumR_normalized_to_1x_original_risk": 40.16,
+      "n_winners": 2,
+      "n_partial": 11,
+      "n_losers": 45,
+      "n_timeout": 11,
+      "n_no_touch": 9,
+      "mfe_median": 1.35
+    }
+  ],
+  "best_variant_recommendation": {
+    "label": "COMBO orig_1.0 + trail_5_0.5 + equal",
+    "config": {
+      "label": "COMBO orig_1.0 + trail_5_0.5 + equal",
+      "entry_policy": "demand_low",
+      "stop_policy": "orig_1.0",
+      "exit_policy": "trail_5_0.5",
+      "size_policy": "equal"
+    },
+    "sumR_adjusted_as_run": 82.54,
+    "capital_mult_per_trade_vs_original": 1.0,
+    "sumR_normalized_to_1x_original_risk": 82.54,
+    "reported_baseline_sumR_normalized_1x": 24.5,
+    "lift_at_normalized_capital": 58.04,
+    "n_winners": 0,
+    "n_partial": 0,
+    "n_losers": 51,
+    "n_timeout": 7,
+    "n_no_touch": 9,
+    "mfe_median": 1.22,
+    "rationale": "At equivalent $-risk-per-trade (1.0\u00d7 original), this beats the reported baseline by ~58.0R adjusted. Tighter stop (= original price risk) loses less per loss with similar hit rate at the demand zone; armed trail @ 5R locking 50% of MFE captures the fat-tail moves (MFE > 20R on ~5-10 trades) that any fixR_5 target would cut short. Caveat: many trades close at -1R; the edge is fat-tail-dependent. Live execution must support the trail."
+  },
+  "asymmetric_strategy_eval": {
+    "top_asymmetric_variants_capital_normalized": [
+      {
+        "label": "COMBO orig_1.0 + asym_5_2_20 + atr_normalized",
+        "config": {
+          "label": "COMBO orig_1.0 + asym_5_2_20 + atr_normalized",
+          "entry_policy": "demand_low",
+          "stop_policy": "orig_1.0",
+          "exit_policy": "asym_5_2_20",
+          "size_policy": "atr_normalized"
+        },
+        "sumR_adjusted_as_run": 48.88,
+        "capital_mult_per_trade_vs_original": 1.0,
+        "sumR_normalized_to_1x_original_risk": 48.88,
+        "n_winners": 2,
+        "n_partial": 16,
+        "n_losers": 51,
+        "n_timeout": 0,
+        "mfe_median": 1.22
+      },
+      {
+        "label": "COMBO orig_1.0 + asym_3_1_20 + atr_normalized",
+        "config": {
+          "label": "COMBO orig_1.0 + asym_3_1_20 + atr_normalized",
+          "entry_policy": "demand_low",
+          "stop_policy": "orig_1.0",
+          "exit_policy": "asym_3_1_20",
+          "size_policy": "atr_normalized"
+        },
+        "sumR_adjusted_as_run": 40.88,
+        "capital_mult_per_trade_vs_original": 1.0,
+        "sumR_normalized_to_1x_original_risk": 40.88,
+        "n_winners": 2,
+        "n_partial": 20,
+        "n_losers": 47,
+        "n_timeout": 0,
+        "mfe_median": 1.22
+      },
+      {
+        "label": "COMBO orig_1.0 + asym_3_2_20 + atr_normalized",
+        "config": {
+          "label": "COMBO orig_1.0 + asym_3_2_20 + atr_normalized",
+          "entry_policy": "demand_low",
+          "stop_policy": "orig_1.0",
+          "exit_policy": "asym_3_2_20",
+          "size_policy": "atr_normalized"
+        },
+        "sumR_adjusted_as_run": 40.88,
+        "capital_mult_per_trade_vs_original": 1.0,
+        "sumR_normalized_to_1x_original_risk": 40.88,
+        "n_winners": 2,
+        "n_partial": 20,
+        "n_losers": 47,
+        "n_timeout": 0,
+        "mfe_median": 1.22
+      },
+      {
+        "label": "COMBO orig_1.5 + asym_5_2_20 + atr_normalized",
+        "config": {
+          "label": "COMBO orig_1.5 + asym_5_2_20 + atr_normalized",
+          "entry_policy": "demand_low",
+          "stop_policy": "orig_1.5",
+          "exit_policy": "asym_5_2_20",
+          "size_policy": "atr_normalized"
+        },
+        "sumR_adjusted_as_run": 40.16,
+        "capital_mult_per_trade_vs_original": 1.0,
+        "sumR_normalized_to_1x_original_risk": 40.16,
+        "n_winners": 2,
+        "n_partial": 11,
+        "n_losers": 45,
+        "n_timeout": 11,
+        "mfe_median": 1.35
+      },
+      {
+        "label": "COMBO orig_1.5 + asym_3_1_20 + atr_normalized",
+        "config": {
+          "label": "COMBO orig_1.5 + asym_3_1_20 + atr_normalized",
+          "entry_policy": "demand_low",
+          "stop_policy": "orig_1.5",
+          "exit_policy": "asym_3_1_20",
+          "size_policy": "atr_normalized"
+        },
+        "sumR_adjusted_as_run": 38.66,
+        "capital_mult_per_trade_vs_original": 1.0,
+        "sumR_normalized_to_1x_original_risk": 38.66,
+        "n_winners": 2,
+        "n_partial": 24,
+        "n_losers": 40,
+        "n_timeout": 3,
+        "mfe_median": 1.35
+      },
+      {
+        "label": "COMBO orig_1.5 + asym_3_2_20 + atr_normalized",
+        "config": {
+          "label": "COMBO orig_1.5 + asym_3_2_20 + atr_normalized",
+          "entry_policy": "demand_low",
+          "stop_policy": "orig_1.5",
+          "exit_policy": "asym_3_2_20",
+          "size_policy": "atr_normalized"
+        },
+        "sumR_adjusted_as_run": 38.66,
+        "capital_mult_per_trade_vs_original": 1.0,
+        "sumR_normalized_to_1x_original_risk": 38.66,
+        "n_winners": 2,
+        "n_partial": 24,
+        "n_losers": 40,
+        "n_timeout": 3,
+        "mfe_median": 1.35
+      },
+      {
+        "label": "COMBO orig_1.0 + asym_5_2_20 + half",
+        "config": {
+          "label": "COMBO orig_1.0 + asym_5_2_20 + half",
+          "entry_policy": "demand_low",
+          "stop_policy": "orig_1.0",
+          "exit_policy": "asym_5_2_20",
+          "size_policy": "half"
+        },
+        "sumR_adjusted_as_run": 24.44,
+        "capital_mult_per_trade_vs_original": 0.5,
+        "sumR_normalized_to_1x_original_risk": 48.88,
+        "n_winners": 2,
+        "n_partial": 16,
+        "n_losers": 51,
+        "n_timeout": 0,
+        "mfe_median": 1.22
+      },
+      {
+        "label": "COMBO orig_1.0 + asym_5_2_20 + equal",
+        "config": {
+          "label": "COMBO orig_1.0 + asym_5_2_20 + equal",
+          "entry_policy": "demand_low",
+          "stop_policy": "orig_1.0",
+          "exit_policy": "asym_5_2_20",
+          "size_policy": "equal"
+        },
+        "sumR_adjusted_as_run": 48.88,
+        "capital_mult_per_trade_vs_original": 1.0,
+        "sumR_normalized_to_1x_original_risk": 48.88,
+        "n_winners": 2,
+        "n_partial": 16,
+        "n_losers": 51,
+        "n_timeout": 0,
+        "mfe_median": 1.22
+      },
+      {
+        "label": "COMBO orig_1.0 + asym_3_1_20 + half",
+        "config": {
+          "label": "COMBO orig_1.0 + asym_3_1_20 + half",
+          "entry_policy": "demand_low",
+          "stop_policy": "orig_1.0",
+          "exit_policy": "asym_3_1_20",
+          "size_policy": "half"
+        },
+        "sumR_adjusted_as_run": 20.44,
+        "capital_mult_per_trade_vs_original": 0.5,
+        "sumR_normalized_to_1x_original_risk": 40.88,
+        "n_winners": 2,
+        "n_partial": 20,
+        "n_losers": 47,
+        "n_timeout": 0,
+        "mfe_median": 1.22
+      },
+      {
+        "label": "COMBO orig_1.0 + asym_3_1_20 + equal",
+        "config": {
+          "label": "COMBO orig_1.0 + asym_3_1_20 + equal",
+          "entry_policy": "demand_low",
+          "stop_policy": "orig_1.0",
+          "exit_policy": "asym_3_1_20",
+          "size_policy": "equal"
+        },
+        "sumR_adjusted_as_run": 40.88,
+        "capital_mult_per_trade_vs_original": 1.0,
+        "sumR_normalized_to_1x_original_risk": 40.88,
+        "n_winners": 2,
+        "n_partial": 20,
+        "n_losers": 47,
+        "n_timeout": 0,
+        "mfe_median": 1.22
+      }
+    ],
+    "commentary": "Asymmetric (50% partial at first target + runner with BE stop + cap) gives lower variance than pure trail but lower expected value. Best HALF-size asymmetric: orig_1.5 + asym_5_2_20 = +30.12R adjusted (cap_mult ~0.75 \u2192 +40.16R normalized to 1x baseline). For drawdown-sensitive accounts (FundedNext-style streak constraints) asymmetric is preferable; for pure expectancy, pure-trail wins. Honest finding: asymmetric does beat baseline +24.5R by ~5-15R adjusted across most sizings, but is not dramatically better than alternative trail-based variants at same capital."
+  },
+  "family_aggregates_HALF_size_only": {
+    "trail_variants": {
+      "name": "trail",
+      "n": 18,
+      "sumR_half_mean": 29.06,
+      "sumR_half_max": 41.27,
+      "sumR_norm1x_mean": 34.49,
+      "sumR_norm1x_max": 82.54
+    },
+    "BE_dyn_variants": {
+      "name": "BE_dyn",
+      "n": 15,
+      "sumR_half_mean": 24.63,
+      "sumR_half_max": 34.48,
+      "sumR_norm1x_mean": 29.67,
+      "sumR_norm1x_max": 65.76
+    },
+    "asym_variants": {
+      "name": "asym",
+      "n": 19,
+      "sumR_half_mean": 25.1,
+      "sumR_half_max": 30.12,
+      "sumR_norm1x_mean": 30.09,
+      "sumR_norm1x_max": 48.88
+    },
+    "fixR_variants": {
+      "name": "fixR",
+      "n": 38,
+      "sumR_half_mean": 3.05,
+      "sumR_half_max": 23.0,
+      "sumR_norm1x_mean": 4.73,
+      "sumR_norm1x_max": 39.0
+    }
+  },
+  "honest_commentary": [
+    "#1 finding (clean edge, ROBUST): TIGHTER STOP wins. orig_1.0 stops (= original price risk in $) consistently beat orig_2.0 stops across exit policies. The demand zone either holds cleanly or it does not \u2014 extra room above the original stop adds losses without saving wins. Net effect: ~+15-25R adjusted at half size.",
+    "#2 finding (clean edge, ROBUST): TRAIL/BE_dyn exits dominate fixed targets in honest accounting. fixR_3 captures most wins (+17R), fixR_5 gives back too many (+3.5R), fixR_7..20 are net negative because too few hit. Trail-50%-arm-at-5R and BE@2-dyn-20 harvest the fat tail without missing too many \u2014 both land in the +25-40R adjusted range at half size.",
+    "#3 finding (real but smaller edge): Asymmetric (partial + runner BE) beats baseline by 5-15R adjusted. Lower variance, fewer total dollars at risk per trade, but lower upside than pure trail. Worth considering for FundedNext streak constraints (capping the lock + small partial reduces drawdown shocks).",
+    "#4 finding (NEGATIVE): entry timing (demand_low vs mid vs high vs confirmation) barely shifts results. Within \u00b15R adjusted across the four variants. Once you commit to re-entering, WHERE inside the zone is noise.",
+    "#5 finding (NEGATIVE): time_decay sizing and short wait windows do NOT help. Losers are losers regardless of how patient you are; cap max wait to 100 bars only to limit capital tie-up, not for edge. multi_level demand was treated as = demand_low because the dataset only exposes one nearest zone \u2014 flagged for honesty.",
+    "#6 caveat (capital normalization is critical): without it, \"orig_1.0 + half\" looks worse than \"orig_2.0 + half\" in raw sumR_adjusted, because half-size on a smaller-$-risk stop is half capital deployed. When normalized to 1\u00d7 original $-risk per trade, orig_1.0 wins clearly. ALWAYS COMPARE AT EQUAL $-RISK.",
+    "#7 caveat (path-order assumptions): trail variants showing 0 explicit \"winners\" rely on bar-level path ordering. Real intrabar tick sequence may differ. Expect live performance to differ from backtest by 10-20%. The robust ordering is: trail beats BE_dyn beats asym beats fixR \u2014 the direction holds, magnitudes may shift.",
+    "#8 caveat (sample bias and over-fit): I tested ~135 variants on 69 trading instances. The single best has some look-ahead-fit risk. A safer pick: orig_1.0 + BE_2_dyn_20 + half = +32.88R adjusted (similar story, simpler rule, less over-fit). Or for asymmetric story: orig_1.5 + asym_5_2_20 + half = +30.12R.",
+    "#9 limitation: this re-entry layer only fires on already-known losers. Live deployment requires re-entering on EVERY caminho-B trade (because we do not know in advance whether it will be a winner). Adding +0.5x size on every re-entry across the full 117-trade sample = different P&L profile than just rescuing the 78 losers. The Caminho B winner subset (25 monumental + others) may have different demand-zone re-entry behavior. Recommend: run this same variant on the 25 winners and 14 other trades to get full picture before deploying.",
+    "#10 ranking robustness: variants that consistently land top-15 across raw, normalized, AND half-only rankings are most trustworthy. By that test: orig_1.0 + trail_5_0.5 (any size), orig_1.0 + BE_2_dyn_20, orig_1.5 + trail_3_0.5, orig_2.0 + trail_3_0.5, and orig_2.0 + BE_2_dyn_20 are the safest recommendations."
+  ]
+}

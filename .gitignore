@@ -45,3 +45,20 @@ my-strategy/research/backtests/**/all_summaries.json
 eval_tmp/
 test_write.txt
 **/.runtime_state/
+
+# 2026-06-16: event-store backup snapshots + regenerable lab backfills (cold-storage/local only, never git)
+alert-bridge/logs/*.before_*
+alert-bridge/logs/*.contaminated_*
+alert-bridge/logs/signal_outcomes_lab/backfill_*/
+#   (signal_outcomes_lab/outcomes_current.* intentionally NOT ignored — KEEP_UNTRACKED seed, left untouched)
+
+# 2026-06-16: large regenerable candidate datasets — ARCHIVE_CANDIDATE, kept local, not versioned
+my-strategy/strategies/candidates/regime_classifier_v3/regime_B_v3_classifications.jsonl
+my-strategy/strategies/candidates/regime_classifier_v3/xau_daily_with_features.jsonl
+my-strategy/strategies/candidates/regime_classifier_v3/xau_weekly_with_features.jsonl
+my-strategy/strategies/candidates/xau_4h_reversal_v1_4g_rws_a6/v1_base_trades_2016_2026.jsonl
+
+# editor/OS caches
+__pycache__/
+*.pyc
+.DS_Store

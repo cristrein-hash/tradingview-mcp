@@ -1,0 +1,29 @@
+{
+  "strategy_id": "XAU_4H_LONG_CONTINUATION_L1_EMA21_A_F5",
+  "NOT_VALIDATION": true,
+  "n": 3,
+  "date_range": [
+    "2023-10-23",
+    "2025-04-15"
+  ],
+  "sumR": -0.3,
+  "WR": 33.3,
+  "avgR": -0.1,
+  "maxDD_R": 1.2,
+  "max_losing_streak": 2,
+  "big15W": 0,
+  "big10W": 0,
+  "big5W": 0,
+  "expected_old_n": 16,
+  "expected_old_sumR": 31.74,
+  "expected_old_WR": 43.8,
+  "reconciliation_status": "MISMATCH",
+  "reconciliation_note": "CANNOT_RECONCILE_NO_ORIGINAL_TRADES (sem lista original; compara\u00e7\u00e3o s\u00f3 agregada)",
+  "warning": "NOT_VALIDATION \u2014 reconstru\u00e7\u00e3o da fonte, n\u00e3o prova de edge",
+  "assumptions": [
+    "Discrep\u00e2ncia n=11 (hist\u00f3rico) vs n=16 (re-run 2026-06-07) \u2014 trigger original tinha varia\u00e7\u00e3o n\u00e3o documentada. Reconstr\u00f3i vers\u00e3o n=16 F5-only documentada.",
+    "regime_B_v3 tem bias residual ~10.68% (NEEDS_SHIFT1_AUDIT) \u2014 herdado.",
+    "OB zone eligibility \u00e9 ASSUMPTION (sem label no RAW).",
+    "Sem lista de trades original para reconciliar checksum."
+  ]
+}

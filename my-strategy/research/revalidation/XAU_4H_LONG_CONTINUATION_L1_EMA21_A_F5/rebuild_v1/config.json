@@ -1,0 +1,41 @@
+{
+  "strategy_id": "XAU_4H_LONG_CONTINUATION_L1_EMA21_A_F5",
+  "purpose": "Reconstrução da fonte perdida (não validação, não promoção). Definição congelada da memória project_caminho_a_L1_v1_F4F5_status_candidato_escasso.",
+  "symbol": "XAUUSD",
+  "provider": "PEPPERSTONE",
+  "timeframe": "4H",
+  "direction": "LONG",
+  "period": {"start": "2020-01-01", "end": "2025-12-31", "note": "exclui 2026 BEAR (decisão Cris 2026-06-06); RAW disponível 2019-12->2026"},
+  "gates": {
+    "regime_d1_shift1": "BULL (regime_B_v3 v3_state, último registro estritamente < dia do entry)",
+    "close_prev_gt_ema21": "close[i-1] > EMA21[i-1]",
+    "close_prev_gt_sma50": "close[i-1] > SMA50[i-1]",
+    "ema21_slope3_pos": "EMA21[i-1] > EMA21[i-4]",
+    "sma50_slope6_pos": "SMA50[i-1] > SMA50[i-7]",
+    "bos_causal": "highest_high(20)[i-1] > max(close[i-21..i-2])",
+    "atr14_ratio_band": {"min": 0.004, "max": 0.030, "ASSUMPTION": "memória diz 'ATR14 in [0.4,3.0] USD interpretado como ratio [0.004,0.030]'; 0.4-3.0 USD absoluto é implausível p/ XAU -> usado ATR14/close ratio"},
+    "zone_source": {"primary": "Custom OB v11 demand zone (box {high,low} com high < close[i-1])", "fallback": "EMA21_proxy (zone_high=zone_low=EMA21[i-1])", "ASSUMPTION": "RAW pine_boxes NÃO traz label DEMAND/SUPPLY; demand = box abaixo do preço (geométrico). SHIFT1: zonas do snapshot i-1."},
+    "zone_touch": {"ob_tolerance_pct": 0.001, "ma_proxy_tolerance_pct": 0.002, "rule": "low[i] OU low[i-1] entrou na zona (com tolerância)"},
+    "close_gt_zone_high": "close[i] > zone_high",
+    "body_pct_min": 0.35,
+    "close_gt_prior": "close[i] > close[i-1]",
+    "ret_5b_min": -0.04,
+    "F5_vol_ratio_med50_max": 1.0
+  },
+  "cooldown": "no-overlap: máx 1 trade L1 ativo (novo entry só após exit do anterior)",
+  "stop": {"rule": "structural min(low[i], low[i-1..i-4], zone_low) - 0.1*ATR14", "R_floor_atr": 0.3, "R_ceiling_atr": 1.5, "abort_if_R_over_ceiling": true},
+  "exit": {
+    "name": "V_stair_A (candidate)",
+    "steps_R": "BE@+2R (stop->entry) -> +5R lock+1R -> +8R lock+3R -> +12R lock+6R -> +16R lock+10R",
+    "target_R": 20,
+    "time_stop_bars": 60
+  },
+  "slippage_R": 0.1,
+  "NOT_VALIDATION": true,
+  "NOTES_UNKNOWN": [
+    "Discrepância n=11 (histórico) vs n=16 (re-run 2026-06-07) — trigger original tinha variação não documentada. Reconstrói versão n=16 F5-only documentada.",
+    "regime_B_v3 tem bias residual ~10.68% (NEEDS_SHIFT1_AUDIT) — herdado.",
+    "OB zone eligibility é ASSUMPTION (sem label no RAW).",
+    "Sem lista de trades original para reconciliar checksum."
+  ]
+}

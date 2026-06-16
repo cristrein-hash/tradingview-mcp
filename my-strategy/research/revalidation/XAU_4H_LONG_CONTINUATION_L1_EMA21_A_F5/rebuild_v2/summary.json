@@ -1,0 +1,54 @@
+{
+  "strategy_id": "XAU_4H_LONG_CONTINUATION_L1_EMA21_A_F5",
+  "rebuild": "v2",
+  "NOT_VALIDATION": true,
+  "candidate_count_pre_cooldown": 38,
+  "trade_count": 3,
+  "2024_03_26_appears_as_candidate": false,
+  "2024_03_26_appears_as_trade": false,
+  "gates_failed_2024_03_26": [
+    {
+      "bar": "2024-03-26T02:00:00",
+      "passed": false,
+      "fail_gate": "close_prev<=EMA21"
+    },
+    {
+      "bar": "2024-03-26T06:00:00",
+      "passed": false,
+      "fail_gate": "ema21_slope3<=0"
+    },
+    {
+      "bar": "2024-03-26T10:00:00",
+      "passed": false,
+      "fail_gate": "body_pct<0.35"
+    },
+    {
+      "bar": "2024-03-26T14:00:00",
+      "passed": false,
+      "fail_gate": "zone_not_touched"
+    },
+    {
+      "bar": "2024-03-26T18:00:00",
+      "passed": false,
+      "fail_gate": "zone_not_touched"
+    },
+    {
+      "bar": "2024-03-26T22:00:00",
+      "passed": false,
+      "fail_gate": "zone_not_touched"
+    }
+  ],
+  "sumR": -0.3,
+  "WR": 33.3,
+  "avgR": -0.1,
+  "big15W": 0,
+  "comparison_to_memory": {
+    "expected_n": 16,
+    "expected_sumR": 31.74,
+    "expected_WR": 43.8
+  },
+  "reconciliation_status": "FAILED_RECONSTRUCTION",
+  "warning": "NOT_VALIDATION",
+  "dedup_K_bars": 6,
+  "dedup_K_is_assumption": true
+}
