@@ -47,6 +47,17 @@ OB_TOL, MA_TOL = 0.001, 0.002
 # (artefato de matriz bugada E morto sob F5). Ver STRATEGY.md (auditoria 2026-06-15).
 RSI_VS_MA_THR = -9.35
 
+# === Refinamento APROVADO 2026-06-16 (in-sample 2020-2026; ver APPROVED_REFINEMENT_2026_06_16.md) ===
+# Filtros at-entry causais (stack v1 anti-extensão) + filtro NAS (SHIFT1). Thresholds CONGELADOS.
+RET5_MAX = 0.0142          # ret5 (retorno 5 barras) <= 1.42%
+EXT_EMA_ATR_MAX = 2.95     # (close-EMA21)/ATR <= 2.95
+ZONE_W_ATR_MIN = 0.6       # largura da zona OB / ATR >= 0.6
+DIST_ZONE_ATR_MAX = 1.81   # (entry-zone_high)/ATR <= 1.81
+NAS_DIST_SHIFT1_MIN = 1.31 # NAS_DISTANCE_FROM_EMA_ATR no bar i-1 >= 1.31
+SWING_N = 6                # swing low das últimas 6 barras (<= bar i)
+SL_ATR_BUFFER = 0.1        # SL = max(zone_OB_low, swing6_low) - 0.1*ATR
+TARGET_R = 3.0             # +3R
+
 
 def _f(x):
     """Parse seguro de valor de study_value (trata sinal unicode/strings)."""
@@ -59,8 +70,8 @@ def _f(x):
 
 
 def load_series():
-    """Lê o RAW canônico (read-only): OHLCV + zones Custom OB + RSI/RSI-MA por bar."""
-    bars, zones_at, rsi_at = {}, {}, {}
+    """Lê o RAW canônico (read-only): OHLCV + zones Custom OB + RSI/RSI-MA + NAS_DISTANCE por bar."""
+    bars, zones_at, rsi_at, nas_at = {}, {}, {}, {}
     with gzip.open(RAW, "rt") as f:
         for line in f:
             if '"replay_current_date"' not in line:
@@ -83,10 +94,13 @@ def load_series():
             if zs:
                 zones_at[cur] = zs
             for s in (r.get("study_values") or []):
-                if "Relative Strength Index" in s.get("name", ""):
+                nm = s.get("name", "")
+                if "Relative Strength Index" in nm:
                     vals = s.get("values") or {}
                     rsi_at[cur] = (_f(vals.get("RSI")), _f(vals.get("RSI-based MA")))
-    return bars, zones_at, rsi_at
+                if "NAS" in nm:
+                    nas_at[cur] = _f((s.get("values") or {}).get("NAS_DISTANCE_FROM_EMA_ATR"))
+    return bars, zones_at, rsi_at, nas_at
 
 
 def ema(s, sp):
@@ -108,12 +122,12 @@ def sma(s, n):
 class Series:
     """Container das séries + features + regime (regime_l1_v4 classifications)."""
     __slots__ = ("T", "idx", "N", "O", "H", "L", "C", "V", "EMA21", "SMA50",
-                 "ATR14", "zones_at", "rsi_at", "CLS")
+                 "ATR14", "zones_at", "rsi_at", "nas_at", "CLS")
 
 
 def build_series():
     """Carrega RAW + computa indicadores + carrega classifications regime_l1_v4. Read-only."""
-    bars, zones_at, rsi_at = load_series()
+    bars, zones_at, rsi_at, nas_at = load_series()
     S = Series()
     S.T = sorted(bars); S.idx = {t: i for i, t in enumerate(S.T)}; S.N = len(S.T)
     S.O = [bars[t]["o"] for t in S.T]; S.H = [bars[t]["h"] for t in S.T]
@@ -126,7 +140,7 @@ def build_series():
     if N >= 14:
         a = sum(TR[:14]) / 14; S.ATR14[13] = a
         for i in range(14, N): a = (a * 13 + TR[i]) / 14; S.ATR14[i] = a
-    S.zones_at = zones_at; S.rsi_at = rsi_at
+    S.zones_at = zones_at; S.rsi_at = rsi_at; S.nas_at = nas_at
     S.CLS = [json.loads(l) for l in open(REGIME) if l.strip()]
     return S
 
@@ -190,16 +204,76 @@ def rsi_vs_ma(S, i):
     return (rsi - rma) if (rsi is not None and rma is not None) else None
 
 
+def nas_dist_shift1(S, i):
+    """NAS_DISTANCE_FROM_EMA_ATR no bar i-1 (SHIFT1 causal; NAS top/bottom repinta)."""
+    return S.nas_at.get(S.T[i - 1]) if i >= 1 else None
+
+
+def refined_features(S, i):
+    """Features at-entry causais (conhecidas no close do bar i) do refinamento aprovado."""
+    C, H, L, EMA21, ATR14 = S.C, S.H, S.L, S.EMA21, S.ATR14
+    atr = ATR14[i] or 0.0
+    dz = demand_zone(S, i)
+    zhi, zlo = (dz if dz else (EMA21[i - 1], EMA21[i - 1]))
+    swing6_low = min(L[max(0, i - SWING_N + 1):i + 1])  # somente barras <= i
+    f = {
+        "ret5": (C[i] / C[i - 5] - 1) if i >= 5 else None,
+        "ext_ema_atr": ((C[i] - EMA21[i]) / atr) if atr else None,
+        "zone_w_atr": ((zhi - zlo) / atr) if (dz and atr) else 0.0,
+        "dist_zone_atr": ((C[i] - zhi) / atr) if (dz and atr) else 0.0,
+        "nas_dist_shift1": nas_dist_shift1(S, i),
+        "swing6_low": round(swing6_low, 2),
+        "zone_ob_low": round(zlo, 2) if dz else None,
+        "atr": round(atr, 4),
+    }
+    return f, atr, (zlo if dz else None), swing6_low
+
+
+def refined_filter(S, i):
+    """(pass, trace) do stack v1 + NAS SHIFT1 — thresholds CONGELADOS (aprovados 2026-06-16)."""
+    f, atr, zlo, sw6 = refined_features(S, i)
+    nd = f["nas_dist_shift1"]
+    gates = {
+        "ret5<=1.42%": (f["ret5"] is not None and f["ret5"] <= RET5_MAX),
+        "ext_ema<=2.95ATR": (f["ext_ema_atr"] is not None and f["ext_ema_atr"] <= EXT_EMA_ATR_MAX),
+        "zone_w>=0.6ATR": (f["zone_w_atr"] >= ZONE_W_ATR_MIN),
+        "dist_zone<=1.81ATR": (f["dist_zone_atr"] <= DIST_ZONE_ATR_MAX),
+        "nas_dist_shift1>=1.31": (nd is not None and nd >= NAS_DIST_SHIFT1_MIN),
+    }
+    return all(gates.values()), {**f, "gates": gates}
+
+
+def structural_sl(S, i):
+    """SL estrutural = max(zone_OB_low, swing6_low) - 0.1*ATR (fallback swing6 se sem zona)."""
+    atr = S.ATR14[i] or 0.0
+    dz = demand_zone(S, i)
+    sw6 = min(S.L[max(0, i - SWING_N + 1):i + 1])
+    base = max(dz[1], sw6) if dz else sw6
+    return base - SL_ATR_BUFFER * atr
+
+
 def evaluate(S, i):
-    """Avalia o bar i: retorna o dict de saída do scanner (candidato + gate + estado)."""
+    """Avalia o bar i. Gate: base-rule -> RSI exhaustion -> filtro refinado (stack v1 + NAS SHIFT1).
+    Exit aprovado: SL estrutural max(zone,swing6)-0.1ATR + target +3R. Tudo causal (close do bar i)."""
     passed, reason = gate_trace(S, i)
     rvm = rsi_vs_ma(S, i)
-    # GATE de exaustão = RSI-only, AUTOMÁTICO. round(rsi_vs_ma,2) <= -9.35 bloqueia o candidato.
     exhaustion_gate = (rvm is not None and round(rvm, 2) <= RSI_VS_MA_THR)
-    operational = bool(passed and not exhaustion_gate)
-    state = ("operational_candidate" if operational
-             else "blocked_exhaustion" if (passed and exhaustion_gate)
-             else "no_candidate")
+    ref_pass, ref_trace = refined_filter(S, i)
+    operational = bool(passed and not exhaustion_gate and ref_pass)
+    if operational:
+        state = "operational_candidate"
+    elif passed and exhaustion_gate:
+        state = "blocked_exhaustion"
+    elif passed and not ref_pass:
+        state = "blocked_l1_refined_filter"
+    else:
+        state = "no_candidate"
+
+    # exit aprovado (SL estrutural + 3R) — só faz sentido quando a base-rule passou
+    entry = S.C[i]
+    stop = structural_sl(S, i) if passed else None
+    target = (entry + TARGET_R * (entry - stop)) if (stop is not None and entry - stop > 0) else None
+
     ts_iso = datetime.utcfromtimestamp(S.T[i]).isoformat()
     base_symbol = SYMBOL.split(":")[-1]
     _key = f"{ts_iso}|{base_symbol}|{TIMEFRAME}|L1_EMA21_CONTINUATION|continuation"
@@ -213,9 +287,15 @@ def evaluate(S, i):
         "timestamp": ts_iso,
         "candidate": bool(passed),
         "exhaustion_gate": exhaustion_gate,
+        "refined_filter_pass": ref_pass,
         "operational": operational,
         "state": state,
         "rsi_vs_ma": round(rvm, 2) if rvm is not None else None,
+        "entry_price": round(entry, 2),
+        "stop_price": round(stop, 2) if stop is not None else None,
+        "target_price": round(target, 2) if target is not None else None,
+        "filter_trace": {**ref_trace, "regime_state": regime_d1(S, S.T[i]),
+                          "rsi_vs_ma": round(rvm, 2) if rvm is not None else None},
         "review_required": True,
         "automation_level": "SCANNER_ONLY",
         "telegram_allowed": False,
