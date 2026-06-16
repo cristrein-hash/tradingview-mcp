@@ -1,7 +1,10 @@
 {
-  "new_only_found": 25,
-  "plotted": 25,
-  "missing": [],
+  "new_only": 25,
+  "planned": 25,
+  "drawn_long_position": 25,
+  "skipped": [],
+  "target": "3R",
+  "sl": "structural (OB zone low / swing low) -0.1ATR",
   "chart": {
     "before": {
       "symbol": "PEPPERSTONE:XAUUSD",
@@ -17,5 +20,282 @@
     }
   },
   "telegram": "none",
-  "broker": "untouched"
+  "broker": "untouched",
+  "trades": [
+    {
+      "id": "1",
+      "ts": "2020-01-29T23:00",
+      "entry_time": 1580338800,
+      "exit_time": 1580799600,
+      "entry": 1579.83,
+      "sl": 1562.75,
+      "target": 1631.06,
+      "risk": 17.08,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "2",
+      "ts": "2020-03-30T02:00",
+      "entry_time": 1585533600,
+      "exit_time": 1585821600,
+      "entry": 1619.74,
+      "sl": 1593.45,
+      "target": 1698.6,
+      "risk": 26.29,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "10",
+      "ts": "2020-12-06T23:00",
+      "entry_time": 1607295600,
+      "exit_time": 1607583600,
+      "entry": 1839.14,
+      "sl": 1822.77,
+      "target": 1888.26,
+      "risk": 16.37,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "11",
+      "ts": "2020-12-30T19:00",
+      "entry_time": 1609354800,
+      "exit_time": 1609902000,
+      "entry": 1894.44,
+      "sl": 1870.74,
+      "target": 1965.55,
+      "risk": 23.7,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "12",
+      "ts": "2021-06-02T18:00",
+      "entry_time": 1622656800,
+      "exit_time": 1623117600,
+      "entry": 1908.24,
+      "sl": 1891.63,
+      "target": 1958.08,
+      "risk": 16.61,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "13",
+      "ts": "2021-09-01T02:00",
+      "entry_time": 1630461600,
+      "exit_time": 1630922400,
+      "entry": 1815.32,
+      "sl": 1807.0,
+      "target": 1840.27,
+      "risk": 8.32,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "14",
+      "ts": "2021-09-01T18:00",
+      "entry_time": 1630519200,
+      "exit_time": 1630994400,
+      "entry": 1814.1,
+      "sl": 1800.95,
+      "target": 1853.56,
+      "risk": 13.15,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "16",
+      "ts": "2022-05-27T06:00",
+      "entry_time": 1653631200,
+      "exit_time": 1654092000,
+      "entry": 1858.6,
+      "sl": 1841.62,
+      "target": 1909.54,
+      "risk": 16.98,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "17",
+      "ts": "2022-05-29T22:00",
+      "entry_time": 1653861600,
+      "exit_time": 1654149600,
+      "entry": 1856.75,
+      "sl": 1840.21,
+      "target": 1906.36,
+      "risk": 16.54,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "18",
+      "ts": "2022-05-30T02:00",
+      "entry_time": 1653876000,
+      "exit_time": 1654164000,
+      "entry": 1862.15,
+      "sl": 1840.22,
+      "target": 1927.93,
+      "risk": 21.93,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "19",
+      "ts": "2022-12-20T19:00",
+      "entry_time": 1671562800,
+      "exit_time": 1672110000,
+      "entry": 1817.6,
+      "sl": 1803.98,
+      "target": 1858.47,
+      "risk": 13.62,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "28",
+      "ts": "2024-01-30T19:00",
+      "entry_time": 1706641200,
+      "exit_time": 1707102000,
+      "entry": 2036.89,
+      "sl": 2019.69,
+      "target": 2088.5,
+      "risk": 17.2,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "29",
+      "ts": "2024-01-31T23:00",
+      "entry_time": 1706742000,
+      "exit_time": 1707202800,
+      "entry": 2047.04,
+      "sl": 2028.05,
+      "target": 2104.01,
+      "risk": 18.99,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "40",
+      "ts": "2024-11-29T03:00",
+      "entry_time": 1732849200,
+      "exit_time": 1733310000,
+      "entry": 2665.31,
+      "sl": 2634.01,
+      "target": 2759.22,
+      "risk": 31.3,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "41",
+      "ts": "2025-01-02T19:00",
+      "entry_time": 1735844400,
+      "exit_time": 1736305200,
+      "entry": 2657.96,
+      "sl": 2643.74,
+      "target": 2700.61,
+      "risk": 14.22,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "51",
+      "ts": "2025-08-26T18:00",
+      "entry_time": 1756231200,
+      "exit_time": 1756692000,
+      "entry": 3393.62,
+      "sl": 3350.02,
+      "target": 3524.43,
+      "risk": 43.6,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "55",
+      "ts": "2025-11-09T23:00",
+      "entry_time": 1762729200,
+      "exit_time": 1763017200,
+      "entry": 4048.3,
+      "sl": 3962.87,
+      "target": 4304.58,
+      "risk": 85.43,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "56",
+      "ts": "2025-11-27T03:00",
+      "entry_time": 1764212400,
+      "exit_time": 1764673200,
+      "entry": 4157.48,
+      "sl": 4106.53,
+      "target": 4310.32,
+      "risk": 50.95,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "57",
+      "ts": "2025-12-05T03:00",
+      "entry_time": 1764903600,
+      "exit_time": 1765364400,
+      "entry": 4224.35,
+      "sl": 4172.44,
+      "target": 4380.07,
+      "risk": 51.91,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "58",
+      "ts": "2025-12-11T19:00",
+      "entry_time": 1765479600,
+      "exit_time": 1765940400,
+      "entry": 4279.79,
+      "sl": 4217.95,
+      "target": 4465.31,
+      "risk": 61.84,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "59",
+      "ts": "2025-12-16T23:00",
+      "entry_time": 1765926000,
+      "exit_time": 1766386800,
+      "entry": 4314.32,
+      "sl": 4268.51,
+      "target": 4451.74,
+      "risk": 45.81,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "60",
+      "ts": "2026-01-15T07:00",
+      "entry_time": 1768460400,
+      "exit_time": 1768921200,
+      "entry": 4619.76,
+      "sl": 4566.35,
+      "target": 4779.99,
+      "risk": 53.41,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "61",
+      "ts": "2026-01-20T07:00",
+      "entry_time": 1768892400,
+      "exit_time": 1769180400,
+      "entry": 4726.64,
+      "sl": 4655.56,
+      "target": 4939.88,
+      "risk": 71.08,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "62",
+      "ts": "2026-04-07T18:00",
+      "entry_time": 1775584800,
+      "exit_time": 1776045600,
+      "entry": 4705.59,
+      "sl": 4610.01,
+      "target": 4992.32,
+      "risk": 95.58,
+      "sl_src": "OB_zone_low"
+    },
+    {
+      "id": "63",
+      "ts": "2026-04-10T10:00",
+      "entry_time": 1775815200,
+      "exit_time": 1776276000,
+      "entry": 4775.03,
+      "sl": 4693.52,
+      "target": 5019.55,
+      "risk": 81.51,
+      "sl_src": "OB_zone_low"
+    }
+  ]
 }
