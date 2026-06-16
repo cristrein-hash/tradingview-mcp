@@ -1,0 +1,21 @@
+{
+  "new_only_found": 25,
+  "plotted": 25,
+  "missing": [],
+  "chart": {
+    "before": {
+      "symbol": "PEPPERSTONE:XAUUSD",
+      "tf": "240"
+    },
+    "used": {
+      "symbol": "PEPPERSTONE:XAUUSD",
+      "tf": "240"
+    },
+    "left_on": {
+      "symbol": "PEPPERSTONE:XAUUSD",
+      "tf": "240"
+    }
+  },
+  "telegram": "none",
+  "broker": "untouched"
+}
