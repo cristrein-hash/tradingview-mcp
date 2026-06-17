@@ -1,0 +1,399 @@
+{
+  "source": "RAW replay .gz ONLY (audited extractor in-memory; NO slim file)",
+  "thesis": "breakout=validation; entry on return to polaridade=swing_high_10 (Cris Pattern #1)",
+  "canonical_reused": {
+    "retest_tol_atr": 0.15,
+    "reclaim_buf_atr": 0.1,
+    "body_min": 0.5,
+    "R_floor_atr": 0.3,
+    "R_ceil_atr": 1.5,
+    "_note": "L2 v2 / SMC Unified pre-reg values (decided w/ Cris), NOT new"
+  },
+  "bars": 15187,
+  "T8_events": 577,
+  "no_overlap_events": 176,
+  "retested_rate": 0.801,
+  "FASE1_pre_registered": {
+    "immediate": {
+      "R2": {
+        "all": {
+          "n": 176,
+          "WR": 0.494,
+          "sumR": 54.9,
+          "avgR": 0.312,
+          "PF": 1.696
+        },
+        "TRAIN": {
+          "n": 86,
+          "WR": 0.465,
+          "sumR": 19.1,
+          "avgR": 0.222,
+          "PF": 1.489
+        },
+        "HOLDOUT": {
+          "n": 90,
+          "WR": 0.522,
+          "sumR": 35.8,
+          "avgR": 0.397,
+          "PF": 1.9
+        }
+      },
+      "R3": {
+        "all": {
+          "n": 176,
+          "WR": 0.477,
+          "sumR": 81.1,
+          "avgR": 0.461,
+          "PF": 1.999
+        },
+        "TRAIN": {
+          "n": 86,
+          "WR": 0.465,
+          "sumR": 36.1,
+          "avgR": 0.419,
+          "PF": 1.924
+        },
+        "HOLDOUT": {
+          "n": 90,
+          "WR": 0.489,
+          "sumR": 45.0,
+          "avgR": 0.5,
+          "PF": 2.068
+        }
+      },
+      "R4": {
+        "all": {
+          "n": 176,
+          "WR": 0.455,
+          "sumR": 82.4,
+          "avgR": 0.468,
+          "PF": 1.967
+        },
+        "TRAIN": {
+          "n": 86,
+          "WR": 0.453,
+          "sumR": 39.5,
+          "avgR": 0.459,
+          "PF": 1.986
+        },
+        "HOLDOUT": {
+          "n": 90,
+          "WR": 0.456,
+          "sumR": 42.9,
+          "avgR": 0.477,
+          "PF": 1.95
+        }
+      }
+    },
+    "l2_touch": {
+      "R2": {
+        "all": {
+          "n": 2,
+          "WR": 0.0,
+          "sumR": -2.0,
+          "avgR": -1.0,
+          "PF": 0.0
+        },
+        "TRAIN": {
+          "n": 1,
+          "WR": 0.0,
+          "sumR": -1.0,
+          "avgR": -1.0,
+          "PF": 0.0
+        },
+        "HOLDOUT": {
+          "n": 1,
+          "WR": 0.0,
+          "sumR": -1.0,
+          "avgR": -1.0,
+          "PF": 0.0
+        }
+      },
+      "R3": {
+        "all": {
+          "n": 2,
+          "WR": 0.0,
+          "sumR": -2.0,
+          "avgR": -1.0,
+          "PF": 0.0
+        },
+        "TRAIN": {
+          "n": 1,
+          "WR": 0.0,
+          "sumR": -1.0,
+          "avgR": -1.0,
+          "PF": 0.0
+        },
+        "HOLDOUT": {
+          "n": 1,
+          "WR": 0.0,
+          "sumR": -1.0,
+          "avgR": -1.0,
+          "PF": 0.0
+        }
+      },
+      "R4": {
+        "all": {
+          "n": 2,
+          "WR": 0.0,
+          "sumR": -2.0,
+          "avgR": -1.0,
+          "PF": 0.0
+        },
+        "TRAIN": {
+          "n": 1,
+          "WR": 0.0,
+          "sumR": -1.0,
+          "avgR": -1.0,
+          "PF": 0.0
+        },
+        "HOLDOUT": {
+          "n": 1,
+          "WR": 0.0,
+          "sumR": -1.0,
+          "avgR": -1.0,
+          "PF": 0.0
+        }
+      }
+    },
+    "l2_reclaim": {
+      "R2": {
+        "all": {
+          "n": 0
+        },
+        "TRAIN": {
+          "n": 0
+        },
+        "HOLDOUT": {
+          "n": 0
+        }
+      },
+      "R3": {
+        "all": {
+          "n": 0
+        },
+        "TRAIN": {
+          "n": 0
+        },
+        "HOLDOUT": {
+          "n": 0
+        }
+      },
+      "R4": {
+        "all": {
+          "n": 0
+        },
+        "TRAIN": {
+          "n": 0
+        },
+        "HOLDOUT": {
+          "n": 0
+        }
+      }
+    },
+    "l2_touch_fix1": {
+      "R2": {
+        "all": {
+          "n": 141,
+          "WR": 0.489,
+          "sumR": 66.7,
+          "avgR": 0.473,
+          "PF": 1.935
+        },
+        "TRAIN": {
+          "n": 68,
+          "WR": 0.5,
+          "sumR": 34.7,
+          "avgR": 0.51,
+          "PF": 2.041
+        },
+        "HOLDOUT": {
+          "n": 73,
+          "WR": 0.479,
+          "sumR": 32.0,
+          "avgR": 0.438,
+          "PF": 1.842
+        }
+      },
+      "R3": {
+        "all": {
+          "n": 141,
+          "WR": 0.376,
+          "sumR": 64.9,
+          "avgR": 0.46,
+          "PF": 1.745
+        },
+        "TRAIN": {
+          "n": 68,
+          "WR": 0.382,
+          "sumR": 34.8,
+          "avgR": 0.512,
+          "PF": 1.848
+        },
+        "HOLDOUT": {
+          "n": 73,
+          "WR": 0.37,
+          "sumR": 30.1,
+          "avgR": 0.412,
+          "PF": 1.654
+        }
+      },
+      "R4": {
+        "all": {
+          "n": 141,
+          "WR": 0.348,
+          "sumR": 74.6,
+          "avgR": 0.529,
+          "PF": 1.819
+        },
+        "TRAIN": {
+          "n": 68,
+          "WR": 0.353,
+          "sumR": 37.0,
+          "avgR": 0.544,
+          "PF": 1.858
+        },
+        "HOLDOUT": {
+          "n": 73,
+          "WR": 0.342,
+          "sumR": 37.6,
+          "avgR": 0.515,
+          "PF": 1.784
+        }
+      }
+    },
+    "l2_reclaim_fix1": {
+      "R2": {
+        "all": {
+          "n": 24,
+          "WR": 0.333,
+          "sumR": 1.1,
+          "avgR": 0.046,
+          "PF": 1.077
+        },
+        "TRAIN": {
+          "n": 9,
+          "WR": 0.111,
+          "sumR": -6.0,
+          "avgR": -0.667,
+          "PF": 0.25
+        },
+        "HOLDOUT": {
+          "n": 15,
+          "WR": 0.467,
+          "sumR": 7.1,
+          "avgR": 0.474,
+          "PF": 2.091
+        }
+      },
+      "R3": {
+        "all": {
+          "n": 24,
+          "WR": 0.333,
+          "sumR": 4.6,
+          "avgR": 0.191,
+          "PF": 1.316
+        },
+        "TRAIN": {
+          "n": 9,
+          "WR": 0.111,
+          "sumR": -5.0,
+          "avgR": -0.556,
+          "PF": 0.375
+        },
+        "HOLDOUT": {
+          "n": 15,
+          "WR": 0.467,
+          "sumR": 9.6,
+          "avgR": 0.639,
+          "PF": 2.471
+        }
+      },
+      "R4": {
+        "all": {
+          "n": 24,
+          "WR": 0.333,
+          "sumR": 3.1,
+          "avgR": 0.127,
+          "PF": 1.211
+        },
+        "TRAIN": {
+          "n": 9,
+          "WR": 0.111,
+          "sumR": -5.6,
+          "avgR": -0.618,
+          "PF": 0.305
+        },
+        "HOLDOUT": {
+          "n": 15,
+          "WR": 0.467,
+          "sumR": 8.6,
+          "avgR": 0.574,
+          "PF": 2.322
+        }
+      }
+    }
+  },
+  "FASE2_creative": {
+    "base_l2_reclaim_R3": {
+      "status": "HYPOTHESIS_ONLY/CAUSAL/NEEDS_PREREG/NEEDS_VISUAL/NEEDS_OOS",
+      "all": {
+        "n": 0
+      },
+      "HOLDOUT": {
+        "n": 0
+      }
+    },
+    "+atr_expanding": {
+      "status": "HYPOTHESIS_ONLY/CAUSAL/NEEDS_PREREG/NEEDS_VISUAL/NEEDS_OOS",
+      "all": {
+        "n": 0
+      },
+      "HOLDOUT": {
+        "n": 0
+      }
+    },
+    "+not_inside_supply": {
+      "status": "HYPOTHESIS_ONLY/CAUSAL/NEEDS_PREREG/NEEDS_VISUAL/NEEDS_OOS",
+      "all": {
+        "n": 0
+      },
+      "HOLDOUT": {
+        "n": 0
+      }
+    },
+    "+fresh_demand": {
+      "status": "HYPOTHESIS_ONLY/CAUSAL/NEEDS_PREREG/NEEDS_VISUAL/NEEDS_OOS",
+      "all": {
+        "n": 0
+      },
+      "HOLDOUT": {
+        "n": 0
+      }
+    },
+    "+not_nas_short_recent": {
+      "status": "HYPOTHESIS_ONLY/CAUSAL/NEEDS_PREREG/NEEDS_VISUAL/NEEDS_OOS",
+      "all": {
+        "n": 0
+      },
+      "HOLDOUT": {
+        "n": 0
+      }
+    },
+    "+atr_exp&not_supply": {
+      "status": "HYPOTHESIS_ONLY/CAUSAL/NEEDS_PREREG/NEEDS_VISUAL/NEEDS_OOS",
+      "all": {
+        "n": 0
+      },
+      "HOLDOUT": {
+        "n": 0
+      }
+    }
+  },
+  "runaway_vs_toploss": {
+    "_note": "events that NEVER retested polaridade (no L2 fill): how many were immediate-R4 winners (runaways lost) vs losers (top-losses avoided)",
+    "never_retested": 35,
+    "runaways_lost(immediate_R4_win)": 31,
+    "toploss_avoided(immediate_R4_loss)": 4
+  }
+}
