@@ -1,0 +1,145 @@
+{
+  "false_tipo_B_dump_direto": {
+    "BOM_events_kept": 17,
+    "BOM_events_lost": 0,
+    "NAO_events_removed": 0,
+    "UNKNOWN_cand_cut": 0,
+    "role": "tag"
+  },
+  "CHoCH_not_BOS": {
+    "BOM_events_kept": 16,
+    "BOM_events_lost": 1,
+    "NAO_events_removed": 0,
+    "UNKNOWN_cand_cut": 893,
+    "role": "tag"
+  },
+  "first_retomada": {
+    "BOM_events_kept": 8,
+    "BOM_events_lost": 9,
+    "NAO_events_removed": 5,
+    "UNKNOWN_cand_cut": 4128,
+    "role": "reject(kills winners)"
+  },
+  "bear_flag": {
+    "BOM_events_kept": 17,
+    "BOM_events_lost": 0,
+    "NAO_events_removed": 0,
+    "UNKNOWN_cand_cut": 1028,
+    "role": "hard_veto_candidate"
+  },
+  "BOS_fraco": {
+    "BOM_events_kept": 12,
+    "BOM_events_lost": 5,
+    "NAO_events_removed": 3,
+    "UNKNOWN_cand_cut": 3259,
+    "role": "reject(kills winners)"
+  },
+  "cluster_BUY_climax": {
+    "BOM_events_kept": 15,
+    "BOM_events_lost": 2,
+    "NAO_events_removed": 0,
+    "UNKNOWN_cand_cut": 905,
+    "role": "reject(kills winners)"
+  },
+  "bear_macro": {
+    "BOM_events_kept": 13,
+    "BOM_events_lost": 4,
+    "NAO_events_removed": 3,
+    "UNKNOWN_cand_cut": 1570,
+    "role": "reject(kills winners)"
+  },
+  "volume_fraco": {
+    "BOM_events_kept": 17,
+    "BOM_events_lost": 0,
+    "NAO_events_removed": 1,
+    "UNKNOWN_cand_cut": 2154,
+    "role": "hard_veto_candidate"
+  },
+  "no_absorption": {
+    "BOM_events_kept": 17,
+    "BOM_events_lost": 0,
+    "NAO_events_removed": 0,
+    "UNKNOWN_cand_cut": 0,
+    "role": "tag"
+  },
+  "no_polarity_defense": {
+    "BOM_events_kept": 17,
+    "BOM_events_lost": 0,
+    "NAO_events_removed": 0,
+    "UNKNOWN_cand_cut": 214,
+    "role": "hard_veto_candidate"
+  },
+  "no_retest": {
+    "BOM_events_kept": 17,
+    "BOM_events_lost": 0,
+    "NAO_events_removed": 0,
+    "UNKNOWN_cand_cut": 234,
+    "role": "hard_veto_candidate"
+  },
+  "overextended_entry": {
+    "BOM_events_kept": 17,
+    "BOM_events_lost": 0,
+    "NAO_events_removed": 0,
+    "UNKNOWN_cand_cut": 1775,
+    "role": "hard_veto_candidate"
+  },
+  "_meta": {
+    "total_candidates": 7763,
+    "GT_BOM_events": 17,
+    "NAO_events": 8,
+    "cand_BOM": 71,
+    "cand_NAO": 27,
+    "cand_UNKNOWN": 7665,
+    "density_by_source": {
+      "nivel_interno": 915,
+      "swing_high_simples": 671,
+      "topo_duplo": 1832,
+      "fractal_3_3": 4223,
+      "fractal_2_2": 122
+    },
+    "bom_cand_by_source": {
+      "fractal_3_3": 56,
+      "swing_high_simples": 7,
+      "topo_duplo": 6,
+      "nivel_interno": 2
+    },
+    "nao_cand_by_source": {
+      "swing_high_simples": 2,
+      "fractal_3_3": 16,
+      "topo_duplo": 9
+    },
+    "safe_reduction_union": {
+      "zero_BOM_blockers": [
+        "false_tipo_B_dump_direto",
+        "bear_flag",
+        "volume_fraco",
+        "no_absorption",
+        "no_polarity_defense",
+        "no_retest",
+        "overextended_entry"
+      ],
+      "BOM_events_kept": 15,
+      "BOM_events_total": 17,
+      "NAO_events_removed": 1,
+      "UNKNOWN_cand_cut": 4368,
+      "candidates_remaining": 3336,
+      "density_reduction_pct": 57.0
+    },
+    "best_single_zeroBOM_layer": "volume_fraco",
+    "safe_reduction_greedy_17of17": {
+      "layers": [
+        "volume_fraco",
+        "bear_flag",
+        "no_retest",
+        "no_polarity_defense",
+        "false_tipo_B_dump_direto",
+        "no_absorption"
+      ],
+      "BOM_events_kept": 17,
+      "NAO_events_removed": 1,
+      "UNKNOWN_cand_cut": 3151,
+      "candidates_remaining": 4575,
+      "density_reduction_pct": 41.1
+    }
+  }
+}

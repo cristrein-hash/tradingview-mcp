@@ -1,0 +1,13 @@
+reason_id,description,preserved_BOM_count,cut_NAO_count,cut_UNKNOWN_count,recommended_role,confidence,notes
+false_tipo_B_dump_direto,false tipo B dump direto,17,0,0,tag,"low(GT_BOM_events=17,NAO_events=8)","event-level: keeps 17/17 BOM, removes 0/8 NAO; cand-level UNKNOWN cut 0/7665"
+CHoCH_not_BOS,CHoCH not BOS,16,0,893,tag,"low(GT_BOM_events=17,NAO_events=8)","event-level: keeps 16/17 BOM, removes 0/8 NAO; cand-level UNKNOWN cut 893/7665"
+first_retomada,first retomada,8,5,4128,reject(kills winners),"low(GT_BOM_events=17,NAO_events=8)","event-level: keeps 8/17 BOM, removes 5/8 NAO; cand-level UNKNOWN cut 4128/7665"
+bear_flag,bear flag,17,0,1028,hard_veto_candidate,"low(GT_BOM_events=17,NAO_events=8)","event-level: keeps 17/17 BOM, removes 0/8 NAO; cand-level UNKNOWN cut 1028/7665"
+BOS_fraco,BOS fraco,12,3,3259,reject(kills winners),"low(GT_BOM_events=17,NAO_events=8)","event-level: keeps 12/17 BOM, removes 3/8 NAO; cand-level UNKNOWN cut 3259/7665"
+cluster_BUY_climax,cluster BUY climax,15,0,905,reject(kills winners),"low(GT_BOM_events=17,NAO_events=8)","event-level: keeps 15/17 BOM, removes 0/8 NAO; cand-level UNKNOWN cut 905/7665"
+bear_macro,bear macro,13,3,1570,reject(kills winners),"low(GT_BOM_events=17,NAO_events=8)","event-level: keeps 13/17 BOM, removes 3/8 NAO; cand-level UNKNOWN cut 1570/7665"
+volume_fraco,volume fraco,17,1,2154,hard_veto_candidate,"low(GT_BOM_events=17,NAO_events=8)","event-level: keeps 17/17 BOM, removes 1/8 NAO; cand-level UNKNOWN cut 2154/7665"
+no_absorption,no absorption,17,0,0,tag,"low(GT_BOM_events=17,NAO_events=8)","event-level: keeps 17/17 BOM, removes 0/8 NAO; cand-level UNKNOWN cut 0/7665"
+no_polarity_defense,no polarity defense,17,0,214,hard_veto_candidate,"low(GT_BOM_events=17,NAO_events=8)","event-level: keeps 17/17 BOM, removes 0/8 NAO; cand-level UNKNOWN cut 214/7665"
+no_retest,no retest,17,0,234,hard_veto_candidate,"low(GT_BOM_events=17,NAO_events=8)","event-level: keeps 17/17 BOM, removes 0/8 NAO; cand-level UNKNOWN cut 234/7665"
+overextended_entry,overextended entry,17,0,1775,hard_veto_candidate,"low(GT_BOM_events=17,NAO_events=8)","event-level: keeps 17/17 BOM, removes 0/8 NAO; cand-level UNKNOWN cut 1775/7665"
