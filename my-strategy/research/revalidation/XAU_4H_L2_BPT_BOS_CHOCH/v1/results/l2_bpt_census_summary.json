@@ -1,0 +1,269 @@
+{
+  "round": "L2/BPT BOS-CHoCH mechanical census 2019-2026",
+  "status": "RECONSTRUCTION_CENSUS / MECHANICAL_BASELINE / HYPOTHESES_ONLY (NOT final validation)",
+  "source": "RAW replay .gz ONLY (audited extractor in-memory; NO slim)",
+  "bars_2019plus": 11182,
+  "date_range": [
+    "2019-01-01T23:00:00+00:00",
+    "2026-05-22T18:00:00+00:00"
+  ],
+  "funnel": {
+    "choch": 240,
+    "bos": 211,
+    "episodes_with_retest": 186,
+    "episodes_with_reclaim": 136,
+    "entries": 53,
+    "no_retest": 54,
+    "no_reclaim": 22,
+    "R_ceiling_abort": 83,
+    "invalidation_before_entry": 28,
+    "no_struct_low": 0
+  },
+  "metrics": {
+    "R2": {
+      "n": 53,
+      "WR": 0.302,
+      "sumR": -9.7,
+      "avgR": -0.183,
+      "medianR": -1.0,
+      "PF": 0.738,
+      "maxDD_R": -14.3,
+      "losing_streak": 9,
+      "exits": {
+        "target": 13,
+        "stop": 37,
+        "time_limit": 3
+      },
+      "yearly": {
+        "2019": {
+          "n": 5,
+          "sumR": 1.0,
+          "WR": 0.4
+        },
+        "2020": {
+          "n": 8,
+          "sumR": -5.0,
+          "WR": 0.125
+        },
+        "2021": {
+          "n": 8,
+          "sumR": -0.3,
+          "WR": 0.375
+        },
+        "2022": {
+          "n": 8,
+          "sumR": -5.0,
+          "WR": 0.125
+        },
+        "2023": {
+          "n": 7,
+          "sumR": -1.0,
+          "WR": 0.286
+        },
+        "2024": {
+          "n": 8,
+          "sumR": 2.2,
+          "WR": 0.5
+        },
+        "2025": {
+          "n": 7,
+          "sumR": 0.4,
+          "WR": 0.429
+        },
+        "2026": {
+          "n": 2,
+          "sumR": -2.0,
+          "WR": 0.0
+        }
+      }
+    },
+    "R3": {
+      "n": 53,
+      "WR": 0.264,
+      "sumR": -9.7,
+      "avgR": -0.183,
+      "medianR": -1.0,
+      "PF": 0.752,
+      "maxDD_R": -21.3,
+      "losing_streak": 11,
+      "exits": {
+        "target": 9,
+        "stop": 39,
+        "time_limit": 5
+      },
+      "yearly": {
+        "2019": {
+          "n": 5,
+          "sumR": -1.0,
+          "WR": 0.2
+        },
+        "2020": {
+          "n": 8,
+          "sumR": -7.0,
+          "WR": 0.125
+        },
+        "2021": {
+          "n": 8,
+          "sumR": -4.3,
+          "WR": 0.25
+        },
+        "2022": {
+          "n": 8,
+          "sumR": -4.0,
+          "WR": 0.125
+        },
+        "2023": {
+          "n": 7,
+          "sumR": 1.0,
+          "WR": 0.286
+        },
+        "2024": {
+          "n": 8,
+          "sumR": 5.2,
+          "WR": 0.5
+        },
+        "2025": {
+          "n": 7,
+          "sumR": 2.4,
+          "WR": 0.429
+        },
+        "2026": {
+          "n": 2,
+          "sumR": -2.0,
+          "WR": 0.0
+        }
+      }
+    },
+    "R4": {
+      "n": 53,
+      "WR": 0.264,
+      "sumR": -8.8,
+      "avgR": -0.166,
+      "medianR": -1.0,
+      "PF": 0.775,
+      "maxDD_R": -22.5,
+      "losing_streak": 11,
+      "exits": {
+        "target": 6,
+        "stop": 39,
+        "time_limit": 8
+      },
+      "yearly": {
+        "2019": {
+          "n": 5,
+          "sumR": 0.0,
+          "WR": 0.2
+        },
+        "2020": {
+          "n": 8,
+          "sumR": -7.0,
+          "WR": 0.125
+        },
+        "2021": {
+          "n": 8,
+          "sumR": -4.3,
+          "WR": 0.25
+        },
+        "2022": {
+          "n": 8,
+          "sumR": -5.2,
+          "WR": 0.125
+        },
+        "2023": {
+          "n": 7,
+          "sumR": -0.2,
+          "WR": 0.286
+        },
+        "2024": {
+          "n": 8,
+          "sumR": 8.2,
+          "WR": 0.5
+        },
+        "2025": {
+          "n": 7,
+          "sumR": 1.7,
+          "WR": 0.429
+        },
+        "2026": {
+          "n": 2,
+          "sumR": -2.0,
+          "WR": 0.0
+        }
+      }
+    }
+  },
+  "tag_breakdown_R3": {
+    "inside_supply": {
+      "n": 12,
+      "WR": 0.0,
+      "sumR": -12.0,
+      "avgR": -1.0,
+      "medianR": -1.0,
+      "PF": 0.0,
+      "maxDD_R": -12.0,
+      "losing_streak": 12
+    },
+    "not_inside_supply": {
+      "n": 41,
+      "WR": 0.341,
+      "sumR": 2.3,
+      "avgR": 0.057,
+      "medianR": -1.0,
+      "PF": 1.086,
+      "maxDD_R": -12.3,
+      "losing_streak": 8
+    },
+    "inside_demand": {
+      "n": 4,
+      "WR": 0.0,
+      "sumR": -4.0,
+      "avgR": -1.0,
+      "medianR": -1.0,
+      "PF": 0.0,
+      "maxDD_R": -4.0,
+      "losing_streak": 4
+    },
+    "nas_short_recent": {
+      "n": 44,
+      "WR": 0.25,
+      "sumR": -10.4,
+      "avgR": -0.236,
+      "medianR": -1.0,
+      "PF": 0.686,
+      "maxDD_R": -17.0,
+      "losing_streak": 10
+    },
+    "nas_long_recent": {
+      "n": 32,
+      "WR": 0.312,
+      "sumR": 0.9,
+      "avgR": 0.028,
+      "medianR": -1.0,
+      "PF": 1.041,
+      "maxDD_R": -10.3,
+      "losing_streak": 9
+    },
+    "bubble_large_buy": {
+      "n": 3,
+      "WR": 0.0,
+      "sumR": -3.0,
+      "avgR": -1.0,
+      "medianR": -1.0,
+      "PF": 0.0,
+      "maxDD_R": -3.0,
+      "losing_streak": 3
+    },
+    "rsi_div_bearish": {
+      "n": 1,
+      "WR": 1.0,
+      "sumR": 3.0,
+      "avgR": 3.0,
+      "medianR": 3.0,
+      "PF": null,
+      "maxDD_R": 0.0,
+      "losing_streak": 0
+    }
+  },
+  "gross": true,
+  "costs": false
+}
