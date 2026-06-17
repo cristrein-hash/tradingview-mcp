@@ -10,3 +10,6 @@
 # Round-1 mechanical rebuild bulk outputs (regenerable from run_mechanical_rebuild_v1.py)
 **/results/*_trades.jsonl
 **/results/*_plot_ready.csv
+
+# Entry anatomy substrate (regenerable from RAW via build_entry_anatomy.py)
+**/results/entry_anatomy.jsonl

@@ -1,0 +1,133 @@
+{
+  "source": "RAW replay .gz ONLY (audited extractor in-memory; no slim file read)",
+  "bars": 15187,
+  "events": 1038,
+  "no_overlap_events": 333,
+  "winners": 279,
+  "win_rate": 0.269,
+  "sumR": 168.2,
+  "no_overlap_headline": {
+    "n": 333,
+    "win_rate": 0.306,
+    "sumR": 87.8
+  },
+  "ALT_demand_entry": {
+    "_note": "real outcome of retrace-to-demand entry (fill@demand_high, SL=demand_low-0.5ATR, +4R/BE/time). DA-required; supersedes run_after proxy.",
+    "filled": 395,
+    "of_events": 1038,
+    "win_rate": 0.18,
+    "sumR": 32.5,
+    "vs_current_on_same_events": {
+      "current_sumR": -260.3,
+      "alt_sumR": 32.5,
+      "delta_R": 292.8
+    },
+    "no_overlap": {
+      "filled": 129,
+      "win_rate": 0.225,
+      "sumR": 16.6
+    }
+  },
+  "by_inside_supply": {
+    "yes": {
+      "n": 198,
+      "win_rate": 0.283,
+      "sumR": 32.9
+    },
+    "no": {
+      "n": 840,
+      "win_rate": 0.265,
+      "sumR": 135.3
+    }
+  },
+  "by_nas_short_recent": {
+    "yes": {
+      "n": 853,
+      "win_rate": 0.268,
+      "sumR": 153.4
+    },
+    "no": {
+      "n": 185,
+      "win_rate": 0.27,
+      "sumR": 14.8
+    }
+  },
+  "by_retraced_to_demand": {
+    "yes": {
+      "n": 395,
+      "win_rate": 0.035,
+      "sumR": -260.3
+    },
+    "no": {
+      "n": 642,
+      "win_rate": 0.413,
+      "sumR": 428.5
+    }
+  },
+  "by_d1a": {
+    "pass": {
+      "n": 768,
+      "win_rate": 0.27,
+      "sumR": 163.0
+    },
+    "fail": {
+      "n": 270,
+      "win_rate": 0.267,
+      "sumR": 5.2
+    }
+  },
+  "by_ema_stack": {
+    "yes": {
+      "n": 676,
+      "win_rate": 0.275,
+      "sumR": 148.4
+    },
+    "no": {
+      "n": 362,
+      "win_rate": 0.257,
+      "sumR": 19.8
+    }
+  },
+  "by_dist_to_demand": {
+    "near_<=1atr": {
+      "n": 0,
+      "win_rate": null,
+      "sumR": 0
+    },
+    "mid_1to3": {
+      "n": 280,
+      "win_rate": 0.271,
+      "sumR": 38.9
+    },
+    "ext_>3atr": {
+      "n": 757,
+      "win_rate": 0.268,
+      "sumR": 129.2
+    }
+  },
+  "by_nearest_zone_type": {
+    "DEMAND": {
+      "n": 393,
+      "win_rate": 0.249,
+      "sumR": 48.6
+    },
+    "SUPPLY": {
+      "n": 645,
+      "win_rate": 0.281,
+      "sumR": 119.6
+    }
+  },
+  "by_bubble": {
+    "sell_bubble": {
+      "n": 0,
+      "win_rate": null,
+      "sumR": 0
+    },
+    "large_buy": {
+      "n": 312,
+      "win_rate": 0.288,
+      "sumR": 97.5
+    }
+  },
+  "out": "/Users/cristrein/tradingview-mcp/my-strategy/research/revalidation/XAU_4H_BREAKOUT_D1A/v1/results/entry_anatomy.jsonl"
+}
