@@ -1,0 +1,42 @@
+episode_id,group,timestamp,low_seq(recent),low_seq(prior),high_seq,polarity_is_LH,sweep,bos_down_recent,sl_origin_dist_atr,leg10_atr,slope20_atr,annot
+E1,WIN,2020-03-23 22:00,HL,LL,LH,1,0,0,0.08,2.84,3.73,MUITO BOM. SL estrutural correto gera BIG 
+E2,SLFIX,2020-05-04 06:00,LL,LL,LH,1,1,1,1.2,1.81,-0.33,cluster: viram winners com SL estrutural
+E3,SLFIX,2020-06-10 18:00,LL,LL,LH,1,1,0,1.08,3.84,5.61,SUP D+; SL estrutural é aqui
+E4,SLFIX,2020-07-02 14:00,HL,LL,HH,1,0,0,1.34,-0.5,0.82,SUP UNK; SL estrutural aqui
+E5,WIN,2020-07-30 22:00,HL,HL,LH,1,0,0,1.62,0.58,1.71,WINNER OK
+E6,TRAP,2020-10-08 22:00,LL,LL,HH,1,1,1,0.01,1.74,-0.86,Regime bear: não funciona
+E7,TRAP,2020-10-14 10:00,HL,LL,HH,1,0,0,0.07,-0.94,0.35,Regime bear: não funciona
+E8,TRAP,2020-11-05 07:00,HL,LL,HH,1,0,0,0.14,0.94,2.69,Regime bear: não funciona
+E9,TRAP,2020-11-08 23:00,HL,LL,HH,0,0,0,0.79,3.5,4.58,Regime bear: não funciona
+E10,TRAP,2020-12-17 19:00,HL,LL,LH,1,0,0,0.28,2.63,4.87,Regime bear: não funciona
+E11,TRAP,2021-02-24 15:00,HL,LL,HH,1,0,0,0.18,-1.6,2.32,Loser COMPREENSÍVEL pela lógica da estraté
+E12,REVIEW,2021-03-25 14:00,LL,HL,LH,1,1,1,0.03,-0.34,-0.46,Mesma config de E11 — por que detector NÃO
+E13,WIN,2020-01-20 03:00,HL,LL,LH,1,0,0,1.27,1.57,3.12,Entrada e SL corretos; vira BIG WINNER dos
+E14,REVIEW,2020-02-20 15:00,HL,HL,HH,0,0,0,6.66,2.27,5.13,SKY D- (contexto bear region)
+E15,TRAP,2020-03-09 06:00,LL,HL,LH,1,0,0,1.96,-0.13,0.98,"NÃO pode existir: topo duplo, entra após b"
+E16,REVIEW,2020-03-31 06:00,HL,HL,LH,1,0,0,2.64,-1.28,0.21,SKY D- (cluster)
+E17,WIN,2020-04-01 14:00,HL,HL,LH,1,0,0,0.74,-2.06,-2.57,BIG WINNER
+E18,REVIEW,2020-05-18 14:00,HL,LL,HH,0,0,0,1.74,-0.05,2.48,cluster
+E19,SLFIX,2020-06-30 06:00,LL,HL,LH,1,1,1,2.1,0.34,0.87,"WINNER, SL a corrigir; SL estrutural aqui"
+E20,SLFIX,2020-07-15 14:00,LL,LL,LH,1,1,0,2.08,1.68,0.61,"SKY D+ (cluster winners, SL a corrigir)"
+E21,WIN,2020-07-17 14:00,HL,LL,HH,1,0,0,2.69,0.17,2.06,WINNER OK
+E22,SLFIX,2020-07-23 02:00,HL,LL,HH,0,0,0,6.78,2.8,5.49,WINNER OK (SL a corrigir)
+E23,WIN,2020-08-04 22:00,HL,LL,HH,0,0,0,4.73,3.83,5.27,WINNER OK
+E24,TRAP,2020-08-07 10:00,HL,LL,HH,0,0,0,5.22,0.51,4.26,"Entrada de topo, exaustão clara, MACRO BEA"
+E25,PREM,2020-01-30 23:00,HL,HL,HH,1,0,0,1.37,0.27,-0.91,Entrada precipitada; eliminar (a real é E2
+E26,PREM,2020-02-05 03:00,HL,HL,HH,1,0,1,0.41,-2.04,-1.94,Entrada precipitada; eliminar (a real é E2
+E27,WIN,2020-02-06 19:00,LL,HL,HH,1,0,1,0.51,1.1,-1.28,ENTRADA REAL CORRETA do cluster; BIG WINNE
+E28,SLFIX,2020-05-07 18:00,LL,HL,LH,1,1,1,0.5,1.09,1.02,cluster: viram winners com SL estrutural
+E29,SLFIX,2020-05-28 18:00,LL,LL,LH,1,1,1,0.09,1.1,-1.35,cluster: viram winners com SL estrutural
+E30,WIN,2020-01-14 07:00,LL,?,LH,1,1,1,0.75,-2.1,-2.41,BIG WINNER
+E31,SLFIX,2020-04-17 18:00,HL,HL,LH,1,0,0,2.65,-2.27,-3.71,D- cluster: SL estrutural aqui (vira winne
+E32,SLFIX,2020-04-27 14:00,HL,LL,HH,1,0,0,0.13,-1.12,0.93,D- cluster: SL estrutural aqui
+E33,REVIEW,2020-08-17 10:00,LL,HL,LH,1,0,1,0.75,1.19,5.63,D- D- (cluster perto de E24 topo)
+E34,TRAP,2020-02-25 23:00,HL,HL,HH,0,0,0,3.75,-2.53,1.16,NÃO: exaustão; entrar em queda clara de ve
+E35,PREM,2020-02-03 15:00,HL,HL,LH,1,0,0,0.7,0.53,0.75,Entrada precipitada; eliminar (a real é E2
+E36,TRAP,2020-10-12 18:00,HL,LL,HH,1,0,0,0.66,1.51,4.24,Regime bear (cluster out/2020-mar/2021): n
+E37,TRAP,2021-02-22 07:00,LL,LL,LH,1,1,0,0.06,2.02,0.2,Regime bear: não funciona
+E38,SLFIX,2021-05-12 18:00,HL,HL,HH,1,0,0,0.52,-2.24,-2.4,LOSER por SL curto demais; vira winner com
+E39,TRAP,2021-06-07 06:00,LL,HL,LH,1,1,1,0.18,1.09,-1.3,Compra sem sentido após perna bear clara; 
+E40,WIN,2021-05-02 22:00,LL,LL,HH,1,1,1,0.19,-0.35,-0.62,"BIG WINNER, entrada perfeita, SL curto e e"
+E41,SLFIX,2022-12-15 03:00,HL,LL,HH,1,0,0,0.04,-2.53,-0.14,Ponto de entrada correto é mais abaixo; lo
