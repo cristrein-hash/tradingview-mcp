@@ -1,0 +1,7 @@
+reason_id,reason_name,macro_layer,description,BOM_count,NAO_count,BOM_cand,NAO_cand,UNKNOWN_cand,recommended_role,confidence,causal_status,notes
+at_D1_demand,at_D1_demand,D1_demand,at_D1_demand,0/17,0/6,0,0,358,tag,"low(BOM_ev=17,NAO_ev=6)",causal (D1 guard / as-of-bar boxes),"small-n NAO; contrast only, not proof"
+inside_custom_ob_demand,inside_custom_ob_demand,custom_ob,inside_custom_ob_demand,4/17,2/6,7,2,305,human_review,"low(BOM_ev=17,NAO_ev=6)",causal (D1 guard / as-of-bar boxes),"small-n NAO; contrast only, not proof"
+near_custom_ob_demand,near_custom_ob_demand,custom_ob,near_custom_ob_demand,1/17,2/6,1,2,361,tag,"low(BOM_ev=17,NAO_ev=6)",causal (D1 guard / as-of-bar boxes),"small-n NAO; contrast only, not proof"
+supply_overhead,supply_overhead,supply,supply_overhead,11/17,5/6,26,10,1922,tag,"low(BOM_ev=17,NAO_ev=6)",causal (D1 guard / as-of-bar boxes),"small-n NAO; contrast only, not proof"
+inside_custom_ob_supply,inside_custom_ob_supply,custom_ob,inside_custom_ob_supply,3/17,1/6,5,1,484,tag,"low(BOM_ev=17,NAO_ev=6)",causal (D1 guard / as-of-bar boxes),"small-n NAO; contrast only, not proof"
+macro_leg,macro_leg,macro_leg,manual block annotations (pack 5 rows),NA,NA,NA,NA,NA,do_not_use(REFERENCE_ONLY),NA,NOT a per-candidate causal feature,only 5 manual rows; not derived (no invention)
