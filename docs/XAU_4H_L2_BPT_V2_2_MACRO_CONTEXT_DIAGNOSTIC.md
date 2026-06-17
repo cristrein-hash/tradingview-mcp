@@ -1,6 +1,8 @@
 # XAU 4H L2/BPT v2.2 PRUNED_BASE_V2 — Macro-Structural Context Diagnostic
 
-**Status:** `DIAGNOSTIC · NOT_STRATEGY · NOT_VALIDATION · RECALL_FIRST` · **Data:** 2026-06-17
+> 🚨 **UNTRUSTED — visual reality mismatch. Do not use these macro-context results for strategy decisions until mapping is reconciled against chart/GT examples, including 4H OB Demand.** (Marcado 2026-06-17.) Causa provável: tolerâncias estreitas (0.5·ATR) e ausência de medição de **demanda 4H relevante abaixo / origem da perna** — só foi medido "inside/near". O `at_D1_demand=0/17` é artefato de threshold/semântica, NÃO conclusão. Reconciliação em `XAU_4H_L2_BPT_MACRO_CONTEXT_VISUAL_RECONCILIATION_AUDIT.md`.
+
+**Status:** `UNTRUSTED / NEEDS_VISUAL_RECONCILIATION` · ~~`DIAGNOSTIC`~~ · **Data:** 2026-06-17
 **RAW-only · sem backtest/PnL, sem promoção de veto, sem plotagem, sem MCP/chart, sem Telegram/broker/produção, sem SLIM.** Recall em nível de evento.
 
 ---
