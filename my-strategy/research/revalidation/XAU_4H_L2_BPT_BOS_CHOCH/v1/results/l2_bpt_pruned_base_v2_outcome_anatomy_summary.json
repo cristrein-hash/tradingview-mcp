@@ -1,0 +1,82 @@
+{
+  "analyzed": 2965,
+  "calibration": {
+    "BOM_classes": {
+      "GT01": "STRONG_CONTINUATION",
+      "GT03": "STRONG_CONTINUATION",
+      "GT02": "STRONG_CONTINUATION",
+      "GT08": "STRONG_CONTINUATION",
+      "GT09": "STRONG_CONTINUATION",
+      "GT10": "STRONG_CONTINUATION",
+      "GT13A": "GOOD_CONTINUATION",
+      "GT13B": "STRONG_CONTINUATION",
+      "GT15": "GOOD_CONTINUATION",
+      "GT17A": "NEEDS_VISUAL_REVIEW",
+      "GT18": "STRUCTURE_INVALIDATED",
+      "GT20": "STRONG_CONTINUATION",
+      "GT21": "GOOD_CONTINUATION",
+      "GT23": "STRONG_CONTINUATION",
+      "GT24": "GOOD_CONTINUATION",
+      "GT25": "NEEDS_VISUAL_REVIEW",
+      "GT27": "NEEDS_VISUAL_REVIEW"
+    },
+    "NAO_classes": {
+      "GT04A": "STRUCTURE_INVALIDATED",
+      "GT06A": "STRUCTURE_INVALIDATED",
+      "GT06B": "NEEDS_VISUAL_REVIEW",
+      "GT12": "NEEDS_VISUAL_REVIEW",
+      "GT14_NAO": "NEEDS_VISUAL_REVIEW",
+      "GT19A": "GOOD_CONTINUATION"
+    },
+    "BOM_continuation": "13/17",
+    "NAO_failure": "2/6",
+    "calib_ok": false
+  },
+  "unknown_distribution": {
+    "STRONG_CONTINUATION": 864,
+    "NEEDS_VISUAL_REVIEW": 404,
+    "GOOD_CONTINUATION": 427,
+    "STRUCTURE_INVALIDATED": 801,
+    "WEAK_CONTINUATION": 370,
+    "TOP_SWEEP_REVERSAL": 38,
+    "FAILED_RECLAIM": 8
+  },
+  "unknown_strong": 1291,
+  "unknown_noise": 839,
+  "unknown_visual": 404,
+  "cross": {
+    "STRONG/GOOD": {
+      "n": 1324,
+      "supply_near<=1ATR%": 31.3,
+      "demand_supporting%": 52.3,
+      "overext%": 0.0,
+      "bearflag%": 0.0,
+      "nas_short>=5%": 53.9
+    },
+    "TOP_SWEEP_REVERSAL": {
+      "n": 38,
+      "supply_near<=1ATR%": 13.2,
+      "demand_supporting%": 31.6,
+      "overext%": 0.0,
+      "bearflag%": 0.0,
+      "nas_short>=5%": 60.5
+    },
+    "FAILED_RECLAIM": {
+      "n": 8,
+      "supply_near<=1ATR%": 25.0,
+      "demand_supporting%": 62.5,
+      "overext%": 0.0,
+      "bearflag%": 0.0,
+      "nas_short>=5%": 62.5
+    },
+    "CHOP": {
+      "n": 0,
+      "supply_near<=1ATR%": 0.0,
+      "demand_supporting%": 0.0,
+      "overext%": 0.0,
+      "bearflag%": 0.0,
+      "nas_short>=5%": 0.0
+    }
+  },
+  "status": "MECHANICAL_PROXY_NOT_BACKTEST_NOT_VALIDATION"
+}
