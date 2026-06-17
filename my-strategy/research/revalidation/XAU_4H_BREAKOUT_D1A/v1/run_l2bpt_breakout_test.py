@@ -252,6 +252,23 @@ def main():
         "toploss_avoided(immediate_R4_loss)": toploss_avoided}
 
     (RESULTS / "l2_bpt_breakout_test_summary.json").write_text(json.dumps(summary, indent=2))
+
+    # per-event dump (for metrics-only paired analysis; same params, no logic change)
+    def cell(blk, tk):
+        c = blk.get(tk) if isinstance(blk, dict) else None
+        return (c["R"], c["exit"]) if c else (None, None)
+    with open(RESULTS / "l2_bpt_events_full.jsonl", "w") as f:
+        for e in events:
+            im, lf, lr = e["immediate"], e.get("l2_touch_fix1", {}), e.get("l2_reclaim_fix1", {})
+            i3 = cell(im, "R3"); i4 = cell(im, "R4")
+            f3 = cell(lf, "R3"); f4 = cell(lf, "R4"); r3 = cell(lr, "R3")
+            f.write(json.dumps({
+                "ts": e["ts"], "year": e["year"], "no_overlap": e["no_overlap"], "retested": e["retested"],
+                "imm_R3": i3[0], "imm_R3_exit": i3[1], "imm_R4": i4[0], "imm_R4_exit": i4[1],
+                "l2f_filled": bool(lf.get("filled")), "l2f_risk_atr": lf.get("risk_atr"),
+                "l2f_R3": f3[0], "l2f_R3_exit": f3[1], "l2f_R4": f4[0], "l2f_R4_exit": f4[1],
+                "l2r_filled": bool(lr.get("filled")), "l2r_R3": r3[0], "l2r_R3_exit": r3[1],
+            }) + "\n")
     # trades.jsonl + plot_ready: the REALISTIC viable variant = l2_touch_fix1 @ R4 (SL = P-1ATR causal)
     VOUT, VTK = "l2_touch_fix1", "R4"
     with open(RESULTS / "l2_bpt_breakout_trades.jsonl", "w") as f:

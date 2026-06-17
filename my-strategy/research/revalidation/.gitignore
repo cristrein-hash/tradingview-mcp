@@ -13,3 +13,6 @@
 
 # Entry anatomy substrate (regenerable from RAW via build_entry_anatomy.py)
 **/results/entry_anatomy.jsonl
+
+# L2/BPT per-event dump (regenerable from run_l2bpt_breakout_test.py)
+**/results/l2_bpt_events_full.jsonl

@@ -1,0 +1,276 @@
+{
+  "source": "results/l2_bpt_events_full.jsonl (per-event dump; metrics-only, no backtest/RAW/slim)",
+  "gross": true,
+  "costs_slippage_considered": false,
+  "target_primary": "R4 (R3 also reported)",
+  "universe": {
+    "events_total": 577,
+    "no_overlap": 176
+  },
+  "A_immediate_T8": {
+    "R4": {
+      "n": 176,
+      "WR": 0.455,
+      "sumR": 82.4,
+      "avgR": 0.468,
+      "medianR": -0.248,
+      "PF": 1.967,
+      "maxDD_R": -9.1,
+      "losing_streak": 7,
+      "target": 26,
+      "stop": 82,
+      "time_limit": 68,
+      "stop_be": 0
+    },
+    "R3": {
+      "n": 176,
+      "WR": 0.477,
+      "sumR": 81.1,
+      "avgR": 0.461,
+      "medianR": -0.12,
+      "PF": 1.999,
+      "maxDD_R": -8.6,
+      "losing_streak": 5,
+      "target": 41,
+      "stop": 78,
+      "time_limit": 57,
+      "stop_be": 0
+    },
+    "TRAIN_R4": {
+      "n": 86,
+      "WR": 0.453,
+      "sumR": 39.5,
+      "avgR": 0.459,
+      "medianR": -0.186,
+      "PF": 1.986,
+      "maxDD_R": -7.4,
+      "losing_streak": 5,
+      "target": 13,
+      "stop": 38,
+      "time_limit": 35,
+      "stop_be": 0
+    },
+    "HOLDOUT_R4": {
+      "n": 90,
+      "WR": 0.456,
+      "sumR": 42.9,
+      "avgR": 0.477,
+      "medianR": -0.323,
+      "PF": 1.95,
+      "maxDD_R": -7.3,
+      "losing_streak": 7,
+      "target": 13,
+      "stop": 44,
+      "time_limit": 33,
+      "stop_be": 0
+    }
+  },
+  "B_l2_touch_fix1_Pminus1ATR": {
+    "R4": {
+      "n": 141,
+      "WR": 0.348,
+      "sumR": 74.6,
+      "avgR": 0.529,
+      "medianR": -1.0,
+      "PF": 1.819,
+      "maxDD_R": -7.0,
+      "losing_streak": 7,
+      "target": 36,
+      "stop": 90,
+      "time_limit": 15,
+      "stop_be": 0
+    },
+    "R3": {
+      "n": 141,
+      "WR": 0.376,
+      "sumR": 64.9,
+      "avgR": 0.46,
+      "medianR": -1.0,
+      "PF": 1.745,
+      "maxDD_R": -6.3,
+      "losing_streak": 7,
+      "target": 48,
+      "stop": 86,
+      "time_limit": 7,
+      "stop_be": 0
+    },
+    "TRAIN_R4": {
+      "n": 68,
+      "WR": 0.353,
+      "sumR": 37.0,
+      "avgR": 0.544,
+      "medianR": -1.0,
+      "PF": 1.858,
+      "maxDD_R": -6.3,
+      "losing_streak": 7,
+      "target": 17,
+      "stop": 42,
+      "time_limit": 9,
+      "stop_be": 0
+    },
+    "HOLDOUT_R4": {
+      "n": 73,
+      "WR": 0.342,
+      "sumR": 37.6,
+      "avgR": 0.515,
+      "medianR": -1.0,
+      "PF": 1.784,
+      "maxDD_R": -7.0,
+      "losing_streak": 7,
+      "target": 19,
+      "stop": 48,
+      "time_limit": 6,
+      "stop_be": 0
+    },
+    "filled": 141,
+    "unfilled": 35
+  },
+  "C_l2_reclaim_fix1": {
+    "R3": {
+      "n": 24,
+      "WR": 0.333,
+      "sumR": 4.6,
+      "avgR": 0.191,
+      "medianR": -1.0,
+      "PF": 1.316,
+      "maxDD_R": -9.0,
+      "losing_streak": 9,
+      "target": 5,
+      "stop": 14,
+      "time_limit": 5,
+      "stop_be": 0
+    },
+    "filled": 24
+  },
+  "D_runaways_no_retest": {
+    "never_retested": 35,
+    "imm_R4_win(runaway_lost)": 31,
+    "imm_R4_loss(toploss_avoided)": 4
+  },
+  "paired_R4_same_events": {
+    "n_paired": 141,
+    "E_imm_lose_retest_win": 6,
+    "F_imm_win_retest_lose": 6,
+    "G_both_win": 43,
+    "H_both_lose": 86,
+    "F_extended_unfilled_but_imm_R4_win": 31,
+    "imm_sumR_on_paired": 15.6,
+    "retest_sumR_on_paired": 74.6
+  },
+  "yearly_R4": {
+    "immediate": {
+      "2016": {
+        "n": 4,
+        "sumR": 1.1,
+        "WR": 0.5
+      },
+      "2017": {
+        "n": 11,
+        "sumR": 9.2,
+        "WR": 0.455
+      },
+      "2018": {
+        "n": 9,
+        "sumR": 4.4,
+        "WR": 0.333
+      },
+      "2019": {
+        "n": 21,
+        "sumR": 13.5,
+        "WR": 0.429
+      },
+      "2020": {
+        "n": 24,
+        "sumR": 11.5,
+        "WR": 0.583
+      },
+      "2021": {
+        "n": 5,
+        "sumR": -3.5,
+        "WR": 0.2
+      },
+      "2022": {
+        "n": 12,
+        "sumR": 3.3,
+        "WR": 0.417
+      },
+      "2023": {
+        "n": 17,
+        "sumR": -0.7,
+        "WR": 0.529
+      },
+      "2024": {
+        "n": 29,
+        "sumR": 17.8,
+        "WR": 0.414
+      },
+      "2025": {
+        "n": 36,
+        "sumR": 22.2,
+        "WR": 0.472
+      },
+      "2026": {
+        "n": 8,
+        "sumR": 3.5,
+        "WR": 0.375
+      }
+    },
+    "l2_touch_fix1": {
+      "2016": {
+        "n": 4,
+        "sumR": 2.1,
+        "WR": 0.5
+      },
+      "2017": {
+        "n": 8,
+        "sumR": 10.6,
+        "WR": 0.5
+      },
+      "2018": {
+        "n": 9,
+        "sumR": 6.0,
+        "WR": 0.333
+      },
+      "2019": {
+        "n": 16,
+        "sumR": 8.6,
+        "WR": 0.312
+      },
+      "2020": {
+        "n": 17,
+        "sumR": 6.0,
+        "WR": 0.353
+      },
+      "2021": {
+        "n": 5,
+        "sumR": -2.3,
+        "WR": 0.2
+      },
+      "2022": {
+        "n": 9,
+        "sumR": 6.0,
+        "WR": 0.333
+      },
+      "2023": {
+        "n": 13,
+        "sumR": 8.5,
+        "WR": 0.462
+      },
+      "2024": {
+        "n": 25,
+        "sumR": 19.5,
+        "WR": 0.36
+      },
+      "2025": {
+        "n": 28,
+        "sumR": 6.6,
+        "WR": 0.286
+      },
+      "2026": {
+        "n": 7,
+        "sumR": 3.0,
+        "WR": 0.286
+      }
+    }
+  }
+}
