@@ -4,6 +4,8 @@
 **Decisão de pesquisa:** parar de maturar o BREAKOUT/D1a como motor de entrada; **resgatar e aprofundar a estratégia BOS/CHoCH pura / L2-BPT / Reason Atlas** como mecanismo estrutural de entrada.
 **Bloco:** plano — **zero execução** (sem backtest/workflow/agente/plotagem/MCP/RAW-write/Telegram/produção/SLIM/SHORT/Caminho B/OOS). Só este doc.
 
+> **UPDATE 2026-06-17:** o detector do census v1 (Williams 5/5 puro) falhou o recall-gate (0/17 BOM). O **Detector v2.2** (safety pack) foi recuperado e tem **recall 17/17** confirmado — passa a ser o **anchor de recall / candidate generator** desta frente. Ver `XAU_4H_L2_BPT_DETECTOR_V2_2_RECALL_AUDIT.md` + incidente. Próximo trabalho = camadas 2-3 (contexto/gestão/exit) sobre o candidate set do v2.2, com recall-gate permanente.
+
 ---
 
 ## 1. Executive summary

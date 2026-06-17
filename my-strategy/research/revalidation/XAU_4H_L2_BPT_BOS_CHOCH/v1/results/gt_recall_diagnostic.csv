@@ -1,0 +1,18 @@
+GT_id,GT_entry_ts_utc,captured_by_v2_2,v2_2_mode,captured_by_census_v1,census_v1_lost_stage,nearest_census_choch_ts,nearest_choch_delta_h,likely_causal_diff
+GT01,2020-04-08 18:00,yes,NEAR-2,no,no_CHoCH_episode_near,2020-04-06T10:00:00+00:00,-56.0,polarity source omitted (v2.2 fractal_3_3 vs census Williams5/5 protected_LH) -> no CHoCH
+GT02,2020-07-28 06:00,yes,DIRETO,no,no_CHoCH_episode_near,2020-08-17T18:00:00+00:00,492.0,polarity source omitted (v2.2 fractal_3_3 vs census Williams5/5 protected_LH) -> no CHoCH
+GT03,2020-06-22 06:00,yes,DIRETO,no,no_CHoCH_episode_near,2020-06-30T22:00:00+00:00,208.0,polarity source omitted (v2.2 fractal_3_3 vs census Williams5/5 protected_LH) -> no CHoCH
+GT08,2020-11-03 23:00,yes,DIRETO,no,no_CHoCH_episode_near,2020-10-21T10:00:00+00:00,-325.0,polarity source omitted (v2.2 fractal_3_3 vs census Williams5/5 protected_LH) -> no CHoCH
+GT09,2020-12-02 11:00,yes,DIRETO,no,episode_resolved_R_ceiling,2020-12-02T07:00:00+00:00,-4.0,"R_ceiling (SL too deep >1.5ATR) — census aborts, v2.2 has no R-bound"
+GT10,2020-12-16 11:00,yes,DIRETO,no,episode_resolved_timeout_no_retest,2020-12-17T07:00:00+00:00,20.0,retest too strict (low<=pol+0.15ATR within 24b) vs v2.2 wide band (+0.8ATR)
+GT13A,2021-04-12 18:00,yes,DIRETO,no,no_CHoCH_episode_near,2021-04-15T10:00:00+00:00,64.0,polarity source omitted (v2.2 fractal_3_3 vs census Williams5/5 protected_LH) -> no CHoCH
+GT13B,2021-04-29 14:00,yes,DIRETO,no,no_CHoCH_episode_near,2021-04-15T10:00:00+00:00,-340.0,polarity source omitted (v2.2 fractal_3_3 vs census Williams5/5 protected_LH) -> no CHoCH
+GT15,2021-12-20 19:00,yes,DIRETO,no,no_CHoCH_episode_near,2021-12-22T15:00:00+00:00,44.0,polarity source omitted (v2.2 fractal_3_3 vs census Williams5/5 protected_LH) -> no CHoCH
+GT17A,2022-01-11 11:00,yes,DIRETO,no,no_CHoCH_episode_near,2022-01-19T15:00:00+00:00,196.0,polarity source omitted (v2.2 fractal_3_3 vs census Williams5/5 protected_LH) -> no CHoCH
+GT18,2022-02-24 19:00,yes,DIRETO,no,no_CHoCH_episode_near,2022-03-06T23:00:00+00:00,244.0,polarity source omitted (v2.2 fractal_3_3 vs census Williams5/5 protected_LH) -> no CHoCH
+GT21,2022-11-07 19:00,yes,DIRETO,no,episode_resolved_R_ceiling,2022-11-07T11:00:00+00:00,-8.0,"R_ceiling (SL too deep >1.5ATR) — census aborts, v2.2 has no R-bound"
+GT23,2022-12-12 23:00,yes,DIRETO,no,episode_resolved_timeout_no_reclaim,2022-12-13T11:00:00+00:00,12.0,reclaim too strict (green body>=0.5) vs v2.2 tipo A/B/B_ctx
+GT24,2023-01-03 15:00,yes,DIRETO,no,no_CHoCH_episode_near,2023-01-12T15:00:00+00:00,216.0,polarity source omitted (v2.2 fractal_3_3 vs census Williams5/5 protected_LH) -> no CHoCH
+GT25,2023-01-04 11:00,yes,DIRETO,no,no_CHoCH_episode_near,2023-01-12T15:00:00+00:00,196.0,polarity source omitted (v2.2 fractal_3_3 vs census Williams5/5 protected_LH) -> no CHoCH
+GT27,2023-11-09 07:00,yes,DIRETO,no,no_CHoCH_episode_near,2023-11-14T11:00:00+00:00,124.0,polarity source omitted (v2.2 fractal_3_3 vs census Williams5/5 protected_LH) -> no CHoCH
+GT20,2022-09-30 14:00,yes,NEAR-2,no,no_CHoCH_episode_near,2022-10-03T14:00:00+00:00,72.0,polarity source omitted (v2.2 fractal_3_3 vs census Williams5/5 protected_LH) -> no CHoCH

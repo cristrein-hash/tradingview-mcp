@@ -33,5 +33,8 @@ Registrados por trade, **não** bloqueiam no census v1:
 ## 3. Hard stops (parar o census se)
 - Algum gate depender de feature não-causal · protected_LH não reconstruível · CHoCH/BOS usar futuro · retest/reclaim ambíguo · SL estrutural não R-viável · RAW mapping não fechar.
 
+## 3b. RECALL HARD-GATE (obrigatório — adicionado 2026-06-17)
+**Antes de qualquer censo/backtest:** o detector DEVE recapturar **≥15/17 GT BOM_HIGH** dentro de ±2 barras (±8h) do `entry_ts_utc` do Ground Truth (`L2_ground_truth_v1.json`). Se o recall falhar → **STOP**: reespecificar o detector, **nenhuma métrica de performance pode ser interpretada** (resultado net é nulo, não refuta o conceito). Anchor de recall confirmado = **Detector v2.2** (17/17, `docs/XAU_4H_L2_BPT_DETECTOR_V2_2_RECALL_AUDIT.md`). Census v1 falhou este gate (0/17) → `NOT_VALIDATION`. Regra permanente: `feedback_recall_gate_before_backtest`.
+
 ## 4. Status
 - `RECONSTRUCTION_CENSUS / MECHANICAL_BASELINE / HYPOTHESES_ONLY`. Sem produção, sem promoção, sem OOS aqui. Detector census v1 = **aproximação causal do L2 v2 SMC** (fidelidade de detector = risco a auditar; refino em v2).

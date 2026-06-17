@@ -1,6 +1,8 @@
 # XAU 4H L2/BPT BOS-CHoCH — Mechanical Census 2019-2026
 
-> 🚨 **CENSO NULO — recall não verificado antes (erro 2026-06-17).** O detector v1 recaptura só **2/17** dos GT BOM_HIGH (e esses 2 viraram losers). O resultado net-negativo abaixo **NÃO testa o conceito** — testa um detector que descarta os winners-alvo. Ordem correta era recall-gate vs Ground Truth ANTES do backtest (ver `feedback_recall_gate_before_backtest`). **Tratar tudo abaixo como nulo até o detector recapturar a maioria dos 16 BOM.**
+> 🚨 **NOT_VALIDATION — detector recall failed against Ground Truth BOM_HIGH. Metrics in this report must not be used as verdict on L2/BPT.**
+>
+> Census v1 recaptura **0/17** dos GT BOM_HIGH a ±2 barras (estimativa prévia ≤2/17 — ambas nulas); os poucos próximos viraram losers. Causa raiz GT-a-GT em `.../v1/results/gt_recall_diagnostic.csv` (13/17 nem formaram CHoCH). O resultado net-negativo abaixo **NÃO testa o conceito** — testa um detector que descarta os winners-alvo. Ordem correta = recall-gate vs Ground Truth ANTES do backtest (`feedback_recall_gate_before_backtest`). **Detector v2.2 recuperado tem recall 17/17** (ver `XAU_4H_L2_BPT_DETECTOR_V2_2_RECALL_AUDIT.md` + incidente `XAU_4H_L2_BPT_CENSUS_V1_RECALL_FAILURE_INCIDENT.md`). Base de recall-alignment = v2.2, **não** este census.
 
 
 **Data:** 2026-06-17 · **Tipo:** censo/reconstrução mecânica · **RECONSTRUCTION_CENSUS / MECHANICAL_BASELINE / HYPOTHESES_ONLY (NÃO validação final).**

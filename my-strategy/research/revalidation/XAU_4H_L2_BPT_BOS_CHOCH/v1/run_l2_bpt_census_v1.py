@@ -78,6 +78,16 @@ def main():
               "entries": 0, "no_retest": 0, "no_reclaim": 0, "R_ceiling_abort": 0,
               "invalidation_before_entry": 0, "no_struct_low": 0}
     trades = []
+    episodes = []   # recall diagnostic: one record per CHoCH episode + its resolution (no logic change)
+    cur_ep = None
+
+    def fin(res):  # finalize current episode with a resolution
+        nonlocal cur_ep
+        if cur_ep is not None:
+            cur_ep["resolution"] = res
+            cur_ep["got_retest"] = got_retest
+            cur_ep["got_reclaim"] = got_reclaim
+            episodes.append(cur_ep); cur_ep = None
 
     state = "S0"; polaridade = None; choch_bar = None
     retest_done = False; choch_ph_ref = None
@@ -119,6 +129,8 @@ def main():
                 # leg-origin structural low: most recent confirmed PL below polaridade (for invalidation only)
                 below_o = [p for p in confL if p[1] < protected_LH]
                 struct_low_origin = below_o[-1][1] if below_o else last_pl_px
+                cur_ep = {"choch_ts": datetime.fromtimestamp(Tc[i], tz=timezone.utc).isoformat(),
+                          "choch_bar": i, "polaridade": round(protected_LH, 4), "entry_ts": None}
             continue
 
         # state == "S1"
@@ -142,11 +154,11 @@ def main():
             sl = retest_low - 0.1 * episode_atr
             risk = entry - sl
             if risk <= 0:
-                funnel["no_struct_low"] += 1; state = "S0"; continue
+                funnel["no_struct_low"] += 1; fin("no_struct_low"); state = "S0"; continue
             if risk < R_FLOOR * episode_atr:
                 sl = entry - R_FLOOR * episode_atr; risk = R_FLOOR * episode_atr
             if risk > R_CEIL * episode_atr:
-                funnel["R_ceiling_abort"] += 1; state = "S0"; continue
+                funnel["R_ceiling_abort"] += 1; fin("R_ceiling"); state = "S0"; continue
             r = S[i]
             tr = {"entry_ts": datetime.fromtimestamp(Tc[i], tz=timezone.utc).isoformat(),
                   "year": yr_of(Tc[i]), "entry": round(entry, 4), "stop": round(sl, 4),
@@ -158,17 +170,19 @@ def main():
                 tr[f"R{int(t)}"] = {"R": round(res[0], 4), "exit": res[1]}
             funnel["entries"] += 1
             trades.append(tr)
-            state = "S0"; continue
+            cur_ep["entry_ts"] = tr["entry_ts"]; fin("entry"); state = "S0"; continue
         # (3) invalidation: only a real structural break of the leg-origin low (after retest/reclaim chance)
         if C[i] < struct_low_origin:
             funnel["invalidation_before_entry"] += 1
-            state = "S0"; continue
+            fin("invalidation"); state = "S0"; continue
         # (4) timeout
         if i - choch_bar > N_RETEST:
             if not got_retest:
-                funnel["no_retest"] += 1
+                funnel["no_retest"] += 1; fin("timeout_no_retest")
             elif not got_reclaim:
-                funnel["no_reclaim"] += 1
+                funnel["no_reclaim"] += 1; fin("timeout_no_reclaim")
+            else:
+                fin("timeout_other")
             state = "S0"; continue
 
     # chronological ids
@@ -235,6 +249,9 @@ def main():
         "gross": True, "costs": False,
     }
     (RESULTS / "l2_bpt_census_summary.json").write_text(json.dumps(summary, indent=2))
+    with open(RESULTS / "l2_bpt_census_episodes.jsonl", "w") as f:
+        for e in episodes:
+            f.write(json.dumps(e) + "\n")
     with open(RESULTS / "l2_bpt_census_trades.jsonl", "w") as f:
         for t in trades:
             f.write(json.dumps(t) + "\n")
