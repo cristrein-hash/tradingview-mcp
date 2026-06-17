@@ -1,5 +1,8 @@
 # XAU 4H L2/BPT BOS-CHoCH — Mechanical Census 2019-2026
 
+> 🚨 **CENSO NULO — recall não verificado antes (erro 2026-06-17).** O detector v1 recaptura só **2/17** dos GT BOM_HIGH (e esses 2 viraram losers). O resultado net-negativo abaixo **NÃO testa o conceito** — testa um detector que descarta os winners-alvo. Ordem correta era recall-gate vs Ground Truth ANTES do backtest (ver `feedback_recall_gate_before_backtest`). **Tratar tudo abaixo como nulo até o detector recapturar a maioria dos 16 BOM.**
+
+
 **Data:** 2026-06-17 · **Tipo:** censo/reconstrução mecânica · **RECONSTRUCTION_CENSUS / MECHANICAL_BASELINE / HYPOTHESES_ONLY (NÃO validação final).**
 **Fonte:** RAW replay `.gz` ONLY (extractor auditado in-memory; **zero slim**). Gross R, **sem custos**. Sem MCP/plot/Telegram/produção. Nenhum ajuste humano nas métricas mecânicas.
 
