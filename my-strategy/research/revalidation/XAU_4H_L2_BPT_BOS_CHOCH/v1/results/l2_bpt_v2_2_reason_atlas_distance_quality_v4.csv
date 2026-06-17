@@ -1,0 +1,17 @@
+reason_id,reason_name,side,description,BOM_count,NAO_count,UNKNOWN_count,role,confidence,causal_status,notes
+DEMAND_ABSENT_OR_IRRELEVANT,DEMAND_ABSENT_OR_IRRELEVANT,demand,demand absent or irrelevant,4/17,2/6,427,tag,"low(BOM_ev=17,NAO_ev=6)",causal (as-of-bar OB boxes; age UNAVAILABLE),HYPOTHESIS_ONLY/TAG_ONLY; small-n
+DEMAND_ORIGIN_OF_LEG,DEMAND_ORIGIN_OF_LEG,demand,demand origin of leg,2/17,0/6,230,visual_priority,"low(BOM_ev=17,NAO_ev=6)",causal (as-of-bar OB boxes; age UNAVAILABLE),HYPOTHESIS_ONLY/TAG_ONLY; small-n
+DEMAND_PRESENT_NEUTRAL,DEMAND_PRESENT_NEUTRAL,demand,demand present neutral,1/17,1/6,610,soft_warning,"low(BOM_ev=17,NAO_ev=6)",causal (as-of-bar OB boxes; age UNAVAILABLE),HYPOTHESIS_ONLY/TAG_ONLY; small-n
+DEMAND_SUPPORTING_RETEST,DEMAND_SUPPORTING_RETEST,demand,demand supporting retest,9/17,2/6,1494,tag,"low(BOM_ev=17,NAO_ev=6)",causal (as-of-bar OB boxes; age UNAVAILABLE),HYPOTHESIS_ONLY/TAG_ONLY; small-n
+DEMAND_TOO_DEEP,DEMAND_TOO_DEEP,demand,demand too deep,1/17,1/6,151,soft_warning,"low(BOM_ev=17,NAO_ev=6)",causal (as-of-bar OB boxes; age UNAVAILABLE),HYPOTHESIS_ONLY/TAG_ONLY; small-n
+CLEAN_SKY,CLEAN_SKY,supply,clean sky,5/17,0/6,772,visual_priority,"low(BOM_ev=17,NAO_ev=6)",causal (as-of-bar OB boxes; age UNAVAILABLE),HYPOTHESIS_ONLY/TAG_ONLY; small-n
+SUPPLY_BLOCKS_TARGET,SUPPLY_BLOCKS_TARGET,supply,supply blocks target,3/17,0/6,630,visual_priority,"low(BOM_ev=17,NAO_ev=6)",causal (as-of-bar OB boxes; age UNAVAILABLE),HYPOTHESIS_ONLY/TAG_ONLY; small-n
+SUPPLY_FAR_ENOUGH,SUPPLY_FAR_ENOUGH,supply,supply far enough,5/17,2/6,659,tag,"low(BOM_ev=17,NAO_ev=6)",causal (as-of-bar OB boxes; age UNAVAILABLE),HYPOTHESIS_ONLY/TAG_ONLY; small-n
+SUPPLY_FRESH_DANGEROUS,SUPPLY_FRESH_DANGEROUS,supply,supply fresh dangerous,1/17,1/6,120,soft_warning,"low(BOM_ev=17,NAO_ev=6)",causal (as-of-bar OB boxes; age UNAVAILABLE),HYPOTHESIS_ONLY/TAG_ONLY; small-n
+SUPPLY_NEAR_AND_REJECTING,SUPPLY_NEAR_AND_REJECTING,supply,supply near and rejecting,3/17,3/6,718,soft_warning,"low(BOM_ev=17,NAO_ev=6)",causal (as-of-bar OB boxes; age UNAVAILABLE),HYPOTHESIS_ONLY/TAG_ONLY; small-n
+SUPPLY_NEAR_BUT_BROKEN,SUPPLY_NEAR_BUT_BROKEN,supply,supply near but broken,0/17,0/6,13,tag,"low(BOM_ev=17,NAO_ev=6)",causal (as-of-bar OB boxes; age UNAVAILABLE),HYPOTHESIS_ONLY/TAG_ONLY; small-n
+POLARITY_FLOATING_NO_BASE,POLARITY_FLOATING_NO_BASE,polarity,polarity floating no base,5/17,1/6,760,tag,"low(BOM_ev=17,NAO_ev=6)",causal (as-of-bar OB boxes; age UNAVAILABLE),HYPOTHESIS_ONLY/TAG_ONLY; small-n
+POLARITY_SUPPORTED_BY_DEMAND,POLARITY_SUPPORTED_BY_DEMAND,polarity,polarity supported by demand,3/17,1/6,680,tag,"low(BOM_ev=17,NAO_ev=6)",causal (as-of-bar OB boxes; age UNAVAILABLE),HYPOTHESIS_ONLY/TAG_ONLY; small-n
+POLARITY_UNDER_SUPPLY_PRESSURE,POLARITY_UNDER_SUPPLY_PRESSURE,polarity,polarity under supply pressure,0/17,2/6,406,soft_warning,"low(BOM_ev=17,NAO_ev=6)",causal (as-of-bar OB boxes; age UNAVAILABLE),HYPOTHESIS_ONLY/TAG_ONLY; small-n
+RECLAIM_ACCEPTED_ABOVE_SUPPLY,RECLAIM_ACCEPTED_ABOVE_SUPPLY,polarity,reclaim accepted above supply,0/17,0/6,60,tag,"low(BOM_ev=17,NAO_ev=6)",causal (as-of-bar OB boxes; age UNAVAILABLE),HYPOTHESIS_ONLY/TAG_ONLY; small-n
+RECLAIM_REJECTED_BELOW_SUPPLY,RECLAIM_REJECTED_BELOW_SUPPLY,polarity,reclaim rejected below supply,9/17,2/6,1006,tag,"low(BOM_ev=17,NAO_ev=6)",causal (as-of-bar OB boxes; age UNAVAILABLE),HYPOTHESIS_ONLY/TAG_ONLY; small-n

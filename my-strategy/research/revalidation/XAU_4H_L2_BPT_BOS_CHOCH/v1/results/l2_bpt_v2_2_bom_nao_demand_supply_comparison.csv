@@ -1,0 +1,16 @@
+feature,type,BOM_median,NAO_median,BOM_min,BOM_max,NAO_min,NAO_max,note
+dist_4h_demand_top_atr,numeric_atr,2.51,2.71,0.63,6.72,0.5,5.88,"event-level median; small-n (BOM=17,NAO=6)"
+dist_4h_supply_low_atr,numeric_atr,1.93,0.78,0.59,4.54,0.17,3.62,"event-level median; small-n (BOM=14,NAO=6)"
+dist_d1_demand_atr,numeric_atr,2.38,1.31,0.85,5.31,0.66,5.73,"event-level median; small-n (BOM=17,NAO=6)"
+dist_d1_supply_atr,numeric_atr,1.18,2.16,0.2,4.68,0.53,4.19,"event-level median; small-n (BOM=15,NAO=5)"
+demand_dist_from_polarity_atr,numeric_atr,1.81,2.16,0.27,6.01,0.15,5.21,"event-level median; small-n (BOM=17,NAO=6)"
+supply_dist_from_polarity_atr,numeric_atr,2.48,1.08,1.43,4.9,0.73,3.94,"event-level median; small-n (BOM=14,NAO=6)"
+quality_score_exploratory,numeric_atr,1.0,0.0,0.0,3.0,-2.0,1.0,"event-level median; small-n (BOM=17,NAO=6)"
+has_4h_demand_below,binary_event,17/17,6/6,,,,,event present in >=1 candidate
+demand_4h_touched_on_retest,binary_event,10/17,3/6,,,,,event present in >=1 candidate
+demand_4h_below_polarity,binary_event,17/17,6/6,,,,,event present in >=1 candidate
+demand_4h_origin_of_leg_cand,binary_event,8/17,2/6,,,,,event present in >=1 candidate
+has_4h_supply_overhead,binary_event,14/17,6/6,,,,,event present in >=1 candidate
+supply_4h_broken_before_entry,binary_event,0/17,0/6,,,,,event present in >=1 candidate
+supply_4h_rejected_before_entry,binary_event,9/17,4/6,,,,,event present in >=1 candidate
+supply_4h_blocks_target_2ATR,binary_event,9/17,5/6,,,,,event present in >=1 candidate
