@@ -10,15 +10,17 @@
 
 Testamos a tese visual do Cris (breakout = validação, não gatilho; valor na entrada do retrace à demanda; SL estrutural) **mecanizada e medida rigorosamente** sobre um substrato RAW de 1038 eventos de validação (333 no-overlap para independência), com 14 agentes diversificados + verificação adversarial + 5 Devil's Advocates.
 
-**Resultado central — as duas mecanizações ingênuas da tese NÃO batem o baseline em expectância:**
-1. **"Esperar retrace à demanda" → REFUTADA.** **61.3% dos breakouts nunca recuam** em 24 barras — e são desproporcionalmente os winners (runaways). Esperar **abandona os winners** e negocia um resíduo fraco: entrada-no-retrace = WR 22%, +16.6R vs entrada-no-rompimento +46.8R (H3, mesmo universo).
-2. **"SL estrutural converte os losers" → REFUTADA em expectância.** SL estrutural sobe WR 37.5%→**55%** (holdout 61%) e recupera 24 de 75 losers — **mas isso é mecânico** (stop mais largo sempre sobe WR e baixa R-multiple). A expectância honesta (`avgR` a risco-fixo) **cai 0.39→0.19**: o stop curto faz **~2× o dinheiro por unidade de risco**. No holdout os dólares ficam **flat** (struct +11.4R ≈ tight +12.5R) — WR mudou, expectância não.
+**⚠️ Enquadramento (correção Cris 2026-06-17): NÃO é "tese refutada".** O que subperformou foi uma **implementação ingênua específica** — (1) esperar QUALQUER retrace em 24b; (2) SL estrutural simples mantendo +4R; (3) **sem distinguir** tipo de demanda, supply overhead, aceitação/rejeição, timing, regime. A tese/filosofia **segue hipótese aberta**; o fenômeno visual é real.
+
+**Resultado central — as versões CRUAS não batem o baseline em expectância (não a tese):**
+1. **"Esperar qualquer retrace à demanda em 24b" (cru) subperformou.** **61.3% dos breakouts nunca recuam** em 24 barras — muitos são winners (runaways). A versão crua **abandona-os**: entrada-no-retrace = WR 22%, +16.6R vs entrada-no-rompimento +46.8R. **NÃO** refuta esperar um retrace *bem qualificado* (tipo de demanda, aceitação/rejeição, timing).
+2. **"SL estrutural simples + +4R" subperformou em expectância.** Sobe WR 37.5%→**55%** (holdout 61%), recupera 24/75 losers — **mecânico** (stop largo sempre sobe WR, baixa R-multiple). `avgR` a risco-fixo **cai 0.39→0.19**; stop curto faz **~2× o dinheiro/risco**; holdout flat. **NÃO** refuta SL estrutural *com target redimensionado*.
 
 **O único lead honesto que sobreviveu:** **H3 regime** = no rompimento, `close>EMA200 AND atr_expanding` (sem ADX). WR 37.5%, +46.8R, holds out (TRAIN 35% → HOLDOUT 41%). Modesto, WR-only, n=120 (46 holdout) — **lead, não edge.**
 
 **Correção honesta:** o "+292.8R swing" que reportei (retrace-entry vs current na sub-amostra dos retraced) era **CIRCULAR** — nos eventos que recuam, o stop curto é batido por construção. O DA havia avisado; eu propaguei. **Descartado.**
 
-**Meta-aprendizado (não-óbvio):** a assimetria tight-stop +4R/1R do breakout **já é R-eficiente**; a alavanca não é entry-timing nem stop-width isoladamente — é **(a) seleção de regime (H3)** e **(b) target dimensionado ao risco** (não +4R sobre 4 ATR), que é o **único gate ainda não medido**. **DA: as duas teses ingênuas refutadas; próxima precisa de pré-registro + OOS + custos, NÃO mais p-hacking dos 333 eventos.**
+**Meta-aprendizado (não-óbvio):** a assimetria tight-stop +4R/1R do breakout **já é R-eficiente**; a alavanca não é entry-timing nem stop-width isoladamente — é **(a) seleção de regime (H3)** e **(b) target dimensionado ao risco** (não +4R sobre 4 ATR), que é o **único gate ainda não medido**. **DA: as duas IMPLEMENTAÇÕES ingênuas subperformaram (tese segue aberta); progresso real precisa de pré-registro + OOS + custos, NÃO mais p-hacking dos 333 eventos.**
 
 ---
 
@@ -73,7 +75,7 @@ Testamos a tese visual do Cris (breakout = validação, não gatilho; valor na e
 
 DA1 (substrato): exigiu simular a entrada-alternativa (feito). DA2 (Candidato B): "+292.8R é circular; 61% nunca recuam; naive-wait refutada". DA3 (stop-width): "stop curto não é o problema; avgR cai; WR é mecânico". Workflow verify: 0 confirmados. **Todas as correções aplicadas; nenhuma métrica boa chamada de validação; nenhuma ruim chamada de invalidação final — conceito preservado como investigação, próximo gate definido.**
 
-**DA verdict: PASS (hypotheses-only; duas teses ingênuas refutadas em expectância; H3 lead modesto; próximo gate pré-registrado).**
+**DA verdict: PASS (hypotheses-only; duas IMPLEMENTAÇÕES ingênuas subperformaram em expectância — tese segue hipótese aberta; H3 lead modesto).**
 
 ---
 
