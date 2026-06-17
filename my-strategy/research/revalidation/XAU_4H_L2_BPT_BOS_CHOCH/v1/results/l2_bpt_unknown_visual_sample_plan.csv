@@ -1,0 +1,42 @@
+episode_first_idx,candidate_id,timestamp,selection_stratum,visual_question,supply_category,demand_category,dist_supply_low_atr,n_candidates_in_episode
+351,C351,2020-03-23 22:00,supply_pressure_<=1ATR,Comprou contra o teto ou supply era fraco/rompido?,SUPPLY_FRESH_DANGEROUS,DEMAND_SUPPORTING_RETEST,0.68,13
+521,C521,2020-05-04 06:00,supply_pressure_<=1ATR,Comprou contra o teto ou supply era fraco/rompido?,SUPPLY_NEAR_AND_REJECTING,DEMAND_SUPPORTING_RETEST,0.41,8
+685,C685,2020-06-10 18:00,supply_pressure_<=1ATR,Comprou contra o teto ou supply era fraco/rompido?,SUPPLY_FRESH_DANGEROUS,DEMAND_SUPPORTING_RETEST,0.73,5
+780,C780,2020-07-02 14:00,supply_pressure_<=1ATR,Comprou contra o teto ou supply era fraco/rompido?,SUPPLY_NEAR_AND_REJECTING,DEMAND_PRESENT_NEUTRAL,0.66,19
+901,C901,2020-07-30 22:00,supply_pressure_<=1ATR,Comprou contra o teto ou supply era fraco/rompido?,SUPPLY_NEAR_AND_REJECTING,DEMAND_SUPPORTING_RETEST,0.36,8
+1200,C1200,2020-10-08 22:00,supply_pressure_<=1ATR,Comprou contra o teto ou supply era fraco/rompido?,SUPPLY_FRESH_DANGEROUS,DEMAND_SUPPORTING_RETEST,0.47,3
+1221,C1221,2020-10-14 10:00,supply_pressure_<=1ATR,Comprou contra o teto ou supply era fraco/rompido?,SUPPLY_NEAR_AND_REJECTING,DEMAND_SUPPORTING_RETEST,0.84,22
+1316,C1316,2020-11-05 07:00,supply_pressure_<=1ATR,Comprou contra o teto ou supply era fraco/rompido?,SUPPLY_NEAR_BUT_BROKEN,DEMAND_SUPPORTING_RETEST,0.15,1
+1326,C1326,2020-11-08 23:00,supply_pressure_<=1ATR,Comprou contra o teto ou supply era fraco/rompido?,SUPPLY_FRESH_DANGEROUS,DEMAND_ABSENT_OR_IRRELEVANT,0.39,3
+1497,C1497,2020-12-17 19:00,supply_pressure_<=1ATR,Comprou contra o teto ou supply era fraco/rompido?,SUPPLY_NEAR_AND_REJECTING,DEMAND_SUPPORTING_RETEST,0.07,12
+1775,C1775,2021-02-24 15:00,supply_pressure_<=1ATR,Comprou contra o teto ou supply era fraco/rompido?,SUPPLY_NEAR_AND_REJECTING,DEMAND_PRESENT_NEUTRAL,0.64,3
+1901,C1901,2021-03-25 14:00,supply_pressure_<=1ATR,Comprou contra o teto ou supply era fraco/rompido?,SUPPLY_NEAR_AND_REJECTING,DEMAND_PRESENT_NEUTRAL,0.46,6
+78,C78,2020-01-20 03:00,clean_sky,Céu limpo = setup L2 ou já esticado/tardio?,CLEAN_SKY,DEMAND_SUPPORTING_RETEST,8.89,14
+217,C217,2020-02-20 15:00,clean_sky,Céu limpo = setup L2 ou já esticado/tardio?,CLEAN_SKY,DEMAND_ABSENT_OR_IRRELEVANT,,5
+287,C287,2020-03-09 06:00,clean_sky,Céu limpo = setup L2 ou já esticado/tardio?,CLEAN_SKY,DEMAND_SUPPORTING_RETEST,,13
+383,C383,2020-03-31 06:00,clean_sky,Céu limpo = setup L2 ou já esticado/tardio?,CLEAN_SKY,DEMAND_ABSENT_OR_IRRELEVANT,4.11,2
+391,C391,2020-04-01 14:00,clean_sky,Céu limpo = setup L2 ou já esticado/tardio?,CLEAN_SKY,DEMAND_SUPPORTING_RETEST,5.15,4
+583,C583,2020-05-18 14:00,clean_sky,Céu limpo = setup L2 ou já esticado/tardio?,CLEAN_SKY,DEMAND_ABSENT_OR_IRRELEVANT,,6
+766,C766,2020-06-30 06:00,clean_sky,Céu limpo = setup L2 ou já esticado/tardio?,CLEAN_SKY,DEMAND_SUPPORTING_RETEST,,4
+833,C833,2020-07-15 14:00,clean_sky,Céu limpo = setup L2 ou já esticado/tardio?,CLEAN_SKY,DEMAND_SUPPORTING_RETEST,,1
+845,C845,2020-07-17 14:00,clean_sky,Céu limpo = setup L2 ou já esticado/tardio?,CLEAN_SKY,DEMAND_SUPPORTING_RETEST,,7
+866,C866,2020-07-23 02:00,clean_sky,Céu limpo = setup L2 ou já esticado/tardio?,CLEAN_SKY,DEMAND_ABSENT_OR_IRRELEVANT,,5
+919,C919,2020-08-04 22:00,clean_sky,Céu limpo = setup L2 ou já esticado/tardio?,CLEAN_SKY,DEMAND_SUPPORTING_RETEST,,3
+934,C934,2020-08-07 10:00,clean_sky,Céu limpo = setup L2 ou já esticado/tardio?,CLEAN_SKY,DEMAND_ABSENT_OR_IRRELEVANT,,12
+130,C130,2020-01-30 23:00,demand_supported,Demanda apoia um reclaim real?,SUPPLY_BLOCKS_TARGET,DEMAND_SUPPORTING_RETEST,1.54,2
+149,C149,2020-02-05 03:00,demand_supported,Demanda apoia um reclaim real?,SUPPLY_FAR_ENOUGH,DEMAND_SUPPORTING_RETEST,3.66,1
+159,C159,2020-02-06 19:00,demand_supported,Demanda apoia um reclaim real?,SUPPLY_FAR_ENOUGH,DEMAND_SUPPORTING_RETEST,3.17,20
+542,C542,2020-05-07 18:00,demand_supported,Demanda apoia um reclaim real?,SUPPLY_BLOCKS_TARGET,DEMAND_SUPPORTING_RETEST,1.11,17
+631,C631,2020-05-28 18:00,demand_supported,Demanda apoia um reclaim real?,SUPPLY_BLOCKS_TARGET,DEMAND_SUPPORTING_RETEST,1.34,11
+55,C55,2020-01-14 07:00,no_demand_support,Polaridade flutuante sem base?,SUPPLY_BLOCKS_TARGET,DEMAND_TOO_DEEP,1.99,4
+458,C458,2020-04-17 18:00,no_demand_support,Polaridade flutuante sem base?,SUPPLY_FAR_ENOUGH,DEMAND_ABSENT_OR_IRRELEVANT,2.86,14
+493,C493,2020-04-27 14:00,no_demand_support,Polaridade flutuante sem base?,SUPPLY_BLOCKS_TARGET,DEMAND_TOO_DEEP,1.54,14
+970,C970,2020-08-17 10:00,no_demand_support,Polaridade flutuante sem base?,CLEAN_SKY,DEMAND_ABSENT_OR_IRRELEVANT,4.01,10
+237,C237,2020-02-25 23:00,dense_leg,Sinal serial — há polaridade/retest reais ou só drift da perna?,SUPPLY_FAR_ENOUGH,DEMAND_PRESENT_NEUTRAL,2.33,17
+140,C140,2020-02-03 15:00,single_clean_signal,Sinal isolado — setup limpo ou ruído?,SUPPLY_BLOCKS_TARGET,DEMAND_PRESENT_NEUTRAL,1.34,1
+1211,C1211,2020-10-12 18:00,single_clean_signal,Sinal isolado — setup limpo ou ruído?,SUPPLY_FAR_ENOUGH,DEMAND_SUPPORTING_RETEST,2.61,2
+1761,C1761,2021-02-22 07:00,single_clean_signal,Sinal isolado — setup limpo ou ruído?,SUPPLY_FAR_ENOUGH,DEMAND_SUPPORTING_RETEST,2.18,2
+2100,C2100,2021-05-12 18:00,single_clean_signal,Sinal isolado — setup limpo ou ruído?,SUPPLY_BLOCKS_TARGET,DEMAND_TOO_DEEP,1.78,1
+2204,C2204,2021-06-07 06:00,single_clean_signal,Sinal isolado — setup limpo ou ruído?,SUPPLY_NEAR_AND_REJECTING,DEMAND_SUPPORTING_RETEST,0.37,2
+2053,C2053,2021-05-02 22:00,near_known_BOM,Por que é UNKNOWN e não BOM — mesmo setup ou diferente?,SUPPLY_BLOCKS_TARGET,DEMAND_SUPPORTING_RETEST,1.31,17
+4574,C4574,2022-12-15 03:00,near_known_BOM,Por que é UNKNOWN e não BOM — mesmo setup ou diferente?,SUPPLY_BLOCKS_TARGET,DEMAND_SUPPORTING_RETEST,1.89,19

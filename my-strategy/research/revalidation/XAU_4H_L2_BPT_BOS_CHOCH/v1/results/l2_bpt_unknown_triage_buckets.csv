@@ -1,0 +1,11 @@
+bucket,type,n_episodes,avgR,WR_pct,why_review,priority
+UNKNOWN_HIGH_OUTCOME_BOMlike,SELECTION_GROUP_outcome_defined_NOT_a_finding,62,2.0,tautological,parecem winners L2 — confirmar setup real,high
+UNKNOWN_LOW_OUTCOME_NAOlike,SELECTION_GROUP_outcome_defined_NOT_a_finding,27,-1.0,tautological,parecem losers — confirmar top/trap,high
+UNKNOWN_SUPPLY_PRESSURE,structural_bucket,51,0.13,43.1,supply colado — risco de teto,high
+UNKNOWN_CLEAN_SKY,structural_bucket,82,0.23,41.5,sem teto — continuação limpa?,med
+UNKNOWN_DEMAND_SUPPORTED,structural_bucket,155,0.23,42.6,demanda apoia — setup L2?,med
+UNKNOWN_NO_DEMAND_SUPPORT,structural_bucket,56,0.3,46.4,sem base — flutuante?,med
+UNKNOWN_DUPLICATE_DENSE_LEG,structural_bucket,103,0.33,47.6,sinais seriais na mesma perna,med
+UNKNOWN_SINGLE_CLEAN_SIGNAL,structural_bucket,71,0.12,38.0,sinal isolado limpo,med
+UNKNOWN_TOP_SWEEP_RISK,SELECTION_GROUP_outcome_defined_NOT_a_finding,15,-0.87,tautological,bull genérico que falhou,med
+UNKNOWN_NEEDS_VISUAL,structural_bucket,0,,,dados insuficientes,med

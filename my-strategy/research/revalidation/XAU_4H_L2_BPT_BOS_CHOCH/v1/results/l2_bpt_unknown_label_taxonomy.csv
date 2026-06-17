@@ -1,0 +1,11 @@
+label,definition,what_to_observe,future_consequence
+TRUE_BPT_LONG,"reclaim válido sobre polaridade real, demanda/estrutura apoiando, R-viável",polaridade clara + retest + reclaim verde aceito,candidato a TRUE_L2_SETUP
+ACCEPTABLE_BPT_LONG,"setup L2 ok mas não perfeito (supply moderado, reclaim ok)","aceitação razoável, algum supply acima",operável com cautela
+WEAK_BPT_LONG,reclaim fraco / polaridade duvidosa,"corpo fraco, perfuração rasa",baixa prioridade
+BAD_TOP_ENTRY,entrada em topo/contra supply colado,"supply imediato acima, RSI esticado",excluir / NAO-like
+BEAR_LEG_TRAP,reclaim dentro de perna bear forte,"LH/LL contínuos, bear flag",excluir
+GENERIC_BULL_MOVE,"só subiu por drift, sem âncora L2",sem polaridade/retest claros,não é L2 — ruído
+DUPLICATE_OF_BETTER_ENTRY,sinal serial na mesma perna de entrada melhor,vários candidatos próximos,manter só o melhor
+NO_CLEAR_POLARITY,não há polaridade estrutural identificável,nível ambíguo,descartar/visual
+NO_RECLAIM_ACCEPTANCE,rompeu mas sem aceitação/retest,sweep sem hold,excluir
+NEEDS_SECOND_REVIEW,ambíguo,requer 2a leitura,fila
