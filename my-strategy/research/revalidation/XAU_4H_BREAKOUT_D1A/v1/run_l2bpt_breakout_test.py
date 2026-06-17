@@ -102,6 +102,8 @@ def main():
 
         # IMMEDIATE entry (baseline)
         entry_im = O[i + 1]; stop_im = L[i] - STOP_ATR_TIGHT * atr
+        ev["imm_entry"] = round(entry_im, 4); ev["imm_stop"] = round(stop_im, 4)
+        ev["polarity_source"] = "swing_high_10[i] (broken level; Pattern #1)"
         ev["immediate"] = {}
         for tr in TARGETS:
             res = sim_from(i + 1, entry_im, stop_im, entry_im + tr * (entry_im - stop_im), H, L, C, n)
@@ -113,6 +115,7 @@ def main():
             if L[k] <= P + RETEST_TOL * atr:
                 touch_k = k; break
         ev["retested"] = touch_k is not None
+        ev["retest_fill_time"] = datetime.fromtimestamp(Tc[touch_k], tz=timezone.utc).isoformat() if touch_k is not None else None
 
         # CAUSAL structural SL = pre-breakout consolidation base (swing_low_10[i]) - 0.1ATR.
         # Known at the EVENT bar (before any fill) -> no look-ahead (DA Q4 fix). NO artificial
@@ -262,10 +265,16 @@ def main():
             im, lf, lr = e["immediate"], e.get("l2_touch_fix1", {}), e.get("l2_reclaim_fix1", {})
             i3 = cell(im, "R3"); i4 = cell(im, "R4")
             f3 = cell(lf, "R3"); f4 = cell(lf, "R4"); r3 = cell(lr, "R3")
+            imt = round(e["imm_entry"] + 4 * (e["imm_entry"] - e["imm_stop"]), 4)
+            l2t = round(lf["entry"] + 4 * (lf["entry"] - lf["stop"]), 4) if lf.get("filled") else None
             f.write(json.dumps({
                 "ts": e["ts"], "year": e["year"], "no_overlap": e["no_overlap"], "retested": e["retested"],
+                "polarity_level": round(e["polaridade"], 4), "polarity_source": e["polarity_source"],
+                "retest_fill_time": e["retest_fill_time"],
+                "imm_entry": e["imm_entry"], "imm_stop": e["imm_stop"], "imm_target_R4": imt,
                 "imm_R3": i3[0], "imm_R3_exit": i3[1], "imm_R4": i4[0], "imm_R4_exit": i4[1],
                 "l2f_filled": bool(lf.get("filled")), "l2f_risk_atr": lf.get("risk_atr"),
+                "l2f_entry": lf.get("entry"), "l2f_stop": lf.get("stop"), "l2f_target_R4": l2t,
                 "l2f_R3": f3[0], "l2f_R3_exit": f3[1], "l2f_R4": f4[0], "l2f_R4_exit": f4[1],
                 "l2r_filled": bool(lr.get("filled")), "l2r_R3": r3[0], "l2r_R3_exit": r3[1],
             }) + "\n")
