@@ -1,0 +1,10 @@
+transition,kept,dropped,dropped_winners,dropped_losers,dropped_sumR_indep
+T1->T3,310,269,66,203,43.46
+T2->T3,310,172,52,120,22.12
+T3->T4(+D1a),254,56,13,43,0.39
+T4->T5(+ADX+slope),197,57,15,42,-0.97
+T5->T6(-ADX),197,34,7,27,-3.19
+T5->T7(-slope),197,17,7,10,1.52
+
+pair,T1_only,T2_only,common,union,jaccard
+T1(EMA)_vs_T2(ATR),269,172,310,751,0.413
