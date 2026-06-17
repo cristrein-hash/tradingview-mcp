@@ -1,0 +1,92 @@
+{
+  "status": [
+    "CANDIDATE_BASE",
+    "NOT_STRATEGY",
+    "NOT_VALIDATION",
+    "RECALL_PRESERVED_17_17"
+  ],
+  "chosen_base": "L2_BPT_V2_2_PRUNED_BASE_V1 = P1 (greedy safe union)",
+  "safe_layers_used": [
+    "volume_fraco",
+    "bear_flag",
+    "no_retest",
+    "no_polarity_defense",
+    "false_tipo_B_dump_direto",
+    "no_absorption"
+  ],
+  "forbidden_layers": [
+    "first_retomada",
+    "BOS_fraco",
+    "bear_macro",
+    "cluster_BUY_climax"
+  ],
+  "backbone_source": "fractal_3_3",
+  "versions": {
+    "P0_original": {
+      "name": "P0_original",
+      "desc": "base original, sem pruning",
+      "total": 7763,
+      "pct_cut": 0.0,
+      "BOM_recall": "17/17",
+      "recall_ok": true,
+      "NAO_captured": "8/8",
+      "cand_per_year": 1109.0,
+      "sources": {
+        "nivel_interno": 915,
+        "swing_high_simples": 671,
+        "topo_duplo": 1832,
+        "fractal_3_3": 4223,
+        "fractal_2_2": 122
+      }
+    },
+    "P1_greedy_safe": {
+      "name": "P1_greedy_safe",
+      "desc": "union gulosa verificada 17/17: ['volume_fraco', 'bear_flag', 'no_retest', 'no_polarity_defense', 'false_tipo_B_dump_direto', 'no_absorption']",
+      "total": 4575,
+      "pct_cut": 41.1,
+      "BOM_recall": "17/17",
+      "recall_ok": true,
+      "NAO_captured": "7/8",
+      "cand_per_year": 654.0,
+      "sources": {
+        "swing_high_simples": 380,
+        "topo_duplo": 1095,
+        "fractal_3_3": 2581,
+        "nivel_interno": 446,
+        "fractal_2_2": 73
+      }
+    },
+    "P2_source_prune": {
+      "name": "P2_source_prune",
+      "desc": "drop fontes redundantes ['fractal_2_2', 'nivel_interno', 'topo_duplo'] (mantem fractal_3_3 backbone)",
+      "total": 4894,
+      "pct_cut": 37.0,
+      "BOM_recall": "17/17",
+      "recall_ok": true,
+      "NAO_captured": "7/8",
+      "cand_per_year": 699.0,
+      "sources": {
+        "swing_high_simples": 671,
+        "fractal_3_3": 4223
+      }
+    },
+    "P3_conservative_intersection": {
+      "name": "P3_conservative_intersection",
+      "desc": "interse\u00e7\u00e3o conservadora: remove s\u00f3 o que P1 E P2 removem",
+      "total": 6508,
+      "pct_cut": 16.2,
+      "BOM_recall": "17/17",
+      "recall_ok": true,
+      "NAO_captured": "8/8",
+      "cand_per_year": 930.0,
+      "sources": {
+        "swing_high_simples": 671,
+        "topo_duplo": 1095,
+        "fractal_3_3": 4223,
+        "nivel_interno": 446,
+        "fractal_2_2": 73
+      }
+    }
+  },
+  "recall_revalidated_after_combination": true
+}
