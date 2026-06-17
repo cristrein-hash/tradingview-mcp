@@ -1,5 +1,7 @@
 # XAU 4H L2/BPT PRUNED_BASE_V2 — Outcome / Anatomy Labeling
 
+> 🚨 **SUPERSEDED — proxy errado.** Este bloco mediu MFE/MAE forward (drift), não o trade real. A medição CORRETA (stop estrutural + R-targets, stop-first, por episódio) está em `l2_bpt_real_outcome_per_episode.csv` + script `real_outcome.py`: BOM WR 73%/lift 1.83×, NAO 17%, UNKNOWN 42% (~base rate). Ver também `feedback_outcome_proxy_lift_and_episode`.
+
 **Status:** `MECHANICAL_PROXY · NOT_BACKTEST · NOT_VALIDATION · PARTIALLY_CALIBRATED` · **Data:** 2026-06-17
 **RAW-only (frozen OHLC) · sem estratégia/catalog/produção/Telegram/broker/L1/SLIM/plot/pruning novo.** MFE/MAE são análise **post-hoc** (entrada não usa futuro).
 
