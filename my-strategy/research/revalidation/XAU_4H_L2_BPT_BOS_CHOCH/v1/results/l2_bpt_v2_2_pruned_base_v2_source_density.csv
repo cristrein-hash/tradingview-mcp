@@ -1,0 +1,6 @@
+source,source_family,count_original,count_v2,pct_of_v2,is_backbone,redundant
+fractal_2_2,fractal,122,0,0.0,no,yes
+fractal_3_3,fractal,4223,2592,87.4,yes,no
+nivel_interno,proximity,915,0,0.0,no,yes
+swing_high_simples,structural,671,373,12.6,no,no
+topo_duplo,structural,1832,0,0.0,no,yes

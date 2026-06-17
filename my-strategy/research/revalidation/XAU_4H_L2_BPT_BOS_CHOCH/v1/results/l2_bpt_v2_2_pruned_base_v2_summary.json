@@ -1,0 +1,127 @@
+{
+  "base": "L2_BPT_V2_2_PRUNED_BASE_V2",
+  "status": [
+    "CANDIDATE_BASE",
+    "NOT_STRATEGY",
+    "NOT_VALIDATION",
+    "RECALL_PRESERVED_17_17",
+    "DENSITY_REDUCED_61_8_PERCENT",
+    "WORKING_BASE_FOR_DEEPER_CONTEXT_ANALYSIS"
+  ],
+  "rule": "prune if (overextended_entry OR src_redundant OR bear_flag)",
+  "redundant_sources": [
+    "fractal_2_2",
+    "nivel_interno",
+    "topo_duplo"
+  ],
+  "backbone": "fractal_3_3",
+  "forbidden_as_veto": [
+    "first_retomada",
+    "nas_short_ge5",
+    "BOS_fraco",
+    "bear_macro",
+    "cluster_BUY_climax"
+  ],
+  "borderline_not_base": {
+    "rule": "volume_fraco x overextended_entry",
+    "BOM": "15/17",
+    "kills": [
+      "GT13B",
+      "GT24"
+    ]
+  },
+  "candidates_original": 7763,
+  "candidates_v2": 2965,
+  "reduction_pct": 61.8,
+  "cand_per_year": 424.0,
+  "BOM_recall": "17/17",
+  "fragile_status": {
+    "GT13B": "preserved",
+    "GT17A": "preserved",
+    "GT23": "preserved",
+    "GT24": "preserved"
+  },
+  "NAO_cut": [
+    "GT07",
+    "GT17B"
+  ],
+  "NAO_remain": [
+    "GT04A",
+    "GT06A",
+    "GT06B",
+    "GT12",
+    "GT14_NAO",
+    "GT19A"
+  ],
+  "UNKNOWN_cut": 4753,
+  "UNKNOWN_remain": 2912,
+  "versions": [
+    {
+      "name": "P0_original",
+      "rule": "sem pruning",
+      "candidates": 7763,
+      "reduction": 0,
+      "reduction_pct": 0.0,
+      "cand_per_year": 1109.0,
+      "BOM_recall": "17/17",
+      "NAO_captured": "8/8",
+      "NAO_cut": 0,
+      "UNKNOWN_cut": 0
+    },
+    {
+      "name": "P1_pruned_base_v1",
+      "rule": "greedy safe union (6 blockers)",
+      "candidates": 4575,
+      "reduction": 3188,
+      "reduction_pct": 41.1,
+      "cand_per_year": 654.0,
+      "BOM_recall": "17/17",
+      "NAO_captured": "7/8",
+      "NAO_cut": 1,
+      "UNKNOWN_cut": 3151
+    },
+    {
+      "name": "P2_pruned_base_v2",
+      "rule": "overextended_entry + src_redundant + bear_flag",
+      "candidates": 2965,
+      "reduction": 4798,
+      "reduction_pct": 61.8,
+      "cand_per_year": 424.0,
+      "BOM_recall": "17/17",
+      "NAO_captured": "6/8",
+      "NAO_cut": 2,
+      "UNKNOWN_cut": 4753
+    },
+    {
+      "name": "P3ref_volfraco_x_bearflag",
+      "rule": "reference only",
+      "candidates": 4857,
+      "reduction": 2906,
+      "reduction_pct": 37.4,
+      "cand_per_year": 694.0,
+      "BOM_recall": "17/17",
+      "NAO_captured": "7/8",
+      "NAO_cut": 1,
+      "UNKNOWN_cut": 2870
+    },
+    {
+      "name": "P3ref_fractal33_x_overext",
+      "rule": "reference only (intersection)",
+      "candidates": 6563,
+      "reduction": 1200,
+      "reduction_pct": 15.5,
+      "cand_per_year": 938.0,
+      "BOM_recall": "17/17",
+      "NAO_captured": "8/8",
+      "NAO_cut": 0,
+      "UNKNOWN_cut": 1180
+    }
+  ],
+  "recall_revalidated_after_combination": true,
+  "unavailable_discriminators": [
+    "at_D1_demand",
+    "supply_overhead",
+    "custom_ob_demand_supply",
+    "macro_leg"
+  ]
+}

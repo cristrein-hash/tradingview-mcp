@@ -1,0 +1,10 @@
+nao_id,capturing_candidates,surviving_in_v2,status,surviving_sources
+GT04A,4,3,remains,fractal_3_3|swing_high_simples
+GT06A,2,2,remains,fractal_3_3
+GT06B,4,4,remains,fractal_3_3
+GT07,5,0,cut,
+GT12,4,1,remains,fractal_3_3
+GT14_NAO,3,2,remains,fractal_3_3
+GT17B,3,0,cut,
+GT19A,2,2,remains,fractal_3_3
+_UNKNOWN_SUMMARY,7665,2912,cut=4753 remain=2912,
