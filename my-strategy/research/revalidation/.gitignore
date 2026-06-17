@@ -6,3 +6,7 @@
 
 # D1a generated EMA dataset (regenerable from RAW 1D via build_xau_1d_ema_features.py)
 **/generated/*.jsonl
+
+# Round-1 mechanical rebuild bulk outputs (regenerable from run_mechanical_rebuild_v1.py)
+**/results/*_trades.jsonl
+**/results/*_plot_ready.csv
