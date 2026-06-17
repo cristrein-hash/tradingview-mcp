@@ -1,0 +1,6 @@
+metric,all_bars,base_candidates,lift,verdict
+pct_reach_+2ATR_36bars,67.3%,66.6%,0.99x,NO EDGE — equals base rate
+pct_reach_+3ATR_36bars,52.4%,52.6%,1.00x,NO EDGE — equals base rate
+candidates,9815,2965,,candidates = serial signals
+unique_episodes(gap>6),,276,,true structural count ~276 not 2965
+cand_per_episode_mean,,10.7,,heavy duplication in legs

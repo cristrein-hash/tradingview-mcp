@@ -1,0 +1,9 @@
+feature,BOM_median,UNKNOWN_STRONG_median,note
+dist_4h_supply_low_atr,2.18,1.47,BOM cleaner supply context (farther)
+supply_dist_from_polarity_atr,2.76,1.96,BOM cleaner supply context (farther)
+dist_4h_demand_top_atr,2.34,1.86,BOM cleaner supply context (farther)
+demand_dist_from_polarity_atr,1.53,1.38,BOM cleaner supply context (farther)
+reclaim_close_dist_from_demand_atr,2.34,1.86,BOM cleaner supply context (farther)
+mfe_atr_36,5.31,5.26,forward anatomy
+mae_atr_36,1.13,0.87,forward anatomy
+cret_atr_36,3.3,2.59,forward anatomy
