@@ -1,0 +1,8 @@
+rule,A_killed,B_killed,C_killed,BOM_events_killed,BOM_ids,NAO_events_cut,NAO_ids,UNKNOWN_cand_cut,reduction_pct_of_base,risk
+supply<=0.5ATR,0,0,0,0,,2,GT14_NAO|GT19A,415,14.0,LOW(only C/none)
+supply<=1.0ATR,0,4,0,4,GT01|GT08|GT17A|GT24,4,GT06A|GT12|GT14_NAO|GT19A,858,28.9,MED(kills B)
+supply<=1.5ATR,0,6,0,6,GT01|GT08|GT13B|GT17A|GT20|GT24,4,GT06A|GT12|GT14_NAO|GT19A,1203,40.6,MED(kills B)
+supply_blocks_target_2ATR,0,0,0,0,,0,,0,0.0,LOW(only C/none)
+supply_near1.0+no_demand_support,0,0,0,0,,1,GT19A,134,4.5,LOW(only C/none)
+supply_near1.0+no_origin_of_leg,0,0,0,0,,0,,0,0.0,LOW(only C/none)
+supply_near1.0+polarity_under_supply,0,0,0,0,,2,GT12|GT19A,405,13.7,LOW(only C/none)
