@@ -145,6 +145,31 @@ def main():
             exit_idx, exit_price, exit_reason = last, C[last], "time_limit"
         close_R = (exit_price - entry) / risk
 
+        # STOP-WIDTH ISOLATION (DA-required next gate): SAME entry (next-bar-open), only the SL
+        # changes to STRUCTURAL = nearest_demand_low - 0.5ATR. Isolates "is the tight stop the problem".
+        nd_low_e = r.get("nearest_demand_low")
+        bk_struct = {"valid": False}
+        if nd_low_e is not None:
+            s_stop = nd_low_e - STOP_ATR_MULT * atr
+            s_risk = entry - s_stop
+            if s_risk > 0:
+                s_target = entry + TARGET_R * s_risk
+                be3 = False; sx = sp = sr = None
+                for j in range(i + 1, min(i + 1 + MAX_HOLD, n)):
+                    cs = entry if be3 else s_stop
+                    if L[j] <= cs:
+                        sx, sp, sr = j, cs, ("stop_be" if be3 else "stop"); break
+                    if H[j] >= s_target:
+                        sx, sp, sr = j, s_target, "target"; break
+                    if not be3 and H[j] >= entry + s_risk:
+                        be3 = True
+                if sx is None:
+                    last3 = min(i + 1 + MAX_HOLD - 1, n - 1)
+                    sx, sp, sr = last3, C[last3], "time_limit"
+                bk_struct = {"valid": True, "stop": round(s_stop, 4), "risk": round(s_risk, 4),
+                             "close_R": round((sp - entry) / s_risk, 4), "exit_reason": sr,
+                             "recovered_vs_current": bool(close_R <= 0 and (sp - entry) > 0)}
+
         w_end = min(i + 1 + FWD, n)
         fwd_high = max(H[i + 1:w_end]) if w_end > i + 1 else H[i]
         fwd_low = min(L[i + 1:w_end]) if w_end > i + 1 else L[i]
@@ -213,6 +238,7 @@ def main():
             "entry_price": round(entry, 4), "stop_price": round(stop, 4), "target_price": round(target, 4),
             "risk": round(risk, 4), "close_R": round(close_R, 4), "exit_reason": exit_reason,
             "winner": close_R > 0, "be_moved": be,
+            "bk_struct_sl": bk_struct,
             "alt_demand_entry": alt,
             "bar_index": i,
             "ctx": {f: r.get(f) for f in CTX_FIELDS},
