@@ -1,0 +1,215 @@
+{
+  "version": "v1",
+  "locked_at": "2026-06-08",
+  "source": "ZIP A_ L2 V2.zip (31 prints)",
+  "process": "Full-resolution print + Cris confirmation + RAW 4H verification",
+  "stats": {
+    "BOM_HIGH": 17,
+    "NAO_CONFIRMED": 10,
+    "AMBIGUO": 0,
+    "CONTEXT_ONLY_prints": 10
+  },
+
+  "BOM_HIGH": [
+    {
+      "GT_ID": "GT01",
+      "prints": ["06.04.42 zoom", "06.05.17 amplo"],
+      "classe": "BOM_L2_winner",
+      "entry_ts_utc": "2020-04-08 18:00",
+      "entry_close": 1644.84,
+      "OHLC": [1648.33, 1653.23, 1643.93, 1644.84],
+      "polaridade_aproximada": "topo duplo Fev-Mar 2020, nível visual ~1644",
+      "stop_cris": 1611.74,
+      "tipo_candle": "Tipo B atípico — PRETA com upper wick dominante (53%), lower wick mínima (10%); absorção pela estrutura macro topo duplo, não pelo candle",
+      "context_only_prints": ["06.04.42"]
+    },
+    {"GT_ID": "GT02", "prints": ["06.23.52 amplo"], "classe": "BOM_L2_winner", "direcao": "LONG", "entry_ts_utc": "2020-07-28 06:00", "entry_close": 1929.72, "entry_cris": 1929.82, "OHLC": [1939.53, 1944.15, 1906.62, 1929.72], "polaridade_aproximada": "1908-1911", "bos_polaridade": 1906.5, "stop_cris": 1903.83, "stop_note": "abaixo da absorção/BOS-polaridade 1906.5 ('SL abaixo da polaridade por conta absorção'); 1R=25.99; do long_position plotado", "tipo_candle": "Tipo B clássico forte — PRETA, lower wick 62% dominante, range 37.53 (1.96 ATR), perfuração $4.38 (low 1906.62), close defende $21.72; RSI 67.4", "alvo_cris": 2046.04, "target_hit": true, "target_hit_em": "2020-08-05 10:00 (+37 bars)", "RR_target": 4.47, "mfe_R": 5.59, "heat_pre_target_R": -0.89, "source_object": "long_position 0RhUnf + notas 'ENTRADA NO FECHAMENTO DESSA VELA' / 'SL ABAIXO DA POLARIDADE POR CONTA ABSORÇÃO' + info_line 'BOS POLARIDADE'", "stop_completado": "stop firme 1903.83 adicionado 2026-06-09 (plot manual), validado por Cris; antes NEEDS_STOP", "similar_nota": "mesma zona de polaridade ~1930 que GT06A (NAO, 2020-09-21 @ 1931.71) — mesmo nível, ~2 meses depois, desfecho oposto; NÃO é o mesmo trade", "context_only_prints": ["06.29.32 direita"], "motivo": "Long na defesa forte da polaridade ~1906: candle perfura a polaridade (low 1906.62) e fecha 1929.72 (+23 acima) com lower wick 62% dominante = absorção compradora. Stop firme 1903.83 logo abaixo da absorção. Winner: target +4.47R em +37 bars, MFE +5.59R; heat pré-target −0.89R foi intra-candle de entrada.", "licao": "BOM/WINNER canônico: Tipo B forte com lower-wick dominante (62%), defesa clara da polaridade e stop logo abaixo da absorção. Referência de absorção forte (contraste com GT03 lw 58%, e com NAOs fracos GT07/GT04A)."},
+    {"GT_ID": "GT03", "prints": ["06.26.21 zoom"], "classe": "BOM_L2_winner", "direcao": "LONG", "entry_ts_utc": "2020-06-22 06:00", "entry_close": 1748.86, "OHLC": [1752.86, 1753.52, 1742.78, 1749.01], "polaridade_aproximada": "1742-1755 (topo duplo Mai 2020)", "bos_polaridade": 1745.0, "polaridade_inferior": 1733.16, "choch_reference": 1722.18, "stop_cris": 1728.94, "stop_note": "abaixo da polaridade inferior 1733.16 (dentro da caixa rosa 1722-1740); 1R=19.92; do long_position plotado ('SL ABAIXO DA POLARIDADE INFERIOR')", "tipo_candle": "Tipo B com absorção dominante — PRETA, body 36%, upper wick 6%, lower wick 58% (rejeição de baixa); RSI 67.3", "alvo_cris": 1977.81, "target_hit": true, "target_hit_em": "2020-07-27 22:00 (+153 bars)", "RR_target": 11.49, "mfe_R": 15.4, "mae_R_pre_target": -0.31, "source_object": "long_position 0RhUnf + notas 'ENTRADA NO FECHAMENTO DESSA VELA' / 'SL ABAIXO DA POLARIDADE INFERIOR' + info_lines BOS POLARIDADE / POLARIDADE INFERIOR / CHOCH REFERENCE", "anchor_corrigido": "entry atualizado de 2020-06-22 02:00 @ 1752.73 → 2020-06-22 06:00 @ 1748.86 (candle plotado), validado por Cris 2026-06-09; tese 'absorção fraca/atípica' descartada (candle plotado tem lower wick 58%)", "context_only_prints": ["06.29.32 esquerda"], "motivo": "Long no reteste/hold acima da BOS-polaridade ~1745 (CHoCH ref 1722 valida; polaridade inferior 1733). Candle de entrada rejeita a baixa (low 1742.78, lower wick 58%) e fecha 1749 acima do BOS. Stop firme 1728.94 abaixo da polaridade inferior. Big winner: target +11.5R em +153 bars, MFE +15.4R, heat pré-target só −0.31R.", "licao": "BOM/WINNER com boa absorção: reclaim/hold acima da BOS-polaridade com lower-wick dominante (58%) e stop abaixo da polaridade inferior. Contraste com NAOs fracos (GT07 reclaim fraco/round-trip; GT04A BOS sem follow-through) — aqui absorção + contexto sustentaram o grind até o alvo."},
+    {
+      "GT_ID": "GT08",
+      "prints": ["06.41.24"],
+      "classe": "BOM_L2_winner",
+      "entry_ts_utc": "2020-11-03 23:00",
+      "entry_close": 1893.57,
+      "OHLC": [1908.83, 1916.41, 1882.08, 1893.57],
+      "polaridade_aproximada": 1888.91,
+      "stop_cris": 1882.08,
+      "stop_alt": 1880,
+      "tipo_candle": "Tipo B clássico — PRETA, lower wick 33%, range 4 ATR, perfuração $6.83, close defende $4.66"
+    },
+    {
+      "GT_ID": "GT09",
+      "prints": ["06.43.15"],
+      "classe": "BOM_L2_winner",
+      "entry_ts_utc": "2020-12-02 11:00",
+      "entry_close": 1818.52,
+      "OHLC": [1829.87, 1830.26, 1812.77, 1818.52],
+      "polaridade_aproximada": 1817,
+      "stop_cris": 1806.39,
+      "tipo_candle": "Tipo B — PRETA, body 65%, lower wick 33%, range 1.5 ATR, perfuração $4.23, close defende $1.52, volume 1.66x média"
+    },
+    {
+      "GT_ID": "GT10",
+      "prints": ["06.44.27"],
+      "classe": "BOM_L2_winner",
+      "entry_ts_utc": "2020-12-16 11:00",
+      "entry_close": 1854.28,
+      "OHLC": [1863.14, 1865.72, 1849.33, 1854.28],
+      "polaridade_aproximada": 1850,
+      "stop_cris": 1840,
+      "stop_alt_06_45_30": 1843.37,
+      "tipo_candle": "Tipo B — PRETA, body 54%, lower wick 30%, range 1.62 ATR, perfuração $0.67, close defende $4.28, volume 1.84x",
+      "context_only_prints": ["06.45.30 (leitura alternativa polaridade 1860-1865)"]
+    },
+    {
+      "GT_ID": "GT13A",
+      "prints": ["06.51.00 esquerda"],
+      "classe": "BOM_L2_winner",
+      "entry_ts_utc": "2021-04-12 18:00",
+      "entry_close": 1732.77,
+      "OHLC": [1731.76, 1732.98, 1727.38, 1732.77],
+      "polaridade_aproximada": 1727.43,
+      "stop_cris": 1727.38,
+      "tipo_candle": "Tipo A verde reclaim — wick perfura polaridade $0.05, close defende $5.39",
+      "context_only_prints": ["06.51.20 esquerda"]
+    },
+    {
+      "GT_ID": "GT13B",
+      "prints": ["06.51.00 direita"],
+      "classe": "BOM_L2_winner",
+      "entry_ts_utc": "2021-04-29 14:00",
+      "entry_close": 1768.13,
+      "OHLC": [1757.86, 1770.08, 1756.14, 1768.13],
+      "polaridade_aproximada": "1758-1760",
+      "stop_cris": 1756.14,
+      "tipo_candle": "Tipo A verde reclaim — wick perfura polaridade $1.86, close defende $10",
+      "context_only_prints": ["06.51.20 direita"]
+    },
+    {
+      "GT_ID": "GT15",
+      "prints": ["07.04.58"],
+      "classe": "BOM_L2_winner",
+      "entry_ts_utc": "2021-12-20 19:00",
+      "entry_close": 1790.81,
+      "OHLC": [1793.27, 1793.36, 1788.31, 1790.81],
+      "polaridade_aproximada": "NEEDS_POL - provável ~1788-1790 ou ~1798-1800",
+      "stop_cris": 1780.90,
+      "tipo_candle": "Tipo B pequeno — PRETA, body 49%, lower wick 50% moderada, range 0.81 ATR, volume baixo"
+    },
+    {
+      "GT_ID": "GT17A",
+      "prints": ["07.07.27 esquerda"],
+      "classe": "BOM_L2_winner",
+      "entry_ts_utc": "2022-01-11 11:00",
+      "entry_close": 1805.92,
+      "OHLC": [1806.08, 1809.04, 1801.81, 1805.92],
+      "polaridade_aproximada": 1803.80,
+      "stop_cris": 1792.47,
+      "alvo_cris": 1842.27,
+      "tipo_candle": "Tipo B — PRETA, perfuração $1.99, close defende $2.12",
+      "context_only_prints": ["07.06.02"]
+    },
+    {
+      "GT_ID": "GT18",
+      "prints": ["07.12.39"],
+      "classe": "BOM_L2_BIG_WINNER",
+      "entry_ts_utc": "2022-02-24 19:00",
+      "entry_close": 1903.96,
+      "OHLC": [1920.19, 1920.38, 1878.10, 1903.96],
+      "polaridade_aproximada": "NEEDS_POL - zona 1880-1900",
+      "stop_cris": 1870.80,
+      "stop_note": "estrutural preventivo",
+      "tipo_candle": "Tipo B clássico explosivo — PRETA, lower wick 61% dominante, range 2.34 ATR, upper wick nulo, contexto invasão Ucrânia"
+    },
+    {
+      "GT_ID": "GT21",
+      "prints": ["07.21.06"],
+      "classe": "BOM_L2_BIG_WINNER",
+      "entry_ts_utc": "2022-11-07 19:00",
+      "entry_close": 1675.26,
+      "OHLC": [1676.89, 1677.20, 1674.22, 1675.26],
+      "polaridade_aproximada": "~1669-1670 (pivot 02-Nov)",
+      "stop_cris": 1637.24,
+      "tipo_candle": "Tipo B muito pequeno — PRETA, range 0.31 ATR (menor entre HIGHs), body 55%, lwick 35% moderada",
+      "context_only_prints": ["07.21.43"]
+    },
+    {
+      "GT_ID": "GT23",
+      "prints": ["07.25.54 amplo", "07.26.29 zoom"],
+      "classe": "BOM_L2_BIG_WINNER",
+      "entry_ts_utc": "2022-12-12 23:00",
+      "entry_close": 1785.67,
+      "OHLC": [1781.06, 1786.05, 1780.72, 1785.67],
+      "polaridade_aproximada": 1784,
+      "stop_cris": 1763.64,
+      "stop_note": "estrutural macro amplo",
+      "tipo_candle": "Tipo A verde reclaim direto — body 86%, lower wick mínima 6%, range 0.69 ATR, volume baixo",
+      "context_only_prints": ["07.26.29"]
+    },
+    {
+      "GT_ID": "GT24",
+      "prints": ["07.27.34"],
+      "classe": "BOM_L2_winner",
+      "entry_ts_utc": "2023-01-03 15:00",
+      "entry_close": 1838.84,
+      "OHLC": [1844.98, 1845.45, 1827.52, 1838.84],
+      "polaridade_aproximada": 1829.61,
+      "stop_cris": 1811.84,
+      "stop_note": "estrutural macro",
+      "tipo_candle": "Tipo B forte — PRETA, lower wick 63% dominante, range 2.37 ATR, volume 2.10x"
+    },
+    {
+      "GT_ID": "GT25",
+      "prints": ["07.28.17"],
+      "classe": "BOM_L2_winner",
+      "entry_ts_utc": "2023-01-04 11:00",
+      "entry_close": 1857.01,
+      "OHLC": [1858.79, 1862.86, 1852.79, 1857.01],
+      "polaridade_aproximada": "1845-1850",
+      "stop_cris": "1810 ou 1805",
+      "tipo_candle": "Tipo B balanceado — PRETA, body 18%, upper wick 40%, lower wick 42%, range 0.90 ATR, RSI 74.4"
+    },
+    {
+      "GT_ID": "GT27",
+      "prints": ["07.31.37"],
+      "classe": "BOM_L2_BIG_WINNER",
+      "entry_ts_utc": "2023-11-09 07:00",
+      "entry_close": 1947.02,
+      "OHLC": [1949.29, 1950.50, 1944.63, 1947.02],
+      "polaridade_aproximada": "zona interna ~1947-1950",
+      "stop_cris": 1922.51,
+      "stop_note": "estrutural amplo",
+      "tipo_candle": "Tipo B discreto — PRETA, range 1 ATR modesto; absorção contextual via 11 bubbles SELL prévias (4 large), volume normal",
+      "context_only_prints": ["07.31.22"]
+    },
+    {"GT_ID": "GT20", "prints": ["07.20.49"], "classe": "BOM_L2_winner", "direcao": "LONG", "entry_ts_utc": "2022-09-30 14:00", "entry_close": 1663.0, "OHLC": [1670.12, 1675.38, 1661.0, 1663.0], "polaridade_aproximada": "polaridade / BOS ~1662.92 (≈1663) — reclaim após rompimento de estrutura saindo do fundo de fim-Set/2022 (swing low 1614.82 em 28-Set)", "stop_cris": 1640.19, "stop_note": "linha manual 'SL SAFE' @ 1640.19 (1R=22.81); abaixo da estrutura, acima do fundo maior", "alvo_cris": 1721.69, "target_hit": true, "target_hit_em": "2022-10-04 14:00", "bars_to_target": 12, "MFE_R": 2.91, "heat_pre_target_R": -0.15, "tipo_candle": "candle de entrada VERMELHO de pullback (O1670.12 C1663.0, body modesto), RSI 62.6 — reteste do nível de polaridade", "source_object": "long_position 4jz59q (plot manual)", "chart_notes": ["VELA ENTRADA @ 2022-09-30 14:00", "POLARIDADE / BOS @ 1662.92", "SL SAFE @ 1640.19"], "reclassificado": "de NAO_CONFIRMED (pending, 'escopo Caminho B / NÃO L2') → BOM_L2_winner em 2026-06-09, confirmado por Cris a partir da operação manual plotada", "motivo": "Long em reteste/defesa de polaridade-BOS em ~1663 após rompimento de estrutura para cima saindo do fundo de fim-Set/2022. Entrada no close de candle de pullback vermelho que retesta o nível; RSI ainda em força relativa. Stop seguro 1640.19 abaixo da estrutura. Trade limpo: heat mínimo (−0.15R) antes do alvo; target +2.57R atingido em 12 candles.", "licao": "BOM/WINNER de continuation/reclaim: defesa clara de polaridade + estrutura ascendente + stop seguro + continuação rápida. Oposto de GT19A (entrada tardia em topo-polaridade com RSI rolando)."}
+  ],
+
+  "NAO_CONFIRMED": [
+    {"GT_ID": "GT04A", "print": "06.26.35 esquerda", "classe_final": "NAO_CONFIRMED", "resultado": "LOSER", "subclasse": "BOS_VALIDO_MAS_LOSER / NO_FOLLOW_THROUGH / MOMENTUM_ROLLING", "direcao": "LONG", "entry_ts_utc": "2020-05-21 14:00", "OHLC": [1734.02, 1734.02, 1717.15, 1722.23], "entry_close_raw": 1722.23, "entry_cris": 1721.48, "entry_logica": "entrada autorizada pelo BOS em ~1723.11 (linha 'BOS / POLARIDADE'); o CHoCH em 1713.05 foi marcado apenas para VALIDAR o BOS acima (correção de Cris 2026-06-09)", "bos_polaridade": 1723.11, "choch_validador": 1713.05, "stop_estrutural": 1706.17, "stop_origem": "long_position (box vermelho SL); 1R=15.31; abaixo do CHoCH 1713.05", "stop_hit": true, "stop_violado_em": "2020-05-27 02:00 (+20 bars, L1704.92)", "tp_plotado": 1763.25, "tp_plotado_hit": false, "mfe_R": 1.55, "mae_R": -3.32, "source_object": "long_position cwKR7v + nota 'VELA ENTRADA' + info_lines 'CHOCH' e 'BOS / POLARIDADE'", "confidence": "HIGH (leitura mecânica + desfecho RAW)", "motivo": "Long autorizado pelo BOS em ~1723 (CHoCH 1713 validou o BOS), mas SEM follow-through: momentum já rolando nas barras prévias (RSI 61→43.7), candle de entrada vermelho forte; preço chopa 1717–1740 por ~5 dias e quebra pra baixo, stop 1706.17 batido em 27-Mai (+20 bars). Target 1763 nunca ameaçado (MFE só +1.55R). NAO: BOS válido NÃO bastou — contexto/momentum contra invalidou.", "licao": "Mesmo com BOS autorizando a entrada, o trade pode ser NAO/LOSER quando o contexto amplo está contra (momentum revertido, região de topo, sem follow-through). BOS sozinho não basta — exige follow-through/contexto a favor. Distinto de GT19A (entrada tardia/RSI rolando) e GT07 (reclaim fraco/round-trip).", "motivo_anterior_CORRIGIDO": "[CORRIGIDO 2026-06-09 — leitura 'CHoCH não BOS' estava errada; Cris esclareceu que o BOS autoriza a entrada e o CHoCH só valida o BOS] texto antigo: 'CHoCH não BOS, RSI sobrecompra, NAS topo, cluster bubbles BUY large, volume venda alto, desgaste estrutural'"},
+    {"GT_ID": "GT04B", "print": "06.26.35 direita", "data_aprox": "Set 2020", "motivo": "Mesma lógica GT04A — CHoCH, climax bubbles"},
+    {"GT_ID": "GT06A", "print": "06.35.03 esquerda", "entry_ts_utc": "2020-09-21 06:00", "entry_close": 1931.71, "stops_violados": [1911.28, 1905.62], "stop_violado_em": "2020-09-21 14:00 (+8h)", "motivo": "Falso Tipo B — PRETA body 77% dominante mas lower wick nulo (14%) = dump direto sem absorção real. Trade visualmente parecia L2 mas tomou stop catastrófico em 8h (low 1882, -$50)"},
+    {"GT_ID": "GT06B", "print": "06.35.03 direita", "classe_final": "NAO_CONFIRMED", "subclasse": "CLUSTER_BUY_CLIMAX / VOLUME_FRACO / NO_ABSORPTION", "entry_ts_utc": "2020-10-01 22:00", "OHLC": [1905.16, 1907.51, 1897.26, 1897.87], "entry_close_raw": 1897.87, "entry_cris": 1898.37, "stop_estrutural": 1878.92, "stop_hit": true, "bars_to_stop": 17, "horas_to_stop": 68, "detector_v2_2_candidate": false, "blockers_true": ["cluster_BUY_climax", "volume_fraco", "bear_macro_4H", "overextended_entry", "no_absorption"], "motivo": "Volume fraco + cluster bubbles BUY large com M9 = climax comprador", "observacao": "Vela PRETA forte (body 71%) na sequência de doji prévio i=1169 (body 6%); match aceito por Cris como boa probabilidade (dist close $0.50)"},
+    {"GT_ID": "GT12", "print": "06.46.35", "classe_final": "NAO_CONFIRMED", "subclasse": "STOP / NO_ABSORPTION / BEAR_MACRO", "entry_ts_utc": "2021-03-11 23:00", "OHLC": [1721.73, 1727.97, 1718.79, 1719.55], "entry_close_raw": 1719.55, "entry_cris": 1718.83, "stop_estrutural": 1710.18, "stop_hit": true, "bars_to_stop": 1, "horas_to_stop": 4, "detector_v2_2_candidate": false, "blockers_true": ["no_absorption", "volume_fraco", "cluster_BUY_climax", "bear_macro_4H"], "motivo": "Tomaria STOP — bounce em bear macro daily; vela PRETA de rejeição (uw 68%) em bear leg sustentado; sem absorção comprador", "confidence": "HIGH", "observacao": "Stop hit em 1 bar (4h) — falha catastrófica imediata; confirma narrativa Cris 'tomaria STOP'; dist close $0.72"},
+    {"GT_ID": "GT14_NAO", "print": "06.52.50", "classe_final": "NAO_CONFIRMED", "subclasse": "BEAR_MACRO / CLUSTER_BUY_CLIMAX / VOLUME_BAIXO", "entry_ts_utc": "2021-07-08 02:00", "OHLC": [1799.69, 1800.66, 1796.25, 1798.02], "entry_close_raw": 1798.02, "entry_cris": 1797.68, "data_cris_original": "2021-07-06 (print confuso — Cris corrigiu para 07-08)", "stop_estrutural": 1779.03, "stop_hit": true, "bars_to_stop": 128, "horas_to_stop": 512, "detector_v2_2_candidate": false, "blockers_true": ["cluster_BUY_climax", "bear_macro_4H"], "blockers_false_notaveis": ["no_absorption (lw 40% — tem absorção parcial)", "false_tipo_B_dump_direto", "RSI_div_bear (proxy 5b não detectou)", "volume_fraco (ratio 0.83)"], "motivo": "Mercado bear claro, RSI div bear, cluster bubbles, volume baixo compra", "confidence": "HIGH", "observacao": "Cris confirmou i=2340 (07-08 02:00) apesar do print confuso sobre data — dist preço $0.34 é match excelente. Vela PRETA balanceada body 38% lw 40%; stop hit em 128 bars (21 dias). Hipótese A (i=2331 07-06) descartada."},
+    {"GT_ID": "GT17B", "print": "07.07.27 direita", "classe_final": "NAO_CONFIRMED", "subclasse": "BEAR_FLAG / BOS_FRACO / NO_ACCEPTANCE", "entry_ts_utc": "2022-02-02 19:00", "OHLC": [1809.25, 1809.25, 1805.14, 1806.81], "entry_close_raw": 1806.81, "entry_cris": 1808.28, "stop_estrutural": null, "stop_note": "Cris não informou stop", "drawdown_proxy_30b": -18.17, "drawdown_low": 1788.64, "drawdown_bars": 4, "detector_v2_2_candidate": false, "blockers_true": ["BOS_fraco", "no_acceptance", "volume_fraco", "bear_macro_4H", "no_polarity_defense"], "blockers_false_notaveis": ["bear_flag (8p/12v 20b)", "no_absorption (lw 41%)", "cluster_BUY_climax (BUY=0 SELL=0)", "false_tipo_B_dump_direto", "CHoCH_not_BOS"], "estrutura_visual": "VERDE forte (i=3228 body 71% rng 8.08) → ENTRY PRETA (i=3229 body 59%) → PRETA1 minúscula (i=3230 body 9%) → PRETA2 (i=3231) → PRETA3 (i=3232) → PRETA4 ENORME (i=3233 body 71% rng 16.50, ~4x as outras)", "motivo": "BOS muito fraco — rompimento estreito sem aceitação estendida; trade em bear flag", "confidence": "HIGH", "observacao": "Match estrutural perfeito em TODOS critérios Cris (data, vela branca pre-entry, sequência 4 pretas com 1ª minúscula + última enorme). Drawdown -$18.17 em 4 bars confirma falha bear. BOS_fraco proxy = -0.77 ATR (rompimento abaixo do esperado)."},
+    {"GT_ID": "GT19A", "print": "07.16.35 esquerda", "classe_final": "NAO_CONFIRMED", "direcao": "LONG", "subclasse": "TOP_POLARITY_BOS / LATE_ENTRY / RSI_ROLLING (NÃO bear flag)", "entry_ts_utc": "2022-04-14 10:00", "OHLC": [1969.13, 1979.87, 1960.54, 1961.99], "entry_close_raw": 1961.99, "entry_cris": 1962.26, "stop_estrutural": 1947.7, "stop_aprox": true, "stop_origem": "derivado do long_position (stopLevel offset; cross-validado por amountStop 0.5%/50k)", "stop_hit": true, "stop_violado_em": "2022-04-19 18:00", "bars_to_stop": 14, "horas_to_stop_wall": 128, "max_high_after_entry": 1998.32, "target_nao_atingido_aprox": 2030.3, "polarity_top_bos": 1966.18, "polarity_origem": "máxima de 2022-03-24 (H1966.2)", "source_object": "long_position (plot manual, entity Lz1Oz1)", "chart_notes": ["VELA DE ENTRADA ancorada em 2022-04-14 10:00", "POLARIDADE TOPO / BOS em 1966.18"], "anchored_from": "operação manual plotada no chart (long_position + notas), lida via MCP e confirmada por Cris 2026-06-09", "confidence": "HIGH (leitura mecânica candle/entry/direção)", "motivo": "Long em reteste/defesa de polaridade de topo / BOS após rally bull até a região de topo; entrada tardia no topo-polaridade (1966.18, = máxima de 24-Mar) com RSI já rolando de zona alta (~73→59). Preço ainda avança até ~1998 (18-Abr) mas falha antes do target e depois perde o stop (~1947.70) em 19-Abr. NAO por contexto de entrada vulnerável/tardia em topo-polaridade — NÃO por bear flag.", "motivo_anterior_OBSOLETO": "[OBSOLETO 2026-06-09 — não corresponde à operação manual plotada] Bandeira bear + volume fraco — pullback bull forte dentro de tendência bear"},
+    {"GT_ID": "GT19B", "print": "07.16.35 direita", "data_aprox": "Abr 2022", "motivo": "Mesma razão GT19A — sequência de topos descendentes"},
+    {"GT_ID": "GT07", "print": "06.36.35", "classe_final": "NAO_CONFIRMED", "resultado": "LOSER", "subclasse": "BULL_TRAP / WEAK_CONTEXT_RECLAIM / ROUND_TRIP_TO_STOP", "direcao": "LONG", "entry_ts_utc": "2020-08-14 06:00", "OHLC": [1951.17, 1954.16, 1938.75, 1945.44], "entry_close_raw": 1945.44, "entry_cris": 1942.56, "entry_note": "limite na polaridade/BOS ~1942.56 (não o close); preenchido dentro do candle 14-Ago 06:00 (low 1938.75)", "stop_estrutural": 1903.47, "stop_origem": "long_position (box vermelho SL na escala); 1R=39.09", "stop_hit": true, "stop_violado_em": "2020-08-26 10:00 (L1902.76, +49 bars / ~12 dias)", "tp_plotado": 2005.85, "tp_plotado_hit": true, "tp_plotado_hit_em": "2020-08-18 06:00 (+12 bars)", "pico_real": 2015.45, "pico_em": "2020-08-18 10:00", "round_trip_BE_em": "2020-08-19 18:00 (L1924.68, abaixo do BE 1942.56)", "polaridade_bos": 1942.56, "anchor_corrigido": "registro AMBIGUO anterior (2020-08-16 22:00 @ 1940.07) DESCARTADO; candle correto = 2020-08-14 06:00 @ 1942.56, confirmado por Cris via plot manual", "reclassificado": "de AMBIGUO → NAO_CONFIRMED (LOSER) em 2026-06-09, confirmado por Cris", "source_object": "long_position wCHx05 + nota 'VELA ENTRADA' + info_line 'POLARIDADE BOS'", "confidence": "HIGH (leitura mecânica + desfecho RAW)", "motivo": "Long em reteste de polaridade/BOS ~1942.56 em contexto FRACO (RSI ~44, cara de bear-flag, chop pós-crash 2075→1862). O repique/BOS para ~2015 NÃO sustentou: round-trip ao BE em 19-Ago e stop 1903.47 batido em 26-Ago. 'Small winner' é artefato de TP curto (2005.85 = topo do repique); com TP realista vira LOSER. Defesa + BOS posterior NÃO bastaram — contexto fraco invalidou o reclaim (bull trap).", "licao": "EVITAR este tipo de entrada: reclaim de polaridade em contexto fraco que repica mas não sustenta, round-trippa ao BE e stopa. Oposto de GT20 (reclaim forte saindo de fundo, target rápido e limpo).", "tp_plotado_status": "ARTIFACT / INVALID_FOR_CANONICAL_OUTCOME", "resultado_canonico": "LOSER", "target_canonico": "não usar tp_plotado (artefato/ausente -> outcome canônico = stop, respeita resultado LOSER)", "tp_artifact_motivo": "TP manual acidentalmente baixo; alvo real/intencional seria maior e não atingido antes do stop", "bars_to_stop": 49, "bars_to_stop_origem": "determinístico RAW source-of-truth closed-bar (Fase 1); substitui estimativa ad-hoc ~+39"}
+  ],
+
+  "AMBIGUO": [],
+
+  "CONTEXT_ONLY_PRINTS": [
+    "06.04.42 → GT01",
+    "06.29.32 esquerda → GT03",
+    "06.29.32 direita → GT02",
+    "06.45.30 → GT10 (leitura alternativa)",
+    "06.51.20 esquerda → GT13A",
+    "06.51.20 direita → GT13B",
+    "07.06.02 → GT17A",
+    "07.21.43 → GT21",
+    "07.26.29 → GT23",
+    "07.31.22 → GT27"
+  ]
+}

@@ -1,0 +1,4 @@
+field,source,derivation,reconstructable,gate_status,notes
+time,gz ohlcv diário ou agregação 4H->1D,close de cada dia UTC,YES,PENDING,"artefato XAU_1D_bars.jsonl = {time,close} (close-only)"
+close,daily close,close do dia fechado,YES,PENDING,low-risk; trivial agregar
+OVERALL,,,,DEFERRED,"builder não identificado mas reconstrução LOW-risk (close diário). Adiar p/ bloco de reconstrução junto do frozen. Artefato preservado em repro_recovery/XAU_1D_bars.jsonl"

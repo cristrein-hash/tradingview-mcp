@@ -1,0 +1,9 @@
+field,source_in_gz,derivation,reconstructable,gate_status,notes
+ts_epoch,ohlcv[].time,direto do bar fechado,YES,PENDING,trivial
+open/high/low/close,ohlcv (bar FECHADO),"OHLC do bar quando fechado (snapshot T+1 ohlcv[-2]); ov[-1] do snapshot atual é degenerado/forming",YES_with_care,BLOCKED,"exige pareamento exato snapshot-fechado; sutileza de forward-fill"
+volume,ohlcv[].volume (bar fechado),idem OHLC,YES_with_care,BLOCKED,idem
+rsi,study_values 'Relative Strength Index'.RSI,"RSI do snapshot onde o bar é CORRENTE (forming), não o fechado",YES_with_care,BLOCKED,"pareamento RSI-forming difere do OHLC-fechado -> 2 snapshots distintos por bar"
+bubbles_recent,pine_shapes_bubbles[0].activations,"acumular activations (últimos 20/snapshot) ao longo do replay; bars_ago = idx_atual - idx_evento; janela observada >=56 bars",YES_with_care,BLOCKED,"janela exata + regra de dedup desconhecidas; mecanismo identificado mas não validado field-equivalent"
+nas_recent,pine_labels 'NAS' (first-appearance),geralmente vazio no frozen,YES,BLOCKED,quase sempre []
+smc_recent,pine_labels 'Smart Money',geralmente vazio no frozen,YES,BLOCKED,quase sempre []
+OVERALL,,,,HARD_STOP,"mecanismo 100% mapeado; field-equivalence NÃO atingida/validada neste bloco -> reconstrução requer bloco dedicado. Referência íntegra: raw_features_2020_2026.jsonl SHA 9fac96b9"

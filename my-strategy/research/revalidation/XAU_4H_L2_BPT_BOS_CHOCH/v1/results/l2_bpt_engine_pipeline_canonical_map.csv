@@ -1,0 +1,18 @@
+step,stage,input,output,builder_script,builder_path,versioned,deterministic,depends_on_llm,status,fidelity_gate_needed
+1,RAW 4H gz,TradingView replay,XAUUSD_240m_replay_*.jsonl.gz,run_xau_replay_feature_collect.py,alert-bridge/run_xau_replay_feature_collect.py,YES,YES,NO,VERSIONED_OK,NO
+2,RAW 1D daily bars,4H gz / daily,XAU_1D_bars.jsonl (time+close),<unknown _bars writer>,<none>,NO,YES,NO,MISSING_REBUILD_REQUIRED,YES
+2b,RAW 1D ohlc aux,4H,XAU_1D_ohlc.jsonl,build_1d_ohlc.py,v1/build_1d_ohlc.py,YES,YES,NO,VERSIONED_OK,NO
+3,frozen raw_features,4H gz,raw_features_2020_2026.jsonl,extract_raw_features.py,<none>,NO,YES,NO,MISSING_REBUILD_REQUIRED,YES
+4,detector L2 v2.2,frozen + 1D bars + GT,candidates (in-memory),L2_detector_v2_2.py,pipeline/detectors/L2_detector_v2_2.py,YES(promoted),YES,NO,TMP_ONLY_RECOVERED,NO
+4b,ground truth,manual labels,L2_ground_truth_v1.json,(manual),pipeline/detectors/L2_ground_truth_v1.json,YES(promoted),YES,NO,RECOVERED_FROM_PACK,NO
+5,candidate_matrix,detector import + GT,l2_bpt_v2_2_candidate_matrix.csv,l2_layer23_diag.py,v1/l2_layer23_diag.py,YES,YES,NO,VERSIONED_OK,NO
+6,pruned_base_v2,candidate_matrix,l2_bpt_v2_2_pruned_base_v2.csv,build_pruned_base_v2.py,v1/build_pruned_base_v2.py,YES,YES,NO,VERSIONED_OK,NO
+7,demand/supply quality,candidate_matrix + frozen + gz,..._demand_supply_quality.csv,demand_supply_quality.py,v1/demand_supply_quality.py,YES,YES,NO,VERSIONED_OK,NO
+8,macro context,candidate_matrix + gz,..._macro_context.csv,macro_context_enrich.py,v1/macro_context_enrich.py,YES,YES,NO,VERSIONED_OK,NO
+9,d1_sig NAS 1D,gz pine_labels NAS,d1_sig_v3.json,extract_1d_v3.py,pipeline/features/extract_1d_v3.py,YES(promoted),YES,NO,TMP_ONLY_RECOVERED,NO
+10,svp real volume,gz study _data._items,svp_bars.jsonl,extract_svp.py,v1/extract_svp.py,YES,YES,NO,VERSIONED_OK,NO
+11,84-factor extractor,frozen + gz + dsq + macro + d1 + svp + episodes,l2_bpt_trade_qualification_matrix.csv,qualification_extract.py,v1/qualification_extract.py,YES,YES,NO,VERSIONED_OK,NO
+12,qualification matrix,extractor,matrix.csv + qual_packets.jsonl,qualification_extract.py,v1/qualification_extract.py,YES,YES,NO,VERSIONED_OK,NO
+13,TAKE/REVIEW/SKIP rubric,packets,qual_dec_*.jsonl -> decisions_merged.csv,QUALIFICATION_RUBRIC.md + 14 subagentes LLM,v1/QUALIFICATION_RUBRIC.md,YES(rubric),NO,YES,MANUAL_LLM_NONDETERMINISTIC,NO
+14,outcome evaluator,episodes + frozen,realR/exitype (demand-SL+partial50),validate_qualification.py,v1/validate_qualification.py,YES,YES,NO,VERSIONED_OK,NO
+15,matched-random baselines,universe + decisions,baseline P-values,validate_qualification.py / validate_oos_regime.py / attribution.py,v1/*,YES,YES,NO,VERSIONED_OK,NO
