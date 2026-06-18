@@ -9,12 +9,13 @@ CAUSAL: tudo <= barra de entrada. SEM SLIM. SEM look-ahead. Outcomes ficam em AR
 (reasoning é CEGO ao resultado). Reusa demand-SL repaint-auditado + partial50.
 Cross-asset NÃO usado (regra do Cris)."""
 import json,csv,gzip,math
+import os
 from datetime import datetime,timezone
 from collections import Counter,defaultdict
 D="results"
 
 # ============ FROZEN 4H ============
-fr=[json.loads(l) for l in open("/tmp/raw_features_2020_2026.jsonl")]
+fr=[json.loads(l) for l in open(os.environ.get("L2_RAW_FEATURES","/tmp/raw_features_2020_2026.jsonl"))]
 H=[r['high'] for r in fr];L=[r['low'] for r in fr];C=[r['close'] for r in fr];O=[r['open'] for r in fr]
 TS=[r['ts_epoch'] for r in fr];RS=[r.get('rsi') for r in fr];BUB=[r.get('bubbles_recent') or [] for r in fr]
 N=len(fr);TSidx={t:i for i,t in enumerate(TS)}
@@ -126,7 +127,7 @@ print("gz: demand snaps",len(demlow_by_ts),"| nas_new total",sum(nas_new.values(
 
 # ============ Session VP nativo (volume REAL) ============
 svp={}
-for l in open("/tmp/svp_bars.jsonl"):
+for l in open(os.environ.get("L2_SVP","/tmp/svp_bars.jsonl")):
     r=json.loads(l);vp=r.get('vp') or []
     # vp=[VAH, POC, VAL] (ordem observada: high, poc, low) -> normalizar
     if len(vp)==3:
@@ -143,7 +144,7 @@ dsq={int(r['candidate_id'][1:]):r for r in csv.DictReader(open(f"{D}/l2_bpt_v2_2
 mac={int(r['candidate_id'][1:]):r for r in csv.DictReader(open(f"{D}/l2_bpt_v2_2_pruned_base_v2_macro_context.csv"))}
 
 # ============ NAS 1D ============
-d1=json.load(open("/tmp/d1_sig_v3.json"));NAS1D=d1.get('nas',{});BUY1D=d1.get('buy',{})
+d1=json.load(open(os.environ.get("L2_D1_SIG","/tmp/d1_sig_v3.json")));NAS1D=d1.get('nas',{});BUY1D=d1.get('buy',{})
 def nas1d_recent(i,days=3):
     cur=datetime.fromtimestamp(TS[i],tz=timezone.utc).date()
     for k,v in NAS1D.items():
@@ -343,7 +344,7 @@ with open(f"{D}/l2_bpt_trade_qualification_matrix.csv","w",newline="") as f:
     w=csv.DictWriter(f,fieldnames=cols);w.writeheader()
     for r in flats: w.writerow({k:r.get(k,'') for k in cols})
 # packets JSONL (rico, sem outcome) p/ reasoning cego
-with open("/tmp/qual_packets.jsonl","w") as f:
+with open(os.environ.get("L2_QUAL_PACKETS","/tmp/qual_packets.jsonl"),"w") as f:
     for i,_ in reps: f.write(json.dumps(allp[i])+"\n")
 # outcomes (SEPARADO - só validação) + similaridade DIAGNÓSTICO (outcome-derived, NÃO p/ reasoning)
 with open(f"{D}/l2_bpt_trade_qualification_outcomes.csv","w",newline="") as f:

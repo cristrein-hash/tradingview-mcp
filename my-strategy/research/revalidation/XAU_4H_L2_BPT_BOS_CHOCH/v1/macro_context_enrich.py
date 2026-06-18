@@ -6,6 +6,7 @@ macro_leg = REFERENCE_ONLY (only 5 manual block rows in pack) -> NOT derived (no
 NO PnL/backtest/plot/MCP/production/SLIM. RAW gz read-only.
 """
 import json, csv, gzip
+import os
 from datetime import datetime, timezone
 from collections import defaultdict
 from bisect import bisect_right
@@ -20,7 +21,7 @@ TOL_D1 = 0.5  # *ATR_D1 — diagnostic tolerance (calibration, reported; not a f
 TOL_4H = 0.5  # *ATR_4H
 
 # ---- candidates: entry_idx -> ts_epoch (frozen input) + matrix labels (PRUNED_BASE_V2 kept only) ----
-frozen=[json.loads(l) for l in open('/tmp/raw_features_2020_2026.jsonl')]
+frozen=[json.loads(l) for l in open(os.environ.get('L2_RAW_FEATURES','/tmp/raw_features_2020_2026.jsonl'))]
 ts_by_idx={i:frozen[i]['ts_epoch'] for i in range(len(frozen))}
 # ATR4H (Wilder14) from frozen OHLC
 H=[r['high'] for r in frozen]; L=[r['low'] for r in frozen]; C=[r['close'] for r in frozen]

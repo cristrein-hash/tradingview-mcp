@@ -3,10 +3,11 @@
 (demand-SL + partial50, por TIPO DE SAÍDA). Mede TAKE vs REVIEW vs SKIP + 3 baselines + bootstrap +
 recall gate + subset NON-GT (held-out dos priors) + correlação confidence->R. Episódio é a unidade."""
 import json,csv,gzip,random,glob
+import os
 from collections import Counter,defaultdict
 random.seed(20260618)
 D="results"
-fr=[json.loads(l) for l in open("/tmp/raw_features_2020_2026.jsonl")]
+fr=[json.loads(l) for l in open(os.environ.get("L2_RAW_FEATURES","/tmp/raw_features_2020_2026.jsonl"))]
 H=[r['high'] for r in fr];L=[r['low'] for r in fr];C=[r['close'] for r in fr];O=[r['open'] for r in fr]
 TS=[r['ts_epoch'] for r in fr];N=len(fr)
 ATR=[None]*N;trs=[]
@@ -65,7 +66,7 @@ for i in universe: uni_by_sb[(lpb(legpos(i)),db(i))].append(i)
 
 # ---- load decisions + outcomes ----
 dec={}
-for fp in glob.glob('/tmp/qual_dec_*.jsonl'):
+for fp in glob.glob(os.environ.get('L2_QUAL_DEC_GLOB','/tmp/qual_dec_*.jsonl')):
     for l in open(fp):
         if l.strip():
             r=json.loads(l);dec[r['bar_idx']]=r

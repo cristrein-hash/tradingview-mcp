@@ -1,4 +1,5 @@
 import json,sys
+import os
 BUY={'plot_0','plot_2','plot_4'}
 nas_by_bar={}; buy_by_bar={}; prev=None
 for line in sys.stdin:
@@ -17,5 +18,5 @@ for line in sys.stdin:
     for a in (mob.get('activations') or []) if mob else []:
         if any(p in BUY for p in (a.get('shapes') or {})): nbuy+=1  # total BUY activations visible
     buy_by_bar[bt]=nbuy
-json.dump({'nas':nas_by_bar,'buy':buy_by_bar},open('/tmp/d1_sig_v3.json','w'))
+json.dump({'nas':nas_by_bar,'buy':buy_by_bar},open(os.environ.get('L2_D1_SIG','/tmp/d1_sig_v3.json'),'w'))
 print("bars:",len(nas_by_bar),"nas_long_new:",sum(nas_by_bar.values()),"max buy/bar:",max(buy_by_bar.values()))

@@ -63,7 +63,7 @@ def dry_run():
     print("\n  NÃO-determinístico (LLM):", nondet or "nenhum")
     print("  FALTANDO/rebuild:", [m[0] for m in missing] or "nenhum")
     print(f"\n  fidelity sentinel: {'PRESENTE' if FIDELITY_SENTINEL.exists() else 'AUSENTE'} ({FIDELITY_SENTINEL})")
-    print("  => pipeline REPRODUZÍVEL:" , "NÃO (builders faltando + reasoning não-determinístico)")
+    print("  => pipeline REPRODUZÍVEL:" , "PARCIAL: builders reconstruídos+gate (frozen decision-invariant), /tmp parametrizado via env; falta SÓ decisão de determinismo LLM (etapa 13 AI_REVIEW)")
     return 0 if not missing else 2
 
 def reproduce_2020_2026():

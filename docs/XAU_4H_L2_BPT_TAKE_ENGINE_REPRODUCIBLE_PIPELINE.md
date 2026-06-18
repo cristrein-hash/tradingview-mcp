@@ -37,11 +37,11 @@ Etapas 1-12,14,15 = determinísticas. Etapa 13 (reasoning TAKE) = **LLM NÃO-det
 ## 10. Como reproduzir 2020-2026
 `--reproduce-2020-2026` → roda o fidelity gate. **Atualmente HARD-STOP** (frozen + 1D builders faltam). Após reconstrução autorizada, comparar output vs SHA `9fac96b9` e, se PASS, criar `pipeline/.fidelity_pass`.
 
-## 11. O que ainda bloqueia a Opção B (estado pós-desbloqueio)
-1. **frozen gate não-PASS-completo (rsi/nas residual 2.6%)** → estrutural reproduzível, mas RSI (crítico p/ 84 fatores) field-equivalente só 97.3%. Decisão do Cris: aceitar resíduo OU resolver a regra de seleção de snapshot em dup-capture. **1D-bars: PASS.** [parcialmente resolvido]
-2. **Parametrização de paths `/tmp` NÃO feita** (HARD-STOP do gate impediu prosseguir). `L2_detector_v2_2.py`, `l2_layer23_diag.py`, `qualification_extract.py`, `demand_supply_quality`, `macro_context_enrich`, `validate_qualification`, `extract_svp`, `extract_1d_v3` ainda lêem/escrevem `/tmp` hardcoded → ~8 scripts a parametrizar (proposta: `os.environ.get('X', '/tmp/...')`, default preserva comportamento). [PENDENTE]
-3. **reasoning LLM não-determinístico** → "mesmo engine sem retune" exige re-rodar subagentes (decisões novas) OU score determinístico (Opção C). [PENDENTE — decisão]
-**Opção B BLOQUEADA** até (1) Cris decidir o resíduo rsi, (2) parametrizar paths, (3) decidir determinismo.
+## 11. O que ainda bloqueia a Opção B (estado pós-parametrização, commit 0aff648 + este bloco)
+1. **frozen gate (rsi/nas residual)** → ✅ **RESOLVIDO via carry-to-next**: estrutural 100% byte-equiv, rsi 99.62%/nas 99.74%, resíduo=dup_ts artifacts **provado DECISION-INVARIANT** (zero crossings rsi<30; 0aff648, DA a72c93cb). 1D-bars 100% PASS. **Caveat:** feature futura usando rsi CONTÍNUO re-exporia 4 diffs sub-7pt.
+2. **Parametrização `/tmp`** → ✅ **FEITO**: 8 scripts + import do detector (`L2_DETECTOR_DIR`→pipeline/detectors) + workdir do reasoning (`L2_WORKDIR`) parametrizados via env (default=/tmp preserva 2020-2026 byte-identical; DA ae9d848 confirmou 0 mismatch, lógica intocada, comportamento inalterado). `results/l2_bpt_pipeline_{tmp_path_parametrization,dry_run_report}.csv`.
+3. **reasoning LLM não-determinístico** → ⏳ **ÚNICO BLOCKER RESTANTE**. Política formalizada ([[XAU_4H_L2_BPT_TAKE_ENGINE_DETERMINISM_POLICY]] §3b): etapa 13 = AI_REVIEW_NONDETERMINISTIC + decisões 2020-2026 CONGELADAS. Para Opção B (2013-2017): re-rodar subagentes (declarado AI_REVIEW, NÃO determinístico) **OU** converter rubrica em score determinístico (Opção C, bloco separado). **Decisão do Cris.**
+**Opção B:** desbloqueada nas dimensões frozen+/tmp; resta SÓ a decisão de determinismo (3). Inputs determinísticos íntegros.
 
 ## 12. DA appendix
 Ver relatório do bloco. Checklist: builders mapeados ✓ · recuperáveis promovidos ✓ (detector/GT/d1_sig) · faltantes reconstruídos só sob gate ✓ (não reconstruídos = hard-stop) · ainda missing: 2 builders ✓ documentado · dependência /tmp: regra permanente criada (§7) · reasoning marcado não-determinístico ✓ · dry-run funciona ✓ · reproduzir 2020-2026: HARD-STOP ✓ · nenhuma validação Opção B rodada ✓ · produção intacta ✓ · sem SLIM/chart/MCP/plot ✓.

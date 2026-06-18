@@ -1,0 +1,11 @@
+script,tmp_paths_found,parameters_added,behavior_changed,test_status
+pipeline/detectors/L2_detector_v2_2.py,2,2,no (default=/tmp preservado),COMPILE_OK
+l2_layer23_diag.py,1,1,no (default=/tmp preservado),COMPILE_OK
+qualification_extract.py,4,4,no (default=/tmp preservado),COMPILE_OK
+demand_supply_quality.py,2,2,no (default=/tmp preservado),COMPILE_OK
+macro_context_enrich.py,1,1,no (default=/tmp preservado),COMPILE_OK
+validate_qualification.py,2,2,no (default=/tmp preservado),COMPILE_OK
+extract_svp.py,1,1,no (default=/tmp preservado),COMPILE_OK
+pipeline/features/extract_1d_v3.py,1,1,no (default=/tmp preservado),COMPILE_OK
+l2_layer23_diag.py (sys.path import),1,L2_DETECTOR_DIR (default pipeline/detectors),no (detector idêntico ao /tmp sha e919e7fa),COMPILE_OK
+pipeline/qualification/REASONING_AGENT_PROMPT_TEMPLATE.md,2,L2_WORKDIR (qual_batch/qual_dec),no,DOC_UPDATED

@@ -5,15 +5,16 @@ Reusa os 12 blockers causais canônicos do L2_layer2_diagnostic_audit.py (re-def
 aqui para não executar o audit no import) + tags de contexto causais do input v2.2.
 """
 import json, csv, sys
+import os
 from datetime import datetime, timezone
 from collections import Counter, defaultdict
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, os.environ.get('L2_DETECTOR_DIR', os.path.join(os.path.dirname(os.path.abspath(__file__)),'pipeline','detectors')))
 from L2_detector_v2_2 import (RAW, ATR, SMA50, N, D, ND, SMA200_D, daily_idx_for_4h,
                               SELL_PLOTS, LARGE_BUY, LARGE_SELL, is_falso_tipo_B_dump_direto,
                               run_candidate_generator)
 
 OUT = "/Users/cristrein/tradingview-mcp/my-strategy/research/revalidation/XAU_4H_L2_BPT_BOS_CHOCH/v1/results"
-GT = json.load(open('/tmp/L2_ground_truth_v1.json'))
+GT = json.load(open(os.environ.get('L2_GROUND_TRUTH','/tmp/L2_ground_truth_v1.json')))
 def pts(s): return int(datetime.strptime(s,'%Y-%m-%d %H:%M').replace(tzinfo=timezone.utc).timestamp())
 def fmt(ts): return datetime.fromtimestamp(ts,tz=timezone.utc).strftime('%Y-%m-%d %H:%M')
 

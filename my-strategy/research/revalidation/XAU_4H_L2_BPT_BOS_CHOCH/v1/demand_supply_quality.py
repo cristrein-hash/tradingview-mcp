@@ -6,6 +6,7 @@ temporal) -> mitigation approximated by price-touch in prior window. No SL in v2
 SL / R-targets UNAVAILABLE -> ATR-proxy targets (labeled). NO backtest/PnL/filter/plot/prod/SLIM.
 """
 import json, csv, gzip, statistics
+import os
 from datetime import datetime, timezone
 from bisect import bisect_right
 from collections import Counter, defaultdict
@@ -17,7 +18,7 @@ GZ_4H = [f"{RAW}/4H/XAUUSD_240m_replay_2020-01-01_to_2023-01-01.jsonl.gz",
 GZ_1D = f"{RAW}/1D/XAUUSD_1D_replay_2012-06-19_to_2026-05-25.jsonl.gz"
 COB="OB Detector"; WIN=12  # retest/touch window (bars before entry)
 
-frozen=[json.loads(l) for l in open('/tmp/raw_features_2020_2026.jsonl')]
+frozen=[json.loads(l) for l in open(os.environ.get('L2_RAW_FEATURES','/tmp/raw_features_2020_2026.jsonl'))]
 N=len(frozen); ts_by_idx={i:frozen[i]['ts_epoch'] for i in range(N)}
 idx_by_ts={frozen[i]['ts_epoch']:i for i in range(N)}
 H=[r['high'] for r in frozen]; L=[r['low'] for r in frozen]; C=[r['close'] for r in frozen]
@@ -173,5 +174,5 @@ with open(f"{D}/l2_bpt_v2_2_pruned_base_v2_demand_supply_quality.csv","w",newlin
     w=csv.DictWriter(f,fieldnames=FQ); w.writeheader(); w.writerows(rows)
 print(f"wrote demand_supply_quality.csv: {len(rows)} candidates ; 4H_OB missing-align: {sum(1 for r in rows if 'NO' in r['feature_availability'])}")
 # persist for analysis stage
-json.dump(rows,open('/tmp/dsq_rows.json','w'))
+json.dump(rows,open(os.environ.get('L2_DSQ_ROWS','/tmp/dsq_rows.json'),'w'))
 print("BOM cand:",sum(1 for r in rows if r['label']=='BOM'),"NAO cand:",sum(1 for r in rows if r['label']=='NAO'),"UNK:",sum(1 for r in rows if r['label']=='UNKNOWN'))

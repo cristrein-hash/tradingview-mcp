@@ -21,6 +21,14 @@ O pipeline tem duas naturezas:
 - **Opção B — rotular:** o engine é **AI_REVIEW não-determinístico**, NÃO um classificador determinístico. Para um dataset novo (ex. 2013-2017), o reasoning teria que ser re-executado (decisões diferentes) OU substituído por um scoring determinístico.
 - **Opção C — scoring determinístico derivado da rubrica:** **NÃO neste bloco** (bloco separado futuro).
 
+## 3b. DECLARAÇÃO FORMAL FINAL (2026-06-18, bloco de parametrização)
+**O TAKE engine atual É:**
+- **Etapas 1-12,14,15 = DETERMINISTIC** (Python; builders versionados em `pipeline/`; frozen reconstruído byte-equiv estrutural + rsi/nas 99.6% decision-invariant; /tmp parametrizado via env).
+- **Etapa 13 (TAKE/REVIEW/SKIP) = AI_REVIEW_NONDETERMINISTIC** + **FROZEN-DECISION ARTIFACT para 2020-2026**.
+  - Prompts: salvos em `pipeline/qualification/REASONING_AGENT_PROMPT_TEMPLATE.md` (template dos 14 subagentes) + rubrica `QUALIFICATION_RUBRIC.md`. Model=claude-opus, temp=default, sem seed.
+  - Decisões 2020-2026: **CONGELADAS** em `results/l2_bpt_trade_qualification_decisions_merged.csv` (artefato canônico imutável).
+- **Para um dataset novo (ex. 2013-2017):** o reasoning teria que ser RE-EXECUTADO → decisões diferentes → declarar AI_REVIEW, NÃO backtest determinístico. **OU** converter a rubrica em scoring determinístico (Opção C, bloco separado) ANTES de qualquer claim de "mesmo engine determinístico".
+
 ## 4. Implicação para validação Opção B
 Mesmo com todos os builders determinísticos reconstruídos+gated, a etapa 13 (reasoning) não é reproduzível byte-a-byte. Logo "rodar o MESMO engine sem retune" em 2013-2017 significa **re-rodar os subagentes** (decisões novas, mesma rubrica) — aceitável como AI_REVIEW, mas deve ser declarado, não vendido como determinístico. Alternativa rigorosa = Opção C (converter rubrica em score determinístico) antes de validar.
 

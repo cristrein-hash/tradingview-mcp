@@ -13,13 +13,14 @@ Mudanças sobre v2.1:
 Blockers continuam apenas diagnóstico.
 """
 import json
+import os
 from datetime import datetime, timezone
 
-RAW = [json.loads(l) for l in open('/tmp/raw_features_2020_2026.jsonl')]
+RAW = [json.loads(l) for l in open(os.environ.get('L2_RAW_FEATURES','/tmp/raw_features_2020_2026.jsonl'))]
 RAW.sort(key=lambda b: b['ts_epoch'])
 N = len(RAW)
 
-D = [json.loads(l) for l in open('/tmp/XAU_1D_bars.jsonl')]
+D = [json.loads(l) for l in open(os.environ.get('L2_1D_BARS','/tmp/XAU_1D_bars.jsonl'))]
 D.sort(key=lambda b: b['time'])
 ND = len(D)
 

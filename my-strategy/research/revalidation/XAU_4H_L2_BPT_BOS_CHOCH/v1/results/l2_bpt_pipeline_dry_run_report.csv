@@ -1,0 +1,9 @@
+script,compile,bare_tmp_remaining,requires_tmp
+pipeline/detectors/L2_detector_v2_2.py,OK,NONE,"NO (env-overridable, default /tmp)"
+l2_layer23_diag.py,OK,NONE,"NO (env-overridable, default /tmp)"
+qualification_extract.py,OK,NONE,"NO (env-overridable, default /tmp)"
+demand_supply_quality.py,OK,NONE,"NO (env-overridable, default /tmp)"
+macro_context_enrich.py,OK,NONE,"NO (env-overridable, default /tmp)"
+validate_qualification.py,OK,NONE,"NO (env-overridable, default /tmp)"
+extract_svp.py,OK,NONE,"NO (env-overridable, default /tmp)"
+pipeline/features/extract_1d_v3.py,OK,NONE,"NO (env-overridable, default /tmp)"

@@ -1,4 +1,5 @@
 import json,sys
+import os
 bars={}
 for line in sys.stdin:
     try: d=json.loads(line)
@@ -17,7 +18,7 @@ for line in sys.stdin:
     if rsi and ov:
         try: bars[int(ov[-1]['time'])]['rsi']=float((rsi.get('values') or {}).get('RSI'))
         except: pass
-out=open('/tmp/svp_bars.jsonl','w'); nvp=0
+out=open(os.environ.get('L2_SVP','/tmp/svp_bars.jsonl'),'w'); nvp=0
 for t in sorted(bars):
     r=bars[t]; r['time']=t
     if 'vp' in r: nvp+=1
