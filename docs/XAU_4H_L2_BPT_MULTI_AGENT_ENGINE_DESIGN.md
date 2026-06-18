@@ -28,18 +28,48 @@ Desenho de uma arquitetura para potencializar o TAKE engine: de **fan-out genér
 ```
 Diferença vs atual: o MESMO trade passa por papéis distintos (cruzamento real), não "1 agente decide sozinho".
 
-## 3. Papéis dos agentes especialistas
-| # | agente | missão (lente única) | NÃO faz |
+## 3. Papéis dos agentes especialistas (roster expandido — mesa de análise por família de evidência)
+**Avaliação da proposta do Cris:** correta e mais forte que a v1 (8 papéis) — especialistas por indicador/família com mandato técnico estreito e evidência estruturada, agregador construindo TESE. Incorporada + ampliada com os edges validados do projeto (capitulação, sweep, bull-beta skeptic, Dead Hours, HTF) + o framework de valor-marginal (§3c) que impede "mais narradores".
+
+### 3a. Roster (Stage A + 20 especialistas + DA + Aggregator)
+| # | agente | lente ÚNICA e técnica (mandato estreito) | fatores-fonte obrigatórios |
 |---|---|---|---|
-| A | **Context Classifier** | classifica setup_type (bottom_reversal/demand_reclaim/bull_pullback/late_top/bear_bounce/unclear) | NÃO decide TAKE/SKIP (separação anti-circular) |
-| 1 | **Macro/Regime Reader** | trend_30/90, rsi_1d vs MA, price_vs_sma50, regime bull/bear/chop | ignora microestrutura |
-| 2 | **Demand/Supply Reader** | demand-distance/width/touched, **supply-distance contínua**, blocks_target, D1 zones | ignora momentum |
-| 3 | **Exhaustion/Top Risk Reader** | legpos90, rise20, rsi overbought, bear-div (A7), F_STRICT, blow-off, climax bubbles | ignora fundo |
-| 4 | **Capitulation/Reversal Reader** | drop20, rsi_min8, sweet-spot falling-knife, below-VAL, SELL-bubble absorção, NAS LONG | ignora topo |
-| 5 | **Entry Quality Reader** | reclaim body, CHoCH/BOS recência+direção, demand-retest timing, premature vs late | ignora risco |
-| 6 | **Risk/SL Reader** | sl_atr, sl_type (V_REVERSAL/NORMAL/LATE_WIDE), demand-anchored quality, target reachability vs supply | ignora tese |
-| DA | **Devil's Advocate** (§9) | atacar a tese: bull-beta? topo? supply perto? SL estrutura-fraca? loser parecido? | não decide |
-| AGG | **Final Aggregator** (§10) | integra evidências + veredito DA → TAKE/REVIEW/SKIP + registro | não inventa fatores |
+| A | **Context Classifier** (cego à decisão) | classifica setup_type, SEM TAKE/SKIP | todos (resumo) |
+| 1 | **Macro/Regime/Leg Reader** | regime bull/bear/chop, maturidade da perna | trend_30/90_atr, slope20, price_vs_sma50, dist_sma50 |
+| 2 | **HTF/Daily-Context Reader** ⊕ | alinhamento 1D/semanal, gate diário (causal shift1) | rsi_1d, rsi_1d_sub_ma, has_d1_demand, dist_d1_demand_atr, has_d1_supply, dist_d1_supply_atr, macro_leg_* |
+| 3 | **Auction Theory / Market-Structure Reader** | balanço vs imbalance, aceitação/rejeição, POC magnet | below_VAL, dist_POC_atr, dist_VAL_atr, va_width_atr |
+| 4 | **Demand & Supply Quality Reader** | demanda defendida/colada, **supply-distance contínua**, espaço limpo até resistência | dist_4h_demand_low_atr, demand_width/age/touched, **dist_4h_supply_low_atr**, supply_blocks_2/3ATR, supply_rejected/broken_before |
+| 5 | **Volume / Session VP / Absorption Reader** | volume real confirma capitulação? absorção vs distribuição | rel_volume, below_VAL, dist_POC/VAL_atr, va_width_atr |
+| 6 | **NAS Specialist** | NAS LONG/BOTTOM/TOP relevante, first-appearance vs ruído, alinhado a fundo/topo/meio | nas_long_new_8b, nas_short_new_8b, nas_dist_ema_atr, nas_rsi, nas_1d_long_recent |
+| 7 | **Market Order Bubbles Specialist** | absorção SELL pré-reversão, BUY-climax em topo, tier s/m/L, antes/depois da entrada | bub_sell_s/m/L, bub_buy_s/m/L, bub_buy_sell_ratio, bub_large_sell/buy_10b, bub_poc_recent |
+| 8 | **RSI / Divergence / Momentum Reader** | oversold/neutro/overbought, divergência real, força vs blow-off | rsi, rsi_min8, rsi_max8, rsi_vs_ma, rsi_bear_div_20b, rsi_bull_div_20b, rsi_drop_6b |
+| 9 | **SMC / BOS / CHoCH / Liquidity-Structure Reader** | BOS/CHoCH relevante vs ruído local, reclaim estrutural vs geométrico, polaridade defendida, LH-bear vs HL-reversão | smc_bos(text/bars_ago), smc_choch, reclaim_dist_from_supply/demand_atr |
+| 10 | **Custom OB / Demand-Origin Reader** | OB de origem-de-perna, OB 1D, qualidade da zona | demand_origin_of_leg, demand_age_bars, has_d1_demand, dist_d1_demand_atr |
+| 11 | **Capitulation / Climax-Wash Specialist** ⊕ | fundo: falling-knife, washout, climax (Tipo 1 silent / Tipo 2 climax F9) — distinto de exaustão de topo | drop20_atr, rsi_min8, sweet_spot_falling_knife, consec_down, below_VAL, range_exp, bub_large_sell_10b |
+| 12 | **Liquidity Sweep / Stop-Run Specialist** ⊕ | varreu low estrutural e reclaimou? (BASE+SWEEP validado V1.4g) | low pivots (PL5), reclaim_body_atr, smc_choch, legpos60/90 |
+| 13 | **Exhaustion / Top-Risk Specialist** | topo: blow-off, overbought, F_STRICT, distribuição, bear-div | legpos90, rise20_atr, rsi, rsi_bear_div_20b, F_STRICT_top_late, bub_large_buy_10b, nas_short_new_8b |
+| 14 | **Entry Timing / Reclaim Quality Reader** | reclaim confirmado vs prematuro/tardio, corpo bullish, retest da demanda | reclaim_body_atr, demand_touched_on_retest, smc_choch bars_ago, consec_up |
+| 15 | **Risk / SL / R-Geometry Reader** | SL demand-anchored quality, alcançabilidade do alvo 2R/6R vs supply, R/R | sl_atr, sl_type, dist_4h_supply_low_atr, supply_blocks_2/3ATR, dist_4h_demand_low_atr |
+| 16 | **Session / Time-of-Day Specialist** ⊕ | Dead Hours (UTC 2/18/20), London/NY, dia | hour_utc, dead_hour |
+| 17 | **Historical Analogues Specialist** | parecido com winners E1/E17/E27/E30/E40 ou losers E23/E24/E15/E34/E39? (por PERFIL de fatores, não outcome leak) | vetor dos eixos-chave; assinaturas na rubrica |
+| 18 | **Bull-Beta / Drift Discriminator** ⊕ (modo de falha #1) | é edge ou só long-gold beta? um random long no mesmo regime faria isso? | trend_90_atr, regime, legpos, rel_volume; cruza com baseline-mental |
+| 19 | **Volatility / ATR-Regime Reader** ⊕ | ATR percentil, spike de vol (entrada engole noise), regime de vol | atr_level, atr_pctile_proxy, range_exp |
+| 20 | **Anti-Look-Ahead / Causality Auditor** ⊕ | todos os fatores são ≤ entrada? algum repinta (SMC/bubbles/OB)? | meta: flag de causalidade por fator |
+| DA | **Devil's Advocate** (§9) | refutar a tese com evidência estruturada | conforme objeção |
+| AGG | **Final Aggregator / Trade Qualification** (§10) | constrói a TESE + decide TAKE/REVIEW/SKIP | mapa de leituras + DA |
+
+⊕ = adicionado por mim além dos 14 do Cris. Especialistas com fonte sobreposta (ex.: RSI #8 vs Exhaustion #13 vs Capitulation #11 todos tocam RSI) são **deliberadamente disjuntos no MANDATO** (#11 só fundo, #13 só topo, #8 só momentum puro) e validados por ablation (§3c) — quem não agrega valor marginal é cortado.
+
+### 3b. O agregador constrói uma TESE (não soma votos)
+O Aggregator NÃO conta votos. Ele formula a **tese principal** ("bottom reversal com capitulação + demanda defendida" / "bull pullback saudável" / "late top / no trade" / "bear bounce perigoso") a partir das leituras, e só então qualifica (§10). A tese é registrada e auditável.
+
+### 3c. Valor marginal por especialista (a TRAVA anti-narrativa — o que faltou no engine atual)
+Cada especialista SÓ permanece no roster se **provar contribuição marginal**, medido offline sobre os 276 (sem retune):
+- **Ablation:** remover o especialista X piora o gradiente TAKE>SKIP / o lift vs baseline? Se não → REDUNDANTE → cortar ou fundir.
+- **Separação win-vs-lose:** os fatores que o especialista X marca `decisive` realmente aparecem mais em winners que em losers? (o teste que HOJE falha). Se não separa → o especialista vira CONTEXTO, não decisive.
+- **Redundância:** correlação das leituras entre especialistas; se #8 e #13 sempre concordam, fundir.
+- **Não-circularidade:** Historical Analogues #17 e Bull-Beta #18 NÃO podem usar outcome; só perfil de fatores / regime.
+Resultado: um roster ENXUTO comprovado, não 20 narradores. O número final de especialistas é EMPÍRICO (pode ser <20), definido pelo ablation, não pela vontade.
 
 ## 4. Input obrigatório por agente (Q1, Q2)
 - **Q1 — transformar 84 fatores em input estruturado:** o packet vira um **dicionário tipado** `{factor: {value, unit, source, causal:true, null:bool}}`. Cada agente recebe o packet COMPLETO (para contexto) MAS tem um **subconjunto OBRIGATÓRIO** que deve avaliar e citar (abaixo). Assim a leitura holística é preservada, mas a cobertura é forçada.
@@ -109,8 +139,8 @@ Por trade, persistir: packet usado (hash), setup_type (Stage A), tabela de evid�
 
 ## 13. Riscos
 - **Destruir o gestalt:** forçar checklist estruturado pode reduzir a leitura holística que HOJE funciona → o gate §12 deve provar que o novo ≥ atual, senão não promove.
-- **Custo/tokens:** 8 agentes/trade × 276 = muito mais caro; mitigar com tiering (DA só em candidatos a TAKE).
-- **Colusão/eco entre agentes:** se os especialistas virem o mesmo packet, podem convergir trivialmente; mitigar com lentes realmente disjuntas + DA adversário.
+- **Custo/tokens:** ~20 especialistas + DA + AGG por trade × 276 = MUITO caro; mitigar com **tiering** (rodar especialistas baratos primeiro; DA + especialistas caros só em candidatos a TAKE/REVIEW) e com o **roster enxuto pós-ablation** (§3c — menos agentes comprovados).
+- **Colusão/eco/redundância:** muitos especialistas tocam fatores sobrepostos (RSI aparece em #8/#11/#13) e veem o mesmo packet → podem convergir trivialmente ou inflar narrativa (o erro da auditoria). Mitigar com: mandatos REALMENTE disjuntos (§3a), **ablation + correlação de leituras (§3c)** que corta redundantes, e DA adversário. **Mais especialistas ≠ mais sinal até o ablation provar contribuição marginal.**
 - **Calibração precisa de N grande:** confidence calibrada exige histórico; até lá, decorativa.
 - **DA circular:** o DA pode "refutar bonito" sem dado → exigir factor_evidence estruturada nele também.
 - **Overfit do aggregator:** a regra a-e não pode ser tunada aos 276 (in-sample) → pré-registrar antes de medir.
@@ -118,8 +148,9 @@ Por trade, persistir: packet usado (hash), setup_type (Stage A), tabela de evid�
 ## 14. Plano de implementação futura (fases, NÃO agora)
 1. **Fase 0:** schema de evidência + validador (factor_used∈84 ∧ value==packet) + packet tipado. (infra, sem decidir nada)
 2. **Fase 1:** Stage A (Context Classifier) isolado + teste de não-circularidade (§7).
-3. **Fase 2:** 6 especialistas + DA, schema estruturado, num SUBSET pequeno; medir se `decisive` factors separam win/lose.
-4. **Fase 3:** Aggregator com rubrica pré-registrada; rodar nos 276; comparar vs atual (§12).
+3. **Fase 2:** roster de especialistas (§3a) + DA, schema estruturado, num SUBSET pequeno; medir se os `decisive` factors de cada um separam win/lose.
+3b. **Fase 2.5 — ABLATION (§3c):** medir contribuição marginal de CADA especialista sobre os 276; cortar/fundir redundantes e os que não separam win/lose. **O roster final é empírico (pode ser <20)**, não a lista cheia. Sem esta fase, o engine vira "20 narradores".
+4. **Fase 3:** Aggregator constrói-tese + rubrica pré-registrada; rodar nos 276; comparar vs atual (§12), só com o roster enxuto que passou no ablation.
 5. **Fase 4:** calibração posterior de confidence; só então confidence vira métrica.
 6. **Fase 5 (só se §12 passar):** promover; aplicar a Opção B (2013-2017) como AI_REVIEW declarado.
 
