@@ -90,7 +90,10 @@ Edge **não-estacionária** em todos (2020-22 pequeno, 2023-26 carrega). M2/M5 m
 
 ## 12. What remains unresolved
 
-1. **E13/E23 stopam sob SL estrutural** mas são winners visuais → reconciliar (entrada mapeada ≠ entrada do Cris? swing-origin ≠ low estrutural que ele desenhou? partial50?). **UNTRUSTED até reconciliar.**
+1. ~~**E13/E23 stopam sob SL estrutural**~~ → **RECONCILIADO 2026-06-18 (forense `/tmp/reconcile_e13_e23.py`), NÃO é bug do motor:**
+   - **E13 (2020-01-20):** winner REAL (corre 1561→1593, Fev/2). Mas o `m_swing` ("pivô 5/5 mais recente") pegou raso (idx69 low 1548, 2.87ATR) e foi varrido por um **wick de 1 barra** (idx85 low 1546) ANTES do run. A estrutura defendida verdadeira é mais **funda** (~1536, idx53, **5.3ATR** / min-30b 1535.9) — essa SOBREVIVE ao sweep e captura o winner. ⇒ não é "SL estrutural não funciona", é (a) heurística de seleção do pivô pegou raso, (b) o SL correto é fundo (**~5ATR = o mesmo problema operacional**). Fix futuro: escolher o swing-low DEFENDIDO (mais fundo), não o mais recente.
+   - **E23 (2020-08-04):** os dados **NÃO suportam "BIG WINNER"** sob nenhum exit — entrou 3 barras antes do **ATH histórico do ouro (2075, 07/08/2020)**, fez pico **+1.03R**, e então sofreu o **crash de −9% de 11/08/2020** (2075→1888). É **entrada de topo de blow-off**, não winner. ⇒ provável **mislabel** (ou scalp +1R que o framework +2R-runner não banca). **Pedir confirmação do Cris** (ele vê a TV). Reforça entry-filter como alavanca.
+   - **Conclusão:** a contradição visual NÃO é falha do SL-engine; é (E13) seleção-de-pivô + tamanho operacional e (E23) timing-de-entrada/label. Ambos apontam **upstream (entrada)**, confirmando o DA.
 2. **Cap de 4ATR não testado** (Cris pediu só tag nesta rodada) — é a iteração natural que torna M5 operável.
 3. **Circularidade** dos 12 bad_SL — recuperação esperada por construção; a base 276 (onde M5 não bate baseline em R) é o teste honesto.
 4. **2 winners não-salváveis + 3 traps resgatados** apontam para **entry-filtering** como próxima alavanca (DA), não SL.
