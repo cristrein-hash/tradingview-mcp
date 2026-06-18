@@ -1,3 +1,5 @@
+> 🚨 **RETRATADO 2026-06-18:** este gate era ARTEFATO do tick-volume do frozen. Com VOLUME REAL (Session VP), o subconjunto 1D-bear NÃO separa (E1=4.88 capitulação, não 0.78; traps interleaveiam 1.64-6.8). Ver `XAU_4H_L2_BPT_REAL_DATA_CONFLUENCE.md`. Volume do frozen `raw_features` = tick-volume NÃO-CONFIÁVEL; usar Session VP gz.
+
 # XAU 4H L2/BPT — Volume × 1D-bear confluence (primeiro filtro recall-passing)
 
 **Status:** `LEAD · RECALL_PASSING · NOT_VALIDATED · NO_OUTCOME` · **Data:** 2026-06-18
