@@ -154,6 +154,14 @@ Por trade, persistir: packet usado (hash), setup_type (Stage A), tabela de evid�
 5. **Fase 4:** calibração posterior de confidence; só então confidence vira métrica.
 6. **Fase 5 (só se §12 passar):** promover; aplicar a Opção B (2013-2017) como AI_REVIEW declarado.
 
+## Phase 0 implemented: typed packet + evidence schema + validator (2026-06-19)
+**SÓ infra de auditoria — nenhum agente, nenhuma decisão, engine atual intocado.**
+- **Packet tipado:** `pipeline/qualification/multi_agent_schema.py` — 84 fatores, cada um com type/source/causal/nullable/unit/bucket/description/**allowed_families** (23 famílias do roster §3a). Mandatos disjuntos por família (demand_supply 18, risk_sl 22, exhaustion_top 20, rsi_momentum 6, nas 5, bubbles 12, capitulation 13…); wildcards (context_classifier/causality_audit/devils_advocate/aggregator) podem citar qualquer fator; 6 metas (ts/price/atr/bar_idx/datetime/episode_id) não-citáveis como evidência. Repaint-risk marcado (smc_bos/choch: direção/recência, não preço). Metadados embutidos (versionados; SEM dep runtime de /tmp).
+- **Schema de evidência:** `specialist_id, episode_id, factor_used, value, packet_value, value_match, interpretation, impact{positive/negative/neutral/veto/review_flag}, strength{weak/medium/strong}, decisive_or_supporting, caveat, causal`.
+- **Validador:** `pipeline/qualification/validate_agent_evidence.py` — REJEITA: factor fora dos 84; **value≠packet (anti-eco/artefato supply_distance)**; fator não-permitido p/ a família; sem source/impact/specialist_id; não-causal; **"uso" sem value explícito** (mata narrativa). Recomputa value_match do packet real (não confia na claim do agente).
+- **Fixtures+teste:** `pipeline/qualification/phase0_test_validator.py` — 5 fixtures (1 TAKE-win/1 TAKE-lose/1 SKIP-win/1 SKIP-lose/1 REVIEW), 8 evidências cada (1 válida + 7 inválidas propositais). **Validador 40/40 PASS.** Relatório: `results/l2_bpt_multi_agent_phase0_schema_validation.csv`.
+- **Não feito:** nenhum agente rodado, nenhuma decisão nova, nenhum outcome alterado, sem Opção B, sem retune.
+
 ## 15. O que NÃO implementar agora
 Nada de código. Nada de rodar agentes. Não tocar engine/rubrica/decisões 2020-2026. Não rodar Opção B. Não calibrar. Não criar os schemas em código. Este bloco entrega **só o design**; cada fase do §14 é um bloco futuro com gate próprio.
 
