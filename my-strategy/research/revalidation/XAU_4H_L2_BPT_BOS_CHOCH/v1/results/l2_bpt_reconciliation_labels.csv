@@ -1,0 +1,5 @@
+episode_id,winner_real,status,issue_type,exit_sensitive,research_implication,note
+E13,yes,VALID_SETUP_BAD_ENTRY_OR_BAD_PIVOT_SELECTION,bad_entry_or_bad_pivot_selection,no,"need defended-swing selection (deeper), not most-recent-pivot; correct SL ~5ATR",winner real; recent pivot 2.87ATR swept by 1-bar wick; defended swing ~5.3ATR survives
+E23,no,TOP_EXHAUSTION_SHOULD_NOT_LONG,top_exhaustion_should_not_long,no,candidate for exhaustion/top-detection filter; do NOT protect as winner,blowoff top 3 bars pre-ATH; peak +1R then -9% crash; NOT a winner
+E1,yes,MUST_PRESERVE_EXIT_SENSITIVE_BIG_WINNER,setup_ok,yes,"partial50 mutes big V-reversal tail; do not change exit now, document only",big V-reversal; large SL 5.3ATR + partial50 -> only +0.64R mechanically
+E17,yes,MUST_PRESERVE_EXIT_SENSITIVE_BIG_WINNER,setup_ok,yes,"partial50 mutes big V-reversal tail; do not change exit now, document only",big V-reversal; large SL 8.36ATR + partial50 -> only +0.91R mechanically

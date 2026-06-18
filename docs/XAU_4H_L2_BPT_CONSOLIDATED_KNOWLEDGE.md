@@ -26,7 +26,7 @@ L2/BPT é um setup LONG estrutural (reclaim de polaridade após BOS/CHoCH). O de
 3. **Entrada precipitada** — vários sinais na perna, entra no errado.
 
 Rótulos (41 episódios):
-- **9 WINNERS confirmados:** E1, E13, E17, E27, E30, E40, E21, E23, E5.
+- **WINNERS a preservar (8, atualizado §8c):** E1, E5, E13, E17, E21, E27, E30, E40. *(E23 reconciliado OUT 2026-06-18 = top-exhaustion, ver §8c; antes listado como 9º winner.)*
 - **12 VALID_SETUP_BAD_SL** (viram winners com SL estrutural): E2,E3,E4,E19,E20,E22,E28,E29,E31,E32,E38,E41.
 - **13 MACRO_BEAR / não-long:** E15,E24,E34,E39,E36,E6,E7,E8,E9,E10*,E37,E11.
 - **3 PREMATURE:** E25,E26,E35 (entrada real = E27).
@@ -47,7 +47,9 @@ Rótulos (41 episódios):
 | **Trap A** | exaustão/topo macro | E15,E24,E34,E39 (high legpos) | maturidade + topo macro 1D |
 | **Trap B** | reclaim em downtrend 1D | E6-E11,E36,E37 (low/mid legpos) | tendência/estrutura 1D |
 | **Win 1** | reversão do fundo | E27,E30,E40 | legpos baixo/médio + sweep |
-| **Win 2** | pullback em uptrend | E1,E5,E13,E17,E21,E23 | slope 1D positivo |
+| **Win 2** | pullback em uptrend | E1,E5,E13,E17,E21 | slope 1D positivo |
+
+*(E23 movido para Trap A / top-exhaustion na reconciliação §8c — blow-off top, não pullback.)*
 
 **Por isso nenhum feature único separa** — é problema multi-mecanismo. Cada eixo cobre PARTE.
 
@@ -81,11 +83,22 @@ Com SL estrutural FIXO, variou-se só o exit (R/BE/parcial/trail) sobre a base 2
 - **partial50@2R+6R** = curva marginalmente mais lisa (bootstrap maxDD 17 vs 18R, streak 9/12 vs 11/15) a sumR chato — só vale por sobrevivência prop-firm (streak ≤5), não R total.
 - **Conclusão:** exit NÃO é a alavanca (é ruído). Alavanca real = **contexto de regime** (deploy só em BULL via Regime Classifier v3) ou SHORT espelho. Baseline +3R = default. Scripts `/tmp/exit_lab.py`, `/tmp/exit_decisive.py`.
 
+## 8c. SL estrutural trade-a-trade + User reconciliation (2026-06-18)
+
+SL estrutural medido (6 modelos causais, exit fixo partial50, base 276; doc `SL_STRUCTURAL_TRADE_BY_TRADE`). Na base não-enviesada os modelos estão **dentro do ruído**; o swing-origin (=`SL_STRUCTURE_LOW` visual) recupera bad_SL 5→10/12 mas **97/276 SL >4ATR (máx 15ATR) = inviável prop-firm sem cap**. **SL não é onde mora a edge** (próxima alavanca = entry-filter).
+
+**User reconciliation after SL structural block (confirmada pelo Cris):**
+- **E13 = winner REAL**, problema NÃO é a tese — é seleção de pivô/entrada (pegou pivô raso 2.87ATR varrido por wick; estrutura defendida real é funda ~5.3ATR). Status: `VALID_SETUP_BAD_ENTRY_OR_BAD_PIVOT_SELECTION` (não SL_ENGINE_FAIL). Implicação: selecionar swing DEFENDIDO, não o mais recente.
+- **E23 = NÃO é winner a preservar** — trade de topo/blow-off (3 barras pré-ATH 2020-08-07, pico +1R, depois crash −9%). Status: `TOP_EXHAUSTION_SHOULD_NOT_LONG` / `BLOWOFF_TOP_REJECT`. **Removido da lista de winners.** Candidato a filtro de exaustão/topo.
+- **E1/E17 = big winners sensíveis ao exit** — saem mutados (+0.64/+0.91R) com partial50 (cauda de reversão em V reduzida). partial50 segue APROVADO (gestão streak prop-firm) **com caveat documentado**; exit NÃO alterado.
+
+**Lista de winners corrigida:** must_preserve (8) = E1,E5,E13,E17,E21,E27,E30,E40. valid_but_needs_better_entry = E13. should_not_long_top_exhaustion = E23 (+E15,E24,E34). exit_sensitive_big_winners = E1,E17. (CSV `results/l2_bpt_reconciliation_labels.csv`.)
+
 ## 9. Estado atual + próximo foco (atualizado 2026-06-18)
 
-**Feito desde então:** (a) 1D leg decomposition codificada → gate duro bear REFUTADO (§7); (b) exit lab + teste decisivo (§8b) → exit é ruído, edge regime-bound; (c) **partial50@2R+6R APROVADO** como exit por gestão de streak prop-firm (50% sai +2R trava +1R, restante BE→runner +6R; base 276: WR48% sumR+63 streak9 vs 13; bootstrap maxDD 17R); (d) **BE global E condicional REJEITADOS** (scratch nos monumentais); (e) flags Telegram legbear/overbought = requisito FUTURO ([[project_l2_bpt_telegram_bear_flags_FUTURE]]).
+**Feito:** (a) 1D leg decomposition → gate duro bear REFUTADO (§7); (b) exit lab → exit é ruído, edge regime-bound (§8b); (c) **partial50@2R+6R APROVADO** (gestão streak prop-firm, caveat cauda V); (d) **BE global E condicional REJEITADOS**; (e) flags Telegram = FUTURO; (f) **SL estrutural medido + reconciliação de labels** (§8c) → SL estrutural correto em princípio mas precisa cap operacional; SL não é a edge.
 
-**Próximo foco APROVADO:** **SL estrutural trade-a-trade** (afinar o stop estrutural 2-4 ATR por episódio, sem teto). **Regime v3 / SHORT espelho** = depois (não iniciado). Detalhes em [[project_l2_bpt_exit_lab_regime_bound]].
+**Próximo foco APROVADO:** **cap 4ATR no SL estrutural** usando os **labels corrigidos** (E23 não-protegido, E13 valid-bad-pivot, E1/E17 cauda crítica). Depois: **entry-filter** (alavanca real, DA). **Regime v3 / SHORT** = depois (não iniciado). Detalhes em [[project_l2_bpt_sl_structural]].
 
 ## 10. Artefatos (docs/results desta frente)
 

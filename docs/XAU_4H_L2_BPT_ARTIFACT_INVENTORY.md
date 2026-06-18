@@ -20,8 +20,9 @@ Auditoria de commits, docs, results, scripts e memória antes de iniciar a sess�
 | Decisão | Status | Fonte |
 |---|---|---|
 | **Exit partial50@2R+6R** (50% sai +2R trava +1R; restante BE→runner +6R; time-stop 60; SL estrutural) | ✅ APROVADO (gestão streak prop-firm; WR48% sumR+63 streak9 vs 13; bootstrap maxDD 17R) | memória `project_l2_bpt_exit_lab_regime_bound` |
-| SL estrutural sem teto (Williams pivot −0.1ATR, floor 0.3ATR) | ✅ Fundação validada | CONSOLIDATED §2 |
-| Recall-gate antes de qualquer métrica (9 winners E1/E13/E17/E27/E30/E40/E21/E23/E5) | ✅ Regra permanente | `feedback_recall_gate_before_backtest` |
+| SL estrutural sem teto (Williams pivot −0.1ATR, floor 0.3ATR) | ✅ Fundação validada; precisa **cap operacional ~4ATR** (97/276 >4ATR, máx 15ATR) | CONSOLIDATED §8c, `SL_STRUCTURAL` |
+| Recall-gate — **must_preserve = 8 winners** E1/E5/E13/E17/E21/E27/E30/E40 (**E23 reconciliado OUT** = top-exhaustion) | ✅ Regra permanente; lista corrigida 2026-06-18 | `feedback_recall_gate_before_backtest`, `l2_bpt_reconciliation_labels.csv` |
+| **User reconciliation (2026-06-18):** E13=valid bad-pivot/entry (winner real); E23=TOP_EXHAUSTION_SHOULD_NOT_LONG (não winner); E1/E17=exit-sensitive big winners (caveat partial50, exit inalterado) | ✅ Confirmado pelo Cris | CONSOLIDATED §8c, `SL_STRUCTURAL §14` |
 
 ## 3. Retracted findings (NÃO usar como autoridade)
 

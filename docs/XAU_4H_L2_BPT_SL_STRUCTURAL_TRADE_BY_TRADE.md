@@ -7,7 +7,7 @@ Constrói e mede políticas de SL estrutural causal para L2/BPT, exit FIXO **par
 
 ## 1. Executive summary
 
-Na base não-enviesada de **276 episódios**, **nenhum modelo de SL bate o baseline em R fora do ruído** (Δ avgR ~0.5 SE). O SL estrutural de swing-origin (**M5 = SL_STRUCTURE_LOW**, o SL que as anotações visuais do Cris apontam) **recupera mecanicamente os "bad_SL" curados 5→10/12**, melhora streak (12→9) e torna 2020-22 positivo (+5.3R vs baseline −0.9R) — **MAS** três ressalvas duras: (a) essa recuperação é **parcialmente circular** (os 12 bad_SL são *definidos* como "viram winner com SL estrutural"); (b) produz SL **operacionalmente inviável** (97/276 = 35% dos trades com SL >4ATR, **máx 15 ATR**); (c) **2 dos 9 winners (E13, E23) ainda stopam**, contradizendo a leitura visual → reconciliação pendente. Gap-aware fills testados (pedido do DA): **efeito desprezível** no ouro 4H. **Recomendação research-only:** o SL estrutural é correto em PRINCÍPIO mas precisa de **cap operacional (~4ATR)** para ser prop-firm-viável; o **M6 capped-hybrid** já mostra que uma versão limitada mantém quase todo o ganho (bad_SL 9/12, winners +17.6R, SL máx 4.72ATR) a sumR +69. **O SL NÃO é onde mora a edge** — entry-filtering e regime são alavancas maiores (DA). **Nada em produção.**
+Na base não-enviesada de **276 episódios**, **nenhum modelo de SL bate o baseline em R fora do ruído** (Δ avgR ~0.5 SE). O SL estrutural de swing-origin (**M5 = SL_STRUCTURE_LOW**, o SL que as anotações visuais do Cris apontam) **recupera mecanicamente os "bad_SL" curados 5→10/12**, melhora streak (12→9) e torna 2020-22 positivo (+5.3R vs baseline −0.9R) — **MAS** três ressalvas duras: (a) essa recuperação é **parcialmente circular** (os 12 bad_SL são *definidos* como "viram winner com SL estrutural"); (b) produz SL **operacionalmente inviável** (97/276 = 35% dos trades com SL >4ATR, **máx 15 ATR**); (c) 2 winners-anotados (E13, E23) stopam → **RECONCILIADO §14**: E13 = winner real com bad-pivot/entry; E23 = top-exhaustion (NÃO winner, removido). Gap-aware fills testados (pedido do DA): **efeito desprezível** no ouro 4H. **Recomendação research-only:** o SL estrutural é correto em PRINCÍPIO mas precisa de **cap operacional (~4ATR)** para ser prop-firm-viável; o **M6 capped-hybrid** já mostra que uma versão limitada mantém quase todo o ganho (bad_SL 9/12, winners +17.6R, SL máx 4.72ATR) a sumR +69. **O SL NÃO é onde mora a edge** — entry-filtering e regime são alavancas maiores (DA). **Nada em produção.**
 
 ## 2. Why SL is the current focus
 
@@ -21,7 +21,7 @@ A reclamação visual nº1 do Cris (12 episódios `VALID_SETUP_BAD_SL`) é "winn
 
 - Em **TODOS** os valid_long o SL sugerido pelo Cris é **`SL_STRUCTURE_LOW`** (swing low de estrutura) — exceto **E40 = `SL_RETEST_LOW`** ("SL curto e eficiente"). Lição central: o SL correto é a **estrutura**, não o low recente apertado.
 - `sl_origin_dist_atr` (swing anatomy): winners variam tight→moderado (E1 0.08, E40 0.19, E27 0.51, E30 0.75, E13 1.27, E5 1.62, E21 2.69, E17 0.74, **E23 4.73**); alguns SLFIX/REVIEW têm origem MUITO distante (**E14 6.66, E22 6.78, E24 5.22, E34 3.75**). Ou seja: o swing-origin às vezes é gigante — a raiz do risco operacional.
-- 12 `bad_SL` = E2,E3,E4,E19,E20,E22,E28,E29,E31,E32,E38,E41. 9 winners GT = E1,E13,E17,E27,E30,E40,E21,E23,E5. should_not_long (macro-bear/trap) = E6-E11(parte),E15,E24,E34,E36,E37,E39.
+- 12 `bad_SL` = E2,E3,E4,E19,E20,E22,E28,E29,E31,E32,E38,E41. **winners a preservar (8, pós-reconciliação §14) = E1,E5,E13,E17,E21,E27,E30,E40** *(este bloco foi medido com a lista antiga de 9 incl. E23; E23 reclassificado top-exhaustion em §14 — a narrativa §6-8 abaixo precede a reconciliação)*. should_not_long (macro-bear/trap) = E6-E11(parte),E15,E24,E34,E36,E37,E39 (+E23).
 
 ## 5. SL model definitions (causais, não grid cego)
 
@@ -38,7 +38,7 @@ Causalidade: pivô Williams 5/5 em `j` só é confirmado em `j+5` → busca rest
 
 ## 6. Trade-by-trade SL classification (`results/l2_bpt_sl_structural_trade_review.csv`)
 
-9 winners sob M5: salvam 7/9. **E13 (−1.1R stop, SL 2.87ATR) e E23 (−1.1R stop, SL 4.83ATR) STOPAM** apesar de anotados winner — **contradição visual, reconciliação pendente**. Mesmo os salvos E1/E17 saem mutados (+0.64R/+0.91R, SL 5.3/8.36ATR — o SL gigante encolhe o R-múltiplo e partial50 corta metade). 14 dos 41 visuais têm SL>4ATR (E1,E3,E9,E14,E15,E16,E17,E22,E23,E24,E33,E34,E36,E38).
+9 winners-anotados sob M5: salvam 7/9. **E13 (−1.1R stop, SL 2.87ATR) e E23 (−1.1R stop, SL 4.83ATR) STOPAM** — **RECONCILIADO §14** (E13 winner real/bad-pivot; E23 top-exhaustion não-winner). Mesmo os salvos E1/E17 saem mutados (+0.64R/+0.91R, SL 5.3/8.36ATR — o SL gigante encolhe o R-múltiplo e partial50 corta metade). 14 dos 41 visuais têm SL>4ATR (E1,E3,E9,E14,E15,E16,E17,E22,E23,E24,E33,E34,E36,E38).
 
 ## 7. Performance by SL model (full 276, partial50, gap-aware, cost 0.10R)
 
@@ -113,6 +113,33 @@ Edge **não-estacionária** em todos (2020-22 pequeno, 2023-26 carrega). M2/M5 m
 
 **DA verdict (síntese):** SL não é onde mora a edge; na base não-enviesada os modelos estão dentro do ruído; a vantagem aparente do estrutural é (parcialmente) manufaturada pelos subsets curados + R-normalização escondendo risco-$ de 15ATR. Conclusão honesta: **adotar SL estrutural CAPADO em ~4ATR (princípio do M5, limite do M6) e redirecionar esforço para o ENTRY-FILTER** — onde vivem os 2 winners não-salváveis e os traps should_not_long. Research-only, nada promovido.
 
+## 14. User reconciliation after SL structural block (2026-06-18, confirmada pelo Cris)
+
+Após a forense E13/E23, o Cris confirmou/corrigiu 4 pontos (labels atualizados em `results/l2_bpt_full_res_visual_episode_review.csv` + `results/l2_bpt_reconciliation_labels.csv`):
+
+| Episódio | Status corrigido | winner_real | Nota |
+|---|---|---|---|
+| **E13** | `VALID_SETUP_BAD_ENTRY_OR_BAD_PIVOT_SELECTION` | **yes** | Winner real; a tese está certa. Falha = pivô raso (2.87ATR) varrido por wick; estrutura defendida real é funda (~5.3ATR). Implicação: selecionar **swing defendido**, não o mais recente. NÃO é SL_ENGINE_FAIL. |
+| **E23** | `TOP_EXHAUSTION_SHOULD_NOT_LONG` / `BLOWOFF_TOP_REJECT` | **NO** | Trade de topo/blow-off (3 barras pré-ATH 2020-08-07, pico +1R, crash −9%). **Removido dos winners a preservar.** Candidato a filtro de exaustão/topo. |
+| **E1** | `MUST_PRESERVE_EXIT_SENSITIVE_BIG_WINNER` | yes | Big V-reversal mutado (+0.64R) por SL grande (5.3ATR)+partial50. Manter; documentar caveat. |
+| **E17** | `MUST_PRESERVE_EXIT_SENSITIVE_BIG_WINNER` | yes | Big V-reversal mutado (+0.91R) por SL grande (8.36ATR)+partial50. Manter; documentar caveat. |
+
+**Caveat partial50 (documentado, exit NÃO alterado):** partial50@2R+6R reduz a **cauda dos big winners de reversão em V** (tira 50% em +2R, capa runner em +6R; e quando o SL estrutural é gigante o R-múltiplo já encolhe). Segue APROVADO por gestão de streak prop-firm — o caveat é registrado, não corrigido agora.
+
+**Lista de referência corrigida:**
+- **must_preserve_winners (8):** E1, E5, E13, E17, E21, E27, E30, E40.
+- **valid_but_needs_better_entry_or_sl:** E13.
+- **should_not_long_top_exhaustion:** E23 (+ E15, E24, E34 já existentes).
+- **exit_sensitive_big_winners:** E1, E17.
+
+## 15. Readiness — próximo bloco CAP 4ATR (NÃO executar ainda)
+
+Quando autorizado, o cap4 deve usar os **labels corrigidos**:
+- **E23 NÃO deve ser protegido como winner** (é top-exhaustion; se um filtro de exaustão/topo o cortar, é ganho, não perda).
+- **E13 = valid setup com bad pivot/entry** — avaliar com seleção de swing defendido (mais fundo); o cap 4ATR vai limitá-lo (estrutura real ~5.3ATR), aceitar o trade-off.
+- **E1/E17 = cauda crítica sensível ao exit** — proteger; o cap 4ATR vai apertar seus SLs (5.3/8.36ATR → 4ATR), o que pode mudar o R; medir e reportar o impacto NESSES especificamente.
+- Recall-gate contra a lista must_preserve (8). Exit fixo partial50. Sem teto 1.5ATR. Research-only.
+
 ---
 
-*Outputs: `results/l2_bpt_sl_structural_{trade_review,models,performance,temporal_split}.csv`. Script: `sl_structural.py`. Sem produção, sem SLIM, sem chart.*
+*Outputs: `results/l2_bpt_sl_structural_{trade_review,models,performance,temporal_split}.csv`, `results/l2_bpt_reconciliation_labels.csv`. Script: `sl_structural.py`. Forense: `/tmp/reconcile_e13_e23.py`. Sem produção, sem SLIM, sem chart.*
