@@ -1,0 +1,8 @@
+model,definition,stop_type,full_sumR,full_WR,full_streak,full_maxDD,full_slATRmed,full_gt4ATR
+BASELINE,"recent 6-bar low -0.1ATR, floor 0.3, NO real cap (flag only)",intrabar,78.8,42.8,12,30.4,1.97,9
+M1_RETEST_LOW,"recent 2-bar reclaim low -0.1ATR, floor 0.3",intrabar,60.1,41.3,11,22.6,1.31,4
+M2_SWING_ORIGIN,most recent Williams 5/5 pivot low below entry -0.1ATR (=SL_STRUCTURE_LOW visual),intrabar,62.5,48.2,9,24.3,3.06,97
+M3_DEMAND_BASE,lowest Williams5/5 pivot low in last 30 bars below entry -0.1ATR (proxy demand; no OB-zone data offline),intrabar,57.2,48.6,11,25.8,3.82,132
+M4_POLARITY_CLOSE,polarity level entry-dist_pol_atr*ATR; exit on CLOSE below -0.1ATR (close-based invalidation),close,50.7,54.0,6,44.3,0.6,0
+M5_CAPPED_STRUCT,=M2 swing origin; floor 0.3; NO hard ceiling; TAG >4ATR/ideal2-4/tight,intrabar,62.5,48.2,9,24.3,3.06,97
+M6_HYBRID,hierarchy: demand(<=4ATR)->swing(<=4ATR)->retest(LOW_CONF); bounds SL operationally,intrabar,69.0,44.2,12,25.7,2.14,3
