@@ -1,0 +1,7 @@
+component,source,causal,coverage_note
+drop20_atr,frozen OHLC,causal,capitulação >=4ATR: 984 barras (10%)
+rsi_min_8,frozen rsi Wilder,causal,oversold <=30: 1033 (11%)
+bubble_sell_8,frozen bubbles_recent plot_6/8/10 + bars_ago,causal (bars_ago),>=2: 2214 (23%); mapping SELL=plot6/8/10 (memória)
+demand_dist,gz OB Detector as-of-bar,causal repaint-auditado,demanda abaixo presente: 9386 (97%)
+legpos90,frozen OHLC,causal,baixo/médio <75: 6350 (65%)
+NAS_long_recent,gz NAS TOP BOTTOM DETECTOR first-appearance (nlong>prev),causal (replay bar-a-bar),NAS LONG novo em 8b: 652 (7%); total nas_new=134
