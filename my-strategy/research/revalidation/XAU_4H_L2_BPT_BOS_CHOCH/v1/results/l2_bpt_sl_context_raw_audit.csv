@@ -1,0 +1,9 @@
+feature,source,raw_or_derived,causal_check,status,caveat,allowed,notes
+OHLCV_4H,/tmp/raw_features_2020_2026.jsonl,raw,causal,ok,vol=tick(NÃO usar),yes,SL não usa volume
+ATR14,derived 4H,derived,causal,ok,-,yes,"floor 0.3ATR, sem teto"
+pivots_Williams5,derived 4H,derived,causal (j<=i-5),ok,-,yes,fallback (3% sem demanda)
+demand_4h_zone,demand_supply_quality.csv (OB Detector as-of-bar replay),derived,CAUSAL (as-of-bar),REPAINT-AUDITED estável,box<=entry sem shift pos-entry; E17 forma no entry-bar (causal close-entry),yes,INPUT PRINCIPAL
+dist_4h_demand_low_atr,demand_supply_quality.csv,derived,causal,cobertura 97%,distancia nao flag binaria (licao a6d8e3a),yes,ancora do SL
+legpos90/RSI,frozen 4H,derived,causal,ok,-,yes,gate no_trade TOP_EXHAUSTION legpos>=85 & RSI>=70
+RETRACTED deep_confluence/vol1Dbear/outcome_proxy/at_D1_binary,-,-,-,RETRACTED,-,no,PROIBIDO
+SLIM,-,-,-,-,-,no,PROIBIDO

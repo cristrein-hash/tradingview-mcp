@@ -1,0 +1,4 @@
+metric,ci5,ci50,ci95,P_better_than_swing
+delta_avgR,-0.075,0.003,0.082,0.53
+delta_sumR,-18.456,0.74,19.968,0.53
+delta_maxDD,-4.842,0.309,5.885,0.46
