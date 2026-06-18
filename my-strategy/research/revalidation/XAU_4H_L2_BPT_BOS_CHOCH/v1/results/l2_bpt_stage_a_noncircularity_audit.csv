@@ -1,0 +1,26 @@
+metric,value
+stage_a_received_outcome,"NO (input stripped, prep verificou 0 vazamento)"
+stage_a_received_old_decision,NO
+stage_a_received_old_setup_type,NO
+MI_label_vs_old_decision,0.366
+NMI_label_vs_old_decision,0.14
+MI_label_vs_outcome,0.036
+NMI_label_vs_outcome,0.01
+
+context_label,n|take%|review%|skip%|max%|warning
+bear_bounce,25|12|36|52|52|
+bottom_reversal_capitulation,23|39|52|9|52|
+bull_pullback_continuation,75|1|31|68|68|
+demand_reclaim,42|14|76|10|76|
+late_top_exhaustion,44|0|7|93|93|WARN~relabel
+liquidity_sweep_reversal,20|45|45|10|45|
+mid_range_noise,46|9|57|35|57|
+unclear_conflict,1|0|0|100|100|WARN~relabel
+
+--- DA af62d319 correções ---,
+NMI_label_vs_decision (max/min/geo),0.14/0.26/0.19 (0.14 era o normalizer mais generoso)
+MI_label_vs_OLD_setup_type,0.913 bits NMI_min 0.38 <- 2.5x vs decisão: Stage A RE-DERIVA o setup_type antigo (cego)
+interpretacao,"Stage A NÃO é circular (cego, verificado) MAS reproduz o setup_type antigo -> re-derivação auditável, NÃO novo eixo. Prova que setup_type NÃO era mero relabel da decisão (é estrutura recuperável cega)"
+contraste_promising_vs_dangerous_WelchT,"4.00 (diff +1.04R) = sinal real, não só bull-beta"
+caveat_power,"unclear_conflict n=1 (dropar), liquidity_sweep n=20, bottom_reversal n=23 subdimensionados; full-8 spread borderline (p~0.02-0.07)"
+winrate_definicao,"WR = reached +2R (exit-type WIN), não realR>0; avgR é a coluna confiável"

@@ -162,6 +162,19 @@ Por trade, persistir: packet usado (hash), setup_type (Stage A), tabela de evid�
 - **Fixtures+teste:** `pipeline/qualification/phase0_test_validator.py` — 5 fixtures (1 TAKE-win/1 TAKE-lose/1 SKIP-win/1 SKIP-lose/1 REVIEW), 8 evidências cada (1 válida + 7 inválidas propositais). **Validador 40/40 PASS.** Relatório: `results/l2_bpt_multi_agent_phase0_schema_validation.csv`.
 - **Não feito:** nenhum agente rodado, nenhuma decisão nova, nenhum outcome alterado, sem Opção B, sem retune.
 
+## ESCOPO (trava do Cris 2026-06-19)
+Este é o engine de qualificação de trade do **L2/BPT XAU 4H** — NÃO um "engine de trading global". Arquitetura reusável depois, mas **sem promoção cross-strategy agora**.
+
+## Phase 1 implemented: Stage A Context Classifier (CEGO à decisão e ao outcome) — 2026-06-19
+**Só classificação de contexto — NÃO decide trade, NÃO viu outcome/decisão/setup_type antigo.**
+- **Mandato:** `pipeline/qualification/stage_a_context_classifier_prompt.md` (8 labels; sem linguagem de decisão/performance; ≥3 evidências estruturadas/episódio).
+- **Runner:** `pipeline/qualification/run_stage_a_context_classifier.py` (--prep tira TODO vazamento: outcome/decision/confidence/setup_type/episode_id → 83 fatores; verificado 0 vazamento. --collect valida cada evidência pela Fase 0).
+- **Execução:** 7 agentes LLM cegos classificaram 276 episódios → `results/l2_bpt_stage_a_context_labels.jsonl`. **Evidências 1231/1232 válidas** (validador anti-eco pegou 1 value≠packet; tolerância tight 0.011). 0 label fora das 8.
+- **Distribuição:** bull_pullback_continuation 75, mid_range_noise 46, late_top_exhaustion 44, demand_reclaim 42, bear_bounce 25, bottom_reversal_capitulation 23, liquidity_sweep_reversal 20, unclear_conflict 1.
+- **Não-circularidade (Tarefa 4, `..._noncircularity_audit.csv`): PASS.** Cego (estrutural, verificado). MI(label;outcome)=0.036 (NMI≈0.02 → sem vazamento de outcome). MI(label;old_decision)=0.366 (NMI 0.14/0.26/0.19). **DA af62d319:** MI(label;old_setup_type)=0.913 (NMI_min 0.38, 2.5× vs decisão) → **Stage A RE-DERIVA o setup_type antigo às cegas** ⇒ (a) prova que setup_type NÃO era relabel da decisão (é estrutura recuperável cega); (b) Stage A agrega AUDITABILIDADE, não um eixo de contexto NOVO.
+- **Diagnóstico pós-hoc (Tarefa 5, `..._context_outcome_diagnostic.csv`, NÃO promoção):** demand_reclaim +0.896 (n42), bottom_reversal_capitulation +0.821 (n23) promissores; bear_bounce −0.230 (n25), late_top_exhaustion −0.141 (n44) perigosos; bull_pullback +0.278 (n75), liquidity_sweep +0.471 (n20), mid_range +0.206 (n46). Contraste promising-vs-dangerous: **Welch t=4.0, diff +1.04R** (grand mean +0.305, median −0.09) = sinal real, NÃO só bull-beta. Caveats DA: unclear n=1 (dropar), liquidity n20/bottom n23 subdimensionados; full-8 spread borderline (p~0.02-0.07).
+- **Veredito Phase 1:** non-circular PASS; útil para Phase 2 = **CONDICIONAL/weak-PASS** — Stage A vale como **re-derivação reproduzível/auditável** do contexto estrutural (com evidência validada), NÃO como eixo novo. Próximo: Phase 2 (especialistas + ablation) tratando Stage A assim.
+
 ## 15. O que NÃO implementar agora
 Nada de código. Nada de rodar agentes. Não tocar engine/rubrica/decisões 2020-2026. Não rodar Opção B. Não calibrar. Não criar os schemas em código. Este bloco entrega **só o design**; cada fase do §14 é um bloco futuro com gate próprio.
 
