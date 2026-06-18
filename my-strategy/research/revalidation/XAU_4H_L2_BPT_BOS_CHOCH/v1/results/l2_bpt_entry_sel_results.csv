@@ -1,0 +1,5 @@
+name,n,avgR,sumR,WIN,STOP,SCR,base50,delta,p_gt_rand
+ALL_L2BPT(BOS),276,0.305,84.1,88,128,60,0.19,0.115,0.89
+H1_demand_backed(<=2.5),85,0.378,32.1,38,45,2,0.184,0.194,0.86
+H2_reclaim_timing_causal,276,0.312,86.0,95,133,48,0.194,0.118,0.89
+H3_filter_kept(noF),245,0.329,80.5,81,116,48,0.178,0.151,0.93
