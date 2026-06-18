@@ -1,0 +1,16 @@
+item,value
+prompt_location,pipeline/qualification/REASONING_AGENT_PROMPT_TEMPLATE.md (14 idênticos, varia só NN do lote)
+rubric_location,QUALIFICATION_RUBRIC.md
+input_per_agent,"1 lote (~20 episódios) de qual_batch_NN.jsonl = packet de 84 fatores causais/episódio (cego ao outcome) + a rubrica completa"
+output_per_agent,"qual_dec_NN.jsonl: 1 JSON/episódio"
+required_fields,"episode_id,bar_idx,datetime,decision(TAKE/REVIEW/SKIP),direction(LONG/SHORT/NONE),confidence(0-100),expected_setup_type,positive_factors[],negative_factors[],decisive_reason,closest_known_examples[],allow_under_human_review"
+how_14_become_final,"FAN-OUT por lote: cada episódio decidido por EXATAMENTE 1 agente (o do seu lote). decisão final = decisão desse agente"
+aggregator,INEXISTENTE
+vote_consensus_majority,INEXISTENTE (não é ensemble; 0 episódios com >1 decisão)
+confidence_role,"campo existe mas NÃO-CALIBRADO (Spearman conf vs realR = -0.02) -> ruído, não usar como peso"
+model,claude-opus (sessão 2026-06-18)
+temperature,default (não fixada)
+seed,AUSENTE
+agent_order,"irrelevante (lotes independentes, sem dependência entre agentes)"
+inter_agent_dependency,NENHUMA
+determinism,"NÃO-determinístico (re-rodar = decisões diferentes); decisões 2020-2026 CONGELADAS em decisions_merged.csv"

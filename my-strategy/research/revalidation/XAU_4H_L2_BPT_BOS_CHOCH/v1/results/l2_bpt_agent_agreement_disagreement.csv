@@ -1,0 +1,19 @@
+note,value
+ESTRUTURA,FAN-OUT por lote (não ensemble): 0 episódios com >1 decisão; cada trade 1 agente
+agreement per-trade,N/A (sem decisões multi-agente por trade) -> HARD-STOP PARCIAL p/ voto/entropy
+agregador/voto/consenso,INEXISTENTE; decisão final = decisão do único agente do lote
+---inter-agent consistency (por lote)---,
+batch 00,TAKE4/REV6/SKIP9 avgR=+0.51
+batch 01,TAKE2/REV9/SKIP9 avgR=+0.42
+batch 02,TAKE2/REV8/SKIP10 avgR=-0.13
+batch 03,TAKE2/REV13/SKIP5 avgR=-0.32
+batch 04,TAKE1/REV12/SKIP7 avgR=+0.03
+batch 05,TAKE3/REV8/SKIP9 avgR=+0.39
+batch 06,TAKE4/REV8/SKIP8 avgR=+0.16
+batch 07,TAKE3/REV6/SKIP11 avgR=+0.41
+batch 08,TAKE2/REV10/SKIP8 avgR=-0.15
+batch 09,TAKE3/REV10/SKIP7 avgR=+0.90
+batch 10,TAKE3/REV6/SKIP11 avgR=+0.56
+batch 11,TAKE1/REV7/SKIP12 avgR=-0.07
+batch 12,TAKE2/REV7/SKIP11 avgR=+1.48
+batch 13,TAKE0/REV4/SKIP12 avgR=-0.02

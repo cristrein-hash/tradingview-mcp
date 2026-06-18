@@ -1,0 +1,7 @@
+group,n,avgR,pct_ment_supply_dist,pct_ment_supply_dist,pct_ment_supply_flag,pct_ment_capit,pct_ment_top,pct_ment_demand,pct_ment_sl,pct_ment_macro,pct_ment_drift
+TAKE_win,17,2.428,88,59,88,41,100,94,100,0
+TAKE_lose,15,-0.805,100,40,87,27,100,100,100,0
+SKIP_win,27,2.203,67,41,33,78,89,63,96,4
+SKIP_lose,102,-0.51,70,39,18,78,86,64,100,0
+REVIEW_win,44,2.11,98,59,55,43,100,91,98,0
+REVIEW_lose,70,-0.668,93,57,59,30,100,81,100,0

@@ -1,0 +1,20 @@
+question,metric,value
+confidence[0-45),n=37 avgR,-0.111 WR=19%
+confidence[45-55),n=77 avgR,+0.691 WR=47%
+confidence[55-70),n=80 avgR,+0.138 WR=29%
+confidence[70-101),n=81 avgR,+0.279 WR=27%
+usa supply_distance contínua?,227/275 decisões mencionam dist-ATR,83%
+usa supply flag (blocks/capped)?,133/275,48%
+reconhece capitulação em bottom_reversal?,47/49,96%
+penaliza topo/tarde em SKIP?,101/129,78%
+setup=bottom_reversal,n=49 avgR,+0.610
+setup=demand_reclaim,n=72 avgR,+0.398
+setup=bull_pullback,n=39 avgR,+0.521
+setup=late_top,n=77 avgR,+0.076
+setup=bear_bounce,n=13 avgR,-0.607
+setup=unclear,n=25 avgR,+0.239
+RETRATADO (DA ac4830f5),supply_distance 83% vs flag 48% = ARTEFATO,regex mede input do packet não cognição; flag é subconjunto do distance
+RETRATADO (DA ac4830f5),setup_type preditivo = CIRCULAR,setup_type ~colinear com decisão (relabel); bear_bounce n=13 10 stops idênticos
+CONFIRMADO,confidence NÃO calibrada,Spearman -0.02 Pearson -0.04 = ruído
+CONFIRMADO,27 missed winners genuínos,19 WIN_HELD/5 BE/3 RUNNER 14 cruzaram +2R
+VEREDITO DA,decisão-gestalt funciona / racionalização é post-hoc,TAKE+0.91/53% vs SKIP+0.06/21% monotônico real; mas aparato citado não verificável
