@@ -48,4 +48,9 @@ DA: proxy sl200 é crude (magnitude, não estrutura) MAS a falha (pior loser no 
 
 ---
 
-*Outputs: este doc. Sem produção, sem plotagem nova, sem promoção. Prints ref: zip FILTRO_ F_STRICT (12 full-res).*
+## 9. CORREÇÃO win/loss (2026-06-18, Cris pegou na plotagem)
+As contagens W/L deste doc usaram **R-sign** (R>0=win). ERRADO: o SL estrutural gigante (~5-7ATR) gera **17/31 time-exits** que nunca batem +2R nem stopam; 5 derivam marginalmente positivos e foram contados "win" (eram SCRATCH). **Classificação correta por tipo de saída: WIN(+2R)=3, STOP_LOSS=11, SCRATCH=17** (não 15/16). **As conclusões de avgR/sumR/regime deste doc PERMANECEM** (usam valores de R, não o rótulo win/loss; near-breakeven em todo regime é robusto). Só a moldura "W/L count" é corrigida: F_STRICT corta apenas **3 winners reais** (não 15) — custo menor, mas sumR ainda ~zero. Plot corrigido: verde=WIN(3)/vermelho=LOSER(11)/cinza=SCRATCH(17).
+
+---
+
+*Outputs: este doc. Sem produção, sem promoção. Prints ref: zip FILTRO_ F_STRICT (12 full-res). Correção de classificação commit 7351fd6.*
