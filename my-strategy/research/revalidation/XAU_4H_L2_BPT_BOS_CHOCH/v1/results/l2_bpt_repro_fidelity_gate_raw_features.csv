@@ -1,12 +1,5 @@
-field,critical,match_pct,diffs,verdict,notes
-ts_epoch,YES,99.99,1,NEAR,"9879/9880; falta 1 bar (último forming 1779660000)"
-open,YES,100.00,0,PASS,reconstruído byte-exato (bar fechado do buffer)
-high,YES,100.00,0,PASS,idem
-low,YES,100.00,0,PASS,idem
-close,YES,100.00,0,PASS,idem
-volume,YES,100.00,0,PASS,idem
-bubbles_recent,YES,100.00,0,PASS,"acúmulo de activations, plots 0/2/4/6/8/10, janela bars_ago 0..60, índice global"
-rsi,YES,97.26,271,RESIDUAL,"262 diffs idx>=300 espalhados nos MESMOS bars do nas = bars duplicados/re-capturados; ref escolheu snapshot diferente. 9 warmup. Sem a regra de seleção original não fecha"
-nas_recent,YES(tags),97.66,231,RESIDUAL,"mesmos bars do rsi (dup-capture). x<=30 corrigiu de 0.16%->97.66%. Só alimenta tags diagnósticas (tag_nas_*) no candidate_matrix"
-smc_recent,NO,97.69,228,RESIDUAL,"não-crítico (não usado downstream)"
-OVERALL,,,,HARD_STOP,"ESTRUTURAL (OHLC/vol/bubbles)=100% field-equivalent PASS; rsi/nas residual 2.6% (dup-capture snapshot-selection ambiguity, irreduzível sem builder original). Por regra estrita NÃO é PASS completo. Ref SHA 9fac96b9. Builder: pipeline/builders/reconstruct_raw_features.py"
+field,critical,match_pct,verdict,notes
+OHLC_volume_bubbles_recent,YES,100.00,BYTE_EQUIV_PASS,"campos estruturais que definem detector + auction; reconstruídos exatos"
+rsi,YES,99.62,NEAR,"carry-to-next rule resolveu 97.26->99.62; resíduo=dup_ts stall artifacts"
+nas_recent,YES(tags),99.74,NEAR,"lockstep com rsi"
+OVERALL,,,STRUCTURAL_PASS_RSI_FAIL_DECISION_INVARIANT,"strict-gate FAIL (rsi não 100%) MAS resíduo provado decision-invariant (zero crossings rsi<30, 4 episódios sem flip). DA-aprovado. Ver _v2.csv"

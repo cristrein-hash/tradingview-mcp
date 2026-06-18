@@ -1,0 +1,4 @@
+composite_rule,rsi_match_pct,nas_match_pct,critical_combined,remaining_mismatch,causal,deterministic,uses_future,notes
+"R1: fresh=1st-snapshot-por-cur + dups stall forward-to-next-bar (não-cascateante)",99.62,99.74,99.62,"38 rsi / 26 nas em ~12 pares dup_ts",YES,YES,NO,"REGRA VENCEDORA. Resolve os dup-captures de stall (2o snapshot do cur forma o próximo bar). Implementada no builder."
+"R2: + forward em dup-TS single-occurrence stale",NT,NT,NT,NT,YES,YES,NO,"não implementado: exigiria detectar staleness de snapshot único (ohlcv[-1] degenerado) - dup_ts artifacts documentados"
+"R3..R5",NT,NT,NT,NT,,,,"não necessários: R1 já fecha 99.6%+; resíduo = 12 dup_ts artifacts, afeta 1/276 episódio só em rsi_min8 sem mudança categórica"

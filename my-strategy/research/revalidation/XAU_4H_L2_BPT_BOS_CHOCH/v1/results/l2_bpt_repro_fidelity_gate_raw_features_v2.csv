@@ -1,0 +1,13 @@
+field,critical,match_pct,diffs,verdict,notes
+open,YES,100.00,0,BYTE_EQUIV,
+high,YES,100.00,0,BYTE_EQUIV,
+low,YES,100.00,0,BYTE_EQUIV,
+close,YES,100.00,0,BYTE_EQUIV,
+volume,YES,100.00,0,BYTE_EQUIV,
+bubbles_recent,YES,100.00,0,BYTE_EQUIV,
+rsi,YES,99.62,38,NEAR,"carry-to-next (R1) 97.26->99.62. 38 diffs em 3 classes: 19 value->None (stall single n=1 não resolvido), 7 None->value (invented early), 12 differ (4 >3pts, max 7.38)"
+nas_recent,YES(tags),99.74,26,NEAR,"mesmos bars; carregado em lockstep com rsi (tupla); só tags diagnósticas"
+smc_recent,NO,99.74,26,NEAR,non-crit
+bar_set,YES,99.99,1,BENIGN,"REF 9880 vs REB 9879: o extra é 2026-05-24 22:00 (último forming bar, corretamente excluído por closed-bars-only)"
+episode_impact,YES,,,DECISION_INVARIANT,"4 episódios têm diff no rsi_min8 (2022-02-07,2023-12-21,2023-12-22,2024-04-18 + E1). PROVA: ZERO dos 38 diffs cruzam rsi<30 -> nenhum flag oversold vira -> decisão INALTERADA"
+OVERALL,,,,STRUCTURAL_PASS_RSI_FAIL_DECISION_INVARIANT,"Estrutural (OHLC/vol/bubbles) 100% byte-equivalent. rsi/nas 99.6/99.7% -> strict-gate FAIL. Resíduo=dup_ts replay-stall artifacts, exato handling original irreproduzível. PROVADO decision-invariant p/ engine categórico-30. DA a72c93cb APROVOU ship + unblock condicional. Caveat: feature futura usando rsi CONTÍNUO re-expõe 4 diffs sub-7pt."

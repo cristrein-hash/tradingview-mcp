@@ -1,0 +1,13 @@
+rule,rsi_match_pct,nas_match_pct,rsi_mismatch,nas_mismatch,causal,deterministic,uses_future
+C_earliest_rcd,97.591,97.702,238,227,YES,YES,NO
+E_min_bar_index,97.591,97.702,238,227,YES,YES,NO
+J_modal_rsi,97.591,97.702,238,227,YES,YES,NO
+A_first_captured_at,97.581,97.702,239,227,YES,YES,NO
+B2_first_order,97.581,97.702,239,227,YES,YES,NO
+B_last_captured_at,97.257,97.662,271,231,YES,YES,NO
+B3_last_order,97.257,97.662,271,231,YES,YES,NO
+G_most_feature_avail,97.257,97.662,271,231,YES,YES,NO
+H_rsi_nas_nonnull,97.257,97.662,271,231,YES,YES,NO
+I_max_forming_range,97.257,97.662,271,231,YES,YES,NO
+F_max_bar_index,97.247,97.662,272,231,YES,YES,NO
+D_latest_rcd,97.237,97.662,273,231,YES,YES,NO
