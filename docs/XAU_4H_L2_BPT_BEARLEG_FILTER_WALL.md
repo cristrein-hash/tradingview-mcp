@@ -1,6 +1,6 @@
-# XAU 4H L2/BPT — A parede do filtro de bear-leg (PARCIALMENTE RETRATADO)
+# XAU 4H L2/BPT — A parede do filtro de bear-leg (CONFIRMADA — banner intermediário corrigido)
 
-> ⚠️ **RETRATADO 2026-06-18:** declarei "parede definitiva" cedo demais. Cris empurrou por confluência multi-indicador 4H + volumetria profunda condicionada ao 1D-bear — e ela FUNCIONA parcialmente: gate **(1D-bear AND volume-climax≥1.55)** preserva 9/9 winners, bloqueia 5/8 traps, respeita E10/E12. Ver `XAU_4H_L2_BPT_VOLUME_CONFLUENCE_BREAKTHROUGH.md`. A "parede" valia só para indicadores ISOLADOS; a confluência (volume×1D-bear) passou o recall-gate.
+> 🔄 **CORRIGIDO 2026-06-18 (final):** houve um banner intermediário dizendo que a confluência volume×1D-bear "FUNCIONA parcialmente" (gate 1D-bear AND volume-climax≥1.55), remetendo a `XAU_4H_L2_BPT_VOLUME_CONFLUENCE_BREAKTHROUGH.md`. **Esse breakthrough foi RETRATADO no mesmo dia** — era artefato do tick-volume do frozen; com volume REAL (Session VP) o subconjunto 1D-bear NÃO separa (ver `XAU_4H_L2_BPT_REAL_DATA_CONFLUENCE.md`). Portanto **a "parede" deste documento (corpo §1-6) está CONFIRMADA**: o subconjunto reversão-de-fundo × bounce-em-bear não é filtrável na entrada por NENHUM gate automático (indicador isolado OU confluência). Resolução real = veto humano via flags Telegram ([[project_l2_bpt_telegram_bear_flags_FUTURE]]). Volume do frozen = tick-volume NÃO-CONFIÁVEL.
 
 **Status:** `DIAGNOSTIC · DEFINITIVE_NEGATIVE · RECALL_GATED` · **Data:** 2026-06-18
 Testes das propostas do Cris (Q2). Sem outcome/produção. Conclusão estrutural: o subconjunto reversão-de-fundo × bounce-em-bear NÃO é filtrável na entrada sem perder winners.

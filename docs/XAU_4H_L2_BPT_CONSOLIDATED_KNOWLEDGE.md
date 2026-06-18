@@ -55,13 +55,12 @@ Rótulos (41 episódios):
 
 Os indicadores (RSI-div, bubbles, NAS, volume) **NÃO comparam winner×loser**. Eles servem para **identificar um TOPO MACRO BEAR LEGÍTIMO vs um pullback em leg-bull-middle**. Por isso só o **E24** acendeu (topo macro real). Indicadores = **confirmação de topo**, não gatilho de trade.
 
-## 7. O conceito de BLOQUEIO SEQUENCIAL (validado em estrutura, gatilho pendente)
+## 7. BLOQUEIO SEQUENCIAL / bear-leg — RETRATADO (não validou na base completa)
 
-Detectado o topo macro → abre **estado bear-leg** → bloqueia a **sequência** de losers a jusante (E33/E6/E7/E36/E9/E8/E37/E11) — como consequência do topo, não trade-a-trade.
-- ✅ **Conceito correto:** os 8 alvos do Cris estão TODOS a jusante de topos detectados (8/8 em toda variante).
-- ❌ **Gatilho exaustão-4H = inutilizável:** dispara 189-380× (legpos alto é o estado normal de uptrend), recall-gate falha (bloqueia 6-7/9 winners) em TODA variante testada.
-- → **Gatilho correto = evento estrutural 1D RARO** (CHoCH/BOS bear no 1D após perna de alta sustentada), com a exaustão-4H como confirmação. = decomposição de perna 1D.
-- **Exceções a respeitar:** E10 (pullback forte = não bloquear); E12 (borderline, idealmente bloquear).
+🚫 **RETRATADO 2026-06-18:** o bloqueio por estado bear-leg parecia conceito-válido nos 41 rótulos curados (8/8 a jusante de topos) mas **era circular** (o set continha os winners-alvo). Na **base tradável completa (276 episódios, SL estrutural)** NÃO validou: bloqueia **5/9 winner-episodes**, **REDUZ sumR** (+63→+51), pior no held-out 2023-26. DA verdict: FATAL. Detalhes em [[project_l2_bpt_legbear_block]] (memória) e `XAU_4H_L2_BPT_1D_LEG_DECOMPOSITION.md`.
+- **Lição central:** com **SL estrutural (sem teto)**, até os reclaims em regime bear são **net-positivos no agregado** — o SL já administra o regime bear; um bloqueio de regime **destrói valor** (remove os winners de recuperação). Confirmado novamente em 2026-06-18: o subset bear-context é WINNER-RICH (9/15 monumentais; avgR +0.28 > base +0.23), não loser-prone.
+- **Gatilho exaustão-4H** = inutilizável (dispara 189-380×, recall falha 6-7/9). **Gatilho 1D raro** (CHoCH/BOS bear no 1D) também testado e refutado como gate duro (mata E1/E17 do fundo COVID). 7 abordagens convergem: subconjunto **não filtrável na entrada**.
+- **Resolução real:** veto HUMANO via flags `legbear`/`overbought` no Telegram (requisito FUTURO, [[project_l2_bpt_telegram_bear_flags_FUTURE]]) — automação não separa, humano sim. Único filtro automático limpo = extreme-top E24, como veto-soft.
 
 ## 8. Regras metodológicas permanentes (aprendidas a duro)
 
@@ -72,9 +71,21 @@ Detectado o topo macro → abre **estado bear-leg** → bloqueia a **sequência*
 - **Não fabricar leitura visual** — marcar PENDING/AWAITING_USER; não inventar o que o print não mostra.
 - **Não se deslumbrar** — descartar com dado o eixo que não serve, em vez de empurrar.
 
-## 9. Próximo bloco aprovado (1D leg decomposition)
+## 8b. Exit lab + teste decisivo (2026-06-18) — exit é ruído, edge é regime-bound
 
-Codificar a **decomposição de perna no 1D** (continuação de perna de alta 1D vs repique contra-tendência em perna de baixa 1D) como o **gatilho seletivo** do estado bear-leg + o gate **1D-trend** (cobre o cluster bear, a reclamação mais alta do Cris). Tudo com **recall-gate** contra os 9 winners e respeitando E10. Só então outcome (SL estrutural sem teto, por episódio, lift vs base rate).
+Com SL estrutural FIXO, variou-se só o exit (R/BE/parcial/trail) sobre a base 276. **3 DAs.**
+- **Nenhuma política bate baseline +3R fora do ruído** (avgR +0.21..+0.30, SE da diff ~0.19 em n=276). Exit-tuning in-sample.
+- **BE ingênuo PIORA a média** (scratch nos monumentais que recuam pela entrada antes do run; BOMsumR 8→4). Mecânica robusta: scratch perto da entrada baixa a média → contra BE/parcial.
+- **Split temporal revelou o fato dominante — edge NÃO-ESTACIONÁRIO:** build 2020-22 avgR **+0.02** (chato); holdout 2023-26 **+0.39** (sumR +61R). É captura de beta long-gold no bull, não edge estacionário (= padrão Caminho B 2020-22).
+- **Monumentais 13/15 no build, 2 no holdout** → objetivo "preservar monumentais" intestável OOS.
+- **partial50@2R+6R** = curva marginalmente mais lisa (bootstrap maxDD 17 vs 18R, streak 9/12 vs 11/15) a sumR chato — só vale por sobrevivência prop-firm (streak ≤5), não R total.
+- **Conclusão:** exit NÃO é a alavanca (é ruído). Alavanca real = **contexto de regime** (deploy só em BULL via Regime Classifier v3) ou SHORT espelho. Baseline +3R = default. Scripts `/tmp/exit_lab.py`, `/tmp/exit_decisive.py`.
+
+## 9. Estado atual + próximo foco (atualizado 2026-06-18)
+
+**Feito desde então:** (a) 1D leg decomposition codificada → gate duro bear REFUTADO (§7); (b) exit lab + teste decisivo (§8b) → exit é ruído, edge regime-bound; (c) **partial50@2R+6R APROVADO** como exit por gestão de streak prop-firm (50% sai +2R trava +1R, restante BE→runner +6R; base 276: WR48% sumR+63 streak9 vs 13; bootstrap maxDD 17R); (d) **BE global E condicional REJEITADOS** (scratch nos monumentais); (e) flags Telegram legbear/overbought = requisito FUTURO ([[project_l2_bpt_telegram_bear_flags_FUTURE]]).
+
+**Próximo foco APROVADO:** **SL estrutural trade-a-trade** (afinar o stop estrutural 2-4 ATR por episódio, sem teto). **Regime v3 / SHORT espelho** = depois (não iniciado). Detalhes em [[project_l2_bpt_exit_lab_regime_bound]].
 
 ## 10. Artefatos (docs/results desta frente)
 
