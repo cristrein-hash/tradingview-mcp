@@ -1,0 +1,14 @@
+stage,generator_script,repo_path,versioned,in_tmp,in_safety_pack,artifact_produced,reference_artifact_2020_2026,status,notes
+1_raw_gz_to_frozen,extract_raw_features.py,<none>,NO,NO,NO,raw_features_2020_2026.jsonl,raw_features_2020_2026.jsonl (sha 9fac96b9 INTACT in pack+/tmp+SHA256SUMS),NEEDS_RECONSTRUCTION,"builder perdido em todo lugar; artefato intacto e SHA-verificado -> reconstrução fidelity-gateável. Campo difícil: bubbles_recent (derivado)"
+2_raw_gz_to_1D_bars,<unknown _bars writer>,<none>,NO,artifact_only,NO,XAU_1D_bars.jsonl (close-only),XAU_1D_bars.jsonl (/tmp 3584 linhas),NEEDS_RECONSTRUCTION,"detector lê XAU_1D_bars.jsonl (time+close); builder não identificado. build_1d_ohlc.py gera _ohlc (difere). Reconstrução LOW-risk (close diário)"
+2b_raw_gz_to_1D_ohlc,build_1d_ohlc.py,v1/build_1d_ohlc.py,YES,YES,NO,XAU_1D_ohlc.jsonl,XAU_1D_ohlc.jsonl,FOUND,"versionado mas produz _ohlc (não _bars que o detector usa)"
+3_detector,L2_detector_v2_2.py,<none (tmp+pack)>,NO,YES,YES,candidatos (run_candidate_generator),L2_detector_v2_2.py (pack 11709B),TMP_ONLY,"recuperável do safety pack 2026-06-09; importado por l2_layer23_diag (versionado). PROMOVER"
+3b_ground_truth,L2_ground_truth_v1.json,<none (tmp+pack)>,NO,YES,YES,GT labels,L2_ground_truth_v1.json (pack 23476B),TMP_ONLY,"lido por l2_layer23_diag; recuperável do pack. PROMOVER"
+4_candidate_matrix,l2_layer23_diag.py,v1/l2_layer23_diag.py,YES,YES,NO,l2_bpt_v2_2_candidate_matrix.csv,candidate_matrix.csv,FOUND,"versionado MAS faz 'from L2_detector_v2_2 import ...' + lê /tmp/L2_ground_truth_v1.json -> depende dos tmp-only acima"
+5_pruned_base,build_pruned_base_v2.py,v1/build_pruned_base_v2.py,YES,NO,NO,l2_bpt_v2_2_pruned_base_v2.csv,pruned_base_v2.csv,FOUND,
+6_demand_supply,demand_supply_quality.py,v1/demand_supply_quality.py,YES,NO,NO,..._demand_supply_quality.csv,demand_supply_quality.csv,FOUND,
+7_macro_d1,macro_context_enrich.py,v1/macro_context_enrich.py,YES,NO,NO,..._macro_context.csv,macro_context.csv,FOUND,
+8_d1_sig_nas1d,extract_1d_v3.py,<none (tmp)>,NO,YES,NO,d1_sig_v3.json,d1_sig_v3.json (/tmp),TMP_ONLY,"NAS 1D first-appearance; só em /tmp. PROMOVER"
+9_svp,extract_svp.py,v1/extract_svp.py,YES,YES,NO,svp_bars.jsonl,svp_bars.jsonl,FOUND,
+10_84_factors,qualification_extract.py,v1/qualification_extract.py,YES,NO,NO,l2_bpt_trade_qualification_matrix.csv,matrix.csv,FOUND,"escrito nesta sessão; já commitado"
+11_take_engine_reasoning,QUALIFICATION_RUBRIC.md + 14 subagentes LLM,v1/QUALIFICATION_RUBRIC.md,YES,NO,NO,decisions_merged.csv,qual_dec_*.jsonl (/tmp),FOUND_BUT_STOCHASTIC,"rubrica versionada; decisões = LLM (NÃO determinístico). Decisões cacheadas em /tmp + commitadas, mas re-rodar dá decisões diferentes -> reprodutibilidade exige reuso das decisões ou aceitar distribuição"

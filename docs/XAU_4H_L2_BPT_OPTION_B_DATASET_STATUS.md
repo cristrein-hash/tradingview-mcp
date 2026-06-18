@@ -19,8 +19,8 @@ Registro/status dos datasets RAW independentes coletados para a validação do L
 | local RAW | `alert-bridge/logs/backtests/XAUUSD_240m_replay_2013-02-01_to_2016-05-25.jsonl` (558 MB) — **RETIDO (delete pendente de autorização)** |
 | regime | gold BEAR 2013-2015 + crash abr/2013 + fundo dez/2015 + início recuperação 2016 |
 
-## Bloco 2 — TRANSIÇÃO/BULL inicial 2016-2017 (🔄 coletando — Parte 2)
-Range alvo: 2016-05-25 → 2017-12-31. Mesmo padrão de coleta/arquivamento. Status/qualidade serão anexados ao concluir (hard-stop se falhar qualidade).
+## Bloco 2 — TRANSIÇÃO/BULL inicial 2016-2017 (⛔ ABORTADA)
+Coleta interrompida pelo Cris a meio (~1174 bars, até fev/2017) ao descobrir o **incidente de reprodutibilidade** ([[INCIDENT_L2_BPT_ENGINE_REPRODUCIBILITY_TMP_PIPELINE]]). Parcial local `XAUUSD_240m_replay_2016-05-25_to_2017-12-31.jsonl` (1174 bars, 320M) **mantido, não arquivado, não deletado**. Produção restaurada. A validação Opção B está **HARD-STOPPED** até o pipeline ser reproduzível.
 
 ## Registro
 - Registry: `docs/data/dataset_registry.json` (regenerado por `scripts/build_dataset_registry.py` a partir dos manifests).
