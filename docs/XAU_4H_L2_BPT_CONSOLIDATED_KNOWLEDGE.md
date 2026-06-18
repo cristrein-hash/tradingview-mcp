@@ -94,11 +94,18 @@ SL estrutural medido (6 modelos causais, exit fixo partial50, base 276; doc `SL_
 
 **Lista de winners corrigida:** must_preserve (8) = E1,E5,E13,E17,E21,E27,E30,E40. valid_but_needs_better_entry = E13. should_not_long_top_exhaustion = E23 (+E15,E24,E34). exit_sensitive_big_winners = E1,E17. (CSV `results/l2_bpt_reconciliation_labels.csv`.)
 
-## 9. Estado atual + próximo foco (atualizado 2026-06-18)
+## 9. OPERATING POINT (consolidado 2026-06-18, aprovado pelo Cris)
 
-**Feito:** (a) 1D leg decomposition → gate duro bear REFUTADO (§7); (b) exit lab → exit é ruído, edge regime-bound (§8b); (c) **partial50@2R+6R APROVADO** (gestão streak prop-firm, caveat cauda V); (d) **BE global E condicional REJEITADOS**; (e) flags Telegram = FUTURO; (f) **SL estrutural medido + reconciliação de labels** (§8c) → SL estrutural correto em princípio mas precisa cap operacional; SL não é a edge.
+Após 5 blocos de SL/exit/cap/defended-swing, o ponto de operação está travado:
+- **Entrada L2/BPT:** ainda em PESQUISA (não finalizada).
+- **SL:** `NORMAL_BPT` / **swing-origem estrutural** (SL abaixo do swing/origem estrutural). Aprovado como direção.
+- **Exit:** **partial50@2R+6R** (50% sai +2R trava +1R, restante BE→runner +6R, time-stop 60, custo 0.10R). Aprovado (gestão streak prop-firm; caveat: muta cauda de big V-reversal — o que NÃO é culpa do partial, é do SL/pivô, ver §8c + audit E1/E17).
+- **SL ambíguo ou >4ATR:** **review HUMANO**, não cap automático (CAP4 descartado d6f36b6; defended-swing não operacionalizável por regra 8598e85).
+- **E23 / topos:** **próxima frente = entry/exhaustion filter** (validar com amostra independente, NÃO com os 9 casos curados).
 
-**Próximo foco APROVADO:** **cap 4ATR no SL estrutural** usando os **labels corrigidos** (E23 não-protegido, E13 valid-bad-pivot, E1/E17 cauda crítica). Depois: **entry-filter** (alavanca real, DA). **Regime v3 / SHORT** = depois (não iniciado). Detalhes em [[project_l2_bpt_sl_structural]].
+**Cadeia de blocos:** exit lab (§8b) → SL estrutural (§8c) → reconciliação E13/E23/E1/E17 → audit E1/E17 (SL/pivô, não exit) → CAP4 descartado → defended-swing não-funcionou-como-regra. **Meta-conclusão:** SL/exit/cap/defended-swing **não são a alavanca**; a edge é regime/drift; a próxima alavanca real é **entrada/exhaustion**. Detalhes em [[project_l2_bpt_sl_structural]] · [[project_l2_bpt_exit_lab_regime_bound]].
+
+**Não iniciado:** entry/exhaustion filter · regime v3 · SHORT espelho.
 
 ## 10. Artefatos (docs/results desta frente)
 
