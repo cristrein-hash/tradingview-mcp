@@ -1,0 +1,6 @@
+baseline,n=276,WR=48.2,avgR=0.226,sumR=62.5,PF=1.44,maxDD=24.3,streak=9
+filter,blocked,BOM_blocked,sumR_blocked,kept_n,kept_WR,kept_avgR,kept_sumR,kept_PF,kept_maxDD,kept_streak
+F_TOP_OB_RSI,38,0,4.3,238,47.5,0.244,58.2,1.46,21.4,7
+F_TOP_OB_RSI_strict,30,0,-0.9,246,48.4,0.258,63.4,1.49,22.1,8
+F_LATE_LEG_EXT,46,1,7.7,230,47.0,0.238,54.8,1.44,20.1,8
+F_WEAK_RECLAIM_NEAR_HIGH,14,1,5.4,262,47.7,0.218,57.1,1.42,23.2,8

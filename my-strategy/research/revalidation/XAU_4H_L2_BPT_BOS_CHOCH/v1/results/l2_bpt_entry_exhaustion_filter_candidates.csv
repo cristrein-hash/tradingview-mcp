@@ -1,0 +1,7 @@
+filter,definition,hypothesis,classification,note
+F_TOP_OB_RSI,legpos90>=85 & RSI>=68,blow-off top,AUTO_BLOCK_CANDIDATE,"causal; pega E23/E24, poupa must-preserve"
+F_TOP_OB_RSI_strict,legpos90>=85 & RSI>=70,blow-off top,TAG_ONLY,mais restrito; só E23
+F_LATE_LEG_EXT,legpos90>=85 & ext_lo20>=4.5,late/extended,REVIEW_ONLY,alternativa ao RSI; risco cortar V-reversal
+F_WEAK_RECLAIM_NEAR_HIGH,dist_hi90<2 & body<0.15,reclaim fraco,REVIEW_ONLY,n=1 (E15); overfit risk
+F_BEAR_BOUNCE,bearleg context,bear-leg bounce,REVIEW_ONLY,E39 indistinguível de E17 — NUNCA auto-block
+F_SUPPLY_REJECTION,supply prox + rejeição pós-entrada,supply reject,REJECTED_AS_ENTRY,usa candle pós-entrada = não causal p/ entry

@@ -1,0 +1,14 @@
+eid,set,legpos,distHi,extLo20,rsi,accel3,dir20,slope20,bearleg,reclaim
+E23,CUT,94,1.2,6.5,77.45,3.4,5.3,5.27,não,vermelho body12%
+E15,CUT,73,1.9,1.6,53.02,-0.4,1.0,0.98,não,verde body8%
+E24,CUT,89,1.8,4.8,69.13,-1.3,4.3,4.26,não,vermelho body55%
+E34,CUT,65,2.7,1.3,48.51,-0.6,1.2,1.16,não,verde body42%
+E39,CUT,56,3.0,2.7,46.22,-0.7,-1.3,-1.3,SIM,verde body15%
+E1,KEEP,48,5.8,5.2,62.35,1.9,3.7,3.73,SIM,verde body60%
+E5,KEEP,92,1.1,4.0,61.01,0.7,1.7,1.71,não,verde body82%
+E13,KEEP,47,10.3,3.4,56.27,0.3,3.1,3.12,SIM,verde body72%
+E17,KEEP,62,5.2,0.9,40.73,-0.4,-2.6,-2.57,SIM,verde body11%
+E21,KEEP,90,1.2,3.6,55.08,2.0,2.1,2.06,não,verde body57%
+E27,KEEP,43,4.1,3.0,51.43,-0.0,-1.3,-1.28,SIM,verde body24%
+E30,KEEP,30,10.3,1.4,37.31,-0.4,-2.4,-2.41,SIM,verde body77%
+E40,KEEP,65,2.9,1.7,44.98,0.3,-0.6,-0.62,SIM,verde body60%
