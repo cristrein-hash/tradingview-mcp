@@ -20,8 +20,8 @@ FIDELITY_SENTINEL = ROOT / ".fidelity_pass"
 # (step, stage, builder_relpath_from_v1, deterministic, status)
 STAGES = [
  (1, "RAW 4H gz", "../../../../../alert-bridge/run_xau_replay_feature_collect.py", True, "VERSIONED_OK"),
- (2, "RAW 1D bars", None, True, "MISSING_REBUILD_REQUIRED"),
- (3, "frozen raw_features", None, True, "MISSING_REBUILD_REQUIRED"),
+ (2, "RAW 1D bars", "pipeline/builders/build_xau_1d_bars.py", True, "RECONSTRUCTED_GATE_PASS"),
+ (3, "frozen raw_features", "pipeline/builders/reconstruct_raw_features.py", True, "RECONSTRUCTED_GATE_PARTIAL"),
  (4, "detector L2 v2.2", "pipeline/detectors/L2_detector_v2_2.py", True, "TMP_ONLY_RECOVERED"),
  (4.1,"ground truth", "pipeline/detectors/L2_ground_truth_v1.json", True, "RECOVERED_FROM_PACK"),
  (5, "candidate_matrix", "l2_layer23_diag.py", True, "VERSIONED_OK"),
@@ -36,6 +36,7 @@ STAGES = [
  (15,"matched-random baselines", "validate_qualification.py", True, "VERSIONED_OK"),
 ]
 MISSING_STATUSES = {"MISSING_REBUILD_REQUIRED"}
+GATE_PARTIAL = {"RECONSTRUCTED_GATE_PARTIAL"}
 
 def resolve(rel):
     if rel is None: return None
@@ -67,12 +68,13 @@ def dry_run():
 
 def reproduce_2020_2026():
     print("=== FIDELITY GATE — reproduzir raw_features_2020_2026 (ref SHA 9fac96b9) ===")
-    frozen_builder = resolve(None)  # step 3 builder = None (MISSING)
-    print("  frozen builder (extract_raw_features.py): MISSING")
-    print("  1D-bars builder: MISSING")
-    print("  => HARD STOP: não há builder para reproduzir. Gate NÃO executável.")
-    print("  Mecanismo documentado em results/l2_bpt_repro_fidelity_gate_raw_features.csv")
-    print(f"  Referência íntegra preservada: repro_recovery/raw_features_2020_2026.jsonl (SHA {REF_RAW_FEATURES_SHA[:8]})")
+    print("  frozen builder: pipeline/builders/reconstruct_raw_features.py (RECONSTRUÍDO)")
+    print("    OHLC/volume/bubbles_recent = 100% field-equivalent (PASS)")
+    print("    rsi=97.26% nas_recent=97.66% (RESIDUAL 2.6% = dup-capture snapshot ambiguity)")
+    print("    => GATE PARCIAL: estrutural PASS, mas NÃO field-equivalent completo no rsi -> HARD STOP por regra estrita")
+    print("  1D-bars builder: pipeline/builders/build_xau_1d_bars.py = 100% field-equivalent (PASS)")
+    print("  Detalhes: results/l2_bpt_repro_fidelity_gate_{raw_features,daily_bars}.csv")
+    print(f"  sentinela .fidelity_pass NÃO criada (gate raw_features não 100%). Opção B BLOQUEADA.")
     return 2
 
 def run_new_dataset(args):

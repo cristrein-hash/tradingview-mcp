@@ -1,9 +1,12 @@
-field,source_in_gz,derivation,reconstructable,gate_status,notes
-ts_epoch,ohlcv[].time,direto do bar fechado,YES,PENDING,trivial
-open/high/low/close,ohlcv (bar FECHADO),"OHLC do bar quando fechado (snapshot T+1 ohlcv[-2]); ov[-1] do snapshot atual é degenerado/forming",YES_with_care,BLOCKED,"exige pareamento exato snapshot-fechado; sutileza de forward-fill"
-volume,ohlcv[].volume (bar fechado),idem OHLC,YES_with_care,BLOCKED,idem
-rsi,study_values 'Relative Strength Index'.RSI,"RSI do snapshot onde o bar é CORRENTE (forming), não o fechado",YES_with_care,BLOCKED,"pareamento RSI-forming difere do OHLC-fechado -> 2 snapshots distintos por bar"
-bubbles_recent,pine_shapes_bubbles[0].activations,"acumular activations (últimos 20/snapshot) ao longo do replay; bars_ago = idx_atual - idx_evento; janela observada >=56 bars",YES_with_care,BLOCKED,"janela exata + regra de dedup desconhecidas; mecanismo identificado mas não validado field-equivalent"
-nas_recent,pine_labels 'NAS' (first-appearance),geralmente vazio no frozen,YES,BLOCKED,quase sempre []
-smc_recent,pine_labels 'Smart Money',geralmente vazio no frozen,YES,BLOCKED,quase sempre []
-OVERALL,,,,HARD_STOP,"mecanismo 100% mapeado; field-equivalence NÃO atingida/validada neste bloco -> reconstrução requer bloco dedicado. Referência íntegra: raw_features_2020_2026.jsonl SHA 9fac96b9"
+field,critical,match_pct,diffs,verdict,notes
+ts_epoch,YES,99.99,1,NEAR,"9879/9880; falta 1 bar (último forming 1779660000)"
+open,YES,100.00,0,PASS,reconstruído byte-exato (bar fechado do buffer)
+high,YES,100.00,0,PASS,idem
+low,YES,100.00,0,PASS,idem
+close,YES,100.00,0,PASS,idem
+volume,YES,100.00,0,PASS,idem
+bubbles_recent,YES,100.00,0,PASS,"acúmulo de activations, plots 0/2/4/6/8/10, janela bars_ago 0..60, índice global"
+rsi,YES,97.26,271,RESIDUAL,"262 diffs idx>=300 espalhados nos MESMOS bars do nas = bars duplicados/re-capturados; ref escolheu snapshot diferente. 9 warmup. Sem a regra de seleção original não fecha"
+nas_recent,YES(tags),97.66,231,RESIDUAL,"mesmos bars do rsi (dup-capture). x<=30 corrigiu de 0.16%->97.66%. Só alimenta tags diagnósticas (tag_nas_*) no candidate_matrix"
+smc_recent,NO,97.69,228,RESIDUAL,"não-crítico (não usado downstream)"
+OVERALL,,,,HARD_STOP,"ESTRUTURAL (OHLC/vol/bubbles)=100% field-equivalent PASS; rsi/nas residual 2.6% (dup-capture snapshot-selection ambiguity, irreduzível sem builder original). Por regra estrita NÃO é PASS completo. Ref SHA 9fac96b9. Builder: pipeline/builders/reconstruct_raw_features.py"

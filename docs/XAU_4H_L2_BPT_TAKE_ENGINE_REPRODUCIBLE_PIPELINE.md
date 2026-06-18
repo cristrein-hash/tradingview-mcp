@@ -12,13 +12,14 @@ Pesquisa rápida com builders escritos direto em `/tmp` (não versionados); só 
 ## 3. Builders VERSIONADOS (OK)
 detector (promovido `pipeline/detectors/L2_detector_v2_2.py`), GT (promovido), candidate_matrix (`l2_layer23_diag.py`), pruned_base, demand_supply_quality, macro_context_enrich, extract_1d_v3 (promovido `pipeline/features/`), extract_svp, qualification_extract, validate_qualification, build_1d_ohlc. Rubrica `QUALIFICATION_RUBRIC.md`.
 
-## 4. Builders RECONSTRUÍDOS
-**Nenhum.** Os 2 faltantes (frozen `extract_raw_features.py`; `XAU_1D_bars.jsonl` builder) **NÃO foram reconstruídos** — mecanismo mapeado mas field-equivalence não validada → HARD-STOP (§5). Reconstrução adiada para bloco dedicado com autorização.
+## 4. Builders RECONSTRUÍDOS (2026-06-18, bloco de desbloqueio)
+- **`pipeline/builders/reconstruct_raw_features.py`** (frozen) — RECONSTRUÍDO. Regras deduzidas empiricamente do ref: OHLC+vol do bar fechado do buffer; RSI do snapshot forming (mais-formado); bubbles_recent = acúmulo de `pine_shapes_bubbles[].activations` (plots 0/2/4/6/8/10, janela bars_ago 0..60, índice global); nas/smc_recent = labels x≤30. **Gate: OHLC/vol/bubbles=100% field-equivalent; rsi 97.3%/nas 97.7% residual (§5).**
+- **`pipeline/builders/build_xau_1d_bars.py`** (1D bars) — RECONSTRUÍDO (projeção {time,close} de XAU_1D_ohlc). **Gate: 100% field-equivalent PASS.**
 
 ## 5. Fidelity gates
-- **raw_features:** `results/l2_bpt_repro_fidelity_gate_raw_features.csv` — mecanismo 100% mapeado (OHLC do bar fechado, RSI do snapshot forming, bubbles_recent = acúmulo de `pine_shapes_bubbles[].activations`), mas pareamento exato não reproduzível com confiança sem o original → **HARD_STOP**.
-- **daily_bars:** `results/l2_bpt_repro_fidelity_gate_daily_bars.csv` — **DEFERRED** (low-risk).
-- **Gate obrigatório:** reproduzir `raw_features_2020_2026.jsonl` **byte/field-equivalent** (ref SHA `9fac96b9`) ANTES de aplicar em 2013-2017. Sentinela `pipeline/.fidelity_pass` (ausente).
+- **raw_features:** `results/l2_bpt_repro_fidelity_gate_raw_features.csv` — **ESTRUTURAL PASS** (open/high/low/close/volume/bubbles_recent = **100% field-equivalent**, 9879/9880 bars). **rsi 97.26% + nas_recent 97.66% = RESIDUAL 2.6%** em bars duplicados/re-capturados (ref escolheu snapshot diferente; ambiguidade irreduzível sem o builder original). 1 bar de fronteira faltante. Por regra estrita (rsi é crítico p/ os 84 fatores) → **HARD_STOP / gate não-PASS-completo**.
+- **daily_bars:** `results/l2_bpt_repro_fidelity_gate_daily_bars.csv` — **PASS** (100% field-equivalent).
+- **Sentinela `pipeline/.fidelity_pass`: AUSENTE** (raw_features não 100%). Decisão do Cris: aceitar resíduo de 2.6% (dup-capture, arguivelmente tão válido quanto o original que também escolheu 1 snapshot) OU manter hard-stop.
 
 ## 6. Artefatos de referência (preservados, íntegros)
 `repro_recovery/` (51 arquivos; ver `results/l2_bpt_repro_preserved_tmp_artifacts.csv`). Frozen `raw_features_2020_2026.jsonl` SHA `9fac96b9` idêntico em SHA256SUMS+safety pack+/tmp+repro_recovery. Decisões LLM 2020-2026 congeladas (`decisions_merged.csv` + `qual_dec_*`).
@@ -35,11 +36,11 @@ Etapas 1-12,14,15 = determinísticas. Etapa 13 (reasoning TAKE) = **LLM NÃO-det
 ## 10. Como reproduzir 2020-2026
 `--reproduce-2020-2026` → roda o fidelity gate. **Atualmente HARD-STOP** (frozen + 1D builders faltam). Após reconstrução autorizada, comparar output vs SHA `9fac96b9` e, se PASS, criar `pipeline/.fidelity_pass`.
 
-## 11. O que ainda bloqueia a Opção B
-1. **frozen builder** + **1D-bars builder** faltam → pipeline não re-executável (HARD-STOP).
-2. **TODO script do pipeline lê/escreve `/tmp` HARDCODED** (achado DA): `L2_detector_v2_2.py` lê `/tmp/raw_features` + `/tmp/XAU_1D_bars`; `l2_layer23_diag.py` importa o detector (PYTHONPATH) + lê `/tmp/L2_ground_truth_v1.json`; `qualification_extract.py` lê `/tmp/{raw_features,svp_bars,d1_sig_v3}`; `demand_supply_quality`/`macro_context_enrich`/`validate_qualification` lêem `/tmp/raw_features`. Mesmo com os 2 builders reconstruídos, o pipeline **não roda em dataset novo sem uma passada de PARAMETRIZAÇÃO DE PATHS** (substituir `/tmp/*` por args do runner). Não feito aqui (mexeria em ~8 scripts — bloco autorizado separado).
-3. **reasoning é LLM não-determinístico** → "mesmo engine sem retune" exige re-rodar subagentes (decisões novas) OU converter rubrica em score determinístico (Opção C, bloco futuro).
-Até (1) reconstruir+gate, (2) parametrizar paths, e (3) decidir o determinismo, **a validação Opção B permanece BLOQUEADA**.
+## 11. O que ainda bloqueia a Opção B (estado pós-desbloqueio)
+1. **frozen gate não-PASS-completo (rsi/nas residual 2.6%)** → estrutural reproduzível, mas RSI (crítico p/ 84 fatores) field-equivalente só 97.3%. Decisão do Cris: aceitar resíduo OU resolver a regra de seleção de snapshot em dup-capture. **1D-bars: PASS.** [parcialmente resolvido]
+2. **Parametrização de paths `/tmp` NÃO feita** (HARD-STOP do gate impediu prosseguir). `L2_detector_v2_2.py`, `l2_layer23_diag.py`, `qualification_extract.py`, `demand_supply_quality`, `macro_context_enrich`, `validate_qualification`, `extract_svp`, `extract_1d_v3` ainda lêem/escrevem `/tmp` hardcoded → ~8 scripts a parametrizar (proposta: `os.environ.get('X', '/tmp/...')`, default preserva comportamento). [PENDENTE]
+3. **reasoning LLM não-determinístico** → "mesmo engine sem retune" exige re-rodar subagentes (decisões novas) OU score determinístico (Opção C). [PENDENTE — decisão]
+**Opção B BLOQUEADA** até (1) Cris decidir o resíduo rsi, (2) parametrizar paths, (3) decidir determinismo.
 
 ## 12. DA appendix
 Ver relatório do bloco. Checklist: builders mapeados ✓ · recuperáveis promovidos ✓ (detector/GT/d1_sig) · faltantes reconstruídos só sob gate ✓ (não reconstruídos = hard-stop) · ainda missing: 2 builders ✓ documentado · dependência /tmp: regra permanente criada (§7) · reasoning marcado não-determinístico ✓ · dry-run funciona ✓ · reproduzir 2020-2026: HARD-STOP ✓ · nenhuma validação Opção B rodada ✓ · produção intacta ✓ · sem SLIM/chart/MCP/plot ✓.
