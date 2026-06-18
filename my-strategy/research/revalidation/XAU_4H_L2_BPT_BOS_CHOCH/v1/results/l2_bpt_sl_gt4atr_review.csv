@@ -1,0 +1,98 @@
+episode_id,entry_ts,SL_ATR,model,visual_label,BOM_NAO_UNK,baseline_R,structural_R,cap4_reject,cap4_clamp_R,reason
+idx6489,2024-03-13 10:00,15.04,M5_SWING_ORIGIN,,UNKNOWN,-1.1,0.1,REJECTED,0.64,unknown — needs visual/better entry
+idx5965,2023-11-08 23:00,13.32,M5_SWING_ORIGIN,,BOM,-1.1,0.44,REJECTED,1.79,big V-reversal / estrutura larga válida (monumental)
+E16,2020-03-31 06:00,11.38,M5_SWING_ORIGIN,NEEDS_SECOND_REVIEW,UNKNOWN,-1.1,0.61,REJECTED,1.91,unknown — needs visual/better entry
+idx6471,2024-03-08 11:00,11.37,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-0.05,REJECTED,0.04,unknown — needs visual/better entry
+idx5842,2023-10-11 10:00,9.23,M5_SWING_ORIGIN,,UNKNOWN,3.9,1.8,REJECTED,2.99,unknown — needs visual/better entry
+idx8923,2025-10-08 10:00,9.18,M5_SWING_ORIGIN,,UNKNOWN,-1.1,0.07,REJECTED,0.9,unknown — needs visual/better entry
+E17,2020-04-01 14:00,8.36,M5_SWING_ORIGIN,TRUE_L2_STRUCTURAL_SETUP,UNKNOWN,3.9,0.91,REJECTED,1.95,unknown — needs visual/better entry
+idx8589,2025-07-22 18:00,8.21,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx3147,2022-01-14 03:00,8.1,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-0.76,REJECTED,-1.1,unknown — needs visual/better entry
+E14,2020-02-20 15:00,8.01,M5_SWING_ORIGIN,NEEDS_SECOND_REVIEW,UNKNOWN,0.9,0.75,REJECTED,0.9,unknown — needs visual/better entry
+idx6977,2024-07-05 18:00,7.98,M5_SWING_ORIGIN,,UNKNOWN,1.01,0.03,REJECTED,-1.1,unknown — needs visual/better entry
+idx5875,2023-10-18 22:00,7.89,M5_SWING_ORIGIN,,UNKNOWN,2.24,0.37,REJECTED,0.82,unknown — needs visual/better entry
+idx6453,2024-03-05 11:00,7.62,M5_SWING_ORIGIN,,UNKNOWN,1.26,0.13,REJECTED,0.33,unknown — needs visual/better entry
+idx8858,2025-09-23 14:00,7.48,M5_SWING_ORIGIN,,UNKNOWN,-1.1,1.24,REJECTED,2.15,unknown — needs visual/better entry
+idx8111,2025-03-31 22:00,7.39,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx7426,2024-10-18 14:00,7.33,M5_SWING_ORIGIN,,UNKNOWN,1.26,0.16,REJECTED,0.37,unknown — needs visual/better entry
+idx7577,2024-11-22 19:00,7.23,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx9329,2026-01-14 07:00,7.21,M5_SWING_ORIGIN,,UNKNOWN,-1.1,2.29,REJECTED,3.41,unknown — needs visual/better entry
+idx886,2020-07-28 10:00,7.11,M5_SWING_ORIGIN,,BOM,1.04,-0.04,REJECTED,0.0,big V-reversal / estrutura larga válida (monumental)
+idx4964,2023-03-20 02:00,7.05,M5_SWING_ORIGIN,,UNKNOWN,-0.65,-0.43,REJECTED,-0.68,unknown — needs visual/better entry
+E22,2020-07-23 02:00,6.94,M5_SWING_ORIGIN,VALID_SETUP_BAD_SL,UNKNOWN,3.9,2.09,REJECTED,2.96,unknown — needs visual/better entry
+idx6049,2023-11-29 03:00,6.92,M5_SWING_ORIGIN,,UNKNOWN,0.9,-1.1,REJECTED,0.9,unknown — needs visual/better entry
+idx2338,2021-07-07 18:00,6.84,M5_SWING_ORIGIN,,NAO,-1.1,-0.11,REJECTED,-0.11,unknown — needs visual/better entry
+E9,2020-11-08 23:00,6.83,M5_SWING_ORIGIN,MACRO_BEAR_NO_LONG,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,top/exhaustion
+E33,2020-08-17 10:00,6.81,M5_SWING_ORIGIN,NEEDS_SECOND_REVIEW,UNKNOWN,-1.1,-0.13,REJECTED,-1.1,unknown — needs visual/better entry
+idx5042,2023-04-06 02:00,6.73,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-0.41,REJECTED,-1.1,unknown — needs visual/better entry
+E3,2020-06-10 18:00,6.6,M5_SWING_ORIGIN,VALID_SETUP_BAD_SL,UNKNOWN,-1.1,0.23,REJECTED,0.45,unknown — needs visual/better entry
+idx7022,2024-07-17 06:00,6.38,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx2859,2021-11-05 18:00,6.32,M5_SWING_ORIGIN,,UNKNOWN,0.72,0.36,REJECTED,0.63,unknown — needs visual/better entry
+idx9727,2026-04-17 14:00,6.16,M5_SWING_ORIGIN,,UNKNOWN,-1.11,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx2497,2021-08-13 06:00,6.11,M5_SWING_ORIGIN,,UNKNOWN,1.99,0.83,REJECTED,1.32,unknown — needs visual/better entry
+idx9297,2026-01-06 23:00,6.11,M5_SWING_ORIGIN,,UNKNOWN,-1.1,1.67,REJECTED,2.25,unknown — needs visual/better entry
+idx2922,2021-11-22 07:00,6.04,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx3070,2021-12-28 07:00,6.04,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx3042,2021-12-20 15:00,6.01,M5_SWING_ORIGIN,,BOM,-1.1,0.43,REJECTED,0.7,big V-reversal / estrutura larga válida (monumental)
+idx4409,2022-11-07 11:00,5.92,M5_SWING_ORIGIN,,BOM,-1.1,0.86,REJECTED,1.61,big V-reversal / estrutura larga válida (monumental)
+idx3252,2022-02-08 15:00,5.89,M5_SWING_ORIGIN,,UNKNOWN,3.9,1.84,REJECTED,2.28,unknown — needs visual/better entry
+idx9256,2025-12-26 03:00,5.84,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx5866,2023-10-17 10:00,5.73,M5_SWING_ORIGIN,,UNKNOWN,3.16,1.13,REJECTED,1.65,unknown — needs visual/better entry
+idx7094,2024-08-02 06:00,5.72,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx420,2020-04-08 10:00,5.63,M5_SWING_ORIGIN,,BOM,3.9,0.79,REJECTED,1.15,big V-reversal / estrutura larga válida (monumental)
+idx8157,2025-04-10 14:00,5.59,M5_SWING_ORIGIN,,UNKNOWN,1.45,0.57,REJECTED,1.36,unknown — needs visual/better entry
+idx6523,2024-03-21 02:00,5.53,M5_SWING_ORIGIN,,UNKNOWN,1.23,1.17,REJECTED,-1.1,unknown — needs visual/better entry
+idx9390,2026-01-28 11:00,5.53,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx9504,2026-02-24 11:00,5.52,M5_SWING_ORIGIN,,UNKNOWN,3.9,0.16,REJECTED,0.27,unknown — needs visual/better entry
+idx8765,2025-09-02 02:00,5.5,M5_SWING_ORIGIN,,UNKNOWN,3.9,1.95,REJECTED,2.34,unknown — needs visual/better entry
+idx8966,2025-10-17 14:00,5.42,M5_SWING_ORIGIN,,UNKNOWN,0.9,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx9243,2025-12-22 19:00,5.42,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx3534,2022-04-14 14:00,5.41,M5_SWING_ORIGIN,,NAO,0.9,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx7129,2024-08-12 02:00,5.39,M5_SWING_ORIGIN,,UNKNOWN,0.9,1.24,REJECTED,1.8,unknown — needs visual/better entry
+idx6119,2023-12-14 19:00,5.36,M5_SWING_ORIGIN,,UNKNOWN,-1.1,0.31,REJECTED,0.45,unknown — needs visual/better entry
+E24,2020-08-07 10:00,5.32,M5_SWING_ORIGIN,MACRO_BEAR_NO_LONG,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,top/exhaustion
+E1,2020-03-23 22:00,5.3,M5_SWING_ORIGIN,TRUE_L2_STRUCTURAL_SETUP,UNKNOWN,0.88,0.64,REJECTED,0.87,unknown — needs visual/better entry
+idx2663,2021-09-22 02:00,5.3,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx1168,2020-10-01 14:00,5.29,M5_SWING_ORIGIN,,NAO,-1.1,-0.12,REJECTED,-0.12,unknown — needs visual/better entry
+idx1623,2021-01-20 03:00,5.28,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-0.37,REJECTED,-0.46,unknown — needs visual/better entry
+idx5055,2023-04-11 06:00,5.26,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-0.39,REJECTED,-0.49,unknown — needs visual/better entry
+idx7943,2025-02-19 23:00,5.25,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx9492,2026-02-20 11:00,5.19,M5_SWING_ORIGIN,,UNKNOWN,0.9,0.25,REJECTED,0.9,unknown — needs visual/better entry
+E15,2020-03-09 06:00,5.09,M5_SWING_ORIGIN,BEAR_LEG_RECLAIM_TRAP,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,top/exhaustion
+idx3474,2022-03-31 14:00,5.08,M5_SWING_ORIGIN,,UNKNOWN,-1.1,0.38,REJECTED,0.51,unknown — needs visual/better entry
+idx7797,2025-01-16 15:00,5.08,M5_SWING_ORIGIN,,UNKNOWN,2.4,1.24,REJECTED,1.6,unknown — needs visual/better entry
+idx5668,2023-08-31 10:00,5.05,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx9432,2026-02-06 11:00,5.02,M5_SWING_ORIGIN,,UNKNOWN,0.25,0.09,REJECTED,0.14,unknown — needs visual/better entry
+idx7408,2024-10-15 14:00,5.01,M5_SWING_ORIGIN,,UNKNOWN,2.88,1.58,REJECTED,1.95,unknown — needs visual/better entry
+idx5414,2023-07-04 02:00,4.99,M5_SWING_ORIGIN,,UNKNOWN,-1.1,1.03,REJECTED,1.31,unknown — needs visual/better entry
+idx9304,2026-01-08 03:00,4.95,M5_SWING_ORIGIN,,UNKNOWN,-1.1,2.11,REJECTED,2.39,unknown — needs visual/better entry
+idx3132,2022-01-11 15:00,4.93,M5_SWING_ORIGIN,,BOM,1.41,0.74,REJECTED,0.94,big V-reversal / estrutura larga válida (monumental)
+idx7662,2024-12-12 23:00,4.89,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+E23,2020-08-04 22:00,4.83,M5_SWING_ORIGIN,BLOWOFF_TOP_REJECT,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,top/exhaustion
+idx6597,2024-04-09 10:00,4.82,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-0.39,REJECTED,-0.45,unknown — needs visual/better entry
+idx7149,2024-08-15 10:00,4.82,M5_SWING_ORIGIN,,UNKNOWN,3.9,0.98,REJECTED,1.2,unknown — needs visual/better entry
+idx8497,2025-07-01 06:00,4.81,M5_SWING_ORIGIN,,UNKNOWN,-0.09,-0.09,REJECTED,-0.09,unknown — needs visual/better entry
+E38,2021-05-12 18:00,4.79,M5_SWING_ORIGIN,VALID_SETUP_BAD_SL,UNKNOWN,0.9,1.78,REJECTED,1.95,unknown — needs visual/better entry
+idx1429,2020-12-02 11:00,4.76,M5_SWING_ORIGIN,,BOM,2.11,0.55,REJECTED,0.67,big V-reversal / estrutura larga válida (monumental)
+idx7902,2025-02-11 03:00,4.76,M5_SWING_ORIGIN,,UNKNOWN,-1.1,0.11,REJECTED,0.15,unknown — needs visual/better entry
+idx7765,2025-01-09 07:00,4.75,M5_SWING_ORIGIN,,UNKNOWN,2.73,1.44,REJECTED,1.82,unknown — needs visual/better entry
+idx8431,2025-06-16 06:00,4.73,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx7869,2025-02-03 15:00,4.72,M5_SWING_ORIGIN,,UNKNOWN,1.66,0.89,REJECTED,1.07,unknown — needs visual/better entry
+idx7993,2025-03-04 07:00,4.7,M5_SWING_ORIGIN,,UNKNOWN,2.0,1.16,REJECTED,1.38,unknown — needs visual/better entry
+idx4252,2022-09-30 06:00,4.68,M5_SWING_ORIGIN,,BOM,0.9,-0.35,REJECTED,-0.39,big V-reversal / estrutura larga válida (monumental)
+idx7816,2025-01-21 19:00,4.68,M5_SWING_ORIGIN,,UNKNOWN,2.03,1.62,REJECTED,1.91,unknown — needs visual/better entry
+idx8371,2025-06-02 06:00,4.64,M5_SWING_ORIGIN,,UNKNOWN,0.7,0.51,REJECTED,0.6,unknown — needs visual/better entry
+idx6162,2023-12-26 23:00,4.56,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx5478,2023-07-18 18:00,4.51,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+E36,2020-10-12 18:00,4.48,M5_SWING_ORIGIN,MACRO_BEAR_NO_LONG,UNKNOWN,-1.1,-0.59,REJECTED,-1.1,top/exhaustion
+idx2372,2021-07-15 10:00,4.48,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx3799,2022-06-16 18:00,4.44,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx4644,2023-01-03 19:00,4.43,M5_SWING_ORIGIN,,BOM,2.94,1.69,REJECTED,1.78,big V-reversal / estrutura larga válida (monumental)
+idx9805,2026-05-06 14:00,4.39,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx2174,2021-05-31 02:00,4.35,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+E34,2020-02-25 23:00,4.34,M5_SWING_ORIGIN,EXHAUSTION_LONG_TRAP,UNKNOWN,-1.1,0.13,REJECTED,-1.1,top/exhaustion
+idx4429,2022-11-10 19:00,4.33,M5_SWING_ORIGIN,,UNKNOWN,-0.11,-0.11,REJECTED,-0.11,unknown — needs visual/better entry
+idx3443,2022-03-24 10:00,4.27,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx8544,2025-07-11 06:00,4.25,M5_SWING_ORIGIN,,UNKNOWN,1.01,0.01,REJECTED,0.02,unknown — needs visual/better entry
+idx2991,2021-12-08 03:00,4.22,M5_SWING_ORIGIN,,UNKNOWN,-1.1,-1.1,REJECTED,-1.1,unknown — needs visual/better entry
+idx9287,2026-01-05 07:00,4.06,M5_SWING_ORIGIN,,UNKNOWN,1.64,1.27,REJECTED,1.29,unknown — needs visual/better entry
