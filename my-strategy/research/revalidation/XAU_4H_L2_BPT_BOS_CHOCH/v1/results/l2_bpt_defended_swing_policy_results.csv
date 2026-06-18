@@ -1,0 +1,3 @@
+policy,n,no_trade,WR,avgR,sumR,PF,maxDD,streak,slATRmed,slATRp90,slATRmax,gt4
+V1_HYBRID,224,52,50.4,0.325,72.7,1.67,14.5,9,2.94,5.02,15.04,45
+V2_NEAREST_VALID,276,0,43.5,0.29,80.1,1.48,27.0,9,1.84,3.04,5.3,6
