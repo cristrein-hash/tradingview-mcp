@@ -1,8 +1,10 @@
 # CANONICAL TRADE PLOTTING — XAU 4H (fonte única de verdade)
 
-**Status:** CANÔNICO · **Atualizado:** 2026-06-16 · **Escopo:** plotar trades (entries de estratégia/backtest/candidatos) num chart TradingView via MCP `draw_shape`.
+**Status:** CANÔNICO · **Atualizado:** 2026-06-18 · **Escopo:** plotar trades (entries de estratégia/backtest/candidatos) num chart TradingView via MCP `draw_shape`.
 
 > Esta é a **única** referência canônica de plotagem. Onde memória/docs antigos divergirem (em especial sobre `stopLevel`/`profitLevel`), **este documento prevalece**. Script de referência vivo: `alert-bridge/draw_xau_4h_trades.py`.
+
+> 🚨 **REGRA ABSOLUTA (Cris 2026-06-18): NUNCA plotar sem LER E VERIFICAR este documento antes.** Toda plotagem = `long_position` (largura **20 barras**) + `text` label. Nunca lines/vertical/text-only como substituto. Verificar §2 (largura 20 barras) + §0 (ticks) ANTES de qualquer `draw_shape`.
 
 ---
 
@@ -63,11 +65,13 @@ draw_shape({
 |---|---|
 | `point.time` | `entry_time` (unix) |
 | `point.price` | `entry_price` |
-| `point2.time` | `exit_time` (ou target_time visual) |
+| `point2.time` | **`entry_time + 20 × bar_seconds`** (LARGURA PADRÃO = **20 barras**; 4H → `+ 20×14400`) |
 | `point2.price` | `target_price` |
 | `overrides.stopLevel` | `round((entry − stop)/mintick)` (ticks) |
 | `overrides.profitLevel` | `round((target − entry)/mintick)` (ticks) |
 | `mintick` (XAU) | **0.01** |
+
+> ⭐ **LARGURA PADRÃO DO long_position = 20 BARRAS** (confirmado por Cris 2026-06-18). A largura é a extensão temporal `point2.time − entry_time`. Usar **20 barras** salvo pedido explícito de outro valor. **Largura < ~6 barras vira sliver invisível em zoom multi-mês** (erro 2026-06-18: 4 barras = "não tenho longs no chart"); largura default do `createShape` de 1 ponto é larga demais. 20 barras = visível + compacto.
 
 ---
 
@@ -112,7 +116,8 @@ Se a fonte tiver política própria (V_stair, target dinâmico), usar a dela e *
 `alert-bridge/draw_xau_4h_trades.py`:
 - `price_to_ticks_offset(entry_price, level_price, mintick=0.01)` → `int(round(abs(level − entry)/mintick))`; valida mintick>0 e preços finitos (hard stop).
 - Desenha `long_position` (ticks) + label verde/vermelho por `close_R`.
-- Constantes de exit default (se a fonte não tiver SL/TP): `STOP_R_MULT=1.0`, `TARGET_R_MULT=2.7`, `HORIZON_BARS=10` — **declarar** quando usadas.
+- Constantes de exit default (se a fonte não tiver SL/TP): `STOP_R_MULT=1.0`, `TARGET_R_MULT=2.7` — **declarar** quando usadas.
+- **LARGURA padrão da caixa = 20 barras** (`exit_time = entry_time + 20 × bar_seconds`). `HORIZON_BARS=10` do script antigo está SUPERSEDED pelo padrão 20 (Cris 2026-06-18). Largura controla-se SÓ via `point2.time`; `createShape` de 1 ponto (sem point2) = largura default larga = ❌.
 
 Antes de plotar QUALQUER trade: ir **direto** a este helper / esta referência. Não auditar o MCP do zero nem inventar marcador.
 
