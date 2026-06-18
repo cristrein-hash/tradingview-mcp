@@ -1,0 +1,16 @@
+feature_name,source_file,raw_or_derived,causal_check,mapping_status,known_caveat,allowed_for_gate,allowed_for_tag,notes
+OHLCV_4H,/tmp/raw_features_2020_2026.jsonl,raw,causal (bar i),confirmed,volume=tick (NÃO autoridade),yes,yes,RAW canônico desta frente
+ATR14,derived from frozen 4H,derived,causal,confirmed,-,yes,yes,Wilder TR média 14
+RSI,frozen rsi field,raw,causal (closes<=i),CONFIRMED = Wilder RSI14,~2pt ruído vs recomputo; seeding,yes,yes,median abs diff 1.9 vs Wilder; usado como gate
+legpos90d,derived from frozen H/L,derived,causal (bars<=i),confirmed,-,yes,yes,posição na faixa 90d
+dist_hi90 / ext_lo20,derived from frozen,derived,causal,confirmed,-,yes,yes,distância ATR ao high/low de janela
+body_frac (entry candle),frozen OHLC bar i,derived,causal (close de i conhecido na entrada),confirmed,-,yes,yes,corpo/range do candle de entrada
+RSI_divergence,(detector próprio),derived,-,UNAVAILABLE/BUG-RISK,detector zera/instável,no,no,marcado indisponível — NÃO usar como gate
+volume_real_SessionVP,/tmp/svp_bars.jsonl,raw,causal,available,-,yes(se vol importar),yes,não usado neste filtro (sem vol)
+NAS_labels,frozen nas_recent,raw,causal,mapping=LONG/SHORT first-appearance,não inventar,no(gate isolado),yes,"contexto, não gate; não usado aqui"
+Bubbles,frozen bubbles_recent,raw,causal,BUY=plot0/2/4 SELL=plot6/8/10 POC=plot12,-,no(gate isolado),yes,não usado neste filtro
+Custom_OB_supply_demand,candidate_matrix dist_pol_atr / macro_context,derived,causal (entry-bar),confirmed,-,yes,yes,não primário aqui
+SMC_recent_price,frozen smc_recent,raw,texto causal; PREÇO suspeito,CAVEAT,"usar texto CHoCH/BOS/bars-ago, NÃO preço",no(preço),yes(texto),não usado como preço
+volume_frozen_tick,frozen volume,raw,-,FORBIDDEN,tick-volume não-confiável,no,no,PROIBIDO como autoridade
+deep_confluence,results/l2_bpt_deep_confluence.csv,derived,-,RETRACTED,artefato tick-volume,no,no,PROIBIDO (retratado)
+outcome_proxy,l2_bpt_outcome_proxy_*,derived,-,RETRACTED,mede drift não setup,no,no,PROIBIDO

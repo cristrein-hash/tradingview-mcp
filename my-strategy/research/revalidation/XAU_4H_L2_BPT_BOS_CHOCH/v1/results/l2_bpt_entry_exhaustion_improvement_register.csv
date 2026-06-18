@@ -1,0 +1,5 @@
+filter,n_removed,removed_winners_must,removed_BOM,removed_NAO,removed_UNKNOWN,avgR_before,avgR_after,delta_avgR_ci,sumR_before,sumR_after,delta_sumR_ci,WR_before,WR_after,DD_before,DD_after,delta_maxDD_ci,streak_before,streak_after,P_dAvg>0,P_dDD<0,verdict
+F_TOP_OB_RSI_strict,30,0,0,0,30,0.226,0.258,"(-0.007, 0.031, 0.071)",62.5,63.4,"(-8.5, 1.0, 10.0)",48.2,48.4,24.3,22.1,"(-4.4, -1.1, 1.5)",9,8,0.9,0.76,SMALL_BUT_STABLE
+F_TOP_OB_RSI,38,0,0,0,38,0.226,0.244,"(-0.03, 0.017, 0.064)",62.5,58.2,"(-16.1, -4.4, 6.8)",48.2,47.5,24.3,21.4,"(-4.6, -1.1, 2.7)",9,7,0.74,0.71,SMALL_BUT_STABLE
+F_LATE_LEG_EXT,46,0,1,0,45,0.226,0.238,"(-0.042, 0.013, 0.065)",62.5,54.8,"(-20.6, -7.5, 4.8)",48.2,47.0,24.3,20.1,"(-5.2, -1.1, 3.3)",9,8,0.65,0.7,REJECTED_RECALL_FAIL
+F_WEAK_RECLAIM,14,0,1,0,13,0.226,0.218,"(-0.044, -0.007, 0.022)",62.5,57.1,"(-15.3, -4.9, 2.9)",48.2,47.7,24.3,23.2,"(-1.9, 0.0, 3.1)",9,8,0.35,0.4,REJECTED_RECALL_FAIL
