@@ -1,31 +1,31 @@
 episode_id,entry_ts,entity_id,label_entity_id,plotted,reason_if_not_plotted
-E14,2020-02-20 15:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-E22,2020-07-23 02:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-E23,2020-08-04 22:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx2372,2021-07-15 10:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx4429,2022-11-10 19:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx4964,2023-03-20 02:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx5042,2023-04-06 02:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx5478,2023-07-18 18:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx5668,2023-08-31 10:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx5866,2023-10-17 10:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx6049,2023-11-29 03:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx6453,2024-03-05 11:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx6471,2024-03-08 11:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx6523,2024-03-21 02:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx6597,2024-04-09 10:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx6767,2024-05-17 18:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx6977,2024-07-05 18:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx7022,2024-07-17 06:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx7426,2024-10-18 14:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx7797,2025-01-16 15:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx7816,2025-01-21 19:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx7902,2025-02-11 03:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx8111,2025-03-31 22:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx8589,2025-07-22 18:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx8765,2025-09-02 02:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx8858,2025-09-23 14:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx8923,2025-10-08 10:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx9243,2025-12-22 19:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx9368,2026-01-22 19:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
-idx9390,2026-01-28 11:00,,,no,AWAITING_PRODUCTION_SAFETY_AUTHORIZATION (xau-l1-cycle ativo; pedir go + confirmar symbol/TF antes)
+E14,2020-02-20 15:00,3vvoVh,OhSbyO,yes,
+E22,2020-07-23 02:00,u8FomL,r0GTEh,yes,
+E23,2020-08-04 22:00,BUuHEp,DLONUF,yes,
+idx2372,2021-07-15 10:00,mfGIry,pam8RX,yes,
+idx4429,2022-11-10 19:00,hY6pCr,norWe3,yes,
+idx4964,2023-03-20 02:00,w61al4,1VReQY,yes,
+idx5042,2023-04-06 02:00,SgX4xN,8fUKmA,yes,
+idx5478,2023-07-18 18:00,uIOzaq,qzhAKu,yes,
+idx5668,2023-08-31 10:00,UESYk5,SbgLOG,yes,
+idx5866,2023-10-17 10:00,8Jofgb,b864hk,yes,
+idx6049,2023-11-29 03:00,Ck3L04,cQ1oM0,yes,
+idx6453,2024-03-05 11:00,l3GUdk,yuHgqJ,yes,
+idx6471,2024-03-08 11:00,Frkc52,gdvFYq,yes,
+idx6523,2024-03-21 02:00,PFMFJO,DZYD8i,yes,
+idx6597,2024-04-09 10:00,Zl9DHN,33cgbg,yes,
+idx6767,2024-05-17 18:00,yx1AwR,85vWlN,yes,
+idx6977,2024-07-05 18:00,wXVPR5,kPx7ET,yes,
+idx7022,2024-07-17 06:00,9s5VAt,7hZ3NS,yes,
+idx7426,2024-10-18 14:00,Zn1mO1,DwGZsN,yes,
+idx7797,2025-01-16 15:00,wudmUO,8V43ve,yes,
+idx7816,2025-01-21 19:00,cGpR1G,fe9pvt,yes,
+idx7902,2025-02-11 03:00,Xj1WzJ,PHDSeQ,yes,
+idx8111,2025-03-31 22:00,VLZiqP,aeuVgC,yes,
+idx8589,2025-07-22 18:00,KepjDn,SnaUo5,yes,
+idx8765,2025-09-02 02:00,nwXn9I,vn2147,yes,
+idx8858,2025-09-23 14:00,c3PNvW,RlFoGH,yes,
+idx8923,2025-10-08 10:00,VDb4jd,GYSRLZ,yes,
+idx9243,2025-12-22 19:00,gpkpdZ,QcuQuy,yes,
+idx9368,2026-01-22 19:00,8oudCN,w9kapz,yes,
+idx9390,2026-01-28 11:00,8iNP2B,oFVyGW,yes,

@@ -7,7 +7,7 @@ Valida o filtro congelado em +1 janela (2021-2022) + lista completa dos filtrado
 
 ## 1. Executive summary
 
-Filtro **congelado** `F_TOP_OB_RSI_strict = legpos90≥85 AND RSI≥70` (sem alterar threshold/condição). **A janela extra ENFRAQUECEU o caso, não fortaleceu:** 2021-2022 filtra só **2 trades** (n=2, não-informativo, período negativo da estratégia). O breakdown anual revelou evidência NOVA negativa: o filtro **corta winners net-positivos em anos de bull (2020 +1.7R, 2025 +2.9R)** — é **regime-blind, não top-específico**. Dos 30 filtrados, mapeiam a 3 curados: **E23 (top confirmado ✓), E14 (review ambíguo), E22 (VALID_SETUP_BAD_SL = false-positive — winner que o problema é SL, não entrada)**. 0 BOM, 0 must-preserve cortados. **Veredito final: HUMAN_REVIEW_FLAG only, NUNCA auto-block** — directionally OK em blow-off (E23) mas corta dips de continuação em bull + 1 winner validado. **Plot dos 30 filtrados: PENDENTE de autorização** (processo chart-controlling `xau-l1-cycle` ativo; risco de colisão).
+Filtro **congelado** `F_TOP_OB_RSI_strict = legpos90≥85 AND RSI≥70` (sem alterar threshold/condição). **A janela extra ENFRAQUECEU o caso, não fortaleceu:** 2021-2022 filtra só **2 trades** (n=2, não-informativo, período negativo da estratégia). O breakdown anual revelou evidência NOVA negativa: o filtro **corta winners net-positivos em anos de bull (2020 +1.7R, 2025 +2.9R)** — é **regime-blind, não top-específico**. Dos 30 filtrados, mapeiam a 3 curados: **E23 (top confirmado ✓), E14 (review ambíguo), E22 (VALID_SETUP_BAD_SL = false-positive — winner que o problema é SL, não entrada)**. 0 BOM, 0 must-preserve cortados. **Veredito final: HUMAN_REVIEW_FLAG only, NUNCA auto-block** — directionally OK em blow-off (E23) mas corta dips de continuação em bull + 1 winner validado. **Plot dos 30 filtrados: EXECUTADO (30/30) em formato CANÔNICO (long_position + label), autorizado pelo Cris** — xau-l1-cycle pausado → plotado → restaurado; receiver/cloudflared/L1 intactos; sem server.js órfão.
 
 ## 2. Frozen filter definition
 
@@ -28,10 +28,15 @@ Anual: 2020 filt3 **netR +1.7 (corta positivo)** · 2021 −1.1 · 2022 −0.1 �
 
 30 trades filtrados (2020:3, 2021:1, 2022:1, 2023:6, 2024:8, 2025:9, 2026:2). **0 BOM, 0 must-preserve.** Mapeiam a curados: **E14, E22, E23**. top_likelihood heurístico: 21 HIGH / 8 MEDIUM / 1 LOW — **circular** (usa as mesmas legpos/RSI que definem o filtro; descartado como validação pelo DA).
 
-## 5. Plot protocol (PENDENTE — não executado)
+## 5. Plot protocol (EXECUTADO — 30/30 canônico)
 
-**Preflight de produção (read-only) detectou processo chart-controlling ativo:** `com.cristrein.xau-l1-cycle` (LaunchAgent carregado), CDP 9222 escutando (TradingView ativo, PID 1525), receiver (841) + cloudflared (1033) vivos (L1 produção). Pela seção Segurança do bloco ("pausar de forma segura ou pedir autorização antes" se houver chart-controlling ativo), **o plot NÃO foi executado autonomamente** — risco de colisão (xau-l1-cycle pode disparar e mudar símbolo/TF/plotar). `..._plot_manifest.csv` = todos `plotted=no, reason=AWAITING_PRODUCTION_SAFETY_AUTHORIZATION`.
-**Protocolo aprovado para quando autorizado:** confirmar PEPPERSTONE:XAUUSD 4H/240; não apagar desenhos; label `F_STRICT #<eid> · RSI <v> · LP <lp>`; cor laranja/vermelho (review, NÃO outcome); sem winner/loser, sem R no label; Long Position se entry/SL/target, senão label+marker.
+**Autorizado pelo Cris: pausar xau-l1-cycle → plotar → restaurar.** Sequência executada:
+1. `launchctl bootout` do `com.cristrein.xau-l1-cycle` (pausado, verificado); receiver/cloudflared/L1 NÃO tocados.
+2. `chart_get_state`: PEPPERSTONE:XAUUSD confirmado; resolution 1D→ajustado para **240 (4H)**; indicadores do Cris preservados.
+3. **Plotagem CANÔNICA** (long_position + label, via cliente MCP do projeto `draw_xau_4h_trades.py`): cada trade = `long_position` (entry=close, stopLevel/profitLevel em TICKS via mintick 0.01: stop estrutural, target +2R) + label `F_STRICT #<eid> · RSI<v> · LP<lp>` (SEM R, SEM outcome). **30/30 plotados.**
+4. `launchctl bootstrap` recarregou o xau-l1-cycle ✓; sem server.js órfão (só o do harness).
+
+🚨 **Correção registrada:** uma primeira tentativa usou vertical_line+text (NÃO-canônico). Cris reiterou enfático: **neste projeto só plotagem CANÔNICA (long_position+label), NUNCA lines/text-only.** Os 9 desenhos errados foram removidos (só meus IDs) ANTES do plot canônico. Manifest (`..._plot_manifest.csv`) = 30 entity_ids reais, plotted=yes.
 
 ## 6. Visual review summary (`..._visual_review.csv`)
 
