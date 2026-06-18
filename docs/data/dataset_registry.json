@@ -1,18 +1,18 @@
 {
   "_meta": {
-    "generated_at": "2026-06-10T23:05:35.022203+00:00",
+    "generated_at": "2026-06-18T21:24:27.591213+00:00",
     "generated_by": "scripts/build_dataset_registry.py",
     "external_root": "/Volumes/GUTS_ LACIE/TradingData",
     "primary_integrity_source": "per-file manifests under TradingData/manifests (and superseded/)",
     "integrity_validated": "gzip -t + sha256(gz)==manifest, per entry",
     "feature_availability_note": "per-bar availability NOT deep-scanned; derived from manifest notes only",
-    "dataset_count": 21,
+    "dataset_count": 22,
     "counts_by_tf_status": {
       "15M_active": 8,
       "15M_superseded": 1,
       "30M_active": 4,
       "1H_active": 3,
-      "4H_active": 3,
+      "4H_active": 4,
       "None_active": 1,
       "1D_active": 1
     },
@@ -606,6 +606,42 @@
     {
       "symbol": "XAUUSD",
       "timeframe": "4H",
+      "start_date": "2013-02-01",
+      "end_date": "2016-05-25",
+      "replay_range_real": {
+        "start": "2013-01-31T23:59:59",
+        "end": "2016-05-25T01:59:59 UTC"
+      },
+      "bars": 5100,
+      "raw_gz_path": "TradingData/raw_replay/XAUUSD/4H/XAUUSD_240m_replay_2013-02-01_to_2016-05-25.jsonl.gz",
+      "manifest_path": "TradingData/manifests/XAUUSD_240m_replay_2013-02-01_to_2016-05-25_manifest.txt",
+      "sha256_original": "349c2b69e5cbf59965309581b0ebad0cdb95cf01df13a811e38c9d3f3ac3b713",
+      "sha256_gz": "6175e11fa4be57f3c66c4f9a6a1f8a8511995004a1410fc9a6a6d034469f201e",
+      "original_size_bytes": 558471389,
+      "gz_size_bytes": 68600117,
+      "collected_at": "2026-06-18T19:00:00Z",
+      "feature_baseline": "Custom OB Detector v11 — Alert (baseline), LuxAlgo SMC, NAS Top Bottom, Market Order Bubbles, RSI (all 5 confirmed by name) + Volume",
+      "feature_availability": {
+        "per_bar_deep_scanned": false,
+        "source": "manifest",
+        "summary": "not recorded in manifest (integrity validated via gzip+sha)"
+      },
+      "known_gaps": [],
+      "collector": "run_xau_replay_feature_collect.py",
+      "window_mode": "replay-collect",
+      "series_group": "XAUUSD_4H",
+      "series_order": 1,
+      "status": "active",
+      "notes": "XAU 4H Option-B independent BEAR sample (validation of L2/BPT Trade Qualification Engine). Local original retained until deletion approval.",
+      "_integrity": {
+        "exists": true,
+        "gzip_t": true,
+        "sha256_match": true
+      }
+    },
+    {
+      "symbol": "XAUUSD",
+      "timeframe": "4H",
       "start_date": "2016-05-25",
       "end_date": "2020-01-01",
       "replay_range_real": {
@@ -632,7 +668,7 @@
       "collector": "run_xau_replay_feature_collect.py",
       "window_mode": "replay-collect",
       "series_group": "XAUUSD_4H",
-      "series_order": 1,
+      "series_order": 2,
       "status": "active",
       "notes": "XAU 4H block 1 of 3. Local original retained until deletion approval.",
       "_integrity": {
@@ -668,7 +704,7 @@
       "collector": "run_xau_replay_feature_collect.py",
       "window_mode": "replay-collect",
       "series_group": "XAUUSD_4H",
-      "series_order": 2,
+      "series_order": 3,
       "status": "active",
       "notes": "XAU 4H block 2 of 3. Local original retained until deletion approval.",
       "_integrity": {
@@ -704,7 +740,7 @@
       "collector": "run_xau_replay_feature_collect.py",
       "window_mode": "replay-collect",
       "series_group": "XAUUSD_4H",
-      "series_order": 3,
+      "series_order": 4,
       "status": "active",
       "notes": "XAU 4H block 3 of 3. Local original retained until deletion approval.",
       "_integrity": {
@@ -715,9 +751,9 @@
     },
     {
       "symbol": "XAUUSD",
-      "timeframe": "4H",
-      "start_date": "2019-12-01",
-      "end_date": "2026-06-10",
+      "timeframe": null,
+      "start_date": null,
+      "end_date": null,
       "replay_range_real": {
         "start": "2019-11-30T23:59:59",
         "end": "2026-06-10T01:59:59 UTC"
@@ -737,9 +773,9 @@
         "summary": "not recorded in manifest (integrity validated via gzip+sha)"
       },
       "known_gaps": [],
-      "collector": "variante staging de run_xau_replay_feature_collect.py + SVP/heartbeat (/tmp/run_xau_replay_svp_collect.py)",
-      "window_mode": "manual maintenance window (daemon+cron bootout; pause flag mantida; sem safe_backtest_window por instrução — trap removeria pause flag)",
-      "series_group": "XAUUSD_4H_SVP_LUX",
+      "collector": "run_xau_replay_feature_collect.py",
+      "window_mode": "replay-collect",
+      "series_group": null,
       "series_order": 1,
       "status": "active",
       "notes": "Dataset SVP/LUX serie propria (nao substitui blocos 1-3 do XAUUSD_4H). Staging preservado ate autorizacao. Collector: variante staging de run_xau_replay_feature_collect.py + SVP/heartbeat (/tmp/run_xau_replay_svp_collect.py).",
@@ -747,27 +783,7 @@
         "exists": true,
         "gzip_t": true,
         "sha256_match": true
-      },
-      "source_type": "raw_replay",
-      "snapshot_count": 10074,
-      "unique_bar_count": 10035,
-      "fields_presence": {
-        "ohlcv": "100%",
-        "study_values": "100%",
-        "pine_labels": "100%",
-        "pine_lines": "100%",
-        "pine_shapes_bubbles": "100%",
-        "session_vp": "100%",
-        "pine_boxes": "10073/10074 (bar 1 do replay)"
-      },
-      "caveats": [
-        "gaps diarios 22:00-03:00 UTC = fechamento sessao ouro (normal)",
-        "39 replay-stall overwrites (~0.4%) — keep-last na extracao",
-        "Market Structure CHoCH/BOS intermitente ~11% — rastrear por primeira-aparicao",
-        "Session VP presente por bar (POC/VAH/VAL, last3 sessoes)"
-      ],
-      "manifest_json_path": "TradingData/manifests/XAUUSD_4H_replay_2019-12_to_2026-current_SVP_LUX_manifest.json",
-      "_post_generator_patch": "campos timeframe/datas/series/collector/counts adicionados manualmente 2026-06-11 (parser do generator espera padrao 240m no filename); fonte de verdade = manifests"
+      }
     },
     {
       "symbol": "XAUUSD",

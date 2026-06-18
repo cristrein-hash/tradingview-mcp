@@ -1,0 +1,2 @@
+block,range_real,bars,unique_ts,dup_ts,out_of_order,invalid_json,error_count,sources_present,indicators,gz_path,sha256_gz,gzip_t,roundtrip,local_retained
+BEAR_2013_2016,2013-01-31T23:59:59Z..2016-05-25T01:59:59Z,5100,5076,24,0,0,0,6/6 (5100/5100),OB+SMC+NAS+Bubbles+RSI+Volume,TradingData/raw_replay/XAUUSD/4H/XAUUSD_240m_replay_2013-02-01_to_2016-05-25.jsonl.gz,6175e11fa4be57f3c66c4f9a6a1f8a8511995004a1410fc9a6a6d034469f201e,OK,MATCH,YES
