@@ -1,0 +1,9 @@
+stage,status,count,detail
+raw_features_OOS,DONE,5100,reconstruct + rsi patch Rota A; rsi null=5 (0.1%); OHLC/bubbles 100%
+daily_1D_bars_OOS,DONE,855,sessão 22:00 UTC do 4H; convenção in-sample; edge SMA início-2013
+L2_detector_universe,DONE,3798,"3798 raw (A:2125,B_ctx:171,B:1502); pré-pruning"
+stages_5_11_pruning_84factors,PENDING,0,build sensível à fidelidade; cada builder precisa adaptação de interface (1D builder teve mismatch); NÃO fabricado
+specialist_capitulation_evidence,PENDING,0,exige rodar agente AI (prompt congelado) sobre packets OOS
+specialist_rsi_momentum_evidence,PENDING,0,idem
+outcomes_OOS,PENDING,0,forward sim (stage 14) — pendente de packets/universo pruned
+apply_frozen_hypothesis,BLOCKED_PENDING,0,só após packets+evidence+outcomes; regra congelada capit&rsi supportive

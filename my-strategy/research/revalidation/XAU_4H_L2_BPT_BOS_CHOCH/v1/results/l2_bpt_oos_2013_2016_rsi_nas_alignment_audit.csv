@@ -1,0 +1,10 @@
+check,result,detail
+rsi_nas_aligned_by_timestamp,PASS,bar_time = último ohlcv time; 5076 bars únicos atribuídos ao bar que o snapshot fecha
+no_future_bar_value,PASS,valor nunca atribuído a bar futuro (apenas ao bar corrente do snapshot)
+no_forming_used_as_closed,PASS,replay captura após o bar formar; último ohlcv = bar fechado no seu time; entry=close do bar i (causal)
+duplicates_deterministic,PASS,keep-last; 24 bars com >1 snapshot (~0.47%)
+all_bars_status_clear,PASS,5076/5076 bars com alignment_status preenchido
+missing_null_reported,PASS,rsi ausente na extração direta: 0
+nas_rsi_available_when_needed,PASS,"rsi 100% disponível; NAS signals presentes (disparos raros, esperado); NAS não é input da hipótese capit+rsi"
+recon_vs_direct_rsi_agreement,PASS,rsi direto difere da reconstrução em 1/5073 bars (99.98%) — Rota A remove resíduo
+ambiguous_alignment_unresolved,NONE,nenhum alinhamento ambíguo não-resolvido -> não parar
