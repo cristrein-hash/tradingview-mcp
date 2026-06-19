@@ -11,10 +11,11 @@ from datetime import datetime, timezone
 from bisect import bisect_right
 from collections import Counter, defaultdict
 
-D = "/Users/cristrein/tradingview-mcp/my-strategy/research/revalidation/XAU_4H_L2_BPT_BOS_CHOCH/v1/results"
+D = os.environ.get("L2_OUT_DIR", "/Users/cristrein/tradingview-mcp/my-strategy/research/revalidation/XAU_4H_L2_BPT_BOS_CHOCH/v1/results")
 RAW = "/Volumes/GUTS_ LACIE/TradingData/raw_replay/XAUUSD"
 GZ_4H = [f"{RAW}/4H/XAUUSD_240m_replay_2020-01-01_to_2023-01-01.jsonl.gz",
          f"{RAW}/4H/XAUUSD_240m_replay_2023-01-03_to_2026-05-25.jsonl.gz"]
+GZ_4H = [os.environ["L2_GZ_4H"]] if os.environ.get("L2_GZ_4H") else GZ_4H
 GZ_1D = f"{RAW}/1D/XAUUSD_1D_replay_2012-06-19_to_2026-05-25.jsonl.gz"
 COB="OB Detector"; WIN=12  # retest/touch window (bars before entry)
 

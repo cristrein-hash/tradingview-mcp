@@ -1,0 +1,7 @@
+stage,output,detail,result
+7_demand_supply_quality,1361,Custom OB do gz OOS; 4H OB align-miss 2; GZ_1D 2012-2026 cobre OOS,PASS
+8_macro_context,1361,"boxes4h 5076, d1_records 3602",PASS
+9_d1_sig_NAS,5076 bars,nas_long_new 251; NAS labels do gz OOS,PASS
+10_svp,0,Session VP NÃO coletado 2013-2016 -> SVP factors null (below_VAL etc); decisive 1/276 in-sample -> gap menor documentado,DEGRADED_DOCUMENTED
+11_qualification_extract,132 packets x84,"universo final OOS; swing_anatomy header-only (E1-E40 in-sample N/A, só sim-features excluídas do packet)",PASS
+packets_84f,132,schema 100% match in-sample; rsi 0 null; causal; sem leak de outcome/decision,PASS

@@ -12,7 +12,7 @@ import json,csv,gzip,math
 import os
 from datetime import datetime,timezone
 from collections import Counter,defaultdict
-D="results"
+D=os.environ.get("L2_OUT_DIR","results")
 
 # ============ FROZEN 4H ============
 fr=[json.loads(l) for l in open(os.environ.get("L2_RAW_FEATURES","/tmp/raw_features_2020_2026.jsonl"))]
@@ -75,7 +75,7 @@ def rsi_bull_div(i,win=20):
 
 # ============ gz: OB Detector (demand/supply) + NAS labels+numeric + SMC + RSI-MA ============
 RAW="/Volumes/GUTS_ LACIE/TradingData/raw_replay/XAUUSD"
-GZ=[f"{RAW}/4H/XAUUSD_240m_replay_2020-01-01_to_2023-01-01.jsonl.gz",f"{RAW}/4H/XAUUSD_240m_replay_2023-01-03_to_2026-05-25.jsonl.gz"]
+GZ=[os.environ["L2_GZ_4H"]] if os.environ.get("L2_GZ_4H") else [f"{RAW}/4H/XAUUSD_240m_replay_2020-01-01_to_2023-01-01.jsonl.gz",f"{RAW}/4H/XAUUSD_240m_replay_2023-01-03_to_2026-05-25.jsonl.gz"]
 demlow_by_ts={};demhigh_by_ts={};suplow_by_ts={}
 nas_new={};nas_short_new={};nas_num_by_ts={}
 smc_bos_new={};smc_choch_new={}  # ts-> (text, color, price) quando label novo aparece

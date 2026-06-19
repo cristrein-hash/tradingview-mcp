@@ -11,10 +11,11 @@ from datetime import datetime, timezone
 from collections import defaultdict
 from bisect import bisect_right
 
-BASE_D = "/Users/cristrein/tradingview-mcp/my-strategy/research/revalidation/XAU_4H_L2_BPT_BOS_CHOCH/v1/results"
+BASE_D = os.environ.get("L2_OUT_DIR", "/Users/cristrein/tradingview-mcp/my-strategy/research/revalidation/XAU_4H_L2_BPT_BOS_CHOCH/v1/results")
 RAW_DIR = "/Volumes/GUTS_ LACIE/TradingData/raw_replay/XAUUSD"
 GZ_4H = [f"{RAW_DIR}/4H/XAUUSD_240m_replay_2020-01-01_to_2023-01-01.jsonl.gz",
          f"{RAW_DIR}/4H/XAUUSD_240m_replay_2023-01-03_to_2026-05-25.jsonl.gz"]
+GZ_4H = [os.environ["L2_GZ_4H"]] if os.environ.get("L2_GZ_4H") else GZ_4H
 GZ_1D = f"{RAW_DIR}/1D/XAUUSD_1D_replay_2012-06-19_to_2026-05-25.jsonl.gz"
 COB = "OB Detector"
 TOL_D1 = 0.5  # *ATR_D1 — diagnostic tolerance (calibration, reported; not a final threshold)

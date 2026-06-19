@@ -13,7 +13,7 @@ from L2_detector_v2_2 import (RAW, ATR, SMA50, N, D, ND, SMA200_D, daily_idx_for
                               SELL_PLOTS, LARGE_BUY, LARGE_SELL, is_falso_tipo_B_dump_direto,
                               run_candidate_generator)
 
-OUT = "/Users/cristrein/tradingview-mcp/my-strategy/research/revalidation/XAU_4H_L2_BPT_BOS_CHOCH/v1/results"
+OUT = os.environ.get("L2_OUT_DIR", "/Users/cristrein/tradingview-mcp/my-strategy/research/revalidation/XAU_4H_L2_BPT_BOS_CHOCH/v1/results")
 GT = json.load(open(os.environ.get('L2_GROUND_TRUTH','/tmp/L2_ground_truth_v1.json')))
 def pts(s): return int(datetime.strptime(s,'%Y-%m-%d %H:%M').replace(tzinfo=timezone.utc).timestamp())
 def fmt(ts): return datetime.fromtimestamp(ts,tz=timezone.utc).strftime('%Y-%m-%d %H:%M')

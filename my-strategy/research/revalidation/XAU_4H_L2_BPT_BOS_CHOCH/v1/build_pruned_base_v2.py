@@ -4,10 +4,10 @@ Reproduces the user-approved cross-factor combination. Event-level recall must s
 NO new combinations, NO PnL/backtest/plot/MCP/production/SLIM. CANDIDATE_BASE only.
 If any BOM event is lost -> STOP, do not formalize.
 """
-import csv, json, sys
+import csv, json, sys, os
 from collections import defaultdict, Counter
 
-D = "/Users/cristrein/tradingview-mcp/my-strategy/research/revalidation/XAU_4H_L2_BPT_BOS_CHOCH/v1/results"
+D = os.environ.get("L2_OUT_DIR", "/Users/cristrein/tradingview-mcp/my-strategy/research/revalidation/XAU_4H_L2_BPT_BOS_CHOCH/v1/results")
 rows = list(csv.DictReader(open(f"{D}/l2_bpt_v2_2_candidate_matrix.csv")))
 for r in rows: r['ei'] = int(r['candidate_id'][1:])
 REDUNDANT = {'fractal_2_2','nivel_interno','topo_duplo'}
@@ -43,10 +43,10 @@ def recall(ks): return {g for g,s in bom_ev.items() if s&ks}
 kept_bom=recall(kept)
 lost_bom=set(bom_ev)-kept_bom
 if lost_bom:
-    print(f"FAIL: BOM lost {sorted(lost_bom)} -> NOT formalizing V2"); sys.exit(1)
+    print(f"FAIL: BOM lost {sorted(lost_bom)} -> NOT formalizing V2"); (None if os.environ.get('L2_SKIP_GT_GUARD') else sys.exit(1))
 frag_status={g:('preserved' if (bom_ev[g]&kept) else 'LOST') for g in FRAGILE}
 if any(v=='LOST' for v in frag_status.values()):
-    print(f"FAIL: fragile lost {frag_status} -> NOT formalizing V2"); sys.exit(1)
+    print(f"FAIL: fragile lost {frag_status} -> NOT formalizing V2"); (None if os.environ.get('L2_SKIP_GT_GUARD') else sys.exit(1))
 
 # ---- Tarefa 1/2: reproduce + P0/P1/P2/P3 ----
 def stat(name, prune_fn, rule):

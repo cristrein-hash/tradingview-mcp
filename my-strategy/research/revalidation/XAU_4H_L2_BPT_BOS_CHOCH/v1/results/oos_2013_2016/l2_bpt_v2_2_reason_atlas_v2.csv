@@ -1,0 +1,13 @@
+reason_id,description,preserved_BOM_count,cut_NAO_count,cut_UNKNOWN_count,recommended_role,confidence,notes
+false_tipo_B_dump_direto,false tipo B dump direto,0,0,0,tag,"low(GT_BOM_events=0,NAO_events=0)","event-level: keeps 0/0 BOM, removes 0/0 NAO; cand-level UNKNOWN cut 0/3798"
+CHoCH_not_BOS,CHoCH not BOS,0,0,640,hard_veto_candidate,"low(GT_BOM_events=0,NAO_events=0)","event-level: keeps 0/0 BOM, removes 0/0 NAO; cand-level UNKNOWN cut 640/3798"
+first_retomada,first retomada,0,0,2707,hard_veto_candidate,"low(GT_BOM_events=0,NAO_events=0)","event-level: keeps 0/0 BOM, removes 0/0 NAO; cand-level UNKNOWN cut 2707/3798"
+bear_flag,bear flag,0,0,564,hard_veto_candidate,"low(GT_BOM_events=0,NAO_events=0)","event-level: keeps 0/0 BOM, removes 0/0 NAO; cand-level UNKNOWN cut 564/3798"
+BOS_fraco,BOS fraco,0,0,1392,hard_veto_candidate,"low(GT_BOM_events=0,NAO_events=0)","event-level: keeps 0/0 BOM, removes 0/0 NAO; cand-level UNKNOWN cut 1392/3798"
+cluster_BUY_climax,cluster BUY climax,0,0,168,hard_veto_candidate,"low(GT_BOM_events=0,NAO_events=0)","event-level: keeps 0/0 BOM, removes 0/0 NAO; cand-level UNKNOWN cut 168/3798"
+bear_macro,bear macro,0,0,2076,hard_veto_candidate,"low(GT_BOM_events=0,NAO_events=0)","event-level: keeps 0/0 BOM, removes 0/0 NAO; cand-level UNKNOWN cut 2076/3798"
+volume_fraco,volume fraco,0,0,1275,hard_veto_candidate,"low(GT_BOM_events=0,NAO_events=0)","event-level: keeps 0/0 BOM, removes 0/0 NAO; cand-level UNKNOWN cut 1275/3798"
+no_absorption,no absorption,0,0,0,tag,"low(GT_BOM_events=0,NAO_events=0)","event-level: keeps 0/0 BOM, removes 0/0 NAO; cand-level UNKNOWN cut 0/3798"
+no_polarity_defense,no polarity defense,0,0,208,hard_veto_candidate,"low(GT_BOM_events=0,NAO_events=0)","event-level: keeps 0/0 BOM, removes 0/0 NAO; cand-level UNKNOWN cut 208/3798"
+no_retest,no retest,0,0,114,hard_veto_candidate,"low(GT_BOM_events=0,NAO_events=0)","event-level: keeps 0/0 BOM, removes 0/0 NAO; cand-level UNKNOWN cut 114/3798"
+overextended_entry,overextended entry,0,0,669,hard_veto_candidate,"low(GT_BOM_events=0,NAO_events=0)","event-level: keeps 0/0 BOM, removes 0/0 NAO; cand-level UNKNOWN cut 669/3798"

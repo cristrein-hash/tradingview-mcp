@@ -1,0 +1,4 @@
+stage,input,output,detail,result
+5_candidate_matrix,3798 detector cands,3798 matrix,12 blockers causais; OUT isolado via L2_OUT_DIR,PASS
+6_pruned_base_v2,3798,1361 kept,overextended+src_redundant+bear_flag (3 regras causais FIXAS); guard recall-GT in-sample pulado via L2_SKIP_GT_GUARD (N/A OOS),PASS
+structural_vs_insample,in-sample 7763->2965->276,OOS 3798->1361->132,densidade: cand 1151 vs 1232/y; pruned 412 vs 471/y; final 40 vs 44/y — COMPARÁVEL,PASS

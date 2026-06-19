@@ -1,0 +1,9 @@
+check,result,detail
+packet_count,132,OOS final universe (132)
+factor_count,84,84 esperado
+schema_match_vs_insample,PASS,faltam=[] extra=[]
+no_leak_fields,PASS*,"só episode_id (=identificador, removido no --prep antes dos especialistas, igual in-sample); decision/realR/exitype/setup_type AUSENTES"
+rsi_populated,PASS,null=0
+capit_primary_populated,PASS,drop20_atr+rsi_min8
+svp_below_VAL_null,EXPECTED_NULL,SVP ausente 2013-2016; below_VAL null=132/132
+causal_no_future,PASS,entry=close bar i; RSI Rota A causal; reconstruct causal

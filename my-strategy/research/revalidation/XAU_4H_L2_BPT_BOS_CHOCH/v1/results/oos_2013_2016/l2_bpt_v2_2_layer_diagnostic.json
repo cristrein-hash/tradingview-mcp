@@ -1,0 +1,147 @@
+{
+  "false_tipo_B_dump_direto": {
+    "BOM_events_kept": 0,
+    "BOM_events_lost": 0,
+    "NAO_events_removed": 0,
+    "UNKNOWN_cand_cut": 0,
+    "role": "tag"
+  },
+  "CHoCH_not_BOS": {
+    "BOM_events_kept": 0,
+    "BOM_events_lost": 0,
+    "NAO_events_removed": 0,
+    "UNKNOWN_cand_cut": 640,
+    "role": "hard_veto_candidate"
+  },
+  "first_retomada": {
+    "BOM_events_kept": 0,
+    "BOM_events_lost": 0,
+    "NAO_events_removed": 0,
+    "UNKNOWN_cand_cut": 2707,
+    "role": "hard_veto_candidate"
+  },
+  "bear_flag": {
+    "BOM_events_kept": 0,
+    "BOM_events_lost": 0,
+    "NAO_events_removed": 0,
+    "UNKNOWN_cand_cut": 564,
+    "role": "hard_veto_candidate"
+  },
+  "BOS_fraco": {
+    "BOM_events_kept": 0,
+    "BOM_events_lost": 0,
+    "NAO_events_removed": 0,
+    "UNKNOWN_cand_cut": 1392,
+    "role": "hard_veto_candidate"
+  },
+  "cluster_BUY_climax": {
+    "BOM_events_kept": 0,
+    "BOM_events_lost": 0,
+    "NAO_events_removed": 0,
+    "UNKNOWN_cand_cut": 168,
+    "role": "hard_veto_candidate"
+  },
+  "bear_macro": {
+    "BOM_events_kept": 0,
+    "BOM_events_lost": 0,
+    "NAO_events_removed": 0,
+    "UNKNOWN_cand_cut": 2076,
+    "role": "hard_veto_candidate"
+  },
+  "volume_fraco": {
+    "BOM_events_kept": 0,
+    "BOM_events_lost": 0,
+    "NAO_events_removed": 0,
+    "UNKNOWN_cand_cut": 1275,
+    "role": "hard_veto_candidate"
+  },
+  "no_absorption": {
+    "BOM_events_kept": 0,
+    "BOM_events_lost": 0,
+    "NAO_events_removed": 0,
+    "UNKNOWN_cand_cut": 0,
+    "role": "tag"
+  },
+  "no_polarity_defense": {
+    "BOM_events_kept": 0,
+    "BOM_events_lost": 0,
+    "NAO_events_removed": 0,
+    "UNKNOWN_cand_cut": 208,
+    "role": "hard_veto_candidate"
+  },
+  "no_retest": {
+    "BOM_events_kept": 0,
+    "BOM_events_lost": 0,
+    "NAO_events_removed": 0,
+    "UNKNOWN_cand_cut": 114,
+    "role": "hard_veto_candidate"
+  },
+  "overextended_entry": {
+    "BOM_events_kept": 0,
+    "BOM_events_lost": 0,
+    "NAO_events_removed": 0,
+    "UNKNOWN_cand_cut": 669,
+    "role": "hard_veto_candidate"
+  },
+  "_meta": {
+    "total_candidates": 3798,
+    "GT_BOM_events": 0,
+    "NAO_events": 0,
+    "cand_BOM": 0,
+    "cand_NAO": 0,
+    "cand_UNKNOWN": 3798,
+    "density_by_source": {
+      "nivel_interno": 706,
+      "fractal_2_2": 58,
+      "fractal_3_3": 1870,
+      "swing_high_simples": 233,
+      "topo_duplo": 931
+    },
+    "bom_cand_by_source": {},
+    "nao_cand_by_source": {},
+    "safe_reduction_union": {
+      "zero_BOM_blockers": [
+        "false_tipo_B_dump_direto",
+        "CHoCH_not_BOS",
+        "first_retomada",
+        "bear_flag",
+        "BOS_fraco",
+        "cluster_BUY_climax",
+        "bear_macro",
+        "volume_fraco",
+        "no_absorption",
+        "no_polarity_defense",
+        "no_retest",
+        "overextended_entry"
+      ],
+      "BOM_events_kept": 0,
+      "BOM_events_total": 0,
+      "NAO_events_removed": 0,
+      "UNKNOWN_cand_cut": 3631,
+      "candidates_remaining": 167,
+      "density_reduction_pct": 95.6
+    },
+    "best_single_zeroBOM_layer": "first_retomada",
+    "safe_reduction_greedy_17of17": {
+      "layers": [
+        "first_retomada",
+        "bear_macro",
+        "BOS_fraco",
+        "volume_fraco",
+        "overextended_entry",
+        "CHoCH_not_BOS",
+        "bear_flag",
+        "no_polarity_defense",
+        "cluster_BUY_climax",
+        "no_retest",
+        "false_tipo_B_dump_direto",
+        "no_absorption"
+      ],
+      "BOM_events_kept": 0,
+      "NAO_events_removed": 0,
+      "UNKNOWN_cand_cut": 3631,
+      "candidates_remaining": 167,
+      "density_reduction_pct": 95.6
+    }
+  }
+}

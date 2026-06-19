@@ -1,0 +1,117 @@
+{
+  "base": "L2_BPT_V2_2_PRUNED_BASE_V2",
+  "status": [
+    "CANDIDATE_BASE",
+    "NOT_STRATEGY",
+    "NOT_VALIDATION",
+    "RECALL_PRESERVED_17_17",
+    "DENSITY_REDUCED_61_8_PERCENT",
+    "WORKING_BASE_FOR_DEEPER_CONTEXT_ANALYSIS"
+  ],
+  "rule": "prune if (overextended_entry OR src_redundant OR bear_flag)",
+  "redundant_sources": [
+    "fractal_2_2",
+    "nivel_interno",
+    "topo_duplo"
+  ],
+  "backbone": "fractal_3_3",
+  "forbidden_as_veto": [
+    "first_retomada",
+    "nas_short_ge5",
+    "BOS_fraco",
+    "bear_macro",
+    "cluster_BUY_climax"
+  ],
+  "borderline_not_base": {
+    "rule": "volume_fraco x overextended_entry",
+    "BOM": "15/17",
+    "kills": [
+      "GT13B",
+      "GT24"
+    ]
+  },
+  "candidates_original": 3798,
+  "candidates_v2": 1361,
+  "reduction_pct": 64.2,
+  "cand_per_year": 194.0,
+  "BOM_recall": "0/0",
+  "fragile_status": {
+    "GT13B": "LOST",
+    "GT17A": "LOST",
+    "GT23": "LOST",
+    "GT24": "LOST"
+  },
+  "NAO_cut": [],
+  "NAO_remain": [],
+  "UNKNOWN_cut": 2437,
+  "UNKNOWN_remain": 1361,
+  "versions": [
+    {
+      "name": "P0_original",
+      "rule": "sem pruning",
+      "candidates": 3798,
+      "reduction": 0,
+      "reduction_pct": 0.0,
+      "cand_per_year": 543.0,
+      "BOM_recall": "0/0",
+      "NAO_captured": "0/0",
+      "NAO_cut": 0,
+      "UNKNOWN_cut": 0
+    },
+    {
+      "name": "P1_pruned_base_v1",
+      "rule": "greedy safe union (6 blockers)",
+      "candidates": 1955,
+      "reduction": 1843,
+      "reduction_pct": 48.5,
+      "cand_per_year": 279.0,
+      "BOM_recall": "0/0",
+      "NAO_captured": "0/0",
+      "NAO_cut": 0,
+      "UNKNOWN_cut": 1843
+    },
+    {
+      "name": "P2_pruned_base_v2",
+      "rule": "overextended_entry + src_redundant + bear_flag",
+      "candidates": 1361,
+      "reduction": 2437,
+      "reduction_pct": 64.2,
+      "cand_per_year": 194.0,
+      "BOM_recall": "0/0",
+      "NAO_captured": "0/0",
+      "NAO_cut": 0,
+      "UNKNOWN_cut": 2437
+    },
+    {
+      "name": "P3ref_volfraco_x_bearflag",
+      "rule": "reference only",
+      "candidates": 2147,
+      "reduction": 1651,
+      "reduction_pct": 43.5,
+      "cand_per_year": 307.0,
+      "BOM_recall": "0/0",
+      "NAO_captured": "0/0",
+      "NAO_cut": 0,
+      "UNKNOWN_cut": 1651
+    },
+    {
+      "name": "P3ref_fractal33_x_overext",
+      "rule": "reference only (intersection)",
+      "candidates": 3353,
+      "reduction": 445,
+      "reduction_pct": 11.7,
+      "cand_per_year": 479.0,
+      "BOM_recall": "0/0",
+      "NAO_captured": "0/0",
+      "NAO_cut": 0,
+      "UNKNOWN_cut": 445
+    }
+  ],
+  "recall_revalidated_after_combination": true,
+  "unavailable_discriminators": [
+    "at_D1_demand",
+    "supply_overhead",
+    "custom_ob_demand_supply",
+    "macro_leg"
+  ]
+}
