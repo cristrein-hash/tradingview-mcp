@@ -4,6 +4,30 @@ Escopo: **XAU_4H_L2_BPT_BOS_CHOCH** (Trade Qualification Engine). Não é engine
 cross-strategy. Esta política governa como uma hipótese nasce, é validada e — só então — pode pesar
 em decisão. Existe para impedir que achado in-sample vire narrativa, regra informal ou overfit.
 
+## Objetivo: LUCRO, não winrate/seletividade
+O engine existe para **lucro em prop firm** = **expectancy × frequência** (R-multiple acumulado),
+respeitando streak ≤5 e drawdown da FundedNext. **R:R alto justifica alguns losers a mais.** NÃO se
+busca n baixo + ultra-winrate; over-filtrar mata frequência e lucro (por isso `ultra_filter_risk` é
+risco). Métrica de lucro (expectancy/sumR/profit factor) é primária; winrate/hit_2R é diagnóstico ou
+proxy quando realR está capado. **O gate rejeita o NÃO-VALIDADO/overfit, nunca "winrate moderado".**
+Uma hipótese com WR médio + R:R alto + frequência decente é exatamente o que DEVE passar.
+
+## Simplicidade (skeleton mínimo)
+Governança = caminho mais curto e seguro. As etapas procedurais (readiness + DA + gate + sanity) vivem
+num **único módulo** `hypothesis_gate.py`; o store/schema em `hypothesis_registry.py`; a biblioteca num
+JSON. Sem lógica de cálculo prematura. Burocracia que desacelera pesquisa sem adicionar edge é o oposto
+do objetivo — evitá-la.
+
+## Thresholds — provisórios, versionados, revisáveis
+Os thresholds do gate (`min_n_holdout`, DA aprovado, OOS validado, status promovível) foram definidos
+com **n=1 exemplo** → são **provisórios** (`version: v0-provisional-2026-06-19`, `revisable: true`) e
+serão **calibrados no bloco de validação**. O gate **bloqueia por OMISSÃO** — thresholds errados pecam
+por bloquear demais, não por promover indevidamente.
+
+## Forma da validação OOS — NÃO assumida
+A forma do OOS (split temporal / sub-janelas anuais / walk-forward / purged k-fold) **não é hardcoded**.
+O lab lista opções; a escolha acontece no bloco de validação, com métrica de lucro + base context-matched.
+
 ## Ciclo canônico
 
 ```
@@ -57,10 +81,10 @@ status ainda UNTESTED/PROMISING_IN_SAMPLE · allowed_engine_use indevido para o 
 - Promotion gate: **can_promote=NO** (6 bloqueios). Nada promovido.
 - Confluence library: **0 regras promovidas**; capit+rsi PROMISING_IN_SAMPLE/REVIEW_ONLY/oos=false.
 
-## Módulos
+## Módulos (skeleton mínimo)
 
-- `pipeline/qualification/hypothesis_registry.py` — schema + status + `validate_hypothesis` + seed/validate.
-- `pipeline/qualification/run_hypothesis_validation.py` — validation lab (dry-run; plano, não cálculo).
-- `pipeline/qualification/hypothesis_da_audit.py` — DA checklist sobre metadados (dry-run).
-- `pipeline/qualification/promotion_gate.py` — gate default-deny (dry-run).
+- `pipeline/qualification/hypothesis_registry.py` — store + schema + status + `validate_hypothesis` + seed/validate.
+- `pipeline/qualification/hypothesis_gate.py` — **único** módulo procedural: readiness de validação +
+  DA checklist + promotion gate (default-deny) + `--sanity`. Dry-run; thresholds versionados; forma do OOS não-hardcoded.
+  Outputs: `l2_bpt_hypothesis_gate_dry_run.csv`, `l2_bpt_hypothesis_infra_sanity.csv`.
 - `pipeline/qualification/validated_confluence_library.json` — biblioteca (0 promovidas).

@@ -104,9 +104,10 @@ SEED = [{
     "factors_used": ["drop20_atr", "rsi_min8", "rsi_drop_6b", "rsi", "rsi_vs_ma"],
     "specialist_ids": ["capitulation", "rsi_momentum"],
     "context_labels_allowed": ["bottom_reversal_capitulation", "bear_bounce", "mid_range"],
-    "primary_metric": "hit_2R",
-    "secondary_metrics": ["stop_rate", "scratch_rate", "runner_rate", "avgR_floor2R"],
-    "target_direction": "hit_2R acima da base context-matched (lift>1) com Wilson-lo separado da base",
+    "primary_metric": "hit_2R",  # hit_2R só porque realR está CAPADO +3.9R; objetivo do engine = LUCRO
+    "secondary_metrics": ["expectancy_R", "sumR", "profit_factor", "stop_rate", "scratch_rate", "runner_rate"],
+    "target_direction": ("LUCRO: expectancy/sumR positivos e estáveis vs base context-matched; hit_2R "
+        "(Wilson-lo separado da base) como proxy enquanto realR está capado. R:R alto justifica + losers."),
     "minimum_n_required": 30,
     "expected_failure_modes": ["in_sample_multiplicity", "cap_pinned_inflation_+3.9R", "n_pequeno_17",
         "context_relabel (so re-seleciona bottom_reversal)", "nao_estacionario/beta_long_gold"],
