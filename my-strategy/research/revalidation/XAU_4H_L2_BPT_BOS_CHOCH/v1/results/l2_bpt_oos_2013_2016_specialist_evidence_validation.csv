@@ -1,0 +1,3 @@
+specialist,episodes,unique_ids,covers_132,evidence_total,evidence_valid,pct_valid,episodes_with_issue,net_read,top_reasons
+capitulation,132,132,True,433,433,100.0,0,"{""supportive"": 48, ""neutral"": 78, ""hostile"": 6}",{}
+rsi_momentum,132,132,True,396,396,100.0,0,"{""neutral"": 48, ""hostile"": 29, ""supportive"": 55}",{}

@@ -114,11 +114,12 @@ SEED = [{
     "examples_seen": ["ver results/l2_bpt_specialist_confluence_hit_rate_metrics.csv (celula capit+rsi, n=17)"],
     "discovery_sample": "full_276_episodes_in_sample_2020_2026",
     "discovery_commit": "2a59b4f",
-    "status": "OOS_CANDIDATE",
-    "allowed_engine_use": "REVIEW_ONLY",
+    "status": "CONTEXT_ONLY",
+    "allowed_engine_use": "CONTEXT_ONLY",
     "validation_required": True,
     "oos_validated": False,
     "subwindow_validation": "PASS_in_sample_profit_robust",
+    "oos_2013_2016": "FAIL_REFUTED (exp_decap -0.119R, pf 0.84, sumR -2.0R, hit2R 24%, random-matched-legpos null P=54%; abaixo de TODOS controles). Edge NAO-ESTACIONARIA/regime-bound: in-sample 2020-2026 +2.055R/pf8.94/null0.3% NAO replica no BEAR 2013-2016. Só 2015-16 (fundo dez-2015) positivo. Pipeline OOS fiel (Rota A RSI direto; 132 packets 84f schema-match; evidence 100% valida; SVP-null documentado decisive 1/276).",
     "notes": ("DA ac573cc2: family-wise p=0.014 (shuffle-null), context-matched p=0.0098, drop-top2 +1.25; "
         "hit_2R 65% vs base 32% (lift 2.0x, Wilson-lo 41%). VALIDACAO sub-janelas 2026-06-19 "
         "(validate_capit_rsi_oos.py): exp_decap +2.055R (drop2 +1.529), pf 8.94, maxDD -1.1R, streak 2; "

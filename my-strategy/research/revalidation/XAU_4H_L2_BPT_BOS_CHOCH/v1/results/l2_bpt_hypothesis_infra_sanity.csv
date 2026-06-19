@@ -1,7 +1,7 @@
 check,result,detail
 registry_schema_valid,PASS,1 hipótese(s)
-capit_rsi_registered,PASS,status=OOS_CANDIDATE use=REVIEW_ONLY
-validation_dry_run_pass,PASS,ready=YES; OOS não rodado
+capit_rsi_registered,PASS,status=CONTEXT_ONLY use=CONTEXT_ONLY
+validation_dry_run_pass,PASS,ready=NO (terminal status CONTEXT_ONLY = OK)
 da_dry_run_pass,PASS,oos_required=YES; manter REVIEW_ONLY
 gate_blocks_capit_rsi,PASS,sem_DA_aprovado|sem_OOS_validado|ultra_filter_risk(mata_frequencia/lucro)|outlie
 library_no_promoted,PASS,promoted=[]

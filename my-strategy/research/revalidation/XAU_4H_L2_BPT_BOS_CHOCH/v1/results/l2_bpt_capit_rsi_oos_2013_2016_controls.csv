@@ -1,0 +1,7 @@
+label,n,exp_capped,exp_decap,sumR_capped,sumR_decap,pf_decap,hit2R,hit3R,stop,scratch,drop2_decap,maxDD_decap,lose_streak,hit2_wilson
+CELL_capit+rsi,17,-0.243,-0.119,-4.1,-2.0,0.84,24,6,65,12,-0.669,-8.76,6,"[0.10,0.47]"
+capitulation_alone,48,-0.209,-0.077,-10.0,-3.7,0.9,25,6,69,6,-0.342,-11.83,7,"[0.15,0.39]"
+rsi_momentum_alone,55,-0.038,0.038,-2.1,2.1,1.07,20,4,45,35,-0.187,-12.08,14,"[0.12,0.32]"
+base_universe_132,132,-0.107,-0.027,-14.1,-3.6,0.96,21,4,56,23,-0.12,-27.01,22,"[0.15,0.29]"
+
+# random-matched-by-legpos null (10k): P(null_exp_decap>=cell -0.119) = 54.43%

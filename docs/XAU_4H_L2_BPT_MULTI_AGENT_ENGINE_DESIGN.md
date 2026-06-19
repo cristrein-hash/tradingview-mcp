@@ -233,7 +233,16 @@ runners capados):
 - **Controles:** bate TODOS — context-matched 0.608/pf2.17, capit-só 0.858, rsi-só 0.563, base 0.427, nas 1.178. random-matched null (10k same-context) P(null≥célula)=**0.3%**.
 - **Janelas:** positiva em todas (halves +0.84/+2.56; thirds +0.87/+2.19/+2.43) — não concentrada. MAS 2020-2022 fina/fraca (n3-5, hit2R 33-40%); forte em 2023-2026 (n12, +2.56, 75%).
 - **Veredito: PASS in-sample profit-robusto + INCONCLUSIVE em OOS verdadeiro.** Mesmo conjunto da descoberta (null corrobora 2B.5, não valida independente); janela inicial n<5; **freq ~2.8/ano = flag de confluência, NÃO engine standalone**.
-- **Status:** PROMISING_IN_SAMPLE → **OOS_CANDIDATE**, mantém REVIEW_ONLY. Gate `can_promote=NO` (sem OOS real/DA). Próximo: OOS independente (Opção B / nova coleta) otimizando lucro. CSVs: `l2_bpt_capit_rsi_{validation_plan,oos_data_availability,validation_results,validation_controls,validation_by_context_window,validation_da}.csv`.
+- **Status:** PROMISING_IN_SAMPLE → OOS_CANDIDATE → **CONTEXT_ONLY** (ver OOS abaixo). Gate `can_promote=NO`.
+
+## OOS REAL 2013-2016 — REFUTADA (2026-06-19)
+Pipeline OOS completo e fiel (Rota A): RSI direto de study_values (0 null, causal), reconstruct+patch → stages
+5-11 parametrizados com segurança (in-sample intocado) → **132 packets × 84 fatores** (schema 100% match, 0 leak,
+SVP-null documentado = decisive 1/276) → especialistas capit+rsi congelados (evidence **100% válida**, 132/132) →
+outcomes (forward-sim idêntico stage 14) → regra congelada `capit&rsi supportive`.
+- **Resultado célula (n=17 OOS, BEAR 2013-2016): exp_decap −0.119R, sumR −2.0R, profit factor 0.84, hit2R 24% (Wilson [0.10,0.47]), maxDD −8.76R, streak 6.** random-matched-legpos null **P=54%** (= aleatório, zero edge). **Abaixo de TODOS os controles** (base −0.027, capit-só −0.077, rsi-só +0.038).
+- **In-sample (2020-2026) +2.055R/pf8.94/hit2R65%/null0.3% NÃO replica.** Por ano: 2013 −0.84, 2014 −0.25, só 2015-16 (fundo dez-2015) +0.91 (n=5). Por contexto: nenhum edge positiva real.
+- **VEREDITO: FAIL / REFUTADA OOS.** A edge é **NÃO-ESTACIONÁRIA / regime-bound** (período-específica 2020-2026, provável beta-long-gold), não generaliza ao BEAR. **Status → CONTEXT_ONLY / allowed_use CONTEXT_ONLY** (não é profit/aggregator rule). Nunca promovida. CSVs: `l2_bpt_capit_rsi_oos_2013_2016_{results,controls,by_context,da,outcome_generation_report}.csv` + `..._source_check/data_availability/packet_validation/stages_5_6/stages_7_11/specialist_evidence_validation.csv`. Builders OOS: `build_oos_rsi_nas_from_study_values.py`.
 
 ## OOS real 2013-2016 — preparado, BLOQUEADO por fidelidade (2026-06-19)
 Prereg congelado `docs/XAU_4H_L2_BPT_CAPIT_RSI_OOS_2013_2016_PREREG.md`. Fonte OOS **confirmada e íntegra**

@@ -8,14 +8,14 @@
   "items": [
     {
       "confluence_id": "L2BPT_CONFL_CAPITULATION_RSI_MOMENTUM_V1",
-      "status": "OOS_CANDIDATE",
-      "allowed_use": "REVIEW_ONLY",
+      "status": "CONTEXT_ONLY",
+      "allowed_use": "CONTEXT_ONLY",
       "primary_metric": "expectancy_R (lucro); hit_2R secundário (realR capado)",
-      "evidence_summary": "n=17; VALIDAÇÃO sub-janelas 2026-06-19: exp_decap +2.055R (drop2 +1.529), profit factor 8.94, maxDD -1.1R, streak 2; bate TODOS controles (context-matched 0.608, capit-só 0.858, rsi-só 0.563, nas 1.178); positiva em TODAS janelas; random-matched null P=0.3%. PASS in-sample profit-robusto.",
-      "validation_level": "in_sample_subwindow_PASS (NÃO OOS verdadeiro)",
+      "evidence_summary": "REFUTADA EM OOS REAL. In-sample 2020-2026 (sub-janelas): exp_decap +2.055R, pf 8.94, hit2R 65%, null P=0.3%. OOS 2013-2016 (BEAR, n=17, pipeline fiel Rota A): exp_decap -0.119R, pf 0.84, sumR -2.0R, hit2R 24%, random-matched-legpos null P=54%, ABAIXO de todos controles. Edge NÃO replica fora do regime de descoberta.",
+      "validation_level": "OOS_2013_2016_FAIL_REFUTED (in-sample-only era period-specific)",
       "oos_status": false,
-      "caveats": ["NAO_e_OOS_verdadeiro(mesmo_conjunto_descoberta)", "janela_2020-2022_fina/fraca(n3-5,hit2R 33-40%)", "4_cap_pinned", "freq ~2.8/ano = flag confluência NÃO engine standalone", "nao_regra_final", "NUNCA_DECISIVE_ate_OOS_real"],
-      "last_reviewed_commit": "validate_capit_rsi_oos.py 2026-06-19"
+      "caveats": ["edge NÃO-ESTACIONÁRIA/regime-bound", "só 2015-16 (fundo dez-2015) positivo no OOS", "SVP-null OOS documentado (decisive 1/276, não muda verdict)", "n=17 OOS pequeno mas claramente negativo/nulo", "NÃO usar como profit/aggregator rule", "NUNCA DECISIVE/PROMOTED"],
+      "last_reviewed_commit": "OOS 2013-2016 2026-06-19"
     },
     {
       "confluence_id": "L2BPT_NAS_INDIVIDUAL_DIAGNOSTIC",

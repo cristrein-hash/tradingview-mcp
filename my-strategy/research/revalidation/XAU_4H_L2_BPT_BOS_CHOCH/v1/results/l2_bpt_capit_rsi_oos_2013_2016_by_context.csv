@@ -1,0 +1,8 @@
+context,cell_n,cell_exp_decap,cell_hit2R,cell_sumR,allctx_n,allctx_exp_decap,allctx_hit2R
+bottom_reversal_capitulation,3,-0.067,33,-0.2,15,0.001,33
+demand_reclaim,4,0.675,25,2.7,19,0.176,21
+bull_pullback_continuation,2,-1.1,0,-2.2,30,0.212,20
+liquidity_sweep_reversal,1,0.15,0,0.1,3,-0.06,0
+late_top_exhaustion,1,-1.1,0,-1.1,13,-0.312,15
+bear_bounce,5,-0.056,40,-0.3,34,-0.231,24
+mid_range_noise,1,-1.1,0,-1.1,18,-0.068,17

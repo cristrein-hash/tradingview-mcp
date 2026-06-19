@@ -1,0 +1,10 @@
+item,value,detail
+candidate_count,132,universo final OOS (qualification_extract)
+outcome_count,132,stage 11 escreveu realR/exitype (mesma lógica in-sample)
+stop_logic,structural demand_sl,"nearest DEMAND low <5ATR -> p-(nd-0.1ATR), floor 0.3ATR; senão swing_origin"
+target_logic,"partial +2R -> BE, runner +6R",rz+=1 rem=0.5 stop=BE @ +2R; +6R fecha runner
+time_stop,60 bars,exit no close do bar i+60 se não stop/target
+cap_decap,cap +3.9R (runner); de-cap runner=+6R,mesma convenção da validação in-sample
+missing_outcomes,0,132/132 com realR+exitype
+exitype_dist,STOP74/SCRATCH30/WIN_BE10/WIN_HELD13/WIN_RUNNER5,base WR hit2R=21%
+sanity,PASS,"forward-sim causal, idêntico ao stage 14 in-sample"

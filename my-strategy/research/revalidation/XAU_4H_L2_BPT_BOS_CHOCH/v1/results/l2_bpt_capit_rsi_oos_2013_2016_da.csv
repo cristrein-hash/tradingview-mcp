@@ -1,17 +1,22 @@
 check,result,detail
-oos_fora_de_2020_2026,CONFIRMED,dataset 2013-02-01..2016-05-25; descoberta 2020-2026; zero overlap
-preregistro_antes_do_teste,YES,docs/..._OOS_2013_2016_PREREG.md congelado antes
-nenhuma_variacao_testada,YES,só a regra congelada (não executada)
-nenhum_threshold_ajustado,YES,sem retune
-outcome_so_pos_hoc,N/A,OOS não executado
+oos_real_fora_2020_2026,CONFIRMED,2013-02..2016-05; zero overlap
+prereg_congelado_antes,YES,docs/..._OOS_2013_2016_PREREG.md (commit anterior)
+rota_A_documentada,YES,RSI direto study_values; METHOD_DECISION.md
+rsi_nas_causal_alinhado,YES,0 RSI null; dedup keep-last; sem futuro/forming
+stages_5_11_auditaveis,YES,reports stages_5_6 + 7_11; in-sample não clobbado; parametrização segura
+packets_84f_validos,YES,"132x84, schema 100% match, 0 leak conteúdo, causal"
+evidence_validada,YES,capit 433/433 + rsi 396/396 = 100% válida (Fase 0); cobre 132/132
+outcomes_confiaveis,YES,"132/132, forward-sim idêntico in-sample"
+nenhuma_variante_testada,YES,só regra congelada capit&rsi supportive
+nenhum_threshold_alterado,YES,sem retune
+outcome_so_pos_hoc,YES,cruzado após estados; especialistas cegos a outcome
 sem_aggregator,YES,nenhum
 sem_TAKE_novo,YES,nenhum
-sem_promocao,YES,status permanece OOS_CANDIDATE; sem PROMOTED/DECISIVE
-controles_feitos,NO,pendente — OOS não executado
-drop_top2_feito,NO,pendente — OOS não executado
-n_e_CI_reportados,N/A,OOS não executado
-objetivo_lucro_nao_winrate,YES,prereg define expectancy/sumR/PF como primárias
-sem_ultra_filtragem_que_mate_lucro,YES,não aplicável — nada filtrado
-nao_fabricou_resultado_com_input_nao_certificado,YES,STOP por fidelidade rsi/nas 97% + run-new-dataset bloqueado/unimplemented
-engine_intocado,YES,0 arquivo de engine/decisions_merged/especialistas alterado
-producao_intacta,YES,sem chart/MCP/plot/SLIM/receiver
+sem_promocao,YES,status NÃO sobe; refutado
+n_e_CI_reportados,YES,"n=17 cell; hit2_wilson [0.10,0.47]"
+controles_feitos,YES,"capit-só, rsi-só, base, random-matched-legpos (null P=54%)"
+drop_top2_feito,YES,drop2_decap=-0.669 (continua negativo)
+objetivo_lucro,YES,exp_decap/sumR/PF primárias: -0.119 / -2.0 / 0.84 = NÃO-lucrativo OOS
+VERDICT,FAIL_OOS_REFUTED,"in-sample +2.055/pf8.94/null0.3% NÃO replica; OOS -0.119/pf0.84/null54%, abaixo de TODOS controles; edge NÃO-ESTACIONÁRIA/regime-bound (só 2015-16 fundo positivo)"
+engine_intocado,YES,0 decisions_merged/engine; parametrização env segura
+producao_intacta,YES,sem chart/MCP/plot/SLIM
