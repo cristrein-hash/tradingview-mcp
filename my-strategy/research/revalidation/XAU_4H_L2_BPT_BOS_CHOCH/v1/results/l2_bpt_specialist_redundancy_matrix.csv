@@ -1,0 +1,58 @@
+specialist_A,specialist_B,stance_corr,veto_jaccard,decisive_factor_overlap
+bubbles,bull_beta,0.42,0.0,0.0
+bubbles,capitulation,0.31,0.0,0.0
+bubbles,demand_supply,-0.05,0.0,0.0
+bubbles,devils_advocate,0.09,0.0,0.07
+bubbles,exhaustion_top,0.3,0.0,0.0
+bubbles,nas,0.49,0.0,0.0
+bubbles,risk_sl,0.11,0.0,0.0
+bubbles,rsi_momentum,0.49,0.0,0.0
+bubbles,volume_vp,-0.0,0.0,0.0
+bull_beta,capitulation,0.29,0.0,0.0
+bull_beta,demand_supply,-0.06,0.0,0.0
+bull_beta,devils_advocate,0.28,0.0,0.0
+bull_beta,exhaustion_top,0.43,0.0,0.0
+bull_beta,nas,0.61,0.0,0.0
+bull_beta,risk_sl,0.11,0.0,0.0
+bull_beta,rsi_momentum,0.28,0.0,0.0
+bull_beta,volume_vp,0.14,0.0,0.0
+capitulation,demand_supply,-0.03,0.0,0.0
+capitulation,devils_advocate,0.24,0.0,0.0
+capitulation,exhaustion_top,0.46,0.0,0.0
+capitulation,nas,0.38,0.0,0.0
+capitulation,risk_sl,0.24,0.0,0.0
+capitulation,rsi_momentum,0.11,0.0,0.0
+capitulation,volume_vp,0.36,0.0,0.17
+demand_supply,devils_advocate,0.35,0.0,0.06
+demand_supply,exhaustion_top,0.3,0.0,0.09
+demand_supply,nas,-0.04,0.0,0.0
+demand_supply,risk_sl,0.69,0.0,0.27
+demand_supply,rsi_momentum,-0.01,0.0,0.0
+demand_supply,volume_vp,0.05,0.0,0.0
+devils_advocate,exhaustion_top,0.39,0.0,0.27
+devils_advocate,nas,0.2,0.0,0.0
+devils_advocate,risk_sl,0.55,0.0,0.33
+devils_advocate,rsi_momentum,0.15,0.0,0.18
+devils_advocate,volume_vp,0.13,0.0,0.0
+exhaustion_top,nas,0.47,0.0,0.0
+exhaustion_top,risk_sl,0.49,0.0,0.25
+exhaustion_top,rsi_momentum,0.23,0.0,0.0
+exhaustion_top,volume_vp,0.18,0.0,0.0
+nas,risk_sl,0.09,0.0,0.0
+nas,rsi_momentum,0.37,0.0,0.0
+nas,volume_vp,-0.0,0.0,0.0
+risk_sl,rsi_momentum,0.16,0.0,0.0
+risk_sl,volume_vp,0.17,0.0,0.0
+rsi_momentum,volume_vp,-0.13,0.0,0.0
+
+specialist,NMI_stance_vs_StageA_label,interpretacao
+bubbles,0.24,independente do Stage A
+bull_beta,0.24,independente do Stage A
+capitulation,0.33,eco do Stage A se alto
+demand_supply,0.04,independente do Stage A
+devils_advocate,0.15,independente do Stage A
+exhaustion_top,0.24,independente do Stage A
+nas,0.39,eco do Stage A se alto
+risk_sl,0.07,independente do Stage A
+rsi_momentum,0.18,independente do Stage A
+volume_vp,0.07,independente do Stage A

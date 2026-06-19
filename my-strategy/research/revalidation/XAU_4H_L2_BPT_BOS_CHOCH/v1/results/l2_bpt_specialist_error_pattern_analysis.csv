@@ -1,0 +1,31 @@
+question,specialist,metric,value
+alertaria_TAKE_losers,bubbles,hostile/veto em 15 TAKE-losers,1 (7%)
+alertaria_TAKE_losers,bull_beta,hostile/veto em 15 TAKE-losers,2 (13%)
+alertaria_TAKE_losers,capitulation,hostile/veto em 15 TAKE-losers,0 (0%)
+alertaria_TAKE_losers,demand_supply,hostile/veto em 15 TAKE-losers,2 (13%)
+alertaria_TAKE_losers,devils_advocate,hostile/veto em 15 TAKE-losers,10 (67%)
+alertaria_TAKE_losers,exhaustion_top,hostile/veto em 15 TAKE-losers,3 (20%)
+alertaria_TAKE_losers,nas,hostile/veto em 15 TAKE-losers,0 (0%)
+alertaria_TAKE_losers,risk_sl,hostile/veto em 15 TAKE-losers,3 (20%)
+alertaria_TAKE_losers,rsi_momentum,hostile/veto em 15 TAKE-losers,1 (7%)
+alertaria_TAKE_losers,volume_vp,hostile/veto em 15 TAKE-losers,6 (40%)
+bloquearia_SKIP_winners,bubbles,hostile/veto em 27 SKIP-winners,14 (52%)
+bloquearia_SKIP_winners,bull_beta,hostile/veto em 27 SKIP-winners,20 (74%)
+bloquearia_SKIP_winners,capitulation,hostile/veto em 27 SKIP-winners,11 (41%)
+bloquearia_SKIP_winners,demand_supply,hostile/veto em 27 SKIP-winners,11 (41%)
+bloquearia_SKIP_winners,devils_advocate,hostile/veto em 27 SKIP-winners,26 (96%)
+bloquearia_SKIP_winners,exhaustion_top,hostile/veto em 27 SKIP-winners,19 (70%)
+bloquearia_SKIP_winners,nas,hostile/veto em 27 SKIP-winners,18 (67%)
+bloquearia_SKIP_winners,risk_sl,hostile/veto em 27 SKIP-winners,18 (67%)
+bloquearia_SKIP_winners,rsi_momentum,hostile/veto em 27 SKIP-winners,9 (33%)
+bloquearia_SKIP_winners,volume_vp,hostile/veto em 27 SKIP-winners,8 (30%)
+distingue_lateTop_vs_bullPullback,bubbles,hostile@late_top % / supportive@bull_pullback %,86% / 51%
+distingue_lateTop_vs_bullPullback,bull_beta,hostile@late_top % / supportive@bull_pullback %,93% / 8%
+distingue_lateTop_vs_bullPullback,capitulation,hostile@late_top % / supportive@bull_pullback %,57% / 5%
+distingue_lateTop_vs_bullPullback,demand_supply,hostile@late_top % / supportive@bull_pullback %,23% / 43%
+distingue_lateTop_vs_bullPullback,devils_advocate,hostile@late_top % / supportive@bull_pullback %,98% / 0%
+distingue_lateTop_vs_bullPullback,exhaustion_top,hostile@late_top % / supportive@bull_pullback %,91% / 0%
+distingue_lateTop_vs_bullPullback,nas,hostile@late_top % / supportive@bull_pullback %,93% / 1%
+distingue_lateTop_vs_bullPullback,risk_sl,hostile@late_top % / supportive@bull_pullback %,68% / 53%
+distingue_lateTop_vs_bullPullback,rsi_momentum,hostile@late_top % / supportive@bull_pullback %,75% / 65%
+distingue_lateTop_vs_bullPullback,volume_vp,hostile@late_top % / supportive@bull_pullback %,41% / 1%

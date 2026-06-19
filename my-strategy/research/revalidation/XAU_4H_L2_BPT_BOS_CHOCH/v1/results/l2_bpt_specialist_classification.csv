@@ -1,0 +1,25 @@
+specialist,cohend_sup_hos,direction_ok,leave_one_out_verdict,max_redundancy_corr,echo_stageA_NMI,veto_utility,classification,rationale
+bubbles,0.12,True,ESSENTIAL(remover piora),0.49,0.24,,CONTEXT_ONLY,"separação fraca (d=0.12) -> útil p/ contexto, não decisive"
+bull_beta,0.17,True,NOISY(remover melhora),0.61,0.24,,CONTEXT_ONLY,separação modesta (d=0.17)
+capitulation,0.2,True,neutro,0.46,0.33,,DECISIVE_CANDIDATE,"separa win/lose (d=0.2, diff +0.34) direção certa"
+demand_supply,0.17,True,neutro,0.69,0.04,,REDUNDANT,corr 0.69 com outro especialista (re-deriva o mesmo)
+devils_advocate,0.0,False,NOISY(remover melhora),0.55,0.15,-0.243,NEEDS_REWRITE,"stance sempre hostile (ruído no sum) mas veto flag trades piores (-0.24) -> reescrever como VETO-only, não net_read"
+exhaustion_top,0.73,True,neutro,0.49,0.24,,DECISIVE_CANDIDATE,"separa win/lose (d=0.73, diff +1.07) direção certa"
+nas,0.49,True,neutro,0.61,0.39,,DECISIVE_CANDIDATE,"separa win/lose (d=0.49, diff +0.77) direção certa"
+risk_sl,0.18,True,NOISY(remover melhora),0.69,0.07,,REDUNDANT,corr 0.69 com outro especialista (re-deriva o mesmo)
+rsi_momentum,0.09,True,neutro,0.49,0.18,,CONTEXT_ONLY,"separação fraca (d=0.09) -> útil p/ contexto, não decisive"
+volume_vp,-0.09,False,ESSENTIAL(remover piora),0.36,0.07,,NOISY,supportive performa PIOR (d=-0.09) -> sinal invertido
+
+--- CORREÇÕES DA af791016 (veredito honesto) ---,,,,,,,,
+specialist,classification_DA_corrected,DA_evidence,,,,,,
+nas,DECISIVE (robusto small-n),"CI diff [+0.10,+1.44] P=0.011; sobrevive drop-top2 (d 0.49->0.34). único claramente decisive",,,,,,
+exhaustion_top,DECISIVE_winner-selection-only,"separa winners (bootstrap P=0.008) MAS avgR +1.26 é artefato do cap +3.9R (4/18 no cap; drop-cap d 0.73->0.22). hit-rate, não expectancy",,,,,,
+capitulation,CONTEXT_ONLY (rebaixado),"NÃO decisive: CI diff [-0.31,+0.99] cruza zero P=0.15 t=1.03. threshold d>=0.2 era frouxo (falso-positivo)",,,,,,
+demand_supply,SUPPORTING (manter),"NÃO redundante c/ risk_sl: separação condicional preservada",,,,,,
+risk_sl,SUPPORTING (manter, distinto),"dentro de ds=supportive ainda separa +0.585R (d=0.34) -> sinal de downside próprio; manter ambos",,,,,,
+volume_vp,NOISE-underpowered (não inversão),"d=-0.09 é RUÍDO não inversão: CI [-0.97,+0.78] P=0.64. rebaixar de NOISY-inverted",,,,,,
+devils_advocate,NEEDS_REWRITE veto-only (não-comprovado),"hostile 74% base-rate -> 96% em SKIP-win é vacuoso; 67% em losers é ABAIXO da base (menos alarmado nos losers!). veto separa -0.24 mas CI cruza zero P=0.10",,,,,,
+bubbles/rsi_momentum/bull_beta,CONTEXT_ONLY underpowered,"|t|<1.1 indistinguível de ruído",,,,,,
+GERAL,PHASE_2C_NOT_YET,"só nas + exhaustion(winner-sel) sobrevivem bootstrap a este n. Aggregator agora = overfit (n276, 2 features reais, target capado, lentes ruidosas). Antes: de-cap metric; rebaixar capitulation/volume_vp; DA->veto-only re-testar; manter ds+risk_sl; apertar thresholds",,,,,,
+realR_CAVEAT,CAP_+3.9R,"17/276 no cap; magnitudes = winner hit-rate NÃO expectancy",,,,,,
+NAO_CIRCULAR,PASS,"especialistas cegos ao outcome (Fase 2A), outcome só pós-hoc; sem vazamento",,,,,,

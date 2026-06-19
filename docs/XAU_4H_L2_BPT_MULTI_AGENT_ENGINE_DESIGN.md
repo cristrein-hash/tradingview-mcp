@@ -186,6 +186,21 @@ Este é o engine de qualificação de trade do **L2/BPT XAU 4H** — NÃO um "en
 - **DA:** 0 decisão TAKE/SKIP gerada; 0 outcome/decisão-antiga no input; 100% validado; 0 fator proibido; nenhum aggregator criado; engine/decisões 2020-2026 INTOCADOS (git); Opção B não rodada; produção intacta.
 - **Veredito Phase 2A: PASS.** Evidência estruturada auditável gerada em escala; pronta para ablation (Fase 2B).
 
+## Phase 2B implemented: ablation / contribuição marginal (DIAGNÓSTICO) — 2026-06-19
+**Outcome só pós-hoc. SEM aggregator, SEM decisão, SEM retune, SEM regra final.** Não-circular (especialistas cegos na Fase 2A; DA af791016 confirmou). CSVs: `l2_bpt_specialist_{marginal_contribution,redundancy_matrix,leave_one_out,classification,error_pattern_analysis}.csv`.
+- **Ranking por contribuição (sup vs hostile, DA-corrigido):**
+  - **nas — DECISIVE (robusto):** CI diff [+0.10,+1.44] P=0.011, sobrevive drop-top2. Único claramente decisive.
+  - **exhaustion_top — DECISIVE só p/ winner-SELECTION:** separa winners (P=0.008) MAS avgR +1.26 é artefato do cap +3.9R (drop-cap d 0.73→0.22) — é hit-rate, não expectancy.
+  - **capitulation — CONTEXT_ONLY (rebaixado):** CI cruza zero (P=0.15) → NÃO decisive (o threshold d≥0.2 era frouxo, gerou falso-positivo).
+  - **demand_supply + risk_sl — SUPPORTING, MANTER AMBOS:** corr 0.69 MAS condicionalmente independentes (dentro de ds=supportive, risk_sl ainda separa +0.585R) → NÃO redundantes.
+  - **volume_vp — NOISE underpowered (não inversão):** d=−0.09 é ruído (CI cruza zero, P=0.64).
+  - **bubbles / rsi_momentum / bull_beta — CONTEXT_ONLY:** |t|<1.1, indistinguíveis de ruído.
+  - **devils_advocate — NEEDS_REWRITE (veto-only):** stance hostil em 74% (base-rate) → ruído num sum; alerta 67% dos TAKE-losers MAS bloquearia 96% dos SKIP-winners (vacuoso vs base-rate; 67% nos losers é ABAIXO da base). Veto separa −0.24R mas CI cruza zero (P=0.10) → reescrever como veto-only e RE-TESTAR.
+- **Redundâncias principais:** demand_supply↔risk_sl 0.69 (mas independentes condicional); bull_beta↔nas 0.61; devils_advocate↔risk_sl 0.55. Veto Jaccard 0 (só o DA veta).
+- **Quem corta TAKE-losers:** DA 67%, volume_vp 40%, exhaustion_top/risk_sl 20%. **Quem ameaça cortar SKIP-winners bons:** DA 96%(!), bull_beta 74%, exhaustion_top 70%, nas 67% → vários são hostis demais.
+- **CAVEAT central:** realR capado em +3.9R (17/276) → magnitudes refletem winner-hit-rate, NÃO expectancy. n pequenos (n_sup 18-26; TAKE-losers 15, SKIP-winners 27).
+- **Phase 2C (aggregator) autorizável? NÃO AINDA.** Só nas + exhaustion(winner-sel) sobrevivem bootstrap a este n; aggregator agora = overfit (n276, 2 features reais, target capado, lentes ruidosas). Antes de 2C: (a) métrica de-capada / winner-vs-loser hit-rate; (b) rebaixar capitulation/volume_vp; (c) DA→veto-only e re-testar; (d) manter ds+risk_sl; (e) apertar thresholds (d≥0.2/corr≥0.65 eram frouxos). Depois, aggregator de 2-3 features (nas + exhaustion + risk_sl-veto) em sub-janelas OOS.
+
 ## 15. O que NÃO implementar agora
 Nada de código. Nada de rodar agentes. Não tocar engine/rubrica/decisões 2020-2026. Não rodar Opção B. Não calibrar. Não criar os schemas em código. Este bloco entrega **só o design**; cada fase do §14 é um bloco futuro com gate próprio.
 
