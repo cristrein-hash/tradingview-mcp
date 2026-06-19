@@ -1,0 +1,12 @@
+sep_score,feature,median_A_bull,median_B_bear,forca,direcao_bull
+2.66,dist_4h_supply_low_atr,1.09,4.82,FORTE,BAIXO (perto/rompendo supply=markup)
+1.01,dist_d1_demand_atr,2.58,1.09,FORTE,ALTO (longe da demand D1=markup)
+0.96,dist_d1_supply_atr,0.67,1.88,FORTE,BAIXO (perto da supply D1=rompendo)
+0.64,rsi_1d,59.7,51.7,moderada,ALTO (momentum macro)
+0.61,rsi,59.42,53.93,moderada,ALTO
+0.59,legpos30,85.4,72.5,moderada,ALTO
+0.52,trend_30_atr,3.22,1.5,moderada,ALTO (trend forte)
+0.3,legpos90,73.3,66.95,fraca,
+0.3,dist_4h_demand_low_atr,2.86,2.45,fraca,
+0.27,reclaim_body_atr,0.26,0.43,fraca,
+0.06,drop20_atr,0.56,0.5,fraca,

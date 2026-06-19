@@ -1,0 +1,17 @@
+item,valor,detalhe
+setA_bons_bullrun_cortados,26,"fatal-SKIP matou (S#): S1,S3,S4,S5,S6,S7,S8,S12,S13,S15,S16,S17,S20,S24,S25,S26,S27,S29,S30,S31,S32,S34,S35,S36,S37,S38"
+setB_bear_corrective_aceitos,18,"TAKE aceitou (T#): T2,T3,T4,T9,T11,T12,T15,T16,T17,T18,T20,T23,T24,T25,T26,T30,T40,T42"
+FEATURE_ATUAL_QUE_FALHA__stage_a,NÃO SEPARA,A e B ambos dominados por bull_pullback_continuation+demand_reclaim (idênticos p/ Stage A)
+FEATURE_ATUAL_QUE_FALHA__macro_leg,MORTA,macro_leg_direction/phase = 'REFERENCE_ONLY' p/ TODOS (feature não computada)
+FEATURE_ATUAL_QUE_FALHA__legpos90,fraca,73 vs 67 — não distingue bull-run de bear
+FEATURE_ATUAL_QUE_FALHA__reclaim_body,fraca,0.26 vs 0.43 — não distingue
+DISCRIMINADOR_FORTE__dist_4h_supply,sep 2.66,"INVERTIDO vs meu cross-check: BAIXO=bull-run markup (1.09), ALTO=bear overhead (4.82)"
+DISCRIMINADOR_FORTE__dist_d1_demand,sep 1.01,ALTO=bull markup (2.58) vs BAIXO=bear perto demand (1.09)
+DISCRIMINADOR_FORTE__dist_d1_supply,sep 0.96,BAIXO=bull rompendo (0.67) vs ALTO=bear overhead (1.88)
+DISCRIMINADOR_MOD__rsi_1d/rsi/trend30,sep 0.5-0.64,momentum macro: A maior (bull) que B (bear)
+PROPOSTA_var__markup_score,NOVA,composto causal: dist_4h_supply BAIXO + dist_d1_supply BAIXO + dist_d1_demand ALTO + rsi_1d ALTO + trend_30 forte = bull-run legítimo; inverso = bear/corrective bounce
+PROPOSTA_var__daily_frame_position,NOVA,posição no frame D1 (rompendo supply D1=markup vs sob overhead perto demand D1=bounce) — eixo que Stage A 4H não vê
+PROPOSTA_fix__macro_leg,FIX,re-computar macro_leg_direction/phase (estão mortos=REFERENCE_ONLY)
+ASSINATURA_AUCTION,-,"A=MARKUP (rompe supply, longe de demand, momentum forte) ; B=BOUNCE corretivo (sob supply overhead, perto demand, momentum fraco)"
+CAVEAT,calibração,"n=26 vs 18; discriminadores = HIPÓTESES causais, exigem validação held-out. NÃO promover."
+DA,DIAGNÓSTICO,"0 promoção, 0 v2, engine/decisions/produção intocados, sem chart/plot/SLIM"
