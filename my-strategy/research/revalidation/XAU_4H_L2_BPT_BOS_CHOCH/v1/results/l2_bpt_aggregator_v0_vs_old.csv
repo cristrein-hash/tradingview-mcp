@@ -1,0 +1,16 @@
+agg_decision,old_decision,n
+REVIEW,REVIEW,34
+REVIEW,SKIP,14
+REVIEW,TAKE,7
+SKIP,REVIEW,49
+SKIP,SKIP,115
+SKIP,TAKE,7
+TAKE,REVIEW,31
+TAKE,SKIP,1
+TAKE,TAKE,18
+
+metric,value,detail
+agg_TAKE_drives,"{""risk_sl"": 48, ""demand_supply"": 44, ""bubbles"": 44, ""rsi_momentum"": 37, ""bull_beta"": 32, ""capitulation"": 19, ""nas"": 18, ""exhaustion_top"": 14, ""volume_vp"": 4}",# supportive por especialista nos TAKE
+cut_winners(agg SKIP & winner),45,winners que o agg jogaria fora
+take_that_stopped,19,de 50 TAKE
+veto_skips_total,141,dos quais 35 eram winners (veto agressivo?)

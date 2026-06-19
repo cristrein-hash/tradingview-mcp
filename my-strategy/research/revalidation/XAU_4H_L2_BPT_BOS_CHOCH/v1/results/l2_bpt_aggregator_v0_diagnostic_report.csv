@@ -1,0 +1,11 @@
+pergunta,resposta,nota
+1_sinais_reais_engine_completo,AGG_TAKE 50 + AGG_REVIEW 55 = 105 acionáveis (de 276),"~8 TAKE/ano, ~9 REVIEW/ano"
+2_frequencia_anual,TAKE 7.9/ano | REVIEW 8.7/ano | SKIP 27/ano,"vs OLD: TAKE 5/ano, REVIEW 18/ano"
+3_take_vs_review,TAKE 50 / REVIEW 55,OLD: 32 / 114
+4_lucro_dos_take,"exp_decap +0.917R, PF 3.14, sumR +45.8R, hit2R 46%, maxDD -3.62, streak 4",POSITIVO/lucrativo MAS abaixo do OLD_TAKE (+1.175/PF3.63/53%)
+5_review_agrega,exp +0.42R PF 1.66 — agrega oportunidade de menor qualidade,"útil p/ filtro humano, não automático"
+6_ultra_filtrando,NÃO no TAKE (50>32 vs old); MAS veto-layer ultra-filtra,141 vetos (51% dos 276)
+7_aceita_lixo_bear,PARCIAL — 19/50 TAKE stoparam (38%); bubbles/bull_beta sobre-acionam,qualidade por trade diluída vs old
+8_especialistas_dominam,"risk_sl 48, demand_supply 44, bubbles 44, rsi 37, bull_beta 32 | NAS só 18/50",ERRO v0: NAS (peso 2) sub-aciona; bubbles/bull_beta (context) sobre-pesam
+9_vetos_agressivos,SIM — 141 veto->SKIP MATAM 35 winners,ERRO v0: union DA-veto OR risk_sl-veto OR exhaustion-hostile é largo demais
+10_melhor_que_old,"NÃO como está — dilui (mais trades, menor qualidade/trade)","promissor como EXPANSÃO de REVIEW p/ humano, não como TAKE automático melhor"

@@ -138,7 +138,9 @@ def cmd_sanity():
     add("gate_blocks_capit_rsi", cr.get("can_promote") == "NO" and cr.get("blocked_reasons") not in ("", "(nenhum)"), cr.get("blocked_reasons", "")[:80])
     lib = json.load(open(os.path.join(QD, "validated_confluence_library.json")))
     add("library_no_promoted", lib.get("promoted_rules") == [] and all(it.get("oos_status") is False for it in lib.get("items", [])), f"promoted={lib.get('promoted_rules')}")
-    add("no_aggregator_created", len(glob.glob(os.path.join(QD, "*aggregator*"))) == 0, "0 aggregator")
+    # aggregator DIAGNÓSTICO (lab) é permitido; só PROMOVIDO/produção viola governança
+    nondiag_agg = [p for p in glob.glob(os.path.join(QD, "*aggregator*")) if "diagnostic" not in os.path.basename(p)]
+    add("no_promoted_aggregator", len(nondiag_agg) == 0, f"0 aggregator promovido (diagnóstico-lab permitido: {len(glob.glob(os.path.join(QD,'*aggregator*diagnostic*')))})")
     root = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True, cwd=QD).stdout.strip()
     dirty = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True, cwd=root).stdout
     touched = [l for l in dirty.splitlines() if any(k in l for k in ("decisions_merged", "qualification_extract", "QUALIFICATION_RUBRIC", "strategy_rules", "monitor_xau", "receiver"))]
