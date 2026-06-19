@@ -72,10 +72,21 @@ sem prereg (discovery_commit/sample) · sem primary_metric · sem n mínimo · s
 sem OOS/sub-janelas suficientes · ultra-filter risk · outlier/cap-pinned dependence ·
 status ainda UNTESTED/PROMISING_IN_SAMPLE · allowed_engine_use indevido para o status.
 
+## Validação sub-janelas capit+rsi (2026-06-19, foco LUCRO)
+`validate_capit_rsi_oos.py` (prereg `docs/XAU_4H_L2_BPT_CAPIT_RSI_OOS_PREREG.md`). Método: split temporal
+in-sample (sem dado novo; Opção B não rodada → NÃO é OOS verdadeiro). Resultado da célula (n=17, 4 runners
+capados): **exp_decap +2.055R** (drop-top2 +1.529 → robusta a outliers), **profit factor 8.94**, maxDD
+−1.1R, streak 2, hit2R 65% Wilson [0.41,0.83]. **Bate todos os controles** (context-matched 0.608, capit-só
+0.858, rsi-só 0.563, base 0.427, nas 1.178); **positiva em todas as janelas** (H1 +0.84 / H2 +2.56; thirds
++0.87/+2.19/+2.43); random-matched null P=0.3%. **Veredito: PASS in-sample profit-robusto + INCONCLUSIVE em
+OOS verdadeiro** (mesmo conjunto da descoberta; janela 2020-2022 fina/fraca n3-5; freq ~2.8/ano = flag de
+confluência, NÃO engine standalone). Status `PROMISING_IN_SAMPLE` → **`OOS_CANDIDATE`**, mantém REVIEW_ONLY.
+Próximo: OOS real exige dado independente (Opção B / nova coleta). Gate continua `can_promote=NO`.
+
 ## Estado atual (2026-06-19)
 
-- Registry: 1 hipótese — `L2BPT_CONFL_CAPITULATION_RSI_MOMENTUM_V1`, status `PROMISING_IN_SAMPLE`,
-  `allowed_engine_use=REVIEW_ONLY`, `validation_required=True`.
+- Registry: 1 hipótese — `L2BPT_CONFL_CAPITULATION_RSI_MOMENTUM_V1`, status `OOS_CANDIDATE`,
+  `allowed_engine_use=REVIEW_ONLY`, `validation_required=True`, `oos_validated=False`.
 - Validation lab: dry-run (ready=YES estrutural; **OOS não rodado**).
 - DA audit: dry-run → OOS_CANDIDATE, manter REVIEW_ONLY, não promover sem OOS.
 - Promotion gate: **can_promote=NO** (6 bloqueios). Nada promovido.

@@ -1,6 +1,6 @@
 check,result,detail
 registry_schema_valid,PASS,1 hipótese(s)
-capit_rsi_registered,PASS,status=PROMISING_IN_SAMPLE use=REVIEW_ONLY
+capit_rsi_registered,PASS,status=OOS_CANDIDATE use=REVIEW_ONLY
 validation_dry_run_pass,PASS,ready=YES; OOS não rodado
 da_dry_run_pass,PASS,oos_required=YES; manter REVIEW_ONLY
 gate_blocks_capit_rsi,PASS,sem_DA_aprovado|sem_OOS_validado|ultra_filter_risk(mata_frequencia/lucro)|outlie

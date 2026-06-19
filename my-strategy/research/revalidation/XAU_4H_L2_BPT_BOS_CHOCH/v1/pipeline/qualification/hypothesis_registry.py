@@ -114,13 +114,19 @@ SEED = [{
     "examples_seen": ["ver results/l2_bpt_specialist_confluence_hit_rate_metrics.csv (celula capit+rsi, n=17)"],
     "discovery_sample": "full_276_episodes_in_sample_2020_2026",
     "discovery_commit": "2a59b4f",
-    "status": "PROMISING_IN_SAMPLE",
+    "status": "OOS_CANDIDATE",
     "allowed_engine_use": "REVIEW_ONLY",
     "validation_required": True,
+    "oos_validated": False,
+    "subwindow_validation": "PASS_in_sample_profit_robust",
     "notes": ("DA ac573cc2: family-wise p=0.014 (shuffle-null), context-matched p=0.0098, drop-top2 +1.25; "
-        "hit_2R 65% vs base 32% (lift 2.0x, Wilson-lo 41%). CAVEATS OBRIGATORIOS: in-sample; n=17; "
-        "4 cap-pinned; expectancy +1.56R capada/inflada (floor-2R +1.11); NAO OOS; NAO regra final. "
-        "allowed_engine_use=REVIEW_ONLY, NUNCA DECISIVE ate validacao OOS pelo promotion_gate."),
+        "hit_2R 65% vs base 32% (lift 2.0x, Wilson-lo 41%). VALIDACAO sub-janelas 2026-06-19 "
+        "(validate_capit_rsi_oos.py): exp_decap +2.055R (drop2 +1.529), pf 8.94, maxDD -1.1R, streak 2; "
+        "bate TODOS controles (context-matched 0.608, capit-so 0.858, rsi-so 0.563, nas 1.178); "
+        "positiva em TODAS janelas (H1 +0.84/H2 +2.56; thirds +0.87/+2.19/+2.43); random-matched null P=0.3%. "
+        "PASS in-sample profit-robusto -> OOS_CANDIDATE. CAVEATS: NAO e OOS verdadeiro (mesmo conjunto da "
+        "descoberta); janela 2020-2022 fina/fraca (n3-5, hit2R 33-40%); 4 runners capados; freq ~2.8/ano "
+        "(flag de confluencia, NAO engine standalone). REVIEW_ONLY, NUNCA DECISIVE ate OOS real pelo gate."),
 }]
 
 

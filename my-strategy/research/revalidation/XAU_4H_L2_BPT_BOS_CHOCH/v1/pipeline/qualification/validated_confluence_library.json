@@ -8,14 +8,14 @@
   "items": [
     {
       "confluence_id": "L2BPT_CONFL_CAPITULATION_RSI_MOMENTUM_V1",
-      "status": "PROMISING_IN_SAMPLE",
+      "status": "OOS_CANDIDATE",
       "allowed_use": "REVIEW_ONLY",
-      "primary_metric": "hit_2R",
-      "evidence_summary": "n=17; hit_2R 65% vs base context-matched 32% (lift 2.0x, Wilson-lo 41%); family-wise p=0.014 (shuffle-null); context-matched p=0.0098; drop-top2 +1.25.",
-      "validation_level": "in_sample_only",
+      "primary_metric": "expectancy_R (lucro); hit_2R secundário (realR capado)",
+      "evidence_summary": "n=17; VALIDAÇÃO sub-janelas 2026-06-19: exp_decap +2.055R (drop2 +1.529), profit factor 8.94, maxDD -1.1R, streak 2; bate TODOS controles (context-matched 0.608, capit-só 0.858, rsi-só 0.563, nas 1.178); positiva em TODAS janelas; random-matched null P=0.3%. PASS in-sample profit-robusto.",
+      "validation_level": "in_sample_subwindow_PASS (NÃO OOS verdadeiro)",
       "oos_status": false,
-      "caveats": ["in_sample", "n=17", "4_cap_pinned", "expectancy_+1.56R_capada_inflada(floor-2R +1.11)", "nao_OOS", "nao_regra_final", "NUNCA_DECISIVE_ate_OOS"],
-      "last_reviewed_commit": "2a59b4f"
+      "caveats": ["NAO_e_OOS_verdadeiro(mesmo_conjunto_descoberta)", "janela_2020-2022_fina/fraca(n3-5,hit2R 33-40%)", "4_cap_pinned", "freq ~2.8/ano = flag confluência NÃO engine standalone", "nao_regra_final", "NUNCA_DECISIVE_ate_OOS_real"],
+      "last_reviewed_commit": "validate_capit_rsi_oos.py 2026-06-19"
     },
     {
       "confluence_id": "L2BPT_NAS_INDIVIDUAL_DIAGNOSTIC",

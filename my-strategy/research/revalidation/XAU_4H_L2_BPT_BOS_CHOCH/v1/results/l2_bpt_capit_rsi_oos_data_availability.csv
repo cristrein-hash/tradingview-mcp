@@ -1,0 +1,9 @@
+input,available,n,note
+specialist_evidence:capitulation,YES,276,net_read stance
+specialist_evidence:rsi_momentum,YES,276,net_read stance
+stage_a_context_labels,YES,276,para context-matching
+outcomes(realR/exitype/datetime),YES,276,realR CAPADO +3.9 (de-cap não recuperável; piso runner +6R)
+decisions_merged(TAKE/SKIP),YES,276,só para cut_losers/kill_skipwin; NÃO alterado
+base_universe,YES,276,276 episódios
+context_matched_controls,YES,156,mesmos Stage A da célula
+OOS_externo/OpçãoB,NO,0,não coletado neste bloco

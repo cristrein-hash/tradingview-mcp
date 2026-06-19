@@ -222,7 +222,18 @@ aggregator criado, nenhuma decisão TAKE nova, engine/decisões 2020-2026 intoca
 - **Registry** (`hypothesis_registry.py` → `results/l2_bpt_hypothesis_registry.jsonl`): schema 23 campos, 10 status, 7 allowed_engine_use; `validate_hypothesis` checa campos, fatores ∈ 84-schema, especialistas ∈ famílias, mapa status→use default-deny, `PROMOTED` só via gate. Regra-mãe: nova = UNTESTED + NONE.
 - **Hipótese registrada:** `L2BPT_CONFL_CAPITULATION_RSI_MOMENTUM_V1` — `PROMISING_IN_SAMPLE`, `allowed_engine_use=REVIEW_ONLY` (nunca DECISIVE), `validation_required=True`, primary_metric `hit_2R` (proxy: realR capado), secundárias de LUCRO (expectancy_R/sumR/profit_factor), caveats obrigatórios (in-sample, n=17, 4 cap-pinned, inflada, não-OOS).
 - **Gate** (`hypothesis_gate.py`, dry-run): (a) readiness estrutural; (b) DA checklist sobre metadados → capit+rsi OOS_CANDIDATE, manter REVIEW_ONLY; (c) promoção DEFAULT-DENY → capit+rsi **can_promote=NO (6 bloqueios)**. **Thresholds versionados/revisáveis** (`v0-provisional`, definidos com n=1; bloqueiam por omissão). **Forma do OOS NÃO hardcoded** (lista opções: split temporal / sub-janelas / walk-forward / purged k-fold; escolher no bloco de validação). Saídas `l2_bpt_hypothesis_gate_dry_run.csv` + `--sanity` → `l2_bpt_hypothesis_infra_sanity.csv` (8/8 PASS).
-- **Validated Confluence Library** (`validated_confluence_library.json`): **0 regras promovidas**; capit+rsi PROMISING_IN_SAMPLE/REVIEW_ONLY/oos=false; nas e exhaustion_top entram como CONTEXT_ONLY diagnósticos (não promovidos sem decisão explícita).
+- **Validated Confluence Library** (`validated_confluence_library.json`): **0 regras promovidas**; capit+rsi OOS_CANDIDATE/REVIEW_ONLY/oos=false; nas e exhaustion_top entram como CONTEXT_ONLY diagnósticos (não promovidos sem decisão explícita).
+
+## Validação sub-janelas capit+rsi (foco LUCRO) — 2026-06-19
+`validate_capit_rsi_oos.py`, prereg congelado `docs/XAU_4H_L2_BPT_CAPIT_RSI_OOS_PREREG.md`. Método: split
+temporal in-sample (sem dado novo; Opção B não rodada → **NÃO é OOS verdadeiro**). Regra congelada: capitulation
+supportive AND rsi_momentum supportive (state() fiel à 2B.5). De-cap = runner +6R (piso; true≥). Célula n=17 (4
+runners capados):
+- **Lucro:** exp_decap **+2.055R** (drop-top2 **+1.529** → robusta a outliers), sumR_decap +34.9R, **profit factor 8.94**, maxDD **−1.1R**, losing streak **2**, hit2R 65% Wilson [0.41,0.83].
+- **Controles:** bate TODOS — context-matched 0.608/pf2.17, capit-só 0.858, rsi-só 0.563, base 0.427, nas 1.178. random-matched null (10k same-context) P(null≥célula)=**0.3%**.
+- **Janelas:** positiva em todas (halves +0.84/+2.56; thirds +0.87/+2.19/+2.43) — não concentrada. MAS 2020-2022 fina/fraca (n3-5, hit2R 33-40%); forte em 2023-2026 (n12, +2.56, 75%).
+- **Veredito: PASS in-sample profit-robusto + INCONCLUSIVE em OOS verdadeiro.** Mesmo conjunto da descoberta (null corrobora 2B.5, não valida independente); janela inicial n<5; **freq ~2.8/ano = flag de confluência, NÃO engine standalone**.
+- **Status:** PROMISING_IN_SAMPLE → **OOS_CANDIDATE**, mantém REVIEW_ONLY. Gate `can_promote=NO` (sem OOS real/DA). Próximo: OOS independente (Opção B / nova coleta) otimizando lucro. CSVs: `l2_bpt_capit_rsi_{validation_plan,oos_data_availability,validation_results,validation_controls,validation_by_context_window,validation_da}.csv`.
 
 ## 15. O que NÃO implementar agora
 Nada de código. Nada de rodar agentes. Não tocar engine/rubrica/decisões 2020-2026. Não rodar Opção B. Não calibrar. Não criar os schemas em código. Este bloco entrega **só o design**; cada fase do §14 é um bloco futuro com gate próprio.

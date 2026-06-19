@@ -1,0 +1,2 @@
+validation_method,dataset,date_range,reason_selected,required_inputs,available,blocked_reason
+sub-janelas / split temporal in-sample (XAU 2020-2026),"276 episódios L2/BPT XAU 4H (outcomes congelados, realR capado +3.9)",2020-01 .. 2026 (halves + thirds por datetime),forma mais segura/honesta SEM dado novo; Opção B NÃO rodada; OOS externo exigiria recoletar inputs/evidence. NÃO é OOS verdadeiro (descoberta no conjunto completo).,ablation_matrix(states)+specialist_out(net_read)+outcomes(realR/exitype/datetime)+stage_a_labels,YES,

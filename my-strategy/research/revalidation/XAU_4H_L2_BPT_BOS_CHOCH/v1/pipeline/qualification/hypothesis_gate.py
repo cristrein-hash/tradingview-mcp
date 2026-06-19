@@ -130,7 +130,7 @@ def cmd_sanity():
     def add(n, ok, d): checks.append({"check": n, "result": "PASS" if ok else "FAIL", "detail": d})
     add("registry_schema_valid", bool(rows) and all(reg.validate_hypothesis(h)["valid"] for h in rows), f"{len(rows)} hipótese(s)")
     capr = next((h for h in rows if h["hypothesis_id"] == "L2BPT_CONFL_CAPITULATION_RSI_MOMENTUM_V1"), None)
-    add("capit_rsi_registered", bool(capr) and capr["status"] == "PROMISING_IN_SAMPLE" and capr["allowed_engine_use"] == "REVIEW_ONLY", f"status={capr and capr['status']} use={capr and capr['allowed_engine_use']}")
+    add("capit_rsi_registered", bool(capr) and capr["status"] in ("PROMISING_IN_SAMPLE", "OOS_CANDIDATE") and capr["allowed_engine_use"] == "REVIEW_ONLY", f"status={capr and capr['status']} use={capr and capr['allowed_engine_use']}")
     gate_rows = cmd_dry_run()
     cr = next((r for r in gate_rows if r["hypothesis_id"] == (capr or {}).get("hypothesis_id")), {})
     add("validation_dry_run_pass", cr.get("validation_ready") == "YES", "ready=YES; OOS não rodado")

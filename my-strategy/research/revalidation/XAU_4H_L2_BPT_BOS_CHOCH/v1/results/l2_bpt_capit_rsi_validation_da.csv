@@ -1,0 +1,18 @@
+check,result,detail
+preregistro_antes_do_teste,YES,docs/XAU_4H_L2_BPT_CAPIT_RSI_OOS_PREREG.md congelado antes
+nenhuma_variante_testada,YES,só a regra congelada capit&rsi supportive
+nenhum_threshold_ajustado,YES,state() reusado fiel; sem retune
+outcome_so_pos_hoc,YES,cruzado após definir subset
+sem_aggregator,YES,nenhum
+sem_decisao_TAKE_nova,YES,decisions_merged só lido
+sem_promocao,YES,status não vira PROMOTED/DECISIVE
+n_reportado,YES,n_cell=17 runners_capados=4
+CI_incerteza_reportada,YES,"hit2_wilson=[0.41,0.83]"
+drop_top2_feito,YES,drop2_decap=1.529 vs exp_decap=2.055
+controles_feitos,YES,"capit/rsi alone, base, context-matched, nas benchmark"
+context_matched_feito,YES,random-matched null 10k: P(null>=cell) exp_decap=0.32% hit2R=0.3% (10k same-context)
+ultra_filter_risk_avaliado,YES,n_cell=17; frequência ok p/ ler; risco = matar lucro/frequência se virar filtro
+objetivo_lucro_nao_winrate,YES,exp_decap=2.055 sumR_decap=34.9 pf_decap=8.94
+dependencia_cap_+3.9_avaliada,YES,exp_capped=1.561 vs exp_decap=2.055; drop2 remove 2 melhores
+engine_intocado,YES,nenhum arquivo de engine/decisões alterado
+producao_intacta,YES,sem chart/MCP/plot/SLIM/receiver
