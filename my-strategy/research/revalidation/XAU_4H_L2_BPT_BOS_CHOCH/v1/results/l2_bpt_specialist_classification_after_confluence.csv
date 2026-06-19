@@ -1,0 +1,24 @@
+specialist,classification_after_confluence,evidence,caveat
+nas,DECISIVE_INDIVIDUAL,"2B robusto (CI [+0.10,+1.44]); confluências nas+rsi/nas+demand fortes",small-n nas-supportive (26)
+exhaustion_top,DECISIVE_INDIVIDUAL (winner-sel + top-detect),"2B winner-selection; em confluência hostil detecta topos (late_top context -0.14)","avgR magnitude = cap +3.9R, é hit-rate"
+capitulation,DECISIVE_IN_CONFLUENCE,"REDIMIDO: +rsi Δcomp +0.99 (avgR +1.56 drop2 +1.25); 3-way +bubbles+rsi +0.76; forte em bear_bounce(+0.82/57%) e mid_range(+0.94)","fraco sozinho (2B CI cruzava zero); n17 small"
+rsi_momentum,DECISIVE_IN_CONFLUENCE,"REDIMIDO: +capitulation Δcomp +0.99; bottom_reversal context +1.60(n13); demand+rsi n62 +0.62","fraco sozinho (2B |t|<1.1)"
+bubbles,DECISIVE_IN_CONFLUENCE,"REDIMIDO: capitulation+bubbles n39 +0.78; 3-way capit+bub+rsi +0.76; bottom_reversal +1.12","fraco sozinho; Δcomp negativo em alguns pares"
+demand_supply,SUPPORTING (manter),"+rsi n62 +0.62; +risk_sl n94 +0.50; base de muitas confluências",condicionalmente independente de risk_sl
+risk_sl,SUPPORTING (manter, distinto),"3-way demand+risk+exhaustion n10 +1.46; sinal de downside próprio",n pequeno em trios
+bull_beta,CONTEXT_ONLY (drift-flag),"nas+bull_beta +1.86 mas n13; bull_pullback context NEGATIVO (-0.14) -> não é edge, é flag de beta",confluência n pequeno
+volume_vp,NOISY (NÃO redimido),"fraco em TODA confluência e TODO contexto (bottom_reversal +0.003); d=-0.09 ruído",confirma 2B
+devils_advocate,VETO_ONLY,"DAveto+demand-hostile n45 avgR -0.068 hit2R 11% flag trades ruins; mas killSW alto -> veto SELETIVO",hostile 74% base-rate; precisa veto seletivo
+GERAL,PHASE_2C_CONDICIONALMENTE_AUTORIZAVEL,"confluências REAIS achadas (capit+rsi, capit+bub+rsi, nas+demand+rsi) com drop2 sobrevivendo. Aggregator de confluência (nas core + capit/rsi/bubbles confluence + risk_sl + DA-veto-seletivo) plausível MAS: n pequenos (13-39), multiplicity (31 combos), validar OOS antes de promover",
+
+--- CORREÇÕES DA ac573cc2 (shuffle-null + context-matched + drop-top2) ---,,,
+finding,verdict,evidence,
+capitulation+rsi_momentum,GENUINE_CONFLUENCE (única que sobrevive),"family-wise p=0.014 (shuffle-null p95=0.82,p99=1.05); context-matched p=0.0098 (sinal INDEPENDENTE do contexto); drop2 +1.25. MÉTRICA HONESTA = hit-2R 65% vs base 32% (lift 2.0x, Wilson-lo 41%)","n=17, 4 no cap +3.9R -> avgR +1.56 é ~40% cap-inflado; floor-2R -> +1.11; IN-SAMPLE não-validado OOS"
+3-way capit+bub+rsi,OVERSTATED (herdado),"dentro do shuffle-null upper tail (Δcomp +0.76 < p95 0.82); subset de capit+rsi (15 dos 17) -> NÃO sobrevive multiplicity independente",
+nas+demand+rsi,BORDERLINE/FISHING,"context-matched p=0.045 marginal, n=13",
+bubbles_standalone,NOT_DECISIVE (rebaixar),"rsi solo lift 1.10x, bubbles solo 1.01x = ruído; só importam DENTRO da célula capit+rsi, não independentes",
+rsi_momentum_standalone,NOT_DECISIVE (só no par capit+rsi),idem,
+volume_vp,NOISY confirmado,"nenhuma confluência/contexto defensável (células n=1-3); morto corretamente",
+DAveto+demand-hostile,WRONG (sem sinal além do contexto),"context-matched p=0.11; seleciona contexto já-ruim (bear/bull_pullback/late_top mix), não discrimina; DAveto-any +0.136/23% ~base","veto NÃO validado"
+GERAL_DA,PHASE_2C_NAO_AINDA,"só capit+rsi sobrevive (p=0.014, n=17, 4 cap-pinned). Aggregator sobre 1 célula de 17 = overfit. PRÓXIMO: validar capit+rsi OOS como HIT-RATE target (split temporal) ANTES de qualquer aggregator. É calibração, não validação (regra 45-grupos)",
+CAVEAT_UNICO,cap+multiplicity,"única afirmação defensável: capit+rsi ~dobra hit-2R (65% vs 32%, Wilson-lo 41%), n=17, in-sample, não-validado OOS. Resto = inflado (cap) ou herdado",

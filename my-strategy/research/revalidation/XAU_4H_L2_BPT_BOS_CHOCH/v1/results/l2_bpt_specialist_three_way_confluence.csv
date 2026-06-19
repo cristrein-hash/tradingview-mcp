@@ -1,0 +1,13 @@
+combo,reqs,n,avgR,avgR_drop2,WR,hit2R,runner3R,stop,scratch,ci,diff_vs_base,diff_vs_comp_min,cut_losers,kill_skipwin,min_n_warn
+nas+demand_supply+risk_sl,nas=supportive;demand_supply=supportive;risk_sl=supportive,15,1.155,0.733,60,60,13,33,7,"[0.22,2.09]",0.85,0.138,2,0,
+nas+demand_supply+exhaustion_top,nas=supportive;demand_supply=supportive;exhaustion_top=supportive,6,2.328,1.542,83,83,33,17,0,"[0.85,3.81]",2.023,1.067,0,0,WARN_n<12
+nas+risk_sl+exhaustion_top,nas=supportive;risk_sl=supportive;exhaustion_top=supportive,7,2.196,1.514,71,71,29,14,14,"[0.92,3.47]",1.891,0.935,1,0,WARN_n<12
+nas+demand_supply+rsi_momentum,nas=supportive;demand_supply=supportive;rsi_momentum=supportive,13,1.502,1.066,69,69,15,23,8,"[0.55,2.45]",1.197,0.485,1,0,
+nas+demand_supply+bubbles,nas=supportive;demand_supply=supportive;bubbles=supportive,13,0.938,0.399,54,54,15,38,8,"[-0.10,1.97]",0.633,-0.079,2,0,
+nas+demand_supply+volume_vp,nas=supportive;demand_supply=supportive;volume_vp=supportive,1,1.91,1.91,100,100,0,0,0,"[1.91,1.91]",1.605,0.893,0,0,WARN_n<12
+capitulation+bubbles+rsi_momentum,capitulation=supportive;bubbles=supportive;rsi_momentum=supportive,15,1.332,0.937,60,60,20,27,13,"[0.41,2.26]",1.027,0.758,2,0,
+capitulation+bubbles+volume_vp,capitulation=supportive;bubbles=supportive;volume_vp=supportive,11,0.825,0.142,45,45,18,45,9,"[-0.42,2.07]",0.52,0.251,2,0,WARN_n<12
+capitulation+rsi_momentum+demand_supply,capitulation=supportive;rsi_momentum=supportive;demand_supply=supportive,7,2.14,1.676,86,86,14,0,14,"[1.36,2.92]",1.835,1.566,0,0,WARN_n<12
+demand_supply+risk_sl+exhaustion_top,demand_supply=supportive;risk_sl=supportive;exhaustion_top=supportive,10,1.457,0.846,60,60,30,40,0,"[0.04,2.88]",1.152,0.196,1,0,WARN_n<12
+bull_beta+exhaustion_top+DAveto(hostile),bull_beta=hostile;exhaustion_top=hostile;devils_advocate=veto,46,0.151,0.014,26,26,0,41,33,"[-0.22,0.52]",-0.154,-0.107,0,9,
+DAveto+exhaustion_top+risk_sl(hostile),devils_advocate=veto;exhaustion_top=hostile;risk_sl=hostile,62,0.179,0.067,19,19,2,44,37,"[-0.16,0.52]",-0.126,-0.018,2,10,
