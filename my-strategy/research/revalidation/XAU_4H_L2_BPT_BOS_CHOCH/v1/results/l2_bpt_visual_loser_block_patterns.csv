@@ -1,0 +1,11 @@
+padrao_perigoso,acao,descricao
+compra_bear_continuation,BLOCK,comprar em downtrend puro sem fundo/reclaim (regime OOS 2013-2016) = sem edge
+compra_late_top,BLOCK/REVIEW,entrada esticada perto de TOP/SHORT (NAS) — risco #10-like
+compra_contra_supply_proxima,REDUCE/REVIEW,supply overhead colada bloqueia target -> R ruim
+reclaim_fraco,REVIEW,vela de reclaim sem corpo/sem sweep = não confirmado
+faca_caindo_sem_reclaim,BLOCK,drop forte SEM BOTTOM/reclaim = capitulação não confirmada
+sem_demanda_defendida,BLOCK,entrada sem zona de demanda estrutural sob o preço
+sl_sem_sentido_estrutural,REVIEW,SL longe/arbitrário -> R distorcido
+entrada_atrasada,REDUCE,já correu vários R desde o fundo -> RR comprimido
+movimento_exaurido,BLOCK,legpos alto + RSI overbought + rise20 (late_top_exhaustion)
+bull_beta_sem_estrutura,REVIEW,"sinal só por drift de alta sem demanda/reclaim próprio = beta, não edge"

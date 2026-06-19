@@ -1,0 +1,14 @@
+filename,episode_trade_id,primary_label,confidence_visual,key_visual_reason,regime_context,notes
+img01,"#1,#2",PROTECT,high,demanda defendida + bottom em regime de virada,turning/recovery 2020,setup canônico L2/BPT LONG
+img02,"#16,#17",PROTECT,high,pullback a demanda em bull continuation saudável,bull_continuation,espaço limpo p/ supply
+img03,#15,PROTECT,medium,demand reclaim mid-bull com CHoCH/BOS,bull_continuation,
+img04,"#13,#14",PROTECT,high,"#13 bottom reversal, #14 breakout continuação",bull_continuation/turn,
+img05,#12,REVIEW,medium,demand reclaim em RANGE (choppy) — confirmar reclaim,mid_range/turn,reduzir confiança em range
+img06,#11,PROTECT,high,base -> breakout limpo (bottom->continuation),pre_bull_turn,
+img07,"#9,#10",REVIEW,medium,#9 fundo ok; #10 TARDIO antes de queda — leitura humana,mixed/late,#10 = risco entrada tardia/near top
+img08,#8,PROTECT,medium,demand reclaim no fundo + BOS,turn/range,
+img09,"#6,#7",PROTECT,high,cluster bottom reversal pré bull leg,pre_bull_turn/capitulation,banking crisis 2023
+img10,"#4,#5",PROTECT,high,"#4 fundo, #5 continuação no spike",turn->bull,
+img11,#3,REVIEW,medium,capitulation reclaim pós flash-crash; mas chop depois,capitulation_reclaim,"take válido, gestão exige humano (chop seguinte)"
+img12,"#1,#2",PROTECT,high,bottom reversal + capitulation reclaim (COVID),capitulation/turn,
+img13,(perna jun-jul/2020),TRANSFORM,high,engine NÃO acionou continuação bull limpa (gap de cobertura),bull_continuation,virar hipótese futura: continuation entry

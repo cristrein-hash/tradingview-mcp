@@ -1,0 +1,9 @@
+regime_visual,allowed_use,required_confirmation,block_conditions,human_review_required
+bull_continuation_saudavel,TAKE_CANDIDATE,pullback a demanda + reclaim + espaço p/ supply,entrada esticada / supply colada,no
+pre_bull_turn_fundo_nascente,TAKE_CANDIDATE,BOTTOM(NAS)+reclaim+CHoCH/BOS,sem reclaim confirmado,no
+demand_reclaim,TAKE_CANDIDATE,demanda 4H defendida tocada + reclaim verde,demanda quebrada / reclaim fraco,no
+capitulation_reclaim,REVIEW_ONLY,drop forte + BOTTOM + reclaim,faca caindo sem reclaim,yes (gestão pós-entrada/chop)
+bear_bounce_perigoso,BLOCK,bounce em supply overhead em downtrend,quase sempre,yes p/ exceção
+bear_continuation,BLOCK,downtrend puro (regime OOS 2013-2016),sempre,no
+mid_range_noise,REVIEW_ONLY/WATCHLIST,range sem tese estrutural clara,baixa convicção,yes
+late_top_exhaustion,BLOCK,legpos90+RSI overbought+rise20+distribuição,sempre p/ LONG,no

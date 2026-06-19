@@ -1,0 +1,9 @@
+componente_engine,papel_na_calibracao_visual,nota
+Stage A context,label do regime (bull_continuation/bottom_reversal/bear_bounce/late_top...) = gate primário visual,mapa direto: contextos PROTECT vs BLOCK
+NAS,BOTTOM verde confirma fundo (winners); TOP/SHORT marca late-top a evitar,"confluência, nunca gate isolado (memória)"
+exhaustion_top,detecta late_top_exhaustion -> BLOCK LONG,alinha com padrão perigoso 'movimento exaurido'
+demand_supply,demanda defendida = núcleo dos winners; supply overhead = block/reduce,fator visual #1 dos winners
+risk_sl,SL estrutural sob demanda/swing = winners; SL arbitrário = REVIEW,valida 'sl_visual_estrutural'
+capitulation+rsi,forte em fundo/turn (in-sample) MAS refutado em bear puro (OOS) -> só dentro de regime permitido,NÃO usar como gate em bear_continuation
+DA veto,candidato a vetar late_top / faca-caindo / bear_continuation,leitura humana assistida
+bull_beta/drift risk,flag p/ 'sinal só por drift sem estrutura' = REVIEW,distingue edge de beta long-gold

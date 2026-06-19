@@ -1,0 +1,11 @@
+check,result,detail
+nenhuma_regra_automatica_nova,YES,só política discricionária + matrizes visuais
+nenhuma_promocao,YES,capit+rsi permanece CONTEXT_ONLY; registry/library NÃO alterados
+nenhum_backtest_novo,YES,só leitura visual dos 13 prints
+nenhuma_alteracao_engine,YES,0 builder/decisions_merged/strategy tocado
+nenhuma_plotagem,YES,só LEITURA das imagens do ZIP; nada desenhado/chart/MCP
+oos_bear_como_limite_de_regime,YES,"tratado como limite, NÃO invalidação; estratégia bull/turning pré-aprovada"
+visual_nao_salvou_estatistica_ruim,YES,não usei prints p/ reverter o verdict OOS; usei p/ calibrar USO regime-aware
+visual_para_calibrar_uso_discricionario,YES,TAKE_CANDIDATE/REVIEW/BLOCK/WATCHLIST + regime matrix + famílias winner/loser
+producao_intacta,YES,sem receiver/cloudflared/daemon/SLIM
+prints_legiveis_associados,YES,13/13 legíveis; trades #1-#17 + gap jun/2020 associados a período/regime
