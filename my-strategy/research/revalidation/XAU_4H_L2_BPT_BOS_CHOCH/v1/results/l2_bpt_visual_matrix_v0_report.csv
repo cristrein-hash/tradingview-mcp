@@ -1,0 +1,10 @@
+item,valor,detalhe
+Q1_fatal_skip_acceptable_missed,11,de 40 fatal-skip winners (corte CORRETO; NÃO é erro)
+Q2_fatal_skip_real_v1_error,27,v1 cortou winner BOM (PROTECT) = VETO_TOO_HARD real
+Q3_new_take_true_PROTECT,14,de 42 novos TAKE = PROTECT verdadeiro (familia válida bull_pullback)
+Q4_new_take_BLOCK_low_quality,17,novos TAKE que deveriam ser BLOCK (drift/late-top/range)
+Q5_TRANSFORM_timing,T27|S14|T40,"tese/regime ok, timing errado (refino de entrada)"
+Q6_v2_primeiro_eixo,"{'regime': 12, 'mixed': 6, 'structure': 3, 'timing': 3}",eixo dominante das falhas -> onde v2 ataca primeiro
+unclassified_pendentes,S19|T34|T35|S24|T36|T37,T#/S# não rotulados pelo GPT — revisar depois
+DA_anti_hindsight,todos causal_predicate usam features de ENTRADA (anti_hindsight_ok=true),regra: só usar p/ regra futura se anti_hindsight_ok=true
+DA_escopo,"DIAGNÓSTICO: 0 promoção, engine/decisions intocados, sem sizing-rule, regime=feature não-oficial, lacunas fora",
