@@ -1,0 +1,2 @@
+hypothesis_id,status,allowed_engine_use,can_promote,blocked_reasons,required_to_unblock
+L2BPT_CONFL_CAPITULATION_RSI_MOMENTUM_V1,PROMISING_IN_SAMPLE,REVIEW_ONLY,NO,sem_DA_aprovado|sem_OOS_ou_subjanelas_suficientes|n_pequeno(ultra_filter_risk)|outlier/cap_pinned_dependence|status_PROMISING_IN_SAMPLE_nao_promovivel|status_PROMISING_IN_SAMPLE_fora_de_PROMOTABLE,DA aprovado + OOS validado(n>=min) + status->VALIDATED_FEATURE + remover riscos cap/n + autorização explícita do usuário

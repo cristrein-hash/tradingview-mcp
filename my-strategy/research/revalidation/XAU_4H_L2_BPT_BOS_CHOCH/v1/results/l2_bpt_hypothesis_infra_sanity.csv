@@ -1,0 +1,9 @@
+check,result,detail
+registry_schema_valid,PASS,1 hipótese(s); todas válidas=True
+capit_rsi_registered,PASS,status=PROMISING_IN_SAMPLE use=REVIEW_ONLY
+validation_dry_run_pass,PASS,ready_for_validation=YES; OOS NÃO rodado
+da_dry_run_pass,PASS,oos_required=YES; manter REVIEW_ONLY
+promotion_gate_blocks_capit_rsi,PASS,sem_DA_aprovado|sem_OOS_ou_subjanelas_suficientes|n_pequeno(ultra_filter_risk)|outlier/cap
+confluence_library_no_promoted,PASS,promoted_rules=[]; items=3
+no_aggregator_created,PASS,arquivos aggregator encontrados=0
+no_decisions_or_engine_changed,PASS,engine/decisões tocados=0

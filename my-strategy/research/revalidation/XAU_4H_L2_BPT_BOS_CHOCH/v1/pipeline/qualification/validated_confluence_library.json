@@ -1,0 +1,43 @@
+{
+  "library_id": "L2BPT_VALIDATED_CONFLUENCE_LIBRARY",
+  "strategy_scope": "XAU_4H_L2_BPT_BOS_CHOCH",
+  "version": "v0",
+  "last_reviewed_commit": "2a59b4f",
+  "policy": "Nada aqui é PROMOTED. allowed_use governa peso no engine; promoção só via promotion_gate + autorização explícita. validated_oos=false => NUNCA peso decisivo.",
+  "promoted_rules": [],
+  "items": [
+    {
+      "confluence_id": "L2BPT_CONFL_CAPITULATION_RSI_MOMENTUM_V1",
+      "status": "PROMISING_IN_SAMPLE",
+      "allowed_use": "REVIEW_ONLY",
+      "primary_metric": "hit_2R",
+      "evidence_summary": "n=17; hit_2R 65% vs base context-matched 32% (lift 2.0x, Wilson-lo 41%); family-wise p=0.014 (shuffle-null); context-matched p=0.0098; drop-top2 +1.25.",
+      "validation_level": "in_sample_only",
+      "oos_status": false,
+      "caveats": ["in_sample", "n=17", "4_cap_pinned", "expectancy_+1.56R_capada_inflada(floor-2R +1.11)", "nao_OOS", "nao_regra_final", "NUNCA_DECISIVE_ate_OOS"],
+      "last_reviewed_commit": "2a59b4f"
+    },
+    {
+      "confluence_id": "L2BPT_NAS_INDIVIDUAL_DIAGNOSTIC",
+      "status": "CONTEXT_ONLY",
+      "allowed_use": "REVIEW_ONLY",
+      "primary_metric": "hit_2R",
+      "evidence_summary": "Fase 2B: nas marcado DECISIVE_INDIVIDUAL_DIAGNOSTIC (diagnóstico). NÃO promovido — entra na library apenas como referência documentada; promoção exige decisão explícita + gate.",
+      "validation_level": "diagnostic_in_sample",
+      "oos_status": false,
+      "caveats": ["diagnostico", "nao_promovido_sem_decisao_explicita", "exige_gate"],
+      "last_reviewed_commit": "3a67707"
+    },
+    {
+      "confluence_id": "L2BPT_EXHAUSTION_TOP_INDIVIDUAL",
+      "status": "CONTEXT_ONLY",
+      "allowed_use": "REVIEW_ONLY",
+      "primary_metric": "hit_2R",
+      "evidence_summary": "Útil individual COM CAVEAT (winner-selection + cap +3.9R infla magnitude). NÃO promoted.",
+      "validation_level": "diagnostic_in_sample",
+      "oos_status": false,
+      "caveats": ["winner_selection", "cap_pinned_inflation", "nao_promoted"],
+      "last_reviewed_commit": "3a67707"
+    }
+  ]
+}

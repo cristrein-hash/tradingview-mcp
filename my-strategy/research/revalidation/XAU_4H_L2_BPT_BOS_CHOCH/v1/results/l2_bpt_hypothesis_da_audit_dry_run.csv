@@ -1,0 +1,2 @@
+hypothesis_id,discovered_and_tested_same_set,n_small,outlier_dependence,cap_pinned_dependence,context_relabel,subset_of_other_hypothesis,bull_beta_risk,ultra_filter_risk,kills_good_skip_winners,cuts_take_losers,random_context_matched_available,oos_required,suggested_status
+L2BPT_CONFL_CAPITULATION_RSI_MOMENTUM_V1,YES,YES,YES,YES,FLAGGED,UNKNOWN,YES,YES,MANUAL,MANUAL,YES,YES,OOS_CANDIDATE (manter REVIEW_ONLY; NÃO promover sem OOS)

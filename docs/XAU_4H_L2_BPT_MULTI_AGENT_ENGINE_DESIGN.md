@@ -211,6 +211,20 @@ Este é o engine de qualificação de trade do **L2/BPT XAU 4H** — NÃO um "en
 - **Classificação pós-confluência:** nas=DECISIVE_INDIVIDUAL; exhaustion_top=DECISIVE_INDIVIDUAL(winner-sel, cap caveat); capitulation+rsi=GENUINE_CONFLUENCE(único); demand_supply/risk_sl=SUPPORTING; bubbles/rsi/bull_beta=CONTEXT_ONLY (não independentes); volume_vp=NOISY; devils_advocate=VETO_ONLY (veto ainda não validado além do contexto).
 - **Phase 2C (aggregator) autorizável? NÃO AINDA.** Só 1 confluência (capit+rsi) sobrevive, p=0.014 n=17 (4 cap-pinned). Aggregator sobre 1 célula de 17 = overfit. **PRÓXIMO: validar capit+rsi OOS como HIT-RATE target (split temporal/sub-janelas) ANTES de qualquer aggregator.** É calibração, não validação (regra 45-grupos).
 
+## Hypothesis Registry / Validation Lab / Promotion Gate (infra implementada) — 2026-06-19
+Camada de **governança** entre descoberta e decisão. Não gera edge; impede que achado in-sample vire
+narrativa/regra informal/overfit. Ciclo canônico: especialistas → aggregator PROPÕE → hipótese → **registry**
+→ **validation lab** → **DA** → **promotion gate** → **validated confluence library**. Política completa em
+`docs/XAU_4H_L2_BPT_HYPOTHESIS_AND_PROMOTION_POLICY.md`. TUDO skeleton/dry-run: **nenhum OOS rodado, nenhum
+aggregator criado, nenhuma decisão TAKE nova, engine/decisões 2020-2026 intocados**.
+- **Registry** (`pipeline/qualification/hypothesis_registry.py` → `results/l2_bpt_hypothesis_registry.jsonl`): schema de 23 campos, 10 status, 7 allowed_engine_use; `validate_hypothesis` checa campos, fatores ∈ 84-schema, especialistas ∈ famílias, mapa status→use default-deny, `PROMOTED` só via gate. Regra-mãe: nova = UNTESTED + NONE.
+- **Hipótese registrada:** `L2BPT_CONFL_CAPITULATION_RSI_MOMENTUM_V1` — status `PROMISING_IN_SAMPLE`, `allowed_engine_use=REVIEW_ONLY` (nunca DECISIVE), `validation_required=True`, primary_metric `hit_2R`, caveats obrigatórios (in-sample, n=17, 4 cap-pinned, expectancy inflada, não-OOS, não regra final).
+- **Validation Lab** (`run_hypothesis_validation.py`, dry-run): checa completude/executabilidade e emite PLANO (split temporal + sub-janelas, métrica vs base context-matched, hit-rate cap-independente, shuffle/context-null reaplicados, dedup serial). **Não calcula resultado.** Saída `l2_bpt_hypothesis_validation_dry_run.csv`.
+- **DA Audit** (`hypothesis_da_audit.py`, dry-run): checklist adversário sobre metadados (mesmo-set, n pequeno, outlier/cap dependence, context relabel, subset, bull-beta, ultra-filter, kills SKIP-winners, cuts TAKE-losers, null disponível, OOS necessário). capit+rsi → OOS_CANDIDATE, manter REVIEW_ONLY. Saída `..._da_audit_dry_run.csv`.
+- **Promotion Gate** (`promotion_gate.py`, DEFAULT-DENY, dry-run): bloqueia sem prereg/metric/n/DA/OOS, ultra-filter, outlier, status não-promovível, use indevido. capit+rsi: **can_promote=NO (6 bloqueios)**. Saída `..._promotion_gate_dry_run.csv`.
+- **Validated Confluence Library** (`validated_confluence_library.json`): **0 regras promovidas**; capit+rsi PROMISING_IN_SAMPLE/REVIEW_ONLY/oos=false; nas e exhaustion_top entram como CONTEXT_ONLY diagnósticos (não promovidos sem decisão explícita).
+- **Sanity** (`results/l2_bpt_hypothesis_infra_sanity.csv`): registry válido, capit+rsi registrado, dry-runs PASS, gate bloqueia promoção, library sem promovidos, sem aggregator, sem mudança de decisão.
+
 ## 15. O que NÃO implementar agora
 Nada de código. Nada de rodar agentes. Não tocar engine/rubrica/decisões 2020-2026. Não rodar Opção B. Não calibrar. Não criar os schemas em código. Este bloco entrega **só o design**; cada fase do §14 é um bloco futuro com gate próprio.
 
