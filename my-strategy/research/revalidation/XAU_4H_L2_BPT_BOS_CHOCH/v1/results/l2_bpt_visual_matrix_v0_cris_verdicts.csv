@@ -1,5 +1,5 @@
 plot_id,cris_verdict,cris_reason
-T34,PROTECT_acceptable_loser,entrada boa acumulacao bull; stopou por azar (logica T36) = loser aceitavel
+T34,PROTECT_entry_fix_SL,"entrada BOA (irmao de T35, mesma acumulacao bull); stopou por SL CURTO demais. Falha = risk_sl/colocacao de SL, NAO entrada/regime/timing. Vira winner se SL estrutural corrigido."
 T35,PROTECT,big winner boa entrada acumulacao bull
 T36,PROTECT_ressalva,logica de entrada correta + boa localizacao meio de perna macro bull; winner curto aceitavel (pullback bear posterior)
 T37,PROTECT,excelente entrada big winner demand_reclaim
