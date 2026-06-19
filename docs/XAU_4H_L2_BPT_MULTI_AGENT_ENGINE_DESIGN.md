@@ -175,6 +175,17 @@ Este é o engine de qualificação de trade do **L2/BPT XAU 4H** — NÃO um "en
 - **Diagnóstico pós-hoc (Tarefa 5, `..._context_outcome_diagnostic.csv`, NÃO promoção):** demand_reclaim +0.896 (n42), bottom_reversal_capitulation +0.821 (n23) promissores; bear_bounce −0.230 (n25), late_top_exhaustion −0.141 (n44) perigosos; bull_pullback +0.278 (n75), liquidity_sweep +0.471 (n20), mid_range +0.206 (n46). Contraste promising-vs-dangerous: **Welch t=4.0, diff +1.04R** (grand mean +0.305, median −0.09) = sinal real, NÃO só bull-beta. Caveats DA: unclear n=1 (dropar), liquidity n20/bottom n23 subdimensionados; full-8 spread borderline (p~0.02-0.07).
 - **Veredito Phase 1:** non-circular PASS; útil para Phase 2 = **CONDICIONAL/weak-PASS** — Stage A vale como **re-derivação reproduzível/auditável** do contexto estrutural (com evidência validada), NÃO como eixo novo. Próximo: Phase 2 (especialistas + ablation) tratando Stage A assim.
 
+## Phase 2A implemented: specialist evidence generation + ablation prep — 2026-06-19
+**Só geração de evidência por especialista. SEM aggregator, SEM decisão TAKE/REVIEW/SKIP, SEM outcome no input.**
+- **10 especialistas** (subset controlado): demand_supply, capitulation, exhaustion_top, volume_vp, nas, bubbles, rsi_momentum, risk_sl, bull_beta, devils_advocate. Mandatos gerados do schema (`specialists/gen_specialist_prompts.py` → `specialists/prompts/*.md`): missão estreita + fatores PERMITIDOS exatos + perguntas obrigatórias + formato de evidência + travas (sem narrativa, sem TAKE/SKIP).
+- **Amostra:** EXPANDIDA para os **276 episódios completos** (máxima precisão, pedido do Cris). Input = 83 fatores + context_label da Fase 1; outcome/decision/setup_type/episode_id STRIPPED (0 vazamento verificado).
+- **Execução:** 10 agentes LLM, 1 lente cada × 276 episódios → `results/specialist_out/*.jsonl`. Runner `run_specialist_evidence.py` (--prep/--collect).
+- **Validação (Tarefa 4, `..._evidence_validation_phase2a.csv`): 20137 evidências, 20137 VÁLIDAS (100%)** pelo validador da Fase 0. **0 fator proibido, 0 value-mismatch (anti-eco), 0 narrativa-sem-value.** A disciplina estruturada se sustentou em escala (20k evidências).
+- **Não-eco/divergência de lentes:** net_read diverge por especialista (devils_advocate 205 hostile vs rsi_momentum 143 supportive vs capitulation 177 neutral) → lentes leem INDEPENDENTE, sem colusão.
+- **Ablation prep (Tarefa 5, `..._ablation_ready_matrix.csv`):** 2760 linhas (276 episódios × 10 especialistas) com positive/negative/veto/review_flag counts + decisive_factors + unresolved_conflicts por (episódio,especialista). Pronto para a Fase 2B (ablation: contribuição marginal por especialista). Nenhuma performance final calculada.
+- **DA:** 0 decisão TAKE/SKIP gerada; 0 outcome/decisão-antiga no input; 100% validado; 0 fator proibido; nenhum aggregator criado; engine/decisões 2020-2026 INTOCADOS (git); Opção B não rodada; produção intacta.
+- **Veredito Phase 2A: PASS.** Evidência estruturada auditável gerada em escala; pronta para ablation (Fase 2B).
+
 ## 15. O que NÃO implementar agora
 Nada de código. Nada de rodar agentes. Não tocar engine/rubrica/decisões 2020-2026. Não rodar Opção B. Não calibrar. Não criar os schemas em código. Este bloco entrega **só o design**; cada fase do §14 é um bloco futuro com gate próprio.
 
