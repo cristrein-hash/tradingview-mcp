@@ -1,3 +1,7 @@
 *.jsonl
 *.json
 # artefatos grandes/recuperados — não versionar; sha em results/l2_bpt_repro_preserved_tmp_artifacts.csv
+# 2026-06-19: stray analysis dump (scripts/reports duplicados; canônicos vivem em pipeline/) — não versionar
+*.py
+*.md
+*.csv

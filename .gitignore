@@ -70,3 +70,14 @@ my-strategy/core/regime_l1/xau_daily_l1v4.manifest.json
 __pycache__/
 *.pyc
 .DS_Store
+
+# 2026-06-19: L2/BPT research — derivados/intermediários REGENERÁVEIS (lab local, não versionar).
+#   Source-of-truth (packets/registry/decisions/results canônicos) permanece TRACKED. Produção/logs intocados.
+my-strategy/research/revalidation/XAU_4H_L2_BPT_BOS_CHOCH/v1/results/l2_bpt_oos_2013_2016_raw_features.jsonl
+my-strategy/research/revalidation/XAU_4H_L2_BPT_BOS_CHOCH/v1/results/l2_bpt_specialist_evidence_phase2a.jsonl
+my-strategy/research/revalidation/XAU_4H_L2_BPT_BOS_CHOCH/v1/results/specialist_batch_*.jsonl
+my-strategy/research/revalidation/XAU_4H_L2_BPT_BOS_CHOCH/v1/results/specialist_sample.jsonl
+my-strategy/research/revalidation/XAU_4H_L2_BPT_BOS_CHOCH/v1/results/stage_a_batches/
+my-strategy/research/revalidation/XAU_4H_L2_BPT_BOS_CHOCH/v1/results/stage_a_out/
+my-strategy/research/revalidation/XAU_4H_L2_BPT_BOS_CHOCH/v1/results/oos_2013_2016/spec_in/
+my-strategy/research/revalidation/XAU_4H_L2_BPT_BOS_CHOCH/v1/results/oos_2013_2016/spec_out/
