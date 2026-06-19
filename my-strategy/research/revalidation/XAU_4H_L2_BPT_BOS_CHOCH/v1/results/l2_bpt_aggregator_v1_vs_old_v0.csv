@@ -1,0 +1,15 @@
+question,value,detail
+v1_TAKE_vs_v0,63 vs 50,frequência
+v1_TAKE_vs_old,63 vs 32,
+old_TAKE_kept,21,de 32
+old_TAKE_dropped,11,dos quais 4 eram winners
+new_TAKE(not old),42,"vindos de {'REVIEW': 37, 'SKIP': 5}"
+new_TAKE_quality,18W/19stop,de 42 novos
+
+bucket,n,exp_decap,pf,hit2R
+V1_TAKE,63,0.959,3.1,49
+V1_REVIEW,41,0.414,1.71,29
+V1_SKIP,172,0.235,1.44,26
+OLD_TAKE,32,1.175,3.63,53
+V0_TAKE,50,0.917,3.14,46
+ALL_276,276,0.427,1.81,32

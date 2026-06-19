@@ -1,0 +1,11 @@
+check,result,detail
+v1_diagnostico_nao_promocao,YES,simulado; registry/library NÃO promoted
+engine_oficial_intocado,YES,0 builder/decisions_merged alterado
+decisions_merged_intocado,YES,só lido p/ comparação
+sem_telegram_producao,YES,nada vai a sinal real
+sem_registry_library_promoted,YES,status capit+rsi segue CONTEXT_ONLY
+sem_subset_amostra,YES,rodou sobre TODOS os 276 (população completa)
+comparou_old_e_v0,YES,OLD_TAKE + V0_TAKE no summary/vs
+avaliou_lucro_freq_dd_streak,YES,"expectancy/PF/sumR/DD/streak/freq, não só hit-rate"
+identificou_erros,YES,"error_analysis: {'DEMAND_SUPPLY_FALSE_POSITIVE': 25, 'VETO_TOO_HARD': 40, 'GOOD_REVIEW_NOT_TAKE': 3, 'NAS_OVERREQUIRED': 5, 'OTHER': 1}"
+producao_intacta,YES,sem chart/MCP/plot/SLIM/receiver
