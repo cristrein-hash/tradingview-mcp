@@ -235,6 +235,16 @@ runners capados):
 - **Veredito: PASS in-sample profit-robusto + INCONCLUSIVE em OOS verdadeiro.** Mesmo conjunto da descoberta (null corrobora 2B.5, não valida independente); janela inicial n<5; **freq ~2.8/ano = flag de confluência, NÃO engine standalone**.
 - **Status:** PROMISING_IN_SAMPLE → **OOS_CANDIDATE**, mantém REVIEW_ONLY. Gate `can_promote=NO` (sem OOS real/DA). Próximo: OOS independente (Opção B / nova coleta) otimizando lucro. CSVs: `l2_bpt_capit_rsi_{validation_plan,oos_data_availability,validation_results,validation_controls,validation_by_context_window,validation_da}.csv`.
 
+## OOS real 2013-2016 — preparado, BLOQUEADO por fidelidade (2026-06-19)
+Prereg congelado `docs/XAU_4H_L2_BPT_CAPIT_RSI_OOS_2013_2016_PREREG.md`. Fonte OOS **confirmada e íntegra**
+(RAW XAU 4H 2013-02-01→2016-05-25, 5100 bars, gold BEAR, gzip-t OK, zero overlap com 2020-2026 — `..._source_check.csv`).
+**OOS NÃO executado** (Tarefa 2 → STOP por input crítico faltante; `..._data_availability.csv`):
+- `--run-new-dataset` **recusado por design** (`.fidelity_pass` ausente) **e não implementado** no runner.
+- Reconstrução de raw_features só **PARTIAL field-equivalence**: rsi 97.26% / nas 97.66% (resíduo dup-capture) — e **rsi/nas são os inputs diretos da hipótese**; sem referência congelada 2013-2016 não há como certificar decision-invariance.
+- Packets 84-fatores OOS + estados dos especialistas capit/rsi (agentes, prompts congelados) **ainda não gerados**.
+**Decisão:** não fabricar OOS com input não-certificado. Status permanece **OOS_CANDIDATE / REVIEW_ONLY**.
+**Unblock:** (a) fechar o fidelity gate rsi/nas a 100% OU ler rsi/nas direto do collection (decisão de consistência), (b) implementar/wire-up stages 3-11 p/ o gz novo, (c) rodar os 2 especialistas congelados sobre os packets OOS, (d) então aplicar a regra congelada + controles. Requer autorização de escopo (engenharia de pipeline).
+
 ## 15. O que NÃO implementar agora
 Nada de código. Nada de rodar agentes. Não tocar engine/rubrica/decisões 2020-2026. Não rodar Opção B. Não calibrar. Não criar os schemas em código. Este bloco entrega **só o design**; cada fase do §14 é um bloco futuro com gate próprio.
 

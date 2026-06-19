@@ -1,0 +1,12 @@
+input,available,blocker,note
+raw_4h_gz,YES,,fonte OOS íntegra
+builders_stages_1_11_14,YES,,presentes em v1 (dry-run OK)
+raw_features_reconstruction,PARTIAL,CRITICO,rsi 97.26% / nas 97.66% field-equivalence (resíduo dup-capture); SEM referência congelada 2013-2016 p/ certificar decision-invariance — atinge rsi (input do rsi_momentum) e nas
+run_new_dataset_path,NO,CRITICO,runner RECUSA (.fidelity_pass ausente) E run_new_dataset NÃO IMPLEMENTADO
+84_factor_packets_2013_2016,NO,CRITICO,exige stages 3-11 re-wired ao gz novo; builders hard-coded p/ 2020-2026; não gerados
+specialist_capitulation_states,NO,CRITICO,exige rodar agente AI (prompt congelado) sobre packets OOS inexistentes
+specialist_rsi_momentum_states,NO,CRITICO,idem; depende de rsi reconstruído (resíduo 2.7%)
+stage_a_labels,N/A,,não necessário p/ regra congelada (só capit+rsi)
+outcomes_2013_2016,DERIVABLE,,"stage 14 determinístico, MAS pendente de packets"
+context_matched_controls,DERIVABLE,,pendente de packets+stage_a
+VERDICT,STOP,CRITICO,inputs críticos (run-new-dataset unimplemented + reconstrução rsi/nas não certificável + packets/estados inexistentes) FALTAM -> Tarefa 2 manda PARAR e reportar. NÃO fabricar OOS com input não-certificado.

@@ -1,0 +1,9 @@
+item,status,detail
+raw_4h_gz_2013_2016,EXISTS,TradingData/raw_replay/XAUUSD/4H/XAUUSD_240m_replay_2013-02-01_to_2016-05-25.jsonl.gz
+manifest,EXISTS,TradingData/manifests/XAUUSD_240m_replay_2013-02-01_to_2016-05-25_manifest.txt
+gzip_integrity,PASS,gzip -t OK; roundtrip sha256==original (manifest); archived_sha256=6175e11f..
+period_exact,CONFIRMED,2013-01-31T23:59:59 -> 2016-05-25T01:59:59 UTC; 5100 bars; dup_ts=24 (~0.47%)
+regime,OOS_BEAR,gold BEAR 2013-2015 / crash abr-2013 / fundo dez-2015 / recovery 2016 — FORA de 2020-2026
+indicators,5/5+vol,"Custom OB v11, LuxAlgo SMC, NAS Top Bottom, Market Order Bubbles, RSI + Volume; availability 5100/5100"
+no_2020_2026_leak,CONFIRMED,dataset termina 2016-05-25; descoberta começa 2020-01-14; zero sobreposição
+SLIM_use,FORBIDDEN,slim_features 2016-2020 existe no HD mas NÃO usar (regra permanente); só RAW gz

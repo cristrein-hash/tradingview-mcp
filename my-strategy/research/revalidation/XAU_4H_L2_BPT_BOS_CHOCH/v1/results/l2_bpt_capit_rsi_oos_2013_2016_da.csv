@@ -1,0 +1,17 @@
+check,result,detail
+oos_fora_de_2020_2026,CONFIRMED,dataset 2013-02-01..2016-05-25; descoberta 2020-2026; zero overlap
+preregistro_antes_do_teste,YES,docs/..._OOS_2013_2016_PREREG.md congelado antes
+nenhuma_variacao_testada,YES,só a regra congelada (não executada)
+nenhum_threshold_ajustado,YES,sem retune
+outcome_so_pos_hoc,N/A,OOS não executado
+sem_aggregator,YES,nenhum
+sem_TAKE_novo,YES,nenhum
+sem_promocao,YES,status permanece OOS_CANDIDATE; sem PROMOTED/DECISIVE
+controles_feitos,NO,pendente — OOS não executado
+drop_top2_feito,NO,pendente — OOS não executado
+n_e_CI_reportados,N/A,OOS não executado
+objetivo_lucro_nao_winrate,YES,prereg define expectancy/sumR/PF como primárias
+sem_ultra_filtragem_que_mate_lucro,YES,não aplicável — nada filtrado
+nao_fabricou_resultado_com_input_nao_certificado,YES,STOP por fidelidade rsi/nas 97% + run-new-dataset bloqueado/unimplemented
+engine_intocado,YES,0 arquivo de engine/decisions_merged/especialistas alterado
+producao_intacta,YES,sem chart/MCP/plot/SLIM/receiver
