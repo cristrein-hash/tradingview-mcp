@@ -1,0 +1,8 @@
+RETRATADO 2026-06-19: o cross-check causal (HINDSIGHT 18 / REAL_ERROR 1) usou criterios QUEBRADOS para a familia bull-run:
+- not_stretched (legpos<85) penaliza bull-run continuation (legpos alto e' normal/bom);
+- fuel (dist_supply>=2) penaliza trades perto de novos maximos (pouca supply overhead = BOM);
+- regime via Stage A mislabela (bear_bounce/late_top/mid_range em entradas bull boas);
+- reclaim_body>0 falha (bons winners com reclaim negativo).
+Cris reconciliou pelo visual: fatal-SKIP do v1 CORTA muitos bons bull-run winners (S20,S24-27,S29-32,S35-38).
+Conclusao 'fatal-SKIP largamente correto' = RETIRADA. Erro DUPLO real (skip+keep), raiz=REGIME/contexto mal medido.
+Proximo: SESSAO EXCLUSIVA de regime (re-medir regime/contexto/fuel sem perder bons winners).

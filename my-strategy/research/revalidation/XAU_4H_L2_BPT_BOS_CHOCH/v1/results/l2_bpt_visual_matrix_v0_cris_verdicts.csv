@@ -1,0 +1,22 @@
+plot_id,cris_verdict,cris_reason
+T34,PROTECT_acceptable_loser,entrada boa acumulacao bull; stopou por azar (logica T36) = loser aceitavel
+T35,PROTECT,big winner boa entrada acumulacao bull
+T36,PROTECT_ressalva,logica de entrada correta + boa localizacao meio de perna macro bull; winner curto aceitavel (pullback bear posterior)
+T37,PROTECT,excelente entrada big winner demand_reclaim
+T40,BLOCK,TAKE que deveria ser SKIP nato: precipitada em bear-leg corretiva + macro
+S19,BLOCK_acceptable_skip,"skip correto: pullback curto em bear, fuel fraco"
+S20,PROTECT,"fatal-SKIP ERRO: seria big winner, entrada perfeita"
+S24,PROTECT,"bom winner, nao deixar pra tras"
+S25,PROTECT,bom winner
+S26,PROTECT,bom winner
+S27,PROTECT,big winner em range macro bull; irmao de T38
+S29,PROTECT,big winner bullrun entrada perfeita; irmao de T39
+S30,PROTECT,big winner bullrun
+S31,PROTECT,big winner bullrun
+S32,PROTECT,big winner bullrun
+S35,PROTECT,entrada perfeita big winner
+S36,PROTECT,entrada perfeita big winner
+S37,PROTECT,entrada perfeita big winner
+S38,PROTECT,entrada perfeita big winner
+S39,REVIEW,bom ultimo winner de perna bull; talvez dispensavel por estar perto de topo
+S40,BLOCK,skip excelente; irmao do T40 que deveria ter sido skip
