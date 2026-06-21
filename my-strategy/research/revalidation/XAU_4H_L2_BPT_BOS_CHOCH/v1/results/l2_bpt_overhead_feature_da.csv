@@ -1,0 +1,13 @@
+check,result,detail
+diagnostico_nao_promocao,SIM,feature diagnóstica; nada promovido
+sem_v2,SIM,nenhum aggregator rodado
+engine_decisions_registry_intocados,SIM,só results/ + script de pesquisa
+producao_telegram_chart_slim,NAO-TOCADO,nenhum
+outcome_como_predicado,NAO,estados usam só has_overhead/dist/broken/trend/rsi/legpos (entrada)
+C_fora_do_fit,SIM,C=18 reportado à parte
+provenance_supply_broken,CAUSAL,"range(i-WIN,i+1) inclusive, nunca >i; '_before_entry'; verificado"
+look_ahead,AUSENTE,externas não usadas nesta feature; supply causal; sem futuro
+ids_no_fit,NAO,"thresholds principled declarados (DIST/MOM/LEGPOS/RSI), não casados a IDs"
+anchors_checadas,SIM,"preserve 7/18, block 2/2"
+comparacao_vs_distsupply,SIM,composite bal 0.618 vs puro 0.81
+n_pequeno_declarado,SIM,A26/B18; B late n=3 held-out frágil; calibração não validação

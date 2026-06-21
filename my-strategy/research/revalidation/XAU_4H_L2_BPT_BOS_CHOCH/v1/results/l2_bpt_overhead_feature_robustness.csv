@@ -1,0 +1,5 @@
+test,bal_acc,n,note
+full,0.618,A26/B18,composite family BULL=A/RISK=B
+shuffle_null,P(null>=real)=0.07,2000 perm,null mediana=0.524
+temporal_2020-23,0.549,A13/B15,in-window
+temporal_2024-26,0.731,A13/B3,B late n=3 FRÁGIL
