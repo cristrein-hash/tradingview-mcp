@@ -1,0 +1,11 @@
+check,evidence,veredito
+svp_grid,"4H (14400s), 10073 registros, todos com vp","per-bar, não por-sessão"
+vp_intra_session_mutavel,1682/1682 sessões VP MUDA intra-sessão,desenvolve=causal (0 constantes)
+va_width_cresce_na_sessao,bar#1 med 3.68 -> bar#6 med 13.41,assinatura de perfil em desenvolvimento
+vp_1obar_vs_ultimo,DIFERENTE em 1682/1682,0 'final broadcast' = 0 look-ahead
+vp_em_bar_i,volume de session-open ATÉ bar i (inclusive),causal p/ entrada no CLOSE do bar i
+rel_volume_baseline,"recent = svp[TS[j]] para j in [i-50, i) (j<i estrito)","baseline causal, não inclui i+"
+below_VAL_dist_POC_dist_VAL_va_width,usam vpr=svp[TS[i]] (developing-up-to-i),CAUSAL
+tick_volume,NÃO usado (raw_features volume); SVP usa volume REAL nativo,confiável
+VEREDITO,SVP CAUSAL as-of-bar; shift NÃO necessário,caveat do design REBAIXADO a nota de maturidade
+nota_maturidade,VP de início de sessão é fino (poucos bars),não é look-ahead; é qualidade — Volumetry specialist deve ponderar maturidade

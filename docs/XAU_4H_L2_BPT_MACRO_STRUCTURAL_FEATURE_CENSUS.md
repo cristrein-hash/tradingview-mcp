@@ -25,7 +25,7 @@ Inventariadas no CSV com família/timeframe/causalidade/status. Destaques de sta
 ## C. Volumetria
 - **tick-volume (raw_features):** NÃO-CONFIÁVEL → não usar como volume macro.
 - **Session VP nativo (`svp_bars.jsonl`):** CONFIÁVEL (volume REAL, 100% match fundos). POC/VAH/VAL + vol + below_VAL/dist_POC/dist_VAL/va_width/rel_volume.
-- ⚠️ **Caveat causal:** VP da sessão usa volume da sessão inteira → bar 4H intra-sessão = look-ahead. **Solução obrigatória: previous-closed-session VP, OU provar as-of-bar.** Não assumir.
+- ✅ **CAUSALIDADE RESOLVIDA (2026-06-22, `results/l2_bpt_svp_causality_verification.csv`):** provado **as-of-bar / developing** — 1682/1682 sessões com VP mutável intra-sessão (0 constantes), VA width cresce bar#1 3.68→bar#6 13.41, 0 "final broadcast". VP em bar i = volume de session-open ATÉ i; com entrada no close de i = **CAUSAL, sem look-ahead. Shift NÃO necessário.** `rel_volume` baseline causal (j∈[i-50,i)). **Nota de maturidade** (não-causalidade): VP de início de sessão é fino → Volumetry specialist deve ponderar maturidade, não tratar como look-ahead.
 
 ## D. Supply/Demand CATEGÓRICO — elevado a primeira classe (o achado central)
 `demand_supply_quality.py` já deriva (causal, range i-12..i) categorias que **codificam a leitura que tentamos reinventar do zero com `dist_supply` cru — e falhámos**:

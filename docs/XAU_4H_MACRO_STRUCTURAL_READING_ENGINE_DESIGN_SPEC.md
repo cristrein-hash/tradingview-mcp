@@ -18,14 +18,14 @@ na confluência multi-fator multi-timeframe. Calibração inicial: L2/BPT XAU 4H
 5. **Confluência só conta com interpretação de mercado.** Sem isso = fishing → rejeitado.
 6. **Nenhum especialista é caixa-preta.** Cada output: provenance + reason codes + features citadas (factor+value), como na Fase 2A.
 7. **Multiplicidade controlada** na validação futura (shuffle-null por confluência, held-out temporal).
-8. **Causalidade absoluta:** só features conhecíveis no close do bar i; externas com shift D-1; SVP com prev-closed-session; sem outcome/futuro.
+8. **Causalidade absoluta:** só features conhecíveis no close do bar i; externas com shift D-1; **SVP verificado causal as-of-bar (developing; shift não necessário — 2026-06-22)**; sem outcome/futuro.
 
 ## 2. Roster de especialistas (leitores de ASPECTOS, não votadores)
 | # | Especialista | Lê (inclui as "fracas") | Distingue |
 |---|---|---|---|
 | 1 | **Supply Structure** | **sup_cat/pol_cat (1ª classe)** + dist_supply 4H/D1 + overhead/blocks/broken/rejected/fresh | CLEAN_SKY/no-overhead-bullish ≠ supply_colada_bearish |
 | 2 | **Demand Structure** | Custom OB: demand age/width/origin/touched/retest + dist_demand 4H/D1 | demanda defendida real ≠ base frágil |
-| 3 | **Volumetry/Acceptance** | SVP POC/VAH/VAL + below_VAL + rel_volume + va_width + distribution_flag (⚠ prev-closed-session) | aceitação acima de valor ≠ rejeição/distribuição |
+| 3 | **Volumetry/Acceptance** | SVP POC/VAH/VAL + below_VAL + rel_volume + va_width + distribution_flag (✅ causal as-of-bar — verificado 2026-06-22; ponderar maturidade do VP) | aceitação acima de valor ≠ rejeição/distribuição |
 | 4 | **Multi-TF Alignment** | 4H + 1D + **semanal** (slopes, RSI, breaks h4/d/w, demand/supply D1/W) | bull-run maior ≠ bounce local |
 | 5 | **Macro Regime** | regime_B_v3 COMPLETO (cascade/vol/combined/stage/atr_expansion/distribution/stall/sharp_drop/dist_alarm/macro_broken) + l1_v4 | macro_broken/distribution/cascade/stall/recovery |
 | 6 | **Momentum/Exhaustion** | trend_30/90 + slope + rsi/rsi_1d + rise20 + bear_div + **legpos×momentum** | high-legpos saudável ≠ late_top exhaustion |
@@ -65,4 +65,4 @@ Família BULL (consumível como contexto-favorável-LONG) vs RISK (bloquear/reba
 1. Aplicar engine aos 276 (não só 62). 2. Comparar leitura vs matriz/decisões antigas. 3. OOS (2013-2016 + futuro). 4. LONG agora, SHORT depois (espelho). 5. Medir lucro/PF/DD/frequência/convexidade do qualificador que CONSOME a leitura. 6. Avaliar se a leitura macro melhora qualificadores DIFERENTES (não só L2/BPT) — teste de strategy-agnosticismo. Multiplicidade controlada (shuffle-null/held-out).
 
 ## 6. Próximos passos
-(a) Resolver a causalidade do SVP (prev-closed-session vs as-of-bar) — provenance check dedicado. (b) Implementar os 9 especialistas como leitores de evidência sobre os 62 (ensino). (c) Confluência → estados. (d) Anchor check + interpretação. (e) SÓ DEPOIS: 276 + OOS. Cada etapa = bloco diagnóstico próprio, sem promoção.
+(a) ✅ FEITO — causalidade do SVP RESOLVIDA (as-of-bar/developing, causal, sem shift; `results/l2_bpt_svp_causality_verification.csv`). (b) Implementar os 9 especialistas como leitores de evidência sobre os 62 (ensino). (c) Confluência → estados. (d) Anchor check + interpretação. (e) SÓ DEPOIS: 276 + OOS. Cada etapa = bloco diagnóstico próprio, sem promoção.
