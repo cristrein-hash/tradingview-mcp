@@ -1,0 +1,14 @@
+check,result,detail
+design_censo_apenas,SIM,2 docs + 1 censo CSV + DA; nenhuma execução
+sem_execucao_estrategia,SIM,nada rodado além de gerar o censo a partir de dados existentes
+sem_v2,SIM,nenhum aggregator
+sem_promocao,SIM,nada promovido; registry/library intocados
+sem_producao_chart_mcp_slim,NAO-TOCADO,sem produção/Telegram/chart/MCP/SLIM/runtime/monitor/receiver
+sem_outcome_como_predicado,SIM,censo/design não usam outcome/realR/exit/MFE/futuro
+44_62_ensino_nao_fit,SIM,"contrato anti-ilusão §1.3; anchors=teaching, validar 276+OOS"
+svp_causal_caveat_documentado,SIM,intra-session look-ahead -> prev-closed-session obrigatório (censo C + spec §3)
+features_fracas_nao_descartadas,SIM,fraqueza isolada != inútil; 34 FRACA + 63 NÃO-TESTADA mantidas p/ confluência
+mortas_separadas_de_fracas,SIM,"só 3 MORTAS excluídas (macro_leg x2, demand_age); resto mantido"
+sup_cat_pol_cat_primeira_classe,SIM,censo D + Supply Structure Specialist; achado central documentado
+auditabilidade,SIM,cada especialista emite evidência factor+value+reason_codes; sem caixa-preta
+externas_shift_causal,SIM,regime_B_v3/l1v4/daily D-1; weekly prev-closed; SVP prev-session (caveat)

@@ -1,0 +1,123 @@
+feature,family,source,timeframe,causal_at_entry,availability,lookahead_risk,type,status,macro_use
+macro_leg_direction,macro_regime,84packet,4H,yes,NULL/REFERENCE_ONLY,low,categorical,MORTA,ver roster
+macro_leg_phase,macro_regime,84packet,4H,yes,NULL/REFERENCE_ONLY,low,categorical,MORTA,ver roster
+trend_30_atr,macro_regime,84packet,4H,yes,HIGH,low,derived,MODERADA,ver roster
+trend_90_atr,bull_beta,84packet,4H,yes,NULL/REFERENCE_ONLY,low,derived,PARCIAL_NULL,ver roster
+slope20_atr,macro_regime,84packet,4H,yes,HIGH,low,derived,FRACA,ver roster
+dist_sma20_atr,macro_regime,84packet,4H,yes,HIGH,low,derived,NAO_TESTADA,ver roster
+dist_sma50_atr,macro_regime,84packet,4H,yes,HIGH,low,derived,FRACA,ver roster
+price_vs_sma50,macro_regime,84packet,4H,yes,HIGH,low,categorical,NAO_TESTADA,ver roster
+rsi_1d,htf_daily,84packet,1D,yes,NULL/REFERENCE_ONLY,low,derived,MODERADA,ver roster
+rsi_1d_ma,htf_daily,84packet,1D,yes,NULL/REFERENCE_ONLY,low,derived,NAO_TESTADA,ver roster
+rsi_1d_sub_ma,htf_daily,84packet,1D,yes,HIGH,low,derived,NAO_TESTADA,ver roster
+drop20_atr,capitulation,84packet,4H,yes,HIGH,low,derived,FRACA(confluencia-capit),ver roster
+rise20_atr,exhaustion_top,84packet,4H,yes,HIGH,low,derived,FRACA,ver roster
+rsi,rsi_momentum,84packet,4H,yes,HIGH,low,raw,FRACA-MODERADA,ver roster
+rsi_min8,capitulation,84packet,4H,yes,HIGH,low,raw,FRACA(confluencia-capit+rsi),ver roster
+rsi_max8,exhaustion_top,84packet,4H,yes,HIGH,low,raw,FRACA,ver roster
+rsi_vs_ma,rsi_momentum,84packet,4H,yes,HIGH,low,categorical,FRACA,ver roster
+rsi_drop_6b,capitulation,84packet,4H,yes,HIGH,low,raw,FRACA,ver roster
+consec_down,capitulation,84packet,4H,yes,HIGH,low,raw,FRACA,ver roster
+consec_up,entry_reclaim,84packet,4H,yes,HIGH,low,raw,NAO_TESTADA,ver roster
+range_exp,capitulation,84packet,4H,yes,HIGH,low,raw,FRACA,ver roster
+atr_level,volatility,84packet,4H,yes,HIGH,low,raw,NAO_TESTADA,ver roster
+atr_pctile_proxy,volatility,84packet,4H,yes,NULL/REFERENCE_ONLY,low,raw,PARCIAL_NULL,ver roster
+sweet_spot_falling_knife,capitulation,84packet,4H,yes,HIGH,low,raw,FRACA,ver roster
+legpos30,bull_beta,84packet,4H,yes,HIGH,low,raw,FRACA,ver roster
+legpos60,bull_beta,84packet,4H,yes,HIGH,low,raw,FRACA,ver roster
+legpos90,bull_beta,84packet,4H,yes,HIGH,low,raw,FRACA(util-so-condicional-a-momentum),ver roster
+rsi_bear_div_20b,exhaustion_top,84packet,4H,yes,HIGH,low,raw,FRACA,ver roster
+rsi_bull_div_20b,rsi_momentum,84packet,4H,yes,HIGH,low,raw,FRACA,ver roster
+nas_long_new_8b,nas,84packet,4H,yes,HIGH,low,raw,FORTE(nas-decisive-2B),ver roster
+nas_short_new_8b,nas,84packet,4H,yes,HIGH,low,raw,MODERADA,ver roster
+nas_dist_ema_atr,nas,84packet,4H,yes,NULL/REFERENCE_ONLY,low,derived,MODERADA,ver roster
+nas_rsi,nas,84packet,4H,yes,HIGH,low,raw,FRACA,ver roster
+nas_1d_long_recent,nas,84packet,4H,yes,HIGH,low,raw,NAO_TESTADA,ver roster
+bub_buy_s,bubbles,84packet,4H,yes,HIGH,low,raw,FRACA,ver roster
+bub_buy_m,bubbles,84packet,4H,yes,HIGH,low,raw,FRACA,ver roster
+bub_buy_L,bubbles,84packet,4H,yes,HIGH,low,raw,FRACA,ver roster
+bub_sell_s,bubbles,84packet,4H,yes,HIGH,low,raw,FRACA,ver roster
+bub_sell_m,bubbles,84packet,4H,yes,HIGH,low,raw,FRACA,ver roster
+bub_sell_L,bubbles,84packet,4H,yes,HIGH,low,raw,FRACA,ver roster
+bub_poc_recent,auction_structure,84packet,4H,yes,HIGH,low,raw,NAO_TESTADA,ver roster
+bub_buy_total,bubbles,84packet,4H,yes,HIGH,low,raw,FRACA,ver roster
+bub_sell_total,bubbles,84packet,4H,yes,HIGH,low,raw,FRACA(confluencia-capit),ver roster
+bub_buy_sell_ratio,bubbles,84packet,4H,yes,HIGH,low,raw,FRACA,ver roster
+bub_large_sell_10b,bubbles,84packet,4H,yes,HIGH,low,raw,FRACA,ver roster
+bub_large_buy_10b,bubbles,84packet,4H,yes,HIGH,low,raw,FRACA,ver roster
+has_4h_demand,custom_ob,84packet,4H,yes,HIGH,low,categorical,MODERADA,ver roster
+dist_4h_demand_low_atr,custom_ob,84packet,4H,yes,HIGH,low,derived,FRACA,ver roster
+demand_width_atr,custom_ob,84packet,4H,yes,HIGH,low,derived,NAO_TESTADA,ver roster
+demand_age_bars,custom_ob,84packet,4H,yes,NULL/REFERENCE_ONLY,low,derived,MORTA(UNAVAILABLE),ver roster
+demand_touched_on_retest,custom_ob,84packet,4H,yes,HIGH,low,derived,NAO_TESTADA,ver roster
+demand_origin_of_leg,custom_ob,84packet,4H,yes,HIGH,low,derived,NAO_TESTADA,ver roster
+has_d1_demand,custom_ob,84packet,1D,yes,HIGH,low,categorical,NAO_TESTADA,ver roster
+dist_d1_demand_atr,custom_ob,84packet,1D,yes,HIGH,low,derived,MODERADA(es1.01),ver roster
+has_4h_supply_overhead,demand_supply,84packet,4H,yes,HIGH,low,categorical,FORTE(gate-necessario),ver roster
+dist_4h_supply_low_atr,demand_supply,84packet,4H,yes,HIGH,low,derived,SUSPEITA(forte-isolada-mas-artefato-sem-overhead),ver roster
+supply_blocks_2ATR,demand_supply,84packet,4H,yes,HIGH,low,derived,MODERADA,ver roster
+supply_blocks_3ATR,demand_supply,84packet,4H,yes,HIGH,low,derived,MODERADA,ver roster
+supply_rejected_before,demand_supply,84packet,4H,yes,HIGH,low,derived,NAO_TESTADA,ver roster
+supply_broken_before,demand_supply,84packet,4H,yes,HIGH,low,derived,FRACA(causal-mas-rara-nos-winners),ver roster
+has_d1_supply,demand_supply,84packet,1D,yes,HIGH,low,categorical,FORTE(no-supply-D1=ATH-sinal),ver roster
+dist_d1_supply_atr,demand_supply,84packet,1D,yes,NULL/REFERENCE_ONLY,low,derived,MODERADA(es0.96),ver roster
+rel_volume,auction_structure,84packet,4H,yes,HIGH,intra-session-shift,raw,NAO_TESTADA,ver roster
+below_VAL,auction_structure,84packet,4H,yes,HIGH,intra-session-shift,raw,FRACA(decisive-1/276-isolada;categorica-em-confluencia),ver roster
+dist_POC_atr,auction_structure,84packet,4H,yes,HIGH,intra-session-shift,derived,NAO_TESTADA,ver roster
+dist_VAL_atr,auction_structure,84packet,4H,yes,HIGH,intra-session-shift,derived,NAO_TESTADA,ver roster
+va_width_atr,auction_structure,84packet,4H,yes,HIGH,intra-session-shift,derived,NAO_TESTADA,ver roster
+smc_bos,entry_reclaim,84packet,4H,yes,NULL/REFERENCE_ONLY,REPAINT-shift,raw,PARCIAL_NULL(repaint),ver roster
+smc_choch,entry_reclaim,84packet,4H,yes,HIGH,REPAINT-shift,raw,PARCIAL_NULL(repaint),ver roster
+reclaim_body_atr,entry_reclaim,84packet,4H,yes,HIGH,low,derived,FRACA,ver roster
+reclaim_dist_from_demand_atr,custom_ob,84packet,4H,yes,HIGH,low,derived,NAO_TESTADA,ver roster
+reclaim_dist_from_supply_atr,demand_supply,84packet,4H,yes,HIGH,low,derived,SUSPEITA(colinear-dist_supply),ver roster
+sl_atr,historical_analogues,84packet,4H,yes,HIGH,low,derived,FRACA(eixo-risk_sl-T34),ver roster
+sl_source,risk_sl,84packet,4H,yes,HIGH,low,categorical,NAO_TESTADA,ver roster
+sl_type,risk_sl,84packet,4H,yes,HIGH,low,categorical,NAO_TESTADA,ver roster
+F_STRICT_top_late,exhaustion_top,84packet,4H,yes,HIGH,low,raw,FRACA,ver roster
+hour_utc,session_time,84packet,4H,yes,HIGH,low,raw,ARTEFATO(session-time-overfit),ver roster
+dead_hour,session_time,84packet,4H,yes,HIGH,low,raw,NAO_TESTADA,ver roster
+regimeB.cascade_score,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.vol_score,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.combined_score,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.raw_state,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.stage_dir,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.stage_n,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.atr_expansion_ratio,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.distribution_flag,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.ma200_bear,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.ma200_bull,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.state,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.v2_state,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.stall,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.sharp_drop,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.dist_alarm,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.v2_state_final,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.v3_state,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.macro_broken,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.drawdown_pct_13w,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.h4_break_bear,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.h4_break_bull,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.d_break_bear,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.d_break_bull,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.w_break_bear,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.w_break_bull,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.ma_50,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+regimeB.ma_200,macro_regime_EXT,regime_B_v3_classifications.jsonl,1D(D-1 shift),yes(shift D-1),HIGH,MITIGADO-shift-D1,external,NAO_TESTADA(exc.v3_state/dd13w),Macro Regime Specialist
+l1v4.regime_l1_v4,macro_regime_EXT,regime_l1_v4_classifications.jsonl,1D(D-1),yes(shift),HIGH,MITIGADO-shift,external,NAO_TESTADA,Macro Regime Specialist
+l1v4.slope_20_pct,macro_regime_EXT,regime_l1_v4_classifications.jsonl,1D(D-1),yes(shift),HIGH,MITIGADO-shift,external,NAO_TESTADA,Macro Regime Specialist
+l1v4.rsi_14,macro_regime_EXT,regime_l1_v4_classifications.jsonl,1D(D-1),yes(shift),HIGH,MITIGADO-shift,external,NAO_TESTADA,Macro Regime Specialist
+l1v4.rsi_ma_14,macro_regime_EXT,regime_l1_v4_classifications.jsonl,1D(D-1),yes(shift),HIGH,MITIGADO-shift,external,NAO_TESTADA,Macro Regime Specialist
+weekly.rsi_14,multi_tf_EXT,xau_weekly_with_features.jsonl,1W(prev-closed),yes(prev-week),HIGH,MITIGADO-prev-week,external,NAO_TESTADA(3o-frame-nunca-usado),Multi-TF Alignment Specialist
+weekly.rsi_ma_14,multi_tf_EXT,xau_weekly_with_features.jsonl,1W(prev-closed),yes(prev-week),HIGH,MITIGADO-prev-week,external,NAO_TESTADA(3o-frame-nunca-usado),Multi-TF Alignment Specialist
+weekly.ma_20,multi_tf_EXT,xau_weekly_with_features.jsonl,1W(prev-closed),yes(prev-week),HIGH,MITIGADO-prev-week,external,NAO_TESTADA(3o-frame-nunca-usado),Multi-TF Alignment Specialist
+weekly.ma_50,multi_tf_EXT,xau_weekly_with_features.jsonl,1W(prev-closed),yes(prev-week),HIGH,MITIGADO-prev-week,external,NAO_TESTADA(3o-frame-nunca-usado),Multi-TF Alignment Specialist
+weekly.slope_20_pct,multi_tf_EXT,xau_weekly_with_features.jsonl,1W(prev-closed),yes(prev-week),HIGH,MITIGADO-prev-week,external,NAO_TESTADA(3o-frame-nunca-usado),Multi-TF Alignment Specialist
+weekly.atr_14,multi_tf_EXT,xau_weekly_with_features.jsonl,1W(prev-closed),yes(prev-week),HIGH,MITIGADO-prev-week,external,NAO_TESTADA(3o-frame-nunca-usado),Multi-TF Alignment Specialist
+weekly.volume,multi_tf_EXT,xau_weekly_with_features.jsonl,1W(prev-closed),yes(prev-week),HIGH,MITIGADO-prev-week,external,NAO_TESTADA(3o-frame-nunca-usado),Multi-TF Alignment Specialist
+svp.POC,volumetry_EXT,svp_bars.jsonl(Session VP nativo),session,CHECAR(intra-session),HIGH,INTRA-SESSION-shift-obrigatorio(prev-closed-session),external,NAO_TESTADA(volume-REAL-nao-tick),Volumetry/Acceptance Specialist
+svp.VAH,volumetry_EXT,svp_bars.jsonl(Session VP nativo),session,CHECAR(intra-session),HIGH,INTRA-SESSION-shift-obrigatorio(prev-closed-session),external,NAO_TESTADA(volume-REAL-nao-tick),Volumetry/Acceptance Specialist
+svp.VAL,volumetry_EXT,svp_bars.jsonl(Session VP nativo),session,CHECAR(intra-session),HIGH,INTRA-SESSION-shift-obrigatorio(prev-closed-session),external,NAO_TESTADA(volume-REAL-nao-tick),Volumetry/Acceptance Specialist
+svp.vol_real,volumetry_EXT,svp_bars.jsonl(Session VP nativo),session,CHECAR(intra-session),HIGH,INTRA-SESSION-shift-obrigatorio(prev-closed-session),external,NAO_TESTADA(volume-REAL-nao-tick),Volumetry/Acceptance Specialist
+sup_cat(CLEAN_SKY/SUPPLY_NEAR_BUT_BROKEN/SUPPLY_FRESH_DANGEROUS/SUPPLY_NEAR_AND_REJECTING/SUPPLY_FAR_ENOUGH/SUPPLY_BLOCKS_TARGET/SUPPLY_PRESENT_NEUTRAL),demand_supply_CATEGORICAL,"demand_supply_quality.py(derived,causal)",4H,yes(range i-12..i),HIGH,low(before_entry),categorical,NAO_TESTADA-COMO-INPUT(JA-CODIFICA-no-overhead-vs-colada;descartado em favor de dist_supply cru),Supply Structure Specialist (PRIMEIRA CLASSE)
+pol_cat(RECLAIM_ACCEPTED_ABOVE/RECLAIM_REJECTED_BELOW/POLARITY_SUPPORTED_BY_DEMAND/POLARITY_UNDER_SUPPLY_PRESSURE/POLARITY_FLOATING_NO_BASE),demand_supply_CATEGORICAL,"demand_supply_quality.py(derived,causal)",4H,yes(range i-12..i),HIGH,low(before_entry),categorical,NAO_TESTADA-COMO-INPUT(JA-CODIFICA-no-overhead-vs-colada;descartado em favor de dist_supply cru),Supply Structure Specialist (PRIMEIRA CLASSE)
