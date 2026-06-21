@@ -1,0 +1,2 @@
+split,train_feature,thr,dir,train_ba,test_recallA,test_blockB,test_ba
+train2020-23/test2024-26,dist_4h_supply_low_atr,2.33,A<t,0.923,0.615,1.0,0.808

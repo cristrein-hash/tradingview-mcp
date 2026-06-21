@@ -1,0 +1,92 @@
+feature,source,timestamp,causal_at_entry,shift_needed,lookahead_risk
+episode_id,84packet,bar_i (4H close),yes,no,low
+bar_idx,84packet,bar_i (4H close),yes,no,low
+ts,84packet,bar_i (4H close),yes,no,low
+datetime,84packet,bar_i (4H close),yes,no,low
+price,84packet,bar_i (4H close),yes,no,low
+atr,84packet,bar_i (4H close),yes,no,low
+macro_leg_direction,84packet,bar_i (4H close),yes,no,DEAD
+macro_leg_phase,84packet,bar_i (4H close),yes,no,DEAD
+trend_30_atr,84packet,bar_i (4H close),yes,no,low
+trend_90_atr,84packet,bar_i (4H close),yes,no,low
+slope20_atr,84packet,bar_i (4H close),yes,no,low
+dist_sma20_atr,84packet,bar_i (4H close),yes,no,low
+dist_sma50_atr,84packet,bar_i (4H close),yes,no,low
+price_vs_sma50,84packet,bar_i (4H close),yes,no,low
+rsi_1d,84packet(daily-derived),bar_i (4H close),yes,ja-shiftado-no-build,check
+rsi_1d_ma,84packet(daily-derived),bar_i (4H close),yes,ja-shiftado-no-build,check
+rsi_1d_sub_ma,84packet(daily-derived),bar_i (4H close),yes,ja-shiftado-no-build,check
+drop20_atr,84packet,bar_i (4H close),yes,no,low
+rise20_atr,84packet,bar_i (4H close),yes,no,low
+rsi,84packet,bar_i (4H close),yes,no,low
+rsi_min8,84packet,bar_i (4H close),yes,no,low
+rsi_max8,84packet,bar_i (4H close),yes,no,low
+rsi_vs_ma,84packet,bar_i (4H close),yes,no,low
+rsi_drop_6b,84packet,bar_i (4H close),yes,no,low
+consec_down,84packet,bar_i (4H close),yes,no,low
+consec_up,84packet,bar_i (4H close),yes,no,low
+range_exp,84packet,bar_i (4H close),yes,no,low
+atr_level,84packet,bar_i (4H close),yes,no,low
+atr_pctile_proxy,84packet,bar_i (4H close),yes,no,low
+sweet_spot_falling_knife,84packet,bar_i (4H close),yes,no,low
+legpos30,84packet,bar_i (4H close),yes,no,low
+legpos60,84packet,bar_i (4H close),yes,no,low
+legpos90,84packet,bar_i (4H close),yes,no,low
+rsi_bear_div_20b,84packet,bar_i (4H close),yes,no,low
+rsi_bull_div_20b,84packet,bar_i (4H close),yes,no,low
+nas_long_new_8b,84packet,bar_i (4H close),yes,no,low
+nas_short_new_8b,84packet,bar_i (4H close),yes,no,low
+nas_dist_ema_atr,84packet,bar_i (4H close),yes,no,low
+nas_rsi,84packet,bar_i (4H close),yes,no,low
+nas_1d_long_recent,84packet,bar_i (4H close),yes,no,low
+bub_buy_s,84packet,bar_i (4H close),yes,no,low
+bub_buy_m,84packet,bar_i (4H close),yes,no,low
+bub_buy_L,84packet,bar_i (4H close),yes,no,low
+bub_sell_s,84packet,bar_i (4H close),yes,no,low
+bub_sell_m,84packet,bar_i (4H close),yes,no,low
+bub_sell_L,84packet,bar_i (4H close),yes,no,low
+bub_poc_recent,84packet,bar_i (4H close),yes,no,low
+bub_buy_total,84packet,bar_i (4H close),yes,no,low
+bub_sell_total,84packet,bar_i (4H close),yes,no,low
+bub_buy_sell_ratio,84packet,bar_i (4H close),yes,no,low
+bub_large_sell_10b,84packet,bar_i (4H close),yes,no,low
+bub_large_buy_10b,84packet,bar_i (4H close),yes,no,low
+has_4h_demand,84packet,bar_i (4H close),yes,no,low
+dist_4h_demand_low_atr,84packet,bar_i (4H close),yes,no,low
+demand_width_atr,84packet,bar_i (4H close),yes,no,low
+demand_age_bars,84packet,bar_i (4H close),yes,no,low
+demand_touched_on_retest,84packet,bar_i (4H close),yes,no,low
+demand_origin_of_leg,84packet,bar_i (4H close),yes,no,low
+has_d1_demand,84packet(daily-derived),bar_i (4H close),yes,ja-shiftado-no-build,check
+dist_d1_demand_atr,84packet(daily-derived),bar_i (4H close),yes,ja-shiftado-no-build,check
+has_4h_supply_overhead,84packet,bar_i (4H close),yes,no,low
+dist_4h_supply_low_atr,84packet,bar_i (4H close),yes,no,low
+supply_blocks_2ATR,84packet,bar_i (4H close),yes,no,low
+supply_blocks_3ATR,84packet,bar_i (4H close),yes,no,low
+supply_rejected_before,84packet,bar_i (4H close),yes,no,low
+supply_broken_before,84packet,bar_i (4H close),yes,no,low
+has_d1_supply,84packet(daily-derived),bar_i (4H close),yes,ja-shiftado-no-build,check
+dist_d1_supply_atr,84packet(daily-derived),bar_i (4H close),yes,ja-shiftado-no-build,check
+rel_volume,84packet,bar_i (4H close),yes,no,low
+below_VAL,84packet,bar_i (4H close),yes,no,low
+dist_POC_atr,84packet,bar_i (4H close),yes,no,low
+dist_VAL_atr,84packet,bar_i (4H close),yes,no,low
+va_width_atr,84packet,bar_i (4H close),yes,no,low
+smc_bos,84packet,bar_i (4H close),yes,no,REPAINT->usar direcao/recencia
+smc_choch,84packet,bar_i (4H close),yes,no,REPAINT->usar direcao/recencia
+reclaim_body_atr,84packet,bar_i (4H close),yes,no,low
+reclaim_dist_from_demand_atr,84packet,bar_i (4H close),yes,no,low
+reclaim_dist_from_supply_atr,84packet,bar_i (4H close),yes,no,low
+sl_atr,84packet,bar_i (4H close),yes,no,low
+sl_source,84packet,bar_i (4H close),yes,no,low
+sl_type,84packet,bar_i (4H close),yes,no,low
+F_STRICT_top_late,84packet,bar_i (4H close),yes,no,low
+hour_utc,84packet,bar_i (4H close),yes,no,low
+dead_hour,84packet,bar_i (4H close),yes,no,low
+ext_regime_B_v3_state,EXTERNAL(daily),D-1 (causal shift),yes(com shift),YES-D1,MITIGADO-por-shift
+ext_regime_B_v3_combined_score,EXTERNAL(daily),D-1 (causal shift),yes(com shift),YES-D1,MITIGADO-por-shift
+ext_regime_B_v3_macro_broken,EXTERNAL(daily),D-1 (causal shift),yes(com shift),YES-D1,MITIGADO-por-shift
+ext_regime_B_v3_stage_dir,EXTERNAL(daily),D-1 (causal shift),yes(com shift),YES-D1,MITIGADO-por-shift
+ext_regime_l1_v4,EXTERNAL(daily),D-1 (causal shift),yes(com shift),YES-D1,MITIGADO-por-shift
+ext_daily_slope_20_pct,EXTERNAL(daily),D-1 (causal shift),yes(com shift),YES-D1,MITIGADO-por-shift
+ext_daily_rsi_14,EXTERNAL(daily),D-1 (causal shift),yes(com shift),YES-D1,MITIGADO-por-shift

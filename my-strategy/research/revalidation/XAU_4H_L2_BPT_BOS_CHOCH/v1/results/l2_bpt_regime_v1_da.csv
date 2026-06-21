@@ -1,0 +1,14 @@
+check,result,detail
+usa_outcome_como_predicado,NAO,regra usa só dist_4h_supply (feature de entrada); outcome nunca entrou
+feature_causal_entrada,SIM,dist_4h_supply_low_atr conhecível no close do bar i
+externas_shift_causal,SIM,"regime_B_v3/l1_v4/daily só com shift D-1 (Layer1 0 join_issues, shift>=1)"
+macro_leg_testado_nao_nome,SIM,confirmado MORTO empiricamente (REFERENCE_ONLY 276/276)
+stage_a_nao_confiado,SIM,Stage A não separa A/B (distrib idêntica); usado só como feature
+shuffle_null,PASS,P(null>=real)=0.0 (feature top); separação não-aleatória
+held_out_temporal,PARCIAL,train2020-23->test2024-26 ba=0.808 OK; reverso INVIÁVEL (B late n=3); held-out FRÁGIL
+n_pequeno,FLAG,"A=26 B=18 (44); held-out B-side n=3. Calibração, NÃO validação."
+hour_utc_na_arvore,ARTEFATO,"árvore pegou hour_utc no 2º split = session-time, NÃO causal-regime; IGNORAR (candidato a forbidden)"
+overfit_por_ID,NAO,"regra = 1 threshold interpretável (eixo supply-distance), não casada a IDs"
+colinearidade,NOTA,dist_4h_supply e reclaim_dist_from_supply IDÊNTICAS (mesma medição)
+anchors_preserve,9/18,"falhas: ['T34', 'T35', 'T37', 'S29', 'S30', 'S31', 'S32', 'T39', 'T41']"
+anchors_block,1/2,falhas: ['S40']

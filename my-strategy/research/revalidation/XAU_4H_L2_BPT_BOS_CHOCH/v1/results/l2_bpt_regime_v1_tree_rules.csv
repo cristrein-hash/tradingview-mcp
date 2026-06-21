@@ -1,0 +1,5 @@
+path,n,A,B,purity
+reclaim_dist_from_supply_atr<2.33 & rsi_1d_ma<49.0,5,5,0,1.0
+reclaim_dist_from_supply_atr<2.33 & rsi_1d_ma>=49.0,14,14,0,1.0
+reclaim_dist_from_supply_atr>=2.33 & hour_utc<15.0,12,0,12,1.0
+reclaim_dist_from_supply_atr>=2.33 & hour_utc>=15.0,5,1,4,0.8
