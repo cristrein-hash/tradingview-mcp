@@ -1,0 +1,12 @@
+check,result,detail
+diagnostico_apenas,SIM,
+62_ensino,SIM,
+outcome_predicado,NAO,"pivots/estrutura, sem futuro"
+engine_decisions_registry_producao,INTOCADO,
+aplicacao_276,NAO,
+pivots_causais,SIM,"fractal 3/3 confirmação p+k<=i, nunca bar>i"
+smc_causal_esparso,SIM,first-appearance; usado secundário
+prior_layers_condicionais,SIM,cruzamento interpretável bull-leg/bear-leg; sem busca cega
+id_fit,NAO,critérios estruturais declarados
+anchor_check,SIM,preserve 7 block 0
+limitacoes,SIM,"confound de escala — leg 4H captura pullback local, não leg macro (D1/weekly)"

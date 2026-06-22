@@ -1,0 +1,63 @@
+plot_id,set,leg_state,prior_layers_used,prior_layers_conflicts
+S1,A,BULL_LEG_HH_HL,bull-leg+demand_defended=suporte|sweep+reclaim+demand=reversal-possivel,
+S3,A,RANGE_TRANSITION,sweep+reclaim+demand=reversal-possivel,
+S4,A,CORRECTIVE_BEAR_LEG,bear-leg+supply_rejecting=bearish,
+S5,A,CORRECTIVE_BEAR_LEG,,bear-leg+CLEAN_SKY=relief(nao-basta)
+S6,A,BULL_PULLBACK_WITH_HL_INTACT,bull-leg+demand_defended=suporte|sweep+reclaim+demand=reversal-possivel,
+S7,A,CORRECTIVE_BEAR_LEG,sweep+reclaim+demand=reversal-possivel,bear-leg+near-demand=TRAP(nao-suporte)
+S8,A,BULL_LEG_HH_HL,bull-leg+demand_defended=suporte|sweep+reclaim+demand=reversal-possivel,
+S12,A,BULL_LEG_HH_HL,,bull-leg MAS buy-sweep=late-top-risco
+S13,A,RANGE_TRANSITION,,
+S15,A,CORRECTIVE_BEAR_LEG,bear-leg+supply_rejecting=bearish|sweep+reclaim+demand=reversal-possivel,bear-leg+near-demand=TRAP(nao-suporte)
+S16,A,BEAR_PULLBACK_TO_SUPPLY,,
+S17,A,BULL_PULLBACK_WITH_HL_INTACT,bull-leg+demand_defended=suporte,bull-leg MAS buy-sweep=late-top-risco
+S20,A,BULL_LEG_HH_HL,bull-leg+demand_defended=suporte|sweep+reclaim+demand=reversal-possivel,
+S24,A,RANGE_TRANSITION,sweep+reclaim+demand=reversal-possivel,
+S25,A,BULL_PULLBACK_WITH_HL_INTACT,,
+S26,A,BEAR_PULLBACK_TO_SUPPLY,,
+S27,A,BEAR_LEG_LH_LL,,bear-leg+near-demand=TRAP(nao-suporte)
+S29,A,BULL_LEG_HH_HL,bull-leg+CLEAN_SKY+momentum=bom,
+S30,A,RANGE_TRANSITION,,
+S31,A,BULL_LEG_HH_HL,bull-leg+demand_defended=suporte|bull-leg+CLEAN_SKY+momentum=bom,bull-leg MAS buy-sweep=late-top-risco
+S32,A,CORRECTIVE_BEAR_LEG,sweep+reclaim+demand=reversal-possivel,bear-leg+near-demand=TRAP(nao-suporte)|bear-leg+CLEAN_SKY=relief(nao-basta)
+S34,A,BEAR_LEG_LH_LL,sweep+reclaim+demand=reversal-possivel,bear-leg+near-demand=TRAP(nao-suporte)|bear-leg+CLEAN_SKY=relief(nao-basta)
+S35,A,RANGE_TRANSITION,,
+S36,A,RANGE_TRANSITION,,
+S37,A,BULL_PULLBACK_WITH_HL_INTACT,,
+S38,A,BULL_LEG_HH_HL,bull-leg+demand_defended=suporte|bull-leg+supply_broken=markup|sweep+reclaim+demand=reversal-possivel,
+T2,B,BULL_PULLBACK_WITH_HL_INTACT,bull-leg+demand_defended=suporte,
+T3,B,BULL_PULLBACK_WITH_HL_INTACT,,
+T4,B,BULL_LEG_HH_HL,bull-leg+demand_defended=suporte|bull-leg+CLEAN_SKY+momentum=bom,bull-leg MAS buy-sweep=late-top-risco
+T9,B,RANGE_TRANSITION,sweep+reclaim+demand=reversal-possivel,
+T11,B,BEAR_LEG_LH_LL,sweep+reclaim+demand=reversal-possivel,bear-leg+near-demand=TRAP(nao-suporte)|bear-leg+CLEAN_SKY=relief(nao-basta)
+T12,B,BULL_PULLBACK_WITH_HL_INTACT,bull-leg+demand_defended=suporte|sweep+reclaim+demand=reversal-possivel,
+T15,B,BULL_PULLBACK_WITH_HL_INTACT,bull-leg+demand_defended=suporte|sweep+reclaim+demand=reversal-possivel,
+T16,B,BULL_PULLBACK_WITH_HL_INTACT,bull-leg+demand_defended=suporte|sweep+reclaim+demand=reversal-possivel,
+T17,B,BEAR_LEG_LH_LL,sweep+reclaim+demand=reversal-possivel,bear-leg+near-demand=TRAP(nao-suporte)|bear-leg+CLEAN_SKY=relief(nao-basta)
+T18,B,BULL_PULLBACK_WITH_HL_INTACT,bull-leg+demand_defended=suporte|bull-leg+CLEAN_SKY+momentum=bom|sweep+reclaim+demand=reversal-possivel,
+T20,B,BULL_PULLBACK_WITH_HL_INTACT,,
+T23,B,BEAR_LEG_LH_LL,sweep+reclaim+demand=reversal-possivel,bear-leg+near-demand=TRAP(nao-suporte)|bear-leg+CLEAN_SKY=relief(nao-basta)
+T24,B,RANGE_TRANSITION,,
+T25,B,BEAR_LEG_LH_LL,sweep+reclaim+demand=reversal-possivel,bear-leg+near-demand=TRAP(nao-suporte)|bear-leg+CLEAN_SKY=relief(nao-basta)
+T26,B,CORRECTIVE_BEAR_LEG,sweep+reclaim+demand=reversal-possivel,bear-leg+near-demand=TRAP(nao-suporte)|bear-leg+CLEAN_SKY=relief(nao-basta)
+T30,B,CORRECTIVE_BEAR_LEG,,bear-leg+near-demand=TRAP(nao-suporte)
+T40,B,BULL_LEG_HH_HL,bull-leg+demand_defended=suporte|bull-leg+CLEAN_SKY+momentum=bom,
+T42,B,BEAR_LEG_LH_LL,sweep+reclaim+demand=reversal-possivel,bear-leg+near-demand=TRAP(nao-suporte)
+S9,C,RANGE_TRANSITION,,
+S10,C,BEAR_LEG_LH_LL,sweep+reclaim+demand=reversal-possivel,bear-leg+near-demand=TRAP(nao-suporte)
+S14,C,BEAR_PULLBACK_TO_SUPPLY,,
+S18,C,BULL_LEG_HH_HL,bull-leg+demand_defended=suporte|bull-leg+CLEAN_SKY+momentum=bom,bull-leg MAS buy-sweep=late-top-risco
+S19,C,CORRECTIVE_BEAR_LEG,bear-leg+supply_rejecting=bearish,
+S21,C,BULL_PULLBACK_WITH_HL_INTACT,bull-leg+demand_defended=suporte,bull-leg MAS buy-sweep=late-top-risco
+S22,C,BULL_LEG_HH_HL,bull-leg+demand_defended=suporte|bull-leg+CLEAN_SKY+momentum=bom|sweep+reclaim+demand=reversal-possivel,
+S23,C,BULL_PULLBACK_WITH_HL_INTACT,bull-leg+demand_defended=suporte,bull-leg MAS buy-sweep=late-top-risco
+S28,C,RANGE_TRANSITION,sweep+reclaim+demand=reversal-possivel,
+S39,C,BULL_LEG_HH_HL,bull-leg+demand_defended=suporte|bull-leg+CLEAN_SKY+momentum=bom,
+T13,C,BEAR_LEG_LH_LL,sweep+reclaim+demand=reversal-possivel,bear-leg+near-demand=TRAP(nao-suporte)|bear-leg+CLEAN_SKY=relief(nao-basta)
+T14,C,BULL_LEG_HH_HL,bull-leg+demand_defended=suporte|sweep+reclaim+demand=reversal-possivel,
+T19,C,BEAR_LEG_LH_LL,sweep+reclaim+demand=reversal-possivel,bear-leg+near-demand=TRAP(nao-suporte)
+T27,C,RANGE_TRANSITION,sweep+reclaim+demand=reversal-possivel,
+T32,C,CORRECTIVE_BEAR_LEG,sweep+reclaim+demand=reversal-possivel,bear-leg+near-demand=TRAP(nao-suporte)|bear-leg+CLEAN_SKY=relief(nao-basta)
+T33,C,BULL_PULLBACK_WITH_HL_INTACT,bull-leg+demand_defended=suporte|sweep+reclaim+demand=reversal-possivel,
+T34,C,BEAR_LEG_LH_LL,sweep+reclaim+demand=reversal-possivel,bear-leg+near-demand=TRAP(nao-suporte)
+T36,C,RANGE_TRANSITION,sweep+reclaim+demand=reversal-possivel,
