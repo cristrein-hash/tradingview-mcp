@@ -1,0 +1,14 @@
+check,result,detail
+diagnostico_apenas,SIM,confluence v2 sobre 62; nada promovido/produção
+62_ensino_calibracao,SIM,não validação
+outcome_como_predicado,NAO,macro_fatal/late_top usam só features de entrada causais
+engine_oficial,INTOCADO,
+decisions_merged,INTOCADO,
+registry_promoted,NAO,
+producao_telegram_chart_slim,NAO-TOCADO,
+aplicacao_276,NAO,só os 62
+specialists_v1_preservados,SIM,9 especialistas reusados como evidência (confluence_62.csv); só a combinação mudou
+confluence_v2_auditavel,SIM,macro_fatal_rc + late_top_rc + feature_values por trade
+macro_override_nao_tunado_id,SIM,"regras macro_fatal/late_top com thresholds declarados, não casadas a IDs"
+late_top_detector_causal,SIM,legpos+distribution/d1_supply/bear_div/rise20/weekly_OB; sem futuro
+limitacoes_declaradas,SIM,v2 PIOROU; premissa de diagnóstico estava errada; ver report
