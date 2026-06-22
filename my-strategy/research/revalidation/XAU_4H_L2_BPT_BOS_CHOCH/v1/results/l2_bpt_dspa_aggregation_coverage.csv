@@ -1,0 +1,8 @@
+source,n,covers_276,missing,expect_full,status,note
+dspa_path,276,276,0,True,OK,
+macro_engine,276,276,0,True,OK,
+indicator_v2,276,276,0,True,OK,
+decisions/prior,276,276,0,True,OK,
+macro_phase,276,276,0,True,OK,
+uncapped_outcome_EVAL_ONLY,276,276,0,True,OK,
+bearleg_refined_surgical,29,29,247,False,OK,partial=bear_leg universe only
