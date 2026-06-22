@@ -1,0 +1,13 @@
+ponto,verdict,detalhe
+base_unica_276,PASS,N=276 confirmado; 72 runners; baseR 0.261
+outcome_leak,NONE,"set definitions (A/B/C + numerics) só dec/eng/path/states; unc(MFE) só nas métricas (EVAL ONLY)"
+joins_seguros,PASS,276/276; bear_leg refined parcial por design
+confluencia_agrega_alem_do_par,NAO,"C-over-B permutation p=0.121; Fisher C-vs-B-rest p=0.137; convergência over-specified"
+21_numerics_agregam,NAO_RUIDO,"meus 'SEPARATES' eram só threshold de lift sem teste; Fisher: 0 passam nem sem correção; f2_velocity p=0.21; nenhum sobrevive Bonferroni/FDR"
+f2_velocity_circular,SIM,"14/14 FLUSH_V são velocity-hi; fora de FLUSH_V lift cai 1.64->1.20; re-expressa categórica já usada"
+leave_1_year_out_estavel,ARTEFATO,"LBB uniforme entre anos (nenhum >27%); dropar 1 ano quase não move = mecânico, não robustez"
+drop_one_evidence_tinyn,RUIDO,"sweep n=4 75%, flush n=12 50%, capit n=7 43% = a um coin-flip de colapsar"
+status_honesto,SINAL_E_O_PAR,"a n=37/76 = demand+acceptance+bear; tudo além é ruído; até o par p=0.135 não-significativo; não-resolvível a esta amostra"
+sem_policy_promocao,PASS,"diagnóstico; não TAKE/SKIP; não automation-ready; não feature-dead"
+sem_eixo_unico_disfarcado,PASS,"convergência ≥2/≥2 enforced; mas o par domina (honesto)"
+scripts_salvos_reprodutiveis,PASS,"re-run byte-idêntico; sem orphan; sem agentes fabricados; capado nunca árbitro"

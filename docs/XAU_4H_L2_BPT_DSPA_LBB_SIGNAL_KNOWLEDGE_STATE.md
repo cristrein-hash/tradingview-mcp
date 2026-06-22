@@ -23,7 +23,18 @@ Fisher contraste p≈0.045; **sobreviveu P1/P2 (39%/37% vs trap 12%/17%)** = est
 Sinal FINO; parte grande vem do par `demand_defended`+`acceptance_above` (95%/92%); só 9/30 path features consumidas
 (21 numerics ignorados); convergência adiciona incremento real mas pequeno; n=37 → p≈0.06, NÃO edge validada.
 
+## ANATOMIA (stress block, DA-corrigido) — o sinal é o PAR, não a convergência nem os numéricos
+- A (demand+accept) n=136 lift 1.13 p=0.135 · B (+bear) n=76 lift 1.16 p=0.205 · C (full LBB) n=37 lift 1.45 p=0.064.
+- **A convergência completa NÃO agrega além do par+bear** (C-over-B permutation p=0.121; Fisher C-vs-B-rest p=0.137) — over-specified.
+- **Os 21 numeric features NÃO agregam** — meus "leads" eram multiple-testing noise (0 passam Fisher nem sem correção;
+  f2_velocity p=0.21 e CIRCULAR com FLUSH_V). Leave-1-year-out estável = ARTEFATO (LBB uniforme entre anos).
+- **Conclusão honesta (DA):** a n=37/76 isto é **demand+acceptance em bear context**; tudo além é ruído a esta amostra.
+  O contraste LBB-vs-BPT (Fisher p=0.045) ainda vale, carregado tanto por BPT ser runner-poor (13%) quanto por LBB.
+
 ## Status
 **`APPROVED_AS_CONDITIONAL_PATH_EVIDENCE` — não produção, não policy, não automation-ready.** Primeiro sinal NOVO
-realmente alinhado à pergunta certa (separar legitimate-bear-buy de trap por TRAJETÓRIA). Preservar; auditar anatomia
-(este bloco) antes de qualquer promoção. Relaciona o report stress `XAU_4H_L2_BPT_DSPA_LBB_SIGNAL_STRESS_REPORT.md`.
+alinhado à pergunta certa (legitimate-bear-buy vs trap por TRAJETÓRIA), MAS reclassificado honesto: o sinal É o par
+demand+acceptance em bear context, FINO e NÃO-resolvível além disso a n=37 (nem por mais convergência categórica nem
+pelos 21 numéricos = ruído). NÃO construir f2_velocity/f7_slope em nada (DA: multiple-testing). Preservar como evidência
+condicional; NÃO over-build sobre um subset de 37 trades que a estatística não sustenta. Relaciona
+`XAU_4H_L2_BPT_DSPA_LBB_SIGNAL_STRESS_REPORT.md`.
