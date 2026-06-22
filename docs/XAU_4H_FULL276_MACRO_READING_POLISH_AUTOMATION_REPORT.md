@@ -1,7 +1,8 @@
 # FULL 276 — MACRO READING POLISH / AUTOMATION-PATH
 
-**2026-06-22.** Bloco fechado sob canon efaf48a. Diagnóstico na população 276. NÃO produção, NÃO OOS,
-NÃO promoção. outcome só na avaliação (capado +3.9R = hit-rate, não expectancy).
+**2026-06-22.** Bloco fechado sob canon efaf48a. Diagnóstico na população 276. NÃO produção, NÃO promoção.
+outcome só na avaliação (capado +3.9R = hit-rate, não expectancy). **Validação mora DENTRO dos 276** —
+não há OOS nem cross-asset (Cris travou em definitivo; ver `feedback_no_oos_no_crossasset_validation`).
 
 ## 0. Correção de rumo (Cris)
 HUMAN_VISUAL_REQUIRED **não é endpoint**. O objetivo segue sendo **AUTOMAÇÃO**; a leitura visual é
@@ -61,17 +62,19 @@ BULL_RUN rende WR 43.5% — ou seja, nem é cleanly bull-beta: subperformou no 1
 **`PROMISING_BUT_NEEDS_VALIDATION`, explicitamente NÃO `AUTOMATION_READY`.**
 - Look-ahead = **PASS-by-construction** (pendente revisão do script gerador do daily file).
 - **Falha central = IN-SAMPLE SELECTION** (não a não-estacionariedade): os 4 thresholds foram escolhidos contra
-  os mesmos 276 com outcomes visíveis; PF 1.74 = teto otimista. ZERO OOS.
+  os mesmos 276 com outcomes visíveis; PF 1.74 = teto otimista. A correção é **remover a seleção**
+  (substituir o threshold fitado por convergência causal), não buscar outro dataset.
 - Não-estacionariedade CONFIRMADA e pior que o enquadrado (falhou no bull 2020).
 - Convexidade 9 vs 5 = ~mecânica.
-- realR capado não resgata (assimetria 3.5:1 frágil a decay de WR OOS).
+- realR capado não resgata (assimetria 3.5:1 frágil a decay de WR em sub-janela temporal).
 - Outcome-as-predicate = CLEAN (causalidade per-trade limpa; contaminação só na seleção-de-threshold).
 - Orientação automação = PASS (não derivou pra human-in-the-loop endpoint).
 
 ## 6. Seleção de caminhos
 `results/l2_bpt_full276_macro_polish_path_selection.csv`:
 1. **macro_phase causal como FEATURE de contexto** — `PROMISING_BUT_NEEDS_VALIDATION`. **Guardar a feature**
-   (lever causal ortogonal legítimo); **rejeitar a policy TAKE=BULL_RUN** até OOS.
+   (lever causal ortogonal legítimo); **rejeitar a policy TAKE=BULL_RUN** até substituir o threshold fitado
+   por convergência causal validada dentro dos 276.
 2. **BULL_RUN OR bottom_turn OR capitulation-reclaim** — `PROMISING_BUT_NEEDS_FEATURE` (recupera 7/16 runners,
    sem hard-block bear; precisa control/null antes de número).
 3. **Volume-acceptance REAL (Session VP) dentro de BULL_RUN** — `PROMISING_BUT_NEEDS_DATA` (separa markup de
@@ -85,16 +88,20 @@ BULL_RUN rende WR 43.5% — ou seja, nem é cleanly bull-beta: subperformou no 1
 - **WR > 50%?** Candidato A = 50.0% (no fio). **WR > 60%?** Não.
 - **PF/DD/streak sustentam?** PF 1.74 e DD 16.9 OK; **streak NÃO** (Lstreak 15 = streak-fatal FundedNext ≤5).
 - **Runners/big winners preservados?** Melhorou (9/16, 32/65) vs leitura anterior, mas in-sample.
-- **Automatável agora?** **NÃO.** A FEATURE é automatável e causal; a POLICY não é promovível sem OOS.
-- **Falta feature/dado?** Sim: (a) freeze de thresholds + held-out/cross-asset (EUR/USOUSD), (b) revisar script
-  daily p/ fechar look-ahead, (c) geometria de topo p/ o drought 2020-22, (d) Session VP real p/ precisão.
+- **Automatável agora?** **NÃO.** A FEATURE é automatável e causal; a POLICY não é promovível enquanto for
+  threshold-fit in-sample.
+- **Falta feature/dado?** Sim, tudo DENTRO dos 276: (a) substituir o threshold fitado por convergência estrutural
+  causal (remove a seleção) + null/permutation + jackknife + robustez ±20% + sub-janelas temporais, (b) revisar
+  script daily p/ fechar look-ahead, (c) geometria de topo p/ o drought 2020-22, (d) Session VP real p/ precisão.
+  **NÃO há OOS nem cross-asset.**
 
 ## 8. Conclusão
 O bloco encontrou a **maior alavanca de automação** (fase-macro causal) e produziu uma feature que melhora a
 leitura anterior de forma mensurável e causal — **mas a regra TAKE=BULL_RUN não está pronta**: é um ajuste de
 threshold in-sample com edge não-estacionária e Lstreak streak-fatal. **Decisão: guardar a feature macro_phase
-como lever ortogonal; não promover a policy.** O caminho de automação não termina em humano — termina em
-held-out validation + as 3 features faltantes (geometria de topo, SVP real, composição com bottom-turn).
+como lever ortogonal; não promover a policy.** O caminho de automação não termina em humano nem em OOS —
+termina em substituir o threshold fitado por convergência causal (validada por null/jackknife/robustez/sub-janelas
+DENTRO dos 276) + as 3 features faltantes (geometria de topo, SVP real, composição com bottom-turn).
 Diagnóstico apenas; nada promovido; nada em produção. Aguardo direção.
 
 DA = PASS. Outputs: `results/l2_bpt_full276_macro_error_map.csv`, `..._macro_polish_leverage.csv`,
