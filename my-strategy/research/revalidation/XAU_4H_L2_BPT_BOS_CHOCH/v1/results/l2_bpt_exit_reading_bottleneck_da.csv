@@ -1,0 +1,10 @@
+ponto,verdict,detalhe
+look_ahead,CLEAN,"exit walk forward stop-first; SL de bars<=i; regime/context shift D-1. Sem leak."
+caiu_na_conclusao_preguicosa,NAO,"manteve os 2 gargalos acoplados (EXIT 68 + READING 120). 9 dos top-15 winners de let-run foram SKIPADOS = edge na leitura, nao no exit."
+let_run_best_robusto,NAO_ROBUSTO,"+144R é 72% concentrado em 10 trades; sem eles -24.5R em 266 trades. Lstreak 16/maxDD 28.9 = prop-firm-fatal. let-run = captura de convexidade-beta concentrada, NAO exit promovivel sozinho. FLAG adicionado."
+error_map_circular,PARCIAL,"TOP->SKIP 73/74 = label e policy do mesmo engine = parcialmente tautologico. Residuo REAL: 37 runners + 86 losers compartilham contexto, lift 0.93 (nao-discriminativo)."
+runners_losers_share_context,SUPORTADO_SUBPODER,"supply_reject 31/72 runners (43%) vs 78/168 losers (46%) lift 0.93. 'nenhum blocker separa' honesto mas n=72 = 'nao separa NESTE sample', nao provado."
+next_feature_supply_acceptance,REBRAND_NAO_CONSTRUIVEL,"microstructure_features.py JA tentou markup-vs-rejection e falhou (acceptance nao separou, leitura INVERTEU). E o OHLC sub-4H contiguo que acceptance exige NAO EXISTE (frozen é 4H). Corrigido no diagnostico."
+locks_honored,PASS,"diagnostico, sem producao/promocao/OOS/abort/human-endpoint; prior layers vivas (bear_leg CONDITIONAL); capado nao-arbitro."
+reprodutibilidade,FIXED,"T6 era orfao (inline sem script) = erro 367c2e8 repetido. Materializado em l2_bpt_prior_layers_under_target.py."
+guardrail_proximo_bloco,LOCK,"antes de construir supply-acceptance: (1) o OHLC sub-4H contiguo NAO existe — adquirir/validar primeiro; (2) qualquer feature sucessora deve bater lift>1.0 separando os 37 runners dos 86 losers via null/sub-janela DENTRO dos 276 (nao fitar label no mesmo 276). supply_reject lift 0.93 = baseline a bater."
