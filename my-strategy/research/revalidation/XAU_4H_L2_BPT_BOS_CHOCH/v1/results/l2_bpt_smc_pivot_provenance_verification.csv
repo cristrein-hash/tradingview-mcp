@@ -1,0 +1,11 @@
+item,mecanismo,veredito
+smc_bos/smc_choch — derivação,"first-appearance por label-id (seen_lbl), keyed por APPEARANCE-TIME t (snapshot corrente)","CAUSAL — registrado quando o label fica VISÍVEL, não no swing-anchor passado"
+smc bars_ago,= i - appearance_time (bars desde a aparição do label),"CAUSAL — conta desde a visibilidade, não desde o anchor"
+smc repaint residual,label pode aparecer em i-1 e repaintar-away em i; recency ainda o reporta,MINOR — raro p/ BOS/CHoCH confirmado; documentar
+smc cobertura,smc_bos não-null 114/276 | smc_choch 114/276 (~41%),ESPARSO — 59% dos bars sem BOS/CHoCH recente na janela; leg-state precisa de pivots p/ cobertura plena
+smc price,= anchor price do swing (nível passado conhecido),CAUSAL — nível conhecido em i
+pivots fractal_3_3/2_2,"janela lookforward range(p+1, min(p+4, i+1)) CAPADA em i+1",CAUSAL POR CONSTRUÇÃO — nunca lê bar > i; comentário 'sem futuro além de p+3' (p+3<=i)
+pivots busca,"p in range(max(.., i-lookback), i-2) — pivots só até i-2",CAUSAL — pivot confirmado antes do entry
+find_swing_high/range_top/nivel_interno,mesma estrutura: lookforward capado em i+1,CAUSAL — todas as fontes de polaridade do detector são causais
+VEREDITO,smc_bos/smc_choch (first-appearance) + pivots (lookforward-capado) = CAUSAIS,LIMPO p/ leg-state spec; residuais: smc esparso 41% + raro appear-then-vanish
+IMPLICACAO_SPEC,"leg-state backbone = pivots fractais (cobertura plena, causais) + SMC BOS/CHoCH (causal, esparso) como confirmação",construir HH/HL vs LH/LL da sequência de pivots causais; SMC como sinal de shift
