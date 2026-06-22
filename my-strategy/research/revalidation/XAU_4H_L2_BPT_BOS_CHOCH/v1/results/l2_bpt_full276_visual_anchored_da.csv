@@ -1,0 +1,13 @@
+check,verdict,evidence
+diagnostico_apenas,PASS,reader lê/escreve só results/; sem produção/engine/decisions/registry/telegram/mcp/slim
+n_276_completo_sem_amostragem,PASS,276 (não 267); 0 dups; ts ordenado; population_audit OK
+sem_OOS_sem_backtest_bruto,PASS,reusa decisions causais; nenhum 2019-2026 raw
+outcome_nao_predicado,PASS,reader() usa só causais; EVAL_* só em colunas/avaliação
+labels_cris_plot_id_nao_predicado_276,PASS,nenhum plot_id/cris no reader 276; só predicados causais congelados
+causalidade_respeitada,PASS,daily/weekly shift D-1; 4H as-of-bar
+HONESTIDADE_partial_hold,PASS,TAKE WR42.7%<REVIEW 55.4%; só 5/16 runners e 24/65 big winners em TAKE; selecção deferida (92 REVIEW+36 HUMAN_VISUAL); negativo não-mascarado
+human_visual_marcado_nao_inventado,PASS,36 HVR = 12 ambiguous-bear (broken+weekly>0=T9-like) + 24 range-high-legpos (micro-top residual); abstém em vez de inventar
+confluencia_permutation_null,PASS,melhor 3-way p=0.020 MAS null_max>real = hull; re-descobre volume×1D-bear RETRATADO; pré-spec todos nulos = NO_PROMOTABLE_CONFLUENCE_FOUND
+realR_capado_nao_arbitro,PASS,max +3.9; classificação por tipo de saída
+sem_promocao,PASS,nenhuma regra/gate/feature promovida; verdict = hold/reject
+limitacoes_declaradas,PASS,predicados causais NÃO reproduzem o visual (32% non-reproducible); thresholds risk são constantes de calibração; 62=ensino

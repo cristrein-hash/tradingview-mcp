@@ -1,0 +1,13 @@
+predicado,aprendizado,papel,reprodutibilidade
+d1_macro_leg,D1/weekly backbone (causal shift D-1),"contexto camada-1, não gate isolado",CAUSAL
+genuine_bear=MACRO_BEAR_LEG,único bloqueio robusto causal,SKIP_STRUCTURAL,CAUSAL
+corrective_shallow=CORRECTIVE & drop20<1.0 & not bottom_turn,corrective raso sem flush (bear-leg v3),SKIP_STRUCTURAL,CAUSAL
+bear_confluence=RANGE/TRANS & macro_broken & combined<0 & weekly_slope<=0,bear-context causal (regime quebrado+combined neg+weekly não-sobe),SKIP_STRUCTURAL,CAUSAL
+ambiguous_bear=RANGE/TRANS & macro_broken & combined<0 & weekly_slope>0,regime quebrado MAS weekly subindo (caso T9): visual necessário,HUMAN_VISUAL_REQUIRED,HUMAN
+supply_in_bull=BULL_LEG: supply-perto/rompida=markup,NÃO vetar por under-supply em bull (inversão corrigida),não-veta,CAUSAL
+supply_in_bear: rejection/near=risco,supply colada em bear = risco,conflito,CAUSAL
+regimeB_not_authority: broken&combined<0 NÃO sobrepõe BULL_LEG confirmado,over-fire guard (T19/T34),mantém bull-context,CAUSAL
+risk_sl_axis: sl_atr>4 OR SL_TOO_SHORT,entrada pode ser boa + SL ruim (T34-like),"REVIEW(risk), não corte de entrada",CAUSAL
+bottom_turn=climax OR (rsi_min8<=32 & reclaim>=0.4 & demand_defended),reversão de fundo (convexidade),TAKE,CAUSAL
+micro_top_residual=range-bull high-legpos,"T17/T20-like: feature-missing, NÃO filtro auto",HUMAN_VISUAL_REQUIRED/REVIEW,HUMAN
+clean_sky_vacuo,"flag contextual de supply, nunca regra",flag,CAUSAL
