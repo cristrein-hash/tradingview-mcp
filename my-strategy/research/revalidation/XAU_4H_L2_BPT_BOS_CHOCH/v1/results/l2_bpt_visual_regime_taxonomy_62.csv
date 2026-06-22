@@ -1,0 +1,14 @@
+estado,descricao_auction,sinais_visuais_cris,exemplos_pos,exemplos_neg,prior_layers_apoio,prior_layers_nao_vetam_sozinhas,risco_confusao
+VISUAL_BULL_RUN_CONTINUATION,perna de alta macro estabelecida; HH/HL; supply acima = rompimento,"clean-sky/markup, momentum forte, demand defendida",S29-S38,entrada em range/topo,macro+demand apoiam; auction NÃO veta por supply-perto,supply lens isolada,confundir com late-top esticado
+VISUAL_BULL_PULLBACK_CONTINUATION,pullback raso a demanda dentro de bull-leg,"reclaim verde, demanda defendida, drop moderado",S3/S27/S28,pullback profundo sem reclaim,demand+reclaim apoiam,regimeB combined isolado,confundir com corrective-bear
+VISUAL_MARKUP_THROUGH_SUPPLY,rompendo supply testada COM aceitação em bull,"supply_broken, acceptance-above-value",S24/S31,sob supply em bear,volumetria aceitação apoia,auction 'under-supply' invertido NÃO veta em bull,inversão da leitura de supply
+VISUAL_RANGE_BULL_ACCUMULATION,range dentro de macro bull; acumulação,"sweet-spot, demanda na base do range",S27 irmão T38,range em bear,microestrutura/reclaim apoia,regimeB,range-chop bear
+VISUAL_BOTTOM_TURN_RECLAIM,reversão de fundo / reclaim pós-queda,"oversold+reclaim+demanda, V-shape",S15,faca caindo sem reclaim,capit+rsi apoiam,bear-leg label NÃO veta sozinho,bear-pullback (que NÃO é fundo)
+VISUAL_CAPITULATION_RECLAIM,clímax de venda + reclaim (fundo COVID-like),drop>cap + rsi_min baixo + reclaim,S8 (recovery),reclaim em bear sem clímax,capit,-,bear-bounce comum
+VISUAL_BEAR_MARKDOWN,markdown macro sustentado pós-topo,"LH/LL, regime quebrado, momentum negativo","2022-03→10, 2026",V-reversal real (=bottom),macro backbone,-,confundir reversão-de-fundo com markdown
+VISUAL_BEAR_PULLBACK_TRAP,bull-pullback DENTRO de bear-macro (repique),entrada longa em decline macro,T9/T40/T42,fundo genuíno a virar,macro VISUAL (não regimeB),auction/momentum local NÃO sobrepõem o macro bear,regimeB pontua bull e deixa passar (T40)
+VISUAL_CORRECTIVE_PULLBACK_RISK,corrective raso sem flush em contexto ambíguo,drop20<1.0 sem flush,T12/T25/T26,flush real (S3/S27),drop20 separa,-,corrective com flush (preservar)
+VISUAL_RANGE_CHOP_RISK,range/chop sem edge direcional,balanço no POC,T16,range bull com acumulação,microestrutura,-,range-bull bom
+VISUAL_MICRO_TOP_RISK,micro-topo em range-bull (entrada ruim),entrou no topo de micro-range,T17/T20,micro-fundo (S12),-,sinal causal NÃO capturado (feature missing),breakout bom idêntico à entrada
+VISUAL_LATE_TOP_RESIDUAL,late-top esticado genuíno/aceitável,legpos extremo + esticado,T32,-,-,NÃO bloquear via feature (irredutível),aceitar como custo
+VISUAL_UNKNOWN,sem leitura visual clara,-,-,-,-,-,-

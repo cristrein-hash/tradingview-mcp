@@ -1,0 +1,15 @@
+auditor,check,verdict,evidence
+RegimeMeasurementAuditor,causal_priority_visual>backbone>auction>regimeB,PASS,regimeB nunca autoridade; T19/S8/S14 visual sobrepõe regimeB
+RegimeMeasurementAuditor,supply_lens_condicionada_regime,PASS,bull: supply-perto=markup não-veta; bear: supply=risco
+RegimeMeasurementAuditor,T9/T42/T40_SKIP,PASS,todos VA_BEAR_PULLBACK_SKIP corretos
+RegimeMeasurementAuditor,T19_overfire_corrigido_T34_risk_axis,PASS,T19->TAKE (visual sobrepõe over-fire); T34->RISK_SL_REVIEW
+RegimeMeasurementAuditor,S25-S37_bull_markup_TAKE,PASS,todos TAKE; S27 estado RANGE_BULL mas policy TAKE
+RegimeMeasurementAuditor,honestidade_visual_é_input_humano,PASS,20/62 feature!=visual disclosed; calibração não auto-feature
+RegimeMeasurementAuditor,VERDICT,PASS,visual-ancorado respeita canon e conserta o gargalo (over-fire+inversão+bear-junk)
+PriorLayersConsistencyAuditor,supply_nao_invertida,PASS,markup-in-bull encodado; under-supply-rejecting removido
+PriorLayersConsistencyAuditor,risk_sl_eixo_proprio,PASS,"T34/S5/S12 -> risk-review, não corte de entrada"
+PriorLayersConsistencyAuditor,residuais_watchlist,PASS,"T17/T20/T24/T32 WATCHLIST, não force-resolved"
+PriorLayersConsistencyAuditor,refutacoes_reinterpretadas,PASS,capit+rsi=aspecto fundo; clean-sky=flag supply; bear-leg=review humano
+PriorLayersConsistencyAuditor,taxonomia_auction_coerente,PASS,famílias winner mapeiam nos estados TAKE
+PriorLayersConsistencyAuditor,nenhum_layer_veto_solo_proibido,PASS,único router duro = macro-bear-markdown (autorizado pelo canon)
+PriorLayersConsistencyAuditor,VERDICT,PASS,"prior layers reinterpretadas, não descartadas nem re-promovidas"

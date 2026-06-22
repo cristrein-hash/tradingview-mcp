@@ -1,0 +1,16 @@
+check,verdict,evidence
+diagnostico_apenas,PASS,script lê/escreve só results/; sem produção/engine/decisions/registry/telegram/mcp/slim/monitor
+62_ensino_sem_276_oos,PASS,inputs *_62; 62 linhas; nenhum 276/OOS
+outcome_nao_predicado,PASS,estado/policy de phase+cris+d1+supply+risk; EVAL_* só em colunas finais/calibração
+realR_capado_nao_arbitro,PASS,calibração por tipo de saída; realR=hit-rate label
+visual_calibracao_nao_validacao,PASS,"header declara INPUT HUMANO discricionário, calibração não validação"
+honestidade_tautologia,PASS,concordância 16/18 parcialmente tautológica (18 labels do Cris); 20/62 feature!=visual disclosed
+regimeB_nao_autoridade,PASS,regimeB=coluna-evidência; visual sobrepõe (T19/S8/S14)
+supply_condicionada_regime,PASS,bull=markup não-veta; bear=risco
+risk_sl_separado,PASS,"T34/S5/S12 -> risk-review, não corte de entrada"
+prior_layers_reinterpretadas,PASS,capit+rsi/clean-sky/bear-leg-block como flags condicionais
+convexidade_preservada,PASS,5/5 RUNNERS TAKE; big winners TAKE 8->27/32
+HINDSIGHT_timeline_declarado,FLAG->declarado,bordas de fase alinham com datas winner/loser (RALLY_TO_WAR 1-dia na data do T19; BEAR 2025-10-01 pós último S-winner) = hindsight irredutível; seguro só por congelado/não-promovido/pendente OOS
+scorecard_honesto,CORRIGIDO,"1 corte errado (T34->risk-review) + 1 MANUTENÇÃO ERRADA (T30 bull-leg TAKE que stopou), ambos defensáveis, nenhum escondido"
+sem_promocao,PASS,leitura congelada diagnóstica; nada lockado/emitido a pipeline
+limitacoes_declaradas,PASS,32% não-reproduzível por features; hindsight da timeline; 62=ensino; OOS bear pendente
