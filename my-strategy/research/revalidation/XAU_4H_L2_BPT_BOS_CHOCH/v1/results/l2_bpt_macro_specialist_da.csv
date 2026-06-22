@@ -1,0 +1,14 @@
+check,result,detail
+diagnostico_apenas,SIM,leitura sobre 62; nada promovido/executado em produção
+62_ensino_calibracao,SIM,não validação; não fit target
+outcome_como_predicado,NAO,9 especialistas usam só features de entrada (categóricas/numéricas causais)
+engine_oficial,INTOCADO,só results/ + script de pesquisa
+decisions_merged,INTOCADO,não lido como predicado
+registry_promoted,NAO,nada promovido
+producao_telegram_chart_slim,NAO-TOCADO,nenhum
+especialistas_auditaveis,SIM,cada evidência: state+confidence+supports+conflicts+reason_codes+feature_values+market_interpretation
+feature_provenance,SIM,packet close-i; dsq categórico range i-12..i; regime_B shift D-1; weekly prev-week; SVP as-of-bar(7f3c852)
+svp_causal_as_of_bar,SIM,sem shift (validado); nota de maturidade no Volumetry specialist
+fit_por_id,NAO,thresholds declarados; sem tuning aos 62 IDs
+anchor_check_feito,SIM,"preserve 12/14, block 0/1"
+limitacoes_declaradas,SIM,lado RISK fraco (B 5/18); macro_broken overridden por local; late-top-com-momentum não detectado

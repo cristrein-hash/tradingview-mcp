@@ -1,0 +1,559 @@
+plot_id,set,specialist,state,confidence,supports,conflicts,reason_codes,feature_values,market_interpretation,provenance_ok
+S1,A,supply,SUPPLY_REJECTING_RISK,high,,supply_rejecting,SUPPLY_NEAR_AND_REJECTING,supply_category=SUPPLY_NEAR_AND_REJECTING;polarity_category=RECLAIM_REJECTED_BELOW_SUPPLY;dist_4h_supply=0.85;has_overhead=1,supply viva colada acima = risco,True
+S1,A,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=3.29;touched_retest=1,demanda defendida real,True
+S1,A,volume,REJECTION_BELOW_VALUE,medium,,below_value,BELOW_VAL|maturity:VP-as-of-bar,below_VAL=True;dist_POC=-0.58;dist_VAL=-0.25;va_width=1.04;rel_volume=1.1,preço abaixo do VAL = rejeição/distribuição,True
+S1,A,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=3.23;rsi_1d=62.0;d_break=bull;w_break=bull;weekly_slope=0.536186078146,alinhamento bull multi-TF = bull-run maior,True
+S1,A,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=4.0;cascade=3.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=2.7376269594316844,regime macro bull,True
+S1,A,momentum,HEALTHY_HIGH_LEGPOS,high,strong_bull,,legpos_high+momentum,trend_30=3.23;rsi=77.4;rsi_1d=62.0;legpos90=89.2;rise20=4.78;bear_div=0.0,legpos alto COM momentum = continuação sadia,True
+S1,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.9;rsi_min8=60.25;sweet_spot=False;bub_sell=0.0;reclaim_body=-0.9,sem capitulação relevante,True
+S1,A,fuel,low_fuel,high,,obstructed,blocks/colada,supply_category=SUPPLY_NEAR_AND_REJECTING;dist_4h_supply=0.85;dist_d1_supply=0.85;blocks_target=1,supply colada/bloqueia = combustível baixo,True
+S1,A,risk,SL_NEUTRAL,medium,,,neutral,sl_atr=3.39;sl_type=TOP_EXHAUSTION,SL aceitável,True
+S3,A,supply,SUPPLY_REJECTING_RISK,high,,supply_rejecting,SUPPLY_NEAR_AND_REJECTING,supply_category=SUPPLY_NEAR_AND_REJECTING;polarity_category=POLARITY_UNDER_SUPPLY_PRESSURE;dist_4h_supply=0.8;has_overhead=1,supply viva colada acima = risco,True
+S3,A,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=1.28;touched_retest=1,demanda defendida real,True
+S3,A,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.76;dist_VAL=1.27;va_width=1.35;rel_volume=1.67,aceitação acima do valor = bullish,True
+S3,A,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=2.21;rsi_1d=55.2;d_break=bull;w_break=bull;weekly_slope=0.5881809871920802,alinhamento bull multi-TF = bull-run maior,True
+S3,A,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=2.0;cascade=2.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=1.8360733749532672,regime macro bull,True
+S3,A,momentum,STRONG_BULL_MOMENTUM,high,strong_bull,,momentum_strong,trend_30=2.21;rsi=40.59;rsi_1d=55.2;legpos90=69.3;rise20=1.26;bear_div=0.0,momentum bull forte,True
+S3,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=1.69;rsi_min8=40.59;sweet_spot=True;bub_sell=1.0;reclaim_body=1.26,sem capitulação relevante,True
+S3,A,fuel,low_fuel,high,,obstructed,blocks/colada,supply_category=SUPPLY_NEAR_AND_REJECTING;dist_4h_supply=0.8;dist_d1_supply=0.03;blocks_target=1,supply colada/bloqueia = combustível baixo,True
+S3,A,risk,SL_NEUTRAL,medium,,,neutral,sl_atr=1.38;sl_type=V_REVERSAL_DEMAND,SL aceitável,True
+S4,A,supply,SUPPLY_REJECTING_RISK,high,,supply_rejecting,SUPPLY_NEAR_AND_REJECTING,supply_category=SUPPLY_NEAR_AND_REJECTING;polarity_category=RECLAIM_REJECTED_BELOW_SUPPLY;dist_4h_supply=0.66;has_overhead=1,supply viva colada acima = risco,True
+S4,A,demand,DEMAND_NEUTRAL,medium,demand_present,,PRESENT_NEUTRAL,demand_category=DEMAND_PRESENT_NEUTRAL;dist_4h_demand=1.91;touched_retest=1,demanda presente neutra,True
+S4,A,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.47;dist_VAL=1.21;va_width=1.09;rel_volume=1.17,aceitação acima do valor = bullish,True
+S4,A,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=1.55;rsi_1d=60.9;d_break=bull;w_break=bull;weekly_slope=0.6158233570956342,alinhamento bull multi-TF = bull-run maior,True
+S4,A,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=2.0;cascade=2.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=1.1363636363636325,regime macro bull,True
+S4,A,momentum,HEALTHY_HIGH_LEGPOS,high,strong_bull,,legpos_high+momentum,trend_30=1.55;rsi=53.39;rsi_1d=60.9;legpos90=85.7;rise20=1.16;bear_div=0.0,legpos alto COM momentum = continuação sadia,True
+S4,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=1.08;rsi_min8=45.97;sweet_spot=False;bub_sell=0.0;reclaim_body=0.36,sem capitulação relevante,True
+S4,A,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=SUPPLY_NEAR_AND_REJECTING;dist_4h_supply=0.66;dist_d1_supply=None;blocks_target=1,sem teto = combustível alto,True
+S4,A,risk,SL_NEUTRAL,medium,,,neutral,sl_atr=2.01;sl_type=V_REVERSAL_DEMAND,SL aceitável,True
+S5,A,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=POLARITY_FLOATING_NO_BASE;dist_4h_supply=None;has_overhead=0,sem teto = markup/ATH bullish,True
+S5,A,demand,DEMAND_ABSENT,high,,no_demand_base,ABSENT,demand_category=DEMAND_ABSENT_OR_IRRELEVANT;dist_4h_demand=7.25;touched_retest=0,sem base de demanda = floating,True
+S5,A,volume,IN_VALUE_BALANCE,low,,,BALANCE|maturity:VP-as-of-bar,below_VAL=False;dist_POC=-0.04;dist_VAL=0.48;va_width=0.64;rel_volume=0.86,dentro do valor = balanço,True
+S5,A,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=5.62;rsi_1d=77.6;d_break=bull;w_break=bull;weekly_slope=0.8290219067529373,alinhamento bull multi-TF = bull-run maior,True
+S5,A,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=3.0;cascade=3.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=0.31010238725372014,regime macro bull,True
+S5,A,momentum,HEALTHY_HIGH_LEGPOS,high,strong_bull,,legpos_high+momentum,trend_30=5.62;rsi=77.26;rsi_1d=77.6;legpos90=94.1;rise20=5.7;bear_div=0.0,legpos alto COM momentum = continuação sadia,True
+S5,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.19;rsi_min8=75.45;sweet_spot=False;bub_sell=0.0;reclaim_body=0.27,sem capitulação relevante,True
+S5,A,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=None;dist_d1_supply=None;blocks_target=0,sem teto = combustível alto,True
+S5,A,risk,SL_TOO_WIDE,medium,,sl_wide,sl>5ATR,sl_atr=6.94;sl_type=TOP_EXHAUSTION,SL largo = R ruim,True
+S6,A,supply,SUPPLY_REJECTING_RISK,high,,supply_rejecting,SUPPLY_NEAR_AND_REJECTING,supply_category=SUPPLY_NEAR_AND_REJECTING;polarity_category=POLARITY_UNDER_SUPPLY_PRESSURE;dist_4h_supply=0.36;has_overhead=1,supply viva colada acima = risco,True
+S6,A,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=1.62;touched_retest=1,demanda defendida real,True
+S6,A,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.67;dist_VAL=0.67;va_width=0.0;rel_volume=0.55,aceitação acima do valor = bullish,True
+S6,A,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=5.54;rsi_1d=82.2;d_break=bull;w_break=bull;weekly_slope=0.8637794577699351,alinhamento bull multi-TF = bull-run maior,True
+S6,A,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=3.0;cascade=3.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=1.1009313242977181,regime macro bull,True
+S6,A,momentum,HEALTHY_HIGH_LEGPOS,high,strong_bull,,legpos_high+momentum,trend_30=5.54;rsi=61.01;rsi_1d=82.2;legpos90=91.6;rise20=2.42;bear_div=0.0,legpos alto COM momentum = continuação sadia,True
+S6,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.44;rsi_min8=60.19;sweet_spot=False;bub_sell=0.0;reclaim_body=0.67,sem capitulação relevante,True
+S6,A,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=SUPPLY_NEAR_AND_REJECTING;dist_4h_supply=0.36;dist_d1_supply=None;blocks_target=1,sem teto = combustível alto,True
+S6,A,risk,SL_NEUTRAL,medium,,,neutral,sl_atr=1.72;sl_type=V_REVERSAL_DEMAND,SL aceitável,True
+S7,A,supply,SUPPLY_BLOCKS_TARGET,medium,,target_obstructed,BLOCKS_TARGET,supply_category=SUPPLY_BLOCKS_TARGET;polarity_category=POLARITY_SUPPORTED_BY_DEMAND;dist_4h_supply=1.09;has_overhead=1,supply bloqueia alvo = R ruim,True
+S7,A,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=2.82;touched_retest=1,demanda defendida real,True
+S7,A,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.66;dist_VAL=0.84;va_width=0.79;rel_volume=0.91,aceitação acima do valor = bullish,True
+S7,A,mtf,BEAR_ALIGN,high,,mtf_bear,d/w break bear,trend_30_4h=-1.43;rsi_1d=43.4;d_break=bear;w_break=bear;weekly_slope=0.3407171844842703,alinhamento bear = bounce local provável,True
+S7,A,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=BEAR;combined_score=-2.0;cascade=-2.0;macro_broken=True;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=9.428443386452459,macro quebrado/distribuição = topo macro,True
+S7,A,momentum,WEAK_MOMENTUM,medium,,weak,momentum_weak,trend_30=-1.43;rsi=48.73;rsi_1d=43.4;legpos90=39.6;rise20=2.05;bear_div=0.0,momentum fraco = bounce/indeciso,True
+S7,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=1.98;rsi_min8=33.67;sweet_spot=False;bub_sell=2.0;reclaim_body=0.43,sem capitulação relevante,True
+S7,A,fuel,low_fuel,high,,obstructed,blocks/colada,supply_category=SUPPLY_BLOCKS_TARGET;dist_4h_supply=1.09;dist_d1_supply=0.84;blocks_target=1,supply colada/bloqueia = combustível baixo,True
+S7,A,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=2.92;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+S8,A,supply,SUPPLY_FAR_NEUTRAL,medium,room,,FAR_ENOUGH,supply_category=SUPPLY_FAR_ENOUGH;polarity_category=POLARITY_SUPPORTED_BY_DEMAND;dist_4h_supply=2.05;has_overhead=1,supply longe = espaço ok,True
+S8,A,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=1.39;touched_retest=1,demanda defendida real,True
+S8,A,volume,IN_VALUE_BALANCE,low,,,BALANCE|maturity:VP-as-of-bar,below_VAL=False;dist_POC=-0.15;dist_VAL=0.14;va_width=0.89;rel_volume=1.24,dentro do valor = balanço,True
+S8,A,mtf,BEAR_ALIGN,high,,mtf_bear,d/w break bear,trend_30_4h=0.98;rsi_1d=50.4;d_break=bear;w_break=bear;weekly_slope=-0.44757112568483043,alinhamento bear = bounce local provável,True
+S8,A,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=BEAR;combined_score=-1.0;cascade=-1.0;macro_broken=True;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=11.942020109222682,macro quebrado/distribuição = topo macro,True
+S8,A,momentum,WEAK_MOMENTUM,medium,,weak,momentum_weak,trend_30=0.98;rsi=67.33;rsi_1d=50.4;legpos90=69.8;rise20=6.63;bear_div=0.0,momentum fraco = bounce/indeciso,True
+S8,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.74;rsi_min8=57.27;sweet_spot=False;bub_sell=0.0;reclaim_body=-0.74,sem capitulação relevante,True
+S8,A,fuel,medium_fuel,medium,,,moderate,supply_category=SUPPLY_FAR_ENOUGH;dist_4h_supply=2.05;dist_d1_supply=2.71;blocks_target=0,combustível médio,True
+S8,A,risk,SL_NEUTRAL,medium,,,neutral,sl_atr=1.49;sl_type=V_REVERSAL_DEMAND,SL aceitável,True
+S12,A,supply,SUPPLY_FAR_NEUTRAL,medium,room,,FAR_ENOUGH,supply_category=SUPPLY_FAR_ENOUGH;polarity_category=RECLAIM_ACCEPTED_ABOVE_SUPPLY;dist_4h_supply=2.75;has_overhead=1,supply longe = espaço ok,True
+S12,A,demand,DEMAND_ABSENT,high,,no_demand_base,ABSENT,demand_category=DEMAND_ABSENT_OR_IRRELEVANT;dist_4h_demand=5.27;touched_retest=0,sem base de demanda = floating,True
+S12,A,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.86;dist_VAL=1.39;va_width=0.89;rel_volume=0.9,aceitação acima do valor = bullish,True
+S12,A,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=3.99;rsi_1d=55.3;d_break=bull;w_break=bull;weekly_slope=0.1355882414146172,alinhamento bull multi-TF = bull-run maior,True
+S12,A,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=TRANSITION;combined_score=3.0;cascade=3.0;macro_broken=False;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=2.9785465800787314,regime macro bull,True
+S12,A,momentum,STRONG_BULL_MOMENTUM,high,strong_bull,,momentum_strong,trend_30=3.99;rsi=63.73;rsi_1d=55.3;legpos90=65.1;rise20=5.38;bear_div=0.0,momentum bull forte,True
+S12,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.0;rsi_min8=58.89;sweet_spot=False;bub_sell=0.0;reclaim_body=0.88,sem capitulação relevante,True
+S12,A,fuel,medium_fuel,medium,,,moderate,supply_category=SUPPLY_FAR_ENOUGH;dist_4h_supply=2.75;dist_d1_supply=0.36;blocks_target=0,combustível médio,True
+S12,A,risk,SL_TOO_WIDE,medium,,sl_wide,sl>5ATR,sl_atr=5.89;sl_type=LATE_WIDE,SL largo = R ruim,True
+S13,A,supply,SUPPLY_BLOCKS_TARGET,medium,,target_obstructed,BLOCKS_TARGET,supply_category=SUPPLY_BLOCKS_TARGET;polarity_category=RECLAIM_ACCEPTED_ABOVE_SUPPLY;dist_4h_supply=1.93;has_overhead=1,supply bloqueia alvo = R ruim,True
+S13,A,demand,DEMAND_ABSENT,high,,no_demand_base,ABSENT,demand_category=DEMAND_ABSENT_OR_IRRELEVANT;dist_4h_demand=None;touched_retest=0,sem base de demanda = floating,True
+S13,A,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=2.83;dist_VAL=4.13;va_width=2.76;rel_volume=1.71,aceitação acima do valor = bullish,True
+S13,A,mtf,BEAR_ALIGN,high,,mtf_bear,d/w break bear,trend_30_4h=0.94;rsi_1d=22.0;d_break=bear;w_break=bear;weekly_slope=-0.6656697849668259,alinhamento bear = bounce local provável,True
+S13,A,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=BEAR;combined_score=-2.0;cascade=-2.0;macro_broken=True;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=14.924536610753034,macro quebrado/distribuição = topo macro,True
+S13,A,momentum,WEAK_MOMENTUM,medium,,weak,momentum_weak,trend_30=0.94;rsi=54.01;rsi_1d=22.0;legpos90=28.0;rise20=3.73;bear_div=0.0,momentum fraco = bounce/indeciso,True
+S13,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.09;rsi_min8=27.92;sweet_spot=False;bub_sell=5.0;reclaim_body=0.48,sem capitulação relevante,True
+S13,A,fuel,low_fuel,high,,obstructed,blocks/colada,supply_category=SUPPLY_BLOCKS_TARGET;dist_4h_supply=1.93;dist_d1_supply=5.3;blocks_target=1,supply colada/bloqueia = combustível baixo,True
+S13,A,risk,SL_NEUTRAL,medium,,,neutral,sl_atr=1.53;sl_type=LATE_WIDE,SL aceitável,True
+S15,A,supply,SUPPLY_REJECTING_RISK,high,,supply_rejecting,SUPPLY_NEAR_AND_REJECTING,supply_category=SUPPLY_NEAR_AND_REJECTING;polarity_category=POLARITY_UNDER_SUPPLY_PRESSURE;dist_4h_supply=0.27;has_overhead=1,supply viva colada acima = risco,True
+S15,A,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=2.99;touched_retest=1,demanda defendida real,True
+S15,A,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=1.31;dist_VAL=1.59;va_width=0.29;rel_volume=0.58,aceitação acima do valor = bullish,True
+S15,A,mtf,BEAR_ALIGN,high,,mtf_bear,d/w break bear,trend_30_4h=-1.25;rsi_1d=41.2;d_break=bear;w_break=bear;weekly_slope=-0.4691936913007228,alinhamento bear = bounce local provável,True
+S15,A,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=BEAR;combined_score=-3.0;cascade=-3.0;macro_broken=True;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=10.724167593541283,macro quebrado/distribuição = topo macro,True
+S15,A,momentum,WEAK_MOMENTUM,medium,,weak,momentum_weak,trend_30=-1.25;rsi=44.1;rsi_1d=41.2;legpos90=52.2;rise20=2.73;bear_div=1.0,momentum fraco = bounce/indeciso,True
+S15,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.74;rsi_min8=29.39;sweet_spot=False;bub_sell=2.0;reclaim_body=1.3,sem capitulação relevante,True
+S15,A,fuel,low_fuel,high,,obstructed,blocks/colada,supply_category=SUPPLY_NEAR_AND_REJECTING;dist_4h_supply=0.27;dist_d1_supply=0.11;blocks_target=1,supply colada/bloqueia = combustível baixo,True
+S15,A,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=3.09;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+S16,A,supply,SUPPLY_BLOCKS_TARGET,medium,,target_obstructed,BLOCKS_TARGET,supply_category=SUPPLY_BLOCKS_TARGET;polarity_category=POLARITY_FLOATING_NO_BASE;dist_4h_supply=1.36;has_overhead=1,supply bloqueia alvo = R ruim,True
+S16,A,demand,DEMAND_ABSENT,high,,no_demand_base,ABSENT,demand_category=DEMAND_ABSENT_OR_IRRELEVANT;dist_4h_demand=5.67;touched_retest=0,sem base de demanda = floating,True
+S16,A,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.68;dist_VAL=1.47;va_width=1.06;rel_volume=0.46,aceitação acima do valor = bullish,True
+S16,A,mtf,PARTIAL_BULL,medium,partial_bull,,parcial,trend_30_4h=-2.92;rsi_1d=59.3;d_break=bull;w_break=bull;weekly_slope=-0.15548914863712407,alinhamento parcial bull,True
+S16,A,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=TRANSITION;combined_score=2.0;cascade=2.0;macro_broken=True;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=3.828198462304333,macro quebrado/distribuição = topo macro,True
+S16,A,momentum,STRONG_BULL_MOMENTUM,high,strong_bull,,momentum_strong,trend_30=-2.92;rsi=46.77;rsi_1d=59.3;legpos90=78.2;rise20=1.47;bear_div=0.0,momentum bull forte,True
+S16,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.5;rsi_min8=38.03;sweet_spot=False;bub_sell=2.0;reclaim_body=0.68,sem capitulação relevante,True
+S16,A,fuel,low_fuel,high,,obstructed,blocks/colada,supply_category=SUPPLY_BLOCKS_TARGET;dist_4h_supply=1.36;dist_d1_supply=0.67;blocks_target=1,supply colada/bloqueia = combustível baixo,True
+S16,A,risk,SL_NEUTRAL,medium,,,neutral,sl_atr=2.13;sl_type=LATE_WIDE,SL aceitável,True
+S17,A,supply,SUPPLY_REJECTING_RISK,high,,supply_rejecting,SUPPLY_NEAR_AND_REJECTING,supply_category=SUPPLY_NEAR_AND_REJECTING;polarity_category=RECLAIM_REJECTED_BELOW_SUPPLY;dist_4h_supply=0.81;has_overhead=1,supply viva colada acima = risco,True
+S17,A,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=2.67;touched_retest=1,demanda defendida real,True
+S17,A,volume,IN_VALUE_BALANCE,low,,,BALANCE|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.11;dist_VAL=0.61;va_width=1.12;rel_volume=0.42,dentro do valor = balanço,True
+S17,A,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=4.21;rsi_1d=66.3;d_break=bull;w_break=bull;weekly_slope=0.48669225017661527,alinhamento bull multi-TF = bull-run maior,True
+S17,A,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=3.0;cascade=3.0;macro_broken=False;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=0.48765586987116144,regime macro bull,True
+S17,A,momentum,HEALTHY_HIGH_LEGPOS,high,strong_bull,,legpos_high+momentum,trend_30=4.21;rsi=64.82;rsi_1d=66.3;legpos90=86.2;rise20=3.66;bear_div=0.0,legpos alto COM momentum = continuação sadia,True
+S17,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.56;rsi_min8=60.29;sweet_spot=False;bub_sell=0.0;reclaim_body=0.06,sem capitulação relevante,True
+S17,A,fuel,low_fuel,high,,obstructed,blocks/colada,supply_category=SUPPLY_NEAR_AND_REJECTING;dist_4h_supply=0.81;dist_d1_supply=0.58;blocks_target=1,supply colada/bloqueia = combustível baixo,True
+S17,A,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=2.77;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+S20,A,supply,SUPPLY_REJECTING_RISK,high,,supply_rejecting,SUPPLY_NEAR_AND_REJECTING,supply_category=SUPPLY_NEAR_AND_REJECTING;polarity_category=RECLAIM_REJECTED_BELOW_SUPPLY;dist_4h_supply=0.18;has_overhead=1,supply viva colada acima = risco,True
+S20,A,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=2.84;touched_retest=1,demanda defendida real,True
+S20,A,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=1.65;dist_VAL=2.01;va_width=1.63;rel_volume=1.42,aceitação acima do valor = bullish,True
+S20,A,mtf,PARTIAL_BULL,medium,partial_bull,,parcial,trend_30_4h=7.66;rsi_1d=43.4;d_break=bear;w_break=bull;weekly_slope=-0.18938395936776528,alinhamento parcial bull,True
+S20,A,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=TRANSITION;combined_score=1.0;cascade=1.0;macro_broken=True;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=6.487840958835875,macro quebrado/distribuição = topo macro,True
+S20,A,momentum,STRONG_BULL_MOMENTUM,high,strong_bull,,momentum_strong,trend_30=7.66;rsi=71.07;rsi_1d=43.4;legpos90=45.1;rise20=7.64;bear_div=0.0,momentum bull forte,True
+S20,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.0;rsi_min8=63.7;sweet_spot=False;bub_sell=0.0;reclaim_body=0.25,sem capitulação relevante,True
+S20,A,fuel,low_fuel,high,,obstructed,blocks/colada,supply_category=SUPPLY_NEAR_AND_REJECTING;dist_4h_supply=0.18;dist_d1_supply=2.75;blocks_target=1,supply colada/bloqueia = combustível baixo,True
+S20,A,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=2.94;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+S24,A,supply,SUPPLY_REJECTING_RISK,high,,supply_rejecting,SUPPLY_FRESH_DANGEROUS,supply_category=SUPPLY_FRESH_DANGEROUS;polarity_category=POLARITY_SUPPORTED_BY_DEMAND;dist_4h_supply=0.97;has_overhead=1,supply viva colada acima = risco,True
+S24,A,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=2.76;touched_retest=1,demanda defendida real,True
+S24,A,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=1.32;dist_VAL=1.68;va_width=0.46;rel_volume=1.06,aceitação acima do valor = bullish,True
+S24,A,mtf,PARTIAL_BULL,medium,partial_bull,,parcial,trend_30_4h=3.01;rsi_1d=50.3;d_break=bear;w_break=bull;weekly_slope=0.5897049129146874,alinhamento parcial bull,True
+S24,A,regime,MACRO_TRANSITION_RISK,medium,,transition,STALL/ALARM,v3_state=TRANSITION;combined_score=0.0;cascade=0.0;macro_broken=False;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=5.1174674699188625,transição/alerta macro,True
+S24,A,momentum,STRONG_BULL_MOMENTUM,high,strong_bull,,momentum_strong,trend_30=3.01;rsi=55.74;rsi_1d=50.3;legpos90=70.2;rise20=2.61;bear_div=0.0,momentum bull forte,True
+S24,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.0;rsi_min8=49.79;sweet_spot=False;bub_sell=0.0;reclaim_body=1.3,sem capitulação relevante,True
+S24,A,fuel,low_fuel,high,,obstructed,blocks/colada,supply_category=SUPPLY_FRESH_DANGEROUS;dist_4h_supply=0.97;dist_d1_supply=2.65;blocks_target=1,supply colada/bloqueia = combustível baixo,True
+S24,A,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=2.86;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+S25,A,supply,SUPPLY_BLOCKS_TARGET,medium,,target_obstructed,BLOCKS_TARGET,supply_category=SUPPLY_BLOCKS_TARGET;polarity_category=RECLAIM_REJECTED_BELOW_SUPPLY;dist_4h_supply=1.59;has_overhead=1,supply bloqueia alvo = R ruim,True
+S25,A,demand,DEMAND_NEUTRAL,medium,demand_present,,PRESENT_NEUTRAL,demand_category=DEMAND_PRESENT_NEUTRAL;dist_4h_demand=1.5;touched_retest=1,demanda presente neutra,True
+S25,A,volume,REJECTION_BELOW_VALUE,medium,,below_value,BELOW_VAL|maturity:VP-as-of-bar,below_VAL=True;dist_POC=-0.9;dist_VAL=-0.55;va_width=0.44;rel_volume=1.34,preço abaixo do VAL = rejeição/distribuição,True
+S25,A,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=2.19;rsi_1d=58.0;d_break=bull;w_break=bull;weekly_slope=0.22044507817301648,alinhamento bull multi-TF = bull-run maior,True
+S25,A,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=2.0;cascade=2.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=1.6979111304375867,regime macro bull,True
+S25,A,momentum,STRONG_BULL_MOMENTUM,high,strong_bull,,momentum_strong,trend_30=2.19;rsi=54.9;rsi_1d=58.0;legpos90=72.1;rise20=0.71;bear_div=1.0,momentum bull forte,True
+S25,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=2.05;rsi_min8=47.27;sweet_spot=True;bub_sell=0.0;reclaim_body=-0.89,sem capitulação relevante,True
+S25,A,fuel,low_fuel,high,,obstructed,blocks/colada,supply_category=SUPPLY_BLOCKS_TARGET;dist_4h_supply=1.59;dist_d1_supply=0.12;blocks_target=1,supply colada/bloqueia = combustível baixo,True
+S25,A,risk,SL_TOO_SHORT,high,,sl_short,sl<1.2ATR,sl_atr=0.58;sl_type=V_REVERSAL_DEMAND,SL curto demais = stop no ruído (ex T34),True
+S26,A,supply,SUPPLY_BLOCKS_TARGET,medium,,target_obstructed,BLOCKS_TARGET,supply_category=SUPPLY_BLOCKS_TARGET;polarity_category=RECLAIM_REJECTED_BELOW_SUPPLY;dist_4h_supply=1.14;has_overhead=1,supply bloqueia alvo = R ruim,True
+S26,A,demand,DEMAND_FRAGILE,medium,,demand_deep,TOO_DEEP,demand_category=DEMAND_TOO_DEEP;dist_4h_demand=4.79;touched_retest=0,demanda muito funda = entrada esticada,True
+S26,A,volume,REJECTION_BELOW_VALUE,medium,,below_value,BELOW_VAL|maturity:VP-as-of-bar,below_VAL=True;dist_POC=-1.14;dist_VAL=-0.38;va_width=1.13;rel_volume=None,preço abaixo do VAL = rejeição/distribuição,True
+S26,A,mtf,PARTIAL_BULL,medium,partial_bull,,parcial,trend_30_4h=-2.76;rsi_1d=55.2;d_break=bull;w_break=bull;weekly_slope=0.4018224665467104,alinhamento parcial bull,True
+S26,A,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=2.0;cascade=2.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=1.6672393975660929,regime macro bull,True
+S26,A,momentum,STRONG_BULL_MOMENTUM,high,strong_bull,,momentum_strong,trend_30=-2.76;rsi=44.44;rsi_1d=55.2;legpos90=49.7;rise20=0.16;bear_div=0.0,momentum bull forte,True
+S26,A,capit,FALLING_KNIFE,high,,knife,drop_no_reclaim,drop20=4.12;rsi_min8=34.28;sweet_spot=False;bub_sell=1.0;reclaim_body=-1.12,drop forte sem reclaim = faca caindo,True
+S26,A,fuel,low_fuel,high,,obstructed,blocks/colada,supply_category=SUPPLY_BLOCKS_TARGET;dist_4h_supply=1.14;dist_d1_supply=0.54;blocks_target=1,supply colada/bloqueia = combustível baixo,True
+S26,A,risk,SL_TOO_SHORT,high,,sl_short,sl<1.2ATR,sl_atr=0.92;sl_type=NORMAL_DEMAND_BASE,SL curto demais = stop no ruído (ex T34),True
+S27,A,supply,SUPPLY_BLOCKS_TARGET,medium,,target_obstructed,BLOCKS_TARGET,supply_category=SUPPLY_BLOCKS_TARGET;polarity_category=RECLAIM_REJECTED_BELOW_SUPPLY;dist_4h_supply=1.58;has_overhead=1,supply bloqueia alvo = R ruim,True
+S27,A,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_ORIGIN_OF_LEG,demand_category=DEMAND_ORIGIN_OF_LEG;dist_4h_demand=2.55;touched_retest=0,demanda defendida real,True
+S27,A,volume,IN_VALUE_BALANCE,low,,,BALANCE|maturity:VP-as-of-bar,below_VAL=False;dist_POC=-0.24;dist_VAL=0.43;va_width=1.42;rel_volume=1.13,dentro do valor = balanço,True
+S27,A,mtf,PARTIAL_BULL,medium,partial_bull,,parcial,trend_30_4h=-3.21;rsi_1d=52.3;d_break=bull;w_break=bull;weekly_slope=1.1166325924137492,alinhamento parcial bull,True
+S27,A,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=1.0;cascade=1.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=5.675762935110862,regime macro bull,True
+S27,A,momentum,WEAK_MOMENTUM,medium,,weak,momentum_weak,trend_30=-3.21;rsi=35.44;rsi_1d=52.3;legpos90=48.7;rise20=0.0;bear_div=0.0,momentum fraco = bounce/indeciso,True
+S27,A,capit,FALLING_KNIFE,high,,knife,drop_no_reclaim,drop20=4.28;rsi_min8=35.44;sweet_spot=True;bub_sell=1.0;reclaim_body=-0.99,drop forte sem reclaim = faca caindo,True
+S27,A,fuel,low_fuel,high,,obstructed,blocks/colada,supply_category=SUPPLY_BLOCKS_TARGET;dist_4h_supply=1.58;dist_d1_supply=1.77;blocks_target=1,supply colada/bloqueia = combustível baixo,True
+S27,A,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=2.65;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+S29,A,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=POLARITY_FLOATING_NO_BASE;dist_4h_supply=None;has_overhead=0,sem teto = markup/ATH bullish,True
+S29,A,demand,DEMAND_ABSENT,high,,no_demand_base,ABSENT,demand_category=DEMAND_ABSENT_OR_IRRELEVANT;dist_4h_demand=5.4;touched_retest=1,sem base de demanda = floating,True
+S29,A,volume,IN_VALUE_BALANCE,low,,,BALANCE|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.06;dist_VAL=0.2;va_width=0.7;rel_volume=1.23,dentro do valor = balanço,True
+S29,A,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=7.07;rsi_1d=73.8;d_break=bull;w_break=bull;weekly_slope=0.2740287472976669,alinhamento bull multi-TF = bull-run maior,True
+S29,A,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=3.0;cascade=3.0;macro_broken=False;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=0.34241766932481593,regime macro bull,True
+S29,A,momentum,HEALTHY_HIGH_LEGPOS,high,strong_bull,,legpos_high+momentum,trend_30=7.07;rsi=81.34;rsi_1d=73.8;legpos90=92.2;rise20=6.5;bear_div=0.0,legpos alto COM momentum = continuação sadia,True
+S29,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.27;rsi_min8=73.44;sweet_spot=False;bub_sell=0.0;reclaim_body=-0.27,sem capitulação relevante,True
+S29,A,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=None;dist_d1_supply=None;blocks_target=0,sem teto = combustível alto,True
+S29,A,risk,SL_TOO_WIDE,medium,,sl_wide,sl>5ATR,sl_atr=5.5;sl_type=TOP_EXHAUSTION,SL largo = R ruim,True
+S30,A,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=POLARITY_FLOATING_NO_BASE;dist_4h_supply=None;has_overhead=0,sem teto = markup/ATH bullish,True
+S30,A,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=4.29;touched_retest=1,demanda defendida real,True
+S30,A,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=2.37;dist_VAL=3.1;va_width=1.93;rel_volume=0.57,aceitação acima do valor = bullish,True
+S30,A,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=2.8;rsi_1d=77.5;d_break=bull;w_break=bull;weekly_slope=0.3743791972827738,alinhamento bull multi-TF = bull-run maior,True
+S30,A,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=3.0;cascade=3.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=0.7053771400113772,regime macro bull,True
+S30,A,momentum,HEALTHY_HIGH_LEGPOS,high,strong_bull,,legpos_high+momentum,trend_30=2.8;rsi=69.17;rsi_1d=77.5;legpos90=98.0;rise20=3.72;bear_div=0.0,legpos alto COM momentum = continuação sadia,True
+S30,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.19;rsi_min8=55.23;sweet_spot=False;bub_sell=0.0;reclaim_body=-0.19,sem capitulação relevante,True
+S30,A,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=None;dist_d1_supply=None;blocks_target=0,sem teto = combustível alto,True
+S30,A,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=4.39;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+S31,A,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=POLARITY_FLOATING_NO_BASE;dist_4h_supply=None;has_overhead=0,sem teto = markup/ATH bullish,True
+S31,A,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=2.86;touched_retest=1,demanda defendida real,True
+S31,A,volume,IN_VALUE_BALANCE,low,,,BALANCE|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.23;dist_VAL=0.64;va_width=0.75;rel_volume=1.12,dentro do valor = balanço,True
+S31,A,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=3.99;rsi_1d=84.0;d_break=bull;w_break=bull;weekly_slope=0.6700509901770102,alinhamento bull multi-TF = bull-run maior,True
+S31,A,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=2.0;cascade=2.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=0.7146657575146993,regime macro bull,True
+S31,A,momentum,HEALTHY_HIGH_LEGPOS,high,strong_bull,,legpos_high+momentum,trend_30=3.99;rsi=67.8;rsi_1d=84.0;legpos90=92.1;rise20=4.69;bear_div=0.0,legpos alto COM momentum = continuação sadia,True
+S31,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.57;rsi_min8=53.57;sweet_spot=False;bub_sell=0.0;reclaim_body=-0.57,sem capitulação relevante,True
+S31,A,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=None;dist_d1_supply=None;blocks_target=0,sem teto = combustível alto,True
+S31,A,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=2.96;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+S32,A,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=POLARITY_SUPPORTED_BY_DEMAND;dist_4h_supply=None;has_overhead=0,sem teto = markup/ATH bullish,True
+S32,A,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=2.63;touched_retest=1,demanda defendida real,True
+S32,A,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=1.08;dist_VAL=1.49;va_width=0.82;rel_volume=1.07,aceitação acima do valor = bullish,True
+S32,A,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=5.01;rsi_1d=81.0;d_break=bull;w_break=bull;weekly_slope=0.6700509901770102,alinhamento bull multi-TF = bull-run maior,True
+S32,A,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=2.0;cascade=2.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=1.3503006228011398,regime macro bull,True
+S32,A,momentum,HEALTHY_HIGH_LEGPOS,high,strong_bull,,legpos_high+momentum,trend_30=5.01;rsi=57.25;rsi_1d=81.0;legpos90=94.7;rise20=3.48;bear_div=1.0,legpos alto COM momentum = continuação sadia,True
+S32,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.26;rsi_min8=52.46;sweet_spot=True;bub_sell=0.0;reclaim_body=0.76,sem capitulação relevante,True
+S32,A,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=None;dist_d1_supply=None;blocks_target=0,sem teto = combustível alto,True
+S32,A,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=2.73;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+S34,A,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=POLARITY_FLOATING_NO_BASE;dist_4h_supply=None;has_overhead=0,sem teto = markup/ATH bullish,True
+S34,A,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=3.24;touched_retest=1,demanda defendida real,True
+S34,A,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.34;dist_VAL=0.75;va_width=0.81;rel_volume=0.89,aceitação acima do valor = bullish,True
+S34,A,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=3.29;rsi_1d=81.9;d_break=bull;w_break=bull;weekly_slope=0.8506313187533326,alinhamento bull multi-TF = bull-run maior,True
+S34,A,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=1.0;cascade=1.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=1.703558626806107,regime macro bull,True
+S34,A,momentum,HEALTHY_HIGH_LEGPOS,high,strong_bull,,legpos_high+momentum,trend_30=3.29;rsi=66.32;rsi_1d=81.9;legpos90=99.3;rise20=3.1;bear_div=0.0,legpos alto COM momentum = continuação sadia,True
+S34,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.0;rsi_min8=49.64;sweet_spot=False;bub_sell=0.0;reclaim_body=0.33,sem capitulação relevante,True
+S34,A,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=None;dist_d1_supply=None;blocks_target=0,sem teto = combustível alto,True
+S34,A,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=3.34;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+S35,A,supply,SUPPLY_BLOCKS_TARGET,medium,,target_obstructed,BLOCKS_TARGET,supply_category=SUPPLY_BLOCKS_TARGET;polarity_category=RECLAIM_REJECTED_BELOW_SUPPLY;dist_4h_supply=1.37;has_overhead=1,supply bloqueia alvo = R ruim,True
+S35,A,demand,DEMAND_NEUTRAL,medium,demand_present,,PRESENT_NEUTRAL,demand_category=DEMAND_PRESENT_NEUTRAL;dist_4h_demand=0.98;touched_retest=1,demanda presente neutra,True
+S35,A,volume,IN_VALUE_BALANCE,low,,,BALANCE|maturity:VP-as-of-bar,below_VAL=False;dist_POC=-0.08;dist_VAL=0.54;va_width=0.77;rel_volume=0.94,dentro do valor = balanço,True
+S35,A,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=3.31;rsi_1d=63.4;d_break=bull;w_break=bull;weekly_slope=1.3733804583563853,alinhamento bull multi-TF = bull-run maior,True
+S35,A,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=2.0;cascade=2.0;macro_broken=False;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=1.5554460010316509,regime macro bull,True
+S35,A,momentum,STRONG_BULL_MOMENTUM,high,strong_bull,,momentum_strong,trend_30=3.31;rsi=57.84;rsi_1d=63.4;legpos90=73.6;rise20=2.31;bear_div=0.0,momentum bull forte,True
+S35,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=1.79;rsi_min8=57.84;sweet_spot=True;bub_sell=0.0;reclaim_body=-0.03,sem capitulação relevante,True
+S35,A,fuel,low_fuel,high,,obstructed,blocks/colada,supply_category=SUPPLY_BLOCKS_TARGET;dist_4h_supply=1.37;dist_d1_supply=0.81;blocks_target=1,supply colada/bloqueia = combustível baixo,True
+S35,A,risk,SL_TOO_SHORT,high,,sl_short,sl<1.2ATR,sl_atr=1.08;sl_type=V_REVERSAL_DEMAND,SL curto demais = stop no ruído (ex T34),True
+S36,A,supply,SUPPLY_BLOCKS_TARGET,medium,,target_obstructed,BLOCKS_TARGET,supply_category=SUPPLY_BLOCKS_TARGET;polarity_category=POLARITY_FLOATING_NO_BASE;dist_4h_supply=1.35;has_overhead=1,supply bloqueia alvo = R ruim,True
+S36,A,demand,DEMAND_FRAGILE,medium,,demand_deep,TOO_DEEP,demand_category=DEMAND_TOO_DEEP;dist_4h_demand=4.94;touched_retest=0,demanda muito funda = entrada esticada,True
+S36,A,volume,IN_VALUE_BALANCE,low,,,BALANCE|maturity:VP-as-of-bar,below_VAL=False;dist_POC=-0.13;dist_VAL=0.25;va_width=0.82;rel_volume=0.77,dentro do valor = balanço,True
+S36,A,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=3.36;rsi_1d=60.3;d_break=bull;w_break=bull;weekly_slope=1.1821257622043917,alinhamento bull multi-TF = bull-run maior,True
+S36,A,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=TRANSITION;combined_score=3.0;cascade=3.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=2.2457833867415564,regime macro bull,True
+S36,A,momentum,STRONG_BULL_MOMENTUM,high,strong_bull,,momentum_strong,trend_30=3.36;rsi=65.57;rsi_1d=60.3;legpos90=73.0;rise20=4.88;bear_div=0.0,momentum bull forte,True
+S36,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.6;rsi_min8=59.15;sweet_spot=False;bub_sell=0.0;reclaim_body=-0.64,sem capitulação relevante,True
+S36,A,fuel,low_fuel,high,,obstructed,blocks/colada,supply_category=SUPPLY_BLOCKS_TARGET;dist_4h_supply=1.35;dist_d1_supply=0.23;blocks_target=1,supply colada/bloqueia = combustível baixo,True
+S36,A,risk,SL_TOO_WIDE,medium,,sl_wide,sl>5ATR,sl_atr=5.04;sl_type=NORMAL_DEMAND_BASE,SL largo = R ruim,True
+S37,A,supply,SUPPLY_BLOCKS_TARGET,medium,,target_obstructed,BLOCKS_TARGET,supply_category=SUPPLY_BLOCKS_TARGET;polarity_category=RECLAIM_REJECTED_BELOW_SUPPLY;dist_4h_supply=1.09;has_overhead=1,supply bloqueia alvo = R ruim,True
+S37,A,demand,DEMAND_NEUTRAL,medium,demand_present,,PRESENT_NEUTRAL,demand_category=DEMAND_PRESENT_NEUTRAL;dist_4h_demand=3.76;touched_retest=0,demanda presente neutra,True
+S37,A,volume,IN_VALUE_BALANCE,low,,,BALANCE|maturity:VP-as-of-bar,below_VAL=False;dist_POC=-0.23;dist_VAL=0.0;va_width=0.59;rel_volume=0.82,dentro do valor = balanço,True
+S37,A,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=3.21;rsi_1d=57.9;d_break=bull;w_break=bull;weekly_slope=1.1821257622043917,alinhamento bull multi-TF = bull-run maior,True
+S37,A,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=1.0;cascade=1.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=2.1470990316185468,regime macro bull,True
+S37,A,momentum,STRONG_BULL_MOMENTUM,high,strong_bull,,momentum_strong,trend_30=3.21;rsi=51.33;rsi_1d=57.9;legpos90=58.2;rise20=3.06;bear_div=0.0,momentum bull forte,True
+S37,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=1.87;rsi_min8=51.33;sweet_spot=False;bub_sell=0.0;reclaim_body=-0.24,sem capitulação relevante,True
+S37,A,fuel,low_fuel,high,,obstructed,blocks/colada,supply_category=SUPPLY_BLOCKS_TARGET;dist_4h_supply=1.09;dist_d1_supply=0.67;blocks_target=1,supply colada/bloqueia = combustível baixo,True
+S37,A,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=3.86;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+S38,A,supply,MARKUP_BREAKING,high,markup,,SUPPLY_BROKEN,supply_category=SUPPLY_NEAR_BUT_BROKEN;polarity_category=POLARITY_UNDER_SUPPLY_PRESSURE;dist_4h_supply=0.34;has_overhead=1,rompendo supply próxima = markup,True
+S38,A,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=3.53;touched_retest=1,demanda defendida real,True
+S38,A,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=1.19;dist_VAL=1.79;va_width=1.2;rel_volume=0.56,aceitação acima do valor = bullish,True
+S38,A,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=6.1;rsi_1d=60.1;d_break=bull;w_break=bull;weekly_slope=1.1821257622043917,alinhamento bull multi-TF = bull-run maior,True
+S38,A,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=2.0;cascade=2.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=2.20248535119762,regime macro bull,True
+S38,A,momentum,HEALTHY_HIGH_LEGPOS,high,strong_bull,,legpos_high+momentum,trend_30=6.1;rsi=63.08;rsi_1d=60.1;legpos90=85.6;rise20=2.64;bear_div=0.0,legpos alto COM momentum = continuação sadia,True
+S38,A,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.0;rsi_min8=49.36;sweet_spot=False;bub_sell=0.0;reclaim_body=0.48,sem capitulação relevante,True
+S38,A,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=SUPPLY_NEAR_BUT_BROKEN;dist_4h_supply=0.34;dist_d1_supply=None;blocks_target=1,sem teto = combustível alto,True
+S38,A,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=3.63;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+T2,B,supply,SUPPLY_BLOCKS_TARGET,medium,,target_obstructed,BLOCKS_TARGET,supply_category=SUPPLY_BLOCKS_TARGET;polarity_category=RECLAIM_REJECTED_BELOW_SUPPLY;dist_4h_supply=1.54;has_overhead=1,supply bloqueia alvo = R ruim,True
+T2,B,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=1.37;touched_retest=1,demanda defendida real,True
+T2,B,volume,IN_VALUE_BALANCE,low,,,BALANCE|maturity:VP-as-of-bar,below_VAL=False;dist_POC=-0.19;dist_VAL=0.05;va_width=0.52;rel_volume=0.77,dentro do valor = balanço,True
+T2,B,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=1.63;rsi_1d=61.5;d_break=bull;w_break=bull;weekly_slope=0.24430619108777824,alinhamento bull multi-TF = bull-run maior,True
+T2,B,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=TRANSITION;combined_score=1.0;cascade=1.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=2.5611428642352383,regime macro bull,True
+T2,B,momentum,STRONG_BULL_MOMENTUM,high,strong_bull,,momentum_strong,trend_30=1.63;rsi=50.06;rsi_1d=61.5;legpos90=69.2;rise20=1.09;bear_div=0.0,momentum bull forte,True
+T2,B,capit,NO_CAPITULATION,low,,,no_cap,drop20=1.83;rsi_min8=50.06;sweet_spot=False;bub_sell=0.0;reclaim_body=-0.22,sem capitulação relevante,True
+T2,B,fuel,low_fuel,high,,obstructed,blocks/colada,supply_category=SUPPLY_BLOCKS_TARGET;dist_4h_supply=1.54;dist_d1_supply=1.68;blocks_target=1,supply colada/bloqueia = combustível baixo,True
+T2,B,risk,SL_NEUTRAL,medium,,,neutral,sl_atr=1.47;sl_type=V_REVERSAL_DEMAND,SL aceitável,True
+T3,B,supply,SUPPLY_FAR_NEUTRAL,medium,room,,FAR_ENOUGH,supply_category=SUPPLY_FAR_ENOUGH;polarity_category=RECLAIM_REJECTED_BELOW_SUPPLY;dist_4h_supply=2.33;has_overhead=1,supply longe = espaço ok,True
+T3,B,demand,DEMAND_NEUTRAL,medium,demand_present,,PRESENT_NEUTRAL,demand_category=DEMAND_PRESENT_NEUTRAL;dist_4h_demand=0.39;touched_retest=1,demanda presente neutra,True
+T3,B,volume,IN_VALUE_BALANCE,low,,,BALANCE|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.01;dist_VAL=0.21;va_width=0.43;rel_volume=1.27,dentro do valor = balanço,True
+T3,B,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=2.04;rsi_1d=77.5;d_break=bull;w_break=bull;weekly_slope=0.5054408455860381,alinhamento bull multi-TF = bull-run maior,True
+T3,B,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=3.0;cascade=3.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=1.0228846768560487,regime macro bull,True
+T3,B,momentum,STRONG_BULL_MOMENTUM,high,strong_bull,,momentum_strong,trend_30=2.04;rsi=48.51;rsi_1d=77.5;legpos90=65.4;rise20=1.16;bear_div=0.0,momentum bull forte,True
+T3,B,capit,NO_CAPITULATION,low,,,no_cap,drop20=2.53;rsi_min8=48.51;sweet_spot=False;bub_sell=0.0;reclaim_body=0.27,sem capitulação relevante,True
+T3,B,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=SUPPLY_FAR_ENOUGH;dist_4h_supply=2.33;dist_d1_supply=None;blocks_target=0,sem teto = combustível alto,True
+T3,B,risk,SL_TOO_SHORT,high,,sl_short,sl<1.2ATR,sl_atr=0.49;sl_type=V_REVERSAL_DEMAND,SL curto demais = stop no ruído (ex T34),True
+T4,B,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=POLARITY_SUPPORTED_BY_DEMAND;dist_4h_supply=None;has_overhead=0,sem teto = markup/ATH bullish,True
+T4,B,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=1.14;touched_retest=1,demanda defendida real,True
+T4,B,volume,IN_VALUE_BALANCE,low,,,BALANCE|maturity:VP-as-of-bar,below_VAL=False;dist_POC=-0.79;dist_VAL=0.09;va_width=1.31;rel_volume=0.81,dentro do valor = balanço,True
+T4,B,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=2.72;rsi_1d=70.0;d_break=bull;w_break=bull;weekly_slope=0.6064504073529768,alinhamento bull multi-TF = bull-run maior,True
+T4,B,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=4.0;cascade=3.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=1.043817864433865,regime macro bull,True
+T4,B,momentum,STRONG_BULL_MOMENTUM,high,strong_bull,,momentum_strong,trend_30=2.72;rsi=53.02;rsi_1d=70.0;legpos90=72.8;rise20=1.41;bear_div=0.0,momentum bull forte,True
+T4,B,capit,NO_CAPITULATION,low,,,no_cap,drop20=1.75;rsi_min8=53.02;sweet_spot=True;bub_sell=0.0;reclaim_body=0.1,sem capitulação relevante,True
+T4,B,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=None;dist_d1_supply=0.22;blocks_target=0,sem teto = combustível alto,True
+T4,B,risk,SL_NEUTRAL,medium,,,neutral,sl_atr=1.24;sl_type=V_REVERSAL_DEMAND,SL aceitável,True
+T9,B,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=RECLAIM_ACCEPTED_ABOVE_SUPPLY;dist_4h_supply=6.93;has_overhead=1,sem teto = markup/ATH bullish,True
+T9,B,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=3.76;touched_retest=1,demanda defendida real,True
+T9,B,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=1.3;dist_VAL=1.76;va_width=0.82;rel_volume=1.31,aceitação acima do valor = bullish,True
+T9,B,mtf,BEAR_ALIGN,high,,mtf_bear,d/w break bear,trend_30_4h=-5.45;rsi_1d=44.0;d_break=bear;w_break=bear;weekly_slope=0.13537984025754116,alinhamento bear = bounce local provável,True
+T9,B,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=BEAR;combined_score=-2.0;cascade=-2.0;macro_broken=True;distribution=False;stall=True;sharp_drop=True;dist_alarm=False;dd13w=9.509399048770975,macro quebrado/distribuição = topo macro,True
+T9,B,momentum,WEAK_MOMENTUM,medium,,weak,momentum_weak,trend_30=-5.45;rsi=46.58;rsi_1d=44.0;legpos90=35.5;rise20=3.21;bear_div=0.0,momentum fraco = bounce/indeciso,True
+T9,B,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.0;rsi_min8=40.32;sweet_spot=False;bub_sell=0.0;reclaim_body=1.34,sem capitulação relevante,True
+T9,B,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=6.93;dist_d1_supply=1.85;blocks_target=0,sem teto = combustível alto,True
+T9,B,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=3.86;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+T11,B,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=RECLAIM_ACCEPTED_ABOVE_SUPPLY;dist_4h_supply=9.04;has_overhead=1,sem teto = markup/ATH bullish,True
+T11,B,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=2.25;touched_retest=1,demanda defendida real,True
+T11,B,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=1.58;dist_VAL=1.99;va_width=0.94;rel_volume=1.5,aceitação acima do valor = bullish,True
+T11,B,mtf,BEAR_ALIGN,high,,mtf_bear,d/w break bear,trend_30_4h=-0.93;rsi_1d=43.2;d_break=bear;w_break=bear;weekly_slope=-0.21810057484990794,alinhamento bear = bounce local provável,True
+T11,B,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=BEAR;combined_score=-3.0;cascade=-3.0;macro_broken=True;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=6.107922746606424,macro quebrado/distribuição = topo macro,True
+T11,B,momentum,WEAK_MOMENTUM,medium,,weak,momentum_weak,trend_30=-0.93;rsi=43.22;rsi_1d=43.2;legpos90=42.2;rise20=1.68;bear_div=0.0,momentum fraco = bounce/indeciso,True
+T11,B,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.79;rsi_min8=36.06;sweet_spot=False;bub_sell=3.0;reclaim_body=1.26,sem capitulação relevante,True
+T11,B,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=9.04;dist_d1_supply=2.49;blocks_target=0,sem teto = combustível alto,True
+T11,B,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=2.35;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+T12,B,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=POLARITY_SUPPORTED_BY_DEMAND;dist_4h_supply=5.21;has_overhead=1,sem teto = markup/ATH bullish,True
+T12,B,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=1.78;touched_retest=1,demanda defendida real,True
+T12,B,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.5;dist_VAL=0.77;va_width=0.43;rel_volume=0.79,aceitação acima do valor = bullish,True
+T12,B,mtf,PARTIAL_BULL,medium,partial_bull,,parcial,trend_30_4h=1.37;rsi_1d=51.5;d_break=bear;w_break=bull;weekly_slope=0.3616902615007083,alinhamento parcial bull,True
+T12,B,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=TRANSITION;combined_score=1.0;cascade=1.0;macro_broken=True;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=5.696635134641565,macro quebrado/distribuição = topo macro,True
+T12,B,momentum,WEAK_MOMENTUM,medium,,weak,momentum_weak,trend_30=1.37;rsi=54.41;rsi_1d=51.5;legpos90=92.0;rise20=2.56;bear_div=0.0,momentum fraco = bounce/indeciso,True
+T12,B,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.12;rsi_min8=53.1;sweet_spot=False;bub_sell=0.0;reclaim_body=0.49,sem capitulação relevante,True
+T12,B,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=5.21;dist_d1_supply=4.09;blocks_target=0,sem teto = combustível alto,True
+T12,B,risk,SL_NEUTRAL,medium,,,neutral,sl_atr=1.88;sl_type=V_REVERSAL_DEMAND,SL aceitável,True
+T15,B,supply,SUPPLY_FAR_NEUTRAL,medium,room,,FAR_ENOUGH,supply_category=SUPPLY_FAR_ENOUGH;polarity_category=POLARITY_SUPPORTED_BY_DEMAND;dist_4h_supply=3.07;has_overhead=1,supply longe = espaço ok,True
+T15,B,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=2.89;touched_retest=1,demanda defendida real,True
+T15,B,volume,IN_VALUE_BALANCE,low,,,BALANCE|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.25;dist_VAL=0.41;va_width=0.61;rel_volume=0.79,dentro do valor = balanço,True
+T15,B,mtf,BEAR_ALIGN,high,,mtf_bear,d/w break bear,trend_30_4h=-3.64;rsi_1d=45.7;d_break=bear;w_break=bear;weekly_slope=-0.28972844202019227,alinhamento bear = bounce local provável,True
+T15,B,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=BEAR;combined_score=-1.0;cascade=-1.0;macro_broken=True;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=7.312020954100287,macro quebrado/distribuição = topo macro,True
+T15,B,momentum,WEAK_MOMENTUM,medium,,weak,momentum_weak,trend_30=-3.64;rsi=56.14;rsi_1d=45.7;legpos90=38.8;rise20=4.07;bear_div=0.0,momentum fraco = bounce/indeciso,True
+T15,B,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.0;rsi_min8=44.33;sweet_spot=False;bub_sell=0.0;reclaim_body=0.18,sem capitulação relevante,True
+T15,B,fuel,high_fuel,medium,room,,far_supply,supply_category=SUPPLY_FAR_ENOUGH;dist_4h_supply=3.07;dist_d1_supply=0.26;blocks_target=0,supply longe = combustível alto,True
+T15,B,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=2.99;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+T16,B,supply,SUPPLY_FAR_NEUTRAL,medium,room,,FAR_ENOUGH,supply_category=SUPPLY_FAR_ENOUGH;polarity_category=POLARITY_SUPPORTED_BY_DEMAND;dist_4h_supply=3.34;has_overhead=1,supply longe = espaço ok,True
+T16,B,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=1.4;touched_retest=1,demanda defendida real,True
+T16,B,volume,IN_VALUE_BALANCE,low,,,BALANCE|maturity:VP-as-of-bar,below_VAL=False;dist_POC=-0.16;dist_VAL=0.41;va_width=0.58;rel_volume=0.53,dentro do valor = balanço,True
+T16,B,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=5.59;rsi_1d=72.7;d_break=bull;w_break=bull;weekly_slope=-0.005775650458188004,alinhamento bull multi-TF = bull-run maior,True
+T16,B,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=2.0;cascade=2.0;macro_broken=False;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=0.04548519323179838,regime macro bull,True
+T16,B,momentum,HEALTHY_HIGH_LEGPOS,high,strong_bull,,legpos_high+momentum,trend_30=5.59;rsi=59.35;rsi_1d=72.7;legpos90=97.3;rise20=2.91;bear_div=0.0,legpos alto COM momentum = continuação sadia,True
+T16,B,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.05;rsi_min8=57.93;sweet_spot=False;bub_sell=0.0;reclaim_body=0.58,sem capitulação relevante,True
+T16,B,fuel,high_fuel,medium,room,,far_supply,supply_category=SUPPLY_FAR_ENOUGH;dist_4h_supply=3.34;dist_d1_supply=1.06;blocks_target=0,supply longe = combustível alto,True
+T16,B,risk,SL_NEUTRAL,medium,,,neutral,sl_atr=1.5;sl_type=V_REVERSAL_DEMAND,SL aceitável,True
+T17,B,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=RECLAIM_ACCEPTED_ABOVE_SUPPLY;dist_4h_supply=8.56;has_overhead=1,sem teto = markup/ATH bullish,True
+T17,B,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=3.45;touched_retest=1,demanda defendida real,True
+T17,B,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=1.05;dist_VAL=1.7;va_width=1.13;rel_volume=0.58,aceitação acima do valor = bullish,True
+T17,B,mtf,MTF_CONFLICT,low,,mtf_conflict,conflito,trend_30_4h=-9.23;rsi_1d=40.3;d_break=none;w_break=bull;weekly_slope=0.05353041237491978,timeframes em conflito,True
+T17,B,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=BEAR;combined_score=2.0;cascade=2.0;macro_broken=True;distribution=False;stall=True;sharp_drop=True;dist_alarm=False;dd13w=4.602336595474904,macro quebrado/distribuição = topo macro,True
+T17,B,momentum,WEAK_MOMENTUM,medium,,weak,momentum_weak,trend_30=-9.23;rsi=46.08;rsi_1d=40.3;legpos90=23.0;rise20=2.91;bear_div=0.0,momentum fraco = bounce/indeciso,True
+T17,B,capit,NO_CAPITULATION,low,,,no_cap,drop20=1.32;rsi_min8=23.29;sweet_spot=False;bub_sell=6.0;reclaim_body=1.07,sem capitulação relevante,True
+T17,B,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=8.56;dist_d1_supply=2.09;blocks_target=0,sem teto = combustível alto,True
+T17,B,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=3.55;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+T18,B,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=POLARITY_FLOATING_NO_BASE;dist_4h_supply=6.56;has_overhead=1,sem teto = markup/ATH bullish,True
+T18,B,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=3.84;touched_retest=1,demanda defendida real,True
+T18,B,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=1.92;dist_VAL=2.45;va_width=1.41;rel_volume=0.41,aceitação acima do valor = bullish,True
+T18,B,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=1.69;rsi_1d=51.8;d_break=bull;w_break=bull;weekly_slope=0.09580731591219226,alinhamento bull multi-TF = bull-run maior,True
+T18,B,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=TRANSITION;combined_score=1.0;cascade=1.0;macro_broken=True;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=3.8565012865659014,macro quebrado/distribuição = topo macro,True
+T18,B,momentum,HEALTHY_HIGH_LEGPOS,high,strong_bull,,legpos_high+momentum,trend_30=1.69;rsi=59.96;rsi_1d=51.8;legpos90=91.5;rise20=2.87;bear_div=0.0,legpos alto COM momentum = continuação sadia,True
+T18,B,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.5;rsi_min8=40.83;sweet_spot=False;bub_sell=0.0;reclaim_body=0.12,sem capitulação relevante,True
+T18,B,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=6.56;dist_d1_supply=2.15;blocks_target=0,sem teto = combustível alto,True
+T18,B,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=3.94;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+T20,B,supply,SUPPLY_FAR_NEUTRAL,medium,room,,FAR_ENOUGH,supply_category=SUPPLY_FAR_ENOUGH;polarity_category=POLARITY_FLOATING_NO_BASE;dist_4h_supply=2.53;has_overhead=1,supply longe = espaço ok,True
+T20,B,demand,DEMAND_NEUTRAL,medium,demand_present,,PRESENT_NEUTRAL,demand_category=DEMAND_PRESENT_NEUTRAL;dist_4h_demand=1.04;touched_retest=1,demanda presente neutra,True
+T20,B,volume,REJECTION_BELOW_VALUE,medium,,below_value,BELOW_VAL|maturity:VP-as-of-bar,below_VAL=True;dist_POC=-0.37;dist_VAL=-0.25;va_width=0.48;rel_volume=0.89,preço abaixo do VAL = rejeição/distribuição,True
+T20,B,mtf,PARTIAL_BULL,medium,partial_bull,,parcial,trend_30_4h=3.57;rsi_1d=61.2;d_break=bull;w_break=bear;weekly_slope=0.16495559961782771,alinhamento parcial bull,True
+T20,B,regime,MACRO_TRANSITION_RISK,medium,,transition,STALL/ALARM,v3_state=TRANSITION;combined_score=0.0;cascade=0.0;macro_broken=False;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=1.9136003068579475,transição/alerta macro,True
+T20,B,momentum,STRONG_BULL_MOMENTUM,high,strong_bull,,momentum_strong,trend_30=3.57;rsi=56.85;rsi_1d=61.2;legpos90=84.4;rise20=0.72;bear_div=0.0,momentum bull forte,True
+T20,B,capit,NO_CAPITULATION,low,,,no_cap,drop20=1.08;rsi_min8=51.48;sweet_spot=False;bub_sell=0.0;reclaim_body=-0.46,sem capitulação relevante,True
+T20,B,fuel,medium_fuel,medium,,,moderate,supply_category=SUPPLY_FAR_ENOUGH;dist_4h_supply=2.53;dist_d1_supply=0.87;blocks_target=0,combustível médio,True
+T20,B,risk,SL_TOO_SHORT,high,,sl_short,sl<1.2ATR,sl_atr=1.14;sl_type=V_REVERSAL_DEMAND,SL curto demais = stop no ruído (ex T34),True
+T23,B,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=POLARITY_FLOATING_NO_BASE;dist_4h_supply=4.37;has_overhead=1,sem teto = markup/ATH bullish,True
+T23,B,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=4.17;touched_retest=1,demanda defendida real,True
+T23,B,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=1.02;dist_VAL=1.49;va_width=0.92;rel_volume=1.36,aceitação acima do valor = bullish,True
+T23,B,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=0.82;rsi_1d=52.6;d_break=bull;w_break=bull;weekly_slope=0.41462632942806754,alinhamento bull multi-TF = bull-run maior,True
+T23,B,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=TRANSITION;combined_score=3.0;cascade=3.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=6.465042597994702,regime macro bull,True
+T23,B,momentum,WEAK_MOMENTUM,medium,,weak,momentum_weak,trend_30=0.82;rsi=56.62;rsi_1d=52.6;legpos90=33.3;rise20=3.24;bear_div=0.0,momentum fraco = bounce/indeciso,True
+T23,B,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.0;rsi_min8=40.83;sweet_spot=False;bub_sell=0.0;reclaim_body=1.24,sem capitulação relevante,True
+T23,B,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=4.37;dist_d1_supply=2.24;blocks_target=0,sem teto = combustível alto,True
+T23,B,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=4.27;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+T24,B,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=RECLAIM_ACCEPTED_ABOVE_SUPPLY;dist_4h_supply=4.82;has_overhead=1,sem teto = markup/ATH bullish,True
+T24,B,demand,DEMAND_FRAGILE,medium,,demand_deep,TOO_DEEP,demand_category=DEMAND_TOO_DEEP;dist_4h_demand=4.98;touched_retest=0,demanda muito funda = entrada esticada,True
+T24,B,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.64;dist_VAL=1.64;va_width=1.32;rel_volume=0.97,aceitação acima do valor = bullish,True
+T24,B,mtf,PARTIAL_BULL,medium,partial_bull,,parcial,trend_30_4h=-1.79;rsi_1d=48.3;d_break=bull;w_break=bull;weekly_slope=0.48287836162169046,alinhamento parcial bull,True
+T24,B,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=TRANSITION;combined_score=3.0;cascade=3.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=6.7050789173734096,regime macro bull,True
+T24,B,momentum,WEAK_MOMENTUM,medium,,weak,momentum_weak,trend_30=-1.79;rsi=55.46;rsi_1d=48.3;legpos90=47.5;rise20=3.41;bear_div=0.0,momentum fraco = bounce/indeciso,True
+T24,B,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.0;rsi_min8=42.05;sweet_spot=False;bub_sell=0.0;reclaim_body=0.68,sem capitulação relevante,True
+T24,B,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=4.82;dist_d1_supply=3.06;blocks_target=0,sem teto = combustível alto,True
+T24,B,risk,SL_TOO_WIDE,medium,,sl_wide,sl>5ATR,sl_atr=5.08;sl_type=NORMAL_DEMAND_BASE,SL largo = R ruim,True
+T25,B,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=RECLAIM_ACCEPTED_ABOVE_SUPPLY;dist_4h_supply=5.81;has_overhead=1,sem teto = markup/ATH bullish,True
+T25,B,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=2.76;touched_retest=1,demanda defendida real,True
+T25,B,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=1.23;dist_VAL=1.61;va_width=0.76;rel_volume=1.16,aceitação acima do valor = bullish,True
+T25,B,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=3.59;rsi_1d=49.4;d_break=bull;w_break=bull;weekly_slope=0.5451745154262317,alinhamento bull multi-TF = bull-run maior,True
+T25,B,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=2.0;cascade=2.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=6.808917566601627,regime macro bull,True
+T25,B,momentum,STRONG_BULL_MOMENTUM,high,strong_bull,,momentum_strong,trend_30=3.59;rsi=49.95;rsi_1d=49.4;legpos90=68.5;rise20=2.27;bear_div=0.0,momentum bull forte,True
+T25,B,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.3;rsi_min8=41.47;sweet_spot=False;bub_sell=0.0;reclaim_body=1.3,sem capitulação relevante,True
+T25,B,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=5.81;dist_d1_supply=3.6;blocks_target=0,sem teto = combustível alto,True
+T25,B,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=2.86;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+T26,B,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=RECLAIM_ACCEPTED_ABOVE_SUPPLY;dist_4h_supply=6.51;has_overhead=1,sem teto = markup/ATH bullish,True
+T26,B,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=2.71;touched_retest=1,demanda defendida real,True
+T26,B,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.82;dist_VAL=1.06;va_width=0.37;rel_volume=1.55,aceitação acima do valor = bullish,True
+T26,B,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=0.89;rsi_1d=50.5;d_break=bull;w_break=bull;weekly_slope=0.5451745154262317,alinhamento bull multi-TF = bull-run maior,True
+T26,B,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=3.0;cascade=3.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=6.553426192454072,regime macro bull,True
+T26,B,momentum,WEAK_MOMENTUM,medium,,weak,momentum_weak,trend_30=0.89;rsi=53.45;rsi_1d=50.5;legpos90=65.0;rise20=2.06;bear_div=0.0,momentum fraco = bounce/indeciso,True
+T26,B,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.29;rsi_min8=46.25;sweet_spot=False;bub_sell=0.0;reclaim_body=0.82,sem capitulação relevante,True
+T26,B,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=6.51;dist_d1_supply=0.07;blocks_target=0,sem teto = combustível alto,True
+T26,B,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=2.81;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+T30,B,supply,SUPPLY_FAR_NEUTRAL,medium,room,,FAR_ENOUGH,supply_category=SUPPLY_FAR_ENOUGH;polarity_category=RECLAIM_REJECTED_BELOW_SUPPLY;dist_4h_supply=2.39;has_overhead=1,supply longe = espaço ok,True
+T30,B,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=1.93;touched_retest=1,demanda defendida real,True
+T30,B,volume,IN_VALUE_BALANCE,low,,,BALANCE|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.26;dist_VAL=0.52;va_width=0.27;rel_volume=0.53,dentro do valor = balanço,True
+T30,B,mtf,PARTIAL_BULL,medium,partial_bull,,parcial,trend_30_4h=-1.73;rsi_1d=51.6;d_break=bull;w_break=bull;weekly_slope=0.4616119012118506,alinhamento parcial bull,True
+T30,B,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=1.0;cascade=1.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=5.0184061101753805,regime macro bull,True
+T30,B,momentum,WEAK_MOMENTUM,medium,,weak,momentum_weak,trend_30=-1.73;rsi=39.87;rsi_1d=51.6;legpos90=64.3;rise20=1.12;bear_div=0.0,momentum fraco = bounce/indeciso,True
+T30,B,capit,CLIMAX_RECLAIM,high,climax_reclaim,,drop+oversold+reclaim,drop20=2.8;rsi_min8=31.97;sweet_spot=False;bub_sell=3.0;reclaim_body=0.26,drop forte + oversold + reclaim = clímax/fundo,True
+T30,B,fuel,medium_fuel,medium,,,moderate,supply_category=SUPPLY_FAR_ENOUGH;dist_4h_supply=2.39;dist_d1_supply=0.22;blocks_target=0,combustível médio,True
+T30,B,risk,SL_NEUTRAL,medium,,,neutral,sl_atr=2.03;sl_type=V_REVERSAL_DEMAND,SL aceitável,True
+T40,B,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=POLARITY_SUPPORTED_BY_DEMAND;dist_4h_supply=5.27;has_overhead=1,sem teto = markup/ATH bullish,True
+T40,B,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=2.12;touched_retest=1,demanda defendida real,True
+T40,B,volume,REJECTION_BELOW_VALUE,medium,,below_value,BELOW_VAL|maturity:VP-as-of-bar,below_VAL=True;dist_POC=-0.62;dist_VAL=-0.33;va_width=1.19;rel_volume=0.78,preço abaixo do VAL = rejeição/distribuição,True
+T40,B,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=5.55;rsi_1d=64.3;d_break=bull;w_break=bull;weekly_slope=1.37566222323685,alinhamento bull multi-TF = bull-run maior,True
+T40,B,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=TRANSITION;combined_score=3.0;cascade=3.0;macro_broken=True;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=3.984817568893822,macro quebrado/distribuição = topo macro,True
+T40,B,momentum,STRONG_BULL_MOMENTUM,high,strong_bull,,momentum_strong,trend_30=5.55;rsi=56.69;rsi_1d=64.3;legpos90=79.4;rise20=2.51;bear_div=0.0,momentum bull forte,True
+T40,B,capit,NO_CAPITULATION,low,,,no_cap,drop20=1.54;rsi_min8=56.69;sweet_spot=False;bub_sell=0.0;reclaim_body=0.38,sem capitulação relevante,True
+T40,B,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=5.27;dist_d1_supply=1.88;blocks_target=0,sem teto = combustível alto,True
+T40,B,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=2.22;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+T42,B,supply,SUPPLY_FAR_NEUTRAL,medium,room,,FAR_ENOUGH,supply_category=SUPPLY_FAR_ENOUGH;polarity_category=POLARITY_SUPPORTED_BY_DEMAND;dist_4h_supply=3.18;has_overhead=1,supply longe = espaço ok,True
+T42,B,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=2.64;touched_retest=1,demanda defendida real,True
+T42,B,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=1.86;dist_VAL=2.64;va_width=1.13;rel_volume=1.19,aceitação acima do valor = bullish,True
+T42,B,mtf,PARTIAL_BULL,medium,partial_bull,,parcial,trend_30_4h=2.84;rsi_1d=51.9;d_break=bear;w_break=bull;weekly_slope=0.6070517404707794,alinhamento parcial bull,True
+T42,B,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=TRANSITION;combined_score=-1.0;cascade=-1.0;macro_broken=True;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=14.44431939777524,macro quebrado/distribuição = topo macro,True
+T42,B,momentum,HEALTHY_HIGH_LEGPOS,high,strong_bull,,legpos_high+momentum,trend_30=2.84;rsi=67.75;rsi_1d=51.9;legpos90=95.0;rise20=2.34;bear_div=0.0,legpos alto COM momentum = continuação sadia,True
+T42,B,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.5;rsi_min8=51.03;sweet_spot=False;bub_sell=0.0;reclaim_body=-0.52,sem capitulação relevante,True
+T42,B,fuel,high_fuel,medium,room,,far_supply,supply_category=SUPPLY_FAR_ENOUGH;dist_4h_supply=3.18;dist_d1_supply=2.19;blocks_target=0,supply longe = combustível alto,True
+T42,B,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=2.74;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+S9,C,supply,SUPPLY_BLOCKS_TARGET,medium,,target_obstructed,BLOCKS_TARGET,supply_category=SUPPLY_BLOCKS_TARGET;polarity_category=RECLAIM_REJECTED_BELOW_SUPPLY;dist_4h_supply=1.78;has_overhead=1,supply bloqueia alvo = R ruim,True
+S9,C,demand,DEMAND_FRAGILE,medium,,demand_deep,TOO_DEEP,demand_category=DEMAND_TOO_DEEP;dist_4h_demand=4.69;touched_retest=0,demanda muito funda = entrada esticada,True
+S9,C,volume,REJECTION_BELOW_VALUE,medium,,below_value,BELOW_VAL|maturity:VP-as-of-bar,below_VAL=True;dist_POC=-1.49;dist_VAL=-0.9;va_width=1.18;rel_volume=0.78,preço abaixo do VAL = rejeição/distribuição,True
+S9,C,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=2.98;rsi_1d=66.2;d_break=bull;w_break=bull;weekly_slope=-0.22379088690467835,alinhamento bull multi-TF = bull-run maior,True
+S9,C,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=TRANSITION;combined_score=3.0;cascade=2.0;macro_broken=True;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=6.32674934925739,macro quebrado/distribuição = topo macro,True
+S9,C,momentum,STRONG_BULL_MOMENTUM,high,strong_bull,,momentum_strong,trend_30=2.98;rsi=47.95;rsi_1d=66.2;legpos90=66.4;rise20=0.0;bear_div=1.0,momentum bull forte,True
+S9,C,capit,FALLING_KNIFE,high,,knife,drop_no_reclaim,drop20=2.59;rsi_min8=47.95;sweet_spot=False;bub_sell=0.0;reclaim_body=-0.71,drop forte sem reclaim = faca caindo,True
+S9,C,fuel,low_fuel,high,,obstructed,blocks/colada,supply_category=SUPPLY_BLOCKS_TARGET;dist_4h_supply=1.78;dist_d1_supply=0.79;blocks_target=1,supply colada/bloqueia = combustível baixo,True
+S9,C,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=4.79;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+S10,C,supply,SUPPLY_FAR_NEUTRAL,medium,room,,FAR_ENOUGH,supply_category=SUPPLY_FAR_ENOUGH;polarity_category=POLARITY_SUPPORTED_BY_DEMAND;dist_4h_supply=2.09;has_overhead=1,supply longe = espaço ok,True
+S10,C,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=2.93;touched_retest=1,demanda defendida real,True
+S10,C,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=1.2;dist_VAL=1.86;va_width=1.5;rel_volume=None,aceitação acima do valor = bullish,True
+S10,C,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=0.02;rsi_1d=62.9;d_break=bull;w_break=bull;weekly_slope=-0.22379088690467835,alinhamento bull multi-TF = bull-run maior,True
+S10,C,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=TRANSITION;combined_score=2.0;cascade=1.0;macro_broken=True;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=7.001480120451185,macro quebrado/distribuição = topo macro,True
+S10,C,momentum,HEALTHY_HIGH_LEGPOS,high,strong_bull,,legpos_high+momentum,trend_30=0.02;rsi=58.09;rsi_1d=62.9;legpos90=92.5;rise20=2.67;bear_div=0.0,legpos alto COM momentum = continuação sadia,True
+S10,C,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.0;rsi_min8=40.98;sweet_spot=False;bub_sell=0.0;reclaim_body=0.51,sem capitulação relevante,True
+S10,C,fuel,medium_fuel,medium,,,moderate,supply_category=SUPPLY_FAR_ENOUGH;dist_4h_supply=2.09;dist_d1_supply=3.93;blocks_target=0,combustível médio,True
+S10,C,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=3.03;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+S14,C,supply,SUPPLY_BLOCKS_TARGET,medium,,target_obstructed,BLOCKS_TARGET,supply_category=SUPPLY_BLOCKS_TARGET;polarity_category=RECLAIM_REJECTED_BELOW_SUPPLY;dist_4h_supply=1.11;has_overhead=1,supply bloqueia alvo = R ruim,True
+S14,C,demand,DEMAND_NEUTRAL,medium,demand_present,,PRESENT_NEUTRAL,demand_category=DEMAND_PRESENT_NEUTRAL;dist_4h_demand=4.09;touched_retest=0,demanda presente neutra,True
+S14,C,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=1.02;dist_VAL=1.49;va_width=1.45;rel_volume=0.92,aceitação acima do valor = bullish,True
+S14,C,mtf,BEAR_ALIGN,high,,mtf_bear,d/w break bear,trend_30_4h=1.29;rsi_1d=41.0;d_break=bear;w_break=bear;weekly_slope=-0.4691936913007228,alinhamento bear = bounce local provável,True
+S14,C,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=BEAR;combined_score=-3.0;cascade=-3.0;macro_broken=True;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=11.166997094049586,macro quebrado/distribuição = topo macro,True
+S14,C,momentum,WEAK_MOMENTUM,medium,,weak,momentum_weak,trend_30=1.29;rsi=44.4;rsi_1d=41.0;legpos90=49.9;rise20=2.08;bear_div=0.0,momentum fraco = bounce/indeciso,True
+S14,C,capit,NO_CAPITULATION,low,,,no_cap,drop20=2.27;rsi_min8=33.76;sweet_spot=False;bub_sell=8.0;reclaim_body=1.06,sem capitulação relevante,True
+S14,C,fuel,low_fuel,high,,obstructed,blocks/colada,supply_category=SUPPLY_BLOCKS_TARGET;dist_4h_supply=1.11;dist_d1_supply=2.09;blocks_target=1,supply colada/bloqueia = combustível baixo,True
+S14,C,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=4.19;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+S18,C,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=POLARITY_SUPPORTED_BY_DEMAND;dist_4h_supply=None;has_overhead=0,sem teto = markup/ATH bullish,True
+S18,C,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=2.22;touched_retest=1,demanda defendida real,True
+S18,C,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.5;dist_VAL=0.86;va_width=1.13;rel_volume=1.28,aceitação acima do valor = bullish,True
+S18,C,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=3.37;rsi_1d=68.2;d_break=bull;w_break=bull;weekly_slope=0.6487836827052934,alinhamento bull multi-TF = bull-run maior,True
+S18,C,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=3.0;cascade=3.0;macro_broken=False;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=0.31358292408104743,regime macro bull,True
+S18,C,momentum,HEALTHY_HIGH_LEGPOS,high,strong_bull,,legpos_high+momentum,trend_30=3.37;rsi=66.03;rsi_1d=68.2;legpos90=98.2;rise20=6.27;bear_div=0.0,legpos alto COM momentum = continuação sadia,True
+S18,C,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.0;rsi_min8=62.25;sweet_spot=False;bub_sell=0.0;reclaim_body=0.53,sem capitulação relevante,True
+S18,C,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=None;dist_d1_supply=3.86;blocks_target=0,sem teto = combustível alto,True
+S18,C,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=2.32;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+S19,C,supply,SUPPLY_REJECTING_RISK,high,,supply_rejecting,SUPPLY_NEAR_AND_REJECTING,supply_category=SUPPLY_NEAR_AND_REJECTING;polarity_category=POLARITY_UNDER_SUPPLY_PRESSURE;dist_4h_supply=0.85;has_overhead=1,supply viva colada acima = risco,True
+S19,C,demand,DEMAND_ABSENT,high,,no_demand_base,ABSENT,demand_category=DEMAND_ABSENT_OR_IRRELEVANT;dist_4h_demand=12.22;touched_retest=0,sem base de demanda = floating,True
+S19,C,volume,IN_VALUE_BALANCE,low,,,BALANCE|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.16;dist_VAL=0.83;va_width=1.06;rel_volume=1.32,dentro do valor = balanço,True
+S19,C,mtf,BEAR_ALIGN,high,,mtf_bear,d/w break bear,trend_30_4h=-0.92;rsi_1d=33.7;d_break=bear;w_break=bear;weekly_slope=-0.24545820039007285,alinhamento bear = bounce local provável,True
+S19,C,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=BEAR;combined_score=-2.0;cascade=-2.0;macro_broken=True;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=8.85405389800661,macro quebrado/distribuição = topo macro,True
+S19,C,momentum,WEAK_MOMENTUM,medium,,weak,momentum_weak,trend_30=-0.92;rsi=43.35;rsi_1d=33.7;legpos90=18.4;rise20=1.69;bear_div=0.0,momentum fraco = bounce/indeciso,True
+S19,C,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.71;rsi_min8=40.48;sweet_spot=True;bub_sell=2.0;reclaim_body=1.02,sem capitulação relevante,True
+S19,C,fuel,low_fuel,high,,obstructed,blocks/colada,supply_category=SUPPLY_NEAR_AND_REJECTING;dist_4h_supply=0.85;dist_d1_supply=3.96;blocks_target=1,supply colada/bloqueia = combustível baixo,True
+S19,C,risk,SL_NEUTRAL,medium,,,neutral,sl_atr=1.89;sl_type=LATE_WIDE,SL aceitável,True
+S21,C,supply,SUPPLY_BLOCKS_TARGET,medium,,target_obstructed,BLOCKS_TARGET,supply_category=SUPPLY_BLOCKS_TARGET;polarity_category=POLARITY_SUPPORTED_BY_DEMAND;dist_4h_supply=1.18;has_overhead=1,supply bloqueia alvo = R ruim,True
+S21,C,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=1.85;touched_retest=1,demanda defendida real,True
+S21,C,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.66;dist_VAL=1.3;va_width=0.98;rel_volume=1.47,aceitação acima do valor = bullish,True
+S21,C,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=6.6;rsi_1d=60.0;d_break=bull;w_break=bull;weekly_slope=-0.12456137625421815,alinhamento bull multi-TF = bull-run maior,True
+S21,C,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=TRANSITION;combined_score=3.0;cascade=3.0;macro_broken=True;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=3.436633608565932,macro quebrado/distribuição = topo macro,True
+S21,C,momentum,HEALTHY_HIGH_LEGPOS,high,strong_bull,,legpos_high+momentum,trend_30=6.6;rsi=71.16;rsi_1d=60.0;legpos90=96.9;rise20=5.55;bear_div=0.0,legpos alto COM momentum = continuação sadia,True
+S21,C,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.2;rsi_min8=67.28;sweet_spot=False;bub_sell=0.0;reclaim_body=0.45,sem capitulação relevante,True
+S21,C,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=SUPPLY_BLOCKS_TARGET;dist_4h_supply=1.18;dist_d1_supply=0.0;blocks_target=1,sem teto = combustível alto,True
+S21,C,risk,SL_NEUTRAL,medium,,,neutral,sl_atr=1.95;sl_type=TOP_EXHAUSTION,SL aceitável,True
+S22,C,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=POLARITY_FLOATING_NO_BASE;dist_4h_supply=None;has_overhead=0,sem teto = markup/ATH bullish,True
+S22,C,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=3.94;touched_retest=1,demanda defendida real,True
+S22,C,volume,IN_VALUE_BALANCE,low,,,BALANCE|maturity:VP-as-of-bar,below_VAL=False;dist_POC=-0.27;dist_VAL=0.16;va_width=0.87;rel_volume=0.72,dentro do valor = balanço,True
+S22,C,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=5.66;rsi_1d=74.8;d_break=bull;w_break=bull;weekly_slope=0.21494183568943886,alinhamento bull multi-TF = bull-run maior,True
+S22,C,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=3.0;cascade=3.0;macro_broken=False;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=0.17572025726619994,regime macro bull,True
+S22,C,momentum,HEALTHY_HIGH_LEGPOS,high,strong_bull,,legpos_high+momentum,trend_30=5.66;rsi=83.3;rsi_1d=74.8;legpos90=93.9;rise20=6.21;bear_div=0.0,legpos alto COM momentum = continuação sadia,True
+S22,C,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.28;rsi_min8=67.06;sweet_spot=False;bub_sell=0.0;reclaim_body=-0.27,sem capitulação relevante,True
+S22,C,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=None;dist_d1_supply=0.37;blocks_target=0,sem teto = combustível alto,True
+S22,C,risk,SL_NEUTRAL,medium,,,neutral,sl_atr=4.04;sl_type=TOP_EXHAUSTION,SL aceitável,True
+S23,C,supply,SUPPLY_BLOCKS_TARGET,medium,,target_obstructed,BLOCKS_TARGET,supply_category=SUPPLY_BLOCKS_TARGET;polarity_category=RECLAIM_REJECTED_BELOW_SUPPLY;dist_4h_supply=1.51;has_overhead=1,supply bloqueia alvo = R ruim,True
+S23,C,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=2.71;touched_retest=1,demanda defendida real,True
+S23,C,volume,IN_VALUE_BALANCE,low,,,BALANCE|maturity:VP-as-of-bar,below_VAL=False;dist_POC=-0.33;dist_VAL=0.42;va_width=1.11;rel_volume=1.22,dentro do valor = balanço,True
+S23,C,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=1.17;rsi_1d=58.7;d_break=bull;w_break=bull;weekly_slope=0.9776251203295535,alinhamento bull multi-TF = bull-run maior,True
+S23,C,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=3.0;cascade=3.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=2.642434412104612,regime macro bull,True
+S23,C,momentum,STRONG_BULL_MOMENTUM,high,strong_bull,,momentum_strong,trend_30=1.17;rsi=51.63;rsi_1d=58.7;legpos90=66.2;rise20=2.63;bear_div=0.0,momentum bull forte,True
+S23,C,capit,NO_CAPITULATION,low,,,no_cap,drop20=2.05;rsi_min8=51.63;sweet_spot=False;bub_sell=0.0;reclaim_body=0.29,sem capitulação relevante,True
+S23,C,fuel,low_fuel,high,,obstructed,blocks/colada,supply_category=SUPPLY_BLOCKS_TARGET;dist_4h_supply=1.51;dist_d1_supply=1.36;blocks_target=1,supply colada/bloqueia = combustível baixo,True
+S23,C,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=2.81;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+S28,C,supply,SUPPLY_FAR_NEUTRAL,medium,room,,FAR_ENOUGH,supply_category=SUPPLY_FAR_ENOUGH;polarity_category=POLARITY_SUPPORTED_BY_DEMAND;dist_4h_supply=2.22;has_overhead=1,supply longe = espaço ok,True
+S28,C,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=2.12;touched_retest=1,demanda defendida real,True
+S28,C,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.4;dist_VAL=0.91;va_width=0.66;rel_volume=1.25,aceitação acima do valor = bullish,True
+S28,C,mtf,MTF_CONFLICT,low,,mtf_conflict,conflito,trend_30_4h=-0.02;rsi_1d=50.2;d_break=bear;w_break=bull;weekly_slope=0.7695780101118973,timeframes em conflito,True
+S28,C,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=TRANSITION;combined_score=1.0;cascade=1.0;macro_broken=False;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=5.216330425689355,regime macro bull,True
+S28,C,momentum,WEAK_MOMENTUM,medium,,weak,momentum_weak,trend_30=-0.02;rsi=58.41;rsi_1d=50.2;legpos90=62.7;rise20=3.65;bear_div=0.0,momentum fraco = bounce/indeciso,True
+S28,C,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.0;rsi_min8=47.46;sweet_spot=False;bub_sell=0.0;reclaim_body=0.38,sem capitulação relevante,True
+S28,C,fuel,medium_fuel,medium,,,moderate,supply_category=SUPPLY_FAR_ENOUGH;dist_4h_supply=2.22;dist_d1_supply=1.52;blocks_target=0,combustível médio,True
+S28,C,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=2.22;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+S39,C,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=POLARITY_SUPPORTED_BY_DEMAND;dist_4h_supply=None;has_overhead=0,sem teto = markup/ATH bullish,True
+S39,C,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=3.35;touched_retest=1,demanda defendida real,True
+S39,C,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=2.06;dist_VAL=2.77;va_width=1.17;rel_volume=0.58,aceitação acima do valor = bullish,True
+S39,C,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=5.94;rsi_1d=73.3;d_break=bull;w_break=bull;weekly_slope=1.204192301178643,alinhamento bull multi-TF = bull-run maior,True
+S39,C,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=3.0;cascade=3.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=0.7824454026985672,regime macro bull,True
+S39,C,momentum,HEALTHY_HIGH_LEGPOS,high,strong_bull,,legpos_high+momentum,trend_30=5.94;rsi=76.57;rsi_1d=73.3;legpos90=99.3;rise20=5.0;bear_div=0.0,legpos alto COM momentum = continuação sadia,True
+S39,C,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.0;rsi_min8=62.11;sweet_spot=False;bub_sell=0.0;reclaim_body=0.37,sem capitulação relevante,True
+S39,C,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=None;dist_d1_supply=None;blocks_target=0,sem teto = combustível alto,True
+S39,C,risk,SL_NEUTRAL,medium,,,neutral,sl_atr=3.45;sl_type=TOP_EXHAUSTION,SL aceitável,True
+T13,C,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=POLARITY_FLOATING_NO_BASE;dist_4h_supply=6.2;has_overhead=1,sem teto = markup/ATH bullish,True
+T13,C,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=3.81;touched_retest=1,demanda defendida real,True
+T13,C,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=2.02;dist_VAL=2.52;va_width=1.86;rel_volume=0.47,aceitação acima do valor = bullish,True
+T13,C,mtf,BEAR_ALIGN,high,,mtf_bear,d/w break bear,trend_30_4h=-6.8;rsi_1d=24.6;d_break=bear;w_break=bear;weekly_slope=0.049612178563807556,alinhamento bear = bounce local provável,True
+T13,C,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=BEAR;combined_score=-3.0;cascade=-3.0;macro_broken=True;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=9.675096657048782,macro quebrado/distribuição = topo macro,True
+T13,C,momentum,WEAK_MOMENTUM,medium,,weak,momentum_weak,trend_30=-6.8;rsi=49.4;rsi_1d=24.6;legpos90=47.2;rise20=3.33;bear_div=0.0,momentum fraco = bounce/indeciso,True
+T13,C,capit,NO_CAPITULATION,low,,,no_cap,drop20=1.43;rsi_min8=19.85;sweet_spot=False;bub_sell=3.0;reclaim_body=-0.14,sem capitulação relevante,True
+T13,C,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=6.2;dist_d1_supply=2.15;blocks_target=0,sem teto = combustível alto,True
+T13,C,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=3.91;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+T14,C,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=RECLAIM_ACCEPTED_ABOVE_SUPPLY;dist_4h_supply=7.07;has_overhead=1,sem teto = markup/ATH bullish,True
+T14,C,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=2.49;touched_retest=1,demanda defendida real,True
+T14,C,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.39;dist_VAL=0.67;va_width=0.32;rel_volume=1.05,aceitação acima do valor = bullish,True
+T14,C,mtf,BEAR_ALIGN,high,,mtf_bear,d/w break bear,trend_30_4h=-5.94;rsi_1d=37.0;d_break=bear;w_break=bear;weekly_slope=0.049612178563807556,alinhamento bear = bounce local provável,True
+T14,C,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=BEAR;combined_score=-1.0;cascade=-1.0;macro_broken=True;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=8.609651617211998,macro quebrado/distribuição = topo macro,True
+T14,C,momentum,WEAK_MOMENTUM,medium,,weak,momentum_weak,trend_30=-5.94;rsi=52.77;rsi_1d=37.0;legpos90=51.7;rise20=5.38;bear_div=0.0,momentum fraco = bounce/indeciso,True
+T14,C,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.0;rsi_min8=48.0;sweet_spot=False;bub_sell=0.0;reclaim_body=0.4,sem capitulação relevante,True
+T14,C,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=7.07;dist_d1_supply=1.83;blocks_target=0,sem teto = combustível alto,True
+T14,C,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=2.59;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+T19,C,supply,SUPPLY_FAR_NEUTRAL,medium,room,,FAR_ENOUGH,supply_category=SUPPLY_FAR_ENOUGH;polarity_category=POLARITY_SUPPORTED_BY_DEMAND;dist_4h_supply=3.29;has_overhead=1,supply longe = espaço ok,True
+T19,C,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=2.27;touched_retest=1,demanda defendida real,True
+T19,C,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.79;dist_VAL=1.14;va_width=0.78;rel_volume=1.53,aceitação acima do valor = bullish,True
+T19,C,mtf,BEAR_ALIGN,high,,mtf_bear,d/w break bear,trend_30_4h=-0.19;rsi_1d=46.0;d_break=bear;w_break=bear;weekly_slope=0.08478990615073391,alinhamento bear = bounce local provável,True
+T19,C,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=BEAR;combined_score=-2.0;cascade=-2.0;macro_broken=True;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=4.296011379315849,macro quebrado/distribuição = topo macro,True
+T19,C,momentum,WEAK_MOMENTUM,medium,,weak,momentum_weak,trend_30=-0.19;rsi=43.16;rsi_1d=46.0;legpos90=35.9;rise20=1.62;bear_div=0.0,momentum fraco = bounce/indeciso,True
+T19,C,capit,NO_CAPITULATION,low,,,no_cap,drop20=3.32;rsi_min8=36.54;sweet_spot=False;bub_sell=0.0;reclaim_body=0.78,sem capitulação relevante,True
+T19,C,fuel,high_fuel,medium,room,,far_supply,supply_category=SUPPLY_FAR_ENOUGH;dist_4h_supply=3.29;dist_d1_supply=0.41;blocks_target=0,supply longe = combustível alto,True
+T19,C,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=2.37;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+T27,C,supply,SUPPLY_BLOCKS_TARGET,medium,,target_obstructed,BLOCKS_TARGET,supply_category=SUPPLY_BLOCKS_TARGET;polarity_category=POLARITY_SUPPORTED_BY_DEMAND;dist_4h_supply=1.64;has_overhead=1,supply bloqueia alvo = R ruim,True
+T27,C,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=1.96;touched_retest=1,demanda defendida real,True
+T27,C,volume,IN_VALUE_BALANCE,low,,,BALANCE|maturity:VP-as-of-bar,below_VAL=False;dist_POC=-0.3;dist_VAL=0.48;va_width=0.89;rel_volume=0.94,dentro do valor = balanço,True
+T27,C,mtf,BEAR_ALIGN,high,,mtf_bear,d/w break bear,trend_30_4h=-2.2;rsi_1d=24.6;d_break=bear;w_break=bear;weekly_slope=-0.6218079847300196,alinhamento bear = bounce local provável,True
+T27,C,regime,MACRO_BROKEN_DISTRIBUTION,high,,macro_broken,MACRO_BROKEN,v3_state=BEAR;combined_score=-3.0;cascade=-3.0;macro_broken=True;distribution=False;stall=True;sharp_drop=False;dist_alarm=False;dd13w=15.141877329988604,macro quebrado/distribuição = topo macro,True
+T27,C,momentum,WEAK_MOMENTUM,medium,,weak,momentum_weak,trend_30=-2.2;rsi=51.02;rsi_1d=24.6;legpos90=15.1;rise20=1.63;bear_div=0.0,momentum fraco = bounce/indeciso,True
+T27,C,capit,NO_CAPITULATION,low,,,no_cap,drop20=2.05;rsi_min8=33.05;sweet_spot=False;bub_sell=6.0;reclaim_body=-0.31,sem capitulação relevante,True
+T27,C,fuel,low_fuel,high,,obstructed,blocks/colada,supply_category=SUPPLY_BLOCKS_TARGET;dist_4h_supply=1.64;dist_d1_supply=5.58;blocks_target=1,supply colada/bloqueia = combustível baixo,True
+T27,C,risk,SL_NEUTRAL,medium,,,neutral,sl_atr=2.06;sl_type=V_REVERSAL_DEMAND,SL aceitável,True
+T32,C,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=POLARITY_SUPPORTED_BY_DEMAND;dist_4h_supply=None;has_overhead=0,sem teto = markup/ATH bullish,True
+T32,C,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=2.16;touched_retest=1,demanda defendida real,True
+T32,C,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.76;dist_VAL=1.37;va_width=0.64;rel_volume=1.8,aceitação acima do valor = bullish,True
+T32,C,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=3.65;rsi_1d=74.0;d_break=bull;w_break=bull;weekly_slope=0.6363053631811029,alinhamento bull multi-TF = bull-run maior,True
+T32,C,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=1.0;cascade=1.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=1.1706562270117638,regime macro bull,True
+T32,C,momentum,HEALTHY_HIGH_LEGPOS,high,strong_bull,,legpos_high+momentum,trend_30=3.65;rsi=56.87;rsi_1d=74.0;legpos90=95.7;rise20=1.69;bear_div=0.0,legpos alto COM momentum = continuação sadia,True
+T32,C,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.41;rsi_min8=51.16;sweet_spot=False;bub_sell=0.0;reclaim_body=0.76,sem capitulação relevante,True
+T32,C,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=None;dist_d1_supply=None;blocks_target=0,sem teto = combustível alto,True
+T32,C,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=2.26;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+T33,C,supply,SUPPLY_BLOCKS_TARGET,medium,,target_obstructed,BLOCKS_TARGET,supply_category=SUPPLY_BLOCKS_TARGET;polarity_category=POLARITY_SUPPORTED_BY_DEMAND;dist_4h_supply=1.73;has_overhead=1,supply bloqueia alvo = R ruim,True
+T33,C,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=1.84;touched_retest=1,demanda defendida real,True
+T33,C,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=1.12;dist_VAL=1.5;va_width=0.84;rel_volume=1.49,aceitação acima do valor = bullish,True
+T33,C,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=2.92;rsi_1d=49.7;d_break=bull;w_break=bull;weekly_slope=0.9776251203295535,alinhamento bull multi-TF = bull-run maior,True
+T33,C,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=TRANSITION;combined_score=1.0;cascade=1.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=4.838225435641808,regime macro bull,True
+T33,C,momentum,STRONG_BULL_MOMENTUM,high,strong_bull,,momentum_strong,trend_30=2.92;rsi=46.21;rsi_1d=49.7;legpos90=33.6;rise20=1.49;bear_div=0.0,momentum bull forte,True
+T33,C,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.32;rsi_min8=46.21;sweet_spot=False;bub_sell=2.0;reclaim_body=1.49,sem capitulação relevante,True
+T33,C,fuel,low_fuel,high,,obstructed,blocks/colada,supply_category=SUPPLY_BLOCKS_TARGET;dist_4h_supply=1.73;dist_d1_supply=0.06;blocks_target=1,supply colada/bloqueia = combustível baixo,True
+T33,C,risk,SL_NEUTRAL,medium,,,neutral,sl_atr=1.94;sl_type=V_REVERSAL_DEMAND,SL aceitável,True
+T34,C,supply,SUPPLY_FAR_NEUTRAL,medium,room,,FAR_ENOUGH,supply_category=SUPPLY_FAR_ENOUGH;polarity_category=POLARITY_SUPPORTED_BY_DEMAND;dist_4h_supply=3.28;has_overhead=1,supply longe = espaço ok,True
+T34,C,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=2.9;touched_retest=1,demanda defendida real,True
+T34,C,volume,IN_VALUE_BALANCE,low,,,BALANCE|maturity:VP-as-of-bar,below_VAL=False;dist_POC=-0.03;dist_VAL=1.4;va_width=1.72;rel_volume=0.3,dentro do valor = balanço,True
+T34,C,mtf,PARTIAL_BULL,medium,partial_bull,,parcial,trend_30_4h=3.09;rsi_1d=43.4;d_break=bear;w_break=bull;weekly_slope=0.898919941913868,alinhamento parcial bull,True
+T34,C,regime,MACRO_NEUTRAL,low,,,neutral,v3_state=TRANSITION;combined_score=-1.0;cascade=-1.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=6.066839725065709,regime neutro/transição,True
+T34,C,momentum,STRONG_BULL_MOMENTUM,high,strong_bull,,momentum_strong,trend_30=3.09;rsi=59.71;rsi_1d=43.4;legpos90=45.5;rise20=2.44;bear_div=0.0,momentum bull forte,True
+T34,C,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.13;rsi_min8=39.75;sweet_spot=False;bub_sell=0.0;reclaim_body=-0.11,sem capitulação relevante,True
+T34,C,fuel,high_fuel,medium,room,,far_supply,supply_category=SUPPLY_FAR_ENOUGH;dist_4h_supply=3.28;dist_d1_supply=0.81;blocks_target=0,supply longe = combustível alto,True
+T34,C,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=3.0;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
+T36,C,supply,CLEAN_SKY_BULLISH,high,no_overhead,,CLEAN_SKY,supply_category=CLEAN_SKY;polarity_category=POLARITY_SUPPORTED_BY_DEMAND;dist_4h_supply=None;has_overhead=0,sem teto = markup/ATH bullish,True
+T36,C,demand,DEMAND_DEFENDED,high,demand_defended,,DEMAND_SUPPORTING_RETEST,demand_category=DEMAND_SUPPORTING_RETEST;dist_4h_demand=2.24;touched_retest=1,demanda defendida real,True
+T36,C,volume,ACCEPTANCE_ABOVE_VALUE,medium,acceptance_above,,ABOVE_POC|maturity:VP-as-of-bar,below_VAL=False;dist_POC=0.84;dist_VAL=1.73;va_width=0.92;rel_volume=1.11,aceitação acima do valor = bullish,True
+T36,C,mtf,FULL_BULL_ALIGN,high,mtf_bull,,4H+1D+W bull,trend_30_4h=-0.13;rsi_1d=65.8;d_break=bull;w_break=bull;weekly_slope=0.8559237367907301,alinhamento bull multi-TF = bull-run maior,True
+T36,C,regime,MACRO_BULL,high,macro_bull,,combined>0,v3_state=BULL;combined_score=1.0;cascade=1.0;macro_broken=False;distribution=False;stall=False;sharp_drop=False;dist_alarm=False;dd13w=1.2693709074971689,regime macro bull,True
+T36,C,momentum,HEALTHY_HIGH_LEGPOS,high,strong_bull,,legpos_high+momentum,trend_30=-0.13;rsi=63.45;rsi_1d=65.8;legpos90=90.1;rise20=2.64;bear_div=0.0,legpos alto COM momentum = continuação sadia,True
+T36,C,capit,NO_CAPITULATION,low,,,no_cap,drop20=0.0;rsi_min8=47.54;sweet_spot=False;bub_sell=0.0;reclaim_body=0.82,sem capitulação relevante,True
+T36,C,fuel,high_fuel,high,clean_sky,,no_overhead,supply_category=CLEAN_SKY;dist_4h_supply=None;dist_d1_supply=None;blocks_target=0,sem teto = combustível alto,True
+T36,C,risk,SL_STRUCTURAL_OK,high,sl_ok,,demand_base,sl_atr=2.34;sl_type=NORMAL_DEMAND_BASE,SL estrutural na demanda = ok,True
