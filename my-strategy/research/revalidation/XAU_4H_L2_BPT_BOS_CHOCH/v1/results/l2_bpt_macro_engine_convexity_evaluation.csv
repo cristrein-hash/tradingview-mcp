@@ -1,0 +1,5 @@
+label,n,runner_freq,monster_freq,runners_captured,monsters_captured,median,p90,sum_mfe,sumR_vstair,stop_before_2R
+ENGINE_TAKE,141,24.8,10.6,35,15,1.14,10.46,506.7,103.5,86
+ENGINE_SKIP,78,30.8,11.5,24,9,1.36,10.4,301.0,73.5,45
+INDIC_TAKE_CONFIRMED,119,25.2,10.9,30,13,1.05,10.94,424.5,97.0,73
+BASELINE_276,276,26.1,10.9,72,30,1.21,10.46,993.9,207.7,168

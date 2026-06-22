@@ -1,0 +1,10 @@
+metric,L2_BPT,random_long_ctx_matched
+n,276,1379
+median,1.21,1.23
+p75,5.07,5.11
+p90,10.46,11.77
+mean,3.6,4.4
+runner_freq,26.1,25.5
+monster_freq,10.9,12.8
+sum_mfe,993.9,6072.7
+bootstrap_p_random_ge_L2_runnerfreq,0.423,

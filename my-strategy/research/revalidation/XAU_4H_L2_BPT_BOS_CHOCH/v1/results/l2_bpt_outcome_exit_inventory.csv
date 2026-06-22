@@ -1,0 +1,10 @@
+arquivo,papel,capped,tem_path,reconstruivel
+results/l2_bpt_trade_qualification_outcomes.csv,AUTORIDADE atual (276 realR),SIM (+3.9R),NAO (só realR final),via frozen 4H
+real_outcome.py,gerador realR (SL estrutural+target+2/3/4R stop-first),SIM (target cap),caminha path mas só retorna R final,SIM
+outcome_anatomy.py,proxy forward MFE/MAE em ATR (windows 6/12/24/36),NAO (MFE uncapped em ATR),SIM,SIM
+results/l2_bpt_pruned_base_v2_outcome_anatomy.csv,proxy MFE/MAE 2965 cand,NAO,SIM,já tem MFE
+results/l2_bpt_real_outcome_per_episode.csv,agregado por label (BOM/NAO),SIM,NAO,N/A
+results/l2_bpt_outcome_proxy_failure_audit.csv,REFUTADO (proxy lift 0.99x),N/A,N/A,N/A
+repro_recovery/raw_features_2020_2026.jsonl,FONTE OHLC 4H contígua (9880 bars),NAO,SIM (high/low/close),É a fonte
+reconstruct_l2_bpt_outcomes_uncapped.py,NOVO gerador uncapped+convexo (derived),NAO,SIM,autoridade nova derived
+results/l2_bpt_uncapped_or_proxy_outcomes_276.csv,NOVO outcome uncapped (MFE/maxrun/hits/vstair),NAO,SIM,derived/regenerable

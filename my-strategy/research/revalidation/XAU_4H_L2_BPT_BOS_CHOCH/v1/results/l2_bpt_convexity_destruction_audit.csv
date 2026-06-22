@@ -1,0 +1,10 @@
+metric,value,interpretacao
+n_episodes,276,população
+capped_at_+3.9R,17,trades grudados no teto do target
+MFE_R>=5_available,72,runners REAIS que existiram no path
+MFE_R>=10_monsters,30,monstros achatados pelo cap
+runners_compressed,21,capado~3.9 mas MFE real >5R = convexidade apagada
+sumR_capped,84.2,régua atual (hit-rate-ish)
+sumR_letrun_H120,241.2,"mesma entrada, exit deixa correr"
+sumR_vstair_H120,207.7,"mesma entrada, exit convexo V-stair"
+delta_vstair_vs_capped,123.5,convexidade recuperável trocando SÓ o exit

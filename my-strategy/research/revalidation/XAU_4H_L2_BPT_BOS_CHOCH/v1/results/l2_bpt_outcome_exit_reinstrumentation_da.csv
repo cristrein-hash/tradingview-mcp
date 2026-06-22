@@ -1,0 +1,10 @@
+ponto,verdict,detalhe
+look_ahead,CLEAN,"entry=C[i], SL de bars<=i, path j>i, stop-first intrabar. Causal, sem leak."
+order_of_magnitude_robust,PASS,"cap destruiu a MAIORIA da edge mesmo no piso conservador custado: let-run +144.6R vs capado +84.2R (~1.7x). Independe do V-stair."
+random_baseline_fair,PASS_WITH_NUANCE,"context-matched (+-50b) é a pergunta certa (L2 vs long no mesmo regime) = null. MAS vs random GLOBAL L2 bate +4.2pp (concentra em regimes convexos). Reportar ambos."
+entry_no_convexity_edge,UNDERPOWERED_TO_CONFIRM,"CI n=72 ~[20.9,31.3]% >> gap 0.6pp. Pode-se descartar edge GRANDE, nao confirmar zero. Corrigido 'STRENGTHENED'->'no large edge'."
+engine_no_separation,PASS,"ENGINE_TAKE runner_freq 24.8% < baseline 26.1%; SKIP per-trade > TAKE em let-run e V-stair. Engine anti-seletivo solido."
+engine_capital_preservation,OVERREACH_CORRIGIDO,"spec §5 especulava engine=preservacao-bear: NAO testado e CONTRADITO (SKIP renderia mais). Reescrito como questao aberta, nao conclusao."
+vstair_bug,FAIL_BUG_CORRIGIDO,"V-stair v1: lock nunca era gatilho de saida -> +390.1R inflado ~47%. Corrigido (trailing stop real) = +207.7R. let-run +241.2R é o headline conservador."
+locks_honored,PASS,"diagnostico, sem producao/promocao/OOS, capado nao-arbitro, scripts salvos, sem abortar-estrategia, sem human-endpoint."
+two_headline_claims,HOLD,"(a) cap destruiu maioria da edge = ROBUSTO (custado +144 vs +84). (b) entry/engine sem alpha de convexidade = direcionalmente sim, entry sem alpha de trigger (so regime/beta), engine anti-seletivo."
