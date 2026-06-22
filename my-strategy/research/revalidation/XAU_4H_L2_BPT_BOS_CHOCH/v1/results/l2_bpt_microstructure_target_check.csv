@@ -1,0 +1,10 @@
+plot_id,status,reads_as,consensus,note
+T17,BAD_micro_top,GOOD,BREAKOUT_ACCEPTANCE,separability=NOT_SEPARATED agree=3/3
+T20,BAD_micro_top,BAD,FAILED_BREAKOUT,separability=SEPARATED agree=3/3
+T24,BAD_micro_top,GOOD,BREAKOUT_ACCEPTANCE,separability=NOT_SEPARATED agree=3/3
+T40,BAD_micro_top,SPLIT,MICRO_BOTTOM_RECLAIM,separability=NOT_SEPARATED agree=1/3
+T23,BAD_macrobear_accum,GOOD,BREAKOUT_ACCEPTANCE,separability=NOT_SEPARATED agree=3/3
+T32,late_top_residual,GOOD,BREAKOUT_ACCEPTANCE,separability=SEPARATED agree=2/3
+S12,GOOD_contrast,GOOD,BREAKOUT_ACCEPTANCE,separability=SEPARATED agree=3/3
+T21,CONTRAST_OUT_OF_WORKING_SET,-,-,"citado pelo Cris, fora dos 62"
+T22,CONTRAST_OUT_OF_WORKING_SET,-,-,"citado pelo Cris, fora dos 62"

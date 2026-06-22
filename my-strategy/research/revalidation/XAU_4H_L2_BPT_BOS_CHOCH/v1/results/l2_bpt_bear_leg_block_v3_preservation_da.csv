@@ -1,0 +1,12 @@
+check,verdict,evidence
+v3_commit_referenced,PASS,184cdba citado no knowledge state
+rule_BLOCK_CORRECTIVE_PULLBACK,PASS,leg==CORRECTIVE + NOT bottom_turn + drop20<1.0
+drop20_separator,PASS,"shallow 0.0-0.3 block vs flush 1.69/4.28 preserve; robusto [0.5,1.5]"
+targets_blocked,PASS,T12/T25/T26/S28 bloqueados
+S3_S27_preserved,PASS,flush real -> ALLOW
+S15_preserved,PASS,bottom-turn carve-out
+S7_S8_S13_correct_blocks,PASS,bear-markdown confirmado pelo Cris
+T17_T20_still_open,PASS,registrado como microestrutura aberta
+T23_open,PASS,classifier/hindsight não resolvido
+no_276_oos,PASS,só 62
+no_promotion,PASS,"diagnóstico, sem produção"

@@ -1,0 +1,10 @@
+layer,finding_under_microstructure,status
+sup_cat/pol_cat (supply structure),"DECISIVO p/ trap óbvio (near+rejecting), MAS marca GOOD breakouts-through-supply como trap",util_mas_perigoso
+dist_4h_supply_atr proximity,único eixo que separa trap; porém dispara em winners que romperam supply (S15/S24),util_mas_perigoso
+reclaim_body sign + va_state (SVP),ABOVE_VAH+reclaim>0 compartilhado por acceptance E trap-near-supply = NÃO separa,nao_separa
+legpos30/90 (leg position),alto em ambos good breakout e late-top; confound de escala persiste,nao_separa
+drop20/rise20 (flush vs chase),"FAILED_BREAKOUT (T20, below-VAL+neg reclaim) é o único padrão bad separável",parcial
+bubbles order-flow,forte buy-flow presente em acceptance E em blowoff-top (X15/X16) = não distingue,nao_separa
+D1 leg-state backbone,contexto macro correto (Bear-Leg Block v3 já usa); não resolve micro-top intra-bull,contexto_only
+Bear-Leg Block v3 (corrective drop20),"ortogonal: pega corrective raso, NÃO micro-top; T12/T25 leem como acceptance",ortogonal_complementar
+entry-quality (refutado antes),confirmado de novo: entradas good/bad estruturalmente idênticas no ponto de entrada,refutado_confirmado

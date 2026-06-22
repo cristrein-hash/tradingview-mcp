@@ -1,0 +1,13 @@
+check,verdict,evidence
+diagnostico_apenas,PASS,scripts leem/escrevem só results/; zero produção/engine/decisions/registry/telegram/mcp/slim/runtime/monitor/receiver
+sem_276_oos,PASS,feature builder itera os 62 evidence packs; nada de OOS
+sem_outcome_predicado,PASS,visual_matrix usado SÓ p/ join datetime/episode_id; outcome/realR/exit_type nunca como feature
+agentes_cegos,PASS,"input opaco X01..X18, 34 features causais; sem set/role/cris/outcome/plot_id/gate/blocked"
+prior_layers_evidencia_condicional,PASS,"sup_cat/pol_cat/SVP/reclaim/leg-state/bubbles no crosscheck, nenhuma descartada"
+features_causais,PASS,join 84-feature stream proveniência verificada (1937d82); composites causais
+sem_id_fit_sem_regra_forcada,PASS,conclusão FEATURE_MISSING; nenhuma regra nova criada/promovida
+T17_T20_nao_forcados,PASS,T17 lido GOOD 3/3 reportado honestamente; negativo não mascarado
+limitacao_declarada,PASS,"sem série OHLC contígua -> micro_range/sweep/bars_since_swing UNAVAILABLE, não fabricado"
+honestidade_resultado_negativo,PASS,reporta que filtro destruiria 5 winners (S3/S15/S20/S24/S25) e inverteria resultado
+T20_caveat,PASS,FAILED_BREAKOUT separável mas marcado não-seguro (atinge anchors S25/S35)
+contrast_out_of_set,PASS,T21/T22/S11/S40 marcados CONTRAST_OUT_OF_WORKING_SET (fora dos 62)
