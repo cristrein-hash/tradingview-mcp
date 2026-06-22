@@ -39,10 +39,16 @@ domínio = teste errado. **Uso = evidência condicional / camada de leitura DENT
   por 5 runners + 2 monumentais preservados. Cris assume o trade-off.
 - **NÃO promover a produção** sem walk-forward; **NÃO usar fora do universo bear-leg** (não generaliza).
 
-## Resíduo irredutível → aguarda MAIS DATA (Cris)
-Os 11 leaked vs 5 runners não-separáveis com features atuais. Reconciliação só com **OHLC sub-4H contíguo** (aceitação
-intra-barra real), inexistente hoje — integrar mais data adiante (conecta com coleta replay). Lever paralelo p/ os 2
-monumentais: predicado GLOBAL `capit==CLIMAX_RECLAIM` (n=10, runner_rate 40%, lift 1.53, fraco mas estrutural).
+## Resíduo irredutível → FECHAMENTO PERMANENTE (coleta sub-4H morta, 2026-06-22)
+Os 11 leaked vs 5 runners não-separáveis com features atuais. A hipótese era reconciliar com OHLC sub-4H contíguo
+(aceitação intra-barra). **Essa porta está FECHADA, definitivamente:**
+- **Histórico (resíduo em 2020-2023):** sub-4H INACESSÍVEL — o chart TradingView não mantém histórico intraday com essa
+  profundidade; não alcança mais 2020-2023 em 1H/15M. Não é "ainda não coletado", é inobtível via replay.
+- **Forward (cobertura sub-4H existente ≥2024-05-25):** dos 29 episódios bear-leg, só **2** têm sub-4H (2024-06-14 loser,
+  2026-03-30 mid) — **ZERO runners**. Não há nem 1 exemplo de bear-leg-runner com sub-4H para treinar o discriminador.
+**Conclusão madura: o resíduo é PERMANENTEMENTE irredutível com qualquer data disponível ou obtível.** Não há lever de
+dados que o resolva. A feature bear-leg fica como está, com o resíduo aceito como custo conhecido e fixo. O único lever
+parcial p/ os 2 monumentais segue sendo o predicado GLOBAL `capit==CLIMAX_RECLAIM` (n=10, lift 1.53, fraco, estrutural).
 
 Arquivos: `l2_bpt_bearleg_surgical.py` + `results/l2_bpt_bearleg_surgical.csv` (regra+grupos);
 `l2_bpt_bearleg_leaked_vs_blocked.py` (leak vs blocked vs runner); `l2_bpt_supply_fuel_global.py` (generalização).
