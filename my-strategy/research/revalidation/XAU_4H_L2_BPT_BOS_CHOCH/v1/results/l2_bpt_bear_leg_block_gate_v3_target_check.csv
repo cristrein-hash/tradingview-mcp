@@ -1,0 +1,14 @@
+plot_id,expected,gate_v3,blocked_v3,ok,drop20_atr,reason_codes,cris
+T12,BLOCK,BLOCK_CORRECTIVE_PULLBACK,YES,YES,0.12,"corrective_shallow(drop20_atr=0.12<1.0, no_flush)",BLOCK
+T25,BLOCK,BLOCK_CORRECTIVE_PULLBACK,YES,YES,0.3,"corrective_shallow(drop20_atr=0.3<1.0, no_flush)",BLOCK
+T26,BLOCK,BLOCK_CORRECTIVE_PULLBACK,YES,YES,0.29,"corrective_shallow(drop20_atr=0.29<1.0, no_flush)",BLOCK
+S28,BLOCK,BLOCK_CORRECTIVE_PULLBACK,YES,YES,0.0,"corrective_shallow(drop20_atr=0.0<1.0, no_flush)",REVIEW
+S15,PRESERVE,PRESERVE_BOTTOM_TURN,NO,YES,0.74,bottom_turn_oversold_reclaim_demand,PROTECT
+T17,DIAG_MISFIRE,ALLOW,NO,DIAG,1.32,carveout_suppressed_in_bull_leg|allow(leg=MACRO_BULL_LEG),BLOCK
+S7,BLOCK,BLOCK_BEAR_MARKDOWN,YES,YES,1.98,"bear_markdown(leg=MACRO_RANGE,mb=True,cs=-2.0)",PROTECT
+S8,BLOCK,BLOCK_BEAR_MARKDOWN,YES,YES,0.74,"bear_markdown(leg=MACRO_RANGE,mb=True,cs=-1.0)",PROTECT
+S13,BLOCK,BLOCK_BEAR_MARKDOWN,YES,YES,0.09,"bear_markdown(leg=MACRO_BEAR_LEG,mb=True,cs=-2.0)",PROTECT
+T9,BLOCK,BLOCK_BEAR_MARKDOWN,YES,YES,0.0,"bear_markdown(leg=MACRO_TRANSITION,mb=True,cs=-2.0)",BLOCK
+T11,BLOCK,BLOCK_BEAR_MARKDOWN,YES,YES,0.79,"bear_markdown(leg=MACRO_BEAR_LEG,mb=True,cs=-3.0)",BLOCK
+T15,BLOCK,BLOCK_BEAR_MARKDOWN,YES,YES,0.0,"bear_markdown(leg=MACRO_RANGE,mb=True,cs=-1.0)",BLOCK
+T42,BLOCK,BLOCK_BEAR_MARKDOWN,YES,YES,0.5,"bear_markdown(leg=MACRO_RANGE,mb=True,cs=-1.0)",BLOCK

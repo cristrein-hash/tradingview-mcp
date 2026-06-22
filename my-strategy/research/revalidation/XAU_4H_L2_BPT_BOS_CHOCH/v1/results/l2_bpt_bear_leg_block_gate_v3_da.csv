@@ -1,0 +1,18 @@
+check,verdict,evidence
+diagnostico_apenas,PASS,"lê results/*.jsonl,*.csv; escreve só CSV/MD em results/+docs"
+sem_producao,PASS,nenhum path engine/monitor/receiver/runtime tocado
+sem_engine_oficial,PASS,não toca AGG/strategy_rules/catalog
+sem_decisions_merged,PASS,não lê nem escreve decisions_merged
+sem_registry_promoted,PASS,não toca registry-library promovido
+sem_telegram,PASS,sem dispatch/notify
+sem_chart_mcp,PASS,nenhuma tool mcp__tradingview usada; guiado por prints/dados as-of-bar
+sem_slim,PASS,"usa evidence packs RAW-derivados (D1 backbone, capit, confluence), não slim_features"
+sem_276_oos,PASS,todos inputs *_62; output 62 linhas; nenhum arquivo 276/OOS aberto
+sem_outcome_predicado,PASS,gate() usa só leg/mb/cs/wsl/climax/rmin/recl/dem/drop; cris só em colunas de report
+sem_id_fit,PASS,"regra leg-based (MACRO_CORRECTIVE_PULLBACK) + drop20_atr; nenhuma string T## em gate(); thr robusto [0.5,1.5] idêntico"
+T17_misfire_diagnosticado,PASS,"carve-out suprimido em MACRO_BULL_LEG (regra leg-based, afeta T17 E T30 simetricamente); não bloqueado (micro-estrutura aberta, honesto)"
+S15_bottom_turn_preservado,PASS,"MACRO_RANGE mantém carve-out -> PRESERVE_BOTTOM_TURN, blocked=NO"
+S3_S27_winners_preservados,PASS,ambos corrective mas flush drop=1.69/4.28>=1.0 -> ALLOW (S27 é anchor)
+smoke_test_v2_reconstrucao,PASS,"gate(v2) == v2 CSV 62/62; sys.exit(1) se divergir, gateia execução"
+anchors_zero_novo_bloqueio,PASS,"newly_blocked_by_v3=[] ; T34 bloqueio é pré-existente v2, disclosed fora de escopo"
+limitacoes_declaradas,PASS,T17/T20 micro-estrutura não resolvida; 62=ensino não validação; S28/T33=REVIEW aceitável não comprovado
