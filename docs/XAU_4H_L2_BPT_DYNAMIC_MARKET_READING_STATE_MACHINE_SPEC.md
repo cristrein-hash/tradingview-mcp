@@ -4,12 +4,20 @@
 por uma leitura DINÂMICA multi-fatorial de TRAJETÓRIA — a máquina que o macro engine deveria ter sido (e colapsou
 num flag bull estático). Causal (só barras passadas até a entrada). Avaliada nos DOIS objetivos. DIAGNÓSTICO.
 
-## 0. Princípio (o que corrige a miopia)
-- Cada sub-estado vem de uma **TRAJETÓRIA** (janela de lookback de barras passadas), NUNCA de um snapshot na barra i.
+## 0. OBJETIVO PRINCIPAL (Cris, revisão) — CORREÇÃO DE MISLABEL, não top-avoidance
+A meta lógica central é **fazer SKIP-WINNERS virarem TAKES e LOSER-TAKES virarem SKIPS** — medido contra a verdade de
+convexidade (runner MFE≥5 vs loser MFE<2), **na BASE 276 (única base, decisão do Cris)**.
+- **PRIMÁRIO = recuperar os winners skipados** (runners que a leitura/engines cortam — incl. os escondidos em estados
+  bearish/reversão e as compras legítimas em bear leg) → flip para TAKE. É onde mora a convexidade.
+- **SECUNDÁRIO = cortar loser-takes** (não-runners que a leitura toma) → flip para SKIP. **Topos = SECUNDÁRIO e NÃO é o
+  driver do design:** o limite entre topo-real e pullback já sabemos ser irredutível (target-7, microstructure inverteu).
+  NÃO construir a máquina perseguindo precisão de top-detection.
+
+**Princípios anti-miopia (baked):**
+- Cada sub-estado vem de uma **TRAJETÓRIA** (lookback de barras passadas), NUNCA snapshot na barra i.
 - A leitura é a **CONVERGÊNCIA** de sub-estados ortogonais, NUNCA um fator isolado.
-- Avalia **DOIS objetivos**: (A) capturar convexidade (não skipar runner) E (B) evitar topo (cortar loser/DD/streak).
 - Usa o conjunto quantificado COMPLETO (84-feat + SVP + bubbles + NAS + SMC), não fatia fina.
-- Valida por null/sub-janela DENTRO dos 276 — calibração ≠ validação.
+- Valida por **multi-base + null/sub-janela** DENTRO dos dados — calibração ≠ validação; realR capado nunca árbitro.
 - **markup-vs-rejeição é DINÂMICO** (preço aceita acima da oferta *ao longo do tempo* vs é empurrado de volta) —
   por isso o `supply_category` na barra i deu flat; a trajetória de interação é o que carrega o sinal.
 
@@ -69,13 +77,19 @@ block cego corta E mantém o corte de losers. Ataca diretamente "winners skipado
 A convergência (≥2-3 sub-estados concordando) define a leitura; um sub-estado isolado nunca. Note que LEGITIMATE_BEAR_BUY
 e BEAR_PULLBACK_TRAP ocupam o MESMO contexto bruto (long em bear leg) — separados SÓ pela dinâmica (exaurindo vs impulsivo).
 
-## 3. Avaliação DUPLO-OBJETIVO (within 276, null + sub-janela)
-- **(A) Convexidade:** REVERSAL_RUNNER + MARKUP_CONTINUATION → runner-rate (MFE≥5) vs base 26.1% (lift>1).
-- **(B) Top-avoidance:** TOP_TRAP_AVOID → loser-rate (MFE<2) vs base 60.9% E runner-cut BAIXO (poupa runner). **Isto ataca o
-  Lstreak-16 / maxDD-28.9 que o let-run deixou aberto** = a outra metade dos dois gargalos acoplados.
-- Deve **bater os baselines estáticos**: supply_reject lift 1.08, bear_leg 1.63. Se a versão dinâmica não bate o
-  estático, o sinal não é dinâmico → reportar honesto.
-- null permutation + P1/P2 sub-janela. realR uncapped (let-run/V-stair) como régua, nunca capado.
+## 3. Avaliação = CORREÇÃO DE MISLABEL (base 276 única, null + sub-janela)
+Régua = quantos mislabels a leitura dinâmica corrige vs a leitura atual (engine policy), medido em convexidade uncapped.
+- **PRIMÁRIO — recuperar SKIP-WINNERS:** dos runners (MFE≥5) hoje em SKIP/REVIEW (37+), quantos a leitura dinâmica
+  flipa para TAKE via REVERSAL_RUNNER / LEGITIMATE_BEAR_BUY / MARKUP_CONTINUATION — **sem cortar runners que já estavam
+  certos** (lição bear_leg_block cego). Métrica: #runners recuperados + ΔsumR uncapped (let-run) vs leitura atual.
+- **SECUNDÁRIO — cortar LOSER-TAKES:** dos losers (MFE<2) hoje em TAKE (86), quantos a leitura flipa para SKIP. NÃO
+  perseguir top-detection (limite topo-vs-pullback irredutível, conhecido) — só os que a convergência marca claramente.
+- **Régua composta:** ΔsumR_uncapped(nova leitura − leitura atual) na 276, decomposto em ganho-de-skip-winners (primário)
+  e ganho-de-loser-cut (secundário). Tem que ser POSITIVO sem destruir convexidade.
+- **Baselines a bater:** estáticos supply_reject lift 1.08, bear_leg 1.63 — a versão dinâmica deve separar melhor; se não
+  bate o estático, o sinal não é dinâmico → reportar honesto.
+- **Validação:** null permutation + sub-janela P1/P2, DENTRO da 276. realR uncapped (let-run) como régua, nunca capado.
+- **Recall-gate:** não pode skipar os 9 winners curados conhecidos (E1,E13,E17,E27,E30,E40,E21,E23,E5).
 
 ## 4. Limitação de dados (declarada)
 Micro intra-4H NÃO existe (frozen é 4H) — então sweep/aceitação intra-barra é FEATURE_UNAVAILABLE. PORÉM a trajetória
@@ -83,6 +97,8 @@ INTER-barra 4H sobre o lookback É construível do frozen path (causal, barras p
 de trajetória 4H. NÃO prometer micro que não temos.
 
 ## 5. Guardrails anti-miopia (baked no design)
-NÃO snapshot · NÃO eixo isolado · NÃO objetivo único · NÃO fatia fina de features · NÃO calibração-como-validação ·
-markup/rejeição SEMPRE como trajetória condicionada a regime · prior layers vivas como evidência condicional.
-Próximo: implementar os 6 sub-leitores do frozen path + a convergência + a avaliação duplo-objetivo. Sem promoção, sem OOS.
+NÃO snapshot · NÃO eixo isolado · NÃO fatia fina de features · NÃO calibração-como-validação · markup/rejeição SEMPRE
+como trajetória condicionada a regime · prior layers vivas como evidência condicional · objetivo PRIMÁRIO = recuperar
+skip-winners (topos secundário, limite conhecido) · base ÚNICA 276.
+Próximo: implementar os **7 sub-leitores** do frozen path + a convergência condicionada a regime + a avaliação de
+correção-de-mislabel na 276 (null/sub-janela, recall-gate dos 9 winners). Sem promoção, sem OOS.
