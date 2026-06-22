@@ -1,0 +1,63 @@
+plot_id,datetime,FINAL_policy,EVAL_exitype,EVAL_realR,risk_axis,trade_type,structural_read_explains_outcome,note
+S1,2020-04-07,REVIEW,WIN_HELD,1.46,YES,good_entry_bad_SL_but_won,PARTIAL,convergência mista (1T/2R/1S)
+S3,2020-06-15,TAKE_CANDIDATE,WIN_HELD,2.43,NO,structural_winner,YES,"convergência forte (3/4 TAKE), risco operável"
+S4,2020-07-02,TAKE_CANDIDATE,WIN_HELD,1.43,NO,structural_winner,YES,"convergência forte (3/4 TAKE), risco operável"
+S5,2020-07-23,REVIEW,WIN_HELD,2.09,YES,good_entry_bad_SL_but_won,PARTIAL,entrada coerente MAS eixo risco/SL (too-wide/too-short/late) = review humano (camada 3)
+S6,2020-07-30,REVIEW,WIN_BE,0.9,NO,review_won,PARTIAL,convergência parcial (2 TAKE / 2 REVIEW)
+S7,2020-11-02,REVIEW,WIN_BE,0.9,NO,review_won,PARTIAL,convergência parcial (2 TAKE / 2 REVIEW)
+S8,2021-04-06,REVIEW,WIN_BE,0.9,NO,review_won,PARTIAL,convergência mista (1T/3R/0S)
+S9,2021-05-12,SKIP_STRUCTURAL,WIN_HELD,1.78,YES,bad_context_won_beta,PARTIAL,entrada estruturalmente incompleta (2 lentes SKIP: sob-supply + rejeição de valor)
+S10,2021-05-14,REVIEW,WIN_HELD,1.86,NO,review_won,PARTIAL,convergência mista (1T/3R/0S)
+S12,2022-02-08,REVIEW,WIN_HELD,1.84,YES,good_entry_bad_SL_but_won,PARTIAL,entrada coerente MAS eixo risco/SL (too-wide/too-short/late) = review humano (camada 3)
+S13,2022-07-21,SKIP_STRUCTURAL,WIN_HELD,3.54,YES,bad_context_won_beta,PARTIAL,macro-bear-markdown + sem reclaim limpo de auction (contexto bear genuíno)
+S14,2022-11-01,SKIP_STRUCTURAL,WIN_HELD,2.75,YES,bad_context_won_beta,PARTIAL,macro-bear-markdown + sem reclaim limpo de auction (contexto bear genuíno)
+S15,2022-11-04,SKIP_STRUCTURAL,WIN_HELD,2.76,NO,bad_context_won_beta,PARTIAL,macro-bear-markdown + sem reclaim limpo de auction (contexto bear genuíno)
+S16,2022-11-23,REVIEW,WIN_HELD,1.82,YES,good_entry_bad_SL_but_won,PARTIAL,convergência mista (0T/3R/1S)
+S17,2023-01-03,REVIEW,WIN_HELD,2.17,NO,review_won,PARTIAL,convergência parcial (2 TAKE / 2 REVIEW)
+S18,2023-01-11,TAKE_CANDIDATE,WIN_HELD,2.05,NO,structural_winner,YES,"convergência forte (4/4 TAKE), risco operável"
+S19,2023-08-22,SKIP_STRUCTURAL,WIN_HELD,1.96,YES,bad_context_won_beta,PARTIAL,macro-bear-markdown + sem reclaim limpo de auction (contexto bear genuíno)
+S20,2023-10-11,REVIEW,WIN_RUNNER,3.9,NO,review_won,PARTIAL,convergência mista (1T/2R/1S)
+S21,2023-10-17,REVIEW,WIN_HELD,2.7,YES,good_entry_bad_SL_but_won,PARTIAL,entrada coerente MAS eixo risco/SL (too-wide/too-short/late) = review humano (camada 3)
+S22,2023-11-29,REVIEW,WIN_BE,0.9,YES,good_entry_bad_SL_but_won,PARTIAL,entrada coerente MAS eixo risco/SL (too-wide/too-short/late) = review humano (camada 3)
+S23,2024-05-13,REVIEW,WIN_BE,0.9,NO,review_won,PARTIAL,convergência parcial (2 TAKE / 2 REVIEW)
+S24,2024-07-03,TAKE_CANDIDATE,WIN_HELD,3.16,NO,structural_winner,YES,"convergência forte (3/4 TAKE), risco operável"
+S25,2024-08-15,REVIEW,WIN_RUNNER,3.9,YES,good_entry_bad_SL_but_won,PARTIAL,entrada coerente MAS eixo risco/SL (too-wide/too-short/late) = review humano (camada 3)
+S26,2024-09-04,SKIP_STRUCTURAL,WIN_RUNNER,3.9,YES,bad_context_won_beta,PARTIAL,entrada estruturalmente incompleta (2 lentes SKIP: sob-supply + rejeição de valor)
+S27,2025-05-28,REVIEW,WIN_HELD,1.78,NO,review_won,PARTIAL,convergência parcial (2 TAKE / 2 REVIEW)
+S28,2025-07-11,REVIEW,WIN_HELD,1.01,NO,review_won,PARTIAL,convergência parcial (2 TAKE / 2 REVIEW)
+S29,2025-09-02,REVIEW,WIN_HELD,1.95,YES,good_entry_bad_SL_but_won,PARTIAL,entrada coerente MAS eixo risco/SL (too-wide/too-short/late) = review humano (camada 3)
+S30,2025-09-15,REVIEW,WIN_HELD,2.05,YES,good_entry_bad_SL_but_won,PARTIAL,entrada coerente MAS eixo risco/SL (too-wide/too-short/late) = review humano (camada 3)
+S31,2025-10-01,TAKE_CANDIDATE,WIN_HELD,2.83,NO,structural_winner,YES,"convergência forte (3/4 TAKE), risco operável"
+S32,2025-10-03,TAKE_CANDIDATE,WIN_RUNNER,3.9,NO,structural_winner_monumental,YES,"convergência forte (4/4 TAKE), risco operável"
+S34,2025-10-13,TAKE_CANDIDATE,WIN_BE,0.9,NO,good_entry_scratch_exit,YES,"convergência forte (3/4 TAKE), risco operável"
+S35,2025-12-16,REVIEW,WIN_RUNNER,3.9,NO,review_won,PARTIAL,convergência parcial (2 TAKE / 2 REVIEW)
+S36,2026-01-06,REVIEW,WIN_HELD,1.97,YES,good_entry_bad_SL_but_won,PARTIAL,convergência mista (1T/2R/1S)
+S37,2026-01-08,REVIEW,WIN_HELD,2.45,YES,good_entry_bad_SL_but_won,PARTIAL,entrada coerente MAS eixo risco/SL (too-wide/too-short/late) = review humano (camada 3)
+S38,2026-01-09,TAKE_CANDIDATE,WIN_HELD,3.16,NO,structural_winner,YES,"convergência forte (3/4 TAKE), risco operável"
+S39,2026-01-22,REVIEW,WIN_BE,0.9,YES,good_entry_bad_SL_but_won,PARTIAL,entrada coerente MAS eixo risco/SL (too-wide/too-short/late) = review humano (camada 3)
+T2,2020-01-30,REVIEW,WIN_BE,0.79,NO,review_won,PARTIAL,convergência parcial (2 TAKE / 2 REVIEW)
+T3,2020-02-25,REVIEW,STOP_LOSS,-1.1,YES,good_entry_bad_SL_stopped,PARTIAL,entrada coerente MAS eixo risco/SL (too-wide/too-short/late) = review humano (camada 3)
+T4,2020-03-09,TAKE_CANDIDATE,STOP_LOSS,-1.1,NO,structural_take_stopped,PARTIAL,"convergência forte (3/4 TAKE), risco operável"
+T9,2020-11-13,TAKE_CANDIDATE,STOP_LOSS,-1.1,NO,structural_take_stopped,PARTIAL,"convergência forte (3/4 TAKE), risco operável"
+T11,2021-01-28,REVIEW,STOP_LOSS,-1.1,NO,review_loser_acceptable,PARTIAL,convergência mista (3T/0R/1S)
+T12,2021-07-14,TAKE_CANDIDATE,STOP_LOSS,-1.1,NO,structural_take_stopped,PARTIAL,"convergência forte (3/4 TAKE), risco operável"
+T13,2021-08-11,SKIP_STRUCTURAL,SCRATCH,1.02,YES,acceptable_loser,YES,macro-bear-markdown + sem reclaim limpo de auction (contexto bear genuíno)
+T14,2021-08-13,SKIP_STRUCTURAL,WIN_HELD,1.99,NO,bad_context_won_beta,PARTIAL,macro-bear-markdown + sem reclaim limpo de auction (contexto bear genuíno)
+T15,2021-09-22,SKIP_STRUCTURAL,STOP_LOSS,-1.1,NO,acceptable_loser,YES,macro-bear-markdown + sem reclaim limpo de auction (contexto bear genuíno)
+T16,2021-11-15,TAKE_CANDIDATE,STOP_LOSS,-1.1,NO,structural_take_stopped,PARTIAL,"convergência forte (3/4 TAKE), risco operável"
+T17,2021-11-26,WATCHLIST_TRANSFORM,STOP_LOSS,-1.1,NO,residual_late_top,YES,resíduo late-top/micro-top auction-irredutível (aceitar como custo)
+T18,2021-12-30,REVIEW,STOP_LOSS,-1.1,YES,good_entry_bad_SL_stopped,PARTIAL,entrada coerente MAS eixo risco/SL (too-wide/too-short/late) = review humano (camada 3)
+T19,2022-01-10,REVIEW,WIN_HELD,2.02,NO,review_won,PARTIAL,convergência parcial (2 TAKE / 2 REVIEW)
+T20,2022-01-25,WATCHLIST_TRANSFORM,STOP_LOSS,-1.1,NO,residual_late_top,YES,resíduo late-top/micro-top auction-irredutível (aceitar como custo)
+T23,2022-03-24,REVIEW,STOP_LOSS,-1.1,YES,good_entry_bad_SL_stopped,PARTIAL,entrada coerente MAS eixo risco/SL (too-wide/too-short/late) = review humano (camada 3)
+T24,2022-03-31,WATCHLIST_TRANSFORM,SCRATCH,0.38,YES,residual_late_top,YES,resíduo late-top/micro-top auction-irredutível (aceitar como custo)
+T25,2022-04-05,TAKE_CANDIDATE,WIN_BE,0.9,NO,good_entry_scratch_exit,YES,"convergência forte (4/4 TAKE), risco operável"
+T26,2022-04-08,TAKE_CANDIDATE,WIN_BE,0.9,NO,good_entry_scratch_exit,YES,"convergência forte (4/4 TAKE), risco operável"
+T27,2022-07-18,SKIP_STRUCTURAL,STOP_LOSS,-1.1,NO,acceptable_loser,YES,macro-bear-markdown + sem reclaim limpo de auction (contexto bear genuíno)
+T30,2024-01-04,REVIEW,STOP_LOSS,-1.1,NO,review_loser_acceptable,PARTIAL,convergência parcial (2 TAKE / 2 REVIEW)
+T32,2024-04-11,WATCHLIST_TRANSFORM,STOP_LOSS,-1.1,NO,residual_late_top,YES,resíduo late-top/micro-top auction-irredutível (aceitar como custo)
+T33,2024-05-09,TAKE_CANDIDATE,WIN_HELD,1.69,NO,structural_winner,YES,"convergência forte (3/4 TAKE), risco operável"
+T34,2024-06-14,REVIEW,STOP_LOSS,-1.1,NO,review_loser_acceptable,PARTIAL,convergência mista (1T/3R/0S)
+T36,2025-03-27,TAKE_CANDIDATE,WIN_BE,0.9,NO,good_entry_scratch_exit,YES,"convergência forte (4/4 TAKE), risco operável"
+T40,2025-11-13,TAKE_CANDIDATE,STOP_LOSS,-1.1,NO,structural_take_stopped,PARTIAL,"convergência forte (3/4 TAKE), risco operável"
+T42,2026-04-17,REVIEW,STOP_LOSS,-1.11,NO,review_loser_acceptable,PARTIAL,convergência parcial (2 TAKE / 2 REVIEW)

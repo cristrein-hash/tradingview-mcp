@@ -1,0 +1,12 @@
+check,verdict,evidence
+diagnostico_apenas,PASS,scripts leem/escrevem só results/+docs; sem produção/engine/decisions/registry/telegram/mcp/slim/monitor
+62_ensino_sem_276_oos,PASS,inputs *_62; outputs 62 linhas; nenhum 276/OOS
+outcome_nao_predicado,PASS,reader+agentes não consomem EVAL_*; EVAL_ separado; outcome só na Tarefa 5 (calibração)
+agentes_cegos,PASS,"input opaco Y01..Y62, só features causais, sem set/outcome/exitype"
+realR_capado_nao_arbitro,PASS,classificação por TIPO DE SAÍDA (WIN_HELD/RUNNER/BE/STOP/SCRATCH); sem sumR/R-sign
+convexidade_preservada_e_honesta,PASS,25/32 preservados; ACHADO não-mascarado: SKIP_STRUCTURAL bloqueia 7 big winners incl RUNNER S26; S9/S26=over-fire bull declarados
+prior_layers_reinterpretadas,PASS,"13 camadas, nenhuma descartada; cada uma com uso no sistema integrado"
+sem_busca_superficial_sem_promocao,PASS,nenhum gate/feature/threshold novo; nada promovido/validado
+convergencia_interpretavel,PASS,"agregação por camadas (residual->macro-skip->2-skip->risk-review->take), não voto cego; 42/62 concordância c/ determinístico"
+limitacoes_declaradas,PASS,estrutura explica só 19/62 totalmente; 62≠validação; SKIP over-fire não-resolvido->review humano; OOS bear=teste real
+nao_repete_erros_proibidos,PASS,trades não-fungíveis (tipados); sem otimização agregada; convexity-kill surfaçado como finding; filosofia não 'refutada'
