@@ -1,0 +1,12 @@
+check,result,detail
+diagnostico_apenas,SIM,
+62_ensino,SIM,
+outcome_predicado,NAO,packs cegos (sem set/outcome); agentes blind
+backbone_deterministico,SIM,"D1 leg-state causal (daily date<D, shift D-1)"
+confluencia_agentes,SIM,4 agentes leitura-de-conjunto condicional
+engine_decisions_registry_producao,INTOCADO,
+aplicacao_276,NAO,
+id_fit,NAO,agentes cegos a A/B/C; regras de cruzamento interpretáveis
+prior_layers_condicionais,SIM,"todas as camadas no pack, condicionadas à leg D1"
+anchor_check,SIM,preserve 13 block 0
+limitacoes,SIM,ver report
