@@ -1,0 +1,4 @@
+config,allow,WR,sumR,avgR,PF,maxDD,Lstreak,verdict
+baseline_no_gate(276),276,49.3,84.2,0.30,1.58,18.7,7,ref
+macro+bear_v3(allowed),195,50.3,75.5,0.39,1.75,15.2,8,BASELINE_WEAK (sumR cai vs no-gate)
++candidate_confluence,174,55.7,95.5,0.55,2.20,9.7,7,REJEITADO: hull overfit (ver DA)

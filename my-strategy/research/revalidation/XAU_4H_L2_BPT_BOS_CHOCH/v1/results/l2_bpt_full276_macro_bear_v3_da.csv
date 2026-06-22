@@ -1,0 +1,16 @@
+check,verdict,evidence
+diagnostico_apenas,PASS,scripts leem/escrevem results/; sem produção/engine/decisions/registry/telegram/mcp/slim
+n_276_completo,PASS,"276, cronológico, 0 dup, 0 leg UNKNOWN, realR 276/276"
+sem_amostragem,PASS,população completa
+smoke_62,PASS,pipeline 276 reproduz gate v3 nos 62 = 62/62
+sem_outcome_predicado,PASS,realR só em colunas de avaliação; gate usa leg/specialists/features causais
+features_causais,PARTIAL,"macro_leg shift D-1 OK; bub_buy_sell_ratio/supply_blocks = classe repintável, SHIFT1 NÃO confirmado -> candidato UNTRUSTED"
+joins_seguros,PASS,bar_idx 276/276 em packets+dsq+outcomes
+permutation_null,PASS,150 shuffles; candidato p=0.020 MAS null max>real = borderline
+temporal_split,PASS,P1/P2 n=12/9 = pequeno demais p/ concluir
+id_fit_risk,FAIL_candidate,termos isolados ~0 (supply_blocks NEGATIVO); 3-way = hull por encolhimento; 18/21 ratio==0
+multiple_testing,FAIL_candidate,busca exaustiva cross-arc; não passa Bonferroni
+baseline_honesto,PASS,gate REDUZ sumR 84.2->75.5; bloqueia 12 winners incl 3 monumentais = BASELINE_WEAK
+reconciliacao_memoria,PASS,re-descobre RETRATADOS volume×1D-bear + legbear-block no 276
+numeros_diagnostico_nao_edge,PASS,tudo rotulado diagnóstico; sem promoção; sem OOS feito
+limitacoes_declaradas,PASS,sem OOS/cross-asset/full-bar-RAW; candidato não-confiável até auditar lookahead

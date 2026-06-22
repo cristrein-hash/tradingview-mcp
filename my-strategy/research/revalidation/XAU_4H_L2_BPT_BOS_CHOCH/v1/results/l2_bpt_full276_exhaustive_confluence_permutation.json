@@ -1,0 +1,13 @@
+{
+ "best_rule": [
+  "bub_buy_sell_ratio<=1.00",
+  "macro_reader_leg==MACRO_BULL_LEG",
+  "supply_blocks_2ATR>=1.00"
+ ],
+ "best_lift": 0.4549450549450549,
+ "cap": 21,
+ "permutation_p": 0.02,
+ "null_median": 0.37756410256410255,
+ "null_max": 0.5025641025641026,
+ "verdict": "ROBUST"
+}

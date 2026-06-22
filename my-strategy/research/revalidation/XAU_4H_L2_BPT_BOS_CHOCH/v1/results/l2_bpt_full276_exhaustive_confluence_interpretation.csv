@@ -1,0 +1,12 @@
+item,value,note
+candidate_rule,bub_buy_sell_ratio<=1 AND leg==MACRO_BULL_LEG AND supply_blocks_2ATR>=1,
+single_term_ratio<=1,lift +0.046,~null
+single_term_BULL,lift +0.040,~null
+single_term_supply_blocks>=1,lift -0.010,NEGATIVO (marginal inútil)
+intersection_3way,precision 0.952 / lift +0.455,fabricada por encolhimento (hull)
+ratio==0_fraction,18/21,"efetivamente 1 feature: no-buy-bubbles (tick-volume, não-confiável)"
+permutation,p=0.020 mas null max +0.503 > real +0.455,borderline; não passa Bonferroni cross-arc
+effective_n,~15 episódios seriais (3 clusters de 3),"Wilson CI precisão [0.77,0.99] frágil"
+lookahead_risk,"bub/OB classe repintável, SHIFT1 não confirmado",UNTRUSTED até auditar (caso A1')
+reconciliation,"re-descobre volume×1D-bear (RETRATADO, tick-volume) + legbear-block (RETRATADO no 276)",
+verdict,OVERFIT_REJECT / NO_PROMOTABLE_CONFLUENCE_FOUND,
