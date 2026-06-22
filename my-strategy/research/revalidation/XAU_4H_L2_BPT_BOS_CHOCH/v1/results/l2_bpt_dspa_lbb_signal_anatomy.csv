@@ -1,0 +1,4 @@
+set,n,runner_pct,lift,loser_pct,monumentals,hyper_p,P1_rr,P2_rr,P1_n,P2_n
+A_demand+acceptance,136,29.4,1.13,58.1,16,0.135,24.6,33.3,61,75
+B_+bear_context,76,30.3,1.16,56.6,8,0.205,26.8,34.3,41,35
+C_full_confluence_LBB,37,37.8,1.45,54.1,6,0.064,38.9,36.8,18,19

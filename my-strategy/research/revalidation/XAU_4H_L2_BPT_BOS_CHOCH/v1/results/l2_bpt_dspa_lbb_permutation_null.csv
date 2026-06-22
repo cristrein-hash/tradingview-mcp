@@ -1,0 +1,4 @@
+test,observed,p_value,interpretation
+LBB_runner_concentration_vs_base,37.8,0.064,hypergeometric upper-tail vs base 26%
+C_over_B_increment,37.8,0.121,permutation: confluencia estreita B->C adiciona alem de subset aleatorio?
+LBB_vs_BPT_separation,38vs13,~0.045,Fisher contraste (do DA anterior)
