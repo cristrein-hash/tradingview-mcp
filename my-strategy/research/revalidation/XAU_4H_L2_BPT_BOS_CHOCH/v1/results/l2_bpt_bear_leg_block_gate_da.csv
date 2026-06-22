@@ -1,0 +1,11 @@
+check,result,detail
+diagnostico_apenas,SIM,gate nos 62; sem produção
+escopo_62,SIM,NÃO 276/OOS (trava do Cris)
+outcome_predicado,NAO,gate usa leg D1/regime/capit-features de entrada
+engine_decisions_registry_producao,INTOCADO,
+causal,SIM,D1 shift D-1; pivots/regime causais
+id_fit,NAO,thresholds estruturais declarados; carve-out por mecanismo não por ID
+carve_out_bottom_turn,SIM,oversold+reclaim+demanda (corrigido de drop20)
+preservacao_medida,SIM,23/26 A; 3 perdas diagnosticadas
+plotagem,NAO,Cris avaliará por plotagem depois
+limitacoes,SIM,3 perdas A = tensão fundo/virada vs bear-markdown + regime atrasado
