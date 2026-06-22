@@ -1,0 +1,9 @@
+error_state,n,custo,causa_raiz,automacao
+AUTO_TAKE_BAD_CONTEXT,45,WR (TAKE bucket); custa precisão,macro_phase: bull-leg mistura bull-run com late-top/decline,corrigível por FEATURE macro-phase causal
+REVIEW_SHOULD_BE_TAKE,23,winners não-convertidos (frequência+convexidade),regime underread: range/transition em bull-run real,corrigível por FEATURE macro-phase causal
+HUMAN_VISUAL_REQUIRED_DUE_MICRO,24,resíduo micro-top,range+legpos alto = micro-top vs micro-bottom,FEATURE_MISSING (microestrutura/OHLC contíguo)
+HUMAN_VISUAL_REQUIRED_DUE_MACRO,12,T9-like (regime quebrado mas weekly sobe),macro_phase: declínio do topo macro não-capturado,corrigível por FEATURE macro-phase causal
+SKIP_WRONG_CUT_RUNNER,3,CONVEXIDADE (runners cortados),regime over-cut em bottom/range bull,corrigível por FEATURE macro-phase + bottom-turn
+SKIP_WRONG_CUT_WINNER,7,big winners cortados,regime over-cut,corrigível por FEATURE macro-phase
+AUTO_TAKE_BAD_EXIT,13,"good entry, exit/BE",exit_management (eixo separado),corrigível por EXIT (não entrada)
+RESIDUAL_ACCEPTABLE,8,late-top irredutível,auction-irredutível,RESÍDUO aceitável

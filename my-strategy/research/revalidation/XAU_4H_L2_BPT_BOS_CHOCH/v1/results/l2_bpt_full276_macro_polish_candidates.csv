@@ -1,0 +1,6 @@
+candidato,hipotese,objetivo,reprodutibilidade
+A_bull_markup_BULL_RUN,TAKE se macro_phase_causal=MACRO_BULL_RUN,convexity-capture: runners clusterizam,CAUSAL (dist-topo+SMA200+swing)
+B_bear_junk_BEAR_MARKDOWN,SKIP se MACRO_BEAR_MARKDOWN causal,remove bear-junk,CAUSAL parcial
+C_bottom_turn,TAKE se bottom_turn (oversold+reclaim+demand),preserva V-reversal,CAUSAL (já no reader)
+D_convexity,não-SKIP se runners-prone (BULL_RUN+fuel),preserva monumentais,CAUSAL parcial
+E_risk_exit_separation,entrada boa + SL/exit ruim != entrada ruim,T34/BAD_EXIT,CAUSAL (sl_atr/exit-type)
