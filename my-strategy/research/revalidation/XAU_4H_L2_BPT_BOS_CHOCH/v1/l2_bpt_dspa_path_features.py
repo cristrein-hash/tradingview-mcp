@@ -108,7 +108,9 @@ def f4_structure(i):
     else: st='STRUCTURE_UNCLEAR'
     bos=int(bool(highs) and C[i]>H[highs[-1]] and st in('STRUCTURE_UP','STRUCTURE_RANGE'))
     choch=int(bool(lows) and C[i]<L[lows[-1]] and st=='STRUCTURE_UP')
-    return dict(f4_structure_state=st,f4_BOS=bos,f4_CHoCH=choch,f4_n_pivots=len(lows)+len(highs))
+    # FIX DA: contar pivots SÓ na janela LB (bounded), não cumulativo desde barra 0 (corrigia r=1.0 com bar_idx)
+    npiv_lb=sum(1 for j in lows+highs if j>=i-LB)
+    return dict(f4_structure_state=st,f4_BOS=bos,f4_CHoCH=choch,f4_n_pivots_lb=npiv_lb)
 
 # ---- F5 dealing range premium/discount 4H + 1D ----
 def pos_state(c,lo,hi):
@@ -149,8 +151,8 @@ def f7_regime(ed):
     cs=[fnz(RB[k-m].get('combined_score')) for m in range(6,-1,-1)]
     slope=(cs[-1]-cs[0])/6
     casc=fnz(RB[k].get('cascade_score'))
-    distr=[1 if RB[k-m].get('distribution_flag') in(True,'True',1) else 0 for m in range(6,-1,-1)]
-    onset=int(distr[-1]==1 and sum(distr[:-2])==0)  # acabou de ligar
+    # NOTA(DA): distribution_flag é CONSTANTE (False) em todo o regime_B (2582/2582) = campo morto na fonte ->
+    # f7_distribution_onset DROPADO como UNAVAILABLE (não fabricar proxy). macro_broken VARIA (1397F/1185T) -> mantido.
     mb=[1 if RB[k-m].get('macro_broken') in(True,'True',1) else 0 for m in range(6,-1,-1)]
     mb_recent=int(mb[-1]==1 and mb[0]==0)
     if slope<-0.3: tr='REGIME_DETERIORATING'
@@ -158,7 +160,7 @@ def f7_regime(ed):
     elif casc<=-2: tr='REGIME_STABLE_BEAR'
     elif cs[-1]>0: tr='REGIME_STABLE_BULL'
     else: tr='REGIME_NEUTRAL'
-    return dict(f7_regime_traj=tr,f7_combined_slope=round(slope,3),f7_cascade_now=round(casc,1),f7_distribution_onset=onset,f7_macro_broken_recent=mb_recent)
+    return dict(f7_regime_traj=tr,f7_combined_slope=round(slope,3),f7_cascade_now=round(casc,1),f7_macro_broken_recent=mb_recent)
 
 # ---- RODAR ----
 rows=[]; unavail={}
@@ -179,9 +181,9 @@ PROV=[
  ('F2_flush_geometry','4H path','recent_high->entry','causal: só barras<=i','none'),
  ('F3_multi_bar_acceptance','4H path','lookback %d'%LB,'causal: closes/wicks vs swing-high/low confirmados','none'),
  ('F4_swing_structure','4H path','pivots','causal: pivots confirmados','none'),
- ('F5_dealing_range','4H path + XAU_1D_ohlc.jsonl','4H lookback %d / 1D 20 bars'%LB,'causal: 1D shift D-1 (date<entry)','1D needs >=20 daily bars'),
+ ('F5_dealing_range','4H path + XAU_1D_ohlc.jsonl','4H lookback %d / 1D 20 bars'%LB,'causal: 1D shift D-1 (date<entry). NOTA(DA): range path-derivada mas POSICAO (pct/premium-discount) e componente LOCATION/snapshot na barra i','1D needs >=20 daily bars'),
  ('F6_svp_path','svp_bars.jsonl (vp=[POC,VAH,VAL])','lookback %d'%LB,'causal: SVP as-of-bar (validado 7f3c852, sem shift)','none se SVP cobre o ts'),
- ('F7_regime_trajectory','regime_B_v3_classifications.jsonl (daily)','7 daily bars','causal: shift D-1 (date<entry), sequência combined/cascade/distribution','needs >=7 daily before entry'),
+ ('F7_regime_trajectory','regime_B_v3_classifications.jsonl (daily)','7 daily bars','causal: shift D-1 (date<entry), sequência combined-slope/cascade/macro_broken-transition','needs >=7 daily; distribution_flag UNAVAILABLE (constante False 2582/2582 na fonte) -> dropado'),
 ]
 with open(f"{D}/l2_bpt_dspa_path_features_provenance.csv","w",newline="") as f:
     w=csv.writer(f,lineterminator="\n");w.writerow(['family','source','window','causality','unavailable_reason']);[w.writerow(r) for r in PROV]

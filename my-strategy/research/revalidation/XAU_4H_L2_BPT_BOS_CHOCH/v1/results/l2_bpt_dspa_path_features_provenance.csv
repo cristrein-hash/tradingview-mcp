@@ -3,6 +3,6 @@ F1_liquidity_sweep,raw_features_2020_2026.jsonl (4H path),lookback 18 bars,"caus
 F2_flush_geometry,4H path,recent_high->entry,causal: só barras<=i,none
 F3_multi_bar_acceptance,4H path,lookback 18,causal: closes/wicks vs swing-high/low confirmados,none
 F4_swing_structure,4H path,pivots,causal: pivots confirmados,none
-F5_dealing_range,4H path + XAU_1D_ohlc.jsonl,4H lookback 18 / 1D 20 bars,causal: 1D shift D-1 (date<entry),1D needs >=20 daily bars
+F5_dealing_range,4H path + XAU_1D_ohlc.jsonl,4H lookback 18 / 1D 20 bars,causal: 1D shift D-1 (date<entry). NOTA(DA): range path-derivada mas POSICAO (pct/premium-discount) e componente LOCATION/snapshot na barra i,1D needs >=20 daily bars
 F6_svp_path,"svp_bars.jsonl (vp=[POC,VAH,VAL])",lookback 18,"causal: SVP as-of-bar (validado 7f3c852, sem shift)",none se SVP cobre o ts
-F7_regime_trajectory,regime_B_v3_classifications.jsonl (daily),7 daily bars,"causal: shift D-1 (date<entry), sequência combined/cascade/distribution",needs >=7 daily before entry
+F7_regime_trajectory,regime_B_v3_classifications.jsonl (daily),7 daily bars,"causal: shift D-1 (date<entry), sequência combined-slope/cascade/macro_broken-transition",needs >=7 daily; distribution_flag UNAVAILABLE (constante False 2582/2582 na fonte) -> dropado
