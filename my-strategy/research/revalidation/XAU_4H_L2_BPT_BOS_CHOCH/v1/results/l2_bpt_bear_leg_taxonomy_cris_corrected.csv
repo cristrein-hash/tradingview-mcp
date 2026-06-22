@@ -1,0 +1,20 @@
+plot_id,cris_category_visual,status,blockable,nota
+T15,bear/range loser,JA_BLOQUEADO,YES,
+T19,range loser,JA_BLOQUEADO,YES,
+S19,bear pullback fuel-fraco,JA_BLOQUEADO,YES,
+T42,macro-bear genuíno,JA_BLOQUEADO,YES,
+T9,loser sem vantagem,JA_BLOQUEADO,YES,
+T11,loser sem vantagem,JA_BLOQUEADO,YES,
+T12,corrective pullback,CORRECTIVE_LATER,YES_condicional,adicionar regra CORRECTIVE depois
+T25,corrective pullback bear (aceitável perder),CORRECTIVE_LATER,YES_condicional,regime ainda BULL; chamada suave
+T26,corrective pullback bear (aceitável perder),CORRECTIVE_LATER,YES_condicional,idem
+S28,winner curto range alto (se correr vira loser),CORRECTIVE_LATER,YES_condicional,
+T17,range-bull entrada em MICRO-TOPO (ruim),MICRO_STRUCTURE_OPEN,UNKNOWN,sinal causal NÃO capturado (range-position contradiz); risco parcial-irredutível
+T20,range-bull entrada em MICRO-TOPO (ruim),MICRO_STRUCTURE_OPEN,UNKNOWN,idem T17
+T21,range-bull MICRO-FUNDO correto (bom),PRESERVAR,N/A,par de contraste com T17/T20
+T22,range-bull MICRO-FUNDO/breakout correto (bom),PRESERVAR,N/A,par de contraste
+S12,range-bull MICRO-FUNDO/breakout correto (bom),PRESERVAR,N/A,par de contraste
+T23,acumulação MACRO-BEAR recente (Cris),CLASSIFIER_ERROR_OR_HINDSIGHT,NEEDS_CHECK,meu D1=BULL/TRANS errado; mas regime era TRANSITION à entrada -> 'bear' pode ser forward-looking; checar sinal de bear AS-OF-ENTRY
+T32,late-top ESTICADO genuíno,IRREDUTIVEL,NO,único late-top verdadeiramente irredutível (Cris confirmou)
+S11,late-top dentro de acumulação bull,IRREDUTIVEL,NO,aceitar
+S40,fatal-skip aceitável (já não tomado),FORA_DOS_62_GAP,N/A_de_facto_bloqueado,S# marcado BLOCK ficou fora do working-set A/B/C
