@@ -1,0 +1,63 @@
+plot_id,set,d1_leg,fam,cris,old_policy,corrected_policy,exit,realR,bigwin,why
+S1,A,MACRO_RANGE,BULL,UNLABELED,REVIEW,TAKE_CANDIDATE,WIN_HELD,1.46,Y,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+S3,A,MACRO_CORRECTIVE_PULLBACK,BULL,UNLABELED,TAKE_CANDIDATE,TAKE_CANDIDATE,WIN_HELD,2.43,Y,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+S4,A,MACRO_BULL_LEG,BULL,UNLABELED,TAKE_CANDIDATE,TAKE_CANDIDATE,WIN_HELD,1.43,Y,camada2: bull macro (continuação) — supply overhead não veta em bull
+S5,A,MACRO_BULL_LEG,BULL,UNLABELED,REVIEW,TAKE_CANDIDATE,WIN_HELD,2.09,Y,camada2: bull macro (continuação) — supply overhead não veta em bull
+S6,A,MACRO_BULL_LEG,BULL,UNLABELED,REVIEW,TAKE_CANDIDATE,WIN_BE,0.9,,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+S7,A,MACRO_RANGE,RISK,UNLABELED,REVIEW,SKIP_STRUCTURAL,WIN_BE,0.9,,camada1: bear-markdown genuíno (BEAR_LEG ou broken&combined<0) — gate macro
+S8,A,MACRO_RANGE,RISK,UNLABELED,REVIEW,SKIP_STRUCTURAL,WIN_BE,0.9,,camada1: bear-markdown genuíno (BEAR_LEG ou broken&combined<0) — gate macro
+S9,C,MACRO_BULL_LEG,RISK,UNLABELED,SKIP_STRUCTURAL,REVIEW,WIN_HELD,1.78,Y,contexto não-bull e não-bear-genuíno = review
+S10,C,MACRO_BULL_LEG,BULL,UNLABELED,REVIEW,TAKE_CANDIDATE,WIN_HELD,1.86,Y,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+S12,A,MACRO_TRANSITION,BULL,UNLABELED,REVIEW,TAKE_CANDIDATE,WIN_HELD,1.84,Y,camada2: bull macro (continuação) — supply overhead não veta em bull
+S13,A,MACRO_BEAR_LEG,RISK,UNLABELED,SKIP_STRUCTURAL,SKIP_STRUCTURAL,WIN_HELD,3.54,Y,camada1: bear-markdown genuíno (BEAR_LEG ou broken&combined<0) — gate macro
+S14,C,MACRO_RANGE,RISK,UNLABELED,SKIP_STRUCTURAL,SKIP_STRUCTURAL,WIN_HELD,2.75,Y,camada1: bear-markdown genuíno (BEAR_LEG ou broken&combined<0) — gate macro
+S15,A,MACRO_RANGE,RISK,UNLABELED,SKIP_STRUCTURAL,SKIP_STRUCTURAL,WIN_HELD,2.76,Y,camada1: bear-markdown genuíno (BEAR_LEG ou broken&combined<0) — gate macro
+S16,A,MACRO_TRANSITION,BULL,UNLABELED,REVIEW,TAKE_CANDIDATE,WIN_HELD,1.82,Y,camada2: bull macro (continuação) — supply overhead não veta em bull
+S17,A,MACRO_BULL_LEG,BULL,UNLABELED,REVIEW,TAKE_CANDIDATE,WIN_HELD,2.17,Y,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+S18,C,MACRO_BULL_LEG,BULL,UNLABELED,TAKE_CANDIDATE,TAKE_CANDIDATE,WIN_HELD,2.05,Y,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+S19,C,MACRO_RANGE,RISK,BLOCK_acceptable_skip,SKIP_STRUCTURAL,SKIP_STRUCTURAL,WIN_HELD,1.96,Y,camada1: bear-markdown genuíno (BEAR_LEG ou broken&combined<0) — gate macro
+S20,A,MACRO_TRANSITION,BULL,PROTECT,REVIEW,TAKE_CANDIDATE,WIN_RUNNER,3.9,Y,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+S21,C,MACRO_TRANSITION,BULL,UNLABELED,REVIEW,TAKE_CANDIDATE,WIN_HELD,2.7,Y,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+S22,C,MACRO_RANGE,BULL,UNLABELED,REVIEW,TAKE_CANDIDATE,WIN_BE,0.9,,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+S23,C,MACRO_CORRECTIVE_PULLBACK,BULL,UNLABELED,REVIEW,TAKE_CANDIDATE,WIN_BE,0.9,,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+S24,A,MACRO_RANGE,BULL,PROTECT,TAKE_CANDIDATE,TAKE_CANDIDATE,WIN_HELD,3.16,Y,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+S25,A,MACRO_RANGE,BULL,PROTECT,REVIEW,TAKE_CANDIDATE,WIN_RUNNER,3.9,Y,camada2: bull macro (continuação) — supply overhead não veta em bull
+S26,A,MACRO_RANGE,RISK,PROTECT,SKIP_STRUCTURAL,REVIEW,WIN_RUNNER,3.9,Y,contexto não-bull e não-bear-genuíno = review
+S27,A,MACRO_CORRECTIVE_PULLBACK,RISK,PROTECT,REVIEW,REVIEW,WIN_HELD,1.78,Y,contexto não-bull e não-bear-genuíno = review
+S28,C,MACRO_CORRECTIVE_PULLBACK,BULL,UNLABELED,REVIEW,TAKE_CANDIDATE,WIN_HELD,1.01,Y,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+S29,A,MACRO_RANGE,BULL,PROTECT,REVIEW,TAKE_CANDIDATE,WIN_HELD,1.95,Y,camada2: bull macro (continuação) — supply overhead não veta em bull
+S30,A,MACRO_BULL_LEG,BULL,PROTECT,REVIEW,TAKE_CANDIDATE,WIN_HELD,2.05,Y,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+S31,A,MACRO_BULL_LEG,BULL,PROTECT,TAKE_CANDIDATE,TAKE_CANDIDATE,WIN_HELD,2.83,Y,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+S32,A,MACRO_BULL_LEG,BULL,PROTECT,TAKE_CANDIDATE,TAKE_CANDIDATE,WIN_RUNNER,3.9,Y,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+S34,A,MACRO_BULL_LEG,BULL,UNLABELED,TAKE_CANDIDATE,TAKE_CANDIDATE,WIN_BE,0.9,,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+S35,A,MACRO_RANGE,BULL,PROTECT,REVIEW,TAKE_CANDIDATE,WIN_RUNNER,3.9,Y,camada2: bull macro (continuação) — supply overhead não veta em bull
+S36,A,MACRO_BULL_LEG,BULL,PROTECT,REVIEW,TAKE_CANDIDATE,WIN_HELD,1.97,Y,camada2: bull macro (continuação) — supply overhead não veta em bull
+S37,A,MACRO_BULL_LEG,BULL,PROTECT,REVIEW,TAKE_CANDIDATE,WIN_HELD,2.45,Y,camada2: bull macro (continuação) — supply overhead não veta em bull
+S38,A,MACRO_BULL_LEG,BULL,PROTECT,TAKE_CANDIDATE,TAKE_CANDIDATE,WIN_HELD,3.16,Y,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+S39,C,MACRO_BULL_LEG,BULL,REVIEW,REVIEW,TAKE_CANDIDATE,WIN_BE,0.9,,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+T2,B,MACRO_RANGE,BULL,UNLABELED,REVIEW,TAKE_CANDIDATE,WIN_BE,0.79,,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+T3,B,MACRO_BULL_LEG,BULL,UNLABELED,REVIEW,TAKE_CANDIDATE,STOP_LOSS,-1.1,,camada2: bull macro (continuação) — supply overhead não veta em bull
+T4,B,MACRO_BULL_LEG,BULL,UNLABELED,TAKE_CANDIDATE,TAKE_CANDIDATE,STOP_LOSS,-1.1,,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+T9,B,MACRO_TRANSITION,RISK,UNLABELED,TAKE_CANDIDATE,SKIP_STRUCTURAL,STOP_LOSS,-1.1,,camada1: bear-markdown genuíno (BEAR_LEG ou broken&combined<0) — gate macro
+T11,B,MACRO_BEAR_LEG,RISK,UNLABELED,REVIEW,SKIP_STRUCTURAL,STOP_LOSS,-1.1,,camada1: bear-markdown genuíno (BEAR_LEG ou broken&combined<0) — gate macro
+T12,B,MACRO_CORRECTIVE_PULLBACK,RISK,UNLABELED,TAKE_CANDIDATE,REVIEW,STOP_LOSS,-1.1,,contexto não-bull e não-bear-genuíno = review
+T13,C,MACRO_RANGE,RISK,UNLABELED,SKIP_STRUCTURAL,SKIP_STRUCTURAL,SCRATCH,1.02,,camada1: bear-markdown genuíno (BEAR_LEG ou broken&combined<0) — gate macro
+T14,C,MACRO_BEAR_LEG,RISK,UNLABELED,SKIP_STRUCTURAL,SKIP_STRUCTURAL,WIN_HELD,1.99,Y,camada1: bear-markdown genuíno (BEAR_LEG ou broken&combined<0) — gate macro
+T15,B,MACRO_RANGE,RISK,UNLABELED,SKIP_STRUCTURAL,SKIP_STRUCTURAL,STOP_LOSS,-1.1,,camada1: bear-markdown genuíno (BEAR_LEG ou broken&combined<0) — gate macro
+T16,B,MACRO_RANGE,BULL,UNLABELED,TAKE_CANDIDATE,TAKE_CANDIDATE,STOP_LOSS,-1.1,,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+T17,B,MACRO_BULL_LEG,RISK,UNLABELED,WATCHLIST_TRANSFORM,WATCHLIST_TRANSFORM,STOP_LOSS,-1.1,,resíduo late-top/micro-top auction-irredutível
+T18,B,MACRO_TRANSITION,BULL,UNLABELED,REVIEW,TAKE_CANDIDATE,STOP_LOSS,-1.1,,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+T19,C,MACRO_BULL_LEG,RISK,UNLABELED,REVIEW,SKIP_STRUCTURAL,WIN_HELD,2.02,Y,camada1: bear-markdown genuíno (BEAR_LEG ou broken&combined<0) — gate macro
+T20,B,MACRO_BULL_LEG,BULL,UNLABELED,WATCHLIST_TRANSFORM,WATCHLIST_TRANSFORM,STOP_LOSS,-1.1,,resíduo late-top/micro-top auction-irredutível
+T23,B,MACRO_BULL_LEG,BULL,UNLABELED,REVIEW,TAKE_CANDIDATE,STOP_LOSS,-1.1,,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+T24,B,MACRO_RANGE,BULL,UNLABELED,WATCHLIST_TRANSFORM,WATCHLIST_TRANSFORM,SCRATCH,0.38,,resíduo late-top/micro-top auction-irredutível
+T25,B,MACRO_CORRECTIVE_PULLBACK,BULL,UNLABELED,TAKE_CANDIDATE,TAKE_CANDIDATE,WIN_BE,0.9,,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+T26,B,MACRO_CORRECTIVE_PULLBACK,BULL,UNLABELED,TAKE_CANDIDATE,TAKE_CANDIDATE,WIN_BE,0.9,,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+T27,C,MACRO_BEAR_LEG,RISK,UNLABELED,SKIP_STRUCTURAL,SKIP_STRUCTURAL,STOP_LOSS,-1.1,,camada1: bear-markdown genuíno (BEAR_LEG ou broken&combined<0) — gate macro
+T30,B,MACRO_BULL_LEG,BULL,UNLABELED,REVIEW,TAKE_CANDIDATE,STOP_LOSS,-1.1,,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+T32,C,MACRO_BULL_LEG,BULL,UNLABELED,WATCHLIST_TRANSFORM,WATCHLIST_TRANSFORM,STOP_LOSS,-1.1,,resíduo late-top/micro-top auction-irredutível
+T33,C,MACRO_CORRECTIVE_PULLBACK,BULL,UNLABELED,TAKE_CANDIDATE,TAKE_CANDIDATE,WIN_HELD,1.69,Y,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+T34,C,MACRO_BEAR_LEG,BULL,PROTECT_entry_fix_SL,REVIEW,SKIP_STRUCTURAL,STOP_LOSS,-1.1,,camada1: bear-markdown genuíno (BEAR_LEG ou broken&combined<0) — gate macro
+T36,C,MACRO_BULL_LEG,BULL,PROTECT_ressalva,TAKE_CANDIDATE,TAKE_CANDIDATE,WIN_BE,0.9,,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+T40,B,MACRO_RANGE,BULL,BLOCK,TAKE_CANDIDATE,TAKE_CANDIDATE,STOP_LOSS,-1.1,,"camada2: bull macro + demanda defendida (supply-perto=markup, não rejeição)"
+T42,B,MACRO_RANGE,BULL,UNLABELED,REVIEW,SKIP_STRUCTURAL,STOP_LOSS,-1.11,,camada1: bear-markdown genuíno (BEAR_LEG ou broken&combined<0) — gate macro
