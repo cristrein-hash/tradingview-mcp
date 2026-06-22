@@ -1,0 +1,10 @@
+check,result,detail
+diagnostico_apenas,SIM,
+62_ensino,SIM,
+outcome_predicado,NAO,features de entrada
+engine_decisions_registry_producao,INTOCADO,
+causal,SIM,dist_demand/VAL/demand_cat no close bar i
+id_fit,NAO,thresholds declarados
+C_fora_fit,SIM,
+anchors_checadas,SIM,preserve 7 block 0
+limitacoes,SIM,ver report — hipótese entry-quality
