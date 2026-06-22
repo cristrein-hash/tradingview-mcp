@@ -1,0 +1,10 @@
+finding,value,note
+cluster_tightness_ratio,1.03,intra/inter z-dist dos 7; <1=cluster; pior que aleatório (0.78-0.89) -> NÃO cluster
+clean_sky_target,6/7 (86%),supply_blocks_2ATR==0 OR sup_cat CLEAN/FAR
+clean_sky_same_era_winners,3/10 (30%),mesmo era 2020-2022 A-winners
+clean_sky_excluded_B,4/4 (100%),T18/T20/T30/T40 — FALHA VALIDAÇÃO: excluídos têm MAIS clean-sky que alvo
+clean_sky_2024_25_winners,6/15 (40%),"grandes bull winners — assinatura atinge 40%, não-segura como filtro"
+blind_agent_partition,5/7 target em clean-sky group vs 8/10 winners em under-supply,agente cego confirmou eixo clean-sky vs rompeu-supply-testada
+perfect_separators_7v4,0,ZERO features separam target-7 dos 4 excluídos = não-separável
+auction_insight_REAL,winners do era choppy ROMPERAM supply testada (demanda venceu resistência); B-trades compraram vácuo clean-sky,"novo, auction-sólido, mas separa B-vs-A-winner, NÃO os 7-vs-4"
+deeper_commonality_hypothesis,"target-7 agrupam-se em 3 topos macro locais (2020-03,2021-11,2022-03) que precederam quedas",= padrão near-macro-top = forward-looking/auction-irredutível à entrada (re-confirma arco macro engine)

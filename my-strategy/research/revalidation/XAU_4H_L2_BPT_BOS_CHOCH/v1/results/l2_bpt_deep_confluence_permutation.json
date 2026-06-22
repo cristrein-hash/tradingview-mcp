@@ -1,0 +1,13 @@
+{
+ "target_score": 0.7738095238095237,
+ "null_median": 0.6626984126984127,
+ "null_max": 0.8571428571428571,
+ "p_value": 0.16666666666666666,
+ "rule": [
+  "spec_fuel==high_fuel",
+  "d1_n_SH>=q2(11.00)",
+  "supply_blocks_2ATR<=q1(0.00)"
+ ],
+ "cap": 6,
+ "fp": 3
+}
