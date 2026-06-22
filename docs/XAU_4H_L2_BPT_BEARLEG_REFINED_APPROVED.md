@@ -18,15 +18,19 @@ exaurindo / capitulação / clean-sky** (a compra legítima).
 - Os 8 bloqueados são **100% `supply_reject` + `fuel_low`** (supply overhead, sem espaço = inequivocamente ruins) —
   é daí que vem o lift 1.63 do bear-leg.
 
-## Limitações IMPLÍCITAS (reconhecidas — DA FAIL_OVERFIT_TINY_N honrado)
-1. **A preservação 5/5 é parcialmente tautológica** — a exceção foi calibrada sobre exatamente esses 5 runners (n=5).
-2. **A assinatura de exceção (oversold/flush/clean-sky) NÃO generaliza fora do bear-leg** — no full 276 lift 1.01.
-   Ela só é limpa CONDICIONADA ao contexto bear (o condicionamento bear é necessário; não é predicado global).
-3. **`supply_reject + fuel_low` global é mais fraco (lift 1.30) e corta 33% dos runners** — confirma que o bear-leg
-   não é proxy substituível; a edge mora na CONJUNÇÃO bear-context × supply-reject × low-fuel.
-4. **Os 11 losers que vazam são AUCTION-IRREDUTÍVEIS dos 5 runners** — nenhuma feature atual os separa (idênticos no
+## DOMÍNIO (natureza da feature, NÃO defeito — correção Cris)
+**A feature é CONTEXTUAL por design. O fato de não generalizar fora de `MACRO_BEAR_LEG` DEFINE o domínio dela, não a
+invalida.** Fora do bear-leg ela vira ruído (full 276 lift 1.01; `supply_reject+fuel_low` global lift 1.30 e corta 33%
+dos runners). Isso é correto: ela só é boa porque é condicionada ao contexto bear. A edge mora na CONJUNÇÃO
+bear-context × supply-reject × low-fuel — o bear-leg NÃO é proxy substituível. Testá-la no full 276 = testá-la FORA do
+domínio = teste errado. **Uso = evidência condicional / camada de leitura DENTRO de MACRO_BEAR_LEG, nunca regra global.**
+
+## Limitações genuínas (reconhecidas — DA FAIL_OVERFIT_TINY_N honrado)
+1. **A preservação 5/5 é parcialmente tautológica** — a exceção foi calibrada sobre exatamente esses 5 runners (n=5);
+   os THRESHOLDS específicos (oversold/flush/clean-sky) são calibração small-n a refinar com mais data.
+2. **Os 11 losers que vazam são AUCTION-IRREDUTÍVEIS dos 5 runners** — nenhuma feature atual os separa (idênticos no
    entry). A preservação dos runners é por NÃO-cortar o ambíguo, não por assinatura positiva. Trade-off: vazam 11.
-5. **Calibração, não validação estatística** (Fisher p 0.13/0.61/0.62 a n=5). Escopo = universo bear-leg.
+3. **Calibração, não validação estatística** (Fisher p 0.13/0.61/0.62 a n=5). Não promover a produção sem walk-forward.
 
 ## Status e papel (evidência condicional)
 - **APPROVED_AS_CONDITIONAL_LOSER_CUT** (Cris, 2026-06-22). Papel: cortar bear-pullback-trap preservando runners/
