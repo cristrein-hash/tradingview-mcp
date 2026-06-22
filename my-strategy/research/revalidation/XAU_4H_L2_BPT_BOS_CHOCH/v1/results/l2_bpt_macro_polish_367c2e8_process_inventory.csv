@@ -1,0 +1,15 @@
+item,detalhe,veredito
+scripts_py_commitados,"NENHUM .py em 367c2e8 (9 arquivos: 1 md + 8 csv). Blocos anteriores commitaram script (full276_visual_anchored_reader.py, visual_anchored_regime_62.py).",FALHA_REPRODUTIBILIDADE
+script_gerador_macro_phase,"Nao existe no repo nem em /tmp. macro_phase_causal_candidate.csv foi gerado por python inline (Bash heredoc) NAO salvo.",FALHA_REPRODUTIBILIDADE
+csvs_criados,"macro_error_map, macro_phase_causal_candidate, macro_polish_candidates, macro_polish_candidate_results, macro_polish_leverage, macro_polish_agent_diagnostics, macro_polish_path_selection, macro_polish_da",OK_EXISTEM
+docs_criados,"XAU_4H_FULL276_MACRO_READING_POLISH_AUTOMATION_REPORT.md",OK
+inputs_usados,"l2_bpt_full276_macro_bear_v3_decisions.csv (rico), regime_classifier_v3/xau_daily_with_features.jsonl (daily D-1), l2_bpt_full276_macro_error_map.csv",OK
+features_usadas_no_candidato_A,"SO macro_phase_causal (derivada de dist-126d-high + SMA200 + swing). candidate CSV tem 6 colunas: episode_id,datetime,macro_phase_causal,old_policy,exit,realR",FEATURE_ISOLADA
+features_ignoradas,"sup_cat, capit, demand, drop20, bottom_turn, clean_sky, fuel, SVP/below_VAL, dist_POC/VAL, legpos, momentum trend_30/90, rsi/rsi_1d, bub_buy/sell, nas, risk_sl, structural_SL, exit_management — TODAS disponiveis no matrix 84-feat e nas decisions, NENHUMA cruzada",GARGALO
+agentes_rodados,"SO 1 (Devil's Advocate, real). Os '4 specialist agents' do agent_diagnostics.csv (5 linhas) foram ESCRITOS A MAO por mim, NAO spawned.",AGENTES_FALSOS
+engine_9_especialistas,"macro_structural_specialists.py (supply/demand/volume/mtf/regime/momentum/capit/fuel/auction) EXISTE mas NAO foi invocado neste bloco",ENGINE_NAO_RODADO
+confluencia_multifatorial,"NENHUMA no candidato A. TAKE=BULL_RUN e gate de 1 feature.",AUSENTE
+permutation_null,"NAO neste bloco (o bloco full276 anterior fez null na confluencia; este nao).",AUSENTE
+split_temporal,"SIM (P1 2020-22 vs P2 2023-26).",OK
+ablation,"NAO (nenhum teste add/remove feature).",AUSENTE
+comparacao_prior_layers,"SO vs visual_anchored TAKE (1 prior). NAO vs bear_leg_v3, NAO vs 9-especialistas, NAO vs structural_convergent_62.",PARCIAL

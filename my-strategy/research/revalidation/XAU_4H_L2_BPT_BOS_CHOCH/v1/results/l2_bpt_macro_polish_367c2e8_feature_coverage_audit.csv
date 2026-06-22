@@ -1,0 +1,27 @@
+camada_feature,available,used_in_367c2e8,used_as_primary,used_as_conditional_evidence,interacted_with_macro_phase,tested_in_ablation,tested_in_temporal_split,reason_if_excluded,include_in_rerun
+D1/weekly backbone,YES,parcial,NO,NO,NO,NO,SIM(via split),"macro_phase usa SMA200/dist mas NAO o macro_reader_leg rico (RANGE/TRANSITION/BEAR_LEG)",SIM_OBRIGATORIO
+regime_B_v3 (d1_regimeB/combined),YES,NO,NO,NO,NO,NO,NO,"existe em decisions; nao consultado no candidato",SIM
+regime_l1_v4,YES,NO,NO,NO,NO,NO,NO,"nao referenciado",AVALIAR
+macro_phase nova,YES,SIM,SIM,NO,n/a,NO,SIM,"a unica feature do candidato A",SIM(como evidencia nao gate)
+sup_cat,YES,NO,NO,NO,NO,NO,NO,"disponivel em decisions; ignorado — drought cheio de SUPPLY_REJECTING",SIM_OBRIGATORIO
+pol_cat,YES,NO,NO,NO,NO,NO,NO,"nao consultado",SIM
+has_overhead/dist_supply,YES,NO,NO,NO,NO,NO,NO,"fuel/supply nao cruzado",SIM_OBRIGATORIO
+dist_demand/demand defended,YES,NO,NO,NO,NO,NO,NO,"demand defended/absent ignorado",SIM
+supply broken/rejected,YES,NO,NO,NO,NO,NO,NO,"SUPPLY_NEAR_AND_REJECTING aparece em ~metade do drought, ignorado",SIM_OBRIGATORIO
+SVP POC/VAH/VAL,YES(below_VAL/dist_POC no matrix),NO,NO,NO,NO,NO,NO,"acceptance nao consultada",SIM
+va_width/rel_volume,YES,NO,NO,NO,NO,NO,NO,"volume real nao cruzado",AVALIAR
+momentum trend_30/90 + slope,YES,NO,NO,NO,NO,NO,NO,"LATE_TOP_EXHAUSTION (spec_momentum) nao consultado no topo 2020-08",SIM_OBRIGATORIO
+RSI / RSI 1D/weekly,YES,NO,NO,NO,NO,NO,NO,"rsi/rsi_1d no matrix; nao usado",SIM
+legpos x momentum,YES(legpos30/60/90),NO,NO,NO,NO,NO,NO,"eixo causal validado (E40); ignorado",SIM_OBRIGATORIO
+capit+rsi,YES,NO,NO,NO,NO,NO,NO,"FALLING_KNIFE em 2021-11-22 nao detectado pelo candidato",SIM_OBRIGATORIO
+drop20/rise20,YES,NO,NO,NO,NO,NO,NO,"presente em decisions; nao usado como predicado",SIM
+bubbles buy/sell,YES,NO,NO,NO,NO,NO,NO,"bub_* no matrix; ignorado",AVALIAR
+NAS,YES,NO,NO,NO,NO,NO,NO,"nas_* no matrix; ignorado",AVALIAR
+risk_sl / structural SL,YES,NO,NO,NO,NO,NO,NO,"o drought e 17 STOP_LOSS — eixo risco nao analisado no candidato",SIM_OBRIGATORIO
+exit/management,YES,NO,NO,NO,NO,NO,NO,"AUTO_TAKE_BAD_EXIT 13 no error_map; nao integrado",SIM
+clean-sky/vacuo (fuel),YES,NO,NO,NO,NO,NO,NO,"spec_fuel existe; nao cruzado",SIM
+Bear-Leg Block v3,YES,NO,NO,NO,NO,NO,NO,"comparado SO contra visual_anchored, nao contra bear_leg_v3",SIM
+Microstructure FEATURE_MISSING,YES(doc),NO,NO,NO,NO,NO,NO,"24 HUMAN_VISUAL_MICRO no error_map; nao atacado",AVALIAR
+Deep target-7 PARTIAL_SIGNAL,YES(doc),NO,NO,NO,NO,NO,NO,"nao referenciado",AVALIAR
+Visual-Anchored Regime Reading,YES,parcial,NO,NO,NO,NO,NO,"usado SO como baseline de comparacao, nao incorporado",SIM
+9-specialist engine (macro_structural_specialists.py),YES,NO,NO,NO,NO,NO,NO,"o engine COMPLETO nao foi invocado — este e o gargalo central",SIM_OBRIGATORIO

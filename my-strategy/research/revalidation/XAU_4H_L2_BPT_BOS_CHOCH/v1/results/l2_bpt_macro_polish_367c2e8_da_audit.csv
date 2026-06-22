@@ -1,0 +1,10 @@
+ponto,verdict,detalhe
+classificacao_global,FAIL_SUPERFICIAL_GATE_REGRESSION,"Gate de 1 feature com postmortem honesto, NAO engine run. O verdict interno (rejeitar policy, guardar feature) esta certo, mas a RODADA nao executou o engine."
+canon_violado_no_mesmo_dia,FAIL,"Canon efaf48a (2026-06-22) §3 convergencia multifatorial + §7 nao-voltar-a-gate VIOLADOS no mesmo dia. Report cita o canon no cabecalho e entrega o artefato proibido."
+engine_9_especialistas,NAO_INVOCADO,"macro_structural_specialists.py existe e le supply/demand/volume/mtf/momentum/capit/fuel/auction; used_in_367c2e8=NO. Gargalo central."
+agentes_4_especialistas,THEATER,"agent_diagnostics.csv (5 linhas) hand-written, nao spawned. So o DA foi agente real. = assistant gradeando o proprio gate."
+baseline_rigged,FAIL,"Comparado SO vs visual_anchored TAKE (5/16 runners, fraco). bear_leg_v3 (13/16 runners) OMITIDO. 'melhora em TODAS as metricas' = comparison-selection bias; vs bear_leg_v3 PERDE convexidade."
+reprodutibilidade,FAIL,"0 .py em 367c2e8; gerador era heredoc inline nao salvo; numeros nao regeneraveis. Sem null/permutation, sem ablation."
+macro_phase_natureza,DATE_PROXY,"macro_phase BULL_RUN = 'preco a <=0.04 da max 126d e acima SMA200' = relabel de 'perto da maxima'. 89% da edge em 2023-26, WR 43.5% no bull 2020 real => codifica RECENCIA do melt-up 2023-25, NAO regime bull. Artefato A1'/drift-bull que §7 nomeia."
+streak_15_vs_17,DEFINICIONAL_NAO_FRAUDE,"strict consecutive-loss = 15 (quebrado por +0.9 WIN_BE em 2020-07-30, cosmetico); drought-episodio = 17 (2020-07-28->2022-01-25). Report devia ter exposto o drought de 18 meses como blocker prop-firm, nao footnote de 15."
+veredito_promising,GENEROSO_NO_SUBSTANTIVO,"'PROMISING_BUT_NEEDS_VALIDATION' honesto na POLICY (rejeitada), generoso demais na FEATURE (e date-proxy nao-estacionario). Manter macro_phase SO como termo fraco condicional dentro do engine, threshold removido, nunca como gate/policy."
