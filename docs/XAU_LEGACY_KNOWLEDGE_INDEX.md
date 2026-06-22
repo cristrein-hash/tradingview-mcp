@@ -30,3 +30,8 @@ Destinos: `KEEP_REFERENCE` · `KEEP_FOR_REVALIDATION` · `ARCHIVE_AFTER_CAPTURE`
 
 ## Conclusão
 Preservação repo-side agora **SUFICIENTE** para arquivar legacy morto sem perder conhecimento. **Source-of-truth (RAW/manifests/event store/journal novo) = DO_NOT_TOUCH.** Próximo: arquivar só o que está **morto, duplicado e sem uso operacional** — nunca research/RAW.
+
+---
+
+## Macro Structural Reading Engine — knowledge state (2026-06-22)
+Síntese do engine de leitura macro/estrutural (strategy-agnostic, diagnóstico) → **`docs/XAU_4H_MACRO_STRUCTURAL_READING_ENGINE_KNOWLEDGE_STATE.md`** (commits 9574c22→e54d87e). Conclusão canônica: D1-backbone determinístico + confluência agêntica = melhor preservação de bull-run (anchor 13/14); late-top-in-bull é **auction-irredutível** (provado por agentes); caminho realista = preservar bull + bloquear macro-bear-leg + aceitar resíduo late-top. Knowledge locks: leg-state D1/weekly = backbone; prior failed layers = evidência condicional (não descartar); SVP causal as-of-bar; SMC/pivots causais (SMC esparso); sup_cat/pol_cat = 1ª classe; tick-volume não-confiável. Próximo (fila, não iniciado): reflexão do Cris → validação 276+OOS.
