@@ -1,0 +1,23 @@
+source_file,state_feature,prior_engine_origin,used_in_subreader,used_in_v2_vote,role,causality
+l2_bpt_full276_macro_engine_confluence.csv,supply,Macro Structural Engine spec1,no,yes(vote_ENG),support/conflict,causal as-of-bar
+l2_bpt_full276_macro_engine_confluence.csv,demand,Macro Structural Engine spec2,no,no,context,causal
+l2_bpt_full276_macro_engine_confluence.csv,volume,Macro Structural Engine spec3,no,no,context,causal SVP-as-of-bar
+l2_bpt_full276_macro_engine_confluence.csv,mtf,Macro Structural Engine spec4,no,no,context,causal D-1
+l2_bpt_full276_macro_engine_confluence.csv,regime,Macro Structural Engine spec5,no,no,context,causal D-1
+l2_bpt_full276_macro_engine_confluence.csv,momentum,Macro Structural Engine spec6,no,yes(vote_ENG),conflict LATE_TOP,causal
+l2_bpt_full276_macro_engine_confluence.csv,capit,Macro Structural Engine spec7,partial r4,yes(vote_ENG+LAYERS),support CLIMAX,causal
+l2_bpt_full276_macro_engine_confluence.csv,fuel,Macro Structural Engine spec8,no,yes(vote_ENG),support high_fuel,causal
+l2_bpt_full276_macro_engine_confluence.csv,risk,Macro Structural Engine spec9,no,no,axis-separate,causal
+l2_bpt_full276_macro_engine_confluence.csv,macro_state,Macro Structural Engine confluence,no,yes(vote_ENG),support/conflict,causal
+l2_bpt_full276_indicator_engine_cross_v2.csv,bubbles,Indicator engine v2 context-aware,no,yes(vote_IND),support SELL_CLIMAX,causal SHIFT1
+l2_bpt_full276_indicator_engine_cross_v2.csv,nas,Indicator engine v2,no,yes(vote_IND),support/conflict,causal first-appearance
+l2_bpt_full276_indicator_engine_cross_v2.csv,smc,Indicator engine v2,partial packet smc_choch,yes(vote_IND),support CHOCH_BULL,causal
+l2_bpt_full276_indicator_engine_cross_v2.csv,rsi,Indicator engine v2,partial packet rsi,no,context,causal
+l2_bpt_full276_indicator_engine_cross_v2.csv,indicator_confluence,Indicator engine v2,no,yes(vote_IND),support inversion,causal
+l2_bpt_full276_macro_bear_v3_decisions.csv,macro_reader_leg(bear_leg_block),prior layer lift1.63,yes r5/r7,yes(vote_LAYERS),conditional-veto,causal D-1
+l2_bpt_full276_macro_bear_v3_decisions.csv,clean_sky_flag,prior layer flag,no,yes(vote_LAYERS),support,causal
+l2_bpt_full276_macro_bear_v3_decisions.csv,sup_cat,prior demand-supply quality,yes r1,no,context,causal
+l2_bpt_full276_macro_phase_causal_candidate.csv,macro_phase_causal,prior layer weak-conditional,no,yes(vote_LAYERS),support weak,causal D-1
+capit_rsi,context-only layer,prior layer,partial r4,yes(vote_LAYERS),support,causal
+target7_microstructure,FEATURE_MISSING,prior refuted-conditional,no,no,not-buildable no-contiguous-sub4H,NA
+entry_quality,refuted layer,prior,no,no,excluded refuted,NA
