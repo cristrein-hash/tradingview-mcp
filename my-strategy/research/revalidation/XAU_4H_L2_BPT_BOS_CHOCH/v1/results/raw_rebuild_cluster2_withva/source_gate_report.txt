@@ -1,0 +1,4 @@
+SOURCE GATE REPORT — raw_rebuild_cluster2_withva (com VALUE-AREA real)
+episodios: 10 | leak-check: PASS | backbone causal
+VA real: f6_svp_state/f6_dist_poc_atr (DSPA F6) + POC/VAH/VAL (svp_bars.jsonl), validada 7f3c852
+POC/VAL/VAH = DERIVED_FROM_RAW_WITH_MAPPING (NAO mais blocked); sem outcome/R.

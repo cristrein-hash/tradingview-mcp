@@ -1,0 +1,26 @@
+{
+  "input_id": "raw_rebuild_cluster2_withva",
+  "cluster_id": "cluster2",
+  "input_path": "results/raw_rebuild_cluster2_withva/reading_packet_RAW_CLEAN.md",
+  "created_by_script": "l2_bpt_reading_packet_withva.py",
+  "source_packet_type": "RAW_CLEAN_WITH_VALUE_AREA",
+  "allowed_for_reader": "YES",
+  "source_gate_required": "YES",
+  "source_mapping_status": "RAW_CLEAN_ALLOWED",
+  "contains_outcome": "NO",
+  "contains_blocked_fields": "NO",
+  "status": "RAW_CLEAN_ALLOWED",
+  "episodes": [
+    1522,
+    1623,
+    1775,
+    1873,
+    3825,
+    3929,
+    3949,
+    4401,
+    5627,
+    5826
+  ],
+  "notes": "VA real incluida; backbone causal; supersede _postfix (sem-VA)"
+}

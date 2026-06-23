@@ -122,4 +122,28 @@ inputs:
   contains_outcome: NO
   contains_blocked_fields: NO
   status: RAW_CLEAN_ALLOWED
-  notes: backbone causal pos-anchor-fix commit 1267c8d; substitui o pre-fix (historico); POC/VAL/VAH volume BLOCKED
+  notes: backbone causal pos-anchor-fix commit 1267c8d; substitui o pre-fix (historico); POC/VAL/VAH volume BLOCKED (sem-VA, base de comparacao)
+- input_id: raw_rebuild_cluster1_withva
+  cluster_id: cluster1
+  input_path: results/raw_rebuild_cluster1_withva/reading_packet_RAW_CLEAN.md
+  created_by_script: l2_bpt_reading_packet_withva.py
+  source_packet_type: RAW_CLEAN_WITH_VALUE_AREA
+  allowed_for_reader: YES
+  source_gate_required: YES
+  source_mapping_status: RAW_CLEAN_ALLOWED
+  contains_outcome: NO
+  contains_blocked_fields: NO
+  status: RAW_CLEAN_ALLOWED
+  notes: inclui VALUE-AREA real (svp_state/dist_poc via F6 + POC/VAH/VAL svp_bars, validada 7f3c852); base FINAL; supersede _postfix sem-VA
+- input_id: raw_rebuild_cluster2_withva
+  cluster_id: cluster2
+  input_path: results/raw_rebuild_cluster2_withva/reading_packet_RAW_CLEAN.md
+  created_by_script: l2_bpt_reading_packet_withva.py
+  source_packet_type: RAW_CLEAN_WITH_VALUE_AREA
+  allowed_for_reader: YES
+  source_gate_required: YES
+  source_mapping_status: RAW_CLEAN_ALLOWED
+  contains_outcome: NO
+  contains_blocked_fields: NO
+  status: RAW_CLEAN_ALLOWED
+  notes: inclui VALUE-AREA real; base FINAL; supersede _postfix sem-VA

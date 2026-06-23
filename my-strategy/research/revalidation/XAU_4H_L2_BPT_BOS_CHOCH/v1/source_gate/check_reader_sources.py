@@ -192,10 +192,13 @@ for fp in scan_inputs:
         bad = sorted({f for f in STILL_BLOCKED_FIELDS
                       if re.search(r"(?<![A-Za-z0-9_])" + re.escape(f) + r"(?![A-Za-z0-9_])", blob)})
         fail(bool(bad), f"INPUT RAW_CLEAN {rel} contem campo derivado/SVP-valor: {bad}")
-        # SVP/acceptance citados devem estar marcados bloqueados (BLOCKED_UNMAPPED ou UNKNOWN_BLOCKED), nunca valor de VA
-        blocked_marker = ("BLOCKED_UNMAPPED" in blob) or ("UNKNOWN_BLOCKED" in blob)
-        fail(("svp" in blob.lower() or "acceptance" in blob.lower()) and not blocked_marker,
-             f"INPUT RAW_CLEAN {rel} cita SVP/acceptance sem marcador de bloqueio (BLOCKED_UNMAPPED/UNKNOWN_BLOCKED)")
+        # SVP/acceptance citados: ou marcados bloqueados (BLOCKED_UNMAPPED/UNKNOWN_BLOCKED), OU com a VA REAL
+        # RAW-mapeada (svp_state / value-area real / validacao 7f3c852). Senao seria valor de VA sem fonte.
+        low = blob.lower()
+        ok_marker = any(t in blob for t in ("BLOCKED_UNMAPPED", "UNKNOWN_BLOCKED")) or \
+                    any(t in low for t in ("svp_state", "value-area real", "7f3c852"))
+        fail(("svp" in low or "acceptance" in low) and not ok_marker,
+             f"INPUT RAW_CLEAN {rel} cita SVP/acceptance sem marcador de bloqueio NEM VA real RAW-mapeada (svp_state/7f3c852)")
         raw_clean_ok.append(rel)
 
 # ---- emite inventario CSV (FASE 5) ----
