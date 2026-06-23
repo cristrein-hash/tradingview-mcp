@@ -13,6 +13,22 @@ CSV-espelho: `results/l2_bpt_reader_operating_manual_raw_confirmed.csv`.
 
 ---
 
+## 0.-1 SEGUNDA RODADA DIRECIONADA (continuation/fuel + error-only, 2026-06-23) — resultado NEGATIVO honesto
+
+Rodada multi-papel (Continuation/Fuel + Fade/Wall Challenger + Judge) com VA real, focada na fraqueza de over-fade
+de runners. Freeze dbd7c8b. **NENHUMA variável nova sobreviveu ao outcome.** Detalhe:
+`docs/XAU_4H_L2_BPT_CLUSTER1_CONTINUATION_FUEL_REREAD.md` + `..._CLUSTER2_ERROR_ONLY_REREAD.md`.
+
+| Lente proposta nesta rodada | Status vs outcome |
+|---|---|
+| `value-migration-phase` (lead vs lag) — separar supply-consumido de supply-wall pela fase temporal | **REFUTED** — anti-correlacionada (LAG/WALL 8878+4926 correram ~18R; LEAD limpos 8940/6887 falharam) |
+| `floor-backed-absorption triad` (demand-floor + bubble-effort + OHLC-hold) — separar base de distribuição em IN_VALUE | **REFUTED** — over-condena runners (3/4 runners chamados wall/overfade; floor-por-distância e sell-bubbles invertem) |
+| **over-fade de continuação/runners em bull/macro-forte é IRREDUTÍVEL no entry** | **CONFIRMED (negativa)** — a geometria estática que parece wall (near-supply, give-back, dist_poc, floor-distante) é PRÉ-impulso/spring-load que dispara; nenhum separador runner-vs-stop existe nas features de entry (consistente com a auditoria rabbit-hole: entry sem edge) |
+
+**Implicação:** o problema FUEL-vs-WALL / over-fade NÃO se resolve por mais leitura no ENTRY. A próxima alavanca
+plausível NÃO é seleção-no-entry (substrato irredutível) — é gestão/exit/convexidade ou mudar a pergunta. Decisão de
+Cris; não vira regra/gate/score.
+
 ## 0.0 ATUALIZAÇÃO COM VALUE-AREA REAL (2026-06-23 — corrige a premissa "VA bloqueada")
 
 A VA de volume estava DISPONÍVEL o tempo todo (erro de fonte corrigido em c1b24cf; guard estrutural ba1c51c).

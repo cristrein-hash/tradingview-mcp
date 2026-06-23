@@ -14,3 +14,6 @@ OM-VA-1,VA como eixo causal (par casado mesmo regime),WITHVA_CONFIRMED,value-are
 OM-VA-2,svp_state ACCEPTING_ABOVE_VALUE = construtivo (regime-permitindo),WITHVA_CONFIRMED,value-area,Preco aceito ACIMA da VA?,5826 4401 3949 (3/3 macro-neg correram),com-VA audit
 OM-VA-3,dist_poc grande acima do POC = sobre-extensao/exaustao,WITHVA_REFUTED,value-area,NAO usar magnitude como exaustao em bull,4926 dist_poc 2.07 correu +18R,com-VA audit (invertido)
 OM-VA-4,IN_VALUE/abaixo-POC = trap como VETO,WITHVA_REFUTED,value-area,NAO vetar por IN_VALUE; e fator nao veto,5627 +5.96R 1522 +5.65R lidos trap/undecided,com-VA audit (over-condena runners)
+OM-R2-1,value-migration-phase (lead vs lag) separa consumido de wall,REFUTED,temporal,Fase temporal separa fuel de wall?,8878/4926 LAG correram 18R; 8940/6887 LEAD falharam,2a rodada audit (anti-correlacionada)
+OM-R2-2,floor-backed-absorption triad (floor+effort+OHLC) separa base de distribuicao,REFUTED,IN_VALUE,Triad separa base de trap em IN_VALUE?,5627/3949/4401 floor-distante correram; sell-bubbles invertem,2a rodada audit (over-condena runners)
+OM-R2-3,over-fade de continuacao/runners em bull e IRREDUTIVEL no entry,CONFIRMED_NEGATIVE,entry,Existe separador runner-vs-stop nas features de entry?,nenhuma variavel nova sobreviveu 2 rodadas,2a rodada audit (substrato auction-irredutivel)
