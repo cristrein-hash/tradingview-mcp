@@ -1,277 +1,277 @@
 bar_idx,timestamp,active_flags,active_objectives,n_always_on,n_foreground,foreground_per_objective,n_probes,probes_mandatory,n_also_available,foreground_large_diag,n_sosias,has_continuation,micro62,swing41
-55,2020-01-14,leg_bull|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,0,12,1,0,1,0,1
-78,2020-01-20,leg_bull|markup_context|clean_sky|has_continuation_sibling,markup-through-supply-vs-supply-rejection|continuacao-estrutural|preservar-monumentais,47,25,markup:11 continuacao:8 preservar:6,6,1,15,0,37,1,0,1
-116,2020-01-28,leg_bull|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,0,12,1,0,1,0,0
-130,2020-01-30,leg_bull|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,7,1,1,1
-140,2020-02-03,leg_bull|capit_or_flush|supply_threat|has_continuation_sibling,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,1,8,1,7,1,0,1
-149,2020-02-05,leg_bull|capit_or_flush|has_continuation_sibling,reversao/fundo/capitulacao|continuacao-estrutural|preservar-monumentais,47,27,reversao:12 continuacao:10 preservar:5,6,1,13,1,6,1,0,1
-159,2020-02-06,leg_bull|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,47,20,continuacao:12 preservar:8,6,1,20,0,37,1,0,1
-217,2020-02-20,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,47,22,markup:11 topo:4 continuacao:7,6,1,18,0,11,0,0,1
-237,2020-02-25,leg_bull|capit_or_flush|has_continuation_sibling,reversao/fundo/capitulacao|continuacao-estrutural|preservar-monumentais,47,27,reversao:12 continuacao:10 preservar:5,6,0,13,1,0,1,1,1
-287,2020-03-09,leg_bull|markup_context|clean_sky|has_continuation_sibling,markup-through-supply-vs-supply-rejection|continuacao-estrutural|preservar-monumentais,47,25,markup:11 continuacao:8 preservar:6,6,1,15,0,37,1,1,1
-351,2020-03-23,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,25,0,0,1
-383,2020-03-31,leg_bull|regime_distribution_warning|clean_sky|has_continuation_sibling,topo/range/chop|continuacao-estrutural|preservar-monumentais,47,26,topo:7 continuacao:11 preservar:8,6,0,14,1,0,1,0,1
-391,2020-04-01,leg_bull|regime_distribution_warning|clean_sky|has_continuation_sibling,topo/range/chop|continuacao-estrutural|preservar-monumentais,47,26,topo:7 continuacao:11 preservar:8,6,1,14,1,6,1,0,1
-413,2020-04-07,leg_bull|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,25,0,1,0
-458,2020-04-17,leg_bull|capit_or_flush,reversao/fundo/capitulacao|preservar-monumentais,47,22,reversao:12 preservar:10,6,0,18,0,3,0,0,1
-493,2020-04-27,leg_bull|capit_or_flush|supply_threat|has_continuation_sibling,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,0,8,1,0,1,0,1
-521,2020-05-04,leg_bull|capit_or_flush|supply_threat|has_continuation_sibling,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,1,8,1,13,1,0,1
-542,2020-05-07,leg_bull|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,25,1,0,1
-583,2020-05-18,leg_bull|markup_context|clean_sky|has_continuation_sibling,markup-through-supply-vs-supply-rejection|continuacao-estrutural|preservar-monumentais,47,25,markup:11 continuacao:8 preservar:6,6,0,15,0,1,1,0,1
-597,2020-05-20,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,7,0,0,0
-631,2020-05-28,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,13,0,0,1
-685,2020-06-10,leg_bull|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,25,0,0,1
-702,2020-06-15,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,5,0,1,0
-766,2020-06-30,leg_bull|clean_sky|late_top_or_high_legpos,topo/range/chop,47,7,topo:7,6,1,33,0,9,0,0,1
-780,2020-07-02,leg_bull|capit_or_flush|supply_threat|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,7,0,1,1
-833,2020-07-15,leg_bull|clean_sky|late_top_or_high_legpos,topo/range/chop,47,7,topo:7,6,1,33,0,6,0,0,1
-845,2020-07-17,leg_bull|clean_sky|late_top_or_high_legpos,topo/range/chop,47,7,topo:7,6,1,33,0,6,0,0,1
-866,2020-07-23,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,47,22,markup:11 topo:4 continuacao:7,6,1,18,0,11,0,1,1
-886,2020-07-28,leg_bull|capit_or_flush|clean_sky,reversao/fundo/capitulacao|preservar-monumentais,47,22,reversao:12 preservar:10,6,0,18,0,3,0,0,0
-901,2020-07-30,leg_bull|capit_or_flush|supply_threat|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,5,0,1,1
-919,2020-08-04,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,47,22,markup:11 topo:4 continuacao:7,6,1,18,0,37,0,0,1
-934,2020-08-07,leg_bull|clean_sky|late_top_or_high_legpos,topo/range/chop,47,7,topo:7,6,1,33,0,4,0,0,1
-970,2020-08-17,leg_bull|clean_sky,,47,0,,6,0,40,0,3,0,0,1
-1027,2020-08-30,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,7,0,0,0
-1072,2020-09-09,leg_bull,,47,0,,6,1,40,0,37,0,0,0
-1151,2020-09-28,leg_bull|regime_distribution_warning|markup_context|clean_sky|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,11,1,0,0
-1200,2020-10-08,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,1,7,1,7,0,0,1
-1211,2020-10-12,leg_bull|regime_distribution_warning|has_continuation_sibling|late_top_or_high_legpos,topo/range/chop|continuacao-estrutural|preservar-monumentais,47,26,topo:7 continuacao:11 preservar:8,6,1,14,1,11,1,0,1
-1221,2020-10-14,leg_bull|regime_distribution_warning|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,7,1,0,1
-1298,2020-11-02,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,6,0,1,0
-1316,2020-11-05,leg_bear|regime_distribution_warning|markup_context|late_top_or_high_legpos,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,13,0,0,1
-1326,2020-11-08,leg_bull|regime_distribution_warning|supply_threat|has_continuation_sibling|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,0,12,1,0,1,0,1
-1353,2020-11-13,leg_bull|regime_distribution_warning|clean_sky|has_continuation_sibling,topo/range/chop|continuacao-estrutural|preservar-monumentais,47,26,topo:7 continuacao:11 preservar:8,6,1,14,1,6,1,1,0
-1429,2020-12-02,leg_bear|regime_distribution_warning|markup_context|clean_sky,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,37,0,0,0
-1497,2020-12-17,leg_bear|regime_distribution_warning|supply_threat|late_top_or_high_legpos,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,25,0,0,1
-1522,2020-12-23,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,1,7,1,7,0,0,0
-1568,2021-01-06,leg_bull|capit_or_flush|has_continuation_sibling,reversao/fundo/capitulacao|continuacao-estrutural|preservar-monumentais,47,27,reversao:12 continuacao:10 preservar:5,6,0,13,1,1,1,0,0
-1623,2021-01-20,leg_bear|regime_distribution_warning|markup_context|clean_sky,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,37,0,0,0
-1661,2021-01-28,leg_bear|regime_distribution_warning|capit_or_flush|markup_context|clean_sky,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,1,7,1,7,0,1,0
-1761,2021-02-22,leg_bear|regime_distribution_warning|capit_or_flush,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|topo/range/chop|preservar-monumentais,47,30,bear:14 reversao:6 topo:3 preservar:7,6,1,10,1,6,0,0,1
-1775,2021-02-24,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,0,7,1,0,0,0,1
-1836,2021-03-10,leg_bear|regime_distribution_warning|supply_threat,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,6,0,0,0
-1873,2021-03-18,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,0,7,1,0,0,0,0
-1901,2021-03-25,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,0,7,1,0,0,0,1
-1941,2021-04-06,regime_distribution_warning|range_or_chop,topo/range/chop,47,7,topo:7,6,1,33,0,37,0,1,0
-2034,2021-04-27,leg_bull|regime_distribution_warning|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,0,10,1,2,0,0,0
-2053,2021-05-02,leg_bull|regime_distribution_warning|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,7,0,0,1
-2100,2021-05-12,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,0,25,0,0,0,1,1
-2110,2021-05-14,leg_bull|regime_distribution_warning|late_top_or_high_legpos,topo/range/chop,47,7,topo:7,6,0,33,0,0,0,1,0
-2174,2021-05-31,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,47,22,markup:11 topo:4 continuacao:7,6,1,18,0,37,0,0,0
-2188,2021-06-02,leg_bull|capit_or_flush|supply_threat|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,7,0,0,0
-2204,2021-06-07,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,25,0,0,1
-2222,2021-06-10,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,0,10,1,0,0,0,0
-2320,2021-07-02,leg_bull|regime_distribution_warning|markup_context|clean_sky,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,47,22,markup:11 topo:4 continuacao:7,6,1,18,0,37,0,0,0
-2364,2021-07-14,leg_bull|regime_distribution_warning|clean_sky|late_top_or_high_legpos,topo/range/chop,47,7,topo:7,6,1,33,0,11,0,1,0
-2372,2021-07-15,leg_bull|regime_distribution_warning|late_top_or_high_legpos,topo/range/chop,47,7,topo:7,6,1,33,0,6,0,0,0
-2428,2021-07-28,leg_bull|regime_distribution_warning|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,6,0,0,0
-2488,2021-08-11,leg_bull|regime_distribution_warning|markup_context|clean_sky|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,37,1,1,0
-2497,2021-08-13,leg_bear|regime_distribution_warning|capit_or_flush|clean_sky|has_continuation_sibling,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,32,bear:14 reversao:6 topo:3 continuacao:7 preservar:2,6,1,8,1,1,1,1,0
-2544,2021-08-25,regime_distribution_warning|range_or_chop|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,5,0,0,0
-2663,2021-09-22,regime_distribution_warning|range_or_chop,topo/range/chop,47,7,topo:7,6,1,33,0,9,0,1,0
-2705,2021-10-01,leg_bear|regime_distribution_warning|supply_threat,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,13,0,0,0
-2737,2021-10-08,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,1,7,1,1,0,0,0
-2747,2021-10-12,leg_bear|regime_distribution_warning|supply_threat,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,13,0,0,0
-2859,2021-11-05,leg_bull|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,6,0,0,0
-2896,2021-11-15,leg_bull|late_top_or_high_legpos,topo/range/chop,47,7,topo:7,6,1,33,0,9,0,1,0
-2905,2021-11-17,leg_bull|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,13,0,0,0
-2922,2021-11-22,leg_bull|capit_or_flush|supply_threat|has_continuation_sibling,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,0,8,1,0,1,0,0
-2944,2021-11-26,leg_bull|regime_distribution_warning|capit_or_flush|markup_context|clean_sky|has_continuation_sibling,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,1,8,1,37,1,1,0
-2991,2021-12-08,leg_bull|regime_distribution_warning|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,0,12,1,0,1,0,0
-3011,2021-12-13,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,6,0,0,0
-3029,2021-12-16,leg_bull|regime_distribution_warning|capit_or_flush|markup_context|has_continuation_sibling,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,1,8,1,7,1,0,0
-3070,2021-12-28,leg_bull|regime_distribution_warning|markup_context|clean_sky|has_continuation_sibling|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,37,1,0,0
-3085,2021-12-30,leg_bull|regime_distribution_warning|clean_sky|late_top_or_high_legpos,topo/range/chop,47,7,topo:7,6,1,33,0,11,0,1,0
-3102,2022-01-04,leg_bull|regime_distribution_warning|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,7,0,0,0
-3118,2022-01-07,leg_bull|regime_distribution_warning|capit_or_flush|clean_sky|has_continuation_sibling,reversao/fundo/capitulacao|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,30,reversao:12 topo:4 continuacao:9 preservar:5,6,1,10,1,1,1,0,0
-3126,2022-01-10,leg_bull|regime_distribution_warning|has_continuation_sibling,topo/range/chop|continuacao-estrutural|preservar-monumentais,47,26,topo:7 continuacao:11 preservar:8,6,1,14,1,37,1,1,0
-3147,2022-01-14,leg_bull|regime_distribution_warning|capit_or_flush|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|topo/range/chop|preservar-monumentais,47,26,reversao:12 topo:4 preservar:10,6,1,14,1,1,0,0,0
-3162,2022-01-18,leg_bull|regime_distribution_warning|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,0,10,1,2,0,0,0
-3178,2022-01-21,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,5,0,0,0
-3190,2022-01-25,leg_bull|capit_or_flush|late_top_or_high_legpos,reversao/fundo/capitulacao|topo/range/chop|preservar-monumentais,47,26,reversao:12 topo:4 preservar:10,6,0,14,1,0,0,1,0
-3219,2022-02-01,leg_bull|capit_or_flush|clean_sky|has_continuation_sibling,reversao/fundo/capitulacao|continuacao-estrutural|preservar-monumentais,47,27,reversao:12 continuacao:10 preservar:5,6,1,13,1,11,1,0,0
-3238,2022-02-04,leg_bull|regime_distribution_warning|clean_sky|has_continuation_sibling,topo/range/chop|continuacao-estrutural|preservar-monumentais,47,26,topo:7 continuacao:11 preservar:8,6,1,14,1,11,1,0,0
-3252,2022-02-08,leg_bull|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,47,20,continuacao:12 preservar:8,6,1,20,0,4,1,1,0
-3326,2022-02-24,leg_bull|capit_or_flush,reversao/fundo/capitulacao|preservar-monumentais,47,22,reversao:12 preservar:10,6,1,18,0,5,0,0,0
-3443,2022-03-24,leg_bull|markup_context|clean_sky,markup-through-supply-vs-supply-rejection|continuacao-estrutural,47,19,markup:11 continuacao:8,6,1,21,0,37,0,1,0
-3474,2022-03-31,leg_bull|clean_sky,,47,0,,6,0,40,0,0,0,1,0
-3491,2022-04-05,leg_bull|markup_context|clean_sky,markup-through-supply-vs-supply-rejection|continuacao-estrutural,47,19,markup:11 continuacao:8,6,1,21,0,37,0,1,0
-3509,2022-04-08,leg_bull|markup_context|clean_sky,markup-through-supply-vs-supply-rejection|continuacao-estrutural,47,19,markup:11 continuacao:8,6,1,21,0,37,0,1,0
-3622,2022-05-06,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,13,0,0,0
-3678,2022-05-19,leg_bear|regime_distribution_warning|supply_threat,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,6,0,0,0
-3773,2022-06-10,leg_bull|regime_distribution_warning,topo/range/chop,47,7,topo:7,6,0,33,0,0,0,0,0
-3799,2022-06-16,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,25,0,0,0
-3825,2022-06-23,leg_bear|regime_distribution_warning|supply_threat,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,13,0,0,0
-3836,2022-06-26,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,0,7,1,2,0,0,0
-3929,2022-07-18,leg_bear|regime_distribution_warning|supply_threat,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,25,0,1,0
-3949,2022-07-21,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,0,7,1,1,0,1,0
-4095,2022-08-25,regime_distribution_warning|range_or_chop|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,25,0,0,0
-4243,2022-09-28,leg_bear|regime_distribution_warning|supply_threat,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,25,0,0,0
-4309,2022-10-13,regime_distribution_warning|range_or_chop|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,6,0,0,0
-4346,2022-10-23,leg_bear|regime_distribution_warning|supply_threat,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,25,0,0,0
-4372,2022-10-28,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,0,25,0,2,0,0,0
-4384,2022-11-01,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,0,7,1,2,0,1,0
-4401,2022-11-04,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,1,7,1,13,0,1,0
-4429,2022-11-10,regime_distribution_warning|range_or_chop|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,25,0,0,0
-4483,2022-11-23,regime_distribution_warning|range_or_chop|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,0,10,1,1,0,1,0
-4513,2022-11-30,leg_bull|regime_distribution_warning|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,25,0,0,0
-4530,2022-12-05,leg_bull,,47,0,,6,0,40,0,0,0,0,0
-4574,2022-12-15,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,13,0,0,1
-4609,2022-12-22,leg_bull|capit_or_flush,reversao/fundo/capitulacao|preservar-monumentais,47,22,reversao:12 preservar:10,6,1,18,0,1,0,0,0
-4644,2023-01-03,leg_bull|capit_or_flush|supply_threat|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,1,0,1,0
-4677,2023-01-11,leg_bull|clean_sky|late_top_or_high_legpos,topo/range/chop,47,7,topo:7,6,1,33,0,9,0,1,0
-4763,2023-01-31,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,6,0,0,0
-4899,2023-03-03,leg_bear|regime_distribution_warning|has_continuation_sibling,bear-buy-legitimo-vs-trap|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,31,bear:14 topo:5 continuacao:8 preservar:4,6,1,9,1,9,1,0,0
-4908,2023-03-06,leg_bull|regime_distribution_warning|has_continuation_sibling,topo/range/chop|continuacao-estrutural|preservar-monumentais,47,26,topo:7 continuacao:11 preservar:8,6,1,14,1,11,1,0,0
-4918,2023-03-08,leg_bear|regime_distribution_warning|capit_or_flush|has_continuation_sibling,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,32,bear:14 reversao:6 topo:3 continuacao:7 preservar:2,6,1,8,1,7,1,0,0
-4926,2023-03-09,leg_bear|regime_distribution_warning|supply_threat|has_continuation_sibling,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,32,bear:14 markup:8 topo:3 continuacao:4 preservar:3,6,1,8,1,25,1,0,0
-4964,2023-03-20,leg_bull|capit_or_flush|markup_context|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,0,8,1,1,0,0,0
-4996,2023-03-27,leg_bull|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,47,20,continuacao:12 preservar:8,6,1,20,0,1,1,0,0
-5016,2023-03-30,leg_bull|supply_threat|has_continuation_sibling|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,25,1,0,0
-5042,2023-04-06,leg_bull|clean_sky|has_continuation_sibling|late_top_or_high_legpos,topo/range/chop|continuacao-estrutural|preservar-monumentais,47,26,topo:7 continuacao:11 preservar:8,6,0,14,1,3,1,0,0
-5055,2023-04-11,leg_bull|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,7,1,0,0
-5087,2023-04-18,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,3,0,0,0
-5103,2023-04-21,leg_bull|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,7,1,0,0
-5147,2023-05-02,leg_bull|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,47,20,continuacao:12 preservar:8,6,1,20,0,11,1,0,0
-5165,2023-05-05,leg_bull|capit_or_flush,reversao/fundo/capitulacao|preservar-monumentais,47,22,reversao:12 preservar:10,6,1,18,0,1,0,0,0
-5296,2023-06-06,leg_bear|has_continuation_sibling,bear-buy-legitimo-vs-trap|continuacao-estrutural|preservar-monumentais,47,27,bear:14 continuacao:9 preservar:4,6,1,13,1,11,1,0,0
-5321,2023-06-12,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,0,25,0,0,0,0,0
-5331,2023-06-14,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,13,0,0,0
-5350,2023-06-19,leg_bull,,47,0,,6,1,40,0,9,0,0,0
-5414,2023-07-04,leg_bear|regime_distribution_warning|supply_threat,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,5,0,0,0
-5435,2023-07-07,leg_bear|regime_distribution_warning,bear-buy-legitimo-vs-trap|topo/range/chop|preservar-monumentais,47,29,bear:14 topo:5 preservar:10,6,1,11,1,6,0,0,0
-5478,2023-07-18,regime_distribution_warning|range_or_chop|markup_context|clean_sky|has_continuation_sibling|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,37,1,0,0
-5530,2023-07-31,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,25,0,0,0
-5555,2023-08-04,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,1,7,1,2,0,0,0
-5627,2023-08-22,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,0,7,1,0,0,1,0
-5668,2023-08-31,regime_distribution_warning|range_or_chop|clean_sky|late_top_or_high_legpos,topo/range/chop,47,7,topo:7,6,0,33,0,3,0,0,0
-5701,2023-09-07,leg_bear|regime_distribution_warning|capit_or_flush,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|topo/range/chop|preservar-monumentais,47,30,bear:14 reversao:6 topo:3 preservar:7,6,1,10,1,7,0,0,0
-5724,2023-09-13,leg_bear|regime_distribution_warning|capit_or_flush,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|topo/range/chop|preservar-monumentais,47,30,bear:14 reversao:6 topo:3 preservar:7,6,0,10,1,1,0,0,0
-5772,2023-09-25,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,0,7,1,2,0,0,0
-5826,2023-10-06,leg_bear|regime_distribution_warning|capit_or_flush|markup_context|clean_sky,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,1,7,1,37,0,0,0
-5842,2023-10-11,regime_distribution_warning|range_or_chop|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,25,0,1,0
-5866,2023-10-17,regime_distribution_warning|range_or_chop|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,5,0,1,0
-5875,2023-10-18,regime_distribution_warning|range_or_chop|capit_or_flush|supply_threat|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,7,0,0,0
-5920,2023-10-30,leg_bull|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,13,0,0,0
-5955,2023-11-07,leg_bull|clean_sky|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,47,20,continuacao:12 preservar:8,6,1,20,0,1,1,0,0
-5998,2023-11-16,leg_bull|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,47,20,continuacao:12 preservar:8,6,1,20,0,9,1,0,0
-6049,2023-11-29,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,47,22,markup:11 topo:4 continuacao:7,6,1,18,0,37,0,1,0
-6069,2023-12-04,leg_bull|capit_or_flush|clean_sky,reversao/fundo/capitulacao|preservar-monumentais,47,22,reversao:12 preservar:10,6,1,18,0,5,0,0,0
-6119,2023-12-14,leg_bull|markup_context|clean_sky,markup-through-supply-vs-supply-rejection|continuacao-estrutural,47,19,markup:11 continuacao:8,6,1,21,0,11,0,0,0
-6162,2023-12-26,leg_bull|clean_sky|late_top_or_high_legpos,topo/range/chop,47,7,topo:7,6,1,33,0,4,0,0,0
-6193,2024-01-04,leg_bull|capit_or_flush,reversao/fundo/capitulacao|preservar-monumentais,47,22,reversao:12 preservar:10,6,0,18,0,0,0,1,0
-6210,2024-01-08,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,13,0,0,0
-6295,2024-01-29,leg_bear,bear-buy-legitimo-vs-trap|preservar-monumentais,47,24,bear:14 preservar:10,6,1,16,0,37,0,0,0
-6362,2024-02-13,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,3,0,0,0
-6376,2024-02-15,leg_bull|regime_distribution_warning|capit_or_flush,reversao/fundo/capitulacao|topo/range/chop|preservar-monumentais,47,26,reversao:12 topo:4 preservar:10,6,1,14,1,37,0,0,0
-6453,2024-03-05,leg_bull|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,6,0,0,0
-6471,2024-03-08,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,47,22,markup:11 topo:4 continuacao:7,6,1,18,0,37,0,0,0
-6489,2024-03-13,leg_bull|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,6,0,0,0
-6523,2024-03-21,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,47,22,markup:11 topo:4 continuacao:7,6,1,18,0,11,0,0,0
-6597,2024-04-09,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,47,22,markup:11 topo:4 continuacao:7,6,1,18,0,37,0,0,0
-6610,2024-04-11,leg_bull|clean_sky|late_top_or_high_legpos,topo/range/chop,47,7,topo:7,6,1,33,0,11,0,1,0
-6711,2024-05-06,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,25,0,0,0
-6729,2024-05-09,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,7,0,1,0
-6741,2024-05-13,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,13,0,1,0
-6767,2024-05-17,leg_bull|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,25,0,0,0
-6791,2024-05-23,leg_bull|capit_or_flush|clean_sky|has_continuation_sibling,reversao/fundo/capitulacao|continuacao-estrutural|preservar-monumentais,47,27,reversao:12 continuacao:10 preservar:5,6,1,13,1,1,1,0,0
-6819,2024-05-30,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,0,10,1,2,0,0,0
-6832,2024-06-03,leg_bull|capit_or_flush|clean_sky|has_continuation_sibling,reversao/fundo/capitulacao|continuacao-estrutural|preservar-monumentais,47,27,reversao:12 continuacao:10 preservar:5,6,1,13,1,11,1,0,0
-6844,2024-06-05,leg_bull|clean_sky|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,47,20,continuacao:12 preservar:8,6,1,20,0,11,1,0,0
-6887,2024-06-14,leg_bear|capit_or_flush,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|preservar-monumentais,47,27,bear:14 reversao:6 preservar:7,6,1,13,1,7,0,1,0
-6908,2024-06-20,leg_bull|markup_context|clean_sky,markup-through-supply-vs-supply-rejection|continuacao-estrutural,47,19,markup:11 continuacao:8,6,1,21,0,11,0,0,0
-6923,2024-06-24,leg_bull|capit_or_flush|supply_threat|has_continuation_sibling,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,0,8,1,0,1,0,0
-6954,2024-07-01,leg_bull|capit_or_flush,reversao/fundo/capitulacao|preservar-monumentais,47,22,reversao:12 preservar:10,6,0,18,0,0,0,0,0
-6962,2024-07-03,leg_bull|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,6,1,1,0
-6977,2024-07-05,leg_bull|capit_or_flush|has_continuation_sibling|late_top_or_high_legpos,reversao/fundo/capitulacao|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,30,reversao:12 topo:4 continuacao:9 preservar:5,6,0,10,1,0,1,0,0
-6992,2024-07-10,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,25,0,0,0
-7022,2024-07-17,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,47,22,markup:11 topo:4 continuacao:7,6,1,18,0,11,0,0,0
-7053,2024-07-24,leg_bull|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,47,20,continuacao:12 preservar:8,6,1,20,0,6,1,0,0
-7065,2024-07-26,leg_bull|capit_or_flush,reversao/fundo/capitulacao|preservar-monumentais,47,22,reversao:12 preservar:10,6,1,18,0,5,0,0,0
-7094,2024-08-02,leg_bull|capit_or_flush|supply_threat|has_continuation_sibling|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,0,8,1,2,1,0,0
-7119,2024-08-08,leg_bull|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,47,20,continuacao:12 preservar:8,6,1,20,0,37,1,0,0
-7129,2024-08-12,leg_bull|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,47,20,continuacao:12 preservar:8,6,1,20,0,9,1,0,0
-7149,2024-08-15,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,7,0,1,0
-7232,2024-09-04,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,1,0,1,0
-7253,2024-09-09,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,7,0,0,0
-7408,2024-10-15,leg_bull|clean_sky,,47,0,,6,0,40,0,0,0,0,0
-7426,2024-10-18,leg_bull|capit_or_flush|markup_context|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,1,8,1,7,0,0,0
-7454,2024-10-25,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,2,0,0,0
-7509,2024-11-07,leg_bull|capit_or_flush|has_continuation_sibling,reversao/fundo/capitulacao|continuacao-estrutural|preservar-monumentais,47,27,reversao:12 continuacao:10 preservar:5,6,1,13,1,6,1,0,0
-7549,2024-11-18,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,25,0,0,0
-7569,2024-11-21,leg_bull|regime_distribution_warning,topo/range/chop,47,7,topo:7,6,1,33,0,37,0,0,0
-7577,2024-11-22,leg_bull|regime_distribution_warning|supply_threat|has_continuation_sibling|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,6,1,0,0
-7662,2024-12-12,leg_bull|capit_or_flush|supply_threat|has_continuation_sibling,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,0,8,1,0,1,0,0
-7710,2024-12-26,leg_bull|regime_distribution_warning,topo/range/chop,47,7,topo:7,6,0,33,0,1,0,0,0
-7731,2024-12-31,leg_bull|regime_distribution_warning|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,3,0,0,0
-7765,2025-01-09,leg_bull|regime_distribution_warning|clean_sky|late_top_or_high_legpos,topo/range/chop,47,7,topo:7,6,1,33,0,1,0,0,0
-7797,2025-01-16,leg_bull|regime_distribution_warning|supply_threat|has_continuation_sibling|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,25,1,0,0
-7816,2025-01-21,leg_bull|has_continuation_sibling|late_top_or_high_legpos,topo/range/chop|continuacao-estrutural|preservar-monumentais,47,26,topo:7 continuacao:11 preservar:8,6,1,14,1,37,1,0,0
-7838,2025-01-27,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,7,0,0,0
-7869,2025-02-03,leg_bull|capit_or_flush|markup_context|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,0,8,1,0,0,0,0
-7902,2025-02-11,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,47,22,markup:11 topo:4 continuacao:7,6,1,18,0,37,0,0,0
-7924,2025-02-14,leg_bull|capit_or_flush,reversao/fundo/capitulacao|preservar-monumentais,47,22,reversao:12 preservar:10,6,1,18,0,5,0,0,0
-7933,2025-02-18,leg_bull|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,25,0,0,0
-7943,2025-02-19,leg_bull|capit_or_flush|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|topo/range/chop|preservar-monumentais,47,26,reversao:12 topo:4 preservar:10,6,1,14,1,5,0,0,0
-7993,2025-03-04,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,7,0,0,0
-8080,2025-03-24,leg_bull|capit_or_flush|clean_sky|has_continuation_sibling,reversao/fundo/capitulacao|continuacao-estrutural|preservar-monumentais,47,27,reversao:12 continuacao:10 preservar:5,6,0,13,1,0,1,0,0
-8095,2025-03-27,leg_bull|clean_sky|has_continuation_sibling|late_top_or_high_legpos,topo/range/chop|continuacao-estrutural|preservar-monumentais,47,26,topo:7 continuacao:11 preservar:8,6,1,14,1,6,1,1,0
-8111,2025-03-31,leg_bull|capit_or_flush|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|topo/range/chop|preservar-monumentais,47,26,reversao:12 topo:4 preservar:10,6,0,14,1,3,0,0,0
-8133,2025-04-04,leg_bull|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,47,20,continuacao:12 preservar:8,6,0,20,0,1,1,0,0
-8149,2025-04-09,leg_bull,,47,0,,6,1,40,0,37,0,0,0
-8157,2025-04-10,leg_bull|markup_context|clean_sky|has_continuation_sibling|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,11,1,0,0
-8200,2025-04-22,leg_bull|capit_or_flush|clean_sky,reversao/fundo/capitulacao|preservar-monumentais,47,22,reversao:12 preservar:10,6,0,18,0,3,0,0,0
-8216,2025-04-25,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,2,0,0,0
-8236,2025-04-30,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,0,10,1,0,0,0,0
-8277,2025-05-09,leg_bull|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,1,1,0,0
-8338,2025-05-23,leg_bull|capit_or_flush|supply_threat|has_continuation_sibling,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,1,8,1,3,1,0,0
-8357,2025-05-28,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,0,10,1,0,0,1,0
-8371,2025-06-02,leg_bull|clean_sky|late_top_or_high_legpos,topo/range/chop,47,7,topo:7,6,1,33,0,4,0,0,0
-8403,2025-06-09,leg_bull,,47,0,,6,1,40,0,6,0,0,0
-8431,2025-06-16,leg_bull|has_continuation_sibling|late_top_or_high_legpos,topo/range/chop|continuacao-estrutural|preservar-monumentais,47,26,topo:7 continuacao:11 preservar:8,6,1,14,1,37,1,0,0
-8460,2025-06-23,leg_bull|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,0,12,1,1,1,0,0
-8479,2025-06-26,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,25,0,0,0
-8497,2025-07-01,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,7,0,0,0
-8544,2025-07-11,leg_bull,,47,0,,6,1,40,0,37,0,1,0
-8589,2025-07-22,leg_bull|supply_threat|has_continuation_sibling|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,6,1,0,0
-8622,2025-07-30,leg_bull|markup_context|clean_sky,markup-through-supply-vs-supply-rejection|continuacao-estrutural,47,19,markup:11 continuacao:8,6,0,21,0,1,0,0,0
-8635,2025-08-01,leg_bull,,47,0,,6,1,40,0,37,0,0,0
-8659,2025-08-07,leg_bull|regime_distribution_warning,topo/range/chop,47,7,topo:7,6,1,33,0,6,0,0,0
-8765,2025-09-02,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,47,22,markup:11 topo:4 continuacao:7,6,1,18,0,11,0,1,0
-8823,2025-09-15,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,47,22,markup:11 topo:4 continuacao:7,6,1,18,0,37,0,1,0
-8858,2025-09-23,leg_bull|capit_or_flush|markup_context|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,0,8,1,1,0,0,0
-8878,2025-09-28,leg_bull|capit_or_flush|markup_context|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,1,8,1,7,0,0,0
-8893,2025-10-01,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,47,22,markup:11 topo:4 continuacao:7,6,1,18,0,37,0,1,0
-8905,2025-10-03,leg_bull|capit_or_flush|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|topo/range/chop|preservar-monumentais,47,26,reversao:12 topo:4 preservar:10,6,1,14,1,5,0,1,0
-8923,2025-10-08,leg_bull|capit_or_flush|markup_context|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,1,8,1,7,0,0,0
-8940,2025-10-13,leg_bull|capit_or_flush|markup_context|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,1,8,1,7,0,1,0
-8966,2025-10-17,leg_bull|capit_or_flush,reversao/fundo/capitulacao|preservar-monumentais,47,22,reversao:12 preservar:10,6,0,18,0,1,0,0,0
-8978,2025-10-21,leg_bull|capit_or_flush|has_continuation_sibling,reversao/fundo/capitulacao|continuacao-estrutural|preservar-monumentais,47,27,reversao:12 continuacao:10 preservar:5,6,1,13,1,1,1,0,0
-9007,2025-10-28,leg_bull|capit_or_flush,reversao/fundo/capitulacao|preservar-monumentais,47,22,reversao:12 preservar:10,6,0,18,0,0,0,0,0
-9081,2025-11-13,leg_bull|regime_distribution_warning|markup_context|clean_sky|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,37,1,1,0
-9105,2025-11-19,leg_bull|regime_distribution_warning,topo/range/chop,47,7,topo:7,6,1,33,0,6,0,0,0
-9199,2025-12-11,leg_bull|regime_distribution_warning|clean_sky|late_top_or_high_legpos,topo/range/chop,47,7,topo:7,6,1,33,0,11,0,0,0
-9215,2025-12-16,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,1,0,1,0
-9243,2025-12-22,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,47,22,markup:11 topo:4 continuacao:7,6,1,18,0,11,0,0,0
-9256,2025-12-26,leg_bull|clean_sky|late_top_or_high_legpos,topo/range/chop,47,7,topo:7,6,1,33,0,9,0,0,0
-9287,2026-01-05,leg_bull|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,47,20,continuacao:12 preservar:8,6,1,20,0,37,1,0,0
-9297,2026-01-06,leg_bull|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,1,1,1,0
-9304,2026-01-08,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,7,0,1,0
-9314,2026-01-09,leg_bull|markup_context|has_continuation_sibling|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,7,1,1,0
-9329,2026-01-14,leg_bull|clean_sky|late_top_or_high_legpos,topo/range/chop,47,7,topo:7,6,1,33,0,9,0,0,0
-9345,2026-01-18,leg_bull|capit_or_flush|markup_context|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,1,8,1,11,0,0,0
-9368,2026-01-22,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,47,22,markup:11 topo:4 continuacao:7,6,1,18,0,37,0,1,0
-9390,2026-01-28,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,47,22,markup:11 topo:4 continuacao:7,6,1,18,0,11,0,0,0
-9432,2026-02-06,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,0,25,0,1,0,0,0
-9492,2026-02-20,leg_bull|regime_distribution_warning|clean_sky|late_top_or_high_legpos,topo/range/chop,47,7,topo:7,6,0,33,0,0,0,0,0
-9504,2026-02-24,leg_bull|regime_distribution_warning|clean_sky|has_continuation_sibling,topo/range/chop|continuacao-estrutural|preservar-monumentais,47,26,topo:7 continuacao:11 preservar:8,6,1,14,1,4,1,0,0
-9512,2026-02-25,leg_bull|regime_distribution_warning|supply_threat|has_continuation_sibling|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,7,1,0,0
-9523,2026-02-27,leg_bull|regime_distribution_warning|markup_context|clean_sky|has_continuation_sibling|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,28,markup:11 topo:4 continuacao:7 preservar:6,6,0,12,1,1,1,0,0
-9530,2026-03-02,leg_bull|regime_distribution_warning|capit_or_flush|clean_sky|has_continuation_sibling|late_top_or_high_legpos,reversao/fundo/capitulacao|topo/range/chop|continuacao-estrutural|preservar-monumentais,47,30,reversao:12 topo:4 continuacao:9 preservar:5,6,0,10,1,3,1,0,0
-9537,2026-03-03,leg_bull|regime_distribution_warning|capit_or_flush,reversao/fundo/capitulacao|topo/range/chop|preservar-monumentais,47,26,reversao:12 topo:4 preservar:10,6,0,14,1,0,0,0,0
-9582,2026-03-13,leg_bull|regime_distribution_warning|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,30,reversao:12 markup:10 topo:2 preservar:6,6,0,10,1,2,0,0,0
-9628,2026-03-25,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,25,0,0,0
-9646,2026-03-30,leg_bear|regime_distribution_warning|supply_threat,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,47,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,6,0,0,0
-9727,2026-04-17,leg_bull|regime_distribution_warning|late_top_or_high_legpos,topo/range/chop,47,7,topo:7,6,1,33,0,37,0,1,0
-9805,2026-05-06,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,47,15,markup:11 topo:4,6,1,25,0,25,0,0,0
+55,2020-01-14,leg_bull|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,0,12,1,0,1,0,1
+78,2020-01-20,leg_bull|markup_context|clean_sky|has_continuation_sibling,markup-through-supply-vs-supply-rejection|continuacao-estrutural|preservar-monumentais,50,25,markup:11 continuacao:8 preservar:6,6,1,15,0,37,1,0,1
+116,2020-01-28,leg_bull|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,0,12,1,0,1,0,0
+130,2020-01-30,leg_bull|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,7,1,1,1
+140,2020-02-03,leg_bull|capit_or_flush|supply_threat|has_continuation_sibling,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,1,8,1,7,1,0,1
+149,2020-02-05,leg_bull|capit_or_flush|has_continuation_sibling,reversao/fundo/capitulacao|continuacao-estrutural|preservar-monumentais,50,27,reversao:12 continuacao:10 preservar:5,6,1,13,1,6,1,0,1
+159,2020-02-06,leg_bull|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,50,20,continuacao:12 preservar:8,6,1,20,0,37,1,0,1
+217,2020-02-20,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,50,22,markup:11 topo:4 continuacao:7,6,1,18,0,11,0,0,1
+237,2020-02-25,leg_bull|capit_or_flush|has_continuation_sibling,reversao/fundo/capitulacao|continuacao-estrutural|preservar-monumentais,50,27,reversao:12 continuacao:10 preservar:5,6,0,13,1,0,1,1,1
+287,2020-03-09,leg_bull|markup_context|clean_sky|has_continuation_sibling,markup-through-supply-vs-supply-rejection|continuacao-estrutural|preservar-monumentais,50,25,markup:11 continuacao:8 preservar:6,6,1,15,0,37,1,1,1
+351,2020-03-23,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,25,0,0,1
+383,2020-03-31,leg_bull|regime_distribution_warning|clean_sky|has_continuation_sibling,topo/range/chop|continuacao-estrutural|preservar-monumentais,50,26,topo:7 continuacao:11 preservar:8,6,0,14,1,0,1,0,1
+391,2020-04-01,leg_bull|regime_distribution_warning|clean_sky|has_continuation_sibling,topo/range/chop|continuacao-estrutural|preservar-monumentais,50,26,topo:7 continuacao:11 preservar:8,6,1,14,1,6,1,0,1
+413,2020-04-07,leg_bull|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,25,0,1,0
+458,2020-04-17,leg_bull|capit_or_flush,reversao/fundo/capitulacao|preservar-monumentais,50,22,reversao:12 preservar:10,6,0,18,0,3,0,0,1
+493,2020-04-27,leg_bull|capit_or_flush|supply_threat|has_continuation_sibling,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,0,8,1,0,1,0,1
+521,2020-05-04,leg_bull|capit_or_flush|supply_threat|has_continuation_sibling,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,1,8,1,13,1,0,1
+542,2020-05-07,leg_bull|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,25,1,0,1
+583,2020-05-18,leg_bull|markup_context|clean_sky|has_continuation_sibling,markup-through-supply-vs-supply-rejection|continuacao-estrutural|preservar-monumentais,50,25,markup:11 continuacao:8 preservar:6,6,0,15,0,1,1,0,1
+597,2020-05-20,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,7,0,0,0
+631,2020-05-28,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,13,0,0,1
+685,2020-06-10,leg_bull|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,25,0,0,1
+702,2020-06-15,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,5,0,1,0
+766,2020-06-30,leg_bull|clean_sky|late_top_or_high_legpos,topo/range/chop,50,7,topo:7,6,1,33,0,9,0,0,1
+780,2020-07-02,leg_bull|capit_or_flush|supply_threat|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,7,0,1,1
+833,2020-07-15,leg_bull|clean_sky|late_top_or_high_legpos,topo/range/chop,50,7,topo:7,6,1,33,0,6,0,0,1
+845,2020-07-17,leg_bull|clean_sky|late_top_or_high_legpos,topo/range/chop,50,7,topo:7,6,1,33,0,6,0,0,1
+866,2020-07-23,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,50,22,markup:11 topo:4 continuacao:7,6,1,18,0,11,0,1,1
+886,2020-07-28,leg_bull|capit_or_flush|clean_sky,reversao/fundo/capitulacao|preservar-monumentais,50,22,reversao:12 preservar:10,6,0,18,0,3,0,0,0
+901,2020-07-30,leg_bull|capit_or_flush|supply_threat|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,5,0,1,1
+919,2020-08-04,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,50,22,markup:11 topo:4 continuacao:7,6,1,18,0,37,0,0,1
+934,2020-08-07,leg_bull|clean_sky|late_top_or_high_legpos,topo/range/chop,50,7,topo:7,6,1,33,0,4,0,0,1
+970,2020-08-17,leg_bull|clean_sky,,50,0,,6,0,40,0,3,0,0,1
+1027,2020-08-30,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,7,0,0,0
+1072,2020-09-09,leg_bull,,50,0,,6,1,40,0,37,0,0,0
+1151,2020-09-28,leg_bull|regime_distribution_warning|markup_context|clean_sky|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,11,1,0,0
+1200,2020-10-08,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,1,7,1,7,0,0,1
+1211,2020-10-12,leg_bull|regime_distribution_warning|has_continuation_sibling|late_top_or_high_legpos,topo/range/chop|continuacao-estrutural|preservar-monumentais,50,26,topo:7 continuacao:11 preservar:8,6,1,14,1,11,1,0,1
+1221,2020-10-14,leg_bull|regime_distribution_warning|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,7,1,0,1
+1298,2020-11-02,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,6,0,1,0
+1316,2020-11-05,leg_bear|regime_distribution_warning|markup_context|late_top_or_high_legpos,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,13,0,0,1
+1326,2020-11-08,leg_bull|regime_distribution_warning|supply_threat|has_continuation_sibling|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,0,12,1,0,1,0,1
+1353,2020-11-13,leg_bull|regime_distribution_warning|clean_sky|has_continuation_sibling,topo/range/chop|continuacao-estrutural|preservar-monumentais,50,26,topo:7 continuacao:11 preservar:8,6,1,14,1,6,1,1,0
+1429,2020-12-02,leg_bear|regime_distribution_warning|markup_context|clean_sky,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,37,0,0,0
+1497,2020-12-17,leg_bear|regime_distribution_warning|supply_threat|late_top_or_high_legpos,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,25,0,0,1
+1522,2020-12-23,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,1,7,1,7,0,0,0
+1568,2021-01-06,leg_bull|capit_or_flush|has_continuation_sibling,reversao/fundo/capitulacao|continuacao-estrutural|preservar-monumentais,50,27,reversao:12 continuacao:10 preservar:5,6,0,13,1,1,1,0,0
+1623,2021-01-20,leg_bear|regime_distribution_warning|markup_context|clean_sky,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,37,0,0,0
+1661,2021-01-28,leg_bear|regime_distribution_warning|capit_or_flush|markup_context|clean_sky,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,1,7,1,7,0,1,0
+1761,2021-02-22,leg_bear|regime_distribution_warning|capit_or_flush,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|topo/range/chop|preservar-monumentais,50,30,bear:14 reversao:6 topo:3 preservar:7,6,1,10,1,6,0,0,1
+1775,2021-02-24,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,0,7,1,0,0,0,1
+1836,2021-03-10,leg_bear|regime_distribution_warning|supply_threat,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,6,0,0,0
+1873,2021-03-18,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,0,7,1,0,0,0,0
+1901,2021-03-25,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,0,7,1,0,0,0,1
+1941,2021-04-06,regime_distribution_warning|range_or_chop,topo/range/chop,50,7,topo:7,6,1,33,0,37,0,1,0
+2034,2021-04-27,leg_bull|regime_distribution_warning|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,0,10,1,2,0,0,0
+2053,2021-05-02,leg_bull|regime_distribution_warning|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,7,0,0,1
+2100,2021-05-12,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,0,25,0,0,0,1,1
+2110,2021-05-14,leg_bull|regime_distribution_warning|late_top_or_high_legpos,topo/range/chop,50,7,topo:7,6,0,33,0,0,0,1,0
+2174,2021-05-31,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,50,22,markup:11 topo:4 continuacao:7,6,1,18,0,37,0,0,0
+2188,2021-06-02,leg_bull|capit_or_flush|supply_threat|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,7,0,0,0
+2204,2021-06-07,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,25,0,0,1
+2222,2021-06-10,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,0,10,1,0,0,0,0
+2320,2021-07-02,leg_bull|regime_distribution_warning|markup_context|clean_sky,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,50,22,markup:11 topo:4 continuacao:7,6,1,18,0,37,0,0,0
+2364,2021-07-14,leg_bull|regime_distribution_warning|clean_sky|late_top_or_high_legpos,topo/range/chop,50,7,topo:7,6,1,33,0,11,0,1,0
+2372,2021-07-15,leg_bull|regime_distribution_warning|late_top_or_high_legpos,topo/range/chop,50,7,topo:7,6,1,33,0,6,0,0,0
+2428,2021-07-28,leg_bull|regime_distribution_warning|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,6,0,0,0
+2488,2021-08-11,leg_bull|regime_distribution_warning|markup_context|clean_sky|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,37,1,1,0
+2497,2021-08-13,leg_bear|regime_distribution_warning|capit_or_flush|clean_sky|has_continuation_sibling,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,32,bear:14 reversao:6 topo:3 continuacao:7 preservar:2,6,1,8,1,1,1,1,0
+2544,2021-08-25,regime_distribution_warning|range_or_chop|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,5,0,0,0
+2663,2021-09-22,regime_distribution_warning|range_or_chop,topo/range/chop,50,7,topo:7,6,1,33,0,9,0,1,0
+2705,2021-10-01,leg_bear|regime_distribution_warning|supply_threat,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,13,0,0,0
+2737,2021-10-08,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,1,7,1,1,0,0,0
+2747,2021-10-12,leg_bear|regime_distribution_warning|supply_threat,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,13,0,0,0
+2859,2021-11-05,leg_bull|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,6,0,0,0
+2896,2021-11-15,leg_bull|late_top_or_high_legpos,topo/range/chop,50,7,topo:7,6,1,33,0,9,0,1,0
+2905,2021-11-17,leg_bull|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,13,0,0,0
+2922,2021-11-22,leg_bull|capit_or_flush|supply_threat|has_continuation_sibling,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,0,8,1,0,1,0,0
+2944,2021-11-26,leg_bull|regime_distribution_warning|capit_or_flush|markup_context|clean_sky|has_continuation_sibling,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,1,8,1,37,1,1,0
+2991,2021-12-08,leg_bull|regime_distribution_warning|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,0,12,1,0,1,0,0
+3011,2021-12-13,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,6,0,0,0
+3029,2021-12-16,leg_bull|regime_distribution_warning|capit_or_flush|markup_context|has_continuation_sibling,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,1,8,1,7,1,0,0
+3070,2021-12-28,leg_bull|regime_distribution_warning|markup_context|clean_sky|has_continuation_sibling|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,37,1,0,0
+3085,2021-12-30,leg_bull|regime_distribution_warning|clean_sky|late_top_or_high_legpos,topo/range/chop,50,7,topo:7,6,1,33,0,11,0,1,0
+3102,2022-01-04,leg_bull|regime_distribution_warning|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,7,0,0,0
+3118,2022-01-07,leg_bull|regime_distribution_warning|capit_or_flush|clean_sky|has_continuation_sibling,reversao/fundo/capitulacao|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,30,reversao:12 topo:4 continuacao:9 preservar:5,6,1,10,1,1,1,0,0
+3126,2022-01-10,leg_bull|regime_distribution_warning|has_continuation_sibling,topo/range/chop|continuacao-estrutural|preservar-monumentais,50,26,topo:7 continuacao:11 preservar:8,6,1,14,1,37,1,1,0
+3147,2022-01-14,leg_bull|regime_distribution_warning|capit_or_flush|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|topo/range/chop|preservar-monumentais,50,26,reversao:12 topo:4 preservar:10,6,1,14,1,1,0,0,0
+3162,2022-01-18,leg_bull|regime_distribution_warning|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,0,10,1,2,0,0,0
+3178,2022-01-21,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,5,0,0,0
+3190,2022-01-25,leg_bull|capit_or_flush|late_top_or_high_legpos,reversao/fundo/capitulacao|topo/range/chop|preservar-monumentais,50,26,reversao:12 topo:4 preservar:10,6,0,14,1,0,0,1,0
+3219,2022-02-01,leg_bull|capit_or_flush|clean_sky|has_continuation_sibling,reversao/fundo/capitulacao|continuacao-estrutural|preservar-monumentais,50,27,reversao:12 continuacao:10 preservar:5,6,1,13,1,11,1,0,0
+3238,2022-02-04,leg_bull|regime_distribution_warning|clean_sky|has_continuation_sibling,topo/range/chop|continuacao-estrutural|preservar-monumentais,50,26,topo:7 continuacao:11 preservar:8,6,1,14,1,11,1,0,0
+3252,2022-02-08,leg_bull|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,50,20,continuacao:12 preservar:8,6,1,20,0,4,1,1,0
+3326,2022-02-24,leg_bull|capit_or_flush,reversao/fundo/capitulacao|preservar-monumentais,50,22,reversao:12 preservar:10,6,1,18,0,5,0,0,0
+3443,2022-03-24,leg_bull|markup_context|clean_sky,markup-through-supply-vs-supply-rejection|continuacao-estrutural,50,19,markup:11 continuacao:8,6,1,21,0,37,0,1,0
+3474,2022-03-31,leg_bull|clean_sky,,50,0,,6,0,40,0,0,0,1,0
+3491,2022-04-05,leg_bull|markup_context|clean_sky,markup-through-supply-vs-supply-rejection|continuacao-estrutural,50,19,markup:11 continuacao:8,6,1,21,0,37,0,1,0
+3509,2022-04-08,leg_bull|markup_context|clean_sky,markup-through-supply-vs-supply-rejection|continuacao-estrutural,50,19,markup:11 continuacao:8,6,1,21,0,37,0,1,0
+3622,2022-05-06,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,13,0,0,0
+3678,2022-05-19,leg_bear|regime_distribution_warning|supply_threat,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,6,0,0,0
+3773,2022-06-10,leg_bull|regime_distribution_warning,topo/range/chop,50,7,topo:7,6,0,33,0,0,0,0,0
+3799,2022-06-16,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,25,0,0,0
+3825,2022-06-23,leg_bear|regime_distribution_warning|supply_threat,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,13,0,0,0
+3836,2022-06-26,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,0,7,1,2,0,0,0
+3929,2022-07-18,leg_bear|regime_distribution_warning|supply_threat,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,25,0,1,0
+3949,2022-07-21,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,0,7,1,1,0,1,0
+4095,2022-08-25,regime_distribution_warning|range_or_chop|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,25,0,0,0
+4243,2022-09-28,leg_bear|regime_distribution_warning|supply_threat,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,25,0,0,0
+4309,2022-10-13,regime_distribution_warning|range_or_chop|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,6,0,0,0
+4346,2022-10-23,leg_bear|regime_distribution_warning|supply_threat,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,25,0,0,0
+4372,2022-10-28,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,0,25,0,2,0,0,0
+4384,2022-11-01,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,0,7,1,2,0,1,0
+4401,2022-11-04,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,1,7,1,13,0,1,0
+4429,2022-11-10,regime_distribution_warning|range_or_chop|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,25,0,0,0
+4483,2022-11-23,regime_distribution_warning|range_or_chop|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,0,10,1,1,0,1,0
+4513,2022-11-30,leg_bull|regime_distribution_warning|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,25,0,0,0
+4530,2022-12-05,leg_bull,,50,0,,6,0,40,0,0,0,0,0
+4574,2022-12-15,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,13,0,0,1
+4609,2022-12-22,leg_bull|capit_or_flush,reversao/fundo/capitulacao|preservar-monumentais,50,22,reversao:12 preservar:10,6,1,18,0,1,0,0,0
+4644,2023-01-03,leg_bull|capit_or_flush|supply_threat|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,1,0,1,0
+4677,2023-01-11,leg_bull|clean_sky|late_top_or_high_legpos,topo/range/chop,50,7,topo:7,6,1,33,0,9,0,1,0
+4763,2023-01-31,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,6,0,0,0
+4899,2023-03-03,leg_bear|regime_distribution_warning|has_continuation_sibling,bear-buy-legitimo-vs-trap|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,31,bear:14 topo:5 continuacao:8 preservar:4,6,1,9,1,9,1,0,0
+4908,2023-03-06,leg_bull|regime_distribution_warning|has_continuation_sibling,topo/range/chop|continuacao-estrutural|preservar-monumentais,50,26,topo:7 continuacao:11 preservar:8,6,1,14,1,11,1,0,0
+4918,2023-03-08,leg_bear|regime_distribution_warning|capit_or_flush|has_continuation_sibling,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,32,bear:14 reversao:6 topo:3 continuacao:7 preservar:2,6,1,8,1,7,1,0,0
+4926,2023-03-09,leg_bear|regime_distribution_warning|supply_threat|has_continuation_sibling,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,32,bear:14 markup:8 topo:3 continuacao:4 preservar:3,6,1,8,1,25,1,0,0
+4964,2023-03-20,leg_bull|capit_or_flush|markup_context|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,0,8,1,1,0,0,0
+4996,2023-03-27,leg_bull|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,50,20,continuacao:12 preservar:8,6,1,20,0,1,1,0,0
+5016,2023-03-30,leg_bull|supply_threat|has_continuation_sibling|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,25,1,0,0
+5042,2023-04-06,leg_bull|clean_sky|has_continuation_sibling|late_top_or_high_legpos,topo/range/chop|continuacao-estrutural|preservar-monumentais,50,26,topo:7 continuacao:11 preservar:8,6,0,14,1,3,1,0,0
+5055,2023-04-11,leg_bull|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,7,1,0,0
+5087,2023-04-18,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,3,0,0,0
+5103,2023-04-21,leg_bull|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,7,1,0,0
+5147,2023-05-02,leg_bull|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,50,20,continuacao:12 preservar:8,6,1,20,0,11,1,0,0
+5165,2023-05-05,leg_bull|capit_or_flush,reversao/fundo/capitulacao|preservar-monumentais,50,22,reversao:12 preservar:10,6,1,18,0,1,0,0,0
+5296,2023-06-06,leg_bear|has_continuation_sibling,bear-buy-legitimo-vs-trap|continuacao-estrutural|preservar-monumentais,50,27,bear:14 continuacao:9 preservar:4,6,1,13,1,11,1,0,0
+5321,2023-06-12,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,0,25,0,0,0,0,0
+5331,2023-06-14,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,13,0,0,0
+5350,2023-06-19,leg_bull,,50,0,,6,1,40,0,9,0,0,0
+5414,2023-07-04,leg_bear|regime_distribution_warning|supply_threat,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,5,0,0,0
+5435,2023-07-07,leg_bear|regime_distribution_warning,bear-buy-legitimo-vs-trap|topo/range/chop|preservar-monumentais,50,29,bear:14 topo:5 preservar:10,6,1,11,1,6,0,0,0
+5478,2023-07-18,regime_distribution_warning|range_or_chop|markup_context|clean_sky|has_continuation_sibling|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,37,1,0,0
+5530,2023-07-31,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,25,0,0,0
+5555,2023-08-04,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,1,7,1,2,0,0,0
+5627,2023-08-22,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,0,7,1,0,0,1,0
+5668,2023-08-31,regime_distribution_warning|range_or_chop|clean_sky|late_top_or_high_legpos,topo/range/chop,50,7,topo:7,6,0,33,0,3,0,0,0
+5701,2023-09-07,leg_bear|regime_distribution_warning|capit_or_flush,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|topo/range/chop|preservar-monumentais,50,30,bear:14 reversao:6 topo:3 preservar:7,6,1,10,1,7,0,0,0
+5724,2023-09-13,leg_bear|regime_distribution_warning|capit_or_flush,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|topo/range/chop|preservar-monumentais,50,30,bear:14 reversao:6 topo:3 preservar:7,6,0,10,1,1,0,0,0
+5772,2023-09-25,leg_bear|regime_distribution_warning|capit_or_flush|supply_threat,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,0,7,1,2,0,0,0
+5826,2023-10-06,leg_bear|regime_distribution_warning|capit_or_flush|markup_context|clean_sky,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,33,bear:14 reversao:6 markup:7 topo:2 preservar:4,6,1,7,1,37,0,0,0
+5842,2023-10-11,regime_distribution_warning|range_or_chop|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,25,0,1,0
+5866,2023-10-17,regime_distribution_warning|range_or_chop|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,5,0,1,0
+5875,2023-10-18,regime_distribution_warning|range_or_chop|capit_or_flush|supply_threat|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,7,0,0,0
+5920,2023-10-30,leg_bull|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,13,0,0,0
+5955,2023-11-07,leg_bull|clean_sky|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,50,20,continuacao:12 preservar:8,6,1,20,0,1,1,0,0
+5998,2023-11-16,leg_bull|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,50,20,continuacao:12 preservar:8,6,1,20,0,9,1,0,0
+6049,2023-11-29,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,50,22,markup:11 topo:4 continuacao:7,6,1,18,0,37,0,1,0
+6069,2023-12-04,leg_bull|capit_or_flush|clean_sky,reversao/fundo/capitulacao|preservar-monumentais,50,22,reversao:12 preservar:10,6,1,18,0,5,0,0,0
+6119,2023-12-14,leg_bull|markup_context|clean_sky,markup-through-supply-vs-supply-rejection|continuacao-estrutural,50,19,markup:11 continuacao:8,6,1,21,0,11,0,0,0
+6162,2023-12-26,leg_bull|clean_sky|late_top_or_high_legpos,topo/range/chop,50,7,topo:7,6,1,33,0,4,0,0,0
+6193,2024-01-04,leg_bull|capit_or_flush,reversao/fundo/capitulacao|preservar-monumentais,50,22,reversao:12 preservar:10,6,0,18,0,0,0,1,0
+6210,2024-01-08,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,13,0,0,0
+6295,2024-01-29,leg_bear,bear-buy-legitimo-vs-trap|preservar-monumentais,50,24,bear:14 preservar:10,6,1,16,0,37,0,0,0
+6362,2024-02-13,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,3,0,0,0
+6376,2024-02-15,leg_bull|regime_distribution_warning|capit_or_flush,reversao/fundo/capitulacao|topo/range/chop|preservar-monumentais,50,26,reversao:12 topo:4 preservar:10,6,1,14,1,37,0,0,0
+6453,2024-03-05,leg_bull|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,6,0,0,0
+6471,2024-03-08,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,50,22,markup:11 topo:4 continuacao:7,6,1,18,0,37,0,0,0
+6489,2024-03-13,leg_bull|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,6,0,0,0
+6523,2024-03-21,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,50,22,markup:11 topo:4 continuacao:7,6,1,18,0,11,0,0,0
+6597,2024-04-09,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,50,22,markup:11 topo:4 continuacao:7,6,1,18,0,37,0,0,0
+6610,2024-04-11,leg_bull|clean_sky|late_top_or_high_legpos,topo/range/chop,50,7,topo:7,6,1,33,0,11,0,1,0
+6711,2024-05-06,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,25,0,0,0
+6729,2024-05-09,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,7,0,1,0
+6741,2024-05-13,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,13,0,1,0
+6767,2024-05-17,leg_bull|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,25,0,0,0
+6791,2024-05-23,leg_bull|capit_or_flush|clean_sky|has_continuation_sibling,reversao/fundo/capitulacao|continuacao-estrutural|preservar-monumentais,50,27,reversao:12 continuacao:10 preservar:5,6,1,13,1,1,1,0,0
+6819,2024-05-30,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,0,10,1,2,0,0,0
+6832,2024-06-03,leg_bull|capit_or_flush|clean_sky|has_continuation_sibling,reversao/fundo/capitulacao|continuacao-estrutural|preservar-monumentais,50,27,reversao:12 continuacao:10 preservar:5,6,1,13,1,11,1,0,0
+6844,2024-06-05,leg_bull|clean_sky|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,50,20,continuacao:12 preservar:8,6,1,20,0,11,1,0,0
+6887,2024-06-14,leg_bear|capit_or_flush,bear-buy-legitimo-vs-trap|reversao/fundo/capitulacao|preservar-monumentais,50,27,bear:14 reversao:6 preservar:7,6,1,13,1,7,0,1,0
+6908,2024-06-20,leg_bull|markup_context|clean_sky,markup-through-supply-vs-supply-rejection|continuacao-estrutural,50,19,markup:11 continuacao:8,6,1,21,0,11,0,0,0
+6923,2024-06-24,leg_bull|capit_or_flush|supply_threat|has_continuation_sibling,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,0,8,1,0,1,0,0
+6954,2024-07-01,leg_bull|capit_or_flush,reversao/fundo/capitulacao|preservar-monumentais,50,22,reversao:12 preservar:10,6,0,18,0,0,0,0,0
+6962,2024-07-03,leg_bull|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,6,1,1,0
+6977,2024-07-05,leg_bull|capit_or_flush|has_continuation_sibling|late_top_or_high_legpos,reversao/fundo/capitulacao|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,30,reversao:12 topo:4 continuacao:9 preservar:5,6,0,10,1,0,1,0,0
+6992,2024-07-10,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,25,0,0,0
+7022,2024-07-17,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,50,22,markup:11 topo:4 continuacao:7,6,1,18,0,11,0,0,0
+7053,2024-07-24,leg_bull|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,50,20,continuacao:12 preservar:8,6,1,20,0,6,1,0,0
+7065,2024-07-26,leg_bull|capit_or_flush,reversao/fundo/capitulacao|preservar-monumentais,50,22,reversao:12 preservar:10,6,1,18,0,5,0,0,0
+7094,2024-08-02,leg_bull|capit_or_flush|supply_threat|has_continuation_sibling|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,0,8,1,2,1,0,0
+7119,2024-08-08,leg_bull|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,50,20,continuacao:12 preservar:8,6,1,20,0,37,1,0,0
+7129,2024-08-12,leg_bull|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,50,20,continuacao:12 preservar:8,6,1,20,0,9,1,0,0
+7149,2024-08-15,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,7,0,1,0
+7232,2024-09-04,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,1,0,1,0
+7253,2024-09-09,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,7,0,0,0
+7408,2024-10-15,leg_bull|clean_sky,,50,0,,6,0,40,0,0,0,0,0
+7426,2024-10-18,leg_bull|capit_or_flush|markup_context|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,1,8,1,7,0,0,0
+7454,2024-10-25,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,2,0,0,0
+7509,2024-11-07,leg_bull|capit_or_flush|has_continuation_sibling,reversao/fundo/capitulacao|continuacao-estrutural|preservar-monumentais,50,27,reversao:12 continuacao:10 preservar:5,6,1,13,1,6,1,0,0
+7549,2024-11-18,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,25,0,0,0
+7569,2024-11-21,leg_bull|regime_distribution_warning,topo/range/chop,50,7,topo:7,6,1,33,0,37,0,0,0
+7577,2024-11-22,leg_bull|regime_distribution_warning|supply_threat|has_continuation_sibling|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,6,1,0,0
+7662,2024-12-12,leg_bull|capit_or_flush|supply_threat|has_continuation_sibling,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,0,8,1,0,1,0,0
+7710,2024-12-26,leg_bull|regime_distribution_warning,topo/range/chop,50,7,topo:7,6,0,33,0,1,0,0,0
+7731,2024-12-31,leg_bull|regime_distribution_warning|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,1,10,1,3,0,0,0
+7765,2025-01-09,leg_bull|regime_distribution_warning|clean_sky|late_top_or_high_legpos,topo/range/chop,50,7,topo:7,6,1,33,0,1,0,0,0
+7797,2025-01-16,leg_bull|regime_distribution_warning|supply_threat|has_continuation_sibling|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,25,1,0,0
+7816,2025-01-21,leg_bull|has_continuation_sibling|late_top_or_high_legpos,topo/range/chop|continuacao-estrutural|preservar-monumentais,50,26,topo:7 continuacao:11 preservar:8,6,1,14,1,37,1,0,0
+7838,2025-01-27,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,7,0,0,0
+7869,2025-02-03,leg_bull|capit_or_flush|markup_context|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,0,8,1,0,0,0,0
+7902,2025-02-11,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,50,22,markup:11 topo:4 continuacao:7,6,1,18,0,37,0,0,0
+7924,2025-02-14,leg_bull|capit_or_flush,reversao/fundo/capitulacao|preservar-monumentais,50,22,reversao:12 preservar:10,6,1,18,0,5,0,0,0
+7933,2025-02-18,leg_bull|supply_threat|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,25,0,0,0
+7943,2025-02-19,leg_bull|capit_or_flush|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|topo/range/chop|preservar-monumentais,50,26,reversao:12 topo:4 preservar:10,6,1,14,1,5,0,0,0
+7993,2025-03-04,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,7,0,0,0
+8080,2025-03-24,leg_bull|capit_or_flush|clean_sky|has_continuation_sibling,reversao/fundo/capitulacao|continuacao-estrutural|preservar-monumentais,50,27,reversao:12 continuacao:10 preservar:5,6,0,13,1,0,1,0,0
+8095,2025-03-27,leg_bull|clean_sky|has_continuation_sibling|late_top_or_high_legpos,topo/range/chop|continuacao-estrutural|preservar-monumentais,50,26,topo:7 continuacao:11 preservar:8,6,1,14,1,6,1,1,0
+8111,2025-03-31,leg_bull|capit_or_flush|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|topo/range/chop|preservar-monumentais,50,26,reversao:12 topo:4 preservar:10,6,0,14,1,3,0,0,0
+8133,2025-04-04,leg_bull|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,50,20,continuacao:12 preservar:8,6,0,20,0,1,1,0,0
+8149,2025-04-09,leg_bull,,50,0,,6,1,40,0,37,0,0,0
+8157,2025-04-10,leg_bull|markup_context|clean_sky|has_continuation_sibling|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,11,1,0,0
+8200,2025-04-22,leg_bull|capit_or_flush|clean_sky,reversao/fundo/capitulacao|preservar-monumentais,50,22,reversao:12 preservar:10,6,0,18,0,3,0,0,0
+8216,2025-04-25,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,2,0,0,0
+8236,2025-04-30,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,0,10,1,0,0,0,0
+8277,2025-05-09,leg_bull|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,1,1,0,0
+8338,2025-05-23,leg_bull|capit_or_flush|supply_threat|has_continuation_sibling,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,1,8,1,3,1,0,0
+8357,2025-05-28,leg_bull|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,0,10,1,0,0,1,0
+8371,2025-06-02,leg_bull|clean_sky|late_top_or_high_legpos,topo/range/chop,50,7,topo:7,6,1,33,0,4,0,0,0
+8403,2025-06-09,leg_bull,,50,0,,6,1,40,0,6,0,0,0
+8431,2025-06-16,leg_bull|has_continuation_sibling|late_top_or_high_legpos,topo/range/chop|continuacao-estrutural|preservar-monumentais,50,26,topo:7 continuacao:11 preservar:8,6,1,14,1,37,1,0,0
+8460,2025-06-23,leg_bull|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,0,12,1,1,1,0,0
+8479,2025-06-26,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,25,0,0,0
+8497,2025-07-01,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,7,0,0,0
+8544,2025-07-11,leg_bull,,50,0,,6,1,40,0,37,0,1,0
+8589,2025-07-22,leg_bull|supply_threat|has_continuation_sibling|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,6,1,0,0
+8622,2025-07-30,leg_bull|markup_context|clean_sky,markup-through-supply-vs-supply-rejection|continuacao-estrutural,50,19,markup:11 continuacao:8,6,0,21,0,1,0,0,0
+8635,2025-08-01,leg_bull,,50,0,,6,1,40,0,37,0,0,0
+8659,2025-08-07,leg_bull|regime_distribution_warning,topo/range/chop,50,7,topo:7,6,1,33,0,6,0,0,0
+8765,2025-09-02,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,50,22,markup:11 topo:4 continuacao:7,6,1,18,0,11,0,1,0
+8823,2025-09-15,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,50,22,markup:11 topo:4 continuacao:7,6,1,18,0,37,0,1,0
+8858,2025-09-23,leg_bull|capit_or_flush|markup_context|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,0,8,1,1,0,0,0
+8878,2025-09-28,leg_bull|capit_or_flush|markup_context|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,1,8,1,7,0,0,0
+8893,2025-10-01,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,50,22,markup:11 topo:4 continuacao:7,6,1,18,0,37,0,1,0
+8905,2025-10-03,leg_bull|capit_or_flush|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|topo/range/chop|preservar-monumentais,50,26,reversao:12 topo:4 preservar:10,6,1,14,1,5,0,1,0
+8923,2025-10-08,leg_bull|capit_or_flush|markup_context|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,1,8,1,7,0,0,0
+8940,2025-10-13,leg_bull|capit_or_flush|markup_context|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,1,8,1,7,0,1,0
+8966,2025-10-17,leg_bull|capit_or_flush,reversao/fundo/capitulacao|preservar-monumentais,50,22,reversao:12 preservar:10,6,0,18,0,1,0,0,0
+8978,2025-10-21,leg_bull|capit_or_flush|has_continuation_sibling,reversao/fundo/capitulacao|continuacao-estrutural|preservar-monumentais,50,27,reversao:12 continuacao:10 preservar:5,6,1,13,1,1,1,0,0
+9007,2025-10-28,leg_bull|capit_or_flush,reversao/fundo/capitulacao|preservar-monumentais,50,22,reversao:12 preservar:10,6,0,18,0,0,0,0,0
+9081,2025-11-13,leg_bull|regime_distribution_warning|markup_context|clean_sky|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,37,1,1,0
+9105,2025-11-19,leg_bull|regime_distribution_warning,topo/range/chop,50,7,topo:7,6,1,33,0,6,0,0,0
+9199,2025-12-11,leg_bull|regime_distribution_warning|clean_sky|late_top_or_high_legpos,topo/range/chop,50,7,topo:7,6,1,33,0,11,0,0,0
+9215,2025-12-16,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,1,0,1,0
+9243,2025-12-22,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,50,22,markup:11 topo:4 continuacao:7,6,1,18,0,11,0,0,0
+9256,2025-12-26,leg_bull|clean_sky|late_top_or_high_legpos,topo/range/chop,50,7,topo:7,6,1,33,0,9,0,0,0
+9287,2026-01-05,leg_bull|has_continuation_sibling,continuacao-estrutural|preservar-monumentais,50,20,continuacao:12 preservar:8,6,1,20,0,37,1,0,0
+9297,2026-01-06,leg_bull|supply_threat|has_continuation_sibling,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,1,1,1,0
+9304,2026-01-08,leg_bull|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,7,0,1,0
+9314,2026-01-09,leg_bull|markup_context|has_continuation_sibling|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,7,1,1,0
+9329,2026-01-14,leg_bull|clean_sky|late_top_or_high_legpos,topo/range/chop,50,7,topo:7,6,1,33,0,9,0,0,0
+9345,2026-01-18,leg_bull|capit_or_flush|markup_context|clean_sky|late_top_or_high_legpos,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,32,reversao:12 markup:10 topo:2 continuacao:5 preservar:3,6,1,8,1,11,0,0,0
+9368,2026-01-22,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,50,22,markup:11 topo:4 continuacao:7,6,1,18,0,37,0,1,0
+9390,2026-01-28,leg_bull|markup_context|clean_sky|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural,50,22,markup:11 topo:4 continuacao:7,6,1,18,0,11,0,0,0
+9432,2026-02-06,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,0,25,0,1,0,0,0
+9492,2026-02-20,leg_bull|regime_distribution_warning|clean_sky|late_top_or_high_legpos,topo/range/chop,50,7,topo:7,6,0,33,0,0,0,0,0
+9504,2026-02-24,leg_bull|regime_distribution_warning|clean_sky|has_continuation_sibling,topo/range/chop|continuacao-estrutural|preservar-monumentais,50,26,topo:7 continuacao:11 preservar:8,6,1,14,1,4,1,0,0
+9512,2026-02-25,leg_bull|regime_distribution_warning|supply_threat|has_continuation_sibling|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,1,12,1,7,1,0,0
+9523,2026-02-27,leg_bull|regime_distribution_warning|markup_context|clean_sky|has_continuation_sibling|late_top_or_high_legpos,markup-through-supply-vs-supply-rejection|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,28,markup:11 topo:4 continuacao:7 preservar:6,6,0,12,1,1,1,0,0
+9530,2026-03-02,leg_bull|regime_distribution_warning|capit_or_flush|clean_sky|has_continuation_sibling|late_top_or_high_legpos,reversao/fundo/capitulacao|topo/range/chop|continuacao-estrutural|preservar-monumentais,50,30,reversao:12 topo:4 continuacao:9 preservar:5,6,0,10,1,3,1,0,0
+9537,2026-03-03,leg_bull|regime_distribution_warning|capit_or_flush,reversao/fundo/capitulacao|topo/range/chop|preservar-monumentais,50,26,reversao:12 topo:4 preservar:10,6,0,14,1,0,0,0,0
+9582,2026-03-13,leg_bull|regime_distribution_warning|capit_or_flush|supply_threat,reversao/fundo/capitulacao|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,30,reversao:12 markup:10 topo:2 preservar:6,6,0,10,1,2,0,0,0
+9628,2026-03-25,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,25,0,0,0
+9646,2026-03-30,leg_bear|regime_distribution_warning|supply_threat,bear-buy-legitimo-vs-trap|markup-through-supply-vs-supply-rejection|topo/range/chop|preservar-monumentais,50,32,bear:14 markup:8 topo:3 preservar:7,6,1,8,1,6,0,0,0
+9727,2026-04-17,leg_bull|regime_distribution_warning|late_top_or_high_legpos,topo/range/chop,50,7,topo:7,6,1,33,0,37,0,1,0
+9805,2026-05-06,leg_bull|regime_distribution_warning|supply_threat,markup-through-supply-vs-supply-rejection|topo/range/chop,50,15,markup:11 topo:4,6,1,25,0,25,0,0,0
