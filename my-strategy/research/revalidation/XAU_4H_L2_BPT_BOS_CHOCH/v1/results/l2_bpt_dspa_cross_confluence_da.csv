@@ -1,0 +1,14 @@
+ponto,verdict,detalhe
+anti_miopia,PASS,18 regras = confluências 2-4 eixos por família; nunca eixo único
+outcome_como_predicado,NONE,"EVd lê só path/engine/decision/state; MFE só nas métricas (DA scan 13 tokens = 0 leak)"
+realR_capado_arbitro,NAO,"eixo de avaliação = mfe_R uncapped (max 30.71); capped nunca lido"
+base_276_joins,PASS,5/6 fontes 276/276; bearleg_surgical 29 via safe-default
+familias_A_E_consideradas,PASS_COM_MISS,"cobertura completa MAS A4 over-gateou svp_acc atrás de bear (researcher-DOF) e matou o eixo mais forte"
+prior_layers_preservadas,PASS,macro_reader_leg/sup_cat/macro_phase/bear_leg_refined/clean_sky/bottom_turn como evidência
+multiple_testing,PASS,"Bonferroni-18 é a correção mais fraca defensável; brute-force 56 cells alpha 0.00089; NADA do script passa nem nominal"
+A2_A5_subsignificativo,CORRETO,"A2 lift1.53 p=0.116 precisaria n~29 p/ nominal; CONDITIONAL_EVIDENCE certo, não under-sold"
+loser_takes_0_de_86,ABSENCIA_REAL,"B2/D1 cortam loser E runner proporcionalmente; nenhum combo SKIP limpo (loser_lift>=1.3 & runner_lift<=0.6 & 0 monum) existe; threshold 1.2 não esconde edge"
+data_bug,NONE,hypergeométrico reproduz p-values exatos; sanity full-pop p=1.0
+ACHADO_MISS_svp_acc,LEAD_MAIS_FORTE,"svp_acc ungated: n=132 lift 1.28 p=0.0064 18/30 monumentais P1 28%/P2 38%; svp SEM plain-accept lift 1.31 p=0.047 (sinal independente); plain-accept SEM svp lift 0.78 (ruído). FALHA brute-force MT (0.00089) = CONDITIONAL, não descoberta"
+svp_acc_x_structure,LEAD_REFINAVEL,"svp_acc & st_up: n=41 lift 1.50 p=0.035 P1 29%/P2 46%"
+status_honesto,PARCIAL_NAO_MASCARADO,"exploração broad+controlled real (não fishing); negativo p/ significância; svp_acc é o CONDITIONAL mais forte e monumentais-rico; preservar"
