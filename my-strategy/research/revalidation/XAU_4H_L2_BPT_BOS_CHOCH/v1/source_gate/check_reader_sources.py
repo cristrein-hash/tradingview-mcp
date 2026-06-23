@@ -159,10 +159,14 @@ else:
              f"[input {e.get('input_id')}] input_path inexistente: {e.get('input_path')}")
 # 9b. todo input cego/raw-clean em disco DEVE estar no manifest; RAW_CLEAN sem campo derivado/SVP-valor
 scan_inputs = []
+# Patterns = nomes de ARTEFATO DE INPUT que o Reader cego consome. Inclui reading_packet/agent_input alem de
+# blind/raw_clean para fechar a costura name-scoped do DA: um input futuro nomeado p.ex. reading_packet.md (sem
+# token blind/raw_clean) passa a EXIGIR contrato no manifest. A defesa final continua sendo o manifest como allowlist.
+INPUT_NAME_TOKENS = ("blind", "raw_clean", "reading_packet", "agent_input")
 for dp, _dn, fns in os.walk(RES):
     for fn in fns:
         low = fn.lower()
-        if (("blind" in low or "raw_clean" in low) and low.rsplit(".", 1)[-1] in ("md", "json", "txt")
+        if (any(tok in low for tok in INPUT_NAME_TOKENS) and low.rsplit(".", 1)[-1] in ("md", "json", "txt")
                 and not low.endswith("_entry.json")):
             scan_inputs.append(os.path.join(dp, fn))
 raw_clean_ok = []
