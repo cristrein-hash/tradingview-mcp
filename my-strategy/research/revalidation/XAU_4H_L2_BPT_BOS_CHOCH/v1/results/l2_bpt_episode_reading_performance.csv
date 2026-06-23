@@ -1,0 +1,16 @@
+exit_policy,decision_set,n,WR,sumR,avgR,maxDD_R,loser_streak,winner_streak
+capped_realR,TAKE,140,52.1,60.6,0.43,-14.6,10,9
+capped_realR,TAKE+REVIEW,204,51.5,79.1,0.39,-13.3,9,9
+capped_realR,REVIEW,64,50.0,18.5,0.29,-5.5,5,5
+capped_realR,SKIP,72,43.1,5.1,0.07,-14.6,9,5
+capped_realR,ALL_276,276,49.3,84.2,0.3,-18.7,7,9
+vstair_120,TAKE,140,25.7,138.8,0.99,-13.6,13,2
+vstair_120,TAKE+REVIEW,204,26.0,197.8,0.97,-14.5,16,3
+vstair_120,REVIEW,64,26.6,59.1,0.92,-6.0,8,3
+vstair_120,SKIP,72,18.1,9.8,0.14,-18.0,14,3
+vstair_120,ALL_276,276,23.9,207.7,0.75,-30.5,18,4
+letrun_120,TAKE,140,25.7,169.2,1.21,-13.8,11,4
+letrun_120,TAKE+REVIEW,204,24.5,219.5,1.08,-13.0,13,4
+letrun_120,REVIEW,64,21.9,50.2,0.78,-8.0,8,2
+letrun_120,SKIP,72,18.1,21.7,0.3,-20.4,15,2
+letrun_120,ALL_276,276,22.8,241.2,0.87,-17.8,16,5
