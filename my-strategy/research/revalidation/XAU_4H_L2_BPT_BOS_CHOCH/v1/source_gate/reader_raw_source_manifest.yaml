@@ -144,19 +144,19 @@ signals:
   notes: substituido pelo RAW
 - signal_name: sup_cat
   current_field: sup_cat
-  current_source: engine demand_supply_quality (derivado)
-  raw_original_field: pine_boxes[Custom OB Detector v11]
-  raw_file_or_registry_source: RAW pine_boxes nao mapeado ao feature
-  transform_method: feature computada sem manifest RAW
-  causal_timing_model: nao declarado
-  no_future_guard: UNKNOWN
-  fidelity_check: ausente
-  source_status: UNMAPPED_DERIVED_DISALLOWED
-  allowed_in_blind_packet: NO
+  current_source: l2_bpt_raw_backbone_builder.py
+  raw_original_field: pine_boxes[Custom OB Detector v11].text=SUPPLY
+  raw_file_or_registry_source: raw_replay/XAUUSD/4H/XAUUSD_240m_replay_blocks.jsonl.gz
+  transform_method: nearest SUPPLY box low acima do close as-of-bar; categoriza por dist ATR (NEAR<=1 BLOCKS<=2 FAR CLEAN_SKY)
+  causal_timing_model: as-of-bar snapshot (so boxes presentes na barra)
+  no_future_guard: YES
+  fidelity_check: close RAW vs frozen close-match no anchor
+  source_status: RAW_ORIGINAL_OK
+  allowed_in_blind_packet: YES
   allowed_as_decision: NO
-  known_bug: none confirmado mas sem mapping RAW
-  action_required: mapear de pine_boxes Custom OB com transform e fidelity
-  notes: auction context bloqueado ate mapear
+  known_bug: none
+  action_required: none
+  notes: reconstruido do RAW Custom OB no backbone builder (debito eliminado)
 - signal_name: pol_cat
   current_field: pol_cat
   current_source: engine demand_supply_quality (derivado)
@@ -174,49 +174,49 @@ signals:
   notes: ''
 - signal_name: clean_sky
   current_field: clean_sky
-  current_source: engine (derivado)
+  current_source: l2_bpt_raw_backbone_builder.py
   raw_original_field: pine_boxes[Custom OB Detector v11] room-to-supply
-  raw_file_or_registry_source: nao mapeado
-  transform_method: feature computada sem manifest
-  causal_timing_model: nao declarado
-  no_future_guard: UNKNOWN
-  fidelity_check: ausente
-  source_status: UNMAPPED_DERIVED_DISALLOWED
-  allowed_in_blind_packet: NO
+  raw_file_or_registry_source: raw_replay/XAUUSD/4H/XAUUSD_240m_replay_blocks.jsonl.gz
+  transform_method: True se sem SUPPLY box acima do close OU dist_supply>3 ATR as-of-bar
+  causal_timing_model: as-of-bar snapshot
+  no_future_guard: YES
+  fidelity_check: close RAW vs frozen close-match no anchor
+  source_status: RAW_ORIGINAL_OK
+  allowed_in_blind_packet: YES
   allowed_as_decision: NO
-  known_bug: sem mapping
-  action_required: mapear RAW
-  notes: ''
+  known_bug: none
+  action_required: none
+  notes: reconstruido do RAW Custom OB (debito eliminado); leitura confirmou que clean_sky tem 2 sentidos opostos por regime
 - signal_name: dist_supply
-  current_field: dist_4h_supply_low_atr
-  current_source: engine/qual_packets (derivado)
-  raw_original_field: pine_boxes[Custom OB Detector v11]
-  raw_file_or_registry_source: nao mapeado
-  transform_method: distancia ATR a box derivada
-  causal_timing_model: nao declarado
-  no_future_guard: UNKNOWN
-  fidelity_check: ausente
-  source_status: UNMAPPED_DERIVED_DISALLOWED
-  allowed_in_blind_packet: NO
+  current_field: dist_supply_atr
+  current_source: l2_bpt_raw_backbone_builder.py
+  raw_original_field: pine_boxes[Custom OB Detector v11].text=SUPPLY
+  raw_file_or_registry_source: raw_replay/XAUUSD/4H/XAUUSD_240m_replay_blocks.jsonl.gz
+  transform_method: (min low das SUPPLY boxes acima do close - close)/ATR14 as-of-bar
+  causal_timing_model: as-of-bar snapshot
+  no_future_guard: YES
+  fidelity_check: close RAW vs frozen close-match no anchor
+  source_status: RAW_ORIGINAL_OK
+  allowed_in_blind_packet: YES
   allowed_as_decision: NO
-  known_bug: sem mapping
-  action_required: mapear de pine_boxes Custom OB
-  notes: ''
+  known_bug: none
+  action_required: none
+  notes: reconstruido do RAW Custom OB (debito eliminado)
 - signal_name: dist_demand
-  current_field: dist_4h_demand_low_atr
-  current_source: engine/qual_packets (derivado)
-  raw_original_field: pine_boxes[Custom OB Detector v11]
-  raw_file_or_registry_source: nao mapeado
-  transform_method: distancia ATR a box derivada
-  causal_timing_model: nao declarado
-  no_future_guard: UNKNOWN
-  fidelity_check: ausente
-  source_status: UNMAPPED_DERIVED_DISALLOWED
-  allowed_in_blind_packet: NO
+  current_field: dist_demand_atr
+  current_source: l2_bpt_raw_backbone_builder.py
+  raw_original_field: pine_boxes[Custom OB Detector v11].text=DEMAND
+  raw_file_or_registry_source: raw_replay/XAUUSD/4H/XAUUSD_240m_replay_blocks.jsonl.gz
+  transform_method: (close - max high das DEMAND boxes abaixo do close)/ATR14 as-of-bar
+  causal_timing_model: as-of-bar snapshot
+  no_future_guard: YES
+  fidelity_check: close RAW vs frozen close-match no anchor
+  source_status: RAW_ORIGINAL_OK
+  allowed_in_blind_packet: YES
   allowed_as_decision: NO
-  known_bug: sem mapping
-  action_required: mapear RAW
-  notes: usado como SL fallback demand-anchored revisar
+  known_bug: none
+  action_required: none
+  notes: reconstruido do RAW Custom OB (debito eliminado)
 - signal_name: acceptance
   current_field: f3_acceptance_state
   current_source: DSPA path features (derivado)
@@ -248,20 +248,20 @@ signals:
   action_required: mapear de session_vp do bloco SVP_LUX_RAW
   notes: RAW existe nao fabricar POC VAL VAH
 - signal_name: weekly_slope_cascade_leg
-  current_field: weekly_slope cascade_score macro_reader_leg
-  current_source: regime_classifier_v3 jsonl (derivado)
-  raw_original_field: 1D e weekly OHLC
-  raw_file_or_registry_source: derivado sem manifest RAW
-  transform_method: classificacao de regime computada
-  causal_timing_model: D-1 declarado mas sem mapping RAW
-  no_future_guard: PARTIAL
-  fidelity_check: ausente
-  source_status: UNMAPPED_DERIVED_DISALLOWED
-  allowed_in_blind_packet: NO
+  current_field: weekly_slope cascade_score combined_score v3_state
+  current_source: l2_bpt_raw_backbone_builder.py (regime_classifier_v3 price-only + fidelity check)
+  raw_original_field: 1D e weekly OHLC close
+  raw_file_or_registry_source: regime_classifier_v3 (price-only ma/breaks/cascade) com fidelity close vs RAW
+  transform_method: asof(entry) regime price-derived; fidelity exige |close_regime-close_RAW|/close<1pct
+  causal_timing_model: as-of-entry (regime usa so price ja fechado; D-1 na classificacao)
+  no_future_guard: YES
+  fidelity_check: close do regime vs close RAW (_fidelity_close_vs_raw); 18/19 PASS, 4401 FAIL flagado
+  source_status: DERIVED_FROM_RAW_WITH_MAPPING
+  allowed_in_blind_packet: YES
   allowed_as_decision: NO
-  known_bug: none confirmado mas sem mapping
-  action_required: mapear computo de regime a OHLC RAW 1D weekly
-  notes: backbone Camada 1 bloqueado ate mapear
+  known_bug: 4401 fidelity-fail flagado no episodio (warning, nao silencioso)
+  action_required: idealmente recomputar regime direto do RAW 1D/weekly (bloco futuro)
+  notes: price-derived do RAW; fidelity-checked por episodio
 # ===================== UNKNOWN_BLOCKED (RAW existe, ainda nao extraido) =====================
 - signal_name: custom_ob_boxes
   current_field: (nao extraido)
