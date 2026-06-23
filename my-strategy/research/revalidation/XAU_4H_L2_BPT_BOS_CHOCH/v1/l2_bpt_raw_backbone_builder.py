@@ -18,6 +18,9 @@ CL1 = [4918, 4926, 1661, 5701, 6887, 7426, 8878, 8923, 8940]
 CL2 = [5826, 1623, 4401, 3825, 1522, 1873, 5627, 1775, 3949, 3929]
 EPS = CL1 + CL2
 def bar_open(ep): return ep - ((ep - 7200) % BAR)
+def to_ep(t):
+    if t is None: return None
+    t = float(t); return int(t / 1000) if t > 1e11 else int(t)
 
 F = [json.loads(l) for l in open(f"{RR}/raw_features_2020_2026.jsonl")]
 ENTRY = {b: int(F[b]["ts_epoch"]) for b in EPS}; FCLOSE = {b: float(F[b]["close"]) for b in EPS}
@@ -71,22 +74,30 @@ for blk in (BLOCK_2020, BLOCK_2023):
     with gzip.open(blk, "rt") as fh:
         for line in fh:
             if not any(d8 in line for d8 in target_dates): continue
-            rec = json.loads(line); cdt = rec.get("replay_current_dt")
-            if not cdt: continue
-            bo = bar_open(int(dt.datetime.fromisoformat(cdt).timestamp()))
+            rec = json.loads(line)
             oh = rec.get("ohlcv")
             win = [{"o": x.get("open"), "h": x.get("high"), "l": x.get("low"), "c": x.get("close"), "t": x.get("time")}
                    for x in (oh if isinstance(oh, list) else [])][-W:]
-            snap[bo] = {"close": rec_close(rec), "boxes": ob_boxes(rec), "ohlc_window": win, "dt": cdt}
+            if not win or win[-1].get("t") is None: continue
+            # CHAVE = timestamp REAL da ultima barra fechada (as-of bar), NAO bar_open(grade fixa).
+            # A grade 4H do feed desloca com DST de NY (achado 2026-06-23); usar o tempo real elimina a suposicao.
+            asof_t = to_ep(win[-1]["t"])
+            snap.setdefault(asof_t, {"close": rec_close(rec), "boxes": ob_boxes(rec),
+                                     "ohlc_window": win, "dt": rec.get("replay_current_dt")})
 
-snaps_sorted = sorted(snap.items())
+snaps_sorted = sorted(snap.items())              # por asof_t (tempo real da barra)
+asof_keys = [t for t, _ in snaps_sorted]
 def anchor(b):
-    eo = bar_open(ENTRY[b]); best = None
-    for i, (bo, dta) in enumerate(snaps_sorted):
-        if abs(bo - eo) > 3 * 86400 or dta["close"] is None: continue
-        dd = abs(float(dta["close"]) - FCLOSE[b])
-        if best is None or dd < best[0]: best = (dd, i)
-    return best[1] if best else None
+    """CAUSAL as-of join por TIMESTAMP real (sem grade): snapshot cuja ultima barra fechada == entry (ENTRY[b]).
+    Fallback = maior asof_t <= entry dentro de 1 barra. NUNCA escolhe barra futura. Substitui o close-match
+    (look-ahead, +1/+2 barras futuras, DA 2026-06-23) e o bar_open de grade fixa (errado no DST)."""
+    et = ENTRY[b]
+    if et in snap:                               # match exato da barra de entry
+        return asof_keys.index(et)
+    k = bisect.bisect_right(asof_keys, et) - 1   # as-of: ultima barra fechada <= entry
+    if k >= 0 and et - asof_keys[k] <= BAR:
+        return k
+    return None
 
 def supply_demand(idx, b):
     s = snaps_sorted[idx][1]; close = s["close"]; atr = ATR[b] or 1.0
@@ -116,11 +127,18 @@ for b in EPS:
     reg_close = rb.get("close")
     reg_fid = (reg_close is not None and raw_close is not None and abs(float(reg_close) - raw_close) / raw_close < 0.01)
     sd = supply_demand(idx, b) if idx is not None else {"_status": "UNKNOWN_BLOCKED"}
+    # GUARD CAUSAL (as-of por tempo real): ultima barra da janela NUNCA pode ser futura (t > entry); ideal == entry.
+    win = s.get("ohlc_window") or []
+    win_last_t = to_ep(win[-1].get("t")) if win and win[-1].get("t") is not None else None
+    causal_ok = (win_last_t is not None and win_last_t <= ENTRY[b])      # sem barra futura
+    exact_anchor = (win_last_t == ENTRY[b])                             # barra de entry exata
+    anchor_close_fid = (raw_close is not None and abs(float(raw_close) - FCLOSE[b]) / FCLOSE[b] < 0.005)
     out.append({
         "bar_idx": b, "timestamp": dt.datetime.utcfromtimestamp(ENTRY[b]).strftime("%Y-%m-%d %H:%M"),
         "source_raw_file": os.path.basename(block_of(b)),
         "ohlcv_window": s.get("ohlc_window"), "ohlcv_status": "RAW_ORIGINAL_OK",
         "raw_close": raw_close, "frozen_close": FCLOSE[b],
+        "causal_window_ends_at_entry": causal_ok, "anchor_exact": exact_anchor, "anchor_close_fidelity": anchor_close_fid,
         "supply_demand_raw_mapped": sd,
         "regime_raw_mapped": {"weekly_slope": wk.get("slope_20_pct"), "cascade_score": rb.get("cascade_score"),
                               "combined_score": rb.get("combined_score"), "macro_broken": (rb.get("combined_score") is not None and rb.get("combined_score") < 0),
@@ -133,7 +151,11 @@ for b in EPS:
         "source_mapping_status_by_field": {
             "ohlcv": "RAW_ORIGINAL_OK", "supply_demand": sd.get("_status"),
             "weekly_cascade_leg": "DERIVED_FROM_RAW_WITH_MAPPING", "svp": "UNKNOWN_BLOCKED", "acceptance": "UNKNOWN_BLOCKED"},
-        "warnings": ([] if reg_fid else ["regime close fidelity vs RAW > 1pct"]) + ([] if idx is not None else ["sem snapshot RAW (anchor falhou)"]),
+        "warnings": ([] if reg_fid else ["regime close fidelity vs RAW > 1pct"])
+                    + ([] if idx is not None else ["sem snapshot RAW (anchor falhou)"])
+                    + ([] if causal_ok else ["janela contem barra FUTURA (look-ahead)"])
+                    + ([] if exact_anchor else ["anchor as-of barra anterior (sem futuro; entry exata ausente)"])
+                    + ([] if anchor_close_fid else ["anchor close fidelity vs frozen > 0.5pct (feed RAW != frozen)"]),
     })
 
 with open(f"{D}/l2_bpt_raw_backbone_episodes.jsonl", "w") as f:

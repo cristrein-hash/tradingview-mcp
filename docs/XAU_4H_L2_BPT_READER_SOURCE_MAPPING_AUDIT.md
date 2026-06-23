@@ -75,3 +75,14 @@ cruza `current_source` com a realidade do disco — defesa adicional para bloco 
 3. `check_reader_sources.py` roda e tem de dar exit 0 antes de qualquer pacote/cluster novo.
 4. RAW vence derivado; RAW≠chart = source-mapping incident; nenhum derivado entra por "parece funcionar".
 5. `allowed_as_decision=NO` para todos — indicador/feature é evidência de leitura, nunca gate/score/veto.
+
+## ADENDO 2026-06-23 — SVP/acceptance + look-ahead no anchor (bloco SVP)
+- **SVP/POC/VAL/VAH (VA de volume LuxAlgo): UNKNOWN_BLOCKED definitivo** — não serializado no RAW (só
+  `{Up,Down,Total}` por barra + série por-barra). Não fabricado. Detalhe: `docs/XAU_4H_L2_BPT_READER_SVP_ACCEPTANCE_RAW_AUDIT.md`.
+- **Novos campos:** `svp_bar_volume_raw` (RAW_ORIGINAL_OK), `tpo_value_area`/`tpo_acceptance` (DERIVED_FROM_RAW, TPO
+  de TEMPO, ≠ volume VA). Manifest = 23 signals, gate exit 0.
+- **Look-ahead corrigido (fundação):** o anchor `close-match` + `bar_open` de grade fixa pegava 1-2 barras futuras
+  (13/19) e errava no DST. Novo anchor = as-of join por **tempo real** da última barra fechada → 19/19 causal,
+  19/19 entry exata; 3/19 com feed RAW≠frozen (~$13) flagado. **Consequência:** o backbone + leituras do bloco
+  anterior (97998e3) eram contaminados (ex. dist_supply 5627 0.84→1.87); Clusters 1/2 precisam de re-validação
+  causal (não feita neste bloco). FUEL-vs-WALL: resolução parcial (ACCEPTED_ABOVE→FUEL 2/2 raro); fecho exige VA de volume (blocked).
