@@ -1,3 +1,11 @@
+> ⚠️ **RETRATAÇÃO (2026-06-23):** o §1 deste doc concluiu que POC/VAH/VAL de volume estavam `UNKNOWN_BLOCKED`
+> ("não serializado no RAW"). **ISSO ESTAVA ERRADO** — por misleitura do layout `session_vp.last3.v=[t,POC,VAH,VAL]`
+> (assumido como `[t,price,h,l]`). A VA de volume REAL existe no RAW, foi extraída por `extract_svp.py` →
+> `repro_recovery/svp_bars.jsonl`, consumida pela DSPA F6 e validada causal no commit 7f3c852. Correção completa:
+> `docs/XAU_4H_L2_BPT_SVP_VOLUME_PROVENANCE_AUDIT.md` + memória [[reference_svp_value_area_provenance]]. O TPO
+> (tempo) permanece como contexto secundário válido, mas NÃO é a VA de volume e NÃO era o único caminho. As
+> seções abaixo ficam como registro histórico do erro.
+
 # XAU 4H L2/BPT — SVP / ACCEPTANCE RAW AUDIT (eixo FUEL-vs-WALL) — 2026-06-23
 
 Bloco: mapear `session_vp` → POC/VAL/VAH + acceptance ao RAW para resolver o eixo bloqueado que os audits

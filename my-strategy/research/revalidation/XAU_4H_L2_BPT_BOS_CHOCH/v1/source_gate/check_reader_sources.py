@@ -143,8 +143,9 @@ fail(bool(new_violations), f"NOVO pacote cego de INPUT com campo BLOQUEADO (fora
 # results/** TEM de estar listado no reader_input_manifest.yaml; inputs RAW_CLEAN_ALLOWED nao podem conter campo
 # derivado nem valor SVP (so BLOCKED_UNMAPPED). Legacy = HISTORICAL_BASELINE_DEBT/QUARANTINED (debito documentado).
 INPUT_MANIFEST = os.path.join(HERE, "reader_input_manifest.yaml")
-STILL_BLOCKED_FIELDS = ["nas_recent", "smc_recent", "bubbles_recent",
-                        "dist_4h_supply", "dist_4h_demand", "dist_poc", "above_value", "below_value"]
+# above_value/below_value/dist_poc REMOVIDOS da lista de bloqueados em 2026-06-23: a VA de volume (POC/VAH/VAL)
+# E RAW (session_vp.last3.v=[t,POC,VAH,VAL] via svp_bars.jsonl/DSPA F6, validada 7f3c852) -> DERIVED_FROM_RAW, nao blocked.
+STILL_BLOCKED_FIELDS = ["nas_recent", "smc_recent", "bubbles_recent", "dist_4h_supply", "dist_4h_demand"]
 INP_STATUS = {"RAW_CLEAN_ALLOWED", "HISTORICAL_BASELINE_DEBT", "QUARANTINED", "DISALLOWED",
               "PRE_FIX_HISTORICAL_REFERENCE_ONLY"}
 inp_by_path = {}

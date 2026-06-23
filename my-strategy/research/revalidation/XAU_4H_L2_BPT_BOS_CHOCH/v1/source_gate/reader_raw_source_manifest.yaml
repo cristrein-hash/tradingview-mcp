@@ -233,20 +233,20 @@ signals:
   action_required: usar tpo_acceptance (TPO derivado do OHLC RAW) no lugar; acceptance de VALOR-DE-VOLUME segue blocked
   notes: nao confiar acceptance textual isolada; proxy RAW honesto = tpo_value_area.tpo_acceptance
 - signal_name: svp_poc_val_vah
-  current_field: dist_poc above_value below_value
-  current_source: nenhum (auditado: VA de volume LuxAlgo nao serializada no RAW)
-  raw_original_field: session_vp (so serie por-barra) / study Session Volume Profile (so Up Down Total)
+  current_field: poc vah val dist_poc_atr above_value below_value svp_state
+  current_source: repro_recovery/svp_bars.jsonl (via extract_svp.py) + DSPA F6 (l2_bpt_dspa_path_features.py)
+  raw_original_field: session_vp.last3[i].v = [time, POC, VAH, VAL]
   raw_file_or_registry_source: raw_replay/XAUUSD/4H/XAUUSD_4H_replay_2019-12_to_2026-current_SVP_LUX_RAW.jsonl.gz
-  transform_method: IMPOSSIVEL com fidelidade - histograma volume-por-preco e niveis POC VAH VAL nunca serializados
-  causal_timing_model: n/a
-  no_future_guard: n/a
-  fidelity_check: auditado read-only (_DA_svp_raw_structure_audit.py + _DA_svp_raw_study_audit2.py)
-  source_status: UNKNOWN_BLOCKED
-  allowed_in_blind_packet: NO
+  transform_method: le session_vp.last3 v=[t,POC,VAH,VAL] as-of-bar (extract_svp.py); VA-acceptance (above/below/dist_poc) por svp_asof
+  causal_timing_model: as-of-bar (VP desenvolve intra-sessao; validado sem look-ahead)
+  no_future_guard: YES
+  fidelity_check: provado v=VALUE-AREA nao OHLC (_DA_svp_va_vs_ohlc_verify.py = so 485/4000 (12pct) batem high/low da barra; 85pct fora do range -> NAO e OHLC); validado causal commit 7f3c852 (l2_bpt_svp_causality_verification.csv 1682 sessoes); print do indicador Value Area Volume=70 Extend POC/VAH/VAL
+  source_status: DERIVED_FROM_RAW_WITH_MAPPING
+  allowed_in_blind_packet: YES
   allowed_as_decision: NO
-  known_bug: VA de volume LuxAlgo nao reconstruivel - so Up Down Total da barra + serie por-barra existem
-  action_required: re-capturar plotagem da SVP (linhas POC VAH VAL) no RAW se quiser VA de volume; ate la BLOCKED
-  notes: NAO fabricado. Proxy honesto = tpo_value_area (tempo, derivado) + svp_bar_volume_raw (volume RAW)
+  known_bug: BLOQUEIO ANTERIOR (UNKNOWN_BLOCKED) ESTAVA ERRADO - heuristica misleu v=[t,POC,VAH,VAL] como [t,price,h,l]; corrigido 2026-06-23
+  action_required: none (fonte ja existia + validada; NAO re-extrair; usar svp_bars.jsonl / DSPA F6)
+  notes: VA de volume LuxAlgo REAL serializada no RAW; spot-check 9 criticos = acima-VA/acima-POC->FUEL, no/abaixo-POC->WALL (diagnostico, NAO regra)
 - signal_name: svp_bar_volume_raw
   current_field: svp_bar_volume_raw (up dn total entry_up_ratio last6_up_ratio)
   current_source: l2_bpt_raw_svp_acceptance_builder.py
