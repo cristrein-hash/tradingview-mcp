@@ -92,6 +92,8 @@ Cada migração herda status+reader_use da biblioteca e acrescenta os campos fun
 
 São as lentes de maior poder de **inversão** (polaridade/contraste) — onde o `what_it_can_invert` mais importa para o Reader. Cross-link via campo `refines`/`related` liga cada uma às OM e às lentes vizinhas.
 
-**Pendente (lotes futuros):** CORE_CONTEXT (17), CONDITIONAL_EVIDENCE, REQUIRES_CASE_READING, DO_NOT_USE_AS_GATE, WARNING_FAILURE_MODE, DEAD_AS_AUTHORITY — migrar quando o uso pedir. (Próximo passo combinado: ir ao próximo cluster — aguardando instrução.)
+**Lote 2 migrado (2026-06-23) — 24 lentes WARNING/FAILURE_MODE + DO_NOT_USE_AS_GATE** (reshape fiel do inventário via `l2_bpt_migrate_lote2_warning_donotgate.py`, idempotente). WARNING → `use_as=WARNING_ONLY` (precedente de erro: `what_it_can_invert` = "previne repetir X"); DO_NOT_USE_AS_GATE → `use_as=DO_NOT_GATE` (vira de gate para contexto). **Manual agora = 39 lentes** (3 OM + 12 lote1 + 24 lote2).
+
+**Pendente (lotes futuros, quando o uso pedir):** CORE_CONTEXT (17), CONDITIONAL_EVIDENCE, REQUIRES_CASE_READING, DEAD_AS_AUTHORITY. (Próximo passo combinado: ir ao próximo cluster, 1-a-1, com pergunta viva clara → aguardando autorização.)
 
 **Artefato machine-readable:** `my-strategy/research/revalidation/XAU_4H_L2_BPT_BOS_CHOCH/v1/results/l2_bpt_reader_operating_manual.csv`.
