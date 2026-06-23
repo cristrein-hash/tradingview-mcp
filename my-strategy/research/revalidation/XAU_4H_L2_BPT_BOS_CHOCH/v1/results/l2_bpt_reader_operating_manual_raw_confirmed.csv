@@ -9,4 +9,8 @@ OM-RAW-7,Compression-runner vs washout-runner,POSTFIX_RAW_CONFIRMED,forma,Absorc
 OM-RAW-8,Polo FUEL (supply distante + forma) direcao,POSTFIX_RAW_MODIFIED,forma+supply,Climax digerido + expansao?,8940 (direcao certa exit fraco); 6887 REFUTED (parou 0R sem novo topo),pos-fix
 OM-RAW-Q1,supply-colado/geometria-WALL => fade como REGRA,QUARANTINED_PENDING_VOLUME_VA,supply,NAO usar proximidade-de-supply como sinal de rejeicao isolado,4926 8878 4401 5627 wall+correram,pos-fix REFUTADO
 OM-RAW-Q2,Discriminacao cross-episodio 4918 vs 4926,POSTFIX_REFUTED,geometria,4918 e 4926 sao opostos ou gemeos?,ambos monster ~18-19R,pos-fix arbitro=VA volume BLOCKED
-OM-RAW-I1,Compressao-sob-supply / casos INSIDE_VALUE,STILL_INSUFFICIENT,acceptance/SVP,De que lado do VALUE-AREA DE VOLUME o preco e aceito?,5627 1623 casos INSIDE,BLOQUEADO - exige VA de volume (nao serializado)
+OM-RAW-I1,Compressao-sob-supply / casos INSIDE_VALUE,STILL_INSUFFICIENT,acceptance/SVP,De que lado do VALUE-AREA DE VOLUME o preco e aceito?,5627 1623 casos INSIDE,VA agora disponivel mas STATE nao fecha sozinho (ver OM-VA)
+OM-VA-1,VA como eixo causal (par casado mesmo regime),WITHVA_CONFIRMED,value-area,Casos identicos exceto VA: a VA separa o outcome?,3949 +6.62R vs 3929 +0.05R (so a VA difere),com-VA audit (prova mais limpa)
+OM-VA-2,svp_state ACCEPTING_ABOVE_VALUE = construtivo (regime-permitindo),WITHVA_CONFIRMED,value-area,Preco aceito ACIMA da VA?,5826 4401 3949 (3/3 macro-neg correram),com-VA audit
+OM-VA-3,dist_poc grande acima do POC = sobre-extensao/exaustao,WITHVA_REFUTED,value-area,NAO usar magnitude como exaustao em bull,4926 dist_poc 2.07 correu +18R,com-VA audit (invertido)
+OM-VA-4,IN_VALUE/abaixo-POC = trap como VETO,WITHVA_REFUTED,value-area,NAO vetar por IN_VALUE; e fator nao veto,5627 +5.96R 1522 +5.65R lidos trap/undecided,com-VA audit (over-condena runners)

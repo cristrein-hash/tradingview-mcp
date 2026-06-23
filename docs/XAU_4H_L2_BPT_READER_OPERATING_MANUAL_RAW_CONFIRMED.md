@@ -13,6 +13,24 @@ CSV-espelho: `results/l2_bpt_reader_operating_manual_raw_confirmed.csv`.
 
 ---
 
+## 0.0 ATUALIZAÇÃO COM VALUE-AREA REAL (2026-06-23 — corrige a premissa "VA bloqueada")
+
+A VA de volume estava DISPONÍVEL o tempo todo (erro de fonte corrigido em c1b24cf; guard estrutural ba1c51c).
+Clusters 1/2 RE-LIDOS com a VA real (`_withva`) e auditados. Combinado: **12 CONFIRMED · 3 MODIFIED · 4 REFUTED**
+(vs sem-VA 11C/3M/5R) — melhora MARGINAL. Detalhe: `docs/XAU_4H_L2_BPT_READER_NOVA_VS_WITHVA_COMPARISON.md`.
+
+| Lente (VA) | Status com-VA |
+|---|---|
+| VA como **eixo causal** (par casado 3949 vs 3929: separados SÓ pela VA, +6.62R vs +0.05R) | **WITHVA_CONFIRMED — prova mais limpa do programa** |
+| `svp_state = ACCEPTING_ABOVE_VALUE` (regime-permitindo) = construtivo/fuel | **WITHVA_CONFIRMED** (5826/4401/3949 3/3) |
+| `dist_poc` GRANDE acima do POC = sobre-extensão/exaustão | **WITHVA_REFUTED** (invertido em bull: 4926 correu +18R; sair do valor = correr) |
+| `IN_VALUE`/abaixo-POC = trap como **VETO** | **WITHVA_REFUTED** (over-condena runners: 5627 +5.96R, 1522 +5.65R) |
+| supply-WALL próximo ⇒ fade (lente anterior `QUARANTINED_PENDING_VOLUME_VA`) | **segue QUARANTINED** — a VA-STATE ajuda, magnitude/veto não fecham; o eixo informa, não decide |
+
+**Regra de ouro corrigida:** a VA é um **fator de leitura**, NÃO um veto/gate. O *estado* `ACCEPTING_ABOVE_VALUE`
+é construtivo (regime-permitindo); a *magnitude* de dist_poc e o `IN_VALUE=trap` **não** viram regra (refutam
+runners). FUEL-vs-WALL nos casos IN_VALUE segue ABERTO — exige validação dentro do corpus, nunca como regra.
+
 ## 0. ATUALIZAÇÃO PÓS-ANCHOR-FIX (revalidação causal 2026-06-23)
 
 As lentes abaixo (§1-3) foram REVALIDADAS sobre o backbone CAUSAL (anchor as-of por timestamp real, commit
