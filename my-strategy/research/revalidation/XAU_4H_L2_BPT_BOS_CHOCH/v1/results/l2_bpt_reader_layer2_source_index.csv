@@ -1,0 +1,122 @@
+family|source_type|path_or_commit|covers
+MACRO|doc|docs/XAU_4H_MACRO_STRUCTURAL_READING_ENGINE_DESIGN_SPEC.md|design do engine de percepcao macro multi-TF
+MACRO|doc|docs/XAU_4H_MACRO_STRUCTURAL_READING_ENGINE_KNOWLEDGE_STATE.md|estado de conhecimento macro
+MACRO|doc|docs/XAU_4H_MACRO_STRUCTURAL_READING_ENGINE_CONFLUENCE_V2_REPORT.md|confluence v2 override + late-top (DO_NOT_USE)
+MACRO|doc|docs/XAU_4H_MACRO_STRUCTURAL_READING_ENGINE_SPECIALISTS_62_REPORT.md|9 specialists deterministicos
+MACRO|doc|docs/XAU_4H_MACRO_STRUCTURAL_READING_ENGINE_LEG_STATE_D1_CONFLUENCE_REPORT.md|D1 leg-state backbone (CORE)
+MACRO|doc|docs/XAU_4H_MACRO_STRUCTURAL_READING_ENGINE_LEG_STATE_LIQUIDITY_REPORT.md|4H fractal leg-state (confound)
+MACRO|doc|docs/XAU_4H_MACRO_STRUCTURAL_READING_ENGINE_ENTRY_QUALITY_REPORT.md|entry-quality refutada
+MACRO|doc|docs/XAU_4H_MACRO_STRUCTURAL_FEATURE_CENSUS.md|censo 122 features 6 fontes
+MACRO|doc|docs/XAU_4H_MACRO_ENGINE_METHODOLOGICAL_CANON.md|canon metodologico (8 pontos)
+MACRO|doc|docs/XAU_4H_MACRO_PRIOR_FAILED_LAYERS_AS_CONDITIONAL_EVIDENCE.md|camadas falhadas como evidencia condicional
+MACRO|doc|docs/XAU_4H_FULL276_MACRO_ENGINE_REAL_RERUN_REPORT.md|rerun real full276
+MACRO|doc|docs/XAU_4H_FULL276_VISUAL_ANCHORED_STRUCTURAL_READING_REPORT.md|leitura visual-ancorada
+MACRO|doc|docs/XAU_4H_VISUAL_ANCHORED_REGIME_MEASUREMENT_REPORT.md|regime visual-ancorado 13 estados
+MACRO|doc|docs/XAU_4H_DEEP_TARGET7_DIFFERENTIATION_REPORT.md|permutation guard / clean-sky
+MACRO|doc|docs/XAU_4H_MACRO_POLISH_367C2E8_AUDIT_REPORT.md|macro_phase D1 audit
+MACRO|script|v1/full276_macro_engine.py|engine macro deterministico
+MACRO|script|v1/macro_structural_specialists.py|9 specialists
+MACRO|script|v1/leg_state_d1_backbone.py|D1 backbone
+MACRO|script|v1/leg_state_liquidity_specialist.py|liquidity specialist
+MACRO|script|v1/structural_convergent_reader_62.py|leitura convergente 62
+MACRO|script|v1/visual_anchored_regime_62.py|regime visual-ancorado
+MACRO|memory|project_macro_structural_reading_engine.md|status engine macro
+MACRO|memory|feedback_macro_engine_methodological_canon.md|trava canon macro
+DSPA|doc|docs/XAU_4H_L2_BPT_DYNAMIC_STRUCTURAL_PATH_AGGREGATOR_SPEC.md|spec DSPA (path features F1-F7)
+DSPA|doc|docs/XAU_4H_L2_BPT_DSPA_CROSS_CONFLUENCE_EXPLORATION_REPORT.md|cross-confluence 18 regras
+DSPA|doc|docs/XAU_4H_L2_BPT_DSPA_INTERMEDIATE_STATES_REPORT.md|9 estados intermediarios
+DSPA|doc|docs/XAU_4H_L2_BPT_DSPA_LBB_SIGNAL_KNOWLEDGE_STATE.md|LBB knowledge state
+DSPA|doc|docs/XAU_4H_L2_BPT_DSPA_LBB_SIGNAL_STRESS_REPORT.md|LBB stress test (P1/P2)
+DSPA|doc|docs/XAU_4H_L2_BPT_DYNAMIC_MARKET_READING_STATE_MACHINE_SPEC.md|state machine spec (sub-leitores)
+DSPA|script|v1/l2_bpt_dspa_path_features.py|path features F1-F7
+DSPA|script|v1/l2_bpt_dspa_aggregation.py|agregacao camada-4
+DSPA|script|v1/l2_bpt_dspa_cross_confluence.py|cross-confluence
+DSPA|script|v1/l2_bpt_dspa_lbb_signal_stress.py|stress LBB
+DSPA|memory|project_l2_bpt_dynamic_structural_path_aggregator.md|design lockado DSPA
+BEARLEG|doc|docs/XAU_4H_L2_BPT_BEARLEG_REFINED_APPROVED.md|bear-leg refined loser-cut aprovado
+BEARLEG|doc|docs/XAU_4H_L2_BPT_BEARLEG_FILTER_WALL.md|filter wall (residuo irredutivel)
+BEARLEG|doc|docs/XAU_4H_MACRO_BEAR_LEG_BLOCK_GATE_62_REPORT.md|block gate 62 (retratado)
+BEARLEG|doc|docs/XAU_4H_MACRO_BEAR_LEG_BLOCK_GATE_V3_REPORT.md|block gate v3
+BEARLEG|doc|docs/XAU_4H_MACRO_BEAR_LEG_BLOCK_KNOWLEDGE_STATE.md|knowledge state block
+BEARLEG|doc|docs/XAU_4H_FULL276_MACRO_READER_BEAR_BLOCK_V3_REPORT.md|full276 bear block v3
+BEARLEG|script|v1/bear_leg_block_gate.py|block gate v1
+BEARLEG|script|v1/bear_leg_block_gate_v3.py|block gate v3
+BEARLEG|script|v1/bear_state.py|bear-state machine
+BEARLEG|script|v1/bear_state_1d.py|bear-state 1D
+BEARLEG|script|v1/l2_bpt_bearleg_surgical.py|refined surgical loser-cut
+BEARLEG|script|v1/l2_bpt_bearleg_leaked_vs_blocked.py|leaked vs blocked residue
+BEARLEG|memory|project_l2_bpt_bearleg_refined_approved.md|status refined approved
+BEARLEG|memory|project_l2_bpt_legbear_block.md|legbear block retratado
+MICRO|doc|docs/XAU_4H_MICRO_STRUCTURE_LIQUIDITY_ENGINE_SPEC.md|spec microstructure
+MICRO|doc|docs/XAU_4H_MICRO_STRUCTURE_LIQUIDITY_ENGINE_REPORT.md|report micro (inverte)
+MICRO|doc|docs/XAU_4H_L2_BPT_SWING_STRUCTURE_PRECISION.md|precisao swing
+MICRO|script|v1/microstructure_features.py|features micro
+MICRO|script|v1/swing_anatomy.py|anatomia swing/pivots
+MICRO|script|v1/l2_bpt_defended_swing.py|defended swing/capitulation base
+MICRO|script|v1/leg_maturity.py|maturidade da perna
+MICRO|script|v1/proper_exhaustion.py|exaustao RSI/climax
+MICRO|memory|reference_market_microstructure_explained_leonardo.md|filosofia microstructure
+MICRO|memory|feedback_ob_detectors_micro_vs_macro.md|OB micro vs macro
+INDICATOR|doc|docs/XAU_4H_L2_BPT_REAL_DATA_CONFLUENCE.md|confluencia dados reais SVP/volume
+INDICATOR|doc|docs/XAU_4H_L2_BPT_VOLUME_CONFLUENCE_BREAKTHROUGH.md|volume breakthrough (retratado)
+INDICATOR|doc|docs/XAU_4H_L2_BPT_LEGPOS_X_INDICATORS_TEST.md|legpos x indicadores
+INDICATOR|doc|docs/XAU_4H_L2_BPT_V2_2_DEMAND_SUPPLY_DISTANCE_QUALITY_MODEL.md|distance+quality model
+INDICATOR|doc|docs/XAU_4H_L2_BPT_HAS_OVERHEAD_AWARE_CONTEXT_FEATURE_REPORT.md|overhead-aware feature
+INDICATOR|script|v1/full276_indicator_confluence_v2_contextaware.py|confluence context-aware
+INDICATOR|script|v1/demand_supply_quality.py|demand/supply quality
+INDICATOR|script|v1/extract_svp.py|extracao Session VP nativo
+INDICATOR|script|v1/confluence.py|mapping bubbles plot_id
+INDICATOR|memory|feedback_bubbles_polarity_rule.md|polaridade bubbles context-dependent
+INDICATOR|memory|feedback_nas_long_short_never_top_bottom.md|NAS LONG/SHORT
+INDICATOR|memory|feedback_validate_plot_id_mapping.md|mapping plot_id
+INDICATOR|memory|feedback_distance_quality_not_binary_presence.md|distancia+qualidade nao binaria
+INDICATOR|memory|project_bubble_sell_regime_dependent.md|bubble_sell regime-dependente
+REGIME|doc|docs/XAU_4H_L2_BPT_REGIME_CONTEXT_FUEL_V1_DIAGNOSTIC_SPEC.md|context-fuel 7-axis
+REGIME|doc|docs/XAU_4H_L2_BPT_F_STRICT_REGIME_READING.md|F-strict x regime
+REGIME|doc|docs/XAU_4H_L2_BPT_BOM_TIERING_SUPPLY_TRADEOFF.md|BOM tiering supply trade-off
+REGIME|doc|docs/XAU_4H_L2_BPT_LEARNED_CONTEXT_VS_CONVEXITY.md|learned-context vs convexity
+REGIME|report|v1/results/l2_bpt_regime_v1_report.md|regime v1 report
+REGIME|script|v1/l2_bpt_supply_fuel_global.py|supply-fuel global
+REGIME|script|v1/bom_tiers.py|BOM tiering
+REGIME|script|v1/l2_bpt_learned_states_vs_convexity.py|estados aprendidos vs convexidade
+REGIME|memory|project_regime_classifier_v3_official.md|regime classifier v3
+REGIME|memory|project_l2_bpt_exit_lab_regime_bound.md|edge regime-bound / nao-estacionaria
+RISK|doc|docs/XAU_4H_L2_BPT_SL_STRUCTURAL_TRADE_BY_TRADE.md|SL estrutural swing-origin
+RISK|doc|docs/XAU_4H_L2_BPT_SL_STRUCTURAL_CAP4_RESEARCH.md|SL cap 4ATR
+RISK|doc|docs/XAU_4H_L2_BPT_SL_CONTEXTUAL_STRUCTURAL_RESEARCH.md|SL contextual demanda
+RISK|doc|docs/XAU_4H_L2_BPT_OUTCOME_EXIT_REINSTRUMENTATION_REPORT.md|exit decomposition uncapped
+RISK|doc|docs/XAU_4H_L2_BPT_CONVEXITY_TARGET_FUNCTION_SPEC.md|funcao objetivo de convexidade
+RISK|doc|docs/XAU_4H_L2_BPT_E1_E17_EXIT_SL_AUDIT.md|auditoria E1/E17 exit/SL
+RISK|script|v1/sl_structural.py|SL estrutural
+RISK|script|v1/sl_context.py|SL contextual
+RISK|script|v1/l2_bpt_cap4.py|cap 4ATR
+RISK|script|v1/l2_bpt_convexity_attribution_engine.py|atribuicao de convexidade
+RISK|memory|project_l2_bpt_sl_structural.md|status SL estrutural
+READING|doc|docs/XAU_4H_L2_BPT_EPISODE_READING_CANON.md|canon de leitura por episodio
+READING|doc|docs/XAU_4H_L2_BPT_EPISODE_READING_276_REPORT.md|biblioteca de leituras 276
+READING|doc|docs/XAU_4H_L2_BPT_TRADE_QUALIFICATION_ENGINE.md|engine de qualificacao 84 fatores
+READING|doc|docs/XAU_4H_L2_BPT_VISUAL_DISCRIMINATION_TAXONOMY.md|taxonomia de discriminacao visual
+READING|doc|docs/XAU_4H_L2_BPT_MULTI_AGENT_ENGINE_DESIGN.md|design mesa de especialistas + DA
+READING|doc|docs/XAU_4H_L2_BPT_MULTI_AGENT_ENGINE_CHECKPOINT_2026_06_19.md|checkpoint mesa de especialistas
+READING|script|v1/l2_bpt_sosia_clustering.py|sosia clustering 3a (commit e279217)
+READING|script|v1/l2_bpt_continuation_structural.py|continuacao estrutural 3b (commit 69423ae)
+READING|script|v1/l2_bpt_reading_consistency_audit.py|auditoria de consistencia
+READING|script|v1/l2_bpt_dynamic_reader_v1.py|dynamic reader v1
+READING|script|v1/l2_bpt_dynamic_reader_v2_staged.py|dynamic reader v2
+READING|script|v1/l2_bpt_dynamic_reader_v3_subwindow_validation.py|dynamic reader v3 subwindow
+READING|script|v1/visual_taxonomy.py|taxonomia visual
+READING|script|v1/qualification_extract.py|extracao qualificacao
+READING|memory|project_l2_bpt_episode_reading_276_library.md|biblioteca 276
+READING|memory|feedback_episode_unit_of_analysis_canon.md|canon unidade=episodio
+READING|memory|project_l2_bpt_trade_qualification_engine.md|status qualification engine
+FOUNDATION|doc|docs/XAU_4H_L2_BPT_ENTRY_ATTRIBUTION_BOS_NOT_EDGE.md|entry/BOS sem edge isolado
+FOUNDATION|doc|docs/XAU_4H_L2_BPT_CONSOLIDATED_KNOWLEDGE.md|conhecimento consolidado
+FOUNDATION|doc|docs/XAU_4H_L2_BPT_FULL_PROCESS_AUDIT_AND_SELF_CRITIQUE.md|auditoria full process
+FOUNDATION|doc|docs/XAU_4H_L2_BPT_STRUCTURAL_READING_GARGALO_AUDIT.md|auditoria do gargalo
+FOUNDATION|doc|docs/XAU_4H_L2_BPT_OUTCOME_PROXY_FAILURE_AUDIT.md|falha do outcome proxy
+FOUNDATION|memory|project_l2_bpt_rabbithole_audit.md|rabbit hole audit (6 verdades)
+FOUNDATION|memory|project_l2_bpt_consolidated_knowledge.md|conhecimento consolidado
+FOUNDATION|memory|feedback_outcome_proxy_lift_and_episode.md|lift-vs-base-rate por episodio
+FOUNDATION|memory|feedback_calibration_vs_validation_45_groups.md|45 grupos = calibracao
+FOUNDATION|memory|feedback_no_oos_no_crossasset_validation.md|trava no-OOS/no-cross-asset
+FOUNDATION|memory|feedback_recall_gate_before_backtest.md|recall-gate antes de backtest
