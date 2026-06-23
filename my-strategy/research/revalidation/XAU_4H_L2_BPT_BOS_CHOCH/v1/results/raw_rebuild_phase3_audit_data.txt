@@ -1,0 +1,144 @@
+# FASE 9 — OUTCOME AUDIT DATA (RAW-clean rebuild). Outcome UNCAPPED + price path pos-entry.
+# O Reader cego NUNCA viu nada disto. Use SO para auditar a leitura ja congelada.
+
+
+==============================================================================
+CLUSTER 1
+==============================================================================
+
+--- EPISODIO 4918 ---
+  outcome: datetime=2023-03-08 risk_atr=1.5 capped_realR=3.9 capped_exitype=WIN_RUNNER mfe_R=19.79 mae_R=0.8 mae_before_mfe=0.8 max_run_R=19.79 runner_bucket=R10p runner_flag=1 monster_flag=1 hit2=True hit3=True hit5=True hit8=True hit10=True time_to_2R=12 time_to_max=120 stop_before_2R=0 realized_vstair_120=12.0
+  entry close=1820.38
+  next 10b: maxHigh=1835.64 minLow=1811.87 lastClose=1830.62 upMove=+15.26 dnMove=-8.51
+  next 20b: maxHigh=1914.57 minLow=1811.87 lastClose=1913.37 upMove=+94.19 dnMove=-8.51
+  next 40b: maxHigh=1937.31 minLow=1811.87 lastClose=1929.42 upMove=+116.93 dnMove=-8.51
+
+--- EPISODIO 4926 ---
+  outcome: datetime=2023-03-09 risk_atr=1.5 capped_realR=3.9 capped_exitype=WIN_RUNNER mfe_R=18.03 mae_R=0.27 mae_before_mfe=0.27 max_run_R=18.03 runner_bucket=R10p runner_flag=1 monster_flag=1 hit2=True hit3=True hit5=True hit8=True hit10=True time_to_2R=4 time_to_max=112 stop_before_2R=0 realized_vstair_120=12.0
+  entry close=1830.74
+  next 10b: maxHigh=1909.73 minLow=1827.70 lastClose=1896.68 upMove=+78.99 dnMove=-3.04
+  next 20b: maxHigh=1914.57 minLow=1827.70 lastClose=1900.15 upMove=+83.83 dnMove=-3.04
+  next 40b: maxHigh=2009.74 minLow=1827.70 lastClose=1977.93 upMove=+179.00 dnMove=-3.04
+
+--- EPISODIO 1661 ---
+  outcome: datetime=2021-01-28 risk_atr=1.5 capped_realR=-1.1 capped_exitype=STOP_LOSS mfe_R=0.0 mae_R=1.27 mae_before_mfe=0.0 max_run_R=0.0 runner_bucket=R0_neg runner_flag=0 monster_flag=0 hit2=False hit3=False hit5=False hit8=False hit10=False time_to_2R= time_to_max=0 stop_before_2R=1 realized_vstair_120=-1.0
+  entry close=1854.61
+  next 10b: maxHigh=1875.63 minLow=1834.95 lastClose=1865.50 upMove=+21.02 dnMove=-19.66
+  next 20b: maxHigh=1875.63 minLow=1829.52 lastClose=1838.02 upMove=+21.02 dnMove=-25.09
+  next 40b: maxHigh=1875.63 minLow=1785.06 lastClose=1815.68 upMove=+21.02 dnMove=-69.55
+
+--- EPISODIO 5701 ---
+  outcome: datetime=2023-09-07 risk_atr=1.5 capped_realR=-1.1 capped_exitype=STOP_LOSS mfe_R=0.42 mae_R=1.16 mae_before_mfe=0.77 max_run_R=0.42 runner_bucket=R0_neg runner_flag=0 monster_flag=0 hit2=False hit3=False hit5=False hit8=False hit10=False time_to_2R= time_to_max=3 stop_before_2R=1 realized_vstair_120=-1.0
+  entry close=1925.82
+  next 10b: maxHigh=1930.70 minLow=1916.48 lastClose=1922.66 upMove=+4.88 dnMove=-9.34
+  next 20b: maxHigh=1930.70 minLow=1907.56 lastClose=1911.19 upMove=+4.88 dnMove=-18.26
+  next 40b: maxHigh=1933.47 minLow=1900.94 lastClose=1932.12 upMove=+7.65 dnMove=-24.88
+
+--- EPISODIO 6887 ---
+  outcome: datetime=2024-06-14 risk_atr=1.5 capped_realR=-1.1 capped_exitype=STOP_LOSS mfe_R=0.0 mae_R=1.19 mae_before_mfe=0.0 max_run_R=0.0 runner_bucket=R0_neg runner_flag=0 monster_flag=0 hit2=False hit3=False hit5=False hit8=False hit10=False time_to_2R= time_to_max=0 stop_before_2R=1 realized_vstair_120=-1.0
+  entry close=2332.69
+  next 10b: maxHigh=2332.69 minLow=2306.55 lastClose=2326.73 upMove=+0.00 dnMove=-26.14
+  next 20b: maxHigh=2344.87 minLow=2306.55 lastClose=2340.24 upMove=+12.18 dnMove=-26.14
+  next 40b: maxHigh=2368.69 minLow=2306.55 lastClose=2325.65 upMove=+36.00 dnMove=-26.14
+
+--- EPISODIO 7426 ---
+  outcome: datetime=2024-10-18 risk_atr=1.5 capped_realR=0.37 capped_exitype=SCRATCH mfe_R=4.61 mae_R=3.93 mae_before_mfe=0.45 max_run_R=4.61 runner_bucket=R2_5 runner_flag=0 monster_flag=0 hit2=True hit3=True hit5=False hit8=False hit10=False time_to_2R=12 time_to_max=50 stop_before_2R=0 realized_vstair_120=0.0
+  entry close=2715.82
+  next 10b: maxHigh=2740.53 minLow=2714.13 lastClose=2731.54 upMove=+24.71 dnMove=-1.69
+  next 20b: maxHigh=2758.45 minLow=2708.54 lastClose=2723.72 upMove=+42.63 dnMove=-7.28
+  next 40b: maxHigh=2758.45 minLow=2708.54 lastClose=2752.35 upMove=+42.63 dnMove=-7.28
+
+--- EPISODIO 8878 ---
+  outcome: datetime=2025-09-28 risk_atr=1.5 capped_realR=3.24 capped_exitype=WIN_HELD mfe_R=18.78 mae_R=0.03 mae_before_mfe=0.03 max_run_R=18.78 runner_bucket=R10p runner_flag=1 monster_flag=1 hit2=True hit3=True hit5=True hit8=True hit10=True time_to_2R=6 time_to_max=95 stop_before_2R=0 realized_vstair_120=12.0
+  entry close=3778.67
+  next 10b: maxHigh=3871.74 minLow=3777.60 lastClose=3844.07 upMove=+93.07 dnMove=-1.07
+  next 20b: maxHigh=3895.28 minLow=3777.60 lastClose=3879.17 upMove=+116.61 dnMove=-1.07
+  next 40b: maxHigh=3991.11 minLow=3777.60 lastClose=3980.91 upMove=+212.44 dnMove=-1.07
+
+--- EPISODIO 8923 ---
+  outcome: datetime=2025-10-08 risk_atr=1.5 capped_realR=0.9 capped_exitype=WIN_BE mfe_R=0.58 mae_R=1.01 mae_before_mfe=0.07 max_run_R=0.58 runner_bucket=R0_neg runner_flag=0 monster_flag=0 hit2=False hit3=False hit5=False hit8=False hit10=False time_to_2R= time_to_max=1 stop_before_2R=1 realized_vstair_120=-1.0
+  entry close=4038
+  next 10b: maxHigh=4059.15 minLow=3944.49 lastClose=3974.86 upMove=+21.15 dnMove=-93.51
+  next 20b: maxHigh=4116.90 minLow=3944.49 lastClose=4110.60 upMove=+78.90 dnMove=-93.51
+  next 40b: maxHigh=4379.22 minLow=3944.49 lastClose=4365.50 upMove=+341.22 dnMove=-93.51
+
+--- EPISODIO 8940 ---
+  outcome: datetime=2025-10-13 risk_atr=1.5 capped_realR=0.9 capped_exitype=WIN_BE mfe_R=4.96 mae_R=1.19 mae_before_mfe=0.09 max_run_R=4.96 runner_bucket=R2_5 runner_flag=0 monster_flag=0 hit2=True hit3=True hit5=False hit8=False hit10=False time_to_2R=12 time_to_max=33 stop_before_2R=0 realized_vstair_120=0.0
+  entry close=4077.17
+  next 10b: maxHigh=4186.74 minLow=4071.42 lastClose=4181.58 upMove=+109.57 dnMove=-5.75
+  next 20b: maxHigh=4298.68 minLow=4071.42 lastClose=4293.93 upMove=+221.51 dnMove=-5.75
+  next 40b: maxHigh=4381.38 minLow=4004.06 lastClose=4087.25 upMove=+304.21 dnMove=-73.11
+
+==============================================================================
+CLUSTER 2
+==============================================================================
+
+--- EPISODIO 5826 ---
+  outcome: datetime=2023-10-06 risk_atr=1.5 capped_realR=3.9 capped_exitype=WIN_RUNNER mfe_R=16.73 mae_R=0.0 mae_before_mfe=0.0 max_run_R=16.73 runner_bucket=R10p runner_flag=1 monster_flag=1 hit2=True hit3=True hit5=True hit8=True hit10=True time_to_2R=1 time_to_max=90 stop_before_2R=0 realized_vstair_120=15.13
+  entry close=1831.58
+  next 10b: maxHigh=1865.43 minLow=1844.18 lastClose=1857.46 upMove=+33.85 dnMove=+12.60
+  next 20b: maxHigh=1880.07 minLow=1844.18 lastClose=1880.05 upMove=+48.49 dnMove=+12.60
+  next 40b: maxHigh=1931.56 minLow=1844.18 lastClose=1927.80 upMove=+99.98 dnMove=+12.60
+
+--- EPISODIO 1623 ---
+  outcome: datetime=2021-01-20 risk_atr=1.5 capped_realR=-1.1 capped_exitype=STOP_LOSS mfe_R=0.31 mae_R=1.35 mae_before_mfe=0.07 max_run_R=0.31 runner_bucket=R0_neg runner_flag=0 monster_flag=0 hit2=False hit3=False hit5=False hit8=False hit10=False time_to_2R= time_to_max=1 stop_before_2R=1 realized_vstair_120=-1.0
+  entry close=1852.75
+  next 10b: maxHigh=1875.10 minLow=1832.61 lastClose=1869.58 upMove=+22.35 dnMove=-20.14
+  next 20b: maxHigh=1875.10 minLow=1832.61 lastClose=1855.90 upMove=+22.35 dnMove=-20.14
+  next 40b: maxHigh=1875.10 minLow=1831.31 lastClose=1842.52 upMove=+22.35 dnMove=-21.44
+
+--- EPISODIO 4401 ---
+  outcome: datetime=2022-11-04 risk_atr=1.5 capped_realR=2.76 capped_exitype=WIN_HELD mfe_R=10.31 mae_R=0.38 mae_before_mfe=0.38 max_run_R=10.31 runner_bucket=R10p runner_flag=1 monster_flag=1 hit2=True hit3=True hit5=True hit8=True hit10=True time_to_2R=4 time_to_max=118 stop_before_2R=0 realized_vstair_120=10.04
+  entry close=1647.09
+  next 10b: maxHigh=1681.87 minLow=1641.22 lastClose=1675.26 upMove=+34.78 dnMove=-5.87
+  next 20b: maxHigh=1716.87 minLow=1641.22 lastClose=1711.75 upMove=+69.78 dnMove=-5.87
+  next 40b: maxHigh=1775.08 minLow=1641.22 lastClose=1771.09 upMove=+127.99 dnMove=-5.87
+
+--- EPISODIO 3825 ---
+  outcome: datetime=2022-06-23 risk_atr=1.5 capped_realR=-1.1 capped_exitype=STOP_LOSS mfe_R=0.96 mae_R=1.05 mae_before_mfe=0.93 max_run_R=0.96 runner_bucket=R0_neg runner_flag=0 monster_flag=0 hit2=False hit3=False hit5=False hit8=False hit10=False time_to_2R= time_to_max=2 stop_before_2R=1 realized_vstair_120=-1.0
+  entry close=1834.79
+  next 10b: maxHigh=1846.10 minLow=1816.92 lastClose=1827.33 upMove=+11.31 dnMove=-17.87
+  next 20b: maxHigh=1846.10 minLow=1816.92 lastClose=1821.10 upMove=+11.31 dnMove=-17.87
+  next 40b: maxHigh=1846.10 minLow=1784.50 lastClose=1808.40 upMove=+11.31 dnMove=-50.29
+
+--- EPISODIO 1522 ---
+  outcome: datetime=2020-12-23 risk_atr=1.5 capped_realR=0.9 capped_exitype=WIN_BE mfe_R=5.65 mae_R=1.3 mae_before_mfe=0.54 max_run_R=5.65 runner_bucket=R5_10 runner_flag=1 monster_flag=0 hit2=True hit3=True hit5=True hit8=False hit10=False time_to_2R=29 time_to_max=43 stop_before_2R=0 realized_vstair_120=2.0
+  entry close=1876.96
+  next 10b: maxHigh=1900.21 minLow=1869.10 lastClose=1873.43 upMove=+23.25 dnMove=-7.86
+  next 20b: maxHigh=1900.21 minLow=1869.10 lastClose=1887.36 upMove=+23.25 dnMove=-7.86
+  next 40b: maxHigh=1953.05 minLow=1869.10 lastClose=1949.97 upMove=+76.09 dnMove=-7.86
+
+--- EPISODIO 1873 ---
+  outcome: datetime=2021-03-18 risk_atr=1.24 capped_realR=-1.1 capped_exitype=STOP_LOSS mfe_R=1.2 mae_R=1.92 mae_before_mfe=0.21 max_run_R=1.2 runner_bucket=R0_neg runner_flag=0 monster_flag=0 hit2=False hit3=False hit5=False hit8=False hit10=False time_to_2R= time_to_max=6 stop_before_2R=1 realized_vstair_120=-1.0
+  entry close=1731.25
+  next 10b: maxHigh=1746.88 minLow=1727.34 lastClose=1740.61 upMove=+15.63 dnMove=-3.91
+  next 20b: maxHigh=1746.88 minLow=1723.78 lastClose=1734.72 upMove=+15.63 dnMove=-7.47
+  next 40b: maxHigh=1746.88 minLow=1705.74 lastClose=1711.62 upMove=+15.63 dnMove=-25.51
+
+--- EPISODIO 5627 ---
+  outcome: datetime=2023-08-22 risk_atr=1.28 capped_realR=1.96 capped_exitype=WIN_HELD mfe_R=5.96 mae_R=0.14 mae_before_mfe=0.14 max_run_R=5.96 runner_bucket=R5_10 runner_flag=1 monster_flag=0 hit2=True hit3=True hit5=True hit8=False hit10=False time_to_2R=5 time_to_max=47 stop_before_2R=0 realized_vstair_120=2.0
+  entry close=1897.68
+  next 10b: maxHigh=1922.88 minLow=1896.38 lastClose=1919.57 upMove=+25.20 dnMove=-1.30
+  next 20b: maxHigh=1923.31 minLow=1896.38 lastClose=1915.48 upMove=+25.63 dnMove=-1.30
+  next 40b: maxHigh=1949.01 minLow=1896.38 lastClose=1944.74 upMove=+51.33 dnMove=-1.30
+
+--- EPISODIO 1775 ---
+  outcome: datetime=2021-02-24 risk_atr=1.38 capped_realR=-1.1 capped_exitype=STOP_LOSS mfe_R=0.53 mae_R=1.27 mae_before_mfe=0.07 max_run_R=0.53 runner_bucket=R0_neg runner_flag=0 monster_flag=0 hit2=False hit3=False hit5=False hit8=False hit10=False time_to_2R= time_to_max=1 stop_before_2R=1 realized_vstair_120=-1.0
+  entry close=1797.64
+  next 10b: maxHigh=1805.64 minLow=1755.32 lastClose=1764.44 upMove=+8.00 dnMove=-42.32
+  next 20b: maxHigh=1805.64 minLow=1710.47 lastClose=1712.73 upMove=+8.00 dnMove=-87.17
+  next 40b: maxHigh=1805.64 minLow=1687.38 lastClose=1694.67 upMove=+8.00 dnMove=-110.26
+
+--- EPISODIO 3949 ---
+  outcome: datetime=2022-07-21 risk_atr=1.5 capped_realR=3.54 capped_exitype=WIN_HELD mfe_R=6.62 mae_R=0.5 mae_before_mfe=0.5 max_run_R=6.62 runner_bucket=R5_10 runner_flag=1 monster_flag=0 hit2=True hit3=True hit5=True hit8=False hit10=False time_to_2R=27 time_to_max=82 stop_before_2R=0 realized_vstair_120=2.96
+  entry close=1718.18
+  next 10b: maxHigh=1739.21 minLow=1712.81 lastClose=1720.09 upMove=+21.03 dnMove=-5.37
+  next 20b: maxHigh=1739.21 minLow=1712.81 lastClose=1718.94 upMove=+21.03 dnMove=-5.37
+  next 40b: maxHigh=1775.18 minLow=1711.44 lastClose=1773.40 upMove=+57.00 dnMove=-6.74
+
+--- EPISODIO 3929 ---
+  outcome: datetime=2022-07-18 risk_atr=1.5 capped_realR=-1.1 capped_exitype=STOP_LOSS mfe_R=0.05 mae_R=1.25 mae_before_mfe=0.66 max_run_R=0.05 runner_bucket=R0_neg runner_flag=0 monster_flag=0 hit2=False hit3=False hit5=False hit8=False hit10=False time_to_2R= time_to_max=1 stop_before_2R=1 realized_vstair_120=-1.0
+  entry close=1718.96
+  next 10b: maxHigh=1719.69 minLow=1705.29 lastClose=1708.45 upMove=+0.73 dnMove=-13.67
+  next 20b: maxHigh=1720.12 minLow=1680.87 lastClose=1718.18 upMove=+1.16 dnMove=-38.09
+  next 40b: maxHigh=1739.21 minLow=1680.87 lastClose=1718.94 upMove=+20.25 dnMove=-38.09
