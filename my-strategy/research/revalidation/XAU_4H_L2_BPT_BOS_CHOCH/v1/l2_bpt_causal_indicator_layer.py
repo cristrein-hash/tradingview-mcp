@@ -1,94 +1,85 @@
 #!/usr/bin/env python3
-"""CAUSAL INDICATOR LAYER — evidencia de leitura (NAO decisao) para pacotes cegos futuros.
-Refinamento Cluster 2: o pacote cego estava form-only; faltava o layer de indicador que o olho usa.
-NAS / RSI-divergence / bubbles / SMC entram como EVIDENCIA que faz PERGUNTAS (capitulacao? absorcao? exaustao?
-mudanca de carater? whipsaw?), nunca como TAKE/SKIP/score. Causal: so barras <= entry (SHIFT1 p/ repintantes).
-SEM outcome, SEM nomes de lente, SEM rotulo de resultado. Mapping bubble canonico: BUY=plot_0/2/4, SELL=plot_6/8/10.
+"""CAUSAL INDICATOR LAYER — evidencia de leitura (NAO decisao) para pacotes cegos. FONTE = RAW ORIGINAL.
 
-Uso: import indicator_evidence(bar_idx, F, QP) -> dict pronto p/ embutir no pacote cego.
-Demo: python3 l2_bpt_causal_indicator_layer.py  (roda nos 10 bars do cluster 2 e mostra a evidencia)."""
-import json
+INCIDENTE corrigido (2026-06-23): versao anterior consumiu o DERIVADO repro_recovery/raw_features_2020_2026.jsonl,
+cujo nas_recent/smc_recent pegava a CABECA do buffer de 500 labels (NAS/SMC de 2018-19 = stale) e concluiu erradamente
+"unreliable". O RAW original (replay 4H) tem NAS/SMC/bubbles/RSI+divergencia AUTENTICOS e causais (auditoria provou).
+=> Esta camada consome o artefato extraido do RAW: results/l2_bpt_raw_indicator_events.jsonl (gerado por
+l2_bpt_raw_indicator_extract.py, que le /Volumes/.../raw_replay/XAUUSD/4H/*.jsonl.gz). REGRA PERMANENTE: TODO indicador
+(NAS, SMC, bubbles, RSI, SVP) vem do RAW original, nunca de derivado/repro_recovery/frozen/slim/packet.
 
-BUY_PLOTS = {"plot_0", "plot_2", "plot_4"}
-SELL_PLOTS = {"plot_6", "plot_8", "plot_10"}
-SIZE = {"plot_4": "L", "plot_10": "L", "plot_2": "m", "plot_8": "m", "plot_0": "s", "plot_6": "s"}
+GUARD DURO: este modulo se RECUSA a importar raw_features_2020_2026 como fonte de indicador (assert no import path).
+Evidencia faz PERGUNTAS (capitulacao? absorcao? exaustao? mudanca de carater? whipsaw?), nunca TAKE/SKIP/score/gate.
+SEM outcome/MFE/R/runner/trap/winner/loser.
+"""
+import json, os, re
 
-def _fn(v):
-    try: return float(v)
-    except (TypeError, ValueError): return None
+D = "results"
+RAW_EVENTS = f"{D}/l2_bpt_raw_indicator_events.jsonl"
+FORBIDDEN_INDICATOR_SOURCE = "raw_features_2020_2026"   # guard: nunca fonte de indicador
+RAW_SOURCE_PATTERN = re.compile(r"XAUUSD.*replay.*\.jsonl\.gz$")  # defesa-em-profundidade: so RAW replay original
 
-def indicator_evidence(b, F, QP, lookback=20):
-    """Evidencia causal de indicador no episodio b, framed como PERGUNTAS de leitura. SEM outcome."""
-    lo = max(1, b - lookback + 1)
-    win = list(range(lo, b + 1))
-    H = [F[i]["high"] for i in range(len(F))]; L = [F[i]["low"] for i in range(len(F))]
-    C = [F[i]["close"] for i in range(len(F))]; RSI = [F[i].get("rsi") for i in range(len(F))]
-    # --- bubbles (aparicao AT bar j: bars_ago==0) na janela ---
-    buys, sells = [], []
-    for j in win:
-        for bub in (F[j].get("bubbles_recent") or []):
-            if bub.get("bars_ago") != 0:
-                continue
-            pid = bub.get("plot_id")
-            if pid in BUY_PLOTS: buys.append((j, SIZE.get(pid, "s")))
-            elif pid in SELL_PLOTS: sells.append((j, SIZE.get(pid, "s")))
-    sell_large = sum(1 for _, s in sells if s in ("m", "L"))
-    buy_large = sum(1 for _, s in buys if s in ("m", "L"))
-    # sell-bubbles concentradas perto do LOW da janela? (assinatura de clima de capitulacao)
-    win_low = min(L[j] for j in win); atrish = (max(H[j] for j in win) - win_low) or 1.0
-    sells_near_low = sum(1 for j, _ in sells if (L[j] - win_low) / atrish < 0.25)
-    # --- NAS / SMC: no frozen RAW sao STALE (snapshot fixo; precos nao batem com a era do bar) -> UNRELIABLE ---
-    # Verificacao de staleness: media dos precos das labels vs close do bar. >15% = stale.
-    def _stale(entries):
-        ps = [_fn(e.get("price")) for e in (entries or []) if _fn(e.get("price")) is not None]
-        if not ps or not C[b]:
-            return None
-        med = sorted(ps)[len(ps) // 2]
-        return abs(med - C[b]) / C[b] > 0.15
-    nas_stale = _stale(F[b].get("nas_recent")); smc_stale = _stale(F[b].get("smc_recent"))
-    # --- RSI: valor, recente-min, hint de divergencia (heuristico, NAO o indicador do chart) ---
-    rsi_now = _fn(RSI[b]); rsi_win = [r for r in (_fn(RSI[j]) for j in win) if r is not None]
-    rsi_min = min(rsi_win) if rsi_win else None; rsi_max = max(rsi_win) if rsi_win else None
-    q = QP.get(b, {}) if QP else {}
-    bear_div = q.get("bear_div")
-    # bull-div hint causal: preco faz novo low na 2a metade da janela, mas RSI no low NAO e o minimo
-    bull_div_hint = None
-    if len(win) >= 8 and rsi_win:
-        half = win[len(win) // 2:]
-        price_ll = min(L[j] for j in half) <= win_low + 1e-9
-        rsi_at_pricelow = _fn(RSI[min(half, key=lambda j: L[j])])
-        if price_ll and rsi_at_pricelow is not None and rsi_min is not None:
-            bull_div_hint = rsi_at_pricelow > rsi_min + 1.0  # RSI nao confirmou o novo low
+def _load_raw_events():
+    if not os.path.exists(RAW_EVENTS):
+        raise FileNotFoundError(f"Rode l2_bpt_raw_indicator_extract.py primeiro (gera {RAW_EVENTS} do RAW original).")
+    ev = {}
+    for l in open(RAW_EVENTS):
+        r = json.loads(l)
+        src = str(r.get("source_raw_file", ""))
+        # GUARD DURO: fonte tem de ser o RAW replay original (pattern), nunca derivado, e declarar RAW_AUTHENTIC
+        assert FORBIDDEN_INDICATOR_SOURCE not in src, "FONTE PROIBIDA: indicador nao pode vir de raw_features_2020_2026 (derivado)."
+        assert RAW_SOURCE_PATTERN.search(src), f"FONTE INVALIDA: '{src}' nao bate XAUUSD_*replay*.jsonl.gz (RAW original)."
+        assert r.get("reliability") == "RAW_AUTHENTIC", f"ep {r.get('bar_idx')} sem RAW_AUTHENTIC."
+        ev[int(r["bar_idx"])] = r
+    return ev
+
+def indicator_evidence(bar_idx, raw_events=None):
+    """Evidencia causal de indicador (RAW) para o episodio, framed como PERGUNTAS. SEM outcome/decisao."""
+    ev = raw_events or _load_raw_events()
+    r = ev.get(bar_idx)
+    if r is None:
+        return {"status": "EP_NAO_EXTRAIDO_DO_RAW", "_nota": f"adicione {bar_idx} a l2_bpt_raw_indicator_extract.py"}
+    bub = r.get("bubble_cluster_summary") or {}
+    nas = r.get("nas_events_recent") or []
+    smc = r.get("smc_events_recent") or []
+    nas_era = [e for e in nas if e.get("in_current_era")]
+    smc_era = [e for e in smc if e.get("in_current_era")]
+    nas_long = sum(1 for e in nas_era if "LONG" in str(e.get("text", "")).upper() or "BOTTOM" in str(e.get("text", "")).upper())
+    nas_short = sum(1 for e in nas_era if "SHORT" in str(e.get("text", "")).upper() or "TOP" in str(e.get("text", "")).upper())
+    choch = sum(1 for e in smc_era if "CHOCH" in str(e.get("text", "")).upper())
+    bos = sum(1 for e in smc_era if e.get("text") == "BOS")
+    div = r.get("rsi_divergence_events") or {}
+    bull_div = any("Bullish" in k for k in div); bear_div = any("Bearish" in k for k in div)
     return {
-        "_nota": "EVIDENCIA DE LEITURA, nao decisao. Indicador faz PERGUNTAS, nao classifica TAKE/SKIP.",
-        "bubbles": {"buy_total": len(buys), "sell_total": len(sells), "buy_m+L": buy_large,
-                    "sell_m+L": sell_large, "sell_concentradas_no_low": sells_near_low},
-        "nas": {"status": "UNRELIABLE_IN_FROZEN_RAW", "stale_detectado": nas_stale,
-                "_nota": "nas_recent e snapshot fixo (precos da era 2018-19); usar fonte pine_labels causal (first-appearance LONG/SHORT) em pacote futuro"},
-        "smc": {"status": "UNRELIABLE_IN_FROZEN_RAW", "stale_detectado": smc_stale,
-                "_nota": "smc_recent idem stale; BOS/CHoCH causal exige captura pine_labels SHIFT1 em pacote futuro"},
-        "rsi": {"agora": rsi_now, "min_janela": rsi_min, "max_janela": rsi_max,
-                "bear_div_flag": bear_div, "bull_div_hint_heuristico": bull_div_hint},
+        "_fonte": "RAW_ORIGINAL", "source_raw_file": r.get("source_raw_file"), "reliability": "RAW_AUTHENTIC",
+        "_nota": "EVIDENCIA DE LEITURA (RAW), nao decisao. Indicador PERGUNTA, nao classifica TAKE/SKIP.",
+        "nas": {"recent_era": [(e["text"], e["price"]) for e in nas_era], "long": nas_long, "short": nas_short,
+                "field": "RAW pine_labels[NAS TOP BOTTOM DETECTOR] (tail as-of-entry)"},
+        "smc": {"recent_era": [(e["text"], e["price"]) for e in smc_era], "CHoCH": choch, "BOS": bos,
+                "field": "RAW pine_labels[Smart Money Concepts [LuxAlgo]] (tail as-of-entry)"},
+        "bubbles": {"buy_total": bub.get("buy_total"), "sell_total": bub.get("sell_total"),
+                    "buy_mL": bub.get("buy_mL"), "sell_mL": bub.get("sell_mL"),
+                    "field": "RAW pine_shapes_bubbles[Market Order Bubbles]"},
+        "rsi": {"value": r.get("rsi_value"), "divergence_raw": div, "bull_div": bull_div, "bear_div": bear_div,
+                "field": "RAW study_values[Relative Strength Index]"},
         "PERGUNTAS_DE_LEITURA": [
-            f"CAPITULACAO? sell-bubbles m/L concentradas no low={sells_near_low} (de {sell_large}) + rsi_min={rsi_min} (oversold?)",
-            f"ABSORCAO? buy-bubbles m/L={buy_large} defendendo o low? (NAS indisponivel no RAW)",
-            f"EXAUSTAO? rsi_max={rsi_max} + bear_div_flag={bear_div} (topo? NAS/SMC indisponiveis)",
-            "MUDANCA DE CARATER? SMC (BOS/CHoCH) UNRELIABLE no frozen RAW — exige fonte pine_labels causal",
-            f"WHIPSAW? bull_div_hint={bull_div_hint} com estrutura nao confirmada — tentativa-de-fundo vs reversao confirmada?",
+            f"CAPITULACAO? sell-bubbles m/L={bub.get('sell_mL')} + RSI={r.get('rsi_value')} + RSI-bull-div={bull_div}?",
+            f"ABSORCAO? buy-bubbles m/L={bub.get('buy_mL')} + NAS_long(era)={nas_long} (RAW)?",
+            f"EXAUSTAO? RSI-bear-div={bear_div} + NAS_short(era)={nas_short} (topo/supply acima?)",
+            f"MUDANCA DE CARATER? CHoCH(era)={choch} vs BOS(era)={bos} (RAW SMC LuxAlgo)?",
+            "WHIPSAW? cruzar NAS-bottom recente + estrutura nao confirmada = tentativa-de-fundo vs confirmada?",
         ],
     }
 
 if __name__ == "__main__":
-    RR = "repro_recovery"
-    F = [json.loads(l) for l in open(f"{RR}/raw_features_2020_2026.jsonl")]
-    QP = {int(json.loads(l)["bar_idx"]): json.loads(l) for l in open(f"{RR}/qual_packets.jsonl")}
+    ev = _load_raw_events()
     CLUSTER2 = [5826, 1623, 4401, 3825, 1522, 1873, 5627, 1775, 3949, 3929]
-    print("DEMO causal indicator layer — cluster 2 (evidencia, sem outcome):\n")
+    print("DEMO causal indicator layer — FONTE RAW ORIGINAL (cluster 2, evidencia sem outcome):\n")
     for b in CLUSTER2:
-        ev = indicator_evidence(b, F, QP)
-        bb = ev["bubbles"]; r = ev["rsi"]
-        print(f"#{b}: sell-bubbles {bb['sell_total']} (m/L {bb['sell_m+L']}, no_low {bb['sell_concentradas_no_low']}) "
-              f"| buy-bubbles {bb['buy_total']} (m/L {bb['buy_m+L']}) | rsi {r['agora']} min{r['min_janela']} "
-              f"bull_div_hint={r['bull_div_hint_heuristico']} | NAS/SMC=UNRELIABLE")
-    print("\n(NAS/SMC stale no frozen RAW -> pacote futuro precisa de fonte pine_labels causal. Bubbles+RSI sao causais.)")
-    print("\nLayer pronto p/ embutir em pacotes cegos futuros. Evidencia faz perguntas; o Reader responde. SEM outcome/nomes-de-lente.")
+        e = indicator_evidence(b, ev)
+        if e.get("status"):
+            print(f"#{b}: {e['status']}"); continue
+        print(f"#{b}: NAS(era) L{e['nas']['long']}/S{e['nas']['short']} {e['nas']['recent_era'][:2]} | "
+              f"SMC CHoCH{e['smc']['CHoCH']}/BOS{e['smc']['BOS']} | bubbles sell_mL{e['bubbles']['sell_mL']}/buy_mL{e['bubbles']['buy_mL']} | "
+              f"RSI {e['rsi']['value']} bull_div={e['rsi']['bull_div']} bear_div={e['rsi']['bear_div']} | src={e['source_raw_file']}")
+    print("\nTODO indicador (NAS/SMC/bubbles/RSI/SVP) = RAW original. Guard recusa raw_features_2020_2026. Evidencia faz perguntas, nao decide.")

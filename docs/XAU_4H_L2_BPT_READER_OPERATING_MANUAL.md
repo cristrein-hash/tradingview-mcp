@@ -23,7 +23,7 @@ Todo cluster do currículo de arquétipos roda 1-a-1, com pergunta viva clara, n
 1. **Selecionar** coorte contrastiva (outcome usado SÓ p/ montar o par runner/trap, como hard-cluster).
 2. **Blind plot** canônico no chart (long_position + SL estrutural real + TP 2:1 fixo + label azul; sem outcome/R/cor-de-resultado; pausar daemon L1 antes).
 3. **Revisão visual humana** do plot (Cris valida antes de liberar a leitura).
-4. **Pacote cego** — sem R/trap/runner/mfe/outcome/labels-de-resultado/nomes-de-lente; **leak-check estrito (para se falhar)**. Inclui o **causal indicator layer** como EVIDÊNCIA (perguntas, não decisão).
+4. **Pacote cego** — sem R/trap/runner/mfe/outcome/labels-de-resultado/nomes-de-lente; **leak-check estrito (para se falhar)**. Inclui o **causal indicator layer** como EVIDÊNCIA (perguntas, não decisão). **FONTE = RAW ORIGINAL replay** (NAS/SMC/bubbles/RSI/SVP); proibido derivado/frozen/slim/repro_recovery para indicador (incidente 2026-06-23).
 5. **Reader cego** — spawnar um subagente leitor REAL (via Agent tool), fresco, que nunca viu outcome → leitura por episódio + EXPECTATION auditável + contraste por par.
 6. **Freeze** + **commit da leitura ANTES de abrir o outcome** (integridade anti-hindsight).
 7. **Outcome audit** — spawnar um subagente auditor REAL (via Agent tool), fresco → leitura congelada vs realidade + EXPECTATIONS.
@@ -41,6 +41,7 @@ Antes de propor o próximo cluster, revisar a leitura cega contra os prints/char
 6. algum **"supply wall" era compression/fuel**?
 7. **quais lentes** devem ser refinadas?
 8. **quais campos causais** devem entrar no próximo pacote cego?
+9. 🆕 **source-mapping:** o causal indicator layer veio do RAW ORIGINAL (não derivado)? o timing dos eventos é causal as-of-bar? **qualquer divergência entre chart/print e RAW = INCIDENTE DE SOURCE-MAPPING** (auditar RAW, nunca concluir do derivado).
 
 **Só depois desta revisão** se propõe o próximo arquétipo. Pular a etapa 8 = aceitar verdict sem olhar o chart (proibido — [[feedback_estatistica_aplicada_realidade]]).
 
@@ -112,11 +113,11 @@ polaridade/timing**, não eixos novos — refinam lentes existentes.
 - **use_as:** `CONTRAST_LENS` + `CONDITIONAL_SUPPORT` (evidência que faz PERGUNTAS, NUNCA decide)
 - **when_to_foreground:** sempre — o indicador (sell/buy bubbles, RSI bull/bear-div, NAS, SMC) pergunta: **capitulação? absorção? exaustão? mudança de caráter? whipsaw?** — NÃO classifica TAKE/SKIP.
 - **what_it_can_invert:** confluência de indicador (sell-bubble climax no low + RSI bull-div + NAS-bottom) inverte uma leitura form-only de "range = wall" para "capitulação = fuel". É o fix do furo 5627 (form-only não viu o cluster de sell-bubbles m/L no low + rsi_min 26.6 + bull-div).
-- **known_failure_mode:** indicador como gate per-trade afunda winners (I4); sell-bubble-no-low sozinho não decide (3929-trap e 3949-runner têm assinatura parecida → é o whipsaw OM6 que separa).
-- **example_cases:** 5627 (capitulação no indicador, form-only leu wall); 3929 vs 3949 (mesma assinatura, separados por timing).
-- **do_not_use_as:** gate per-trade; equal-veto; indicador isolado como verdade.
-- **automation_note:** layer causal pronto em `l2_bpt_causal_indicator_layer.py` (bubbles+RSI causais; **NAS/SMC UNRELIABLE no frozen RAW — exigem fonte pine_labels causal antes do próximo cluster**). Embutir no pacote cego como evidência-pergunta.
-- **provenance:** visual post-audit cluster 2 (prints) + audit 9f7326f.
+- **known_failure_mode:** indicador como gate per-trade afunda winners (I4); sell-bubble-no-low sozinho não decide (3929-trap e 3949-runner têm assinatura parecida → é o whipsaw OM6 que separa). **INCIDENTE 2026-06-23:** concluir disponibilidade de indicador a partir de DERIVADO (`raw_features_2020_2026`) é proibido — RAW-first sempre.
+- **example_cases:** 5627 (capitulação no indicador — sell_mL15 + SHORT-supply acima; form-only leu wall); 3929 vs 3949 (mesma assinatura, separados por timing).
+- **do_not_use_as:** gate per-trade; equal-veto; indicador isolado como verdade; **fonte derivada/frozen/slim para qualquer indicador**.
+- **automation_note:** **FONTE = RAW ORIGINAL** (`raw_replay/XAUUSD/4H/*.jsonl.gz`): NAS/SMC=`pine_labels` (tail as-of-bar), bubbles=`pine_shapes_bubbles.activations_per_plot`, RSI+div=`study_values`. Extrator `l2_bpt_raw_indicator_extract.py` → `results/l2_bpt_raw_indicator_events.jsonl` (RAW_AUTHENTIC); layer `l2_bpt_causal_indicator_layer.py` com GUARD que recusa derivado. **Regra permanente: TODO indicador (NAS/SMC/bubbles/RSI/SVP) do RAW, nunca derivado.** Ver `docs/architecture/NAS_SMC_SOURCE_INCIDENT.md`.
+- **provenance:** visual post-audit cluster 2 (prints) + audit 9f7326f + incidente de fonte corrigido (RAW).
 
 ### OM5 · `washout_runner_vs_compression_runner` — refina OM1
 - **family:** MICRO/AUCTION · **refines:** `OM1`(supply momentum) · `capitulation_climax`(A8)
