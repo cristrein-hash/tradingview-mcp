@@ -82,9 +82,16 @@ polaridade/timing**, não eixos novos — refinam lentes existentes.
 3. As lentes `INVALIDATION_PROBE`/`CONTRAST_LENS` são obrigatórias quando há sósia conflitante (hard cluster).
 4. `use_as=DO_NOT_GATE`/`WARNING_ONLY` nunca produzem TAKE/SKIP — só mudam a profundidade/cautela da leitura.
 
-## Migração (incremental, futura)
-As 93 lentes da biblioteca migram para este schema aos poucos, priorizando as que mais aparecem em foreground e as
-POLARITY/CONTRAST (maior valor de inversão). Cada migração herda status+reader_use da biblioteca e acrescenta os campos
-funcionais. **Nada é apagado da biblioteca** — o Manual é overlay.
+## Migração (incremental)
+As lentes da biblioteca migram para este schema aos poucos, priorizando POLARITY/CONTRAST (maior valor de inversão).
+Cada migração herda status+reader_use da biblioteca e acrescenta os campos funcionais. **Nada é apagado** — overlay.
+
+**Lote 1 migrado (2026-06-23) — 12 lentes POLARITY + CONTRAST** (além das 3 OM seed = 15 no Manual):
+- POLARITY (6): `supply_sup_cat_pol_cat` · `overbought_in_bear` · `leg_maturity` · `bubble_polarity_context_dependent` · `capitulation_carrier` · `indicators_identify_macro_top_not_per_trade`.
+- CONTRAST (6): `fuel_convexity_cleansky` · `capitulation_reversal_lens_dspa` · `SMC_BOS_CHoCH` · `acceptance_rejection` · `learned_context_vs_convexity` · `sosia_surface_clustering_3a`.
+
+São as lentes de maior poder de **inversão** (polaridade/contraste) — onde o `what_it_can_invert` mais importa para o Reader. Cross-link via campo `refines`/`related` liga cada uma às OM e às lentes vizinhas.
+
+**Pendente (lotes futuros):** CORE_CONTEXT (17), CONDITIONAL_EVIDENCE, REQUIRES_CASE_READING, DO_NOT_USE_AS_GATE, WARNING_FAILURE_MODE, DEAD_AS_AUTHORITY — migrar quando o uso pedir. (Próximo passo combinado: ir ao próximo cluster — aguardando instrução.)
 
 **Artefato machine-readable:** `my-strategy/research/revalidation/XAU_4H_L2_BPT_BOS_CHOCH/v1/results/l2_bpt_reader_operating_manual.csv`.
