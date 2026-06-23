@@ -52,6 +52,16 @@ for e in entries:
     fail(bool(miss), f"[{e.get('signal_name','?')}] faltam chaves: {miss}")
     fail(e.get("source_status") not in VALID_STATUS, f"[{e.get('signal_name')}] status invalido: {e.get('source_status')}")
 
+# ---- 1b. PROVENANCE GUARD (constricao estrutural; substitui memoria passiva, que falhou 2x) ----
+# Nenhum signal pode ficar UNKNOWN_BLOCKED se ja existe extracao no repo. Busca REAL; falha apontando o arquivo.
+# Provado: re-injetar svp_poc_val_vah=UNKNOWN_BLOCKED -> FALHA apontando svp_bars/F6 (o erro de 2026-06-23).
+try:
+    import provenance_guard as _pg
+    for _v in _pg.check(entries):
+        fail(True, _v)
+except Exception as _e:
+    fail(True, f"provenance_guard indisponivel/erro: {_e}")
+
 # ---- 2. allowed_as_decision == NO para TODOS ----
 for e in entries:
     fail(e.get("allowed_as_decision", "").upper() != "NO",

@@ -294,20 +294,20 @@ signals:
   notes: price-derived do RAW; fidelity-checked por episodio
 # ===================== UNKNOWN_BLOCKED (RAW existe, ainda nao extraido) =====================
 - signal_name: custom_ob_boxes
-  current_field: (nao extraido)
-  current_source: nenhum (RAW disponivel)
+  current_field: sup_cat clean_sky dist_supply dist_demand (EXTRAIDO)
+  current_source: l2_bpt_raw_backbone_builder.py (pine_boxes[Custom OB] as-of-bar)
   raw_original_field: pine_boxes[Custom OB Detector v11]
   raw_file_or_registry_source: raw_replay/XAUUSD/4H/XAUUSD_240m_replay_blocks.jsonl.gz
-  transform_method: a definir (extrair boxes as-of-bar)
-  causal_timing_model: as-of-bar snapshot
-  no_future_guard: a implementar
-  fidelity_check: a implementar
-  source_status: UNKNOWN_BLOCKED
-  allowed_in_blind_packet: NO
+  transform_method: nearest SUPPLY/DEMAND box as-of-bar -> sup_cat/clean_sky/dist_supply/dist_demand
+  causal_timing_model: as-of-bar snapshot (anchor as-of por timestamp real)
+  no_future_guard: YES
+  fidelity_check: ver signals sup_cat/dist_supply/dist_demand (RAW_ORIGINAL_OK)
+  source_status: RAW_ORIGINAL_OK
+  allowed_in_blind_packet: YES
   allowed_as_decision: NO
-  known_bug: none
-  action_required: extrair pine_boxes Custom OB do RAW
-  notes: fonte RAW da supply demand real
+  known_bug: estava UNKNOWN_BLOCKED por engano (provenance_guard pegou: ja extraido como sup_cat/dist_supply); corrigido 2026-06-23
+  action_required: none (ja extraido)
+  notes: fonte RAW da supply demand real; EXTRAIDO via backbone builder (sup_cat/clean_sky/dist_supply/dist_demand)
 - signal_name: smc_boxes_lines
   current_field: (nao extraido)
   current_source: nenhum (RAW disponivel)
