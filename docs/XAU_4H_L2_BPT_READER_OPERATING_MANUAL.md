@@ -16,6 +16,36 @@ Os campos funcionais descrevem COMO ler com a lente, NUNCA uma regra TAKE/SKIP/s
 
 ---
 
+## 🔒 PROTOCOLO READER VIVO — etapas OBRIGATÓRIAS por cluster (lockado 2026-06-23)
+
+Todo cluster do currículo de arquétipos roda 1-a-1, com pergunta viva clara, na sequência:
+
+1. **Selecionar** coorte contrastiva (outcome usado SÓ p/ montar o par runner/trap, como hard-cluster).
+2. **Blind plot** canônico no chart (long_position + SL estrutural real + TP 2:1 fixo + label azul; sem outcome/R/cor-de-resultado; pausar daemon L1 antes).
+3. **Revisão visual humana** do plot (Cris valida antes de liberar a leitura).
+4. **Pacote cego** — sem R/trap/runner/mfe/outcome/labels-de-resultado/nomes-de-lente; **leak-check estrito (para se falhar)**. Inclui o **causal indicator layer** como EVIDÊNCIA (perguntas, não decisão).
+5. **Reader cego** — spawnar um subagente leitor REAL (via Agent tool), fresco, que nunca viu outcome → leitura por episódio + EXPECTATION auditável + contraste por par.
+6. **Freeze** + **commit da leitura ANTES de abrir o outcome** (integridade anti-hindsight).
+7. **Outcome audit** — spawnar um subagente auditor REAL (via Agent tool), fresco → leitura congelada vs realidade + EXPECTATIONS.
+8. **🆕 VISUAL POST-AUDIT REVIEW (OBRIGATÓRIO) — contra prints/chart canônico, antes de propor o próximo cluster.**
+
+> Nota anti-teatro: os leitores/auditores das etapas 5 e 7 são subagentes REAIS spawnados via Agent tool (cego = sem acesso ao outcome), nunca síntese escrita à mão rotulada de "agente".
+
+### Etapa 8 — VISUAL POST-AUDIT REVIEW (checklist obrigatório)
+Antes de propor o próximo cluster, revisar a leitura cega contra os prints/chart canônico e verificar:
+1. a leitura cega bate com o chart?
+2. NAS TOP/BOTTOM, RSI divergences, bubbles, SMC, BOS/CHoCH **reforçam ou contradizem** a leitura?
+3. houve **indicador causal visível ausente** do pacote cego?
+4. **alguma confiança foi alta demais?**
+5. algum **"trap" era bottom-attempt-whipsaw**? (fundo macro perto, este entry falhou por timing)
+6. algum **"supply wall" era compression/fuel**?
+7. **quais lentes** devem ser refinadas?
+8. **quais campos causais** devem entrar no próximo pacote cego?
+
+**Só depois desta revisão** se propõe o próximo arquétipo. Pular a etapa 8 = aceitar verdict sem olhar o chart (proibido — [[feedback_estatistica_aplicada_realidade]]).
+
+---
+
 ## Schema funcional (por lente)
 
 | campo | significado |
@@ -72,6 +102,54 @@ polaridade/timing**, não eixos novos — refinam lentes existentes.
 - **do_not_use_as:** NUNCA virar gate de SKIP (a natureza pode estar certa) — é flag de timing/risk-review: roteia entrada-boa-mal-temporizada para melhor entry, não para descarte.
 - **automation_note:** detectar apex-de-recuperação (entry ≈ high recente pós-reclaim) × cascade negativo; flag de timing ligada ao eixo risco/exit (Família G). NÃO promover a SKIP.
 - **provenance:** audit fase-3 cluster 4918, ep 6887 (commit c3839b8).
+
+---
+
+## SEED lote 2 — 4 lentes do Cluster 2 (macro negativo; commit 9f7326f)
+
+### OM4 · `indicator_confluence_as_reading` — o layer que faltava no pacote cego
+- **family:** INDICATOR · **refines:** `bubble_polarity_context_dependent`(E2) · `overbought_in_bear`(C5) · `capitulation_climax`(A8) · `indicators_identify_macro_top_not_per_trade`(I4)
+- **use_as:** `CONTRAST_LENS` + `CONDITIONAL_SUPPORT` (evidência que faz PERGUNTAS, NUNCA decide)
+- **when_to_foreground:** sempre — o indicador (sell/buy bubbles, RSI bull/bear-div, NAS, SMC) pergunta: **capitulação? absorção? exaustão? mudança de caráter? whipsaw?** — NÃO classifica TAKE/SKIP.
+- **what_it_can_invert:** confluência de indicador (sell-bubble climax no low + RSI bull-div + NAS-bottom) inverte uma leitura form-only de "range = wall" para "capitulação = fuel". É o fix do furo 5627 (form-only não viu o cluster de sell-bubbles m/L no low + rsi_min 26.6 + bull-div).
+- **known_failure_mode:** indicador como gate per-trade afunda winners (I4); sell-bubble-no-low sozinho não decide (3929-trap e 3949-runner têm assinatura parecida → é o whipsaw OM6 que separa).
+- **example_cases:** 5627 (capitulação no indicador, form-only leu wall); 3929 vs 3949 (mesma assinatura, separados por timing).
+- **do_not_use_as:** gate per-trade; equal-veto; indicador isolado como verdade.
+- **automation_note:** layer causal pronto em `l2_bpt_causal_indicator_layer.py` (bubbles+RSI causais; **NAS/SMC UNRELIABLE no frozen RAW — exigem fonte pine_labels causal antes do próximo cluster**). Embutir no pacote cego como evidência-pergunta.
+- **provenance:** visual post-audit cluster 2 (prints) + audit 9f7326f.
+
+### OM5 · `washout_runner_vs_compression_runner` — refina OM1
+- **family:** MICRO/AUCTION · **refines:** `OM1`(supply momentum) · `capitulation_climax`(A8)
+- **use_as:** `CONTRAST_LENS`
+- **when_to_foreground:** ao decidir se um long em macro negativo vai se desenvolver — há DOIS arquétipos de runner, não um.
+- **what_it_can_invert:** distingue **(A) washout-runner** = queda madura→capitulação→reabsorção→expansão **de (B) compression-runner** = range apertado sob supply→defesa lateral→coil→expansão. O furo 5627 veio de só ter o tipo A bem desenvolvido → tratou compressão-sob-supply como wall, era fuel (tipo B).
+- **known_failure_mode:** 5627 (compression-runner lido como wall por falta do arquétipo B).
+- **example_cases:** 5826/4401/1522/3949 (tipo A washout) vs 5627 (tipo B compression).
+- **do_not_use_as:** gate; presumir que todo range-sob-supply é um dos dois (pode ser wall real).
+- **automation_note:** discriminar A vs B por forma (clímax+reabsorção vs lateral-defendido+coil) + OM4 (capitulação no indicador). Leitura humana/agente.
+- **provenance:** visual post-audit cluster 2, ep 5627.
+
+### OM6 · `bottom_attempt_whipsaw_vs_trap` — nem todo loser é trap
+- **family:** MICRO · **refines:** `leg_maturity`(D6) · `OM3`(timing)
+- **use_as:** `CONTRAST_LENS` + `WARNING_ONLY`
+- **when_to_foreground:** ao rotular um caso que falha em macro negativo perto de um possível fundo.
+- **what_it_can_invert:** separa **bottom-attempt-whipsaw** (região perto de fundo macro real + sinais de tentativa de reversão, mas ESTE entry falha por timing/whipsaw) de **bear-pullback-trap limpo** (sem fundo perto, distribuição). Natureza diferente, mesmo que ambos falhem o trade.
+- **known_failure_mode:** 1873 (lido "trap MED-ALTA"; era bottom-attempt-whipsaw — fundo macro perto, whipsaw); 3929 idem (tentativa 3 dias antes do 3949).
+- **example_cases:** 1873, 3929 (whipsaw perto de fundo) vs trap de distribuição limpo.
+- **do_not_use_as:** gate de TAKE (whipsaw ainda falha o entry); chamar todo loser-em-bear de trap.
+- **automation_note:** proximidade de fundo macro + sinais de reversão tentada (OM4) + entry-timing; flag de natureza, não de trade.
+- **provenance:** visual post-audit cluster 2, ep 1873/3929.
+
+### OM7 · `confidence_calibration_ambiguous_zones`
+- **family:** READING · **refines:** todas as lentes de natureza
+- **use_as:** `WARNING_ONLY`
+- **when_to_foreground:** sempre que a leitura cair em zona ambígua: **range-apertado-sob-supply · bottom-attempt · compressão-antes-da-expansão · entry-perto-de-zona-conflitante.**
+- **what_it_can_invert:** baixa a confiança DECLARADA mesmo quando a DIREÇÃO parece clara — nessas zonas a NATUREZA é ambígua (o 5627 levou ALTA-confiança num caso difícil e errou).
+- **known_failure_mode:** 5627 (ALTA-confiança em range-sob-supply, errado); 1873 (MED-ALTA em bottom-whipsaw).
+- **example_cases:** 5627, 1873.
+- **do_not_use_as:** desculpa para não ler; é calibração, não recusa.
+- **automation_note:** rebaixar confiança a MÉDIA nessas 4 zonas por default; leitura humana/agente.
+- **provenance:** visual post-audit cluster 2.
 
 ---
 
