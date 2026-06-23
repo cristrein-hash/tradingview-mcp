@@ -1,9 +1,12 @@
-lens_id,name,status,axis,question_to_ask,evidence_episodes,source_basis
-OM-RAW-1,Regime/weekly-sign inverter de significado,RAW_CONFIRMED,regime,O regime confirma a reversao que a forma sugere ou a contradiz?,1661 vs 4918 / cluster2 4 runners weekly<0,RAW backbone + outcome audit
-OM-RAW-2,RSI-position-in-leg / freio de blow-off,RAW_CONFIRMED,momentum,RSI mostra espaco para estender ou exaustao no apex?,8878 RSI56 vs 8923 RSI82 / 5826 RSI30.8,RAW study_values + outcome
-OM-RAW-3,Polo FUEL (supply distante + climax + flush-reclaim + expansao),RAW_CONFIRMED,forma+supply,Houve climax real digerido por barras e a forma e de expansao?,4918 5826 3949 8940,RAW Custom OB + outcome
-OM-RAW-4,Forma da barra de entrada / TRAP,RAW_CONFIRMED,forma,Entry compra recuperacao ja falhando (vermelha) ou hold/expansao?,1873 3929 1661 1775,RAW OHLC + outcome
-OM-RAW-5,Forma 4H > etiqueta textual de acceptance,RAW_CONFIRMED,forma,Ignore a label; reconstrua aceitacao pela forma (climax+V+reabsorcao+cor),3949 vs 3929 par D,RAW OHLC + outcome (resultado mais forte)
-OM-RAW-6,Geometria preco x supply (condicional a macro controlado),RAW_CONFIRMED_CONDITIONAL,geometria,Os casos comparados tem o MESMO macro? Se sim geometria discrimina,3949v3929 confirma / 4918v4926 quebra,RAW Custom OB + outcome
-OM-RAW-Q1,supply-proximity = WALL/fade,QUARANTINED_PENDING_RAW,supply,NAO usar proximidade-de-supply como sinal de rejeicao ate SVP mapeado,4926 8878 4401 1522 5627 todos correram,RAW Custom OB + outcome (REFUTADO)
-OM-RAW-I1,compressao-sob-supply construtiva vs exaustao,INSUFFICIENT_RAW_CONTEXT,acceptance/SVP,Range faz lower-lows (corrosao) ou higher-lows/lateral defendido (compressao)?,3825 1775 5627,BLOQUEADO - mapear session_vp value-area (prioridade #1)
+lens_id,name,postfix_status,axis,question_to_ask,evidence_episodes,source_basis
+OM-RAW-1,Regime/weekly-sign inverte significado,POSTFIX_RAW_CONFIRMED,regime,O regime confirma a reversao que a forma sugere ou a contradiz?,4918 vs 1661,backbone causal + outcome audit pos-fix
+OM-RAW-2,weekly-negativo NAO e veto,POSTFIX_RAW_CONFIRMED,regime,Macro-negativo forca trap ou pode ser washout construtivo?,5826 16.73R / 3949 -0.6657 correu,pos-fix
+OM-RAW-3,Geometria preco x supply sob macro casado,POSTFIX_RAW_CONFIRMED,geometria,Casos comparados tem MESMO macro? Se sim geometria discrimina,3949 SUPPLY_FAR runner vs 3929 SUPPLY_BLOCKS stop (mesmo dia),pos-fix prova mais limpa SEM look-ahead
+OM-RAW-4,RSI-position / freio de blow-off,POSTFIX_RAW_CONFIRMED,momentum,RSI mostra espaco ou exaustao no apex?,8923 RSI82 climax,pos-fix
+OM-RAW-5,Forma 4H > etiqueta textual de acceptance,POSTFIX_RAW_CONFIRMED,forma,Ignore a label; reconstrua aceitacao pela forma,sub-bloco D 3949/3929,pos-fix
+OM-RAW-6,Entry-red-bar / esforco-comprador-ausente = trap,POSTFIX_RAW_CONFIRMED,forma,Entry compra recuperacao ja falhando (vermelha/sem comprador)?,1873 3929 3825,pos-fix
+OM-RAW-7,Compression-runner vs washout-runner,POSTFIX_RAW_CONFIRMED,forma,Absorcao lenta vs reclaim explosivo?,1522 vs 5826,pos-fix
+OM-RAW-8,Polo FUEL (supply distante + forma) direcao,POSTFIX_RAW_MODIFIED,forma+supply,Climax digerido + expansao?,8940 (direcao certa exit fraco); 6887 REFUTED (parou 0R sem novo topo),pos-fix
+OM-RAW-Q1,supply-colado/geometria-WALL => fade como REGRA,QUARANTINED_PENDING_VOLUME_VA,supply,NAO usar proximidade-de-supply como sinal de rejeicao isolado,4926 8878 4401 5627 wall+correram,pos-fix REFUTADO
+OM-RAW-Q2,Discriminacao cross-episodio 4918 vs 4926,POSTFIX_REFUTED,geometria,4918 e 4926 sao opostos ou gemeos?,ambos monster ~18-19R,pos-fix arbitro=VA volume BLOCKED
+OM-RAW-I1,Compressao-sob-supply / casos INSIDE_VALUE,STILL_INSUFFICIENT,acceptance/SVP,De que lado do VALUE-AREA DE VOLUME o preco e aceito?,5627 1623 casos INSIDE,BLOQUEADO - exige VA de volume (nao serializado)

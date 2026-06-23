@@ -13,6 +13,34 @@ CSV-espelho: `results/l2_bpt_reader_operating_manual_raw_confirmed.csv`.
 
 ---
 
+## 0. ATUALIZAÇÃO PÓS-ANCHOR-FIX (revalidação causal 2026-06-23)
+
+As lentes abaixo (§1-3) foram REVALIDADAS sobre o backbone CAUSAL (anchor as-of por timestamp real, commit
+1267c8d — o backbone PRE-FIX tinha look-ahead de 1-2 barras em 13/19 casos). Readers cegos frescos + outcome
+audits frescos sobre pacotes pós-fix. Resultado combinado: **11 CONFIRMED · 3 MODIFIED · 5 REFUTED · 0 INSUFFICIENT**
+(n=19). Cluster 2 melhorou de 4C/4R/2INSUF (pré) → **7C/1M/2R** (pós). Detalhe:
+`docs/XAU_4H_L2_BPT_CLUSTER{1,2}_PREFIX_VS_POSTFIX_REVALIDATION.md`.
+
+| Lente | Status pós-fix |
+|---|---|
+| Regime/weekly-sign inverte significado | **POSTFIX_RAW_CONFIRMED** |
+| weekly-negativo NÃO é veto (macro-neg pode ser washout construtivo) | **POSTFIX_RAW_CONFIRMED** |
+| **Geometria preço×supply sob macro casado** (3949 SUPPLY_FAR runner vs 3929 SUPPLY_BLOCKS stop, mesmo dia) | **POSTFIX_RAW_CONFIRMED — prova mais limpa, agora SEM look-ahead** |
+| RSI-position / freio de blow-off | **POSTFIX_RAW_CONFIRMED** |
+| Forma 4H > etiqueta textual de acceptance | **POSTFIX_RAW_CONFIRMED** |
+| Entry-red-bar / esforço-comprador-ausente = trap | **POSTFIX_RAW_CONFIRMED** |
+| Compression-runner vs washout-runner | **POSTFIX_RAW_CONFIRMED** |
+| Polo FUEL (supply distante + forma) — direção | **POSTFIX_RAW_MODIFIED** (direção certa, exit/runner variável) |
+| **supply-colado/geometria-WALL ⇒ fade como REGRA** (4926/8878/4401/5627 = wall + correram) | **QUARANTINED_PENDING_VOLUME_VA** |
+| Discriminação cross-episódio 4918 vs 4926 (gêmeos-runner) | **POSTFIX_REFUTED** (árbitro = VA de volume, BLOCKED) |
+| Compressão-sob-supply / casos INSIDE_VALUE | **STILL_INSUFFICIENT** (exige VA de volume) |
+
+**Continuidade com o pré-fix:** o fix NÃO destruiu as lentes — confirmou as load-bearing e reconfirmou a
+quarentena do "supply-WALL ⇒ fade". A novidade causal é a **prova limpa da geometria** (3949/3929) e a melhora de
+calibração do Cluster 2. O eixo que fecharia WALL-vs-FUEL (aceitação no VALUE-AREA DE VOLUME) segue **BLOCKED**.
+
+---
+
 ## 1. Lentes RAW-CONFIRMED (a base operável)
 
 ### OM-RAW-1 — Regime/weekly-sign é o INVERSOR de significado (load-bearing)
