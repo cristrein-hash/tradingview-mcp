@@ -138,6 +138,46 @@ for fp in blind_inputs:
     (debt_found if rel in BASELINE_INPUTS else new_violations).append((rel, hits))
 fail(bool(new_violations), f"NOVO pacote cego de INPUT com campo BLOQUEADO (fora do baseline): {new_violations}")
 
+# ---- 9. INPUT MANIFEST (FASE 6): contrato explicito de input cego; elimina o furo "input nao listado" ----
+# O gate antigo dava PASS com debito baseline e dependia da convencao de nome. Agora TODO input cego/raw-clean em
+# results/** TEM de estar listado no reader_input_manifest.yaml; inputs RAW_CLEAN_ALLOWED nao podem conter campo
+# derivado nem valor SVP (so BLOCKED_UNMAPPED). Legacy = HISTORICAL_BASELINE_DEBT/QUARANTINED (debito documentado).
+INPUT_MANIFEST = os.path.join(HERE, "reader_input_manifest.yaml")
+STILL_BLOCKED_FIELDS = ["nas_recent", "smc_recent", "bubbles_recent",
+                        "dist_4h_supply", "dist_4h_demand", "dist_poc", "above_value", "below_value"]
+INP_STATUS = {"RAW_CLEAN_ALLOWED", "HISTORICAL_BASELINE_DEBT", "QUARANTINED", "DISALLOWED"}
+inp_by_path = {}
+if not os.path.exists(INPUT_MANIFEST):
+    fail(True, "reader_input_manifest.yaml ausente (contrato de input cego obrigatorio — FASE 6)")
+else:
+    inp_entries = parse_manifest(INPUT_MANIFEST)
+    inp_by_path = {e.get("input_path"): e for e in inp_entries}
+    for e in inp_entries:
+        fail(e.get("status") not in INP_STATUS, f"[input {e.get('input_id')}] status invalido: {e.get('status')}")
+        # input listado deve existir em disco (manifest nao pode apontar p/ fantasma)
+        fail(not os.path.exists(os.path.join(V1, e.get("input_path", "/x"))),
+             f"[input {e.get('input_id')}] input_path inexistente: {e.get('input_path')}")
+# 9b. todo input cego/raw-clean em disco DEVE estar no manifest; RAW_CLEAN sem campo derivado/SVP-valor
+scan_inputs = []
+for dp, _dn, fns in os.walk(RES):
+    for fn in fns:
+        low = fn.lower()
+        if (("blind" in low or "raw_clean" in low) and low.rsplit(".", 1)[-1] in ("md", "json", "txt")
+                and not low.endswith("_entry.json")):
+            scan_inputs.append(os.path.join(dp, fn))
+raw_clean_ok = []
+for fp in scan_inputs:
+    rel = os.path.relpath(fp, V1)
+    e = inp_by_path.get(rel)
+    fail(e is None, f"INPUT cego NAO listado no input manifest: {rel} (todo input cego exige contrato)")
+    if e and e.get("status") == "RAW_CLEAN_ALLOWED":
+        blob = open(fp, errors="ignore").read()
+        bad = sorted({f for f in STILL_BLOCKED_FIELDS if f in blob})
+        fail(bool(bad), f"INPUT RAW_CLEAN {rel} contem campo derivado/SVP-valor: {bad}")
+        fail(("svp" in blob.lower() or "acceptance" in blob.lower()) and "BLOCKED_UNMAPPED" not in blob,
+             f"INPUT RAW_CLEAN {rel} cita SVP/acceptance sem BLOCKED_UNMAPPED")
+        raw_clean_ok.append(rel)
+
 # ---- emite inventario CSV (FASE 5) ----
 import csv as _csv
 INV = os.path.join(V1, "results", "l2_bpt_reader_source_mapping_inventory.csv")
@@ -165,6 +205,8 @@ print("  fontes UPSTREAM que emitem Camada-1 derivada (debito declarado; enforce
 for base, hits in UPSTREAM_DEBT:
     print(f"    DEBT-SRC {base}: {hits}")
 print("  RATCHET: gate FALHA em qualquer INPUT cego NOVO (cluster futuro) com campo bloqueado fora do baseline.")
+print(f"\n  INPUT MANIFEST (FASE 6): {len(inp_by_path)} inputs sob contrato | RAW_CLEAN_ALLOWED limpos: {raw_clean_ok}")
+print("  Todo input cego/raw-clean em results/** exige entrada no reader_input_manifest.yaml (fecha furo 'nao listado').")
 if viol:
     print("\nGATE FAIL — violacoes:")
     for v in viol:

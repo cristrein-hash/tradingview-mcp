@@ -1,0 +1,101 @@
+# READER INPUT MANIFEST — contrato explicito de inputs cegos do Reader Vivo. YAML-subset (scalars sem ': ' no valor).
+# Regra: Reader cego SO consome input listado com status RAW_CLEAN_ALLOWED. Input nao-listado => gate FALHA.
+# Status: RAW_CLEAN_ALLOWED | HISTORICAL_BASELINE_DEBT | QUARANTINED | DISALLOWED
+
+inputs:
+- input_id: raw_rebuild_cluster1
+  cluster_id: cluster1
+  input_path: results/raw_rebuild_cluster1/reading_packet_RAW_CLEAN.md
+  created_by_script: l2_bpt_reading_packet_raw_clean.py
+  source_packet_type: RAW_CLEAN_BLIND
+  allowed_for_reader: YES
+  source_gate_required: YES
+  source_mapping_status: RAW_CLEAN
+  contains_outcome: NO
+  contains_blocked_fields: NO
+  status: RAW_CLEAN_ALLOWED
+  notes: Camada-1 RAW (supply/demand Custom OB + regime price) + indicadores RAW; SVP/acceptance BLOCKED_UNMAPPED
+- input_id: raw_rebuild_cluster2
+  cluster_id: cluster2
+  input_path: results/raw_rebuild_cluster2/reading_packet_RAW_CLEAN.md
+  created_by_script: l2_bpt_reading_packet_raw_clean.py
+  source_packet_type: RAW_CLEAN_BLIND
+  allowed_for_reader: YES
+  source_gate_required: YES
+  source_mapping_status: RAW_CLEAN
+  contains_outcome: NO
+  contains_blocked_fields: NO
+  status: RAW_CLEAN_ALLOWED
+  notes: macro negativo RAW-clean
+- input_id: blind_pack_cluster4918_legacy
+  cluster_id: cluster1
+  input_path: results/blind_pack_cluster4918/reading_packet_BLIND.md
+  created_by_script: l2_bpt_reading_packet_blind_cluster4918.py
+  source_packet_type: LEGACY_BLIND
+  allowed_for_reader: NO
+  source_gate_required: YES
+  source_mapping_status: DERIVED_CAMADA1
+  contains_outcome: NO
+  contains_blocked_fields: YES
+  status: HISTORICAL_BASELINE_DEBT
+  notes: input pre-gate com Camada-1 derivada; preservado como historico; NAO usar p/ leitura nova
+- input_id: blind_pack_cluster2_legacy
+  cluster_id: cluster2
+  input_path: results/blind_pack_cluster2/reading_packet_BLIND.md
+  created_by_script: l2_bpt_reading_packet_blind_cluster2.py
+  source_packet_type: LEGACY_BLIND
+  allowed_for_reader: NO
+  source_gate_required: YES
+  source_mapping_status: DERIVED_CAMADA1
+  contains_outcome: NO
+  contains_blocked_fields: YES
+  status: HISTORICAL_BASELINE_DEBT
+  notes: idem; historico
+- input_id: structural_agent_input_blind_old
+  cluster_id: teaching_set_62
+  input_path: results/_structural_agent_input_blind.json
+  created_by_script: structural_convergent_reader_62.py
+  source_packet_type: LEGACY_AGENT_INPUT
+  allowed_for_reader: NO
+  source_gate_required: YES
+  source_mapping_status: DERIVED_CAMADA1
+  contains_outcome: NO
+  contains_blocked_fields: YES
+  status: QUARANTINED
+  notes: pipeline antigo qualification; quarentena
+- input_id: microstructure_agent_input_blind_old
+  cluster_id: teaching_set_62
+  input_path: results/_microstructure_agent_input_blind.json
+  created_by_script: microstructure_aggregate.py
+  source_packet_type: LEGACY_AGENT_INPUT
+  allowed_for_reader: NO
+  source_gate_required: YES
+  source_mapping_status: DERIVED_CAMADA1
+  contains_outcome: NO
+  contains_blocked_fields: YES
+  status: QUARANTINED
+  notes: quarentena
+- input_id: deep_eracontrol_blind_old
+  cluster_id: teaching_set_62
+  input_path: results/_deep_eracontrol_blind.json
+  created_by_script: pipeline antigo
+  source_packet_type: LEGACY_AGENT_INPUT
+  allowed_for_reader: NO
+  source_gate_required: YES
+  source_mapping_status: DERIVED_CAMADA1
+  contains_outcome: NO
+  contains_blocked_fields: YES
+  status: QUARANTINED
+  notes: quarentena
+- input_id: structural_blind_compact_old
+  cluster_id: teaching_set_62
+  input_path: results/_structural_blind_compact.json
+  created_by_script: pipeline antigo
+  source_packet_type: LEGACY_AGENT_INPUT
+  allowed_for_reader: NO
+  source_gate_required: YES
+  source_mapping_status: DERIVED_CAMADA1
+  contains_outcome: NO
+  contains_blocked_fields: YES
+  status: QUARANTINED
+  notes: quarentena
