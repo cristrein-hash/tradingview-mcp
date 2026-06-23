@@ -7,26 +7,26 @@ inputs:
   cluster_id: cluster1
   input_path: results/raw_rebuild_cluster1/reading_packet_RAW_CLEAN.md
   created_by_script: l2_bpt_reading_packet_raw_clean.py
-  source_packet_type: RAW_CLEAN_BLIND
-  allowed_for_reader: YES
+  source_packet_type: RAW_CLEAN_PRE_ANCHOR_FIX
+  allowed_for_reader: NO
   source_gate_required: YES
   source_mapping_status: RAW_CLEAN
   contains_outcome: NO
   contains_blocked_fields: NO
-  status: RAW_CLEAN_ALLOWED
-  notes: Camada-1 RAW (supply/demand Custom OB + regime price) + indicadores RAW; SVP/acceptance BLOCKED_UNMAPPED
+  status: PRE_FIX_HISTORICAL_REFERENCE_ONLY
+  notes: PRE-FIX contaminado por look-ahead (anchor close-match+DST); historico; base final = raw_rebuild_cluster1_postfix
 - input_id: raw_rebuild_cluster2
   cluster_id: cluster2
   input_path: results/raw_rebuild_cluster2/reading_packet_RAW_CLEAN.md
   created_by_script: l2_bpt_reading_packet_raw_clean.py
-  source_packet_type: RAW_CLEAN_BLIND
-  allowed_for_reader: YES
+  source_packet_type: RAW_CLEAN_PRE_ANCHOR_FIX
+  allowed_for_reader: NO
   source_gate_required: YES
   source_mapping_status: RAW_CLEAN
   contains_outcome: NO
   contains_blocked_fields: NO
-  status: RAW_CLEAN_ALLOWED
-  notes: macro negativo RAW-clean
+  status: PRE_FIX_HISTORICAL_REFERENCE_ONLY
+  notes: PRE-FIX contaminado por look-ahead; historico; base final = raw_rebuild_cluster2_postfix
 - input_id: blind_pack_cluster4918_legacy
   cluster_id: cluster1
   input_path: results/blind_pack_cluster4918/reading_packet_BLIND.md
@@ -99,3 +99,27 @@ inputs:
   contains_blocked_fields: YES
   status: QUARANTINED
   notes: quarentena
+- input_id: raw_rebuild_cluster1_postfix
+  cluster_id: cluster1
+  input_path: results/raw_rebuild_cluster1_postfix/reading_packet_RAW_CLEAN.md
+  created_by_script: l2_bpt_reading_packet_raw_clean_postfix.py
+  source_packet_type: RAW_CLEAN_POST_ANCHOR_FIX
+  allowed_for_reader: YES
+  source_gate_required: YES
+  source_mapping_status: RAW_CLEAN_ALLOWED
+  contains_outcome: NO
+  contains_blocked_fields: NO
+  status: RAW_CLEAN_ALLOWED
+  notes: backbone causal pos-anchor-fix commit 1267c8d; substitui o pre-fix (historico); POC/VAL/VAH volume BLOCKED
+- input_id: raw_rebuild_cluster2_postfix
+  cluster_id: cluster2
+  input_path: results/raw_rebuild_cluster2_postfix/reading_packet_RAW_CLEAN.md
+  created_by_script: l2_bpt_reading_packet_raw_clean_postfix.py
+  source_packet_type: RAW_CLEAN_POST_ANCHOR_FIX
+  allowed_for_reader: YES
+  source_gate_required: YES
+  source_mapping_status: RAW_CLEAN_ALLOWED
+  contains_outcome: NO
+  contains_blocked_fields: NO
+  status: RAW_CLEAN_ALLOWED
+  notes: backbone causal pos-anchor-fix commit 1267c8d; substitui o pre-fix (historico); POC/VAL/VAH volume BLOCKED

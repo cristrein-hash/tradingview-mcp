@@ -145,7 +145,8 @@ fail(bool(new_violations), f"NOVO pacote cego de INPUT com campo BLOQUEADO (fora
 INPUT_MANIFEST = os.path.join(HERE, "reader_input_manifest.yaml")
 STILL_BLOCKED_FIELDS = ["nas_recent", "smc_recent", "bubbles_recent",
                         "dist_4h_supply", "dist_4h_demand", "dist_poc", "above_value", "below_value"]
-INP_STATUS = {"RAW_CLEAN_ALLOWED", "HISTORICAL_BASELINE_DEBT", "QUARANTINED", "DISALLOWED"}
+INP_STATUS = {"RAW_CLEAN_ALLOWED", "HISTORICAL_BASELINE_DEBT", "QUARANTINED", "DISALLOWED",
+              "PRE_FIX_HISTORICAL_REFERENCE_ONLY"}
 inp_by_path = {}
 if not os.path.exists(INPUT_MANIFEST):
     fail(True, "reader_input_manifest.yaml ausente (contrato de input cego obrigatorio — FASE 6)")
@@ -176,10 +177,14 @@ for fp in scan_inputs:
     fail(e is None, f"INPUT cego NAO listado no input manifest: {rel} (todo input cego exige contrato)")
     if e and e.get("status") == "RAW_CLEAN_ALLOWED":
         blob = open(fp, errors="ignore").read()
-        bad = sorted({f for f in STILL_BLOCKED_FIELDS if f in blob})
+        # word-boundary p/ NAO confundir o campo bloqueado 'above_value' com o rotulo TPO 'ACCEPTED_ABOVE_VALUE'
+        bad = sorted({f for f in STILL_BLOCKED_FIELDS
+                      if re.search(r"(?<![A-Za-z0-9_])" + re.escape(f) + r"(?![A-Za-z0-9_])", blob)})
         fail(bool(bad), f"INPUT RAW_CLEAN {rel} contem campo derivado/SVP-valor: {bad}")
-        fail(("svp" in blob.lower() or "acceptance" in blob.lower()) and "BLOCKED_UNMAPPED" not in blob,
-             f"INPUT RAW_CLEAN {rel} cita SVP/acceptance sem BLOCKED_UNMAPPED")
+        # SVP/acceptance citados devem estar marcados bloqueados (BLOCKED_UNMAPPED ou UNKNOWN_BLOCKED), nunca valor de VA
+        blocked_marker = ("BLOCKED_UNMAPPED" in blob) or ("UNKNOWN_BLOCKED" in blob)
+        fail(("svp" in blob.lower() or "acceptance" in blob.lower()) and not blocked_marker,
+             f"INPUT RAW_CLEAN {rel} cita SVP/acceptance sem marcador de bloqueio (BLOCKED_UNMAPPED/UNKNOWN_BLOCKED)")
         raw_clean_ok.append(rel)
 
 # ---- emite inventario CSV (FASE 5) ----

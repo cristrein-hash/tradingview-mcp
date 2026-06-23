@@ -1,0 +1,7 @@
+SOURCE GATE REPORT — raw_rebuild_cluster1_postfix (pos-anchor-fix)
+episodios: 9 | causal(sem futuro): 9/9 | leak-check: PASS (0)
+backbone: l2_bpt_raw_backbone_episodes.jsonl (anchor as-of por timestamp real, commit 1267c8d)
+campos: Camada-0/1 RAW + indicadores RAW + svp_bar_volume_raw(RAW_OK) + tpo_value_area(DERIVED, tempo)
+BLOCKED no pacote: POC/VAL/VAH de VOLUME LuxAlgo (UNKNOWN_BLOCKED, nao fabricado)
+fidelity-fail (feed RAW!=frozen, flagado): [1661]
+sem outcome/R/MFE/winner/loser/runner/trap. allowed_for_reader=YES.
