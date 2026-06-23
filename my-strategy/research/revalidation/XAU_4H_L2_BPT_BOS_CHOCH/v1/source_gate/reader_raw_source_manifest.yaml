@@ -1,0 +1,327 @@
+# READER VIVO — RAW SOURCE MANIFEST (gate canônico). Formato YAML-subset (lista de entries, scalars sem ': ' no valor).
+# Regra: allowed_as_decision=NO para TODOS. UNMAPPED/UNKNOWN/BUG => allowed_in_blind_packet=NO.
+# RAW canônico: /Volumes/GUTS_ LACIE/TradingData/raw_replay/XAUUSD/4H/XAUUSD_240m_replay_*.jsonl.gz (+ _SVP_LUX_RAW p/ SVP)
+
+signals:
+# ===================== INDICADORES — RAW_ORIGINAL_OK (corrigidos no incidente) =====================
+- signal_name: nas_top_bottom
+  current_field: nas_events_recent
+  current_source: l2_bpt_raw_indicator_extract.py
+  raw_original_field: pine_labels[NAS TOP BOTTOM DETECTOR]
+  raw_file_or_registry_source: raw_replay/XAUUSD/4H/XAUUSD_240m_replay_blocks.jsonl.gz
+  transform_method: tail-as-of-bar recent labels (era-filtered)
+  causal_timing_model: snapshot as-of-bar replay (so passado)
+  no_future_guard: YES
+  fidelity_check: close-anchor RAW vs frozen <0.5pct
+  source_status: RAW_ORIGINAL_OK
+  allowed_in_blind_packet: YES
+  allowed_as_decision: NO
+  known_bug: none
+  action_required: none
+  notes: substitui nas_recent derivado (head stale)
+- signal_name: smc_bos_choch_eqh_eql
+  current_field: smc_events_recent
+  current_source: l2_bpt_raw_indicator_extract.py
+  raw_original_field: pine_labels[Smart Money Concepts LuxAlgo]
+  raw_file_or_registry_source: raw_replay/XAUUSD/4H/XAUUSD_240m_replay_blocks.jsonl.gz
+  transform_method: tail-as-of-bar recent labels (era-filtered)
+  causal_timing_model: snapshot as-of-bar replay
+  no_future_guard: YES
+  fidelity_check: close-anchor RAW vs frozen <0.5pct
+  source_status: RAW_ORIGINAL_OK
+  allowed_in_blind_packet: YES
+  allowed_as_decision: NO
+  known_bug: none
+  action_required: none
+  notes: BOS CHoCH EQH EQL via text do label
+- signal_name: market_order_bubbles
+  current_field: bubble_cluster_summary
+  current_source: l2_bpt_raw_indicator_extract.py
+  raw_original_field: pine_shapes_bubbles[Market Order Bubbles].activations_per_plot
+  raw_file_or_registry_source: raw_replay/XAUUSD/4H/XAUUSD_240m_replay_blocks.jsonl.gz
+  transform_method: activations_per_plot BUY plot_0_2_4 SELL plot_6_8_10
+  causal_timing_model: as-of-bar 20-bar lookback do estudo
+  no_future_guard: YES
+  fidelity_check: bate derivado bubbles_recent em contagem
+  source_status: RAW_ORIGINAL_OK
+  allowed_in_blind_packet: YES
+  allowed_as_decision: NO
+  known_bug: none
+  action_required: none
+  notes: mapping plot_id canonico
+- signal_name: rsi_value
+  current_field: rsi_value
+  current_source: l2_bpt_raw_indicator_extract.py
+  raw_original_field: study_values[Relative Strength Index].RSI
+  raw_file_or_registry_source: raw_replay/XAUUSD/4H/XAUUSD_240m_replay_blocks.jsonl.gz
+  transform_method: leitura direta as-of-bar
+  causal_timing_model: as-of-bar
+  no_future_guard: YES
+  fidelity_check: valor RAW direto
+  source_status: RAW_ORIGINAL_OK
+  allowed_in_blind_packet: YES
+  allowed_as_decision: NO
+  known_bug: none
+  action_required: none
+  notes: ''
+- signal_name: rsi_divergence
+  current_field: rsi_divergence_events
+  current_source: l2_bpt_raw_indicator_extract.py
+  raw_original_field: study_values[Relative Strength Index].Regular_Bullish_Bearish
+  raw_file_or_registry_source: raw_replay/XAUUSD/4H/XAUUSD_240m_replay_blocks.jsonl.gz
+  transform_method: extrai chaves Regular Bullish e Regular Bearish do payload
+  causal_timing_model: as-of-bar
+  no_future_guard: YES
+  fidelity_check: presente no payload RAW
+  source_status: RAW_ORIGINAL_OK
+  allowed_in_blind_packet: YES
+  allowed_as_decision: NO
+  known_bug: heuristica antiga substituida pelo campo RAW autentico
+  action_required: none
+  notes: divergencia autentica do indicador
+# ===================== FORMA — DERIVED_FROM_RAW_WITH_MAPPING =====================
+- signal_name: ohlcv_price_sequence
+  current_field: price_sequence_4h
+  current_source: raw_features_2020_2026.jsonl (frozen)
+  raw_original_field: ohlcv
+  raw_file_or_registry_source: raw_replay/XAUUSD/4H + frozen extract
+  transform_method: extracao fiel de OHLC do replay capture
+  causal_timing_model: as-of-bar barras fechadas
+  no_future_guard: YES
+  fidelity_check: close frozen vs RAW ~0.1-0.4pct feed
+  source_status: DERIVED_FROM_RAW_WITH_MAPPING
+  allowed_in_blind_packet: YES
+  allowed_as_decision: NO
+  known_bug: none
+  action_required: idealmente ler OHLC direto do RAW no futuro
+  notes: forma viva e RAW-faithful
+# ===================== DERIVED_ARTIFACT_BUG (bloqueados) =====================
+- signal_name: nas_recent_derived
+  current_field: nas_recent
+  current_source: raw_features_2020_2026.jsonl / qual_packets
+  raw_original_field: pine_labels[NAS TOP BOTTOM DETECTOR]
+  raw_file_or_registry_source: derivado bugado
+  transform_method: head-of-buffer (ERRADO)
+  causal_timing_model: quebrado (labels 2018-19)
+  no_future_guard: NO
+  fidelity_check: FALHOU (preços era 2018-19)
+  source_status: DERIVED_ARTIFACT_BUG
+  allowed_in_blind_packet: NO
+  allowed_as_decision: NO
+  known_bug: pegava cabeca do buffer de 500 labels
+  action_required: NAO USAR usar nas_top_bottom RAW
+  notes: incidente NAS_SMC_SOURCE_INCIDENT
+- signal_name: smc_recent_derived
+  current_field: smc_recent
+  current_source: raw_features_2020_2026.jsonl / qual_packets
+  raw_original_field: pine_labels[Smart Money Concepts LuxAlgo]
+  raw_file_or_registry_source: derivado bugado
+  transform_method: head-of-buffer (ERRADO)
+  causal_timing_model: quebrado
+  no_future_guard: NO
+  fidelity_check: FALHOU
+  source_status: DERIVED_ARTIFACT_BUG
+  allowed_in_blind_packet: NO
+  allowed_as_decision: NO
+  known_bug: head-of-buffer stale
+  action_required: NAO USAR usar smc RAW
+  notes: incidente
+# ===================== UNMAPPED_DERIVED_DISALLOWED (RAW existe, falta mapear) =====================
+- signal_name: bubbles_recent_derived
+  current_field: bubbles_recent
+  current_source: raw_features_2020_2026.jsonl
+  raw_original_field: pine_shapes_bubbles[Market Order Bubbles]
+  raw_file_or_registry_source: derivado
+  transform_method: derivado sem manifest
+  causal_timing_model: bars_ago no payload (causal mas derivado)
+  no_future_guard: PARTIAL
+  fidelity_check: nao auditado
+  source_status: UNMAPPED_DERIVED_DISALLOWED
+  allowed_in_blind_packet: NO
+  allowed_as_decision: NO
+  known_bug: none confirmado mas sem mapping
+  action_required: usar market_order_bubbles RAW
+  notes: substituido pelo RAW
+- signal_name: sup_cat
+  current_field: sup_cat
+  current_source: engine demand_supply_quality (derivado)
+  raw_original_field: pine_boxes[Custom OB Detector v11]
+  raw_file_or_registry_source: RAW pine_boxes nao mapeado ao feature
+  transform_method: feature computada sem manifest RAW
+  causal_timing_model: nao declarado
+  no_future_guard: UNKNOWN
+  fidelity_check: ausente
+  source_status: UNMAPPED_DERIVED_DISALLOWED
+  allowed_in_blind_packet: NO
+  allowed_as_decision: NO
+  known_bug: none confirmado mas sem mapping RAW
+  action_required: mapear de pine_boxes Custom OB com transform e fidelity
+  notes: auction context bloqueado ate mapear
+- signal_name: pol_cat
+  current_field: pol_cat
+  current_source: engine demand_supply_quality (derivado)
+  raw_original_field: pine_boxes[Custom OB Detector v11]
+  raw_file_or_registry_source: nao mapeado
+  transform_method: feature computada sem manifest
+  causal_timing_model: nao declarado
+  no_future_guard: UNKNOWN
+  fidelity_check: ausente
+  source_status: UNMAPPED_DERIVED_DISALLOWED
+  allowed_in_blind_packet: NO
+  allowed_as_decision: NO
+  known_bug: sem mapping
+  action_required: mapear RAW
+  notes: ''
+- signal_name: clean_sky
+  current_field: clean_sky
+  current_source: engine (derivado)
+  raw_original_field: pine_boxes[Custom OB Detector v11] room-to-supply
+  raw_file_or_registry_source: nao mapeado
+  transform_method: feature computada sem manifest
+  causal_timing_model: nao declarado
+  no_future_guard: UNKNOWN
+  fidelity_check: ausente
+  source_status: UNMAPPED_DERIVED_DISALLOWED
+  allowed_in_blind_packet: NO
+  allowed_as_decision: NO
+  known_bug: sem mapping
+  action_required: mapear RAW
+  notes: ''
+- signal_name: dist_supply
+  current_field: dist_4h_supply_low_atr
+  current_source: engine/qual_packets (derivado)
+  raw_original_field: pine_boxes[Custom OB Detector v11]
+  raw_file_or_registry_source: nao mapeado
+  transform_method: distancia ATR a box derivada
+  causal_timing_model: nao declarado
+  no_future_guard: UNKNOWN
+  fidelity_check: ausente
+  source_status: UNMAPPED_DERIVED_DISALLOWED
+  allowed_in_blind_packet: NO
+  allowed_as_decision: NO
+  known_bug: sem mapping
+  action_required: mapear de pine_boxes Custom OB
+  notes: ''
+- signal_name: dist_demand
+  current_field: dist_4h_demand_low_atr
+  current_source: engine/qual_packets (derivado)
+  raw_original_field: pine_boxes[Custom OB Detector v11]
+  raw_file_or_registry_source: nao mapeado
+  transform_method: distancia ATR a box derivada
+  causal_timing_model: nao declarado
+  no_future_guard: UNKNOWN
+  fidelity_check: ausente
+  source_status: UNMAPPED_DERIVED_DISALLOWED
+  allowed_in_blind_packet: NO
+  allowed_as_decision: NO
+  known_bug: sem mapping
+  action_required: mapear RAW
+  notes: usado como SL fallback demand-anchored revisar
+- signal_name: acceptance
+  current_field: f3_acceptance_state
+  current_source: DSPA path features (derivado)
+  raw_original_field: ohlcv + SVP value-area
+  raw_file_or_registry_source: derivado sem manifest
+  transform_method: estado computado
+  causal_timing_model: nao declarado
+  no_future_guard: UNKNOWN
+  fidelity_check: ausente
+  source_status: UNMAPPED_DERIVED_DISALLOWED
+  allowed_in_blind_packet: NO
+  allowed_as_decision: NO
+  known_bug: rotulo textual enganou (cluster 2 sub-D)
+  action_required: reconstruir pela forma RAW
+  notes: nao confiar acceptance textual isolada
+- signal_name: svp_poc_val_vah
+  current_field: dist_poc above_value below_value
+  current_source: DSPA path features (derivado, frequentemente None)
+  raw_original_field: session_vp
+  raw_file_or_registry_source: raw_replay/XAUUSD/4H/XAUUSD_4H_replay_SVP_LUX_RAW.jsonl.gz
+  transform_method: nao mapeado ao session_vp RAW
+  causal_timing_model: nao declarado
+  no_future_guard: UNKNOWN
+  fidelity_check: ausente
+  source_status: UNMAPPED_DERIVED_DISALLOWED
+  allowed_in_blind_packet: NO
+  allowed_as_decision: NO
+  known_bug: dist_poc None em cluster 2
+  action_required: mapear de session_vp do bloco SVP_LUX_RAW
+  notes: RAW existe nao fabricar POC VAL VAH
+- signal_name: weekly_slope_cascade_leg
+  current_field: weekly_slope cascade_score macro_reader_leg
+  current_source: regime_classifier_v3 jsonl (derivado)
+  raw_original_field: 1D e weekly OHLC
+  raw_file_or_registry_source: derivado sem manifest RAW
+  transform_method: classificacao de regime computada
+  causal_timing_model: D-1 declarado mas sem mapping RAW
+  no_future_guard: PARTIAL
+  fidelity_check: ausente
+  source_status: UNMAPPED_DERIVED_DISALLOWED
+  allowed_in_blind_packet: NO
+  allowed_as_decision: NO
+  known_bug: none confirmado mas sem mapping
+  action_required: mapear computo de regime a OHLC RAW 1D weekly
+  notes: backbone Camada 1 bloqueado ate mapear
+# ===================== UNKNOWN_BLOCKED (RAW existe, ainda nao extraido) =====================
+- signal_name: custom_ob_boxes
+  current_field: (nao extraido)
+  current_source: nenhum (RAW disponivel)
+  raw_original_field: pine_boxes[Custom OB Detector v11]
+  raw_file_or_registry_source: raw_replay/XAUUSD/4H/XAUUSD_240m_replay_blocks.jsonl.gz
+  transform_method: a definir (extrair boxes as-of-bar)
+  causal_timing_model: as-of-bar snapshot
+  no_future_guard: a implementar
+  fidelity_check: a implementar
+  source_status: UNKNOWN_BLOCKED
+  allowed_in_blind_packet: NO
+  allowed_as_decision: NO
+  known_bug: none
+  action_required: extrair pine_boxes Custom OB do RAW
+  notes: fonte RAW da supply demand real
+- signal_name: smc_boxes_lines
+  current_field: (nao extraido)
+  current_source: nenhum (RAW disponivel)
+  raw_original_field: pine_boxes[SMC] e pine_lines[SMC]
+  raw_file_or_registry_source: raw_replay/XAUUSD/4H/XAUUSD_240m_replay_blocks.jsonl.gz
+  transform_method: a definir
+  causal_timing_model: as-of-bar
+  no_future_guard: a implementar
+  fidelity_check: a implementar
+  source_status: UNKNOWN_BLOCKED
+  allowed_in_blind_packet: NO
+  allowed_as_decision: NO
+  known_bug: none
+  action_required: extrair se necessario
+  notes: order blocks SMC visuais
+# ===================== VISUAL_AUX_ONLY =====================
+- signal_name: chart_prints
+  current_field: prints TradingView
+  current_source: chart visual
+  raw_original_field: N/A
+  raw_file_or_registry_source: N/A
+  transform_method: olho humano
+  causal_timing_model: visual
+  no_future_guard: N/A
+  fidelity_check: comparar contra RAW no post-audit
+  source_status: VISUAL_AUX_ONLY
+  allowed_in_blind_packet: NO
+  allowed_as_decision: NO
+  known_bug: none
+  action_required: nunca usar como fonte primaria
+  notes: so apoio visual no post-audit
+# ===================== CONTAINERS RAW (acesso direto) =====================
+- signal_name: raw_containers
+  current_field: study_values pine_labels pine_shapes_bubbles pine_boxes pine_lines ohlcv session_vp
+  current_source: RAW replay
+  raw_original_field: campos de topo do registro RAW
+  raw_file_or_registry_source: raw_replay/XAUUSD/4H/XAUUSD_240m_replay_blocks.jsonl.gz + SVP_LUX_RAW
+  transform_method: leitura direta as-of-bar
+  causal_timing_model: as-of-bar
+  no_future_guard: YES
+  fidelity_check: source-of-truth
+  source_status: RAW_ORIGINAL_OK
+  allowed_in_blind_packet: YES
+  allowed_as_decision: NO
+  known_bug: none
+  action_required: none
+  notes: containers canonicos
