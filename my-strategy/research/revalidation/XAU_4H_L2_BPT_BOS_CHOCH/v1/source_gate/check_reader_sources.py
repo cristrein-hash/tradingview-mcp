@@ -113,8 +113,10 @@ for pk in glob.glob(os.path.join(V1, "results", "blind_pack_*", "reading_packet_
 # pacote cego com campo bloqueado e pego AQUI. RATCHET: baseline = inputs existentes (debito declarado); input NOVO
 # (cluster futuro) com campo bloqueado = FALHA. Acao: mapear Camada-1 ao RAW antes do proximo cluster.
 import glob as _glob
-BLOCKED_FIELD_NAMES = ["nas_recent", "smc_recent", "bubbles_recent", "sup_cat", "pol_cat", "clean_sky",
-                       "dist_4h_supply", "dist_4h_demand", "dist_poc", "above_value", "below_value"]
+# 2026-06-23: sup_cat/pol_cat/clean_sky/dist_poc/above_value/below_value REMOVIDOS — agora RAW-mapeados
+# (Custom OB backbone = RAW_ORIGINAL_OK; VA via session_vp/F6 = DERIVED_FROM_RAW validado 7f3c852). So restam
+# os marcadores de DERIVADO-BUG (head-stale) + os nomes derivados antigos dist_4h_*.
+BLOCKED_FIELD_NAMES = ["nas_recent", "smc_recent", "bubbles_recent", "dist_4h_supply", "dist_4h_demand"]
 RES = os.path.join(V1, "results")
 # RECURSIVO por NOME (*blind*) em results/** — pega input cego em QUALQUER localizacao, nao so blind_pack_/
 # (fecha HOLE A do DA: agent inputs *_blind.json em results/ root tambem sao varridos).

@@ -147,3 +147,27 @@ inputs:
   contains_blocked_fields: NO
   status: RAW_CLEAN_ALLOWED
   notes: inclui VALUE-AREA real; base FINAL; supersede _postfix sem-VA
+- input_id: cluster1_continuation_fuel_reread
+  cluster_id: cluster1
+  input_path: results/cluster1_continuation_fuel_reread/reading_packet_BLIND.md
+  created_by_script: l2_bpt_reading_packet_focused.py
+  source_packet_type: RAW_CLEAN_FOCUSED_REREAD
+  allowed_for_reader: YES
+  source_gate_required: YES
+  source_mapping_status: RAW_CLEAN_ALLOWED
+  contains_outcome: NO
+  contains_blocked_fields: NO
+  status: RAW_CLEAN_ALLOWED
+  notes: 2a rodada direcionada continuation/fuel; VA real; sem outcome
+- input_id: cluster2_error_only_review
+  cluster_id: cluster2
+  input_path: results/cluster2_error_only_review/reading_packet_BLIND.md
+  created_by_script: l2_bpt_reading_packet_focused.py
+  source_packet_type: RAW_CLEAN_FOCUSED_REREAD
+  allowed_for_reader: YES
+  source_gate_required: YES
+  source_mapping_status: RAW_CLEAN_ALLOWED
+  contains_outcome: NO
+  contains_blocked_fields: NO
+  status: RAW_CLEAN_ALLOWED
+  notes: 2a rodada error-only; VA real; sem outcome

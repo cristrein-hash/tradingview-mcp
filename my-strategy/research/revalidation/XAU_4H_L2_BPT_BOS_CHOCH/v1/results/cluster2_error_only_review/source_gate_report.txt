@@ -1,0 +1,3 @@
+SOURCE GATE REPORT — cluster2_error_only_review
+episodios: 6 (prim 6 + ctx 0) | leak-check PASS
+VA real (f6_svp_state/dist_poc + POC/VAH/VAL svp_bars, validada 7f3c852); backbone causal; sem outcome/R.

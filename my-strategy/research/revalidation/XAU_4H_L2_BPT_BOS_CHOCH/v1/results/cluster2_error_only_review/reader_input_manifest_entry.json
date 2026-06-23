@@ -1,0 +1,22 @@
+{
+  "input_id": "cluster2_error_only_review",
+  "cluster_id": "cluster2_error_only_review",
+  "input_path": "results/cluster2_error_only_review/reading_packet_BLIND.md",
+  "created_by_script": "l2_bpt_reading_packet_focused.py",
+  "source_packet_type": "RAW_CLEAN_FOCUSED_REREAD",
+  "allowed_for_reader": "YES",
+  "source_gate_required": "YES",
+  "source_mapping_status": "RAW_CLEAN_ALLOWED",
+  "contains_outcome": "NO",
+  "contains_blocked_fields": "NO",
+  "status": "RAW_CLEAN_ALLOWED",
+  "episodes": [
+    5627,
+    1522,
+    3825,
+    3929,
+    3949,
+    4401
+  ],
+  "notes": "2a rodada direcionada com VA real; sem outcome"
+}
