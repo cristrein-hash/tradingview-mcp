@@ -171,3 +171,15 @@ inputs:
   contains_blocked_fields: NO
   status: RAW_CLEAN_ALLOWED
   notes: 2a rodada error-only; VA real; sem outcome
+- input_id: confluence_reading
+  cluster_id: confluence_reading
+  input_path: results/confluence_reading/reading_packet_BLIND.md
+  created_by_script: l2_bpt_confluence_extractor.py
+  source_packet_type: RAW_CLEAN_CONFLUENCE_TRAJECTORY
+  allowed_for_reader: YES
+  source_gate_required: YES
+  source_mapping_status: RAW_CLEAN_ALLOWED
+  contains_outcome: NO
+  contains_blocked_fields: NO
+  status: RAW_CLEAN_ALLOWED
+  notes: trajetoria RAW + snapshot-voz + macro; leitura CONVERGENTE por episodio (nao fatores isolados); 31 ep runner/stopper; sem outcome

@@ -1,0 +1,17 @@
+VISUAL BLIND PACK — cluster 4918 — relatório de integridade (fase 1, pré-entry)
+========================================================================================
+episódios: [4918, 4926, 1661, 5701, 8878, 6887]
+janela 4H: 110 barras (mesma p/ todos) | 1D: 60 dias D-1 completos | template idêntico
+TRAVAS: candles cortam NA entry (range slice [b-W+1 : b+1], nenhuma barra após b); linha vertical na entry;
+        sem outcome/R/winner-loser/exit/target-hit/stop-hit; bubbles=cor teal/laranja (buy/sell), NÃO verde/vermelho.
+        demand/supply = APROX derivado de dist_atr (rotulado); SVP VAL/VAH exatos = UNKNOWN (não inventado).
+
+OUTCOME-LEAK CHECK: NENHUM (PASS)
+  (dossiê foi strip-ado de _AUDIT/mfe/runner/monumental ANTES do uso; render nunca acessou outcome)
+
+  bar 4918  entry 2023-03-08 11:00  -> results/blind_pack_cluster4918/blind_4918_2023-03-08.png
+  bar 4926  entry 2023-03-09 19:00  -> results/blind_pack_cluster4918/blind_4926_2023-03-09.png
+  bar 1661  entry 2021-01-28 11:00  -> results/blind_pack_cluster4918/blind_1661_2021-01-28.png
+  bar 5701  entry 2023-09-07 22:00  -> results/blind_pack_cluster4918/blind_5701_2023-09-07.png
+  bar 8878  entry 2025-09-28 22:00  -> results/blind_pack_cluster4918/blind_8878_2025-09-28.png
+  bar 6887  entry 2024-06-14 18:00  -> results/blind_pack_cluster4918/blind_6887_2024-06-14.png

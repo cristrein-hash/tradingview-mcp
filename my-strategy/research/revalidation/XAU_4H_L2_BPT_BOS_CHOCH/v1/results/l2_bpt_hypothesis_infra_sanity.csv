@@ -5,5 +5,5 @@ validation_dry_run_pass,PASS,ready=NO (terminal status CONTEXT_ONLY = OK)
 da_dry_run_pass,PASS,oos_required=YES; manter REVIEW_ONLY
 gate_blocks_capit_rsi,PASS,sem_DA_aprovado|sem_OOS_validado|ultra_filter_risk(mata_frequencia/lucro)|outlie
 library_no_promoted,PASS,promoted=[]
-no_promoted_aggregator,PASS,0 aggregator promovido (diagnóstico-lab permitido: 1)
+no_promoted_aggregator,PASS,0 aggregator promovido (diagnóstico-lab permitido: 2)
 no_engine_or_decisions_changed,PASS,engine/decisões tocados=0

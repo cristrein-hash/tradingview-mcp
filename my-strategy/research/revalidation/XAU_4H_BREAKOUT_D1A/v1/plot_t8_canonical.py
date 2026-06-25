@@ -119,7 +119,7 @@ def main():
         ok_pos = ok_lbl = fail = 0
         for k, t in enumerate(trades):
             R_dollars = t["entry_price"] - t["stop_price"]
-            color = "#1a8917" if t["close_R"] > 0 else "#cc0000"
+            color = t.get("color") or ("#1a8917" if t.get("close_R", 0) > 0 else "#cc0000")
             r1 = client.call_tool("draw_shape", {
                 "shape": "long_position",
                 "point": {"time": t["entry_time"], "price": t["entry_price"]},

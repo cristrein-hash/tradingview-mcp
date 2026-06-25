@@ -1,0 +1,112 @@
+{
+  "source_4h": "repro_recovery/raw_features_2020_2026.jsonl",
+  "source_1d": "repro_recovery/XAU_1D_ohlc.jsonl",
+  "source_states": "results/l2_bpt_reader_dossier_276.jsonl (campos NÃO-audit)",
+  "sha256_4h": "9fac96b99b55708a",
+  "window_4h_bars": 110,
+  "window_1d_bars_D-1": 60,
+  "episodes": [
+    {
+      "bar_idx": 4918,
+      "entry_ts_utc": "2023-03-08 11:00",
+      "png": "results/blind_pack_cluster4918/blind_4918_2023-03-08.png",
+      "window_4h_first_ts": "2023-02-10 07:00",
+      "n_1d_bars": 60,
+      "bubbles_drawn": 50,
+      "fields_used": [
+        "o/h/l/c (4H RAW)",
+        "ATR14",
+        "dist_4h_supply/demand_low_atr (approx)",
+        "bubbles_recent bars_ago==0",
+        "weekly/cascade/leg/sup_cat (dossiê não-audit)",
+        "3a surface",
+        "3b anchor"
+      ]
+    },
+    {
+      "bar_idx": 4926,
+      "entry_ts_utc": "2023-03-09 19:00",
+      "png": "results/blind_pack_cluster4918/blind_4926_2023-03-09.png",
+      "window_4h_first_ts": "2023-02-13 15:00",
+      "n_1d_bars": 60,
+      "bubbles_drawn": 53,
+      "fields_used": [
+        "o/h/l/c (4H RAW)",
+        "ATR14",
+        "dist_4h_supply/demand_low_atr (approx)",
+        "bubbles_recent bars_ago==0",
+        "weekly/cascade/leg/sup_cat (dossiê não-audit)",
+        "3a surface",
+        "3b anchor"
+      ]
+    },
+    {
+      "bar_idx": 1661,
+      "entry_ts_utc": "2021-01-28 11:00",
+      "png": "results/blind_pack_cluster4918/blind_1661_2021-01-28.png",
+      "window_4h_first_ts": "2021-01-04 03:00",
+      "n_1d_bars": 60,
+      "bubbles_drawn": 32,
+      "fields_used": [
+        "o/h/l/c (4H RAW)",
+        "ATR14",
+        "dist_4h_supply/demand_low_atr (approx)",
+        "bubbles_recent bars_ago==0",
+        "weekly/cascade/leg/sup_cat (dossiê não-audit)",
+        "3a surface",
+        "3b anchor"
+      ]
+    },
+    {
+      "bar_idx": 5701,
+      "entry_ts_utc": "2023-09-07 22:00",
+      "png": "results/blind_pack_cluster4918/blind_5701_2023-09-07.png",
+      "window_4h_first_ts": "2023-08-14 18:00",
+      "n_1d_bars": 60,
+      "bubbles_drawn": 68,
+      "fields_used": [
+        "o/h/l/c (4H RAW)",
+        "ATR14",
+        "dist_4h_supply/demand_low_atr (approx)",
+        "bubbles_recent bars_ago==0",
+        "weekly/cascade/leg/sup_cat (dossiê não-audit)",
+        "3a surface",
+        "3b anchor"
+      ]
+    },
+    {
+      "bar_idx": 8878,
+      "entry_ts_utc": "2025-09-28 22:00",
+      "png": "results/blind_pack_cluster4918/blind_8878_2025-09-28.png",
+      "window_4h_first_ts": "2025-09-02 18:00",
+      "n_1d_bars": 60,
+      "bubbles_drawn": 88,
+      "fields_used": [
+        "o/h/l/c (4H RAW)",
+        "ATR14",
+        "dist_4h_supply/demand_low_atr (approx)",
+        "bubbles_recent bars_ago==0",
+        "weekly/cascade/leg/sup_cat (dossiê não-audit)",
+        "3a surface",
+        "3b anchor"
+      ]
+    },
+    {
+      "bar_idx": 6887,
+      "entry_ts_utc": "2024-06-14 18:00",
+      "png": "results/blind_pack_cluster4918/blind_6887_2024-06-14.png",
+      "window_4h_first_ts": "2024-05-21 14:00",
+      "n_1d_bars": 60,
+      "bubbles_drawn": 21,
+      "fields_used": [
+        "o/h/l/c (4H RAW)",
+        "ATR14",
+        "dist_4h_supply/demand_low_atr (approx)",
+        "bubbles_recent bars_ago==0",
+        "weekly/cascade/leg/sup_cat (dossiê não-audit)",
+        "3a surface",
+        "3b anchor"
+      ]
+    }
+  ]
+}
