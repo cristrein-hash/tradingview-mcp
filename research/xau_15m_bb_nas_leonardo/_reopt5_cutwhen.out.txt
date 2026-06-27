@@ -1,0 +1,95 @@
+CUT-pocket WR (lower=better cut target). base WR 60.49 streak 30
+  london         cutWR=53.3 n=392
+  vpnode_near2   cutWR=55.0 n=589
+  vpnode_near1   cutWR=49.0 n=290
+  killzone       cutWR=58.7 n=1531
+  atr_lo         cutWR=61.5 n=579
+  climax_hi      cutWR=61.7 n=326
+  london_killz   cutWR=53.3 n=392
+  near_climax    cutWR=49.3 n=134
+  near_killz     cutWR=52.5 n=238
+  london_climax  cutWR=55.6 n=126
+  macro_bear     cutWR=49.3 n=361
+  nas_after_smc  cutWR=48.2 n=114
+  absorb         cutWR=56.7 n=626
+  london_h1down  cutWR=40.3 n=72
+  near_h1down    cutWR=50.0 n=260
+================================================================================
+ALL CUT-UNIONS passing robust gate (WR>base, all yrs>=base, winK>=85, blk>=6, streak<=base):
+  *** CUT near_climax|macro_bear|nas_after_smc: n=2508 WR=62.92 winK=85.6% losC=22.8% streak25 yr={2024: 61.35, 2025: 65.05, 2026: 59.17} blk8/8 avgR=0.359
+  *** CUT macro_bear|nas_after_smc|london_h1down: n=2566 WR=62.78 winK=87.4% losC=20.7% streak25 yr={2024: 60.81, 2025: 64.94, 2026: 59.63} blk8/8 avgR=0.353
+  *** CUT near_climax|macro_bear|london_h1down: n=2544 WR=62.7 winK=86.5% losC=21.2% streak25 yr={2024: 61.38, 2025: 64.47, 2026: 59.5} blk7/8 avgR=0.351
+  *** CUT macro_bear|nas_after_smc: n=2595 WR=62.58 winK=88.1% losC=19.4% streak25 yr={2024: 60.65, 2025: 64.9, 2026: 58.9} blk8/8 avgR=0.353
+  *** CUT near_climax|macro_bear: n=2571 WR=62.54 winK=87.2% losC=20.0% streak25 yr={2024: 61.28, 2025: 64.49, 2026: 58.78} blk7/8 avgR=0.352
+  *** CUT vpnode_near1|london_h1down|near_h1down: n=2622 WR=62.4 winK=88.8% losC=18.1% streak29 yr={2024: 61.23, 2025: 65.03, 2026: 56.78} blk8/8 avgR=0.329
+  *** CUT vpnode_near1|nas_after_smc|near_h1down: n=2626 WR=62.38 winK=88.9% losC=17.9% streak29 yr={2024: 60.99, 2025: 64.84, 2026: 57.59} blk7/8 avgR=0.331
+  *** CUT vpnode_near1|nas_after_smc|london_h1down: n=2669 WR=62.31 winK=90.2% losC=16.4% streak30 yr={2024: 60.43, 2025: 65.2, 2026: 57.26} blk8/8 avgR=0.328
+  *** CUT vpnode_near1|london_climax|near_h1down: n=2553 WR=62.24 winK=86.2% losC=19.9% streak28 yr={2024: 60.83, 2025: 64.86, 2026: 57.11} blk8/8 avgR=0.328
+  *** CUT vpnode_near1|near_climax|london_h1down: n=2658 WR=62.23 winK=89.7% losC=16.6% streak30 yr={2024: 60.82, 2025: 65.0, 2026: 56.8} blk8/8 avgR=0.325
+  *** CUT vpnode_near1|near_h1down: n=2654 WR=62.21 winK=89.6% losC=16.7% streak29 yr={2024: 61.29, 2025: 64.59, 2026: 56.88} blk7/8 avgR=0.328
+  *** CUT vpnode_near1|near_climax|near_h1down: n=2623 WR=62.18 winK=88.5% losC=17.6% streak29 yr={2024: 61.34, 2025: 64.52, 2026: 56.88} blk7/8 avgR=0.327
+  *** CUT vpnode_near1|london_h1down: n=2703 WR=62.15 winK=91.2% losC=15.0% streak30 yr={2024: 60.72, 2025: 64.97, 2026: 56.57} blk7/8 avgR=0.325
+  *** CUT near_killz|nas_after_smc|near_h1down: n=2615 WR=62.14 winK=88.2% losC=17.8% streak29 yr={2024: 60.18, 2025: 64.91, 2026: 57.36} blk6/8 avgR=0.326
+  *** CUT vpnode_near1|near_killz|near_h1down: n=2606 WR=62.13 winK=87.8% losC=18.0% streak29 yr={2024: 61.03, 2025: 64.65, 2026: 56.66} blk7/8 avgR=0.326
+  *** CUT near_climax|nas_after_smc|near_h1down: n=2676 WR=62.07 winK=90.1% losC=15.7% streak29 yr={2024: 60.63, 2025: 64.41, 2026: 57.59} blk7/8 avgR=0.328
+  *** CUT vpnode_near1|near_climax|nas_after_smc: n=2670 WR=62.06 winK=89.9% losC=15.9% streak30 yr={2024: 60.23, 2025: 64.86, 2026: 57.23} blk8/8 avgR=0.325
+  *** CUT vpnode_near1|near_killz|london_h1down: n=2633 WR=62.06 winK=88.7% losC=17.0% streak30 yr={2024: 60.67, 2025: 64.88, 2026: 56.42} blk8/8 avgR=0.321
+  *** CUT nas_after_smc|london_h1down|near_h1down: n=2698 WR=62.05 winK=90.8% losC=15.0% streak29 yr={2024: 60.12, 2025: 64.69, 2026: 57.5} blk8/8 avgR=0.325
+  *** CUT vpnode_near1|london_climax|london_h1down: n=2615 WR=62.03 winK=88.0% losC=17.5% streak29 yr={2024: 60.21, 2025: 64.97, 2026: 56.8} blk7/8 avgR=0.323
+  *** CUT near_killz|london_h1down|near_h1down: n=2620 WR=62.02 winK=88.2% losC=17.4% streak29 yr={2024: 60.08, 2025: 65.01, 2026: 56.54} blk7/8 avgR=0.322
+  *** CUT near_climax|near_killz|near_h1down: n=2616 WR=62.0 winK=88.0% losC=17.4% streak29 yr={2024: 60.6, 2025: 64.65, 2026: 56.63} blk6/8 avgR=0.324
+  *** CUT macro_bear: n=2686 WR=61.99 winK=90.3% losC=15.2% streak25 yr={2024: 60.44, 2025: 64.07, 2026: 58.26} blk6/8 avgR=0.341
+  *** CUT vpnode_near1|london_climax|nas_after_smc: n=2612 WR=61.98 winK=87.8% losC=17.5% streak29 yr={2024: 59.58, 2025: 65.09, 2026: 57.23} blk8/8 avgR=0.323
+  *** CUT london_climax|nas_after_smc|near_h1down: n=2622 WR=61.98 winK=88.2% losC=17.2% streak28 yr={2024: 59.9, 2025: 64.58, 2026: 57.83} blk7/8 avgR=0.325
+  *** CUT vpnode_near1|near_climax|near_killz: n=2640 WR=61.97 winK=88.8% losC=16.6% streak30 yr={2024: 60.56, 2025: 64.69, 2026: 56.62} blk7/8 avgR=0.322
+  *** CUT vpnode_near1|near_climax|london_climax: n=2608 WR=61.96 winK=87.7% losC=17.6% streak29 yr={2024: 59.95, 2025: 65.01, 2026: 56.77} blk8/8 avgR=0.321
+  *** CUT near_killz|nas_after_smc|london_h1down: n=2691 WR=61.95 winK=90.5% losC=15.0% streak30 yr={2024: 59.95, 2025: 65.04, 2026: 56.54} blk8/8 avgR=0.323
+  *** CUT near_climax|near_killz|nas_after_smc: n=2676 WR=61.92 winK=89.9% losC=15.4% streak30 yr={2024: 60.15, 2025: 64.79, 2026: 56.74} blk7/8 avgR=0.324
+  *** CUT vpnode_near1|near_killz|nas_after_smc: n=2649 WR=61.91 winK=89.0% losC=16.2% streak30 yr={2024: 60.1, 2025: 64.77, 2026: 56.85} blk7/8 avgR=0.32
+  *** CUT near_climax|london_h1down|near_h1down: n=2688 WR=61.9 winK=90.3% losC=15.0% streak29 yr={2024: 60.61, 2025: 64.41, 2026: 56.67} blk7/8 avgR=0.323
+  *** CUT near_killz|london_climax|near_h1down: n=2553 WR=61.89 winK=85.7% losC=19.2% streak28 yr={2024: 59.68, 2025: 64.88, 2026: 56.87} blk7/8 avgR=0.321
+  *** CUT vpnode_near1|near_climax: n=2702 WR=61.88 winK=90.7% losC=14.5% streak30 yr={2024: 60.42, 2025: 64.64, 2026: 56.55} blk7/8 avgR=0.322
+  *** CUT nas_after_smc|near_h1down: n=2730 WR=61.87 winK=91.6% losC=13.5% streak29 yr={2024: 60.2, 2025: 64.27, 2026: 57.59} blk7/8 avgR=0.324
+  *** CUT near_climax|near_killz|london_h1down: n=2696 WR=61.87 winK=90.5% losC=14.6% streak30 yr={2024: 60.36, 2025: 64.86, 2026: 55.99} blk8/8 avgR=0.321
+  *** CUT vpnode_near1|nas_after_smc: n=2720 WR=61.84 winK=91.3% losC=13.8% streak30 yr={2024: 59.88, 2025: 64.79, 2026: 56.77} blk8/8 avgR=0.321
+  *** CUT near_killz|near_h1down: n=2652 WR=61.84 winK=89.0% losC=15.9% streak29 yr={2024: 60.15, 2025: 64.58, 2026: 56.63} blk6/8 avgR=0.322
+  *** CUT vpnode_near1|london_climax: n=2646 WR=61.83 winK=88.8% losC=16.1% streak29 yr={2024: 59.84, 2025: 64.89, 2026: 56.55} blk8/8 avgR=0.32
+  *** CUT vpnode_near1|near_killz|london_climax: n=2575 WR=61.83 winK=86.4% losC=18.4% streak29 yr={2024: 59.89, 2025: 64.82, 2026: 56.62} blk8/8 avgR=0.318
+  *** CUT near_climax|london_climax|near_h1down: n=2626 WR=61.81 winK=88.1% losC=16.7% streak28 yr={2024: 60.21, 2025: 64.34, 2026: 57.0} blk7/8 avgR=0.322
+  *** CUT near_climax|near_h1down: n=2720 WR=61.73 winK=91.1% losC=13.5% streak29 yr={2024: 60.68, 2025: 64.0, 2026: 56.76} blk7/8 avgR=0.322
+  *** CUT near_climax|nas_after_smc|london_h1down: n=2783 WR=61.73 winK=93.2% losC=11.5% streak30 yr={2024: 59.85, 2025: 64.62, 2026: 56.65} blk7/8 avgR=0.319
+  *** CUT vpnode_near1: n=2757 WR=61.7 winK=92.3% losC=12.3% streak30 yr={2024: 60.14, 2025: 64.6, 2026: 56.1} blk7/8 avgR=0.318
+  *** CUT near_killz|london_climax|nas_after_smc: n=2632 WR=61.7 winK=88.1% losC=16.3% streak29 yr={2024: 59.17, 2025: 64.95, 2026: 56.74} blk6/8 avgR=0.32
+  *** CUT vpnode_near1|near_killz: n=2681 WR=61.69 winK=89.7% losC=14.7% streak30 yr={2024: 60.22, 2025: 64.52, 2026: 56.16} blk7/8 avgR=0.317
+  *** CUT near_climax|near_killz|london_climax: n=2643 WR=61.67 winK=88.4% losC=15.9% streak29 yr={2024: 59.55, 2025: 64.87, 2026: 56.19} blk7/8 avgR=0.318
+  *** CUT london_h1down|near_h1down: n=2755 WR=61.63 winK=92.1% losC=12.2% streak29 yr={2024: 60.2, 2025: 64.14, 2026: 56.56} blk6/8 avgR=0.318
+  *** CUT near_climax|near_killz: n=2737 WR=61.6 winK=91.5% losC=12.7% streak30 yr={2024: 60.05, 2025: 64.51, 2026: 55.97} blk7/8 avgR=0.319
+  *** CUT near_killz|nas_after_smc: n=2736 WR=61.59 winK=91.4% losC=12.7% streak30 yr={2024: 59.56, 2025: 64.66, 2026: 56.29} blk7/8 avgR=0.319
+  *** CUT london_climax|london_h1down|near_h1down: n=2658 WR=61.59 winK=88.8% losC=15.2% streak28 yr={2024: 59.82, 2025: 64.22, 2026: 56.79} blk6/8 avgR=0.317
+  *** CUT london_climax|near_h1down: n=2677 WR=61.56 winK=89.4% losC=14.5% streak28 yr={2024: 59.92, 2025: 64.07, 2026: 56.88} blk6/8 avgR=0.318
+  *** CUT nas_after_smc|london_h1down: n=2875 WR=61.46 winK=95.9% losC=8.0% streak30 yr={2024: 59.24, 2025: 64.52, 2026: 56.43} blk7/8 avgR=0.315
+  *** CUT london_climax|nas_after_smc|london_h1down: n=2780 WR=61.4 winK=92.6% losC=10.9% streak29 yr={2024: 58.88, 2025: 64.56, 2026: 56.65} blk6/8 avgR=0.315
+  *** CUT near_killz|london_climax|london_h1down: n=2675 WR=61.38 winK=89.1% losC=14.2% streak29 yr={2024: 59.03, 2025: 64.69, 2026: 55.99} blk7/8 avgR=0.313
+  *** CUT near_climax|london_h1down: n=2857 WR=61.36 winK=95.1% losC=8.3% streak30 yr={2024: 59.86, 2025: 64.19, 2026: 55.81} blk8/8 avgR=0.312
+  *** CUT near_climax|nas_after_smc: n=2832 WR=61.33 winK=94.2% losC=9.1% streak30 yr={2024: 59.43, 2025: 64.22, 2026: 56.3} blk6/8 avgR=0.314
+  *** CUT near_climax|london_climax|london_h1down: n=2776 WR=61.28 winK=92.3% losC=10.7% streak29 yr={2024: 59.34, 2025: 64.26, 2026: 56.02} blk7/8 avgR=0.311
+  *** CUT near_killz: n=2809 WR=61.16 winK=93.2% losC=9.4% streak30 yr={2024: 59.15, 2025: 64.34, 2026: 55.53} blk6/8 avgR=0.311
+  *** CUT near_climax: n=2913 WR=61.0 winK=96.4% losC=5.6% streak30 yr={2024: 59.48, 2025: 63.85, 2026: 55.43} blk6/8 avgR=0.308
+  *** CUT london_h1down: n=2975 WR=60.97 winK=98.4% losC=3.6% streak30 yr={2024: 59.24, 2025: 63.88, 2026: 55.49} blk6/8 avgR=0.306
+  *** CUT climax_hi|near_climax|london_h1down: n=2592 WR=60.96 winK=85.7% losC=15.9% streak30 yr={2024: 59.6, 2025: 63.66, 2026: 55.47} blk6/8 avgR=0.309
+  *** CUT climax_hi|london_climax|london_h1down: n=2619 WR=60.79 winK=86.4% losC=14.7% streak29 yr={2024: 59.31, 2025: 63.5, 2026: 55.37} blk6/8 avgR=0.304
+TOTAL robust unions: 62  (tested 575 unions)
+================================================================================
+Top 12 by WR with winK>=85 (robust or not):
+  CUT near_climax|macro_bear|nas_after_smc: WR=62.92 n=2508 winK=85.6% streak25 yr={2024: 61.35, 2025: 65.05, 2026: 59.17} blk8/8 streakOK=True ROBUST=True
+  CUT macro_bear|nas_after_smc|london_h1down: WR=62.78 n=2566 winK=87.4% streak25 yr={2024: 60.81, 2025: 64.94, 2026: 59.63} blk8/8 streakOK=True ROBUST=True
+  CUT near_climax|macro_bear|london_h1down: WR=62.7 n=2544 winK=86.5% streak25 yr={2024: 61.38, 2025: 64.47, 2026: 59.5} blk7/8 streakOK=True ROBUST=True
+  CUT macro_bear|near_h1down: WR=62.62 n=2507 winK=85.2% streak24 yr={2024: 61.35, 2025: 64.36, 2026: 59.27} blk5/8 streakOK=True ROBUST=False
+  CUT macro_bear|nas_after_smc: WR=62.58 n=2595 winK=88.1% streak25 yr={2024: 60.65, 2025: 64.9, 2026: 58.9} blk8/8 streakOK=True ROBUST=True
+  CUT near_climax|macro_bear: WR=62.54 n=2571 winK=87.2% streak25 yr={2024: 61.28, 2025: 64.49, 2026: 58.78} blk7/8 streakOK=True ROBUST=True
+  CUT vpnode_near1|london_h1down|near_h1down: WR=62.4 n=2622 winK=88.8% streak29 yr={2024: 61.23, 2025: 65.03, 2026: 56.78} blk8/8 streakOK=True ROBUST=True
+  CUT vpnode_near1|nas_after_smc|near_h1down: WR=62.38 n=2626 winK=88.9% streak29 yr={2024: 60.99, 2025: 64.84, 2026: 57.59} blk7/8 streakOK=True ROBUST=True
+  CUT vpnode_near1|nas_after_smc|london_h1down: WR=62.31 n=2669 winK=90.2% streak30 yr={2024: 60.43, 2025: 65.2, 2026: 57.26} blk8/8 streakOK=True ROBUST=True
+  CUT macro_bear|london_h1down: WR=62.29 n=2649 winK=89.5% streak25 yr={2024: 60.62, 2025: 64.17, 2026: 59.36} blk5/8 streakOK=True ROBUST=False
+  CUT london_climax|macro_bear|london_h1down: WR=62.25 n=2556 winK=86.3% streak25 yr={2024: 60.31, 2025: 64.18, 2026: 59.63} blk5/8 streakOK=True ROBUST=False
+  CUT vpnode_near1|london_climax|near_h1down: WR=62.24 n=2553 winK=86.2% streak28 yr={2024: 60.83, 2025: 64.86, 2026: 57.11} blk8/8 streakOK=True ROBUST=True

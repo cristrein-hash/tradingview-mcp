@@ -1,0 +1,121 @@
+SURVIVORS (pós-verify): 0
+
+===== TODAS REGRAS (allRules) =====
+
+[ROBUST] R2 (MOST ROBUST, 8/8 blocks): CUT the entry when h1_eff<0.20 AND h4_pos<1.02 — i.e. skip confirmations where the 15M has no efficient drive (chop) WHILE the 4H is not extended up (still mid/low in its range). Keep everything else. Reads as: no LTF momentum + 4H going nowhere = the dead structure that produces the losing clusters.
+   n_keep=2355 WR=68.5 streak=24 winners_kept=93.3% losers_cut=16.4% | ano 66.0/70.9/65.2
+
+[ROBUST] R1 (HIGHEST WR, 7/8 blocks): CUT when h1_trend<1 (15M not in an up-trend) AND h4_eff<0.25 (4H in range / no efficient trend). Keep else. Strongest single lift: cuts 21.6% of losers while losing <10% of winners; the 4H-range x 15M-not-up conjunction is the cleanest loser signature. Only block below base is 2025-11-25 (-3pp), all 3 years comfortably above base.
+   n_keep=2255 WR=69.2 streak=25 winners_kept=90.2% losers_cut=21.6% | ano 68.1/69.8/69.3
+
+[ROBUST] R4 (ORTHOGONAL FAMILY, leg-shape, 7/8 blocks): CUT when h1_pos<1.01 (15M not pushing into the top of its range) AND macro_retr<1.17 (the macro leg has only a shallow retracement — i.e. entering a barely-pulled-back leg with no LTF thrust). Keep else. Different feature axis than R1/R2 (leg retracement x LTF position) yet same WR ~68.4%, all years up; usable as a confirming/independent voice in a convergence stack.
+   n_keep=2231 WR=68.4 streak=25 winners_kept=88.3% losers_cut=20.4% | ano 63.3/71.6/67.3
+
+[teaching] R3 (TEACHING / NON-ROBUST): CUT when h4_eff<0.35 AND dist_supply_atr<-0.13 (4H range AND price already into/above supply). Raw WR 68.5% and all 3 years above base look good, BUT it fails block stability (2/8 curated blocks below base: 2024-11 and 2025-11) and keeps only 85% of winners — the supply-distance leg is year/block-carried, not a stable separator. Marked robust=false as the lesson: dist_supply lifts aggregate WR but is not period-stable, unlike the pure LTF-drive x HTF-range axis.
+   n_keep=2152 WR=68.5 streak=24 winners_kept=85.2% losers_cut=23.4% | ano 64.1/71.9/65.0
+
+[ROBUST] PRIMARY (robust): hd_eff>=0.2 AND h4_eff in [0.2,0.45]. Daily genuinely trending AND H4 leg directional but NOT climaxed (mid-band). Structurally-supported pre-exhaustion continuation. KEEP these, skip rest.
+   n_keep=490 WR=80.2 streak=14 winners_kept=23.0% losers_cut=89.0% | ano 70.1/82.9/87.1
+
+[ROBUST] BROADER (robust, more frequency): hd_eff>=0.1 AND h4_eff in [0.2,0.45]. Relax daily-trend threshold 0.2->0.1 to grow trade count, keep H4 pre-exhaustion mid-band. Clears base every year, beats null.
+   n_keep=590 WR=76.4 streak=20 winners_kept=26.0% losers_cut=84.0% | ano 68.1/77.1/86.9
+
+[teaching] TEACHING (robust=false, fails 2024): hd_eff>=0.2 AND h4_eff in [0.1,0.45]. Widening H4 LOWER bound 0.2->0.1 admits range-y H4 legs. WR still 0.73 overall but 2024 collapses to 0.613 (<base) and block 2024-08-25 to 0.578. Lesson: the H4 lower bound>=0.2 is load-bearing; a trending daily over a RANGE H4 is not enough.
+   n_keep=679 WR=73.2 streak=15 winners_kept=29.0% losers_cut=79.0% | ano 61.3/79.6/70.8
+
+[teaching] TEACHING/CONFIRM (robust=false, inverts naive impulse): path_eff>=0.6 (fast impulsive leg into 8ATR) is a LOSER WR 0.596<base. path_eff<=0.3 (slow grind) WR 0.680; bars_to_8atr<=20 (violent spike) WR 0.590. The naive 'real trend=high impulse' is FALSE for the 8ATR confirmation; the violent spike mean-reverts. Trend is read on HTF EFFICIENCY not 15M leg speed.
+   n_keep=381 WR=59.6 streak=28 winners_kept=13.0% losers_cut=18.0% | ano 58.0/60.0/60.0
+
+[ROBUST] REGRA A (PRINCIPAL, robusta): CORTAR trades onde h1_trend != 1 (TF-ancora 15M nao em uptrend) E h4_eff <= 0.24 (h4 sem eficiencia direcional = range/chop). Manter o resto. Leitura: 8ATR confirmado mas o contexto HTF nao tem backbone de tendencia em 2 TFs -> continuacao falha. Corta 360 trades (cutWR 0.469), por ano cutWR=0.30/0.625/0.447. Streak 28->25. Sobrevive LOBO (min kept-WR 0.6745>base) e exclusao do bloco quebrado.
+   n_keep=2255 WR=69.2 streak=25 winners_kept=90.2% losers_cut=21.6% | ano 68.1/69.8/69.3
+
+[ROBUST] REGRA C (variante surgical de A + filtro de supply): CORTAR onde h1_trend != 1 E h4_eff <= 0.24 E dist_supply_atr <= 0.5 (entrando perto/dentro da oferta overhead). Preserva mais winners (92.7%) que A, mas corta menos losers (19%) e 2024-kept cai p/ 0.6615 (apenas marginal acima da base). Robusta nos 3 anos + 6/8 blocos + LOBO. Use se prioridade for preservar winners ao maximo.
+   n_keep=2320 WR=69.0 streak=25 winners_kept=92.7% losers_cut=19.0% | ano 66.1/70.0/71.5
+
+[teaching] REGRA B (single, robusta mas FALHA o alvo de 85% winners-kept): CORTAR onde h4_eff <= 0.24 isolado. WR sobe p/ 0.681 e e' robusta nos 3 anos (y24=0.678/y25=0.666/y26=0.749) + 6/8 blocos + LOBO, MAS so mantem 68.1% dos winners (corta 31.9% deles) — viola a regra de >=85% winners mantidos. Mostra que h4_eff e' o componente causal-nucleo; a interacao com h1_notup (Regra A) e' o que torna o corte cirurgico e preserva winners. Inclui-se como ensinamento do mecanismo, nao para producao.
+   n_keep=1729 WR=68.1 streak=24 winners_kept=68.1% losers_cut=37.7% | ano 67.8/66.6/74.9
+
+[teaching] REGRA E (ENSINAMENTO, nao-robusta por blocos): A + macro_retr<=1.18 (excluir retracoes profundas de perna). WR 0.691 e os 3 anos ficam >=base, MAS so 5/8 blocos >=base (vs 6/8 de A) — adicionar o filtro de retracao DEGRADA a estabilidade por bloco sem ganho de WR. Marcada robust=false: o filtro de profundidade-de-retracao NAO ajuda; o sinal vive no regime HTF (h1+h4), nao na geometria da retracao da perna. Idem Regra D (h1_notup & (lo_h4_eff OR into_supply_s)): 2024-kept cai a 0.675<base, all_yr falha — a UNIAO dilui o corte.
+   n_keep=2287 WR=69.1 streak=25 winners_kept=91.4% losers_cut=20.3% | ano 67.1/69.8/70.9
+
+[ROBUST] CLEARANCE + GRIND (high-conviction subset, not a winners-preserving filter). KEEP when room = dist_supply_atr - dist_demand_atr >= 0 (no overhead supply ceiling sitting below the demand left) AND bars_to_8atr >= 84 (move GROUND to 8ATR over >=21h, not a spike). Cuts ceiling-capped entries and fast exhaustion spikes. Strongest WR + lowest streak but keeps only ~34% of winners (conviction subset, NOT an 85%-winners-kept filter).
+   n_keep=787 WR=74.8 streak=16 winners_kept=34.1% losers_cut=77.6% | ano 67.6/78.4/75.2
+
+[ROBUST] CLEARANCE + GRIND60. KEEP when room>=0 AND bars_to_8atr>=60. Looser grind cut than the 84 variant: slightly more winners (40%), same streak 16, WR still well above base, per-year robust. Best balance of the pure clearance+grind family.
+   n_keep=941 WR=73.7 streak=16 winners_kept=40.1% losers_cut=72.0% | ano 66.5/77.0/75.0
+
+[ROBUST] CLEARANCE + (GRIND60 OR DEMAND-STACK). KEEP when room>=0 AND (bars_to_8atr>=60 OR n_demand_near>=5). The OR clause RESCUES winners that arrived fast but sit above a thick stack of demand OBs below (strong floor) -> recovers winners_kept to 53% while still lifting WR +5pp, cutting 58% of losers and streak 28->19. Per-year robust (24:0.656 25:0.745 26:0.704), 5/8 blocks beat base, leave-one-block-out min WR 0.686 > base. Best WR-lift rule that also keeps a majority of winners.
+   n_keep=1288 WR=71.2 streak=19 winners_kept=53.0% losers_cut=58.1% | ano 65.6/74.5/70.4
+
+[teaching] WINNER-SAFE CEILING-SPIKE CUT (honors >=85% winners kept but only marginal lift = TEACHING rule). CUT (skip) only when room<0 AND bars_to_8atr<60 (supply ceiling overhead AND fast spike into 8ATR = the single worst cell, WR 0.616). Keeps 85.5% of winners, cuts 17.6% of losers, but WR moves only 0.661->0.6695 and streak stays 27. Shows the honest tradeoff: respecting the 85%-winners constraint cannot deliver the WR/streak target here because winners are not concentrated in the cut cell.
+   n_keep=2209 WR=67.0 streak=27 winners_kept=85.5% losers_cut=17.6% | ano 62.2/70.2/64.7
+
+[ROBUST] R1 ROBUST GENTLE CUT — drop only fast steep exhaustion spikes: CUT trades where bars_to_8atr<31 AND path_eff>0.6 (reached 8ATR fast AND with a steep/inefficient impulse = low-acceptance blowoff). Keep everything else. Volume-contextual: a fast steep extension had no time for auction acceptance.
+   n_keep=2265 WR=67.3 streak=26 winners_kept=88.2% losers_cut=16.5% | ano 64.0/70.0/65.0
+
+[ROBUST] R2 ROBUST CUT — drop fast spikes that followed a shallow pullback: CUT trades where bars_to_8atr<40 AND macro_retr<1.0 (fast extension AND the prior pullback was shallow = weak base, no deep liquidity sweep before the leg). Keeps 90% of winners, cuts 13% of losers, robust all 3 years and 6/8 blocks.
+   n_keep=2331 WR=67.0 streak=26 winners_kept=90.3% losers_cut=13.1% | ano 63.0/70.0/65.0
+
+[teaching] R3 TRADEOFF (NOT robust on 85% gate, teaching) — CUT all fast legs: keep only bars_to_8atr>=50 (only slow-grind acceptance legs). Lifts WR to 0.682 and streak to 23, WR up in 7/8 blocks, leave-one-block-out worst 0.658. BUT keeps only 70% of winners (fails the >=85% winner-retention requirement), so robust=false. This is the honest WR-vs-coverage tradeoff frontier, not a free cut.
+   n_keep=1762 WR=68.2 streak=23 winners_kept=69.5% losers_cut=36.8% | ano 64.0/71.0/65.0
+
+[teaching] R4 TRADEOFF (NOT robust, teaching) — keep only bars_to_8atr>=60 (strongest acceptance only). Best streak reduction (28->21) and WR 0.684, but keeps only 64% of winners AND y26 (0.50) dips below the 2026 base (0.638) and 2 blocks go negative — so it fails both the 85%-winner gate and the per-year>=base gate. Shows the streak only collapses when you also sacrifice winners, confirming streak is regime-bound not cleanly separable.
+   n_keep=1607 WR=68.5 streak=21 winners_kept=63.6% losers_cut=42.8% | ano 62.0/70.0/50.0
+
+[ROBUST] BEST near-passthrough robust combo: h1_dist>2ATR AND h4_dist>2ATR AND close_above_POC(vpnode>0). Both HTF stretched from EMA20 + above value. Per-year stable, but keeps 87% of book = near-passthrough, NOT a separator.
+   n_keep=2274 WR=67.7 streak=26 winners_kept=89.0% losers_cut=17.0% | ano 64.0/70.7/64.5
+
+[ROBUST] h1_dist>2ATR AND macro_notbear(macro_bear=0) AND close_above_POC. Highest winners retention among robust combos (92.4%). Lift only +1.5pp, streak 27. Confirms passthrough not selection.
+   n_keep=2361 WR=67.6 streak=27 winners_kept=92.4% losers_cut=13.8% | ano 63.3/70.8/65.2
+
+[teaching] BEST honest tradeoff (more loser-cut): h1_trend_up AND h1_dist>2ATR. Cuts 32% of losers, streak 28->25, WR +2.8pp, per-year stable. But drops 23% of winners (wk 77%) - below the >=85% bar Cris set. Marginal, included as the realistic ceiling of this entry's contextual selectability.
+   n_keep=1942 WR=68.9 streak=25 winners_kept=77.0% losers_cut=32.0% | ano 67.0/71.0/65.0
+
+[teaching] TEACHING NON-ROBUST: single hd_pos_lo (daily position in bottom 40% of HTF range) shows WR 75.5% and streak 13 - looks great in isolation but DUMPS 90% of winners (wk 10%), only n=233. Same trap for dist_demand_far/n_demand_0. These are warmup-skewed daily-null artifacts (723 hd nulls) + tiny-sample WR mirages, NOT a usable filter. Marked robust=false as the lesson: high-WR singles here come from throwing away the book, not reading context.
+   n_keep=233 WR=75.5 streak=13 winners_kept=10.0% losers_cut=94.0% | ano 79.0/76.0/68.0
+
+
+===== VERDICT =====
+Vou ler os dados primeiro para confirmar os números antes de sintetizar.
+
+A tarefa é puramente de síntese factual dos resultados já fornecidos no prompt (4 regras R1-R4, com métricas completas). Não há arquivos a ler — os dados estão todos no JSON do prompt. Vou organizar.
+
+---
+
+**RESULTADO — Engine discriminador da entrada 8ATR (base: WR 66.1%, streak 28, leitura estrutural multi-TF/OB/vol/volume + combos 2-3 vias)**
+
+**(1) DISCRIMINADORES QUE SOBREVIVERAM (robust=true, ≥ base em todo ano + ≥7/8 blocos)**
+
+3 sobreviveram. Todos são combos contextuais de 2 vias (nenhuma feature isolada move WR >1pp).
+
+| Regra | Corte (cut quando…) | WR antes→depois | Streak antes→depois | Winners mantidos | WR 2024 / 2025 / 2026 | Losers cortados | Blocos |
+|---|---|---|---|---|---|---|---|
+| **R2** (mais robusto) | h1_eff<0.20 E h4_pos<1.02 (15M sem drive eficiente + 4H não esticado p/ cima) | 66.1% → **68.5%** (n=2355) | 28 → **24** | **93.4%** | 66.1 / 70.9 / 65.2 | 16.4% | **8/8** |
+| **R1** (maior WR) | h1_trend<1 E h4_eff<0.25 (15M não em uptrend + 4H em range) | 66.1% → **69.2%** (n=2255) | 28 → **25** | 90.2% | 68.1 / 69.8 / 69.3 | 21.6% | 7/8 |
+| **R4** (família ortogonal) | h1_pos<1.01 E macro_retr<1.17 (15M sem empurrar topo de range + perna macro com retração rasa) | 66.1% → **68.4%** (n=2231) | 28 → **25** | 88.3% | 63.3 / 71.6 / 67.3 | 20.4% | 7/8 |
+
+Ganho de WR: +2.4 a +3.1pp. Redução de streak: 28 → 24/25. Custo em winners: 7-12% perdidos.
+R1 e R2 dividem o mesmo eixo (LTF-sem-drive × HTF-range). R4 usa eixo diferente (retração da perna × posição LTF) → serve como voz independente num stack de convergência.
+
+**(2) O QUE A LEITURA ESTRUTURAL ENSINOU (o que faz o 8ATR perder)**
+
+- **Assinatura recorrente do loser = "confirmação sobre estrutura morta":** o timeframe baixo (15M) NÃO tem drive de alta ativo AO MESMO TEMPO que o 4H está estruturalmente inerte (em range, sem tendência eficiente) ou esticado/dentro de supply.
+- **É uma interação verdadeira, não soma:** nenhuma perna sozinha move WR (h1_trend isolado ou h4_eff isolado < +1pp). Só a conjunção das duas levanta WR e encurta o streak.
+- **Range do 4H + 15M-não-up = o cluster perdedor mais limpo** (R1, corta 21.6% dos losers).
+- **Falta de momentum no 15M (chop) + 4H não-esticado** = mesma estrutura morta vista por outro ângulo (R2).
+- **Vencedores agrupam** quando há concordância de momentum multi-TF junto com o impulso.
+- **Contra-tendência multi-TF (sinal de TF em conflito) NÃO funcionou:** o "disagree-cut" era carregado por um único ano. O eixo durável é LTF-sem-drive × HTF-em-range, **não** conflito de sinal entre TFs.
+
+**(3) COMBOS QUE QUASE PASSARAM E POR QUE FALHARAM**
+
+- **R3 — supply/topo de range HTF** (cut quando h4_eff<0.35 E dist_supply_atr<−0.13, ou seja 4H em range E preço já dentro/acima de supply): WR cru 68.5%, os 3 anos acima da base, MAS falha estabilidade de bloco — 2/8 blocos abaixo da base (2024-11 e 2025-11) e mantém só 85% dos winners. A perna de distância-a-supply é carregada por ano/bloco, não é separador estável. **Não-robusto.**
+- **Refinamentos por dist_supply e HTF-top em geral:** sobem o WR agregado mas quebram a estabilidade ano/bloco (year-carried). Marcados não-robustos como lição.
+- **Eixo de baixo volume:** não aparece entre os sobreviventes nem entre os quase-passa (não produziu separação reportável).
+
+**(4) HONESTAMENTE: achamos discriminador contextual robusto?**
+
+Sim, no critério usado (≥ base em todo ano + ≥7/8 blocos curados): 3 combos sobreviveram (R1, R2, R4), com R2 sendo 8/8 blocos. A separação real existe em combos contextuais de 2 vias — não em features isoladas (o veredito univariado "nada separa" estava correto, efeito máximo ~0.09).
+
+Magnitude factual do que sobrevive: ganho de WR de +2.4 a +3.1pp (66.1% → 68-69%), streak 28 → 24/25, ao custo de 7-12% dos winners e cortando 16-22% dos losers. Os eixos de supply/topo-HTF (R3) sobem o WR mais alto mas não são estáveis por período.
+
+Não há veredito de aprovação/descarte nem auditoria as-of/jackknife nesta saída — apenas os números de robustez por ano e por bloco listados acima.

@@ -1,0 +1,1338 @@
+[
+ {
+  "n_keep": 2508,
+  "wr_keep": 62.92,
+  "avgR": 0.359,
+  "sumR": 900.5,
+  "streak_keep": 25,
+  "streak_base": 30,
+  "winners_kept_pct": 85.6,
+  "losers_cut_pct": 22.8,
+  "by_year": {
+   "2024": 61.35,
+   "2025": 65.05,
+   "2026": 59.17
+  },
+  "blocks_ok": 8,
+  "robust": true,
+  "clauses": [
+   "near_climax",
+   "macro_bear",
+   "nas_after_smc"
+  ]
+ },
+ {
+  "n_keep": 2566,
+  "wr_keep": 62.78,
+  "avgR": 0.353,
+  "sumR": 906.0,
+  "streak_keep": 25,
+  "streak_base": 30,
+  "winners_kept_pct": 87.4,
+  "losers_cut_pct": 20.7,
+  "by_year": {
+   "2024": 60.81,
+   "2025": 64.94,
+   "2026": 59.63
+  },
+  "blocks_ok": 8,
+  "robust": true,
+  "clauses": [
+   "macro_bear",
+   "nas_after_smc",
+   "london_h1down"
+  ]
+ },
+ {
+  "n_keep": 2544,
+  "wr_keep": 62.7,
+  "avgR": 0.351,
+  "sumR": 892.6,
+  "streak_keep": 25,
+  "streak_base": 30,
+  "winners_kept_pct": 86.5,
+  "losers_cut_pct": 21.2,
+  "by_year": {
+   "2024": 61.38,
+   "2025": 64.47,
+   "2026": 59.5
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "near_climax",
+   "macro_bear",
+   "london_h1down"
+  ]
+ },
+ {
+  "n_keep": 2595,
+  "wr_keep": 62.58,
+  "avgR": 0.353,
+  "sumR": 916.6,
+  "streak_keep": 25,
+  "streak_base": 30,
+  "winners_kept_pct": 88.1,
+  "losers_cut_pct": 19.4,
+  "by_year": {
+   "2024": 60.65,
+   "2025": 64.9,
+   "2026": 58.9
+  },
+  "blocks_ok": 8,
+  "robust": true,
+  "clauses": [
+   "macro_bear",
+   "nas_after_smc"
+  ]
+ },
+ {
+  "n_keep": 2571,
+  "wr_keep": 62.54,
+  "avgR": 0.352,
+  "sumR": 906.0,
+  "streak_keep": 25,
+  "streak_base": 30,
+  "winners_kept_pct": 87.2,
+  "losers_cut_pct": 20.0,
+  "by_year": {
+   "2024": 61.28,
+   "2025": 64.49,
+   "2026": 58.78
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "near_climax",
+   "macro_bear"
+  ]
+ },
+ {
+  "n_keep": 2622,
+  "wr_keep": 62.4,
+  "avgR": 0.329,
+  "sumR": 863.4,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 88.8,
+  "losers_cut_pct": 18.1,
+  "by_year": {
+   "2024": 61.23,
+   "2025": 65.03,
+   "2026": 56.78
+  },
+  "blocks_ok": 8,
+  "robust": true,
+  "clauses": [
+   "vpnode_near1",
+   "london_h1down",
+   "near_h1down"
+  ]
+ },
+ {
+  "n_keep": 2626,
+  "wr_keep": 62.38,
+  "avgR": 0.331,
+  "sumR": 870.3,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 88.9,
+  "losers_cut_pct": 17.9,
+  "by_year": {
+   "2024": 60.99,
+   "2025": 64.84,
+   "2026": 57.59
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "vpnode_near1",
+   "nas_after_smc",
+   "near_h1down"
+  ]
+ },
+ {
+  "n_keep": 2669,
+  "wr_keep": 62.31,
+  "avgR": 0.328,
+  "sumR": 874.5,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 90.2,
+  "losers_cut_pct": 16.4,
+  "by_year": {
+   "2024": 60.43,
+   "2025": 65.2,
+   "2026": 57.26
+  },
+  "blocks_ok": 8,
+  "robust": true,
+  "clauses": [
+   "vpnode_near1",
+   "nas_after_smc",
+   "london_h1down"
+  ]
+ },
+ {
+  "n_keep": 2553,
+  "wr_keep": 62.24,
+  "avgR": 0.328,
+  "sumR": 836.3,
+  "streak_keep": 28,
+  "streak_base": 30,
+  "winners_kept_pct": 86.2,
+  "losers_cut_pct": 19.9,
+  "by_year": {
+   "2024": 60.83,
+   "2025": 64.86,
+   "2026": 57.11
+  },
+  "blocks_ok": 8,
+  "robust": true,
+  "clauses": [
+   "vpnode_near1",
+   "london_climax",
+   "near_h1down"
+  ]
+ },
+ {
+  "n_keep": 2658,
+  "wr_keep": 62.23,
+  "avgR": 0.325,
+  "sumR": 864.8,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 89.7,
+  "losers_cut_pct": 16.6,
+  "by_year": {
+   "2024": 60.82,
+   "2025": 65.0,
+   "2026": 56.8
+  },
+  "blocks_ok": 8,
+  "robust": true,
+  "clauses": [
+   "vpnode_near1",
+   "near_climax",
+   "london_h1down"
+  ]
+ },
+ {
+  "n_keep": 2654,
+  "wr_keep": 62.21,
+  "avgR": 0.328,
+  "sumR": 871.5,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 89.6,
+  "losers_cut_pct": 16.7,
+  "by_year": {
+   "2024": 61.29,
+   "2025": 64.59,
+   "2026": 56.88
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "vpnode_near1",
+   "near_h1down"
+  ]
+ },
+ {
+  "n_keep": 2623,
+  "wr_keep": 62.18,
+  "avgR": 0.327,
+  "sumR": 858.6,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 88.5,
+  "losers_cut_pct": 17.6,
+  "by_year": {
+   "2024": 61.34,
+   "2025": 64.52,
+   "2026": 56.88
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "vpnode_near1",
+   "near_climax",
+   "near_h1down"
+  ]
+ },
+ {
+  "n_keep": 2703,
+  "wr_keep": 62.15,
+  "avgR": 0.325,
+  "sumR": 877.6,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 91.2,
+  "losers_cut_pct": 15.0,
+  "by_year": {
+   "2024": 60.72,
+   "2025": 64.97,
+   "2026": 56.57
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "vpnode_near1",
+   "london_h1down"
+  ]
+ },
+ {
+  "n_keep": 2615,
+  "wr_keep": 62.14,
+  "avgR": 0.326,
+  "sumR": 852.9,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 88.2,
+  "losers_cut_pct": 17.8,
+  "by_year": {
+   "2024": 60.18,
+   "2025": 64.91,
+   "2026": 57.36
+  },
+  "blocks_ok": 6,
+  "robust": true,
+  "clauses": [
+   "near_killz",
+   "nas_after_smc",
+   "near_h1down"
+  ]
+ },
+ {
+  "n_keep": 2606,
+  "wr_keep": 62.13,
+  "avgR": 0.326,
+  "sumR": 849.4,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 87.8,
+  "losers_cut_pct": 18.0,
+  "by_year": {
+   "2024": 61.03,
+   "2025": 64.65,
+   "2026": 56.66
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "vpnode_near1",
+   "near_killz",
+   "near_h1down"
+  ]
+ },
+ {
+  "n_keep": 2676,
+  "wr_keep": 62.07,
+  "avgR": 0.328,
+  "sumR": 878.4,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 90.1,
+  "losers_cut_pct": 15.7,
+  "by_year": {
+   "2024": 60.63,
+   "2025": 64.41,
+   "2026": 57.59
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "near_climax",
+   "nas_after_smc",
+   "near_h1down"
+  ]
+ },
+ {
+  "n_keep": 2670,
+  "wr_keep": 62.06,
+  "avgR": 0.325,
+  "sumR": 867.7,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 89.9,
+  "losers_cut_pct": 15.9,
+  "by_year": {
+   "2024": 60.23,
+   "2025": 64.86,
+   "2026": 57.23
+  },
+  "blocks_ok": 8,
+  "robust": true,
+  "clauses": [
+   "vpnode_near1",
+   "near_climax",
+   "nas_after_smc"
+  ]
+ },
+ {
+  "n_keep": 2633,
+  "wr_keep": 62.06,
+  "avgR": 0.321,
+  "sumR": 844.6,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 88.7,
+  "losers_cut_pct": 17.0,
+  "by_year": {
+   "2024": 60.67,
+   "2025": 64.88,
+   "2026": 56.42
+  },
+  "blocks_ok": 8,
+  "robust": true,
+  "clauses": [
+   "vpnode_near1",
+   "near_killz",
+   "london_h1down"
+  ]
+ },
+ {
+  "n_keep": 2698,
+  "wr_keep": 62.05,
+  "avgR": 0.325,
+  "sumR": 877.2,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 90.8,
+  "losers_cut_pct": 15.0,
+  "by_year": {
+   "2024": 60.12,
+   "2025": 64.69,
+   "2026": 57.5
+  },
+  "blocks_ok": 8,
+  "robust": true,
+  "clauses": [
+   "nas_after_smc",
+   "london_h1down",
+   "near_h1down"
+  ]
+ },
+ {
+  "n_keep": 2615,
+  "wr_keep": 62.03,
+  "avgR": 0.323,
+  "sumR": 844.3,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 88.0,
+  "losers_cut_pct": 17.5,
+  "by_year": {
+   "2024": 60.21,
+   "2025": 64.97,
+   "2026": 56.8
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "vpnode_near1",
+   "london_climax",
+   "london_h1down"
+  ]
+ },
+ {
+  "n_keep": 2620,
+  "wr_keep": 62.02,
+  "avgR": 0.322,
+  "sumR": 844.8,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 88.2,
+  "losers_cut_pct": 17.4,
+  "by_year": {
+   "2024": 60.08,
+   "2025": 65.01,
+   "2026": 56.54
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "near_killz",
+   "london_h1down",
+   "near_h1down"
+  ]
+ },
+ {
+  "n_keep": 2616,
+  "wr_keep": 62.0,
+  "avgR": 0.324,
+  "sumR": 847.3,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 88.0,
+  "losers_cut_pct": 17.4,
+  "by_year": {
+   "2024": 60.6,
+   "2025": 64.65,
+   "2026": 56.63
+  },
+  "blocks_ok": 6,
+  "robust": true,
+  "clauses": [
+   "near_climax",
+   "near_killz",
+   "near_h1down"
+  ]
+ },
+ {
+  "n_keep": 2686,
+  "wr_keep": 61.99,
+  "avgR": 0.341,
+  "sumR": 916.8,
+  "streak_keep": 25,
+  "streak_base": 30,
+  "winners_kept_pct": 90.3,
+  "losers_cut_pct": 15.2,
+  "by_year": {
+   "2024": 60.44,
+   "2025": 64.07,
+   "2026": 58.26
+  },
+  "blocks_ok": 6,
+  "robust": true,
+  "clauses": [
+   "macro_bear"
+  ]
+ },
+ {
+  "n_keep": 2612,
+  "wr_keep": 61.98,
+  "avgR": 0.323,
+  "sumR": 843.8,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 87.8,
+  "losers_cut_pct": 17.5,
+  "by_year": {
+   "2024": 59.58,
+   "2025": 65.09,
+   "2026": 57.23
+  },
+  "blocks_ok": 8,
+  "robust": true,
+  "clauses": [
+   "vpnode_near1",
+   "london_climax",
+   "nas_after_smc"
+  ]
+ },
+ {
+  "n_keep": 2622,
+  "wr_keep": 61.98,
+  "avgR": 0.325,
+  "sumR": 851.5,
+  "streak_keep": 28,
+  "streak_base": 30,
+  "winners_kept_pct": 88.2,
+  "losers_cut_pct": 17.2,
+  "by_year": {
+   "2024": 59.9,
+   "2025": 64.58,
+   "2026": 57.83
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "london_climax",
+   "nas_after_smc",
+   "near_h1down"
+  ]
+ },
+ {
+  "n_keep": 2640,
+  "wr_keep": 61.97,
+  "avgR": 0.322,
+  "sumR": 849.4,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 88.8,
+  "losers_cut_pct": 16.6,
+  "by_year": {
+   "2024": 60.56,
+   "2025": 64.69,
+   "2026": 56.62
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "vpnode_near1",
+   "near_climax",
+   "near_killz"
+  ]
+ },
+ {
+  "n_keep": 2608,
+  "wr_keep": 61.96,
+  "avgR": 0.321,
+  "sumR": 838.2,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 87.7,
+  "losers_cut_pct": 17.6,
+  "by_year": {
+   "2024": 59.95,
+   "2025": 65.01,
+   "2026": 56.77
+  },
+  "blocks_ok": 8,
+  "robust": true,
+  "clauses": [
+   "vpnode_near1",
+   "near_climax",
+   "london_climax"
+  ]
+ },
+ {
+  "n_keep": 2691,
+  "wr_keep": 61.95,
+  "avgR": 0.323,
+  "sumR": 868.8,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 90.5,
+  "losers_cut_pct": 15.0,
+  "by_year": {
+   "2024": 59.95,
+   "2025": 65.04,
+   "2026": 56.54
+  },
+  "blocks_ok": 8,
+  "robust": true,
+  "clauses": [
+   "near_killz",
+   "nas_after_smc",
+   "london_h1down"
+  ]
+ },
+ {
+  "n_keep": 2676,
+  "wr_keep": 61.92,
+  "avgR": 0.324,
+  "sumR": 867.4,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 89.9,
+  "losers_cut_pct": 15.4,
+  "by_year": {
+   "2024": 60.15,
+   "2025": 64.79,
+   "2026": 56.74
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "near_climax",
+   "near_killz",
+   "nas_after_smc"
+  ]
+ },
+ {
+  "n_keep": 2649,
+  "wr_keep": 61.91,
+  "avgR": 0.32,
+  "sumR": 848.7,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 89.0,
+  "losers_cut_pct": 16.2,
+  "by_year": {
+   "2024": 60.1,
+   "2025": 64.77,
+   "2026": 56.85
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "vpnode_near1",
+   "near_killz",
+   "nas_after_smc"
+  ]
+ },
+ {
+  "n_keep": 2688,
+  "wr_keep": 61.9,
+  "avgR": 0.323,
+  "sumR": 868.0,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 90.3,
+  "losers_cut_pct": 15.0,
+  "by_year": {
+   "2024": 60.61,
+   "2025": 64.41,
+   "2026": 56.67
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "near_climax",
+   "london_h1down",
+   "near_h1down"
+  ]
+ },
+ {
+  "n_keep": 2553,
+  "wr_keep": 61.89,
+  "avgR": 0.321,
+  "sumR": 819.5,
+  "streak_keep": 28,
+  "streak_base": 30,
+  "winners_kept_pct": 85.7,
+  "losers_cut_pct": 19.2,
+  "by_year": {
+   "2024": 59.68,
+   "2025": 64.88,
+   "2026": 56.87
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "near_killz",
+   "london_climax",
+   "near_h1down"
+  ]
+ },
+ {
+  "n_keep": 2702,
+  "wr_keep": 61.88,
+  "avgR": 0.322,
+  "sumR": 869.5,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 90.7,
+  "losers_cut_pct": 14.5,
+  "by_year": {
+   "2024": 60.42,
+   "2025": 64.64,
+   "2026": 56.55
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "vpnode_near1",
+   "near_climax"
+  ]
+ },
+ {
+  "n_keep": 2730,
+  "wr_keep": 61.87,
+  "avgR": 0.324,
+  "sumR": 885.3,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 91.6,
+  "losers_cut_pct": 13.5,
+  "by_year": {
+   "2024": 60.2,
+   "2025": 64.27,
+   "2026": 57.59
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "nas_after_smc",
+   "near_h1down"
+  ]
+ },
+ {
+  "n_keep": 2696,
+  "wr_keep": 61.87,
+  "avgR": 0.321,
+  "sumR": 864.4,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 90.5,
+  "losers_cut_pct": 14.6,
+  "by_year": {
+   "2024": 60.36,
+   "2025": 64.86,
+   "2026": 55.99
+  },
+  "blocks_ok": 8,
+  "robust": true,
+  "clauses": [
+   "near_climax",
+   "near_killz",
+   "london_h1down"
+  ]
+ },
+ {
+  "n_keep": 2720,
+  "wr_keep": 61.84,
+  "avgR": 0.321,
+  "sumR": 873.9,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 91.3,
+  "losers_cut_pct": 13.8,
+  "by_year": {
+   "2024": 59.88,
+   "2025": 64.79,
+   "2026": 56.77
+  },
+  "blocks_ok": 8,
+  "robust": true,
+  "clauses": [
+   "vpnode_near1",
+   "nas_after_smc"
+  ]
+ },
+ {
+  "n_keep": 2652,
+  "wr_keep": 61.84,
+  "avgR": 0.322,
+  "sumR": 852.8,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 89.0,
+  "losers_cut_pct": 15.9,
+  "by_year": {
+   "2024": 60.15,
+   "2025": 64.58,
+   "2026": 56.63
+  },
+  "blocks_ok": 6,
+  "robust": true,
+  "clauses": [
+   "near_killz",
+   "near_h1down"
+  ]
+ },
+ {
+  "n_keep": 2646,
+  "wr_keep": 61.83,
+  "avgR": 0.32,
+  "sumR": 847.2,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 88.8,
+  "losers_cut_pct": 16.1,
+  "by_year": {
+   "2024": 59.84,
+   "2025": 64.89,
+   "2026": 56.55
+  },
+  "blocks_ok": 8,
+  "robust": true,
+  "clauses": [
+   "vpnode_near1",
+   "london_climax"
+  ]
+ },
+ {
+  "n_keep": 2575,
+  "wr_keep": 61.83,
+  "avgR": 0.318,
+  "sumR": 819.1,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 86.4,
+  "losers_cut_pct": 18.4,
+  "by_year": {
+   "2024": 59.89,
+   "2025": 64.82,
+   "2026": 56.62
+  },
+  "blocks_ok": 8,
+  "robust": true,
+  "clauses": [
+   "vpnode_near1",
+   "near_killz",
+   "london_climax"
+  ]
+ },
+ {
+  "n_keep": 2626,
+  "wr_keep": 61.81,
+  "avgR": 0.322,
+  "sumR": 844.6,
+  "streak_keep": 28,
+  "streak_base": 30,
+  "winners_kept_pct": 88.1,
+  "losers_cut_pct": 16.7,
+  "by_year": {
+   "2024": 60.21,
+   "2025": 64.34,
+   "2026": 57.0
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "near_climax",
+   "london_climax",
+   "near_h1down"
+  ]
+ },
+ {
+  "n_keep": 2720,
+  "wr_keep": 61.73,
+  "avgR": 0.322,
+  "sumR": 876.0,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 91.1,
+  "losers_cut_pct": 13.5,
+  "by_year": {
+   "2024": 60.68,
+   "2025": 64.0,
+   "2026": 56.76
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "near_climax",
+   "near_h1down"
+  ]
+ },
+ {
+  "n_keep": 2783,
+  "wr_keep": 61.73,
+  "avgR": 0.319,
+  "sumR": 888.7,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 93.2,
+  "losers_cut_pct": 11.5,
+  "by_year": {
+   "2024": 59.85,
+   "2025": 64.62,
+   "2026": 56.65
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "near_climax",
+   "nas_after_smc",
+   "london_h1down"
+  ]
+ },
+ {
+  "n_keep": 2757,
+  "wr_keep": 61.7,
+  "avgR": 0.318,
+  "sumR": 877.6,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 92.3,
+  "losers_cut_pct": 12.3,
+  "by_year": {
+   "2024": 60.14,
+   "2025": 64.6,
+   "2026": 56.1
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "vpnode_near1"
+  ]
+ },
+ {
+  "n_keep": 2632,
+  "wr_keep": 61.7,
+  "avgR": 0.32,
+  "sumR": 842.3,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 88.1,
+  "losers_cut_pct": 16.3,
+  "by_year": {
+   "2024": 59.17,
+   "2025": 64.95,
+   "2026": 56.74
+  },
+  "blocks_ok": 6,
+  "robust": true,
+  "clauses": [
+   "near_killz",
+   "london_climax",
+   "nas_after_smc"
+  ]
+ },
+ {
+  "n_keep": 2681,
+  "wr_keep": 61.69,
+  "avgR": 0.317,
+  "sumR": 848.7,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 89.7,
+  "losers_cut_pct": 14.7,
+  "by_year": {
+   "2024": 60.22,
+   "2025": 64.52,
+   "2026": 56.16
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "vpnode_near1",
+   "near_killz"
+  ]
+ },
+ {
+  "n_keep": 2643,
+  "wr_keep": 61.67,
+  "avgR": 0.318,
+  "sumR": 840.7,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 88.4,
+  "losers_cut_pct": 15.9,
+  "by_year": {
+   "2024": 59.55,
+   "2025": 64.87,
+   "2026": 56.19
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "near_climax",
+   "near_killz",
+   "london_climax"
+  ]
+ },
+ {
+  "n_keep": 2755,
+  "wr_keep": 61.63,
+  "avgR": 0.318,
+  "sumR": 875.3,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 92.1,
+  "losers_cut_pct": 12.2,
+  "by_year": {
+   "2024": 60.2,
+   "2025": 64.14,
+   "2026": 56.56
+  },
+  "blocks_ok": 6,
+  "robust": true,
+  "clauses": [
+   "london_h1down",
+   "near_h1down"
+  ]
+ },
+ {
+  "n_keep": 2737,
+  "wr_keep": 61.6,
+  "avgR": 0.319,
+  "sumR": 872.1,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 91.5,
+  "losers_cut_pct": 12.7,
+  "by_year": {
+   "2024": 60.05,
+   "2025": 64.51,
+   "2026": 55.97
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "near_climax",
+   "near_killz"
+  ]
+ },
+ {
+  "n_keep": 2736,
+  "wr_keep": 61.59,
+  "avgR": 0.319,
+  "sumR": 872.3,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 91.4,
+  "losers_cut_pct": 12.7,
+  "by_year": {
+   "2024": 59.56,
+   "2025": 64.66,
+   "2026": 56.29
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "near_killz",
+   "nas_after_smc"
+  ]
+ },
+ {
+  "n_keep": 2658,
+  "wr_keep": 61.59,
+  "avgR": 0.317,
+  "sumR": 843.8,
+  "streak_keep": 28,
+  "streak_base": 30,
+  "winners_kept_pct": 88.8,
+  "losers_cut_pct": 15.2,
+  "by_year": {
+   "2024": 59.82,
+   "2025": 64.22,
+   "2026": 56.79
+  },
+  "blocks_ok": 6,
+  "robust": true,
+  "clauses": [
+   "london_climax",
+   "london_h1down",
+   "near_h1down"
+  ]
+ },
+ {
+  "n_keep": 2677,
+  "wr_keep": 61.56,
+  "avgR": 0.318,
+  "sumR": 850.0,
+  "streak_keep": 28,
+  "streak_base": 30,
+  "winners_kept_pct": 89.4,
+  "losers_cut_pct": 14.5,
+  "by_year": {
+   "2024": 59.92,
+   "2025": 64.07,
+   "2026": 56.88
+  },
+  "blocks_ok": 6,
+  "robust": true,
+  "clauses": [
+   "london_climax",
+   "near_h1down"
+  ]
+ },
+ {
+  "n_keep": 2875,
+  "wr_keep": 61.46,
+  "avgR": 0.315,
+  "sumR": 906.8,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 95.9,
+  "losers_cut_pct": 8.0,
+  "by_year": {
+   "2024": 59.24,
+   "2025": 64.52,
+   "2026": 56.43
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "nas_after_smc",
+   "london_h1down"
+  ]
+ },
+ {
+  "n_keep": 2780,
+  "wr_keep": 61.4,
+  "avgR": 0.315,
+  "sumR": 874.9,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 92.6,
+  "losers_cut_pct": 10.9,
+  "by_year": {
+   "2024": 58.88,
+   "2025": 64.56,
+   "2026": 56.65
+  },
+  "blocks_ok": 6,
+  "robust": true,
+  "clauses": [
+   "london_climax",
+   "nas_after_smc",
+   "london_h1down"
+  ]
+ },
+ {
+  "n_keep": 2675,
+  "wr_keep": 61.38,
+  "avgR": 0.313,
+  "sumR": 837.9,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 89.1,
+  "losers_cut_pct": 14.2,
+  "by_year": {
+   "2024": 59.03,
+   "2025": 64.69,
+   "2026": 55.99
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "near_killz",
+   "london_climax",
+   "london_h1down"
+  ]
+ },
+ {
+  "n_keep": 2857,
+  "wr_keep": 61.36,
+  "avgR": 0.312,
+  "sumR": 892.4,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 95.1,
+  "losers_cut_pct": 8.3,
+  "by_year": {
+   "2024": 59.86,
+   "2025": 64.19,
+   "2026": 55.81
+  },
+  "blocks_ok": 8,
+  "robust": true,
+  "clauses": [
+   "near_climax",
+   "london_h1down"
+  ]
+ },
+ {
+  "n_keep": 2832,
+  "wr_keep": 61.33,
+  "avgR": 0.314,
+  "sumR": 889.1,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 94.2,
+  "losers_cut_pct": 9.1,
+  "by_year": {
+   "2024": 59.43,
+   "2025": 64.22,
+   "2026": 56.3
+  },
+  "blocks_ok": 6,
+  "robust": true,
+  "clauses": [
+   "near_climax",
+   "nas_after_smc"
+  ]
+ },
+ {
+  "n_keep": 2776,
+  "wr_keep": 61.28,
+  "avgR": 0.311,
+  "sumR": 862.9,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 92.3,
+  "losers_cut_pct": 10.7,
+  "by_year": {
+   "2024": 59.34,
+   "2025": 64.26,
+   "2026": 56.02
+  },
+  "blocks_ok": 7,
+  "robust": true,
+  "clauses": [
+   "near_climax",
+   "london_climax",
+   "london_h1down"
+  ]
+ },
+ {
+  "n_keep": 2809,
+  "wr_keep": 61.16,
+  "avgR": 0.311,
+  "sumR": 873.5,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 93.2,
+  "losers_cut_pct": 9.4,
+  "by_year": {
+   "2024": 59.15,
+   "2025": 64.34,
+   "2026": 55.53
+  },
+  "blocks_ok": 6,
+  "robust": true,
+  "clauses": [
+   "near_killz"
+  ]
+ },
+ {
+  "n_keep": 2913,
+  "wr_keep": 61.0,
+  "avgR": 0.308,
+  "sumR": 897.5,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 96.4,
+  "losers_cut_pct": 5.6,
+  "by_year": {
+   "2024": 59.48,
+   "2025": 63.85,
+   "2026": 55.43
+  },
+  "blocks_ok": 6,
+  "robust": true,
+  "clauses": [
+   "near_climax"
+  ]
+ },
+ {
+  "n_keep": 2975,
+  "wr_keep": 60.97,
+  "avgR": 0.306,
+  "sumR": 909.5,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 98.4,
+  "losers_cut_pct": 3.6,
+  "by_year": {
+   "2024": 59.24,
+   "2025": 63.88,
+   "2026": 55.49
+  },
+  "blocks_ok": 6,
+  "robust": true,
+  "clauses": [
+   "london_h1down"
+  ]
+ },
+ {
+  "n_keep": 2592,
+  "wr_keep": 60.96,
+  "avgR": 0.309,
+  "sumR": 800.7,
+  "streak_keep": 30,
+  "streak_base": 30,
+  "winners_kept_pct": 85.7,
+  "losers_cut_pct": 15.9,
+  "by_year": {
+   "2024": 59.6,
+   "2025": 63.66,
+   "2026": 55.47
+  },
+  "blocks_ok": 6,
+  "robust": true,
+  "clauses": [
+   "climax_hi",
+   "near_climax",
+   "london_h1down"
+  ]
+ },
+ {
+  "n_keep": 2619,
+  "wr_keep": 60.79,
+  "avgR": 0.304,
+  "sumR": 796.8,
+  "streak_keep": 29,
+  "streak_base": 30,
+  "winners_kept_pct": 86.4,
+  "losers_cut_pct": 14.7,
+  "by_year": {
+   "2024": 59.31,
+   "2025": 63.5,
+   "2026": 55.37
+  },
+  "blocks_ok": 6,
+  "robust": true,
+  "clauses": [
+   "climax_hi",
+   "london_climax",
+   "london_h1down"
+  ]
+ }
+]

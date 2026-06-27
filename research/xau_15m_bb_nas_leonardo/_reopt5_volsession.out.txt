@@ -1,0 +1,407 @@
+================================================================================
+(A) INHERITED 8ATR FAMILIES ON 5ATR BASE
+R2a KEEP h1_trend>=0 & h1_eff>=0.2
+  n=1808 WR=64.27(b60.49) avgR=0.364 sumR=657.7 streak 30->28 winK=63.0% losC=46.3%
+  yr={2024: 66.67, 2025: 67.24, 2026: 50.17} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+R2b KEEP h1_pos>=1.0 & h1_trend>=0
+  n=1761 WR=64.79(b60.49) avgR=0.36 sumR=634.0 streak 30->20 winK=61.9% losC=48.5%
+  yr={2024: 63.64, 2025: 68.33, 2026: 55.78} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+R_B CUT (sell-exhaustion, vol_low_vs_med>1.37)
+  n=2614 WR=61.48(b60.49) avgR=0.318 sumR=830.3 streak 30->24 winK=87.2% losC=16.4%
+  yr={2024: 58.75, 2025: 64.68, 2026: 57.06} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=7/8 STREAK_ROBUST=True ROBUST=False
+================================================================================
+(B) VOL/SESSION COMBO HUNT
+-- single atoms (KEEP) --
+KEEP deadzone
+  n=1161 WR=64.77(b60.49) avgR=0.416 sumR=483.2 streak 30->20 winK=40.8% losC=66.0%
+  yr={2024: 60.75, 2025: 66.09, 2026: 66.23} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london
+  n=2655 WR=61.54(b60.49) avgR=0.317 sumR=841.5 streak 30->28 winK=88.7% losC=15.2%
+  yr={2024: 57.88, 2025: 65.66, 2026: 56.3} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=4/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_hi
+  n=1009 WR=63.63(b60.49) avgR=0.349 sumR=351.6 streak 30->25 winK=34.8% losC=69.5%
+  yr={2024: 57.22, 2025: 65.86, 2026: 72.56} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=4/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_mid_hi
+  n=1557 WR=61.4(b60.49) avgR=0.303 sumR=471.5 streak 30->24 winK=51.9% losC=50.1%
+  yr={2024: 57.12, 2025: 64.88, 2026: 59.85} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=4/8 STREAK_ROBUST=True ROBUST=False
+KEEP vpnode_far
+  n=1355 WR=64.87(b60.49) avgR=0.346 sumR=469.2 streak 30->26 winK=47.7% losC=60.5%
+  yr={2024: 63.34, 2025: 66.99, 2026: 61.34} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=7/8 STREAK_ROBUST=True ROBUST=False
+KEEP vpnode_far5
+  n=1006 WR=64.51(b60.49) avgR=0.342 sumR=343.9 streak 30->24 winK=35.2% losC=70.3%
+  yr={2024: 64.58, 2025: 68.53, 2026: 50.62} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_killzone
+  n=1516 WR=62.34(b60.49) avgR=0.342 sumR=518.4 streak 30->21 winK=51.3% losC=52.6%
+  yr={2024: 57.46, 2025: 64.72, 2026: 63.6} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP vol_calm
+  n=1021 WR=61.8(b60.49) avgR=0.345 sumR=352.0 streak 30->14 winK=34.2% losC=67.6%
+  yr={2024: 62.54, 2025: 61.52, 2026: 61.24} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_climax
+  n=1525 WR=61.57(b60.49) avgR=0.334 sumR=509.4 streak 30->18 winK=50.9% losC=51.3%
+  yr={2024: 60.53, 2025: 62.09, 2026: 61.47} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+-- pairwise KEEP (AND) --
+KEEP deadzone & not_london
+  n=1161 WR=64.77(b60.49) avgR=0.416 sumR=483.2 streak 30->20 winK=40.8% losC=66.0%
+  yr={2024: 60.75, 2025: 66.09, 2026: 66.23} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone & atr_hi
+  n=125 WR=77.6(b60.49) avgR=0.772 sumR=96.4 streak 30->6 winK=5.3% losC=97.7%
+  yr={2024: 50.0, 2025: 68.97, 2026: 96.08} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=3/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone & atr_mid_hi
+  n=282 WR=71.28(b60.49) avgR=0.555 sumR=156.5 streak 30->10 winK=10.9% losC=93.3%
+  yr={2024: 41.46, 2025: 74.1, 2026: 81.33} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone & vpnode_far
+  n=633 WR=67.61(b60.49) avgR=0.426 sumR=269.4 streak 30->15 winK=23.2% losC=83.0%
+  yr={2024: 63.89, 2025: 67.96, 2026: 70.32} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone & vpnode_far5
+  n=463 WR=67.39(b60.49) avgR=0.424 sumR=196.5 streak 30->11 winK=16.9% losC=87.5%
+  yr={2024: 68.47, 2025: 69.12, 2026: 60.0} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone & not_killzone
+  n=1161 WR=64.77(b60.49) avgR=0.416 sumR=483.2 streak 30->20 winK=40.8% losC=66.0%
+  yr={2024: 60.75, 2025: 66.09, 2026: 66.23} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone & vol_calm
+  n=472 WR=64.41(b60.49) avgR=0.465 sumR=219.5 streak 30->10 winK=16.5% losC=86.0%
+  yr={2024: 63.41, 2025: 64.0, 2026: 66.67} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone & not_climax
+  n=649 WR=64.87(b60.49) avgR=0.445 sumR=288.8 streak 30->12 winK=22.8% losC=81.1%
+  yr={2024: 59.84, 2025: 63.59, 2026: 71.52} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london & atr_hi
+  n=896 WR=65.07(b60.49) avgR=0.376 sumR=336.5 streak 30->21 winK=31.6% losC=74.0%
+  yr={2024: 55.86, 2025: 68.55, 2026: 75.64} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=4/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london & atr_mid_hi
+  n=1331 WR=63.04(b60.49) avgR=0.335 sumR=445.3 streak 30->23 winK=45.5% losC=59.1%
+  yr={2024: 55.78, 2025: 68.37, 2026: 62.04} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london & vpnode_far
+  n=1203 WR=65.59(b60.49) avgR=0.359 sumR=431.6 streak 30->20 winK=42.8% losC=65.6%
+  yr={2024: 59.37, 2025: 69.61, 2026: 63.24} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london & vpnode_far5
+  n=888 WR=64.98(b60.49) avgR=0.346 sumR=307.2 streak 30->20 winK=31.3% losC=74.2%
+  yr={2024: 60.83, 2025: 71.08, 2026: 51.33} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london & not_killzone
+  n=1516 WR=62.34(b60.49) avgR=0.342 sumR=518.4 streak 30->21 winK=51.3% losC=52.6%
+  yr={2024: 57.46, 2025: 64.72, 2026: 63.6} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london & vol_calm
+  n=919 WR=62.57(b60.49) avgR=0.364 sumR=334.2 streak 30->14 winK=31.2% losC=71.4%
+  yr={2024: 61.69, 2025: 63.1, 2026: 62.65} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=7/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london & not_climax
+  n=1368 WR=62.65(b60.49) avgR=0.355 sumR=485.2 streak 30->16 winK=46.5% losC=57.6%
+  yr={2024: 59.58, 2025: 63.9, 2026: 63.0} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=7/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_hi & atr_mid_hi
+  n=1009 WR=63.63(b60.49) avgR=0.349 sumR=351.6 streak 30->25 winK=34.8% losC=69.5%
+  yr={2024: 57.22, 2025: 65.86, 2026: 72.56} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=4/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_hi & vpnode_far
+  n=381 WR=70.6(b60.49) avgR=0.414 sumR=157.7 streak 30->19 winK=14.6% losC=90.7%
+  yr={2024: 55.41, 2025: 77.92, 2026: 84.81} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_hi & vpnode_far5
+  n=253 WR=66.01(b60.49) avgR=0.286 sumR=72.4 streak 30->20 winK=9.1% losC=92.9%
+  yr={2024: 54.05, 2025: 76.32, 2026: 71.43} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=4/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_hi & not_killzone
+  n=264 WR=66.29(b60.49) avgR=0.437 sumR=115.3 streak 30->21 winK=9.5% losC=92.6%
+  yr={2024: 51.35, 2025: 67.68, 2026: 94.44} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=4/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_hi & vol_calm
+  n=305 WR=64.26(b60.49) avgR=0.349 sumR=106.5 streak 30->11 winK=10.6% losC=90.9%
+  yr={2024: 62.3, 2025: 61.48, 2026: 77.08} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_hi & not_climax
+  n=461 WR=67.9(b60.49) avgR=0.438 sumR=202.0 streak 30->10 winK=17.0% losC=87.7%
+  yr={2024: 60.81, 2025: 67.42, 2026: 80.43} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_mid_hi & vpnode_far
+  n=626 WR=67.73(b60.49) avgR=0.388 sumR=242.8 streak 30->20 winK=23.0% losC=83.2%
+  yr={2024: 59.18, 2025: 72.94, 2026: 68.5} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=7/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_mid_hi & vpnode_far5
+  n=434 WR=65.44(b60.49) avgR=0.339 sumR=147.0 streak 30->18 winK=15.4% losC=87.5%
+  yr={2024: 57.82, 2025: 73.54, 2026: 54.69} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_mid_hi & not_killzone
+  n=477 WR=64.57(b60.49) avgR=0.39 sumR=186.1 streak 30->19 winK=16.7% losC=86.0%
+  yr={2024: 50.3, 2025: 71.3, 2026: 74.16} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_mid_hi & vol_calm
+  n=446 WR=63.0(b60.49) avgR=0.318 sumR=142.0 streak 30->10 winK=15.2% losC=86.3%
+  yr={2024: 64.97, 2025: 59.36, 2026: 70.0} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_mid_hi & not_climax
+  n=704 WR=65.77(b60.49) avgR=0.393 sumR=276.4 streak 30->11 winK=25.1% losC=80.0%
+  yr={2024: 62.37, 2025: 65.05, 2026: 72.46} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP vpnode_far & vpnode_far5
+  n=1006 WR=64.51(b60.49) avgR=0.342 sumR=343.9 streak 30->24 winK=35.2% losC=70.3%
+  yr={2024: 64.58, 2025: 68.53, 2026: 50.62} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP vpnode_far & not_killzone
+  n=821 WR=65.29(b60.49) avgR=0.357 sumR=292.8 streak 30->19 winK=29.1% losC=76.3%
+  yr={2024: 59.39, 2025: 67.54, 2026: 67.65} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP vpnode_far & vol_calm
+  n=434 WR=64.29(b60.49) avgR=0.352 sumR=152.7 streak 30->8 winK=15.1% losC=87.1%
+  yr={2024: 62.02, 2025: 63.35, 2026: 70.24} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP vpnode_far & not_climax
+  n=664 WR=62.8(b60.49) avgR=0.313 sumR=208.0 streak 30->19 winK=22.6% losC=79.5%
+  yr={2024: 59.72, 2025: 61.45, 2026: 68.52} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP vpnode_far5 & not_killzone
+  n=614 WR=66.12(b60.49) avgR=0.376 sumR=231.0 streak 30->17 winK=22.0% losC=82.7%
+  yr={2024: 63.58, 2025: 69.91, 2026: 56.52} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP vpnode_far5 & vol_calm
+  n=324 WR=63.89(b60.49) avgR=0.361 sumR=116.8 streak 30->8 winK=11.2% losC=90.3%
+  yr={2024: 62.14, 2025: 65.73, 2026: 60.47} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=7/8 STREAK_ROBUST=True ROBUST=False
+KEEP vpnode_far5 & not_climax
+  n=478 WR=61.92(b60.49) avgR=0.298 sumR=142.4 streak 30->17 winK=16.1% losC=84.9%
+  yr={2024: 60.71, 2025: 63.08, 2026: 59.77} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_killzone & vol_calm
+  n=575 WR=62.43(b60.49) avgR=0.397 sumR=228.4 streak 30->12 winK=19.5% losC=82.1%
+  yr={2024: 58.52, 2025: 62.98, 2026: 67.27} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_killzone & not_climax
+  n=806 WR=62.9(b60.49) avgR=0.379 sumR=305.1 streak 30->13 winK=27.5% losC=75.2%
+  yr={2024: 57.45, 2025: 62.0, 2026: 70.37} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=4/8 STREAK_ROBUST=True ROBUST=False
+KEEP vol_calm & not_climax
+  n=933 WR=61.84(b60.49) avgR=0.345 sumR=321.9 streak 30->12 winK=31.3% losC=70.4%
+  yr={2024: 62.98, 2025: 60.89, 2026: 62.57} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+-- triple KEEP (AND) --
+KEEP deadzone&not_london&atr_hi
+  n=125 WR=77.6(b60.49) avgR=0.772 sumR=96.4 streak 30->6 winK=5.3% losC=97.7%
+  yr={2024: 50.0, 2025: 68.97, 2026: 96.08} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=3/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&not_london&atr_mid_hi
+  n=282 WR=71.28(b60.49) avgR=0.555 sumR=156.5 streak 30->10 winK=10.9% losC=93.3%
+  yr={2024: 41.46, 2025: 74.1, 2026: 81.33} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&not_london&vpnode_far
+  n=633 WR=67.61(b60.49) avgR=0.426 sumR=269.4 streak 30->15 winK=23.2% losC=83.0%
+  yr={2024: 63.89, 2025: 67.96, 2026: 70.32} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&not_london&vpnode_far5
+  n=463 WR=67.39(b60.49) avgR=0.424 sumR=196.5 streak 30->11 winK=16.9% losC=87.5%
+  yr={2024: 68.47, 2025: 69.12, 2026: 60.0} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&not_london&not_killzone
+  n=1161 WR=64.77(b60.49) avgR=0.416 sumR=483.2 streak 30->20 winK=40.8% losC=66.0%
+  yr={2024: 60.75, 2025: 66.09, 2026: 66.23} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&not_london&vol_calm
+  n=472 WR=64.41(b60.49) avgR=0.465 sumR=219.5 streak 30->10 winK=16.5% losC=86.0%
+  yr={2024: 63.41, 2025: 64.0, 2026: 66.67} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&not_london&not_climax
+  n=649 WR=64.87(b60.49) avgR=0.445 sumR=288.8 streak 30->12 winK=22.8% losC=81.1%
+  yr={2024: 59.84, 2025: 63.59, 2026: 71.52} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&atr_hi&atr_mid_hi
+  n=125 WR=77.6(b60.49) avgR=0.772 sumR=96.4 streak 30->6 winK=5.3% losC=97.7%
+  yr={2024: 50.0, 2025: 68.97, 2026: 96.08} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=3/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&atr_hi&vpnode_far
+  n=54 WR=88.89(b60.49) avgR=1.027 sumR=55.5 streak 30->4 winK=2.6% losC=99.5%
+  yr={2024: 0.0, 2025: 60.0, 2026: 97.67} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&atr_hi&vpnode_far5
+  n=20 WR=75.0(b60.49) avgR=0.465 sumR=9.3 streak 30->4 winK=0.8% losC=99.6%
+  yr={2024: None, 2025: 60.0, 2026: 90.0} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=7/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&atr_hi&not_killzone
+  n=125 WR=77.6(b60.49) avgR=0.772 sumR=96.4 streak 30->6 winK=5.3% losC=97.7%
+  yr={2024: 50.0, 2025: 68.97, 2026: 96.08} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=3/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&atr_hi&vol_calm
+  n=42 WR=90.48(b60.49) avgR=1.048 sumR=44.0 streak 30->2 winK=2.1% losC=99.7%
+  yr={2024: 100.0, 2025: 78.95, 2026: 100.0} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=7/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&atr_hi&not_climax
+  n=77 WR=84.42(b60.49) avgR=0.909 sumR=70.0 streak 30->3 winK=3.5% losC=99.0%
+  yr={2024: 83.33, 2025: 67.74, 2026: 97.5} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&atr_mid_hi&vpnode_far
+  n=138 WR=78.26(b60.49) avgR=0.731 sumR=100.9 streak 30->6 winK=5.9% losC=97.5%
+  yr={2024: 54.55, 2025: 80.6, 2026: 80.0} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&atr_mid_hi&vpnode_far5
+  n=75 WR=76.0(b60.49) avgR=0.658 sumR=49.3 streak 30->4 winK=3.1% losC=98.5%
+  yr={2024: 57.14, 2025: 84.0, 2026: 61.11} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&atr_mid_hi&not_killzone
+  n=282 WR=71.28(b60.49) avgR=0.555 sumR=156.5 streak 30->10 winK=10.9% losC=93.3%
+  yr={2024: 41.46, 2025: 74.1, 2026: 81.33} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&atr_mid_hi&vol_calm
+  n=89 WR=76.4(b60.49) avgR=0.648 sumR=57.7 streak 30->5 winK=3.7% losC=98.3%
+  yr={2024: 80.0, 2025: 70.59, 2026: 85.71} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&atr_mid_hi&not_climax
+  n=154 WR=75.97(b60.49) avgR=0.654 sumR=100.6 streak 30->4 winK=6.3% losC=96.9%
+  yr={2024: 66.67, 2025: 69.41, 2026: 87.72} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&vpnode_far&vpnode_far5
+  n=463 WR=67.39(b60.49) avgR=0.424 sumR=196.5 streak 30->11 winK=16.9% losC=87.5%
+  yr={2024: 68.47, 2025: 69.12, 2026: 60.0} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&vpnode_far&not_killzone
+  n=633 WR=67.61(b60.49) avgR=0.426 sumR=269.4 streak 30->15 winK=23.2% losC=83.0%
+  yr={2024: 63.89, 2025: 67.96, 2026: 70.32} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&vpnode_far&vol_calm
+  n=230 WR=67.39(b60.49) avgR=0.45 sumR=103.5 streak 30->6 winK=8.4% losC=93.8%
+  yr={2024: 66.67, 2025: 65.49, 2026: 71.67} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&vpnode_far&not_climax
+  n=340 WR=67.06(b60.49) avgR=0.449 sumR=152.8 streak 30->10 winK=12.4% losC=90.7%
+  yr={2024: 61.67, 2025: 62.79, 2026: 76.85} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&vpnode_far5&not_killzone
+  n=463 WR=67.39(b60.49) avgR=0.424 sumR=196.5 streak 30->11 winK=16.9% losC=87.5%
+  yr={2024: 68.47, 2025: 69.12, 2026: 60.0} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&vpnode_far5&vol_calm
+  n=165 WR=66.06(b60.49) avgR=0.443 sumR=73.0 streak 30->5 winK=5.9% losC=95.3%
+  yr={2024: 69.57, 2025: 66.3, 2026: 59.26} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&vpnode_far5&not_climax
+  n=231 WR=65.37(b60.49) avgR=0.426 sumR=98.3 streak 30->7 winK=8.2% losC=93.4%
+  yr={2024: 65.96, 2025: 63.7, 2026: 69.39} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&not_killzone&vol_calm
+  n=472 WR=64.41(b60.49) avgR=0.465 sumR=219.5 streak 30->10 winK=16.5% losC=86.0%
+  yr={2024: 63.41, 2025: 64.0, 2026: 66.67} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&not_killzone&not_climax
+  n=649 WR=64.87(b60.49) avgR=0.445 sumR=288.8 streak 30->12 winK=22.8% losC=81.1%
+  yr={2024: 59.84, 2025: 63.59, 2026: 71.52} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP deadzone&vol_calm&not_climax
+  n=434 WR=63.59(b60.49) avgR=0.447 sumR=194.0 streak 30->9 winK=15.0% losC=86.9%
+  yr={2024: 60.91, 2025: 62.45, 2026: 69.47} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london&atr_hi&atr_mid_hi
+  n=896 WR=65.07(b60.49) avgR=0.376 sumR=336.5 streak 30->21 winK=31.6% losC=74.0%
+  yr={2024: 55.86, 2025: 68.55, 2026: 75.64} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=4/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london&atr_hi&vpnode_far
+  n=342 WR=71.05(b60.49) avgR=0.423 sumR=144.6 streak 30->19 winK=13.2% losC=91.8%
+  yr={2024: 49.21, 2025: 80.85, 2026: 89.33} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london&atr_hi&vpnode_far5
+  n=227 WR=65.2(b60.49) avgR=0.26 sumR=58.9 streak 30->20 winK=8.0% losC=93.4%
+  yr={2024: 47.87, 2025: 78.3, 2026: 74.07} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london&atr_hi&not_killzone
+  n=264 WR=66.29(b60.49) avgR=0.437 sumR=115.3 streak 30->21 winK=9.5% losC=92.6%
+  yr={2024: 51.35, 2025: 67.68, 2026: 94.44} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=4/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london&atr_hi&vol_calm
+  n=281 WR=65.12(b60.49) avgR=0.37 sumR=103.9 streak 30->11 winK=9.9% losC=91.9%
+  yr={2024: 61.26, 2025: 62.9, 2026: 80.43} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london&atr_hi&not_climax
+  n=428 WR=68.46(b60.49) avgR=0.453 sumR=193.8 streak 30->10 winK=15.9% losC=88.8%
+  yr={2024: 60.0, 2025: 67.8, 2026: 82.95} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london&atr_mid_hi&vpnode_far
+  n=542 WR=69.19(b60.49) avgR=0.415 sumR=224.9 streak 30->18 winK=20.3% losC=86.1%
+  yr={2024: 53.7, 2025: 77.99, 2026: 71.07} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london&atr_mid_hi&vpnode_far5
+  n=365 WR=66.3(b60.49) avgR=0.347 sumR=126.6 streak 30->18 winK=13.1% losC=89.8%
+  yr={2024: 51.69, 2025: 79.03, 2026: 55.74} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london&atr_mid_hi&not_killzone
+  n=477 WR=64.57(b60.49) avgR=0.39 sumR=186.1 streak 30->19 winK=16.7% losC=86.0%
+  yr={2024: 50.3, 2025: 71.3, 2026: 74.16} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london&atr_mid_hi&vol_calm
+  n=393 WR=64.63(b60.49) avgR=0.357 sumR=140.1 streak 30->10 winK=13.8% losC=88.5%
+  yr={2024: 63.77, 2025: 62.63, 2026: 72.31} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=7/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london&atr_mid_hi&not_climax
+  n=624 WR=67.31(b60.49) avgR=0.428 sumR=266.9 streak 30->11 winK=22.8% losC=83.1%
+  yr={2024: 61.63, 2025: 67.18, 2026: 75.4} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london&vpnode_far&vpnode_far5
+  n=888 WR=64.98(b60.49) avgR=0.346 sumR=307.2 streak 30->20 winK=31.3% losC=74.2%
+  yr={2024: 60.83, 2025: 71.08, 2026: 51.33} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london&vpnode_far&not_killzone
+  n=821 WR=65.29(b60.49) avgR=0.357 sumR=292.8 streak 30->19 winK=29.1% losC=76.3%
+  yr={2024: 59.39, 2025: 67.54, 2026: 67.65} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london&vpnode_far&vol_calm
+  n=394 WR=64.47(b60.49) avgR=0.364 sumR=143.2 streak 30->7 winK=13.8% losC=88.4%
+  yr={2024: 58.41, 2025: 65.17, 2026: 71.25} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london&vpnode_far&not_climax
+  n=602 WR=63.79(b60.49) avgR=0.343 sumR=206.3 streak 30->13 winK=20.8% losC=81.9%
+  yr={2024: 55.47, 2025: 64.09, 2026: 70.2} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london&vpnode_far5&not_killzone
+  n=614 WR=66.12(b60.49) avgR=0.376 sumR=231.0 streak 30->17 winK=22.0% losC=82.7%
+  yr={2024: 63.58, 2025: 69.91, 2026: 56.52} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london&vpnode_far5&vol_calm
+  n=294 WR=63.95(b60.49) avgR=0.365 sumR=107.4 streak 30->8 winK=10.2% losC=91.2%
+  yr={2024: 58.89, 2025: 67.68, 2026: 60.0} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=7/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london&vpnode_far5&not_climax
+  n=430 WR=62.79(b60.49) avgR=0.323 sumR=138.7 streak 30->13 winK=14.7% losC=86.7%
+  yr={2024: 56.57, 2025: 66.01, 2026: 60.26} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london&not_killzone&vol_calm
+  n=575 WR=62.43(b60.49) avgR=0.397 sumR=228.4 streak 30->12 winK=19.5% losC=82.1%
+  yr={2024: 58.52, 2025: 62.98, 2026: 67.27} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london&not_killzone&not_climax
+  n=806 WR=62.9(b60.49) avgR=0.379 sumR=305.1 streak 30->13 winK=27.5% losC=75.2%
+  yr={2024: 57.45, 2025: 62.0, 2026: 70.37} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=4/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_london&vol_calm&not_climax
+  n=842 WR=62.71(b60.49) avgR=0.367 sumR=308.9 streak 30->12 winK=28.6% losC=73.9%
+  yr={2024: 62.4, 2025: 62.35, 2026: 64.15} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=7/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_hi&atr_mid_hi&vpnode_far
+  n=381 WR=70.6(b60.49) avgR=0.414 sumR=157.7 streak 30->19 winK=14.6% losC=90.7%
+  yr={2024: 55.41, 2025: 77.92, 2026: 84.81} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_hi&atr_mid_hi&vpnode_far5
+  n=253 WR=66.01(b60.49) avgR=0.286 sumR=72.4 streak 30->20 winK=9.1% losC=92.9%
+  yr={2024: 54.05, 2025: 76.32, 2026: 71.43} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=4/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_hi&atr_mid_hi&not_killzone
+  n=264 WR=66.29(b60.49) avgR=0.437 sumR=115.3 streak 30->21 winK=9.5% losC=92.6%
+  yr={2024: 51.35, 2025: 67.68, 2026: 94.44} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=4/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_hi&atr_mid_hi&vol_calm
+  n=305 WR=64.26(b60.49) avgR=0.349 sumR=106.5 streak 30->11 winK=10.6% losC=90.9%
+  yr={2024: 62.3, 2025: 61.48, 2026: 77.08} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_hi&atr_mid_hi&not_climax
+  n=461 WR=67.9(b60.49) avgR=0.438 sumR=202.0 streak 30->10 winK=17.0% losC=87.7%
+  yr={2024: 60.81, 2025: 67.42, 2026: 80.43} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_hi&vpnode_far&vpnode_far5
+  n=253 WR=66.01(b60.49) avgR=0.286 sumR=72.4 streak 30->20 winK=9.1% losC=92.9%
+  yr={2024: 54.05, 2025: 76.32, 2026: 71.43} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=4/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_hi&vpnode_far&not_killzone
+  n=142 WR=72.54(b60.49) avgR=0.501 sumR=71.2 streak 30->21 winK=5.6% losC=96.8%
+  yr={2024: 49.25, 2025: 87.5, 2026: 97.67} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_hi&vpnode_far&vol_calm
+  n=109 WR=65.14(b60.49) avgR=0.304 sumR=33.2 streak 30->10 winK=3.9% losC=96.8%
+  yr={2024: 44.68, 2025: 75.0, 2026: 90.91} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=4/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_hi&vpnode_far&not_climax
+  n=172 WR=70.35(b60.49) avgR=0.421 sumR=72.4 streak 30->10 winK=6.6% losC=95.8%
+  yr={2024: 46.15, 2025: 77.14, 2026: 86.0} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_hi&vpnode_far5&not_killzone
+  n=90 WR=70.0(b60.49) avgR=0.315 sumR=28.3 streak 30->13 winK=3.4% losC=97.8%
+  yr={2024: 54.17, 2025: 87.5, 2026: 90.0} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=7/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_hi&vpnode_far5&vol_calm
+  n=77 WR=58.44(b60.49) avgR=0.135 sumR=10.4 streak 30->11 winK=2.4% losC=97.3%
+  yr={2024: 40.54, 2025: 74.29, 2026: 80.0} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=4/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_hi&vpnode_far5&not_climax
+  n=115 WR=62.61(b60.49) avgR=0.21 sumR=24.1 streak 30->9 winK=3.9% losC=96.4%
+  yr={2024: 41.03, 2025: 74.58, 2026: 70.59} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=4/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_hi&not_killzone&vol_calm
+  n=83 WR=69.88(b60.49) avgR=0.495 sumR=41.1 streak 30->9 winK=3.1% losC=97.9%
+  yr={2024: 51.43, 2025: 73.33, 2026: 100.0} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_hi&not_killzone&not_climax
+  n=134 WR=73.13(b60.49) avgR=0.58 sumR=77.7 streak 30->8 winK=5.3% losC=97.0%
+  yr={2024: 60.0, 2025: 63.46, 2026: 97.62} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_hi&vol_calm&not_climax
+  n=278 WR=65.11(b60.49) avgR=0.373 sumR=103.6 streak 30->8 winK=9.8% losC=91.9%
+  yr={2024: 64.15, 2025: 61.6, 2026: 76.6} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_mid_hi&vpnode_far&vpnode_far5
+  n=434 WR=65.44(b60.49) avgR=0.339 sumR=147.0 streak 30->18 winK=15.4% losC=87.5%
+  yr={2024: 57.82, 2025: 73.54, 2026: 54.69} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_mid_hi&vpnode_far&not_killzone
+  n=258 WR=69.38(b60.49) avgR=0.476 sumR=122.7 streak 30->18 winK=9.7% losC=93.4%
+  yr={2024: 53.33, 2025: 82.65, 2026: 71.43} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=7/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_mid_hi&vpnode_far&vol_calm
+  n=169 WR=64.5(b60.49) avgR=0.327 sumR=55.3 streak 30->7 winK=5.9% losC=95.0%
+  yr={2024: 53.57, 2025: 66.67, 2026: 78.12} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_mid_hi&vpnode_far&not_climax
+  n=278 WR=67.63(b60.49) avgR=0.377 sumR=104.7 streak 30->8 winK=10.2% losC=92.5%
+  yr={2024: 52.31, 2025: 69.72, 2026: 77.46} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_mid_hi&vpnode_far5&not_killzone
+  n=173 WR=68.79(b60.49) avgR=0.439 sumR=76.0 streak 30->15 winK=6.5% losC=95.5%
+  yr={2024: 56.92, 2025: 85.19, 2026: 48.15} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_mid_hi&vpnode_far5&vol_calm
+  n=122 WR=62.3(b60.49) avgR=0.294 sumR=35.9 streak 30->11 winK=4.1% losC=96.2%
+  yr={2024: 47.62, 2025: 70.15, 2026: 69.23} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_mid_hi&vpnode_far5&not_climax
+  n=187 WR=64.17(b60.49) avgR=0.287 sumR=53.7 streak 30->7 winK=6.5% losC=94.4%
+  yr={2024: 47.83, 2025: 70.54, 2026: 65.52} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_mid_hi&not_killzone&vol_calm
+  n=145 WR=67.59(b60.49) avgR=0.435 sumR=63.1 streak 30->8 winK=5.3% losC=96.1%
+  yr={2024: 55.32, 2025: 69.12, 2026: 83.33} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=4/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_mid_hi&not_killzone&not_climax
+  n=229 WR=70.31(b60.49) avgR=0.507 sumR=116.1 streak 30->8 winK=8.7% losC=94.4%
+  yr={2024: 58.93, 2025: 66.67, 2026: 87.1} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP atr_mid_hi&vol_calm&not_climax
+  n=398 WR=63.82(b60.49) avgR=0.336 sumR=133.9 streak 30->10 winK=13.8% losC=88.0%
+  yr={2024: 66.91, 2025: 58.88, 2026: 72.31} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP vpnode_far&vpnode_far5&not_killzone
+  n=614 WR=66.12(b60.49) avgR=0.376 sumR=231.0 streak 30->17 winK=22.0% losC=82.7%
+  yr={2024: 63.58, 2025: 69.91, 2026: 56.52} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP vpnode_far&vpnode_far5&vol_calm
+  n=324 WR=63.89(b60.49) avgR=0.361 sumR=116.8 streak 30->8 winK=11.2% losC=90.3%
+  yr={2024: 62.14, 2025: 65.73, 2026: 60.47} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=7/8 STREAK_ROBUST=True ROBUST=False
+KEEP vpnode_far&vpnode_far5&not_climax
+  n=478 WR=61.92(b60.49) avgR=0.298 sumR=142.4 streak 30->17 winK=16.1% losC=84.9%
+  yr={2024: 60.71, 2025: 63.08, 2026: 59.77} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP vpnode_far&not_killzone&vol_calm
+  n=289 WR=64.01(b60.49) avgR=0.365 sumR=105.5 streak 30->7 winK=10.0% losC=91.4%
+  yr={2024: 58.82, 2025: 63.57, 2026: 71.88} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP vpnode_far&not_killzone&not_climax
+  n=420 WR=64.52(b60.49) avgR=0.373 sumR=156.6 streak 30->13 winK=14.7% losC=87.6%
+  yr={2024: 57.14, 2025: 61.29, 2026: 76.79} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=3/8 STREAK_ROBUST=True ROBUST=False
+KEEP vpnode_far&vol_calm&not_climax
+  n=395 WR=64.05(b60.49) avgR=0.346 sumR=136.7 streak 30->8 winK=13.7% losC=88.2%
+  yr={2024: 61.74, 2025: 61.69, 2026: 73.42} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP vpnode_far5&not_killzone&vol_calm
+  n=208 WR=63.94(b60.49) avgR=0.385 sumR=80.1 streak 30->8 winK=7.2% losC=93.8%
+  yr={2024: 60.61, 2025: 66.96, 2026: 60.0} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP vpnode_far5&not_killzone&not_climax
+  n=291 WR=64.26(b60.49) avgR=0.377 sumR=109.8 streak 30->13 winK=10.1% losC=91.4%
+  yr={2024: 62.69, 2025: 63.37, 2026: 69.23} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=6/8 STREAK_ROBUST=True ROBUST=False
+KEEP vpnode_far5&vol_calm&not_climax
+  n=291 WR=62.89(b60.49) avgR=0.337 sumR=97.9 streak 30->6 winK=9.9% losC=91.0%
+  yr={2024: 61.54, 2025: 63.35, 2026: 64.1} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+KEEP not_killzone&vol_calm&not_climax
+  n=523 WR=62.14(b60.49) avgR=0.388 sumR=202.9 streak 30->11 winK=17.6% losC=83.6%
+  yr={2024: 58.06, 2025: 61.45, 2026: 69.81} (b{2024: 58.77, 2025: 63.47, 2026: 54.83}) blkOK=5/8 STREAK_ROBUST=True ROBUST=False
+================================================================================
+ROBUST=TRUE FINDS (VOL/session):
+  NONE robust under full gate. Best by WR with winK>=85:
+  ~ KEEP not_london: WR=61.54 n=2655 winK=88.7% streak28 yr={2024: 57.88, 2025: 65.66, 2026: 56.3} blk4/8 streakOK=True

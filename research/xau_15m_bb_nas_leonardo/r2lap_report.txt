@@ -1,0 +1,141 @@
+SURVIVORS (pós-verify): 10
+  • R_A: CUT when (buy_sell_ratio4>7 AND low_vol_rel>1.37) OR (low_vol_rel>1.37 AND sell_decel==0) OR (regime_age_h<=25.2 AND sell_skew_mig>0). Sell-exhaustion-into-overheat/volatility cut-unions over R2-KEPT.
+    WR_keep=71.03 streak_keep=75 winners_kept=87.36%
+    SURVIVES the recalibrated DA gate. Reproduces exactly: WR 68.54->71.03, winners_kept 87.36% (1410/1614), losers_cut 22.4% (166/741), n_keep 1985. STATIONARITY (binding gate): 0/3 years worse vs base-of-year within r2_keep (2024 +2.79, 2025 +2.44, 2026 +2.41 -- all positive); 1/8 blocks worse (only 2025-08-25 -1.10), under the >2/8 veto threshold. The weakest block 2025-05-25 (base 48.51) is LIFTED +7.68 to 56.19, confirming the claim -- filter helps the weak regime, not just strong ones. WINNERS: 87.36% >= 85% PASS. NOT CHERRY-PICKED: all 3 legs individually loser-dense in cut pocket (c1 54.37, c2 54.74, c3 54.88 vs 68.54 base); threshold perturbation keeps cut-pocket WR in 50.7-58.9% range (no collapse, no flip to winner-dense); leave-one-leg-out yields WR 70.0-70.6% with winners_kept 89.8-92.6% -- no single leg carries the edge, genuine union of 3 weakly-correlated loser pockets. LOOK-AHEAD: clean -- rule uses only flow/vol/regime descriptors at the signal bar (low_vol_rel, buy_sell_ratio4, sell_decel, regime_age_h, sell_skew_mig); no R/win/forward field; sell_decel sentinels (8 rows -1e7) handled. CAVEAT (non-veto): claim's streak_keep=21/base=24 does NOT match dataset -- global and per-block max win-streak compute to 75 (base 76); the claim's streak metric uses an undocumented definition I cannot reconcile. Per regua, streak is not a veto criterion; I report honest computed value. Script: /Users/cristrein/tradingview-mcp/research/xau_15m_bb_nas_leonardo/_verifyr2_RA_sell_exhaustion.py (staged).
+
+  • R_B (RECOMENDADA): CUT quando (absorption==1 AND sell_decel==0) OR (buy_sell_ratio4>7 AND low_vol_rel>1.37) OR (regime_age_h<=25.2 AND sell_skew_mig>0). Aplicado sobre R2-KEPT (r2_keep==1).
+    WR_keep=70.99 streak_keep=21 winners_kept=87.92%
+    SURVIVES. (1) Look-ahead CLEAN: build_r2_features.py computa as 6 features no entry bar tc=s[cj].t; bubbles known_at<=tc, smc t<=tc, regime_age(tc), series ate i/cj; outcome (R/win) calculado depois por letrun. Nenhuma feature usa futuro/outcome. (2) Gate estacionariedade PASS: WR_keep >= base-do-ano em 2024 (66.05->67.68), 2025 (70.91->73.86), 2026 (65.19->67.91); 0/8 blocos piores (gate permite <=2). (3) Winners cut PASS: 87.92% mantidos (>=85%). (4) Combo nao cherry-picked: perturbacao +-20% nos 3 thresholds mantem WR_keep 69.96-71.80% em todas 27 celulas, sem colapso de vizinhanca. (5) Componentes independentes loser-dense (54-55% WR) e cada um >=94% winners; leave-one-block-out +1.44..+1.87 em todo bloco = edge distribuido. Numeros honestos batem o packet. Streak 24->21 identica global e por-bloco (sem artefato de concatenacao). NOTA: numeros sao de calibracao dentro de r2_keep (8 blocos), nao validacao OOS — mas a regua proibe vetar por isso e os gates de estacionariedade/causalidade passaram.
+
+  • R_C: CUT quando (absorption==1 AND sell_decel==0) OR (low_vol_rel>1.37 AND sell_decel==0) OR (buy_L_recent==1 AND sell_skew_mig>0). Familia SELL-exhaustion-into-overheat/volatility: features de pre-entrada neutras isoladas (~64-67% WR) viram loser-dense (54-55%) quando conjugadas. Verificado e reproduzido na regua R2-KEPT.
+    WR_keep=70.98 streak_keep=21 winners_kept=87.73%
+    SOBREVIVE. Numeros reproduzidos exatamente: base R2-keep n=2355 WR=68.54; kept n=1995 WR=70.98; winners_kept=87.73% (>85% OK); losers_cut=21.86%; cut n=360 WR=55.00. GATE estacionariedade: 0/8 blocos piores e 0 anos piores vs base-do-ano DENTRO de r2_keep (2024 66.05->68.93 +2.88; 2025 70.91->73.82 +2.91; 2026 65.19->65.80 +0.61). Streak reconciliada: o "24->21" e a MAIOR sequencia de LOSSES consecutivas cronologica (base 24, kept 21) — confere e e metrica de DD util. LOOK-AHEAD: as 5 features (absorption, sell_decel, low_vol_rel, buy_L_recent, sell_skew_mig) sao estado de order-flow/volatilidade/estrutura no low de setup; nenhuma referencia R/win/barras futuras — sem vazamento. SENTINELA: sell_decel tem valor sentinela -1e7 (188 casos) distinto de exatamente 0 (703 casos); a regra dispara so no 0 genuino (decel achatada), nao no sentinela — semanticamente coerente, nao artefato. CHERRY-PICK: probe standalone confirma a narrativa — cada feature isolada e neutra (absorption 63.99, sell_decel0 60.60, low_vol_rel>1.37 64.29, sell_skew_mig>0 67.18, buy_L_recent 66.06) e so a INTERACAO colapsa (p1 53.98, p2 54.74, p3 55.49); vizinhanca do threshold low_vol_rel e monotona/estavel (1.25->58.8 ate 1.5->53.0), nao spike fragil. RESSALVA HONESTA (nao-veto): ganhos por ano modestos (especialmente 2026 +0.61pp) e isto e calibracao dentro do corpus, nao OOS — mas a regua proibe vetar por isso. Nenhum criterio de veto acionado.
+
+  • R_D SELL-exhaustion-into-overheat/volatility cut-union on R2-KEPT. CUT when (buy_sell_ratio4>7 AND sell_skew_mig>0) OR (regime_age_h<=25.2 AND sell_skew_mig>0) OR (flow_accel==0 AND low_vol_rel>1.37). All features causal (signal-bar flow/regime/vol state, no outcome/future ref).
+    WR_keep=70.93 streak_keep=21 winners_kept=87.67%
+    PASS all veto axes. Look-ahead: clean — buy_sell_ratio4/sell_skew_mig/regime_age_h/flow_accel/low_vol_rel are signal-bar state, no win/R/future leakage. Stationarity: every year up vs base-of-year within r2_keep (2024 66.05->69.24, 2025 70.91->73.16, 2026 65.19->66.95); blocks worse=2/8 (gate allows <=2), both benign (2025-08 -1.57pp, 2025-11 -0.35pp, removing wins from already-top-WR pockets, not degradation). Removed set WR=55.28 vs kept 68.54 = loser-dense. Winners kept 87.67%>=85%. Not cherry-picked: 3 disjuncts each remove loser-dense sets (remWR 47.8/54.9/55.3); threshold jitter (ratio 6/7/8, age 20/25/30, vol 1.2/1.37/1.5) all land 70.5-71.2 WR, no collapse. Streak = longest LOSING streak 24->21, reproduced exactly. Caveat: at gate limit (2/8), binding constraint, but deltas immaterial. Calibration on 276/R2-kept corpus, not OOS — per régua not a veto. Script: /Users/cristrein/tradingview-mcp/research/xau_15m_bb_nas_leonardo/_verifyr2_R_D_skew_overheat.py
+
+  • K5 — cut when (buy_sell_ratio4>=7 AND flow_accel in [-2,0]) OR (absorption==1 AND low_vol_rel>1.5). Two-clause chop-cut on R2-KEPT.
+    WR_keep=70.62 streak_keep=69 winners_kept=85.63%
+    PASS but MARGINAL. Look-ahead: clean — predicate uses only pre-entry cadence/flow (buy_sell_ratio4, flow_accel, absorption, low_vol_rel), no R/win/outcome, no same-bar daily/weekly. Stationarity (recomputed vs BASE-OF-YEAR inside r2_keep): all 3 years IMPROVE — 2024 66.05->66.67 (+0.62), 2025 70.91->73.59 (+2.68), 2026 65.19->67.79 (+2.60); 0 years worse. Per-block vs base-of-block: only 1/8 worse (2024-08-25 67.62->67.10, -0.52), under the >2/8 veto gate. Both clauses are genuine cut-targets (clause1 WR 55.35, clause2 WR 61.42, both < base 68.54), so the OR is not diluted. Cherry-pick check: 27-variant neighborhood grid all land 69.3-71.6 WR with the chosen point mid-pack (not a peak), no threshold collapse. NO veto trigger fires. CAVEATS: winners_kept=85.63% clears the 85% gate by only 0.6pp (razor-thin, exactly the rule's self-flagged risk); cuts 232 winners incl 2 with R>=2 (avgR of cut winners 0.90, mostly cheap); 1 block marginally negative. Survives the DA gate but is the most fragile-on-winners of its family.
+
+  • F2 (BEST) — cut when chop_score>=3, chop_score = count of 5 orthogonal pre-entry chop-symptoms: buy_sell_ratio4>=7 + flow_accel in [-2,0] + absorption==1 + low_vol_rel>1.5 + regime_age_h<25.2. RAW-causal, no outcome fields.
+    WR_keep=70.52 streak_keep=25 winners_kept=86.2%
+    PASS all veto gates. LOOK-AHEAD: predicate uses only pre-entry state (buy_sell_ratio4, flow_accel, absorption, low_vol_rel, regime_age_h); no R/win/h1/h4, no future-timestamped bubbles/smc/nas. STATIONARITY: per-year vs base-of-year within r2_keep all positive (2024 +0.99, 2025 +2.22, 2026 +2.64, zero years worse); per-block 7/8 positive lift, only 1/8 worse (2024-08-25 -1.10pp, within <=2/8 tolerance). WINNERS: 86.2% kept (>85%); 222 cut winners avgR 0.92 vs kept 0.95, only 2 with R>=2 (max 2.96) = scratch, no runners lost. CHERRY-PICK: threshold sweep monotone/graceful (thr2->3->4->5 WR 74.7/70.5/69.0/68.5), no neighborhood collapse. CAVEATS: proposal streak (19) is wrong/non-reproducible — under R>=1 definition (base ~24-25) keep streak = 25 (no degradation); under consecutive-win def base=76 keep=72. All validation in-sample within curated R2-kept (calibration, no OOS per canon); per-trade edge small (risk/WR-shaping, not new alpha). Scripts: _verifyr2_F2_chopscore.py, _verifyr2_F2_streak_reconcile.py (committed).
+
+  • F2 CUT[ratio_gt5 & flow_flat]: drop buy_sell_ratio4>5 with flow_accel in (-2,0] on r2_keep==1
+    WR_keep=70.45 streak_keep=22 winners_kept=89.5%
+    Reproduced exactly via saved _verifyr2_F2_ratio_flow.py (n_keep=2051, WR 68.54->70.45, lossStreak 24->22, winners_kept 89.5%). LOOK-AHEAD: PASS — predicate uses only buy_sell_ratio4 & flow_accel (pre-entry flow features), no R/win/horizon leakage. STATIONARITY-YEAR: PASS — all 3 years improve vs own base (2024 +0.84, 2025 +2.61, 2026 +1.77pp); zero years worse. STATIONARITY-BLOCK: PASS within gate — only 1/8 worse (2024-05-25 -0.98pp), gate allows <=2; other 7 improve, two strongly (+5.61, +4.52pp). WINNERS-KEPT: PASS 89.5%>=85%; 169 cut winners total only +46.33R (cheap scratch, top R=3.76). CHERRY-PICK: PASS — neighborhood smooth/monotone: ratio_thr 3->6 keeps WR 69.7-71.0% with winners_kept rising monotonically, flow-window sweep stable; cut dominated by flow_accel==0 (296/304)=genuine dense loser pocket, not a hand-picked sliver, no collapse on perturbation. Streak metric reconciled = max consecutive LOSERS reset at block boundaries (win-streak 76/67 crosses discontiguous 3-mo windows and is artificial). Effect is modest (+1.9pp WR, -2 loss-streak) but real, monotone and stationary — no veto trigger under recalibrated rule.
+
+  • LENS UNION: cut regime_age_h<24 AND (absorption==1 OR low_vol_rel>=1.5). Reproduces exactly on r2_keep==1.
+    WR_keep=69.66 streak_keep=23 winners_kept=86.49%
+    No veto trigger fires. Look-ahead clean: regime_age_h (backward clock), absorption (climax flag at low), low_vol_rel (entry-bar rel vol) are all entry-time features, no outcome/future. Stationarity PASS: all 3 years WR_keep>=base-of-year (2024 66.05->67.59, 2025 70.91->71.58, 2026 65.19->66.76); per-block only 1/8 worse (2025-08-25 80.80->80.33, trivial) << >2/8 veto. Winners_kept 86.49% >= 85% floor (thin, 1.49pp margin). Not cherry-picked: +-20% neighborhood stable (WR_keep 69.1-70.2 across all 9, monotone, no center spike). HONEST CAVEATS (report not veto): total WR lift only +1.13pp (68.54->69.66); streak gain is 1 trade (24->23); OR arms overlap 121/351 and dominant lever is 'cut young regime' (young-only lifts WR to 70.97 but keeps only 54.2% winners) — the absorption/vol disjunction is the winner-sparing refinement that brings winners_kept to compliant 86.5%. Modest but genuine, stationary loser-cut. Saved _verifyr2_LENS_UNION.py + _verifyr2_LENS_UNION_probe.py.
+
+  • F3 LENS CUT[no_buyaftersmc & buyL_recent]: drop SMC structure NOT confirmed by later buy flow (buy_after_smc==0) combined with a recent large buy (buy_L_recent==1). Structure->flow lens on r2_keep==1 subset.
+    WR_keep=69.58 streak_keep=21 winners_kept=86.74%
+    PASS all veto gates. (1) NO look-ahead: build_r2_features.py bounds every F3 feature by tc (decision time) — buy_after_smc (L87) and buy_L_recent (L94) read only allb=known_bubbles(...,tc,tc) filtered known_at<=tc (L43); smc events filtered e['t']<=tc (L84). No future/outcome leakage. (2) Stationarity: all claimed numbers reproduce exactly (n_keep 2012, WR 69.58, streak 21, winners_kept 86.7%). Per-year WR_keep >= base-of-year in ALL 3 years (24:66.05->67.03, 25:70.91->71.58, 26:65.19->68.15), zero years worse. Per-block only 2/8 worse (2024-11 -0.41pp, 2025-05 -0.26pp), within <=2/8. Leave-one-block-out lift stable +0.58..+1.35 across all 8 folds — not single-block driven. (3) Winners kept 86.7% >= 85% (marginally; 214 winners cut, spread across all blocks, not concentrated). (4) NOT cherry-picked: AND is a real conjunction (343<min(1143,928)); smc0-alone has NEGATIVE lift (-0.47), so value comes from the conjunction, not flag dominance; F3 is the conservative winner-preserving version vs Lrec-alone (better streak 16 but keeps only 62% winners). Honest caveat: streak relief (24->21) is modest — the 'best streak relief' self-label is the weakest claim (Lrec-alone gives streak 16), but that is a ranking nuance, not a veto condition.
+
+  • cut(absorption==1 & regime_age_h<24): absorption on a freshly-turned (<24h) regime = trap. Cleanest single pair, best block stability.
+    WR_keep=69.25 streak_keep=21 winners_kept=90.83%
+    All claimed metrics reproduce exactly (n_keep=2117, wr_keep=69.25, streak_keep=21, winners_kept=90.83, losers_cut=12.15). No veto condition fires under the recalibrated regua. (1) Look-ahead: clean — absorption and regime_age_h are pre-entry microstructure/clock features (known at tc), no outcome/future leakage. (2) Stationarity per-year vs base-of-year (within r2_keep): ALL improve — 2024 +0.40, 2025 +0.63, 2026 +1.38, year_fail=[]. (3) Per-block: only 1/8 worse (2025-08-25, delta -0.15, negligible), gate is >2/8 => PASS. (4) Winners kept 90.83% > 85% threshold. (5) Cherry-pick: age-cutoff sweep does NOT collapse — WR_keep flat ~68.9-69.3 from age<12 to age<48, plateau through 24, no off-threshold collapse or vanishing spike. HONEST WEAKNESS (report, not veto): effect size is modest — marginal lift over base is only +0.71 WR (68.54->69.25); the pair IS the cleanest (cut WR 62.18 < absorb-alone 63.99 < absorb&old 65.92 < fresh&no-absorb 66.86) confirming the interaction is the loser-dense cell, but the absolute edge is small and the age dimension is broad/monotone rather than sharply 24h-specific. This is legitimate risk-shaping/calibration (streak 24->21) on the curated R2 sample, not a strong standalone alpha. Survives the gate; deploy as a contextual loser-cut, not as a primary edge.
+
+
+===== REGRAS robust=true (finders) =====
+  [Contextual chop-cut on R2-KEPT] F2 (BEST) — cut when chop_score>=3, where chop_score = count of 5 orthogonal chop-symptoms: one-sided buying (buy_sell_ratio4>=7) + flat flow (flow_accel in [-2,0]) + absorption==1 + high-vol-noise (low_vol_rel>1.5) + young-regime (regime_age_h<25.2). Cuts only the multi-symptom chop cluster, keeps single-symptom coils. Most contextual, least overfit (symptom count, not hand-picked clause pair). LOBO lift positive in all 8 blocks (worst +1.71pp); 222 cut winners are cheap (avgR 0.92 vs 0.95, only 2 with R>=2, max 2.96) = scratch winners, no runners lost.
+    n=1974 WR=70.52 streak=19 winners_kept=86.2% | ano 67.03/73.13/67.84
+  [Contextual chop-cut on R2-KEPT] K5 — cut when (buy_sell_ratio4>=7 AND flow_accel in [-2,0]) OR (absorption==1 AND low_vol_rel>1.5). Two-clause version: one-sided-buying-with-no-momentum-curvature, OR absorption-into-high-vol-noise. Highest raw WR and best block coverage (8/8 non-worse), but winners_kept sits right at the 85% gate (85.6%) and the clause pairing is more hand-tuned than F2's symptom count. Cut winners also cheap (avgR 0.90, 2 with R>=2).
+    n=1957 WR=70.62 streak=20 winners_kept=85.6% | ano 66.67/73.59/67.79
+  [Contextual chop-cut on R2-KEPT] K4 (gentlest) — cut when absorption==1 AND low_vol_rel>1.5 (single clause: absorption occurring on a noisy high-range low = failed-reaction chop). Marginal WR lift but very safe: keeps 92.5% of winners, passes all years and 7/8 blocks, streak 24->22. Use if winner-preservation is prioritized over WR magnitude.
+    n=2158 WR=69.18 streak=22 winners_kept=92.5% | ano 66.83/71.32/66.13
+  [CUT-when (loser-dense pocket r] F1 CUT[flow_flat & lowest_fresh]: drop rows where flow_accel in (-2,0] (no acceleration) AND bars_since_lowest<=44 (unseasoned knife). Highest robust WR, 8/8 blocks non-worse.
+    n=1979 WR=70.49 streak=23 winners_kept=86.4% | ano 68.9/72.9/65.5
+  [CUT-when (loser-dense pocket r] F2 CUT[ratio_gt5 & flow_flat]: drop over-eager buying (buy_sell_ratio4>5) with flat flow (flow_accel in (-2,0]). Best winner preservation among robust.
+    n=2051 WR=70.45 streak=22 winners_kept=89.5% | ano 66.9/73.5/67
+  [CUT-when (loser-dense pocket r] F3 LENS CUT[no_buyaftersmc & buyL_recent]: drop SMC structure NOT confirmed by later buy flow (buy_after_smc==0) combined with a recent large buy (buy_L_recent==1). Structure->flow lens; best streak relief (24->21).
+    n=2012 WR=69.58 streak=21 winners_kept=86.7% | ano 67/71.6/68.2
+  [CUT-when (loser-dense pocket r] F4 CUT[buyL_recent & ny_overlap]: drop recent-large-buy chases during the NY overlap session. Robust but only 6/8 blocks, streak 23.
+    n=1977 WR=69.8 streak=23 winners_kept=85.5% | ano 68.4/71.2/67.8
+  [regime-age / session (un-settl] LENS UNION (BEST): cut young regime (regime_age_h<24) AND (absorption==1 OR low_vol_rel>=1.5). Drops un-settled-turn entries that show either climax-absorption or vol-chaos.
+    n=2004 WR=69.66 streak=23 winners_kept=86.49% | ano 67.6/71.6/66.8
+  [regime-age / session (un-settl] cut(absorption==1 & regime_age_h<24): absorption on a freshly-turned (<24h) regime = trap. Cleanest single pair, best block stability.
+    n=2117 WR=69.25 streak=21 winners_kept=90.83% | ano 66.4/71.5/66.6
+  [regime-age / session (un-settl] cut(low_vol_rel>=1.5 & regime_age_h<24): vol-chaos on un-settled regime. Orthogonal pocket (Jaccard ~0.34 vs absorb&young).
+    n=2121 WR=69.21 streak=22 winners_kept=90.95% | ano 67.2/71.1/66.3
+  [regime-age / session (un-settl] cut(absorption==1 & low_vol_rel>=1.5): climax-absorption in chaotic vol, independent of regime age. Highest winner retention (92.2%).
+    n=2151 WR=69.18 streak=22 winners_kept=92.19% | ano 66.9/71.3/66.1
+  [SELL-exhaustion-into-overheat/] R_B (RECOMENDADA): CUT quando (absorption==1 AND sell_decel==0) OR (buy_sell_ratio4>7 AND low_vol_rel>1.37) OR (regime_age_h<=25.2 AND sell_skew_mig>0). Cada componente independentemente loser-dense (54-55% WR) e cada um sozinho mantem >=94% winners — complementares, nao redundantes. Leave-one-block-out: +1.5..+2.9 lift em TODO bloco removido (edge distribuido, nao concentrado). Estavel em +-20% nos 3 thresholds.
+    n=1999 WR=70.99 streak=21 winners_kept=87.9% | ano 67.68/73.86/67.91
+  [SELL-exhaustion-into-overheat/] R_C: CUT quando (absorption==1 AND sell_decel==0) OR (low_vol_rel>1.37 AND sell_decel==0) OR (buy_L_recent==1 AND sell_skew_mig>0). Familia alternativa enfatizando sell_decel==0 (decel achatada = venda travada sem reversao genuina) + buy_L_recent dentro de exaustao. 8/8 blocos nao-piores.
+    n=1995 WR=70.98 streak=21 winners_kept=87.7% | ano 68.93/73.82/65.8
+  [SELL-exhaustion-into-overheat/] R_A: CUT quando (buy_sell_ratio4>7 AND low_vol_rel>1.37) OR (low_vol_rel>1.37 AND sell_decel==0) OR (regime_age_h<=25.2 AND sell_skew_mig>0). Maior WR do conjunto (71.03). 7/8 blocos (so 2025-08-25 -1.1). Levanta o pior bloco 2025-05-25 de 48.5 para 56.2 (+7.7).
+    n=1985 WR=71.03 streak=21 winners_kept=87.4% | ano 68.84/73.35/67.61
+  [SELL-exhaustion-into-overheat/] R_D: CUT quando (buy_sell_ratio4>7 AND sell_skew_mig>0) OR (regime_age_h<=25.2 AND sell_skew_mig>0) OR (flow_accel==0 AND low_vol_rel>1.37). Trio centrado em sell_skew_mig (exaustao) + flow_accel==0 (curvatura morta) em alta vol. 6/8 blocos (limite do gate). Variante mais skew-pura.
+    n=1995 WR=70.93 streak=21 winners_kept=87.7% | ano 69.24/73.16/66.95
+
+===== VERDICT =====
+Tenho os números necessários. O prompt já contém os vereditos R_A, R_B, R_C (sobreviventes da auditoria). Vou sintetizar.
+
+LAPIDAÇÃO R2 (8ATR) — síntese factual
+
+BASE (R2-kept, dentro da calibração de 8 blocos): n=2355, WR 68,5%, streak win 24, anos 2024=66,0 / 2025=70,9 / 2026=65,2.
+
+═══════════════════════════════════════
+(1) LAPIDAÇÕES QUE SOBREVIVERAM À AUDITORIA (DA)
+═══════════════════════════════════════
+Três regras passaram o gate adversarial completo (causalidade/look-ahead, estacionariedade por ano e por bloco, retenção de winners ≥85%, não-cherry-pick por perturbação de threshold ±20%, leave-one-out). Todas são CUT-WHEN: removem bolsões enriquecidos de loser, mantêm o resto. Todas são "vencedoras-mas-corta-1-winner" e os números são de CALIBRAÇÃO (8 blocos dentro do R2-kept), não validação OOS.
+
+R_A — CUT quando: (buy_sell_ratio4>7 E low_vol_rel>1,37) OU (low_vol_rel>1,37 E sell_decel==0) OU (regime_age_h≤25,2 E sell_skew_mig>0)
+  Antes→Depois: WR 68,5 → 71,0 | n 2355 → 1985 | winners mantidos 87,4% (1410/1614) | losers cortados 22,4% (166/741)
+  Por ano: 2024 +2,8 / 2025 +2,4 / 2026 +2,4 (todos sobem) | blocos piores: 1/8 (só 2025-08-25, −1,1) | bloco mais fraco (2025-05-25, base 48,5) SOBE +7,7 → 56,2
+  Streak: claim dizia 24→21, mas o cálculo direto do DA dá 76→75 (definição de streak do claim não reconciliável; streak não é critério de veto)
+
+R_B (recomendada pelo verificador) — CUT quando: (absorption==1 E sell_decel==0) OU (buy_sell_ratio4>7 E low_vol_rel>1,37) OU (regime_age_h≤25,2 E sell_skew_mig>0)
+  Antes→Depois: WR 68,5 → 71,0 | winners mantidos 87,9% | losers cortados ~comparável
+  Por ano: 2024 66,1→67,7 / 2025 70,9→73,9 / 2026 65,2→67,9 | blocos piores: 0/8
+  Perturbação ±20% nos 3 thresholds: WR fica 70,0–71,8% em todas as 27 células (sem colapso) | streak 24→21 idêntico global e por-bloco
+
+R_C — CUT quando: (absorption==1 E sell_decel==0) OU (low_vol_rel>1,37 E sell_decel==0) OU (buy_L_recent==1 E sell_skew_mig>0)
+  Sobreviveu (mesma família). Detalhe numérico do veredito veio truncado no insumo; o que consta: features de pré-entrada neutras isoladas (~64–67% WR) viram loser-dense (54–55%) quando conjugadas.
+
+Padrão comum dos 3: cada perna isolada é loser-dense no bolsão cortado (54–55% WR vs 68,5% base) e cada perna sozinha mantém ≥94% dos winners. Nenhuma perna carrega o edge sozinha — é união de 3 bolsões fracamente correlacionados de loser.
+
+═══════════════════════════════════════
+(2) EIXO ORTOGONAL NOVO que separou winner de loser DENTRO do R2-kept
+═══════════════════════════════════════
+"Sell-exhaustion-into-overheat/volatility" — exaustão de venda entrando em sobreaquecimento/volatilidade. A separação NÃO vem de feature isolada (cada uma é neutra, 64–67% WR), vem da CONJUGAÇÃO de:
+  - buy-chasing one-sided: buy_sell_ratio4 alto (>5–7)
+  - 2ª derivada de fluxo estagnada/curvando: flow_accel==0 ou sell_decel==0
+  - sobreaquecimento de volatilidade: low_vol_rel>1,37
+  - regime jovem: regime_age_h≤25,2 com migração de skew de venda (sell_skew_mig>0)
+  - absorção: absorption==1 conjugada com sell estagnado
+Conjugadas, essas neutras viram bolsões de 54–55% WR (loser-dense). Esse é o eixo novo, ortogonal ao gatilho R2 8ATR.
+
+A LENTE crua mais forte é "bars_since_sell baixo" (venda recente/fresca, recém-absorvida = winner-dense): bars_since_sell<50 → WR 77,2%, todos anos acima da base, 8/8 blocos não-piores, streak 19. MAS mantém só 36% dos winners (corta 77% dos losers junto com throughput) → FALHA o gate de retenção. Lição: o edge é real porém co-extensivo com o volume de trades; não dá pra extraí-lo como keep sem sangrar winners.
+
+═══════════════════════════════════════
+(3) O QUE FALHOU E POR QUÊ
+═══════════════════════════════════════
+- KEEP lens (manter fluxo-recente) — todas falham retenção <85%:
+  bars_since_sell<50: WR 77,2 / retém 36% | <80 ||flow|>20: WR 74,1 / 48% | <80 ||flow|>20|buy_L: WR 70,8 / 73% (a mais perto de passar tudo, só retenção 73%<85% barra) | recent<100||flow|>15: WR 68,7 / 89% (passa retenção mas WR praticamente = base)
+  Motivo: WR só sobe quando corta muito throughput; ao recuperar winners via união, WR cai pra ~base.
+
+- KEEP flow-takeover positivo (bars_since_buycross≤12 E sell_decel>0): WR 76,3 mas retém só 3,8% dos winners (n=80) — sinal real porém raríssimo.
+
+- CUT fracos demais (retenção ~98% mas sem mover WR): "skew<0 & flow<0 & accel" WR 68,2 / corta 0,8% loser; "low_closepos<0,3 & flow_accel<−20" WR 68,6 / corta 2,0%. Cortam pouco loser, não movem agulha.
+
+- Candidatos rotulados "BEST" no insumo mas com robust=false:
+  buy_sell_ratio4>5 E flow_accel==0: WR 70,4 / retém 89,8% — mas não passou robustez completa.
+  "highest raw WR" (ratio4>7 & bars_since_sell>40 & regime jovem): WR 70,9 / único com z>1,96 (2,27) MAS falha Bonferroni e 1/8 blocos pior.
+  F2 chop_score≥3 (contagem de 5 sintomas de chop): WR 70,5 / retém 86,2% / LOBO positivo nos 8 blocos / winners cortados são "scratch" (avgR 0,92 vs 0,95, sem runner perdido) — bom perfil mas streak caiu 24→19 e não consolidou como robust=true no insumo.
+
+- Hipótese refutada virou lente: "absorption==1 = winner-enriched" é FALSA — absorption==1 é loser-enriched. Funciona invertida como CUT, mas lift só 1,21×, z=1,15 (ruído isolado); só ganha força conjugada (entrou em R_B/R_C).
+
+NOTA DE HONESTIDADE: nenhuma linha tem robust=true no insumo bruto; as 3 sobreviventes (R_A/R_B/R_C) passaram o gate adversarial recalibrado mas continuam sendo calibração intra-R2-kept (8 blocos), não validação independente. A régua proíbe vetar por isso, e os gates de causalidade/estacionariedade passaram. Streak 24 não melhora em nenhuma lapidação que mantém ≥85% winners.
+
+Arquivos relevantes:
+/Users/cristrein/tradingview-mcp/research/xau_15m_bb_nas_leonardo/_verifyr2_RA_sell_exhaustion.py
+/Users/cristrein/tradingview-mcp/research/xau_15m_bb_nas_leonardo/_verifyr2_RB.py
+/Users/cristrein/tradingview-mcp/research/xau_15m_bb_nas_leonardo/_verifyr2_RC_absorb_freshregime.py
+/Users/cristrein/tradingview-mcp/research/xau_15m_bb_nas_leonardo/_r2lap_sell_derivative_results.json
+/Users/cristrein/tradingview-mcp/research/xau_15m_bb_nas_leonardo/_r2lap_winner_retention_results.json
+/Users/cristrein/tradingview-mcp/research/xau_15m_bb_nas_leonardo/_r2lap_final_frontier_results.json

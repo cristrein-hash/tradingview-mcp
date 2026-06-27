@@ -1,0 +1,168 @@
+IDEIAS BRUTAS: 42
+
+===== MAPA RANQUEADO (synth) =====
+Tudo confirmado. Tenho o quadro completo de viabilidade:
+
+- `series[]`: `t, o, h, l, c, v` (volume REAL), `rsi, nas_dist, atr, ema21` por barra 15m — causal (barra fechada).
+- `bubbles[]`: `t, known_at, side, size, plot, o/h/l/c, atr` — série causal completa de fluxo.
+- `nas_events[]`: `t, dir(LONG/SHORT), price` — causal.
+- `smc_events[]`: `t, text(CHoCH/BOS/...), price` — causal.
+- `zones[]`: `born_t, last_t, high, low, text(SUPPLY/DEMAND)` — causal.
+- `macro_regime_4h.json`: série de regime 4H já materializada.
+- R2 = eixo de eficiência/posição multi-TF (`h1_eff, h4_pos, h4_eff, path_eff`).
+
+Recebi apenas ~9 das 42 ideias no prompt (a lista veio truncada em `regime_age_4h`). Vou sintetizar o mapa a partir das ideias entregues mais as famílias implícitas dos 7 domínios declarados, julgando cada uma contra o RAW que acabei de verificar. Esta é uma tarefa de síntese — não preciso salvar script (o hook se refere a análise numérica órfã; aqui não produzi número, só inspecionei schema).
+
+---
+
+# MAPA RANQUEADO — eixos ortogonais NUNCA TESTADOS p/ lapidar o R2 do 8ATR (XAU 15M)
+
+## 0. Base de viabilidade (RAW confirmado nesta sessão)
+
+| Canal | Campos causais disponíveis | Arquivo |
+|---|---|---|
+| Bubbles (fluxo) | `t, known_at, side(BUY/SELL), size(S/M/L), plot, o/h/l/c, atr` | `bubbles/*.jsonl` |
+| Barras 15m | `t, o, h, l, c, v (vol REAL), rsi, nas_dist, atr, ema21` | `primitives/*.json → series[]` |
+| NAS | `t, dir(LONG/SHORT), price` | `series → nas_events[]` |
+| SMC | `t, text(CHoCH/BOS/...), price` | `series → smc_events[]` |
+| Zonas OB | `born_t, last_t, high, low, text(SUPPLY/DEMAND)` | `series → zones[]` |
+| Regime 4H | série de estado já materializada | `macro_regime_4h.json` |
+
+**Eixo do R2 (o que NÃO repetir):** eficiência/esticamento e posição geométrica multi-TF — `h1_eff, h4_eff, h4_pos, path_eff, disp4/8_atr, range_exp`. Tudo abaixo precisa medir **derivada temporal de fluxo, cadência, sequência/estado, calendário ou idade** — não magnitude/geometria de preço.
+
+⚠️ **Nota de provável saturação:** o dataset cru `entry_dataset.jsonl` JÁ contém `sell_S/M/L, buy_S/M/L, sell_w, buy_w` como **snapshot agregado na barra de entrada** (contagem simples). Logo, qualquer ideia que colapse para "contar bubbles" está parcialmente testada e perde pontos de ortogonalidade. O valor novo está em **derivada/sequência/timing/silêncio**, não em soma.
+
+---
+
+## 1. DEDUP (ideias entregues, agrupadas)
+
+Recebi 9 ideias completas (a lista veio truncada na #9 `regime_age_4h`). Agrupamento:
+
+- **G1 — Desaceleração/exaustão da venda:** `sell_exhaustion_decel` + `large_small_flow_skew` (a parte "SELL afinando L→S") medem a mesma coisa por ângulos diferentes (derivada da pressão vendedora). Mantidas separadas: uma usa peso temporal por semi-janelas, a outra usa migração de tamanho. **Complementares, não duplicatas.**
+- **G2 — Transição de regime de fluxo:** `buy_takeover_cross` (cruzamento SELL→BUY) é distinta de G1 (mede a virada de dominância, não a desaceleração). Mantida.
+- **G3 — Cadência/densidade temporal:** `bubble_silence_then_impulse` — única no eixo de ausência-de-fluxo. Mantida.
+- **G4 — Absorção via volume real:** `volume_absorption_divergence` — única usando `series.v` + closepos. Mantida.
+- **G5 — Acoplamento estrutura↔fluxo:** `smc_flow_confluence_clock` — única cruzando smc_events + bubbles/nas com sequenciamento causal. Mantida.
+- **G6 — Calendário/sessão:** `session_phase_clock` — eixo cronológico puro. Mantida.
+- **G7 — Idade temporal de estado:** `regime_age_4h` — duração desde virada de regime. Mantida.
+
+Sem duplicatas reais a colapsar nas 9 entregues. As outras 33 ideias não chegaram no prompt; preencho as lacunas dos 7 domínios com extensões diretamente derivadas do RAW confirmado (seção 3, marcadas como `[extensão de domínio]`).
+
+---
+
+## 2. DESCARTADAS POR INVIABILIDADE
+
+| Ideia | Motivo do descarte |
+|---|---|
+| Qualquer uso de **Session VP / value-area intraday 15m** | Proibido por cânon (tick-volume não-confiável no frozen) e não está no RAW 15M. `vpnode_dist_atr` no dataset de features é nível agregado, não série. |
+| **Order-book / depth / bid-ask imbalance** | `depth_get` é live-only; não existe no RAW histórico 15M. Inviável p/ backtest. |
+| **Footprint / delta por tick** | Sem dados de tick no RAW; `series.v` é volume agregado por barra, não delta comprador/vendedor. |
+| **Contagem simples de bubbles s/m/L na barra de entrada** (snapshot) | JÁ existe no dataset (`sell_S..buy_L, sell_w, buy_w`). Não é novo nem ortogonal — é o substrato que os eixos temporais devem superar. |
+| **NAS TOP/BOTTOM como sinal** | Proibido por memória (NAS = LONG/SHORT via first-appearance; TOP/BOTTOM e índice `x` são decouplados). Só `dir` é válido. |
+| **Macro/fundamental (DXY, US10Y, fluxo institucional real)** | Fora do escopo 15M operacional declarado no kickoff; cross-asset proibido como gate. |
+
+---
+
+## 3. RANKING — Top 13 eixos (logica × ortogonalidade × viabilidade causal)
+
+Critério de score (qualitativo): **L**=força da lógica de mercado, **O**=ortogonalidade ao eixo eficiência/posição-multi-TF, **V**=viabilidade causal no RAW confirmado.
+
+---
+
+### #1 — `volume_absorption_divergence` (absorção via volume REAL no fundo)
+- **L alta · O alta · V alta**
+- **Receita causal:** `series[]` (barras fechadas com `t<low_t`), janela 12 barras. Para cada novo low local, comparar `v` (volume real) e `closepos=(c-l)/(h-l)`. Flag absorção = preço para de fazer low OU faz low com `v` alto e `closepos>0.66`; razão `v_low_recente / v_low_pico`.
+- **Hipótese de separação:** winner parte de barra de absorção (alto volume, fechamento forte, sem novo low = compra absorvendo a venda); loser parte de fundo em vácuo de baixo volume que continua caindo.
+- **Por que ortogonal:** usa `series.v` (volume real) cruzado com posição-intrabar de fechamento — prova de absorção. R2 não tem nenhuma dimensão de volume. `series.v` é RAW permitido e nunca usado nesse eixo.
+
+### #2 — `sell_exhaustion_decel` (desaceleração temporal da venda antes da entrada)
+- **L alta · O alta · V alta**
+- **Receita causal:** bubbles SELL com `known_at<=tc`, janela 24 barras em 2 semi-janelas (12 antigas vs 12 recentes), peso S/M/L=1/2/3. `decel=(sell_w_old−sell_w_recent)/(sell_w_old+ε)`; + barras desde a última SELL; + checar que não houve novo `series.l` nessas barras.
+- **Hipótese:** loser entra com venda ainda ativa/acelerando; winner entra após a venda desacelerar e ser absorvida (sequência de SELL afina e para enquanto preço para de cair).
+- **Por que ortogonal:** mede a **derivada temporal** da taxa de chegada×tamanho de SELL, não a geometria do preço. Dois trades com `h1_eff/h4_pos` idênticos podem ter perfis de desaceleração opostos. Supera o snapshot `sell_w` já existente porque usa a diferença entre semi-janelas, não a soma.
+
+### #3 — `smc_flow_confluence_clock` (relógio estrutura→fluxo)
+- **L alta · O alta · V alta**
+- **Receita causal:** último `smc_events` bullish (CHoCH/BOS, `t<=tc`); `lag_structural` em barras; depois exigir ≥1 BUY bubble com `known_at>evento_t` e NAS `dir==LONG` na mesma janela.
+- **Hipótese:** CHoCH/BOS só vira perna de 8ATR quando o fluxo confirma DEPOIS dele; estrutura nua (sem follow-through) ou velha = falso/já-precificado = loser.
+- **Por que ortogonal:** sequenciamento causal entre dois canais RAW distintos (estrutura primeiro, fluxo confirmando depois). Não é geometria multi-TF; é coordenação temporal. `smc_choch/smc_bos` já estão no dataset como booleano de presença — o novo é o **lag + ordem causal estrutura→fluxo**.
+
+### #4 — `bubble_silence_then_impulse` (silêncio de fluxo seguido de gatilho)
+- **L média-alta · O alta · V alta**
+- **Receita causal:** maior run de barras consecutivas SEM nenhuma bubble (`known_at<=tc`) nas últimas 20; depois medir range em ATR (`series.atr`) e side da 1ª bubble que quebra o silêncio. Sinal = silêncio≥5 + bubble BUY com range≥1.2 ATR.
+- **Hipótese:** compressão de fluxo (coiled spring) precede expansão limpa; ruído contínuo de bubbles = mercado choppy onde 8ATR é arrastado e stopa.
+- **Por que ortogonal:** mede **ausência/densidade temporal** de eventos (runs/gaps), não magnitude. R2 não tem noção de "quietude do tape".
+
+### #5 — `buy_takeover_cross` (cruzamento de dominância SELL→BUY)
+- **L média-alta · O alta · V alta**
+- **Receita causal:** séries acumuladas causais `cum_sell_w/cum_buy_w` (S/M/L=1/2/3); detectar 1ª barra onde rolling-4 BUY > rolling-4 SELL; `barras desde cruzamento` + razão buy/sell nas últimas 4. Sinal = cruzamento fresco (1–3 barras) com razão>1.5.
+- **Hipótese:** winner coincide com troca recente de dominância de fluxo; loser entra antes (contra fluxo vendedor) ou tarde (cruzamento velho, momentum gasto).
+- **Por que ortogonal:** propriedade de **estado/sequência** (quando o lado dominante virou), não geometria. Distinto do snapshot `sell_pol` (já no dataset) que é razão estática.
+
+### #6 — `regime_age_4h` (idade do regime 4H em horas reais)
+- **L média-alta · O alta · V alta**
+- **Receita causal:** percorrer `macro_regime_4h.json` (barras 4H fechadas `<=low_t`), achar última transição de estado; `regime_age_h=(low_t−t_transicao)/3600`; bins fresh<12h / mid 12–72h / stale>72h.
+- **Hipótese:** 8ATR fresco pós-virada surfa accel-phase (winner); 8ATR em regime velho entra na exaustão/distribuição (loser).
+- **Por que ortogonal:** `h4_pos` é foto instantânea sem dimensão de DURAÇÃO. Posição pode ser idêntica no início e no fim de um regime longo; só a idade os separa. Cuidado: parcialmente correlacionado com `macro_bull/bear` — testar lift condicional.
+
+### #7 — `large_small_flow_skew` (migração de tamanho do fluxo no tempo)
+- **L média-alta · O média-alta · V alta**
+- **Receita causal:** janela 20 barras; razão `L_count/(S_count+1)` por side; trajetória 1ª metade vs 2ª metade. Sinal winner = SELL migrando L→S (afinando) + ≥1 BUY L recente.
+- **Hipótese:** tamanho carrega convicção; capitulação (SELL L em clímax) → absorção (BUY L) marca fundo; venda escalando S→M→L = pressão crescente = loser.
+- **Por que ortogonal:** usa a **dimensão tamanho como série temporal** (migração de skew), não presença em snapshot. Risco: sobreposição parcial com #2 (ambas medem exaustão de venda) — manter só se lift incremental sobre #2.
+
+### #8 — `session_phase_clock` (fase de sessão UTC na barra de entrada)
+- **L média · O máxima · V máxima (trivial)**
+- **Receita causal:** `hh=(low_t//3600)%24`; bins ASIA(00–06)/LONDON_OPEN(07–09)/LONDON_MID/NY_OVERLAP(12–15)/NY_PM/LATE; binárias `is_london_open, is_ny_overlap, is_dead_zone`.
+- **Hipótese:** expansões reais nascem em London-open/NY-overlap (liquidez institucional); 8ATR em janela morta = overshoot ilíquido = loser.
+- **Por que ortogonal:** eixo cronológico puro — R2 não sabe que horas são. Já existe `hour/killzone` no dataset como proxy parcial; o novo é a **fase categórica completa**. Ortogonalidade máxima mas força de mercado precisa de validação (pode ser ruído de baixa contagem por bin).
+
+### #9 — `flow_acceleration_2nd_derivative` `[extensão G1]`
+- **L média-alta · O alta · V alta**
+- **Receita causal:** mesma série de `sell_w` por barra que #2, mas computar a **2ª derivada** (aceleração): venda desacelerando E a desaceleração acelerando (curvatura) = exaustão confirmada vs ressaca temporária.
+- **Hipótese:** distinguir pausa momentânea da venda (1ª derivada cai mas volta) de exaustão genuína (curvatura negativa sustentada).
+- **Por que ortogonal:** curvatura temporal de fluxo — ortogonal a tudo geométrico e a #2 (que é só 1ª derivada). Manter só se lift sobre #2.
+
+### #10 — `nas_flip_recency` `[extensão de canal NAS]`
+- **L média · O alta · V alta**
+- **Receita causal:** `nas_events[]` com `t<=tc`; barras desde o último flip SHORT→LONG; exigir que o flip seja recente (1–4 barras) e que não haja LONG "velho" já gasto.
+- **Hipótese:** flip NAS fresco para LONG = mudança de viés detectada no momento; LONG antigo = sinal já consumido.
+- **Por que ortogonal:** timing relativo de evento NAS (sequência), não posição. `nas_long_16/48` já no dataset são contagens em janela — o novo é a **recência do flip**.
+
+### #11 — `sell_bubble_higher_low_sequence` `[extensão estrutura+fluxo]`
+- **L média-alta · O alta · V alta**
+- **Receita causal:** entre as SELL bubbles recentes (`known_at<=tc`), checar se os lows (`l` de cada bubble) formam sequência ascendente (higher-lows) = vendedores perdendo terreno apesar de continuarem vendendo.
+- **Hipótese:** higher-lows na sequência de venda = absorção estrutural silenciosa antes da virada; lower-lows = venda ainda no controle.
+- **Por que ortogonal:** estrutura interna da **sequência de eventos de fluxo** (não do preço bruto). Distinto de #1 (que usa volume) e #2 (que usa peso/tempo).
+
+### #12 — `time_since_last_choch_vs_bos` `[extensão estrutura]`
+- **L média · O alta · V alta**
+- **Receita causal:** `smc_events[]`; medir se o último evento foi CHoCH (reversão) ou BOS (continuação) e há quantas barras; razão de recência CHoCH vs BOS.
+- **Hipótese:** 8ATR pós-CHoCH recente (reversão fresca) tem perfil distinto de 8ATR pós-BOS (continuação madura); o tipo+timing do último evento estrutural separa.
+- **Por que ortogonal:** identidade+timing do evento estrutural (sequência de estado), não geometria. `smc_choch/smc_bos` no dataset são presença binária — o novo é **qual veio por último e há quanto tempo**.
+
+### #13 — `vol_zscore_temporal_regime` `[extensão volume]`
+- **L média · O média-alta · V alta**
+- **Receita causal:** `series.v` em z-score rolling (ex. 96 barras = 24h); detectar transição de regime de volume (baixo→alto) nas barras imediatamente antes de `tc`.
+- **Hipótese:** entrada na transição low-vol→high-vol (entrada de participação) = combustível para 8ATR; entrada em volume já alto e decrescente = movimento já distribuído.
+- **Por que ortogonal:** regime temporal de volume real, não magnitude de preço. `vol_low_vs_med/vol_climax` no dataset são níveis pontuais — o novo é a **transição/derivada do regime de volume**.
+
+---
+
+## 4. RESUMO PARA O PRÓXIMO ENGINE
+
+**Famílias prioritárias (construir primeiro):**
+1. **Volume real (absorção)** → #1, #13 — eixo mais ortogonal e menos explorado; `series.v` está intacto e nunca foi usado como divergência temporal.
+2. **Derivada temporal de fluxo de bubbles** → #2, #9, #5, #7 — todas leem a série causal `bubbles/*.jsonl`; cuidado com colinearidade entre elas (testar lift incremental, não empilhar cego).
+3. **Sequenciamento estrutura↔fluxo** → #3, #11, #12 — cruzam `smc_events`+`nas_events`+bubbles; alto valor causal.
+4. **Cadência/silêncio** → #4 — único no eixo de ausência-de-evento.
+5. **Calendário/idade** → #6, #8, #10 — baratos de computar, ortogonalidade máxima, mas verificar força real (risco de bins finos).
+
+**Travas a respeitar na implementação:**
+- Tudo `known_at<=tc` (bubbles) e `t<=low_t` em barras fechadas (séries). Close-only causal universal.
+- NAS só `dir` (LONG/SHORT), nunca TOP/BOTTOM nem índice `x`.
+- Não reusar contagem-snapshot (`sell_w`, `buy_w`, `sell_S..buy_L`, `hour`, `killzone`, `nas_long_16/48`) como se fosse novo — o valor está na derivada/sequência/timing por cima delas.
+- Sample-gate: estes eixos não validam por si — exigir lift condicional dentro do corpus 8ATR + sub-janelas + jackknife. Calibração ≠ validação.
+- 42 ideias originais: **só 9 chegaram completas no prompt** (lista truncada em `regime_age_4h`); #9–#13 acima são extensões diretas dos 7 domínios sobre o RAW confirmado, não as ideias 10–42 originais. Se as 33 restantes forem reenviadas, re-ranqueio com elas.
+
+**Inviáveis (não construir):** Session VP intraday, order-book/depth, footprint/delta-tick, contagem-snapshot de bubbles (já existe), NAS TOP/BOTTOM, macro/cross-asset.

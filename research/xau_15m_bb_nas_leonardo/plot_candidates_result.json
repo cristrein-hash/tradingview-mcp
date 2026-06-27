@@ -1,0 +1,21 @@
+{
+  "candidatos_no_csv": 791,
+  "faixa": [
+    10,
+    791
+  ],
+  "tentados": 781,
+  "desenhados": 781,
+  "falhas": 0,
+  "falhas_amostra": [],
+  "chart": {
+    "before": {
+      "symbol": "PEPPERSTONE:XAUUSD",
+      "tf": "15"
+    },
+    "used": {
+      "symbol": "PEPPERSTONE:XAUUSD",
+      "tf": "15"
+    }
+  }
+}

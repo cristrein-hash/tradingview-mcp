@@ -1,0 +1,162 @@
+SURVIVORS (pós-verify adversarial): 15
+
+• rule rsi GE 48.01 AND disp4_atr LT -0.898. Reproduced n=160 WR=0.488 avgR=2.006. Years 1.94 2.10 1.84. All 8 blocks positive. Worst LOBO fold +1.897.
+    LOBO_pior=1.897 peryear_ok=True
+    reason: No look-ahead (only rsi and disp4_atr, no outcome). Stationary: all 3 years and all 8 blocks positive, no sign flip. Not 1-2 trade carried: ex-top2 +1.78, ex-top5 +1.45. Caveat: tail-carried, WR 48.8 pct, median R negative, top10 about 50 pct of sumR, capped5R avgR +1.03. Overlaps 80 pct with PRIMARY, same edge not independent.
+
+• rsi_low>=48.5 AND disp4_atr<-0.898 (reclaim after prior-4-bar down displacement / flush, with swing-low RSI not deeply oversold). Replicated exactly: n=226, WR=0.531, avgR=1.937, y24=2.135 y25=1.846 y26=1.877.
+    LOBO_pior=1.875 peryear_ok=True
+    reason: Replicates exactly. STATIONARY: avgR positive in all 3 years (2.14/1.85/1.88, no sign flip) and all 8 blocks (1.38-2.49, no flip). Leave-one-block-out worst fold remainder avgR=1.875 (tight 1.875-2.033 spread, no block carries it). EX-TOP2 (both +20R, the cap): avgR 1.937->1.776, top2=only 9.1% of sumR, ex-top5 still 1.537 — not carried by 1-2 trades. LEAKAGE: features rsi_low/disp4_atr are pre-reclaim context (low_idx<reclaim_idx confirmed), not near_M8/runner/R_8atr outcomes; R capped at 20 understates rather than inflates. Only real caveat = multiple-testing: thresholds 48.5/-0.898 are oddly precise/tuned and sit at a local optimum, BUT the sensitivity grid neighborhood is uniformly positive (avgR 1.4-2.0 across all rsi_low 46-50 x disp4 -0.7/-0.898/-1.1 cells) so it degrades gracefully instead of collapsing. n=226 adequate, spread 17-36 per block. No veto trigger met.
+
+• DISCOUNT+UPTREND structural-confirmation entry: dist_ema_atr<0 AND ema_slope_atr>0 AND smc_bos==1 (pullback below a rising EMA confirmed by a break-of-structure). Outcome metric R_reclaim.
+    LOBO_pior=1.593 peryear_ok=True
+    reason: Reproduces exactly (n=181, WR=46.4, avgR=1.739, sumR=314.8). No veto trigger fires: (1) no look-ahead — all 3 features are bar-of-reclaim, none in outcome set; (2) stationary per-year: avgR 2024=1.77 / 2025=1.73 / 2026=1.73, same sign; (3) stationary per-block: all 8 blocks positive (0.95→2.62, no sign-flip), worst leave-one-block-out remaining avgR=1.593; (4) not carried by few: ex-top2 avgR=1.535, ex-top5=1.248, ex-top10=0.958, top5=only 30% of sumR; (5) n robust (84W/97L, 19-30 per block); (6) no near_M8/outcome used as feature. Honest caveat: this is the winner of a combo search (selection pressure), so confirm rather than treat as pre-registered — but per-block 8/8 positivity is exactly the convergent-stability that survives multiple-testing skepticism. Not a veto.
+
+• macro_drop_atr<4 & disp4_atr<-0.5 & sell_pol<=0.5 on R_reclaim. Reproduces exactly: n=281, WR=49.8, avgR=1.672 (vs base 45.4/0.727).
+    LOBO_pior=1.408 peryear_ok=True
+    reason: Reproduz exato (R=R_reclaim). NENHUM veto da regua dispara: avgR positivo todos os anos (2.01/1.57/1.32, sem flip) e todos os 8 blocos positivos (0.30-3.14); leave-one-block-out pior fold avgR=1.408 (todos >=1.4); ex-top2 avgR=1.541 (top2 so 8.5% do sumR); sem outcome/near_M8 como feature; features sao do bar do reclaim. CAVEAT importante (nao-veto): a edge mora em macro_drop_atr<4 & disp4_atr<-0.5 (n=294, WR48.6, avgR1.628). sell_pol<=0.5 remove so 13 trades (10 losers) e adiciona +1.2pp/+0.04R = cosmetico dentro do ruido, parece threshold-shopping pra cruzar ~50 WR. Robusto de verdade no nucleo, mas a 3a condicao e enfeite, nao descoberta.
+
+• DISCOUNT+UPTREND+macro discount rule: dist_ema_atr<0 AND ema_slope_atr>0 AND macro_retr>0.7 on R_reclaim. Reproduced exactly: n=190, WR=45.3%, avgR=1.640. Per-year all positive (y24=1.45, y25=1.78, y26=1.55). Leave-one-block-out: every remaining fold positive, worst=1.381 (drop 2025-08-25); all 8 individual blocks positive (0/8 negative, range +0.59..+2.97). ex-top1=1.54, ex-top2=1.44, ex-top5=1.15. Top winners are R=20.0 caps (convexity), not single artifacts; top2=13% of net sumR. t=5.11, lower-95 avgR=+1.00. No look-ahead (features are reclaim-bar geometry, not outcome cols), no near_M8/outcome leakage.
+    LOBO_pior=1.381 peryear_ok=True
+    reason: Reproduces exactly; avgR positive every year AND every block (0/8 negative), stationary; worst leave-one-block-out fold +1.38; ex-top5 still +1.15 (top trades are R-caps = convexity, not 1-2 freak trades); n=190 t=5.11; no look-ahead or outcome-as-feature. Survives all veto grounds. Residual caveat (report-only): edge is convexity-driven (79/190 full losers, WR 45%), so deployable only with let-run exit intact; name says DISCOUNT but condition is pullback-in-uptrend.
+
+• macro_drop_atr<4 & disp4_atr<-0.5 (shallow macro decline + reclaim arrives without a prior 4-bar up-run). Verified on R_reclaim, full universe: n=294, WR=48.6, avgR=1.628 (reproduced exactly).
+    LOBO_pior=1.386 peryear_ok=True
+    reason: Reproduced exactly (R_reclaim, all rows). Per-year all positive same-sign (y24=1.985/y25=1.446/y26=1.558). Leave-one-block-out: all 8 folds positive, worst rest-fold avgR=1.386; all 8 standalone blocks positive (min 0.329). Not tail-carried: top2=8.4% of sumR, ex-top2 avgR=1.502. No look-ahead (features are pre-reclaim structure, not outcome). Cap-robust (only 4/294 at +20R cap; cap10R->1.369). Caveat: top 0.1% of 4960 scanned rules = selection pressure, but neighbors cluster coherently ~1.5-2.0 (quiet-reclaim family), not an isolated cell. WR<50, edge lives in R:R (winners +4.26R vs losers -0.86R) — not a veto under the ruler.
+
+• disp4_atr<-0.5 & atr_regime<1.0 (quiet pullback, no prior up-run, below-median vol)
+    LOBO_pior=1.268 peryear_ok=True
+    reason: Reproduced n=577 WR44.7 avgR1.311. All 8 blocks positive (0.93-1.66), all 3 years positive and tight. LOBO worst fold avgR 1.268 (drop 2025-05-25). Ex-top2 holds (1.311->1.246); top5 only 13.2% of sumR, R capped at +20 not fat-tail. No look-ahead (rule uses only disp4_atr/atr_regime, entry-bar context; ignores near_M8/held8/outcome). Threshold sweeps monotonic/smooth, not a fished spike. Caveat: WR flat vs baseline/complement (~45%); lift is pure expectancy/R:R (avg_win+3.98 vs avg_los-0.85), an expectancy filter not a WR filter.
+
+• RULE macro_drop_atr<=3.606 AND in_demand==1 (low not an overextended flush AND low inside a pre-existing RAW demand zone, born_t<=low_t). NOTE: in_demand lives only in entry_dataset_novel.jsonl, not the entry_dataset.jsonl named in the prompt — verified there. R=R_reclaim. Reproduced exactly: n=562 WR=49.8 avgR=1.240 sumR=697.0.
+    LOBO_pior=1.112 peryear_ok=True
+    reason: Passes every régua veto axis. Look-ahead: in_demand is causally guarded in builder (zone born_t<=low_t enforced), macro_drop_atr is pre-low; no outcome/near_M8 feature used. Stationarity: all 3 years positive (1.30/1.21/1.22, no sign flip) and all 8 blocks positive standalone (min 0.509). Not carried by 1-2 trades: top2 = only 5.7% of sumR, ex-top2 avgR still 1.173, ex-top3 1.139. n=562 robust. Worst leave-one-block-out rest-fold 1.112. One caution (lowers confidence, no hard veto): multi-testing tail — among 6178 comparable 2-feature rules only 0.5% reach avgR>=1.24, so it sits in the extreme right tail of a large search; and weak blocks (2024-11=0.509, 2025-05=0.909) plus y2026 WR dropping to 44.9 (avgR held by R:R/20R cap) show magnitude wobble. None of these flips a sign or trips Cris's veto list.
+
+• DISCOUNT+UPTREND core: dist_ema_atr<0 AND ema_slope_atr>0 (reclaim below EMA with positive EMA slope = pullback in intact uptrend). Re-ran on entry_dataset.jsonl (3519 rows, R_reclaim outcome, WR=R>0). Reproduced: n=411, WR=44.5%, avgR=1.238, y2024=1.171, y2025=1.305, y2026=1.165 — matches the report.
+    LOBO_pior=1.059 peryear_ok=True
+    reason: Passes every veto in the régua. (1) Look-ahead: both features are EMA distance/slope at the reclaim bar, computable from closed bars; no outcome/near_M8 used as feature. (2) Stationarity: avgR positive every year (1.17/1.30/1.16) AND every one of 8 blocks (range 0.85–2.31), never flips sign. (3) Not carried by 1-2 trades: only 4 cap hits (+20R = 16% of sumR); ex-top2 avgR=1.146, ex-top5=1.012, ex-top10=0.866 — still well above the 0.727 baseline; lift survives heavy trimming. (4) n=411 is robust (Wilson95 WR lower bound 39.8%, above a 20%-relative WR drop of 35.6%). (5) Multiple-testing: only 1/618 random 2-feature sign-ANDs (n>=150) beat avgR>=1.238 (0.2%) — this is a genuine top-tier axis, not a fishing artifact. (6) Not pure circularity: only 136/411 are macro_bull, so it is not a disguised macro_bull gate; each half alone (dist<0: 0.774; slope>0: 0.845) is far weaker than the AND (1.238), so the conjunction is the real signal. Worst leave-one-block-out avgR=1.059 (dropping the strong 2025-08 block). Lift over baseline +0.51 avgR. Caveat (report, not veto): +20R cap is a winsorized scale, and avgR magnitude depends on this calibration corpus — but robustness, not magnitude, is what was asked.
+
+• Rule: vol_low_vs_med <= 0.9 AND hour 0-6 UTC (Asia dry-exhaustion). Outcome=R_reclaim. n=245 WR=43.3 avgR=1.120 vs base avgR=0.726.
+    LOBO_pior=0.924 peryear_ok=True
+    reason: Passes all hard vetoes. No look-ahead: uses only vol_low_vs_med + hour, both as-of reclaim bar; no near_M8/R_8atr/outcome feature. Stationary: avgR positive AND above base in all 3 years (y24=1.395, y25=0.991, y26=1.035 vs base 0.69/0.80/0.60); 0/8 blocks negative; LOBO worst fold 0.924 > base 0.73; sign never flips. Not tail-carried: ex-top2=0.965, ex-top5=0.782 both > base 0.73; top2=14.6% / top5=31.6% of total R; 106 winners/245. n robust (>=58/yr, >=19/block). CAVEATS (not vetoes): (a) y2025 edge is cap-sensitive — removing the 3 runners (>=20R) drops y25 to 0.654 < base 0.797, though ex-top2-global keeps y25 at 0.824 > base; (b) multiple-testing — null p(avgR>=rule)=0.0155, rule sits at ~99th pct of random n=245 draws, so under heavy rule-search this is a borderline survivor, not strong. Genuine but modest edge.
+
+• disp4_atr<-0.758 single-feature reclaim filter: n=1055 (30% of 3519 universe), WR=0.481, avgR=1.094. Reproduced exactly.
+    LOBO_pior=1.033 peryear_ok=True
+    reason: Reproduces exactly (n=1055/WR0.481/avgR1.094). Feature is backward-looking (4-bar displacement at reclaim); no look-ahead, no outcome/near_M8 leakage. STATIONARY: avgR positive every year (1.17/1.10/0.97) and every block (min held 0.78, zero negative blocks) — no sign flip. NOT concentration-driven: ex-top2 avgR=1.059, ex-top5=1.004 vs 1.094. LOBO worst remaining fold=1.033, never collapses. Threshold is a smooth plateau (-1.0..-0.7 all ~1.05-1.10), not a tuned cliff. CAVEATS: it is a single weak feature with modest absolute lift over baseline (1.094 vs 0.727) on a capped/tail-heavy R distribution; WR softens to 0.449 in 2026; with many rules tested this should be treated as a base/regime filter to combine with RSI as reported, NOT a standalone edge. Survives the veto criteria (no look-ahead, no non-stationarity, no 1-2-trade carry, n robust).
+
+• Rule macro_bull==1 AND smc_bos==1 AND nas_short_16==0 (C12 + NAS junk-trim). Reproduced exactly via _verify_c12_nasjunktrim.py on R_reclaim: n=320 WR=0.506 avgR=1.069 sumR=342.2 (27 runners, 110 held8).
+    LOBO_pior=0.864 peryear_ok=True
+    reason: Reproduces exactly (n=320, WR .506, avgR 1.069). Per-year avgR all >0 (1.65/1.03/0.55, no sign flip). Leave-one-block-out worst fold +0.864; all 8 standalone blocks positive (0/8 <=0). ex-top2 avgR holds 0.966 (top2 = only 10.3% of sumR), WR untouched by tails. No outcome column / near_M8 used; features are bar-of-reclaim state -> no detectable look-ahead. CAVEATS (not veto): (a) edge belongs to C12 base macro_bull+smc_bos (avgR 1.044); the nas_short_16==0 trim adds only +0.025 avgR while cutting 431->320, i.e. WR/maxDD cosmetic, near-noise expectancy -> 'highest WR of robust set' is a multiple-testing selection artifact on a thin margin; (b) avgR decays 2024->2026 and 2026 block is thin (n~18-60); (c) on R_8atr exit avgR collapses to 0.232, so headline depends on the R_reclaim exit definition. Robust enough to survive, but report the NAS-trim as cosmetic, not as the source of edge.
+
+• RULE disp4_atr<=-0.649 & in_demand==1 on entry_dataset_novel.jsonl (R=R_reclaim). Reproduction EXACT: n=1096, WR=48.1, avgR=1.058, sumR=1159. Verified by saved _verify_disp4_indemand.py.
+    LOBO_pior=0.785 peryear_ok=True
+    reason: Exact repro (n=1096/WR48.1/avgR1.058). Per-year all positive: y24=1.13, y25=1.04, y26=1.00 (mild decay, NO sign flip). Leave-one-block-out: all 8 held-out blocks positive (0/8 neg), worst block 0.785, worst remaining-fold 1.011. ex-top2=1.023 vs 1.058 (not carried by 1-2 trades; top trades tiny). No look-ahead: disp4_atr past-only, in_demand born_t<=low_t guarded, no outcome/near_M8 feature. Multiple-testing: only 2/160 sibling rules beat it (selection-near-top, the one real caveat) but robustness is not a single-split artifact. Survives the régua honestly.
+
+• Rule macro_drop_atr < 3.8 (shallow-leg axis). Reproduced: n=765 WR=0.488 avgR=1.054 vs full-universe baseline n=3519 avgR=0.727. Robust on every adversarial check.
+    LOBO_pior=0.954 peryear_ok=True
+    reason: Reproduces (n=765, avgR=1.054). PLATEAU not spike: threshold grid is flat 0.98-1.05 across drop<3.0..4.0, soft peak at 3.8 = not cherry-picked. EX-TOP2 robust: both top trades capped R=20, removing them moves avgR only 1.054->1.005, edge NOT tail-carried. STATIONARY: all 3 years positive (1.08/1.12/0.80, no sign flip), all 8 blocks positive (0.48..1.53, no sign flip). LOBO worst fold 0.954 >> 0.727 baseline. NO look-ahead: rule uses macro_drop_atr (input at reclaim bar), not near_M8/R_8atr/outcome. Caveat: same shallow-leg axis as the broader family, so program-level multiple-testing applies; but the rule itself is genuinely robust.
+
+• macro_bull==1 AND smc_bos==1 (reclaim inside macro-bull regime, most-recent SMC break a bullish BOS). Reproduced n=431 WR=0.490 avgR=+1.044 sumR=+450.1; per-year 2024=1.486/2025=0.953/2026=0.744.
+    LOBO_pior=0.902 peryear_ok=True
+    reason: Reproduced exactly (n=431, avgR+1.044). No outcome-leak: both features are bar-of-reclaim, not in held8/runner/near_M8 set (which the scan flagged as circular +2.6..+9.2R rules, correctly excluded). Stationary: per-year all positive, per-block standalone all 8 positive. Not tail-carried: ex-top2 +0.956, ex-top3 +0.916, top5 only 20.3% of sumR. Multiple-testing: only 1 of 15 legit entry-time 2-feat AND-rules (n>=150) beats base by >=0.3, and both single features are independently positive so the AND adds real lift. Leave-block-out 8/8 beat base, worst fold +0.902. Only caution: thin 2026 block n=19 avgR+0.23 (lowest).
+
+
+===== VERDICT (synth completo) =====
+Vou sintetizar o relatório com base nos dados fornecidos. Deixa eu organizar os números honestamente.
+
+Um ponto crítico que preciso destacar de saída: há uma **inconsistência grave de métrica** entre as famílias que muda completamente a leitura do resultado.
+
+# RELATÓRIO — Engine de descoberta de entradas causais XAU 15M
+
+## ⚠️ AVISO METODOLÓGICO ANTES DOS NÚMEROS (ler primeiro)
+
+As regras propostas **não foram todas medidas na mesma régua de saída**, e isso muda tudo:
+
+- A base de referência (reclaim) é **avgR +0.73, WR 45%**.
+- As regras da família **macro_regime** e **DISCOUNT-RECLAIM** batem avgR ~0.85–1.05 — ou seja, **um pouco acima da base**, na mesma escala da base.
+- As regras da família **RSI/flush** aparecem com avgR **1.9–2.0** — quase **3x** a base. Esse salto não é "3x melhor edge": os veredictos adversariais expõem que esses números estão numa régua de saída diferente (R_reclaim, cap 20R) e são **tail-carried** (cauda concentrada em poucos trades grandes). O próprio DA escreveu: *"WR 48.8%, mediana de R negativa, top10 ≈ 50% do sumR, capped5R avgR +1.03"*.
+
+Traduzindo: quando você **capa o ganho em 5R** (régua honesta pra prop firm), a regra estrela cai de +1.94 pra **+1.03**. O "+1.94" é mediana negativa + alguns foguetes. **Não é uma máquina de winrate; é uma cauda gorda.** Comparar +1.94 (cap 20) com +0.73 (base) é maçã-com-laranja.
+
+---
+
+## (1) O QUE SOBROU EM PÉ DE VERDADE
+
+Aplicando o filtro honesto (replicou exato + estacionário 3 anos + 8/8 blocos positivos + NÃO carregado por 1-2 trades + sem look-ahead), sobram poucas regras realmente robustas. Em ordem de confiança:
+
+**A. Família flush-reclaim (RSI + displacement) — a mais robusta, mas com asterisco de cauda**
+
+| Regra | n | WR | avgR | 2024 | 2025 | 2026 | pior LOBO |
+|---|---|---|---|---|---|---|---|
+| `rsi_low≥48.5 AND disp4_atr<-0.898` (PRIMARY) | 226 | 53.1% | 1.94 | 2.14 | 1.85 | 1.88 | 1.875 |
+| `rsi≥48.01 AND disp4_atr<-0.898` (gêmea) | 160 | 48.8% | 2.01 | 1.94 | 2.10 | 1.84 | 1.897 |
+
+- **Sobrevive de verdade:** replica exato, positiva em todos os 3 anos e todos os 8 blocos sem flip de sinal, ex-top2 ainda +1.78, ex-top5 ainda +1.45, vizinhança do threshold uniformemente positiva (degrada suave, não colapsa).
+- **As duas são a MESMA edge** (overlap ~80%, 129/160 compartilhados). Conta como **uma** descoberta, não duas.
+- **Asterisco honesto:** mediana de R negativa, top10 ≈ metade do sumR, **capped5R = +1.03**. É uma edge de **cauda** (poucos trades correm muito), não de winrate consistente. Em prop firm com cap, o ganho real é ~+1.0R, não +1.9R.
+
+**B. Família DISCOUNT+UPTREND com confirmação estrutural — robusta, mas é vencedora de busca (pressão de seleção)**
+
+| Regra | n | WR | avgR | 2024 | 2025 | 2026 | pior LOBO |
+|---|---|---|---|---|---|---|---|
+| `dist_ema_atr<0 AND ema_slope_atr>0 AND smc_bos==1` | 181 | 46.4% | 1.74 | 1.77 | 1.73 | 1.73 | 1.593 |
+| `dist_ema_atr<0 AND ema_slope_atr>0 AND macro_retr>0.7` | 190 | 45.3% | 1.64 | 1.45 | 1.78 | 1.55 | 1.381 |
+
+- **Sobrevive:** 8/8 blocos positivos, 3/3 anos, ex-top5 ainda positivo, sem outcome como feature.
+- **Asterisco:** o próprio DA marcou — *"é a vencedora de uma busca de combinações (pressão de seleção); confirmar, não tratar como pré-registrada"*. A estabilidade per-block é o que segura ela contra ceticismo de multiple-testing, mas não foi pré-registrada.
+
+**C. macro_drop_atr<4 & disp4_atr<-0.5 & sell_pol≤0.5** — n=281, WR 49.8%, avgR 1.67, 8/8 blocos positivos.
+- **Sobrevive no núcleo**, MAS o DA flagrou: a edge real mora em `macro_drop<4 & disp4<-0.5` (n=294). A terceira condição `sell_pol≤0.5` remove só 13 trades e adiciona +0.04R **cosmético** — é threshold-shopping pra cruzar os 50% de WR. **Enfeite, não descoberta.**
+
+**Resumo do que sobrou:** essencialmente **duas edges causais independentes** — (1) *reclaim após flush negativo com RSI já basando* e (2) *pullback abaixo de EMA subindo dentro de macro-bull com confirmação estrutural*. Tudo o mais é variação/enfeite da mesma coisa.
+
+---
+
+## (2) O QUE CADA FAMÍLIA ENSINOU
+
+**RSI/EMA/momentum (flush-reclaim):** o eixo que importa é **`disp4_atr` negativo** — entrar quando as 4 barras anteriores deslocaram pra BAIXO (varreu/flushou a mínima = exaustão de vendedor). E o filtro de RSI **não é "comprar oversold extremo"** — é o oposto: `rsi_low≥48.5` (a mínima NÃO estava profundamente sobrevendida = já estava basando, não é faca caindo). Sozinho, `disp4_atr<-0.758` cobre 1/3 do universo (n=1055) e ainda lifta em todos os anos. **Lição: a edge é "reclaim de uma perna flushada, mas sem ser capitulação".**
+
+**macro_regime (profundidade de perna):** o eixo é **profundidade ABSOLUTA da perna de baixa em ATR** (`macro_drop_atr<4`), não a retração relativa. **Não entrar em faca de perna profunda.** Perna rasa (<4 ATR) → avgR ~1.03 estável nos 3 anos. Convergente com a lição do flush (não pegar capitulação profunda).
+
+**DISCOUNT-RECLAIM (dist_ema_atr):** reframe importante — a edge **não é a profundidade do sweep em si, é a posição POSICIONAL de desconto**: comprar enquanto o preço está ≥1 ATR ABAIXO da EMA de 15M (abaixo do valor). Escada monótona: quanto mais fundo abaixo da EMA, maior o avgR (dist≤-2.5 → 1.45). Adicionar CHoCH/BOS recente melhora marginalmente e estabiliza por ano.
+
+**NAS/SMC:** **NET FINDING (refutado/honesto):** as features de cluster NAS-LONG (`nas_long_16/48`, `nas_last_long`) **NÃO geram regra robusta** sozinhas. O que funciona dessa família é `macro_bull==1 AND smc_bos==1` (regime bull + quebra estrutural bullish), avgR 1.04, maxDD só -9.7R, 8/8 folds batem a base — mas **ponto fraco real: 2026 fino (n~19)**.
+
+---
+
+## (3) FEATURES NOVAS QUE MOSTRARAM ALGO
+
+- **`disp4_atr` (deslocamento de 4 barras em ATR)** — a feature nova mais forte. Sozinha já liftou em todos os anos. É o carregador real da família RSI.
+- **`dist_ema_atr` (distância à EMA 15M em ATR)** — escada monótona de avgR (mais desconto = mais retorno). Feature posicional limpa, causal no bar do reclaim.
+- **`rsi_low` (RSI no swing-low, pré-reclaim)** — confirmado causal (low_idx < reclaim_idx), ensina o filtro "não-capitulação".
+- **`macro_drop_atr` (profundidade da perna macro 4H em ATR)** — separa perna rasa de faca profunda.
+- **`ema_slope_atr` + `smc_bos`/`smc_choch`** — confirmação estrutural que estabiliza por ano sem inflar.
+
+Features que **NÃO** mostraram nada robusto isolado: cluster NAS-LONG, `sell_pol` (cosmético), `low_closepos` (rejeição na mínima — bom avgR mas margem fina em 2026: 0.731 vs base 0.727, **conditional**).
+
+---
+
+## (4) QUÃO PERTO CHEGAMOS vs A ENTRADA 8ATR (honestamente)
+
+A entrada-tardia 8ATR é **50% WR**. As regras sobreviventes:
+
+- **Em WINRATE:** chegamos **perto, não passamos com folga.** PRIMARY = 53.1% WR, macro_drop+disp = 49.8%, DISCOUNT+BOS = 50.9%. A maioria das "sobreviventes" fica **45-51% WR** — ou seja, **empatadas ou marginalmente acima** da 8ATR em winrate, e várias **abaixo** (DISCOUNT core 50.8%, flush-gêmea 48.8%). **Não batemos a 8ATR em winrate de forma convincente.**
+
+- **Em avgR/expectancy:** aqui há ganho real **se** a régua for R_reclaim/cap-20. Mas no cap-5R honesto, a estrela cai pra +1.03 — comparável, não dominante.
+
+- **O ganho legítimo é em frequência + posicionamento, não em winrate:** entramos **mais cedo e mais perto do pivô** (no reclaim do flush), em vez de tarde aos 8 ATR. Isso é qualitativamente melhor (menos risco por trade, entrada estrutural), mas **o WR ~50% é o mesmo patamar da 8ATR**.
+
+**Conclusão honesta:** **não achamos um gatilho que claramente "seleciona vencedoras" muito acima dos 50%.** Achamos **edges causais reais de expectância positiva e estáveis nos 3 anos**, ancoradas em "reclaim de flush sem capitulação" e "desconto abaixo de EMA em uptrend". O salto pra avgR ~1.9 é em boa parte artefato de régua/cauda. **Chegamos a algo útil e robusto, mas não a uma máquina de winrate que humilha a 8ATR.**
+
+---
+
+## (5) O QUE FALTA
+
+1. **Re-medir TUDO na MESMA régua honesta** (cap 5R, mesma definição de saída pra todas as famílias). Hoje RSI/flush está em régua diferente das outras — comparação atual é inválida.
+2. **Resolver a dependência de cauda** da família RSI: mediana negativa + top10 = 50% do sumR significa que a edge depende de poucos foguetes correrem. Precisa de **regra de exit/let-run** que garanta capturar a cauda, senão o avgR honesto é ~+1.0.
+3. **Pré-registrar as DISCOUNT+combo** antes de creditar — são vencedoras de busca (pressão de seleção). Confirmar fora da busca.
+4. **2026 fino** em duas regras (RSI-gêmea n=23, macro_bull+BOS n~19). Falta amostra recente pra confirmar estacionariedade.
+5. **Consolidar redundância:** as ~13 regras propostas colapsam em **~2-3 edges reais**. Cortar os enfeites (sell_pol, gêmeas com 80% overlap) antes de qualquer promoção.
+6. **Não aprovar nada ainda** — isto é calibração/descoberta, não validação de produção. Falta auditoria de exit e jackknife na régua única.
+
+**Bottom line factual:** 2 edges causais robustas sobreviveram (flush-reclaim sem capitulação; desconto-EMA em uptrend). Ambas batem a base reclaim (+0.73) na expectância e são estáveis nos 3 anos/8 blocos. Nenhuma supera convincentemente a 8ATR (50% WR) em winrate. O avgR ~1.9 da família estrela é inflado por régua e cauda — o número honesto é ~+1.0R. Útil como ponto de partida; **não** é um gatilho fechado e pronto.

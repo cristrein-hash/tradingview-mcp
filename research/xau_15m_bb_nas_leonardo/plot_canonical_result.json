@@ -1,0 +1,19 @@
+{
+  "total_trades": 131,
+  "faixa": ">= 2025-09-01",
+  "tentados": 48,
+  "desenhados_position": 48,
+  "falhas": 0,
+  "falhas_amostra": [],
+  "chart": {
+    "before": {
+      "symbol": "PEPPERSTONE:XAUUSD",
+      "tf": "15"
+    },
+    "used": {
+      "symbol": "PEPPERSTONE:XAUUSD",
+      "tf": "15"
+    },
+    "draw_list_count": 96
+  }
+}

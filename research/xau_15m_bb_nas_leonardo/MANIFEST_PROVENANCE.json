@@ -1,0 +1,37 @@
+{
+  "front": "XAU_15M_BB_NAS_LEONARDO",
+  "generated": "2026-06-25",
+  "canonical_source": "RAW gz 15M EXCLUSIVO — zero dados secundários",
+  "raw_source_dir": "/Volumes/GUTS_ LACIE/TradingData/raw_replay/XAUUSD/15M",
+  "raw_blocks": [
+    "XAUUSD_15m_replay_2024-05-25_to_2024-08-25.jsonl.gz",
+    "XAUUSD_15m_replay_2024-08-25_to_2024-11-25.jsonl.gz",
+    "XAUUSD_15m_replay_2024-11-25_to_2025-02-25.jsonl.gz",
+    "XAUUSD_15m_replay_2025-02-25_to_2025-05-25.jsonl.gz",
+    "XAUUSD_15m_replay_2025-05-25_to_2025-08-25.jsonl.gz",
+    "XAUUSD_15m_replay_2025-08-25_to_2025-11-25.jsonl.gz",
+    "XAUUSD_15m_replay_2025-11-25_to_2026-02-25.jsonl.gz",
+    "XAUUSD_15m_replay_2026-02-25_to_2026-05-25_rerun_customOBbaseline.jsonl.gz"
+  ],
+  "coverage": "2024-05-25 → 2026-05-25 (~2 anos, ~47k bars 15M)",
+  "build_chain": "RAW gz → build_causal_primitives.py (RAW-only, validado) → primitives/*.json → detect_candidates.py (Stage-B)",
+  "bigbeluga_proxy": {
+    "indicator": "Custom OB Detector v11 — Alert",
+    "status": "PROXY_BY_PINE_LINEAGE_REGISTERED",
+    "pine_source": "my-strategy/pine_alerts/11_custom_ob_detector_v11.pine",
+    "lineage_quote": "Replica a lógica real do BigBeluga: state machine de market structure com ms.trend/ms.choch/ms.bos/ms.loc. OB criado em events de BOS/CHoCH, não em pivots puros.",
+    "created": "2026-05-18 (v10) / 2026-05-21 (v11 — text DEMAND/SUPPLY)",
+    "raw_serialization": "pine_boxes['Custom OB Detector v11 — Alert'].all_boxes[].{id,high,low,x1,x2,text:SUPPLY|DEMAND}",
+    "note": "Construído por Claude a partir do Pine do próprio BigBeluga (confirmado por Cris 2026-06-25). Zonas usadas à exaustão e validadas no 4H L2/BPT (SL_CONTEXT)."
+  },
+  "indicator_sources": {
+    "NAS": "pine_labels['NAS TOP BOTTOM DETECTOR'].labels[].text LONG/SHORT via FIRST-APPEARANCE por id monotônico. PROIBIDO: NAS_*_SIGNAL/TOP/BOTTOM numéricos (desacoplados=0.00) e head-of-buffer antigo.",
+    "SMC": "pine_labels['Smart Money Concepts [LuxAlgo]'].labels[].text BOS/CHoCH/EQH/EQL via FIRST-APPEARANCE; direção derivada de OHLC swing (label text não carrega direção).",
+    "RSI": "study_values['Relative Strength Index'].values.RSI (barra corrente)",
+    "OHLC": "ohlcv tail(5) acumulado por tempo; causal as-of close",
+    "bubbles": "pine_shapes_bubbles['Market Order Bubbles'].activations_per_plot (secundário/contexto)"
+  },
+  "causality": "Cada registro RAW = chart as-of close da barra (replay_current_dt). Consumo SHIFT1 p/ indicadores que repintam (NAS/SMC/OB). Entrada = close do bar SEGUINTE ao bar de confirmação do NAS.",
+  "forbidden_sources": ["raw_features", "slim", "packets", "regime files", "repro_recovery", "eval_tmp", "artefatos 4H (l2_bpt_/_DA_L1_)"],
+  "stage": "Stage-B detector de candidatos (SEM backtest, SEM regra/gate, SEM otimização de threshold)"
+}

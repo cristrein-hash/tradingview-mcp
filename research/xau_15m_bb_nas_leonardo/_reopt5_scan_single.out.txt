@@ -1,0 +1,50 @@
+BASE WR=60.49 n=3047
+================================================================================
+     absorption (binary [0, 1])  =0: WR=61.5 n=2421  =1: WR=56.7 n=626
+[VS] atr_regime: range[0.37,3.68] med=1.13 | low(<= 1.01) WR=60.6 n=1008 | high(>= 1.29) WR=63.6 n=1009
+     bars_since_lowest: range[1.00,488.00] med=44.00 | low(<= 26.00) WR=55.5 n=1015 | high(>= 76.00) WR=66.8 n=1010
+     bars_since_sell: range[2.00,447.00] med=96.00 | low(<= 36.00) WR=61.4 n=1014 | high(>= 99.00) WR=59.1 n=1499
+     bars_to_base: range[1.00,476.00] med=38.00 | low(<= 22.00) WR=56.7 n=1052 | high(>= 71.00) WR=66.6 n=1011
+     buy_L_recent (binary [0, 1])  =0: WR=60.1 n=2316  =1: WR=61.6 n=731
+     buy_after_smc (binary [0, 1])  =0: WR=58.5 n=1833  =1: WR=63.5 n=1214
+     buy_sell_ratio4: range[0.00,12.00] med=4.00 | low(<= 1.00) WR=61.2 n=1018 | high(>= 5.00) WR=58.6 n=1209
+     demand_fresh (binary [0, 1])  =0: WR=77.3 n=97  =1: WR=59.9 n=2950
+     disp4_atr: range[-2.01,7.68] med=2.24 | low(<= 1.69) WR=57.7 n=1006 | high(>= 2.76) WR=59.8 n=1006
+     dist_demand_atr: range[-0.30,8.11] med=-0.01 | low(<= -0.17) WR=62.4 n=1029 | high(>= 0.44) WR=60.9 n=1007
+     dist_supply_atr: range[-0.30,99.00] med=-0.05 | low(<= -0.19) WR=55.1 n=1030 | high(>= 0.29) WR=64.0 n=1010
+     flow_accel: range[-191.00,115.00] med=0.00 | low(<= 0.00) WR=59.4 n=1849 | high(>= 2.00) WR=63.3 n=1023
+     h1_dist: range[-5.43,11.14] med=3.82 | low(<= 2.89) WR=55.6 n=1006 | high(>= 4.59) WR=65.2 n=1014
+     h1_eff: range[0.00,1.00] med=0.31 | low(<= 0.19) WR=56.6 n=1006 | high(>= 0.42) WR=63.8 n=1009
+     h1_pos: range[-0.01,2.67] med=1.05 | low(<= 0.98) WR=54.9 n=1049 | high(>= 1.11) WR=64.4 n=1033
+     h1_trend: range[-1.00,1.00] med=1.00 | low(<= 0.00) WR=55.0 n=1325 | high(>= 1.00) WR=64.7 n=1722
+     h4_dist: range[-15.91,21.41] med=4.95 | low(<= 3.19) WR=57.2 n=972 | high(>= 6.85) WR=59.0 n=973
+     h4_eff: range[0.00,1.00] med=0.28 | low(<= 0.19) WR=58.5 n=995 | high(>= 0.43) WR=59.1 n=978
+     h4_pos: range[0.00,1.56] med=0.88 | low(<= 0.71) WR=56.4 n=989 | high(>= 1.00) WR=63.9 n=993
+     h4_trend: range[-1.00,1.00] med=0.00 | low(<= 0.00) WR=60.3 n=1488 | high(>= 1.00) WR=60.4 n=1457
+     hd_dist: range[-43.46,65.94] med=9.12 | low(<= 3.58) WR=68.9 n=727 | high(>= 15.13) WR=60.3 n=721
+     hd_eff: range[0.00,0.99] med=0.30 | low(<= 0.20) WR=56.9 n=757 | high(>= 0.42) WR=64.7 n=722
+     hd_pos: range[-0.03,1.35] med=0.70 | low(<= 0.56) WR=69.2 n=766 | high(>= 0.91) WR=63.8 n=723
+     hd_trend: range[-1.00,1.00] med=1.00 | low(<= 0.00) WR=66.9 n=893 | high(>= 1.00) WR=59.5 n=1292
+     in_demand (binary [0, 1])  =0: WR=66.7 n=6  =1: WR=60.5 n=3041
+[VS] is_deadzone (binary [0, 1])  =0: WR=57.8 n=1886  =1: WR=64.8 n=1161
+[VS] is_london_open (binary [0, 1])  =0: WR=61.5 n=2655  =1: WR=53.3 n=392
+[VS] is_ny_overlap (binary [0, 1])  =0: WR=60.8 n=1989  =1: WR=59.9 n=1058
+[VS] killzone (binary [0, 1])  =0: WR=62.3 n=1516  =1: WR=58.7 n=1531
+     low_closepos: range[0.00,1.00] med=0.64 | low(<= 0.47) WR=61.3 n=1027 | high(>= 0.78) WR=59.7 n=1020
+     macro_bear (binary [0, 1])  =0: WR=62.0 n=2686  =1: WR=49.3 n=361
+     macro_bull (binary [0, 1])  =0: WR=61.7 n=2201  =1: WR=57.2 n=846
+     macro_drop_atr: range[0.82,64.98] med=7.06 | low(<= 5.01) WR=61.7 n=1006 | high(>= 9.74) WR=58.9 n=1008
+     macro_retr: range[0.12,1.79] med=0.87 | low(<= 0.67) WR=57.7 n=1012 | high(>= 1.01) WR=63.9 n=1043
+     max_silence (binary [21])  =21: WR=60.5 n=3047
+     naslong_after_smc (binary [0, 1])  =0: WR=61.0 n=2933  =1: WR=48.2 n=114
+     path_eff: range[0.02,33.71] med=0.32 | low(<= 0.19) WR=66.6 n=1046 | high(>= 0.52) WR=55.9 n=1009
+     regime_age_h: range[0.00,199.80] med=25.20 | low(<= 13.20) WR=58.0 n=1028 | high(>= 47.20) WR=62.6 n=1010
+     rsi: range[32.20,92.00] med=65.20 | low(<= 62.20) WR=59.1 n=1012 | high(>= 68.18) WR=63.9 n=1006
+     rsi_low: range[12.60,79.70] med=46.00 | low(<= 41.10) WR=60.8 n=1010 | high(>= 50.70) WR=61.0 n=1011
+     sell_decel: range[-74000000.00,1.00] med=0.00 | low(<= 0.00) WR=60.0 n=1859 | high(>= 0.53) WR=62.1 n=1000
+     sell_skew_mig: range[-6.00,15.00] med=0.00 | low(<= 0.00) WR=60.2 n=2654 | high(>= 0.00) WR=59.4 n=2806
+     smc_bos: range[0.00,5.00] med=1.00 | low(<= 1.00) WR=62.3 n=1887 | high(>= 2.00) WR=57.6 n=1160
+     smc_lag_bars: range[0.00,295.00] med=4.00 | low(<= 2.00) WR=59.1 n=1119 | high(>= 8.00) WR=63.0 n=1082
+[VS] vol_climax: range[0.17,6.72] med=1.20 | low(<= 1.08) WR=60.6 n=1047 | high(>= 1.36) WR=58.8 n=1020
+[VS] vol_low_vs_med: range[0.11,6.72] med=1.14 | low(<= 1.00) WR=61.8 n=1021 | high(>= 1.29) WR=59.1 n=1033
+[VS] vpnode_dist_atr: range[-20.07,21.47] med=3.76 | low(<= 2.70) WR=57.5 n=1010 | high(>= 4.75) WR=64.5 n=1006

@@ -1,0 +1,95 @@
+SURVIVORS (filtros que passaram verify): 2
+  • E1_flush: WR_after=0.5729 streak_after=7 winners_kept=91.7%
+    Reproduced exactly. Cuts 24/106 losers (22.6%) keeping 110/120 winners (91.7%), WR 53.1->57.3%. Filter low_closepos is causal/available at reclaim bar, no look-ahead (soft separation winners-median 0.38 vs losers 0.54, not a disguised outcome). Stationary: every year improves (24:.49->.52, 25:.55->.61, 26:.55->.57), no year worsens; all 8 blocks improve-or-tie, zero block worse. Threshold 0.7922 in-sample (fitted quantile) but neighborhood degrades gracefully (loscut .27@.72->.14@.83), no knife-edge. Only honest caveats: maxstreak unchanged at 7 (does not improve, but does not worsen = passes regua) and no Bonferroni on ~700 scanned candidates = calibration not proof. No veto trigger fires under the recalibrated regua.
+
+  • E5_demand (macro_drop_atr<=3.6 AND in_demand==1, outcome=R_reclaim): WR_after=0.5 streak_after=9 winners_kept=95.68%
+    Reproduced exactly. sell_w (weak SELL-bubble polarity at reclaim bar) is orthogonal/causal, NOT look-ahead (not in outcome/idx forbidden set, not rule-defining). Cuts 27 losers vs only 12 winners (cut-subset WR=0.308, genuinely loser-skewed). Winners kept 95.68% (>=90 gate ok). WR 0.487->0.500, maxstreak 10->9. Year-stable: every year improves (y24 +0.008, y25 +0.015, y26 +0.015), none worsens. Per-block 7/8 improve/flat; only 2024-11-25 dips -0.020 (tiny 1-block noise, no collapse). Binary feature so no threshold neighborhood to collapse. Genuine but modest lapidacao, exactly as author disclosed honestly; calibration on 571, not validation, not promotable alone.
+
+
+===== PROPOSALS (antes/depois por alvo) =====
+
+[E0_8atr] ANTES n=2615 WR=66.1 streak=28
+  FILTRO: nenhum — nenhum filtro causal separa winner de loser. O melhor candidato (atr_regime>=0.637) corta 11.9% dos losers mantendo 91.0% dos winners, mas isso eh corte ~proporcional ao base-rate (cut losers 11.9% vs perde 9% winners), WR sobe so 66.1%->66.8% (+0.7pp, dentro do ruido), e maxstreak quase nao muda (28->26). Reportado como ensinamento, nao como edge.
+  DEPOIS n=2354 WR=66.8 streak=26 winners_kept=91% losers_cut=11.9% | ano 62.8/70/63.7
+
+[E1_flush] ANTES n=226 WR=0.531 streak=7
+  FILTRO: KEEP if low_closepos<=0.7922 (reclaim bar closes in lower ~3/4 of its own range). Cut losers = reclaim bars that close in the top quarter of range (>0.79) = exhaustion/blowoff into the close with no follow-through. Orthogonal to rule axes rsi_low/disp4_atr.
+  DEPOIS n=192 WR=0.573 streak=7 winners_kept=91.7% losers_cut=22.6% | ano 0.518/0.606/0.568
+
+[E2_discount (dist_ema_atr<0 AND ema_slope_atr>0; outcome=R_reclaim)] ANTES n=411 WR=44.5 streak=9
+  FILTRO: KEEP if disp4_atr <= -0.333 (deeper 4-bar down-displacement into the rising-EMA discount before the reclaim). Orthogonal single predicate; cuts shallow/no-impulse pullbacks.
+  DEPOIS n=353 WR=46.7 streak=7 winners_kept=90.2% losers_cut=17.5% | ano 44.4/50.8/40
+
+[E3_shallowleg (members: macro_drop_atr<4 AND disp4_atr<-0.5; outcome=R_reclaim)] ANTES n=294 WR=48.6 streak=7
+  FILTRO: low_wick>=0.155 AND sell_pol<=0.5 (KEEP). Orthogonal causal pair: require a real rejection wick at the reclaim low (low_wick, structural absorption of the down-leg) AND no net bearish bubble polarity overhead (sell_pol<=0.5, no fresh distribution capping the bounce). Removes shallow-leg reclaims with no wick rejection and/or bearish overhead.
+  DEPOIS n=254 WR=50.8 streak=6 winners_kept=90.2% losers_cut=17.2% | ano 56.4/49.6/43.6
+
+[E4_bullbos] ANTES n=431 WR=49 streak=7
+  FILTRO: nenhum (filtro robusto). Lente menos-ruidosa, reportada apenas como ensino: cortar reclaims com buy_L>=1 (presenca de >=1 bubble de COMPRA LARGE no bar do reclaim; buy_L e CONTAGEM, nao flag). Keep = buy_L==0.
+  DEPOIS n=383 WR=49.6 streak=6 winners_kept=90% losers_cut=12.3% | ano 56.4/46.4/50.8
+
+[E5_demand (macro_drop_atr<=3.6 AND in_demand==1, outcome=R_reclaim)] ANTES n=571 WR=0.487 streak=10
+  FILTRO: sell_w==0 — KEEP reclaim bars with NO weak SELL-bubble polarity present; CUT bars where a weak SELL bubble is active. Single orthogonal causal feature (bubble polarity), not in rule definition, not look-ahead (read at reclaim bar).
+  DEPOIS n=532 WR=0.5 streak=9 winners_kept=95.68% losers_cut=9.22% | ano 0.4971/0.5271/0.4167
+
+
+===== VERDICT =====
+Vou sintetizar os números factualmente, sem opinião sobre manter/descartar.
+
+# LAPIDAÇÃO (corte-de-loser) — XAU 15M — resultado por alvo
+
+Verificação adversarial aplicada: dos 6 alvos testados, **2 sobreviveram** (E1_flush, E5_demand). Os outros 4 não apresentaram filtro robusto.
+
+---
+
+## FILTROS QUE SOBREVIVERAM
+
+### E1_flush
+| | ANTES | DEPOIS |
+|---|---|---|
+| n | 226 | 192 |
+| WR | 53,1% | 57,3% |
+| maxstreak | 7 | 7 (não mudou) |
+
+- Winners mantidos: 91,7% · Losers cortados: 22,6% (24 de 106)
+- WR por ano: 2024 49→52% · 2025 55→61% · 2026 55→57% (todo ano melhora, nenhum piora)
+- **O que separou winner de loser:** `low_closepos` — onde a barra de reclaim FECHA dentro do próprio range. Loser = fecha no quarto de cima (>0,79) = vela de exaustão/blowoff que fecha forte mas sem comprador restante. Winner = fecha nos 3/4 de baixo = absorção com espaço acima.
+
+### E5_demand
+| | ANTES | DEPOIS |
+|---|---|---|
+| n | 571 (corpus) | — |
+| WR | 48,7% | 50,0% |
+| maxstreak | 10 | 9 |
+
+- Winners mantidos: 95,7% · Losers cortados: 27 losers vs 12 winners (subgrupo cortado WR=30,8%)
+- WR por ano: todo ano melhora (2024 +0,8pp · 2025 +1,5pp · 2026 +1,5pp); nenhum piora; 7/8 blocos melhoram/empatam
+- **O que separou winner de loser:** `sell_w` (bubble SELL fraca na barra de reclaim) — feature binária, ortogonal e causal.
+
+---
+
+## ALVOS SEM FILTRO ROBUSTO (ensinamento)
+
+### E0_8atr — nenhum filtro robusto
+- ANTES: n 2615 · WR 66,1% · maxstreak 28
+- Melhor candidato (atr_regime≥0,637): WR 66,1→66,8% (+0,7pp, dentro do ruído), maxstreak 28→26, corta 11,9% losers mantendo 91% winners = corte ~proporcional ao base-rate.
+- Diagnóstico: nenhuma das 38 features causais separa winner de loser (maior effect size = 0,093, quase todas <0,08). Edge mora no próprio gatilho 8ATR + comportamento pós-entrada, não numa seleção extra no bar do reclaim. Não-estacionário (3 de 8 blocos pioram).
+
+### E2_discount — nenhum filtro robusto
+- ANTES: n 411 · WR 44,5% · maxstreak 9
+- Candidato (disp4_atr≤−0,333): WR 44,5→46,7% (+2,2pp), maxstreak 9→7, winners 90,2%, losers 17,5%.
+- Falha no gate de estacionariedade: ganho concentrado em 2025 (48,1→50,8); 2024 plano (44,4) e 2026 em 40,0 — ambos abaixo da base global 44,5%. Direção da feature (disp4_atr, displacement de 4 barras) separa, mas a magnitude não se sustenta.
+
+### E3_shallowleg — nenhum filtro robusto
+- ANTES: n 294 · WR 48,6% · maxstreak 7
+- Candidato (low_wick≥0,155 AND sell_pol≤0,5): WR 48,6→50,8% (+2,2pp), maxstreak 7→6, winners 90,2% (no piso), losers 17,2%.
+- Falha: 2026 PIORA (45,7→43,6); 2/8 blocos pioram; metade sell_pol é knife-edge. Não-estacionário no ano mais recente.
+
+### E4_bullbos — nenhum filtro robusto
+- ANTES: n 431 · WR 49,0% · maxstreak 7
+- Candidato (buy_L): WR 49,0→49,6% (+0,65pp, dentro do ruído), maxstreak 7→6, winners 90%.
+- Falha: em 2025 (59% da amostra, o ano dominante) o filtro PIORA o WR (−0,6pp) e corta mais winner que loser nesse ano; 2/8 blocos pioram. Inversão de sinal por ano dispara veto.
+
+---
+
+Nota factual: ambos sobreviventes são calibração sobre o corpus (E1=226, E5=571), não validação independente; nenhum reduz maxstreak; nenhum passou por correção de Bonferroni (~700 candidatos varridos cada).
