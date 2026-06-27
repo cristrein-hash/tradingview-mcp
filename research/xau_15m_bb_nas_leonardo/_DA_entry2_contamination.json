@@ -1,0 +1,35 @@
+{
+ "reclaim_atr+h1_pos+killzone": {
+  "mf_in": 27,
+  "mfr_in": 37,
+  "mf_out": 31,
+  "mfr_out": 102,
+  "share_in": 0.422,
+  "share_out": 0.233,
+  "base_share": 0.294,
+  "enrichment": 0.127,
+  "fisher_p": 0.006
+ },
+ "legpos60+reclaim_atr+killzone": {
+  "mf_in": 26,
+  "mfr_in": 40,
+  "mf_out": 32,
+  "mfr_out": 99,
+  "share_in": 0.394,
+  "share_out": 0.244,
+  "base_share": 0.294,
+  "enrichment": 0.1,
+  "fisher_p": 0.023
+ },
+ "pullback_depth+reclaim_atr+killzone": {
+  "mf_in": 26,
+  "mfr_in": 40,
+  "mf_out": 32,
+  "mfr_out": 99,
+  "share_in": 0.394,
+  "share_out": 0.244,
+  "base_share": 0.294,
+  "enrichment": 0.1,
+  "fisher_p": 0.023
+ }
+}

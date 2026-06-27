@@ -1,0 +1,32 @@
+{
+ "checked": 1501,
+ "mismatches": {
+  "reclaim_atr": 0,
+  "reclaim_ema_bars": 0,
+  "micro_hl": 0,
+  "confirm_body_atr": 0,
+  "low_wick": 0,
+  "up_closes_pc": 0,
+  "above_ema21": 0,
+  "downleg_decel": 0,
+  "pullback_depth": 0,
+  "swept_prior_low": 0
+ },
+ "leak": false,
+ "windows": {
+  "reclaim_atr": "lo@p, c@cj -> [p,cj] OK",
+  "reclaim_ema_bars": "loop x in [p,cj], ema[x-60..x] -> max cj OK",
+  "micro_hl": "range (p,cj] -> OK",
+  "confirm_body_atr": "s[cj] only -> OK",
+  "low_wick": "s[p] only -> OK",
+  "up_closes_pc": "range (p,cj] -> OK",
+  "above_ema21": "ema[cj-60..cj] -> OK",
+  "downleg_decel": "ranges [p-6,p] -> OK (pre-low)",
+  "pullback_depth": "[p-60,p] -> OK (pre-low)",
+  "swept_prior_low": "swing q<p, window [q-2,q+2] with q+2<p -> < p < cj OK",
+  "demand_reclaim/in_demand/dist_demand/clean_sky": "zones filtered born_t<=tc(=cj.t) -> causal OK",
+  "buy/sell_bub_w": "bubbles with t<=tc AND known_at<=tc -> causal OK",
+  "nas_long_16": "nas events t<=tc -> OK",
+  "h1/h4 ctx": "htf bars t_end<=tc -> closed HTF only OK"
+ }
+}

@@ -1,0 +1,233 @@
+{
+ "all": {
+  "n": 4502,
+  "WR": 34.4,
+  "sumR": 471.6,
+  "avgR": 0.105,
+  "maxDD": -125.4,
+  "mf": 58,
+  "medfraco": 139,
+  "none": 4305
+ },
+ "all_byyear": {
+  "2024": {
+   "n": 1366,
+   "WR": 33.7,
+   "sumR": 119.2,
+   "avgR": 0.087,
+   "maxDD": -85.2,
+   "mf": 20,
+   "medfraco": 45,
+   "none": 1301
+  },
+  "2025": {
+   "n": 2246,
+   "WR": 35.6,
+   "sumR": 359.4,
+   "avgR": 0.16,
+   "maxDD": -63.4,
+   "mf": 32,
+   "medfraco": 62,
+   "none": 2152
+  },
+  "2026": {
+   "n": 890,
+   "WR": 32.2,
+   "sumR": -7.0,
+   "avgR": -0.008,
+   "maxDD": -125.4,
+   "mf": 6,
+   "medfraco": 32,
+   "none": 852
+  }
+ },
+ "matched_mf": {
+  "n": 58,
+  "WR": 93.1,
+  "sumR": 153.6,
+  "avgR": 2.649,
+  "maxDD": -0.4,
+  "mf": 58,
+  "medfraco": 0,
+  "none": 0
+ },
+ "matched_medfraco": {
+  "n": 139,
+  "WR": 83.5,
+  "sumR": 180.4,
+  "avgR": 1.298,
+  "maxDD": -3.0,
+  "mf": 0,
+  "medfraco": 139,
+  "none": 0
+ },
+ "all_bottoms": {
+  "n": 197,
+  "WR": 86.3,
+  "sumR": 334.0,
+  "avgR": 1.696,
+  "maxDD": -3.0,
+  "mf": 58,
+  "medfraco": 139,
+  "none": 0
+ },
+ "none": {
+  "n": 4305,
+  "WR": 32.0,
+  "sumR": 137.5,
+  "avgR": 0.032,
+  "maxDD": -155.3,
+  "mf": 0,
+  "medfraco": 0,
+  "none": 4305
+ },
+ "combos": {
+  "reclaim_atr+h1_pos+killzone": {
+   "overall": {
+    "n": 369,
+    "WR": 43.1,
+    "sumR": 7.9,
+    "avgR": 0.021,
+    "maxDD": -21.4,
+    "mf": 27,
+    "medfraco": 37,
+    "none": 305
+   },
+   "byyear": {
+    "2024": {
+     "n": 112,
+     "WR": 41.1,
+     "sumR": 2.5,
+     "avgR": 0.022,
+     "maxDD": -21.4,
+     "mf": 8,
+     "medfraco": 7,
+     "none": 97
+    },
+    "2025": {
+     "n": 184,
+     "WR": 44.0,
+     "sumR": 5.3,
+     "avgR": 0.029,
+     "maxDD": -17.0,
+     "mf": 19,
+     "medfraco": 16,
+     "none": 149
+    },
+    "2026": {
+     "n": 73,
+     "WR": 43.8,
+     "sumR": 0.1,
+     "avgR": 0.001,
+     "maxDD": -9.7,
+     "mf": 0,
+     "medfraco": 14,
+     "none": 59
+    }
+   },
+   "null_sumR_mean": 38.9,
+   "null_sumR_sd": 36.3,
+   "p_sumR": 0.821,
+   "p_avgR": 0.8225,
+   "null_avgR_mean": 0.105
+  },
+  "legpos60+reclaim_atr+killzone": {
+   "overall": {
+    "n": 407,
+    "WR": 42.8,
+    "sumR": -0.3,
+    "avgR": -0.001,
+    "maxDD": -18.5,
+    "mf": 26,
+    "medfraco": 40,
+    "none": 341
+   },
+   "byyear": {
+    "2024": {
+     "n": 114,
+     "WR": 40.4,
+     "sumR": 1.9,
+     "avgR": 0.016,
+     "maxDD": -18.5,
+     "mf": 6,
+     "medfraco": 9,
+     "none": 99
+    },
+    "2025": {
+     "n": 200,
+     "WR": 44.5,
+     "sumR": -2.7,
+     "avgR": -0.014,
+     "maxDD": -12.9,
+     "mf": 19,
+     "medfraco": 17,
+     "none": 164
+    },
+    "2026": {
+     "n": 93,
+     "WR": 41.9,
+     "sumR": 0.6,
+     "avgR": 0.006,
+     "maxDD": -14.0,
+     "mf": 1,
+     "medfraco": 14,
+     "none": 78
+    }
+   },
+   "null_sumR_mean": 42.2,
+   "null_sumR_sd": 38.0,
+   "p_sumR": 0.876,
+   "p_avgR": 0.8765,
+   "null_avgR_mean": 0.104
+  },
+  "pullback_depth+reclaim_atr+killzone": {
+   "overall": {
+    "n": 414,
+    "WR": 42.8,
+    "sumR": 0.2,
+    "avgR": 0.001,
+    "maxDD": -18.5,
+    "mf": 26,
+    "medfraco": 40,
+    "none": 348
+   },
+   "byyear": {
+    "2024": {
+     "n": 117,
+     "WR": 41.0,
+     "sumR": 1.7,
+     "avgR": 0.014,
+     "maxDD": -18.5,
+     "mf": 6,
+     "medfraco": 9,
+     "none": 102
+    },
+    "2025": {
+     "n": 204,
+     "WR": 44.1,
+     "sumR": -2.0,
+     "avgR": -0.01,
+     "maxDD": -12.9,
+     "mf": 19,
+     "medfraco": 17,
+     "none": 168
+    },
+    "2026": {
+     "n": 93,
+     "WR": 41.9,
+     "sumR": 0.6,
+     "avgR": 0.006,
+     "maxDD": -14.0,
+     "mf": 1,
+     "medfraco": 14,
+     "none": 78
+    }
+   },
+   "null_sumR_mean": 43.0,
+   "null_sumR_sd": 39.3,
+   "p_sumR": 0.86,
+   "p_avgR": 0.8585,
+   "null_avgR_mean": 0.104
+  }
+ }
+}

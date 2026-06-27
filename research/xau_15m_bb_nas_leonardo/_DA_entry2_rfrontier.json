@@ -1,0 +1,189 @@
+{
+ "universe_avgR": 0.105,
+ "n_combos": 680,
+ "top_by_avgR": [
+  {
+   "combo": "reclaim_atr+killzone",
+   "n": 978,
+   "WR": 44.1,
+   "sumR": 184.8,
+   "avgR": 0.189,
+   "mf": 34,
+   "p_avgR": 0.09133333333333334
+  },
+  {
+   "combo": "reclaim_atr+sell_bub_w+killzone",
+   "n": 978,
+   "WR": 44.1,
+   "sumR": 184.8,
+   "avgR": 0.189,
+   "mf": 34,
+   "p_avgR": 0.072
+  },
+  {
+   "combo": "reclaim_atr+buy_bub_w+killzone",
+   "n": 682,
+   "WR": 44.7,
+   "sumR": 125.9,
+   "avgR": 0.185,
+   "mf": 33,
+   "p_avgR": 0.13266666666666665
+  },
+  {
+   "combo": "reclaim_atr+swept_prior_low+killzone",
+   "n": 652,
+   "WR": 43.4,
+   "sumR": 117.2,
+   "avgR": 0.18,
+   "mf": 31,
+   "p_avgR": 0.15
+  },
+  {
+   "combo": "reclaim_atr+downleg_decel+killzone",
+   "n": 699,
+   "WR": 43.8,
+   "sumR": 116.1,
+   "avgR": 0.166,
+   "mf": 31,
+   "p_avgR": 0.202
+  },
+  {
+   "combo": "reclaim_atr+swept_prior_low+buy_bub_w",
+   "n": 776,
+   "WR": 43.7,
+   "sumR": 122.7,
+   "avgR": 0.158,
+   "mf": 37,
+   "p_avgR": 0.222
+  },
+  {
+   "combo": "reclaim_atr+buy_bub_w",
+   "n": 1030,
+   "WR": 43.9,
+   "sumR": 161.5,
+   "avgR": 0.157,
+   "mf": 39,
+   "p_avgR": 0.178
+  },
+  {
+   "combo": "reclaim_atr+buy_bub_w+sell_bub_w",
+   "n": 1030,
+   "WR": 43.9,
+   "sumR": 161.5,
+   "avgR": 0.157,
+   "mf": 39,
+   "p_avgR": 0.16666666666666666
+  },
+  {
+   "combo": "reclaim_atr+swept_prior_low",
+   "n": 1189,
+   "WR": 43.1,
+   "sumR": 176.8,
+   "avgR": 0.149,
+   "mf": 40,
+   "p_avgR": 0.19733333333333333
+  },
+  {
+   "combo": "reclaim_atr+swept_prior_low+sell_bub_w",
+   "n": 1189,
+   "WR": 43.1,
+   "sumR": 176.8,
+   "avgR": 0.149,
+   "mf": 40,
+   "p_avgR": 0.19066666666666668
+  }
+ ],
+ "top_by_sumR": [
+  {
+   "combo": "sell_bub_w+killzone",
+   "n": 2518,
+   "WR": 33.7,
+   "sumR": 323.0,
+   "avgR": 0.128,
+   "mf": 44,
+   "p_avgR": 0.198
+  },
+  {
+   "combo": "downleg_decel+sell_bub_w",
+   "n": 2566,
+   "WR": 35.5,
+   "sumR": 292.0,
+   "avgR": 0.114,
+   "mf": 49,
+   "p_avgR": 0.3606666666666667
+  },
+  {
+   "combo": "buy_bub_w+sell_bub_w",
+   "n": 2581,
+   "WR": 34.3,
+   "sumR": 279.4,
+   "avgR": 0.108,
+   "mf": 52,
+   "p_avgR": 0.45
+  },
+  {
+   "combo": "swept_prior_low+sell_bub_w",
+   "n": 2516,
+   "WR": 35.0,
+   "sumR": 276.5,
+   "avgR": 0.11,
+   "mf": 54,
+   "p_avgR": 0.4206666666666667
+  },
+  {
+   "combo": "reclaim_atr+sell_bub_w",
+   "n": 1814,
+   "WR": 43.8,
+   "sumR": 251.4,
+   "avgR": 0.139,
+   "mf": 43,
+   "p_avgR": 0.17666666666666667
+  },
+  {
+   "combo": "buy_bub_w+killzone",
+   "n": 1711,
+   "WR": 34.4,
+   "sumR": 212.8,
+   "avgR": 0.124,
+   "mf": 43,
+   "p_avgR": 0.30266666666666664
+  },
+  {
+   "combo": "buy_bub_w+sell_bub_w+killzone",
+   "n": 1711,
+   "WR": 34.4,
+   "sumR": 212.8,
+   "avgR": 0.124,
+   "mf": 43,
+   "p_avgR": 0.314
+  },
+  {
+   "combo": "swept_prior_low+downleg_decel",
+   "n": 1740,
+   "WR": 35.7,
+   "sumR": 196.6,
+   "avgR": 0.113,
+   "mf": 47,
+   "p_avgR": 0.42133333333333334
+  },
+  {
+   "combo": "swept_prior_low+downleg_decel+sell_bub_w",
+   "n": 1740,
+   "WR": 35.7,
+   "sumR": 196.6,
+   "avgR": 0.113,
+   "mf": 47,
+   "p_avgR": 0.404
+  },
+  {
+   "combo": "swept_prior_low+buy_bub_w",
+   "n": 1619,
+   "WR": 35.6,
+   "sumR": 189.6,
+   "avgR": 0.117,
+   "mf": 49,
+   "p_avgR": 0.37066666666666664
+  }
+ ],
+ "n_beat_raw_p05": 0
+}
