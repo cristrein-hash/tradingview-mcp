@@ -1,0 +1,123 @@
+======================================================================
+POINT 1 — REGIME CONFOUND (partial out macro_bull / h1_trend)
+======================================================================
+macro_bull==1: n=52  not-FRACO=0.577  MON+FORTE=0.250
+macro_bull==0: n=147 not-FRACO=0.605  MON+FORTE=0.313
+
+-- WITHIN ALL (n=199) AUC not-FRACO / MON+FORTE --
+   feat                   auc3   auc2   n1   n0
+   legpos90              0.625  0.689  119   80
+   h1_pos                0.624  0.692  119   80
+   rsi_min8              0.656  0.712  119   80
+   atr_regime            0.242   0.25  119   80
+   dist_demand_atr       0.576  0.541  119   80
+   h1_rsi                 0.65  0.679  119   80
+   atr_compression_pre   0.643  0.622  119   80
+   dealing_range_pos      0.58  0.607  117   80
+   h1_eff                0.373  0.355  119   80
+   vpnode_dist_atr       0.606  0.619  119   80
+
+-- WITHIN macro_bull==1 (n=52) AUC not-FRACO / MON+FORTE --
+   feat                   auc3   auc2   n1   n0
+   legpos90              0.632  0.755   30   22
+   h1_pos                0.605   0.78   30   22
+   rsi_min8              0.636  0.771   30   22
+   atr_regime            0.251  0.219   30   22
+   dist_demand_atr       0.573  0.535   30   22
+   h1_rsi                0.595  0.723   30   22
+   atr_compression_pre    0.68  0.655   30   22
+   dealing_range_pos     0.685  0.726   30   22
+   h1_eff                0.399  0.278   30   22
+   vpnode_dist_atr       0.627  0.699   30   22
+
+-- WITHIN macro_bull==0 (n=147) AUC not-FRACO / MON+FORTE --
+   feat                   auc3   auc2   n1   n0
+   legpos90              0.623  0.672   89   58
+   h1_pos                0.633   0.67   89   58
+   rsi_min8              0.671  0.711   89   58
+   atr_regime            0.239  0.263   89   58
+   dist_demand_atr       0.572  0.546   89   58
+   h1_rsi                0.675  0.695   89   58
+   atr_compression_pre   0.627  0.617   89   58
+   dealing_range_pos     0.539  0.568   87   58
+   h1_eff                0.359  0.371   89   58
+   vpnode_dist_atr         0.6  0.603   89   58
+
+   macro_bull alone: auc3=0.489 auc2=0.471   h1_trend alone: auc3=0.542 auc2=0.597
+
+======================================================================
+POINT 2 — YEAR CONCENTRATION (top-3 combos per-year n+rate)
+======================================================================
+
+combo h1_eff+downleg_eff+n_demand_near  n=26 rate3=0.962 lift=1.61 MON+FORTE=0.654
+   2024: n= 12 not-FRACO=1.000 MON+FORTE=0.667  (base3 yr=0.591)
+   2025: n= 10 not-FRACO=1.000 MON+FORTE=0.700  (base3 yr=0.649)
+   2026: n=  4 not-FRACO=0.750 MON+FORTE=0.500  (base3 yr=0.487)
+
+combo killzone+h1_eff+n_demand_near  n=35 rate3=0.943 lift=1.58 MON+FORTE=0.600
+   2024: n= 15 not-FRACO=1.000 MON+FORTE=0.667  (base3 yr=0.591)
+   2025: n= 16 not-FRACO=0.938 MON+FORTE=0.562  (base3 yr=0.649)
+   2026: n=  4 not-FRACO=0.750 MON+FORTE=0.500  (base3 yr=0.487)
+
+combo atr_regime+sweep_reclaim_bars+h1_eff  n=39 rate3=0.923 lift=1.54 MON+FORTE=0.564
+   2024: n= 13 not-FRACO=1.000 MON+FORTE=0.692  (base3 yr=0.591)
+   2025: n= 17 not-FRACO=0.941 MON+FORTE=0.588  (base3 yr=0.649)
+   2026: n=  9 not-FRACO=0.778 MON+FORTE=0.333  (base3 yr=0.487)
+
+======================================================================
+POINT 3 — SELECTION/MULTIPLE-TESTING (permutation null)
+======================================================================
+OBSERVED: best lift=1.608  #combos lift>=1.5 = 16
+NULL best-lift over K=300: mean=1.219 p50=1.216 p95=1.364 p99=1.442 max=1.470
+   empirical p(best>=observed 1.608) = 0/300 = 0.0000
+NULL #combos lift>=1.5: mean=0.0 p95=0 max=0   OBSERVED=16
+   total combos searched (n>=25 subset of 455); Bonferroni note: best combo p must beat 0.05/455=0.00011
+
+======================================================================
+POINT 4 — LABEL LEAK / LOOK-AHEAD
+======================================================================
+build_bottom_features.py L107-110: sweep_reclaim_bars scans range(i+1, i+8) => FORWARD bars after bottom bar i = LOOK-AHEAD.
+All other top features (legpos*, h1_*, rsi_min8, atr_*, dist_demand, vpnode) use i-N..i only (causal).
+sweep_reclaim_bars AUC3=0.356 (in engine top-14, dirn=-1).
+TOP14 with leak: True.  Re-running combo search WITHOUT sweep_reclaim_bars (TOP=13).
+Top-6 combos WITHOUT leaked feature:
+   h1_eff+downleg_eff+n_demand_near               n= 26 rate3=0.962 lift=1.61 MON+FORTE=0.65
+   killzone+h1_eff+n_demand_near                  n= 35 rate3=0.943 lift=1.58 MON+FORTE=0.60
+   atr_regime+h1_eff+downleg_eff                  n= 37 rate3=0.919 lift=1.54 MON+FORTE=0.62
+   killzone+h1_eff+h1_pos                         n= 36 rate3=0.917 lift=1.53 MON+FORTE=0.69
+   killzone+h1_eff+downleg_eff                    n= 36 rate3=0.917 lift=1.53 MON+FORTE=0.69
+   atr_regime+rsi_min8+h1_eff                     n= 47 rate3=0.915 lift=1.53 MON+FORTE=0.57
+
+======================================================================
+POINT 5 — EFFECT MAGNITUDE (AUC spread across 8 leave-block folds)
+======================================================================
+8 blocks.
+feat                 fullAUC foldMin foldMax  spread  per-fold
+rsi_min8               0.656   0.634   0.689   0.055  [0.64, 0.64, 0.67, 0.63, 0.65, 0.69, 0.67, 0.64]
+h1_rsi                  0.65   0.621   0.687   0.066  [0.64, 0.63, 0.66, 0.64, 0.64, 0.67, 0.69, 0.62]
+atr_compression_pre    0.643   0.628   0.666   0.038  [0.66, 0.63, 0.63, 0.63, 0.64, 0.67, 0.64, 0.65]
+legpos90               0.625   0.616   0.637   0.021  [0.62, 0.62, 0.62, 0.63, 0.63, 0.62, 0.64, 0.63]
+atr_regime             0.242   0.225   0.274   0.049  [0.25, 0.27, 0.23, 0.23, 0.25, 0.23, 0.24, 0.25]
+
+Per-block STANDALONE AUC (does 1 block carry the signal?):
+  rsi_min8: 05-25:0.789  08-25:0.762  11-25:0.542  02-25:0.757  05-25:0.682  08-25:0.346  11-25:0.511  02-25:0.651
+  atr_compression_pre: 05-25:0.546  08-25:0.69  11-25:0.719  02-25:0.739  05-25:0.668  08-25:0.454  11-25:0.659  02-25:0.646
+  legpos90: 05-25:0.657  08-25:0.69  11-25:0.632  02-25:0.614  05-25:0.588  08-25:0.7  11-25:0.517  02-25:0.596
+
+======================================================================
+POINT 6 — MEDIO PLACEMENT (FRACO-vs-MEDIO hard boundary)
+======================================================================
+tier counts: {'MONSTRO': 20, 'FORTE': 39, 'MEDIO': 60, 'FRACO': 80}
+
+AUC FRACO-vs-MEDIO (hard) and FRACO-vs-MON+FORTE (easy):
+feat                  F-vs-MED   F-vs-MF
+legpos90                 0.544     0.707
+h1_pos                   0.542     0.707
+rsi_min8                 0.576     0.736
+atr_regime               0.297     0.186
+dist_demand_atr          0.573      0.58
+h1_rsi                   0.597     0.703
+atr_compression_pre      0.619     0.667
+dealing_range_pos        0.543     0.618
+h1_eff                   0.415     0.331
+vpnode_dist_atr          0.575     0.637

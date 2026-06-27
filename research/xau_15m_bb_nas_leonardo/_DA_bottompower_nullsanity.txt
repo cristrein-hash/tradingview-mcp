@@ -1,0 +1,20 @@
+=== NULL SANITY (absolute rate3, immune to base-shift under shuffle) ===
+observed best abs rate3=0.962 combo=('h1_eff', 'downleg_eff', 'n_demand_near') n=26 base=0.598
+null best abs rate3: p50=0.724 p95=0.818 max=0.897 p(>=obs)=0.0000
+
+=== TIER GRADIENT (is tier a monotonic fn of leg-shallowness = continuation/beta axis?) ===
+MONSTRO  n= 20 legpos90=0.232 h1_pos=0.275 rsi_min8=36.8 atr_regime=0.80 h1_trend_up%=0.20 macro_bull%=0.20
+FORTE    n= 39 legpos90=0.114 h1_pos=0.153 rsi_min8=33.8 atr_regime=1.10 h1_trend_up%=0.26 macro_bull%=0.23
+MEDIO    n= 60 legpos90=0.042 h1_pos=0.054 rsi_min8=29.6 atr_regime=1.21 h1_trend_up%=0.08 macro_bull%=0.28
+FRACO    n= 80 legpos90=0.017 h1_pos=-0.050 rsi_min8=27.6 atr_regime=1.56 h1_trend_up%=0.11 macro_bull%=0.28
+Pearson legpos90 vs leg_atr(label source) r=0.460
+
+=== BLOCK STRUCTURE (leave-block folds are ~quarterly, span year boundaries) ===
+  2024-05-25: n= 27 yrs={2024: 27} tiers={'MONSTRO': 4, 'FORTE': 4, 'MEDIO': 12, 'FRACO': 7}
+  2024-08-25: n= 26 yrs={2024: 26} tiers={'MONSTRO': 2, 'FORTE': 7, 'MEDIO': 5, 'FRACO': 12}
+  2024-11-25: n= 25 yrs={2025: 12, 2024: 13} tiers={'FORTE': 9, 'MEDIO': 7, 'FRACO': 9}
+  2025-02-25: n= 24 yrs={2025: 24} tiers={'MONSTRO': 5, 'FORTE': 4, 'MEDIO': 5, 'FRACO': 10}
+  2025-05-25: n= 27 yrs={2025: 27} tiers={'FORTE': 7, 'MEDIO': 10, 'FRACO': 10}
+  2025-08-25: n= 23 yrs={2025: 23} tiers={'MONSTRO': 5, 'FORTE': 3, 'MEDIO': 7, 'FRACO': 8}
+  2025-11-25: n= 19 yrs={2026: 11, 2025: 8} tiers={'MONSTRO': 3, 'FORTE': 4, 'MEDIO': 4, 'FRACO': 8}
+  2026-02-25: n= 28 yrs={2026: 28} tiers={'MONSTRO': 1, 'FORTE': 1, 'MEDIO': 10, 'FRACO': 16}

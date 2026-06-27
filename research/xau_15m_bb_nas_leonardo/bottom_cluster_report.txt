@@ -1,0 +1,37 @@
+N=199 | base MON+FORTE=0.30  base FRACO=0.40 | features=46 | k=5
+
+=== CLUSTERS (família de fundo; rate MON+FORTE vs FRACO; eixos médios mais salientes) ===
+ C0: n= 51 MON+FORTE=0.24(x0.79) FRACO=0.41(x1.02) yr{2024: 15, 2025: 27, 2026: 9}
+     eixos: sweep_depth_atr-0.8, rsi_bull_div+0.8, sweep_reclaim_bars-0.7, h1_slope_atr-0.6, nas_long_16+0.6, dealing_range_pos+0.6
+ C1: n= 19 MON+FORTE=0.84(x2.84) FRACO=0.11(x0.26) yr{2024: 12, 2025: 5, 2026: 2}
+     eixos: legpos60+2.4, legpos90+2.3, legpos30+1.9, rsi_min8+1.6, h1_trend+1.5, h1_rsi+1.5
+ C2: n= 54 MON+FORTE=0.30(x1.00) FRACO=0.31(x0.78) yr{2024: 18, 2025: 27, 2026: 9}
+     eixos: h1_dist+0.7, downleg_eff-0.7, vpnode_dist_atr+0.7, demand_fresh+0.6, drop20_atr-0.6, low_closepos+0.6
+ C3: n= 42 MON+FORTE=0.26(x0.88) FRACO=0.55(x1.36) yr{2024: 12, 2025: 21, 2026: 9}
+     eixos: sweep_depth_atr+1.0, sweep_reclaim_bars+1.0, h1_pos-0.9, dealing_range_pos-0.8, demand_fresh-0.7, atr_compression_pre-0.6
+ C4: n= 33 MON+FORTE=0.12(x0.41) FRACO=0.52(x1.28) yr{2024: 9, 2025: 14, 2026: 10}
+     eixos: rsi_min8-1.4, rsi_head+1.2, rsi_low-1.2, sell_bub_w+1.2, h1_rsi-1.1, downleg_eff+1.1
+
+=== TWINS contrastivos (fundos próximos, tier oposto) — top 12 + eixo diferenciador ===
+ d=2.28 | 1729848600(FORTE) vs 1745587800(FRACO) | difere: dist_supply_atr(-0.8), low_revisit(+0.7)
+ d=3.67 | 1729848600(FORTE) vs 1718295300(FRACO) | difere: atr_regime(-2.1), h1_eff(+1.4)
+ d=3.71 | 1759462200(MONSTRO) vs 1773273600(FRACO) | difere: legpos60(+1.9), sweep_reclaim_bars(+1.7)
+ d=3.73 | 1729168200(FORTE) vs 1768336200(FRACO) | difere: legpos90(+2.0), vol_climax(+1.6)
+ d=3.75 | 1760068800(MONSTRO) vs 1746756000(FRACO) | difere: h1_eff(-2.1), demand_fresh(+2.0)
+ d=3.77 | 1752049800(FORTE) vs 1761303600(FRACO) | difere: h1_eff(-2.0), n_supply_overhead(+1.8)
+ d=3.82 | 1765260000(MONSTRO) vs 1745416800(FRACO) | difere: macro_bull(-2.3), killzone(-2.0)
+ d=3.85 | 1749434400(FORTE) vs 1777005000(FRACO) | difere: n_supply_overhead(-1.9), flush_v_ratio(+1.8)
+ d=3.93 | 1729848600(FORTE) vs 1761303600(FRACO) | difere: sweep_reclaim_bars(+2.0), demand_fresh(-2.0)
+ d=3.93 | 1722993300(FORTE) vs 1750771800(FRACO) | difere: killzone(-2.0), rsi_low(+1.5)
+ d=3.95 | 1765260000(MONSTRO) vs 1746756000(FRACO) | difere: h1_eff(-1.7), consec_down(+1.5)
+ d=4.08 | 1751235300(FORTE) vs 1758175200(FRACO) | difere: dist_supply_atr(+2.4), n_supply_overhead(+1.4)
+
+  features que mais diferenciam twins (freq no top-40 pares):
+    killzone: 12
+    demand_fresh: 9
+    n_supply_overhead: 6
+    flush_v_ratio: 5
+    low_revisit: 4
+    h1_eff: 4
+    macro_bear: 4
+    dist_supply_atr: 3
