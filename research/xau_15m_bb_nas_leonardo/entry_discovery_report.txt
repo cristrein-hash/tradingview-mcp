@@ -1,0 +1,24 @@
+N=4502 MON+FORTE=58 base=1.29%
+SINGLES:legpos90:0.218, legpos60:0.219, pullback_depth:0.780, rsi_low:0.251, rsi_min8:0.266, reclaim_atr:0.733, h1_pos:0.272, h1_rsi:0.282, swept_prior_low:0.689, h1_dist:0.314, buy_bub_w:0.325, reclaim_ema_bars:0.647, downleg_decel:0.361, h1_trend:0.380, sell_bub_w:0.612, killzone:0.399
+
+COMBOS (prec/lift/recall/mf/medfraco/none%/lbPrec):
+reclaim_atr+h1_pos+killzone: n369 prec0.073 lift5.7 rec0.466 mf27 medfraco37 none0.83 lb0.064
+legpos60+reclaim_atr+killzone: n407 prec0.064 lift5.0 rec0.448 mf26 medfraco40 none0.84 lb0.056
+pullback_depth+reclaim_atr+killzone: n414 prec0.063 lift4.9 rec0.448 mf26 medfraco40 none0.84 lb0.055
+legpos90+reclaim_atr+killzone: n423 prec0.061 lift4.8 rec0.448 mf26 medfraco38 none0.85 lb0.053
+rsi_min8+reclaim_atr+killzone: n395 prec0.061 lift4.7 rec0.414 mf24 medfraco38 none0.84 lb0.054
+reclaim_atr+h1_dist+killzone: n339 prec0.059 lift4.6 rec0.345 mf20 medfraco35 none0.84 lb0.05
+rsi_low+reclaim_atr+killzone: n433 prec0.058 lift4.5 rec0.431 mf25 medfraco39 none0.85 lb0.052
+reclaim_atr+h1_pos+downleg_decel: n481 prec0.056 lift4.4 rec0.466 mf27 medfraco70 none0.8 lb0.047
+reclaim_atr+h1_rsi+killzone: n413 prec0.056 lift4.3 rec0.397 mf23 medfraco39 none0.85 lb0.046
+reclaim_atr+h1_pos+swept_prior_low: n519 prec0.054 lift4.2 rec0.483 mf28 medfraco81 none0.79 lb0.046
+rsi_low+reclaim_atr+h1_pos: n482 prec0.054 lift4.2 rec0.448 mf26 medfraco77 none0.79 lb0.047
+reclaim_atr+h1_pos+buy_bub_w: n544 prec0.053 lift4.1 rec0.5 mf29 medfraco72 none0.81 lb0.045
+rsi_min8+downleg_decel+killzone: n532 prec0.053 lift4.1 rec0.483 mf28 medfraco40 none0.87 lb0.046
+rsi_min8+reclaim_atr+h1_pos: n489 prec0.053 lift4.1 rec0.448 mf26 medfraco77 none0.79 lb0.044
+rsi_min8+swept_prior_low+killzone: n636 prec0.052 lift4.0 rec0.569 mf33 medfraco53 none0.86 lb0.044
+legpos60+reclaim_atr+downleg_decel: n613 prec0.052 lift4.1 rec0.552 mf32 medfraco77 none0.82 lb0.045
+pullback_depth+reclaim_atr+downleg_decel: n621 prec0.052 lift4.0 rec0.552 mf32 medfraco77 none0.82 lb0.045
+legpos90+reclaim_atr+downleg_decel: n596 prec0.052 lift4.0 rec0.534 mf31 medfraco75 none0.82 lb0.045
+reclaim_atr+reclaim_ema_bars+killzone: n309 prec0.052 lift4.0 rec0.276 mf16 medfraco34 none0.84 lb0.047
+legpos90+rsi_low+reclaim_atr: n573 prec0.051 lift3.9 rec0.5 mf29 medfraco81 none0.81 lb0.046
