@@ -1,0 +1,55 @@
+BASE: strong(MON+FORTE)=0.0129  bottom=0.0438  weak=0.0175  N=4502
+
+Counts: Counter({'NONE': 4305, 'FRACO': 79, 'MEDIO': 60, 'FORTE': 39, 'MONSTRO': 19}) falling_knife= Counter({0: 4485, 1: 17}) yr= Counter({2025: 2246, 2024: 1366, 2026: 890}) 
+
+=== SINGLE-CONDITION CALIBRATION (threshold inspection only) ===
+sell_bub_w>=8                                465  10% | str  3.44 2.67x | bot 16.34 3.74x | weak  7.53 4.29x
+buy_bub_w>=8 (anti)                          834  19% | str  0.00 0.00x | bot  0.24 0.05x | weak  0.24 0.14x
+sell>buy bub                                1240  28% | str  2.26 1.75x | bot 10.89 2.49x | weak  4.68 2.67x
+nas_long_16>=2                               490  11% | str  2.45 1.90x | bot 14.90 3.40x | weak  7.55 4.30x
+h4n_nas_long_rec>=1                          278   6% | str  1.44 1.12x | bot  3.96 0.90x | weak  1.80 1.02x
+rsi_min8<28 (deep OS)                        437  10% | str  2.75 2.13x | bot 16.93 3.87x | weak  8.92 5.09x
+reclaim_atr>=2.0                            1214  27% | str  3.05 2.37x | bot  8.65 1.98x | weak  2.80 1.60x
+downleg_eff>=0.45 (flush)                    477  11% | str  2.73 2.12x | bot 13.63 3.11x | weak  6.71 3.82x
+atr_regime>1.6 (climax)                      442  10% | str  1.13 0.88x | bot  9.50 2.17x | weak  6.33 3.61x
+h1_pos<=0.2 (deep)                           554  12% | str  3.43 2.66x | bot 13.36 3.05x | weak  5.96 3.39x
+swept_prior_low=1                           2516  56% | str  2.15 1.67x | bot  7.51 1.72x | weak  3.02 1.72x
+htf_demand_confl=1                          1833  41% | str  1.25 0.97x | bot  5.51 1.26x | weak  2.35 1.34x
+
+=== ORTHOGONAL VOICES (each a sub-state) ===
+V_absorb (sell_bub>=8 & >buy)                464  10% | str  3.45 2.68x | bot 16.38 3.74x | weak  7.54 4.30x
+V_nas (nas16>=2 | h4nNAS>=1)                 730  16% | str  2.05 1.59x | bot 10.68 2.44x | weak  5.21 2.97x
+V_capit (rsi<30 & atrhot & swept)            220   5% | str  2.27 1.76x | bot 20.45 4.67x | weak 14.09 8.03x
+V_snap (reclaim>=2.0)                       1214  27% | str  3.05 2.37x | bot  8.65 1.98x | weak  2.80 1.60x
+V_htf (demand_confl | h4n_demand)           3469  77% | str  1.27 0.98x | bot  4.70 1.07x | weak  1.90 1.08x
+V_exhaust_ANTI (buy_bub>=8)                  834  19% | str  0.00 0.00x | bot  0.24 0.05x | weak  0.24 0.14x
+
+=== CONVERGENCE: k-of-voices {absorb, nas, snap, capit} ===
+>= 1 of 4 voices                            1948  43% | str  2.46 1.91x | bot  8.47 1.94x | weak  3.44 1.96x
+>= 2 of 4 voices                             518  12% | str  3.67 2.85x | bot 17.57 4.01x | weak  8.49 4.84x
+>= 3 of 4 voices                             140   3% | str  4.29 3.33x | bot 28.57 6.53x | weak 15.71 8.96x
+
+=== CONVERGENCE PAIRS / TRIPLES (capitulation-done reading) ===
+absorb & snap                                139   3% | str  7.91 6.14x | bot 28.78 6.58x | weak 10.07 5.74x
+capit & snap (flush+reclaim)                  58   1% | str  3.45 2.68x | bot 34.48 7.88x | weak 22.41 12.77x
+absorb & nas                                 251   6% | str  2.79 2.16x | bot 17.93 4.10x | weak  9.16 5.22x
+absorb & snap & nas                           58   1% | str  8.62 6.69x | bot 36.21 8.27x | weak 15.52 8.84x
+capit & snap & absorb                         27   1% | str  3.70 2.87x | bot 40.74 9.31x | weak 22.22 12.66x
+(absorb|capit) & snap & !exhaust             169   4% | str  7.10 5.51x | bot 28.99 6.63x | weak 12.43 7.08x
+
+=== IMPROVED FALLING-KNIFE FILTER (knife_v2) ===
+knife_v2 flags 20 (0.4% of pool)  vs existing falling_knife=17
+knife_v2 (REMOVE these)                       20   0% | str  0.00 0.00x | bot  5.00 1.14x | weak  5.00 2.85x
+AFTER removing knife_v2: kept=4482  strong kept=58/58  bottom kept=196/197
+
+=== knife_v2 ENRICHMENT among NONE (should over-target NONE) ===
+of 20 knife_v2: NONE=19 (95.0%), bottom=1, strong=0
+
+=== PER-YEAR robustness of top convergence (capit&snap) ===
+  2024: n=13 bottom%=15.4 (base 4.8) lift=3.23x
+  2025: n=23 bottom%=39.1 (base 4.2) lift=9.35x
+  2026: n=22 bottom%=40.9 (base 4.3) lift=9.58x
+kill_exhaust (buy_bub>=8 & >sell): n=834 (19%) strong=0 bottom=2
+COMBINED REMOVE (knife_v2 | exhaust): removed=843 (19%) strong_removed=0/58 bottom_removed=3/197
+  NONE in removed = 840/843 (100%)
+  KEPT pool strong=58/58 bottom=194/197
