@@ -1,0 +1,65 @@
+[setup] universo G=4499 | MON+FORTE=58 | regras=13
+[baseline take-all] 4499 avgR=0.1048 sumR=471.6 DD=-125.4 recall_MF=1.0
+====================================================================================================
+
+### ATTACK 1: NULL-OF-THE-MAX + Bonferroni (corrige a busca por ~13 regras)
+  K=2000 shuffles. null-of-MAX distribution: mean=0.2894 p95=0.6073 p99=0.8209 max=1.1003
+  rule                     obs_avgR  single_p  maxnull_p  verdict
+  TAKE-ALL                   0.1048    1.0000     1.0000  FAILS maxnull 
+  M1 anti-knife(macro)       0.1003    0.8705     1.0000  FAILS maxnull 
+  KNIFEKILL_v2(flow)         0.1229    0.0995     0.9550  FAILS maxnull <-- focus
+  M2 bullpullback+demand     0.0976    0.5675     1.0000  FAILS maxnull 
+  V_capit_done              -0.1291    0.8270     1.0000  FAILS maxnull 
+  V_absorb_snap              0.0978    0.5110     1.0000  FAILS maxnull 
+  voices>=2                 -0.0144    0.9345     1.0000  FAILS maxnull 
+  voices>=3                 -0.1875    0.9770     1.0000  FAILS maxnull 
+  R_ROOM sky>=1.5            0.3288    0.0000     0.3030  FAILS maxnull <-- focus
+  R_CONV fresh+room          0.5238    0.0000     0.0810  borderline <-- focus
+  KK + voices>=2            -0.0147    0.9350     1.0000  FAILS maxnull 
+  KK + V_capit_done         -0.1439    0.8420     1.0000  FAILS maxnull 
+  KK + R_ROOM                0.3459    0.0005     0.2745  FAILS maxnull <-- focus
+
+### ATTACK 2: CLEAN-SKY SENTINEL (sky==99 'no supply mapped' vs genuine 1.5<=sky<99)
+  R_ROOM total: {'n': 1025, 'wr': 40.5, 'sumR': 337.0, 'avgR': 0.3288, 'dd': -43.9, 'mf': 11, 'recall': 0.19, 'py': {2024: (246, 19.1, 0.078), 2025: (600, 292.7, 0.488), 2026: (179, 25.2, 0.141)}}
+  SENTINEL (sky==99, no supply above): {'n': 688, 'wr': 40.7, 'sumR': 252.7, 'avgR': 0.3673, 'dd': -39.1, 'mf': 5, 'recall': 0.086, 'py': {2024: (197, 22.8, 0.116), 2025: (404, 211.9, 0.525), 2026: (87, 18.0, 0.206)}}
+  GENUINE (1.5<=sky<99): {'n': 337, 'wr': 40.1, 'sumR': 84.3, 'avgR': 0.2501, 'dd': -26.7, 'mf': 6, 'recall': 0.103, 'py': {2024: (49, -3.7, -0.076), 2025: (196, 80.7, 0.412), 2026: (92, 7.3, 0.079)}}
+  universe sentinel share: 688/4499 = 0.153 | sentinel avgR=0.3673 vs nonsent avgR=0.0574
+  R_CONV total: {'n': 624, 'wr': 41.7, 'sumR': 326.9, 'avgR': 0.5238, 'dd': -32.7, 'mf': 7, 'recall': 0.121, 'py': {2024: (124, 6.3, 0.051), 2025: (395, 278.1, 0.704), 2026: (105, 42.5, 0.405)}}
+  R_CONV sentinel: {'n': 509, 'wr': 40.7, 'sumR': 232.4, 'avgR': 0.4567, 'dd': -32.7, 'mf': 3, 'recall': 0.052, 'py': {2024: (112, 10.7, 0.095), 2025: (322, 199.4, 0.619), 2026: (75, 22.4, 0.299)}}
+  R_CONV genuine: {'n': 115, 'wr': 46.1, 'sumR': 94.4, 'avgR': 0.821, 'dd': -13.3, 'mf': 4, 'recall': 0.069, 'py': {2024: (12, -4.3, -0.362), 2025: (73, 78.7, 1.078), 2026: (30, 20.1, 0.669)}}
+
+### ATTACK 3: STATIONARITY (sumR share by year, avgR ex-2025)
+  TAKE-ALL       sumR-share 24/25/26=0.253/0.762/-0.015 | ex2025: n=2254 avgR=0.0498 sumR=112.2 (base ex2025 avgR=0.0498)
+  R_ROOM         sumR-share 24/25/26=0.057/0.869/0.075 | ex2025: n=425 avgR=0.1043 sumR=44.3 (base ex2025 avgR=0.0498)
+  R_CONV         sumR-share 24/25/26=0.019/0.851/0.13 | ex2025: n=229 avgR=0.2131 sumR=48.8 (base ex2025 avgR=0.0498)
+  KK+R_ROOM      sumR-share 24/25/26=0.127/0.81/0.063 | ex2025: n=305 avgR=0.1462 sumR=44.6 (base ex2025 avgR=0.0498)
+  GENUINE_ROOM   sumR-share 24/25/26=-0.044/0.958/0.086 | ex2025: n=141 avgR=0.0252 sumR=3.5 (base ex2025 avgR=0.0498)
+
+### ATTACK 4: LEAVE-ONE-BLOCK (per block fold)
+  8 blocks: ['2024-05-25', '2024-08-25', '2024-11-25', '2025-02-25', '2025-05-25', '2025-08-25', '2025-11-25', '2026-02-25']
+  R_ROOM         full avgR=0.3288 | LOO min=0.2526 (drop block 2025-08-25) max=0.3772 | spread=0.125
+  R_CONV         full avgR=0.5238 | LOO min=0.4159 (drop block 2025-02-25) max=0.6243 | spread=0.208
+  KK+R_ROOM      full avgR=0.3459 | LOO min=0.2568 (drop block 2025-08-25) max=0.3939 | spread=0.137
+  GENUINE_ROOM   full avgR=0.2501 | LOO min=0.1891 (drop block 2025-05-25) max=0.3268 | spread=0.138
+
+### ATTACK 5: CONCENTRATION (tail dependence)
+  TAKE-ALL       n=4499 sumR=471.6 top5=91.3(19.4%) top10=167.7(35.6%) | rm-top5 avgR=0.0846 rm-top10 avgR=0.0677 | RCAP20 monsters=2 max=20.0
+  R_ROOM         n=1025 sumR=337.0 top5=77.2(22.9%) top10=132.4(39.3%) | rm-top5 avgR=0.2547 rm-top10 avgR=0.2015 | RCAP20 monsters=1 max=20.0
+  R_CONV         n=624 sumR=326.9 top5=72.4(22.1%) top10=126.1(38.6%) | rm-top5 avgR=0.4111 rm-top10 avgR=0.327 | RCAP20 monsters=1 max=20.0
+  KK+R_ROOM      n=678 sumR=234.5 top5=75.1(32.0%) top10=124.8(53.2%) | rm-top5 avgR=0.2369 rm-top10 avgR=0.1642 | RCAP20 monsters=1 max=20.0
+  GENUINE_ROOM   n=337 sumR=84.3 top5=61.4(72.9%) top10=92.6(109.9%) | rm-top5 avgR=0.0689 rm-top10 avgR=-0.0254 | RCAP20 monsters=0 max=16.7
+
+### ATTACK 6: RISK-ADJUSTED HONESTY (return-per-DD, avgR CI, recall cost)
+  TAKE-ALL       n=4499 avgR=0.1048 CI95=(0.0509, 0.1622) sumR=471.6 DD=-125.4 return/DD=3.76 recall_MF=1.0 (drops 0% of MON+FORTE)
+  R_ROOM         n=1025 avgR=0.3288 CI95=(0.1941, 0.4739) sumR=337.0 DD=-43.9 return/DD=7.68 recall_MF=0.19 (drops 81% of MON+FORTE)
+  R_CONV         n=624 avgR=0.5238 CI95=(0.3299, 0.7268) sumR=326.9 DD=-32.7 return/DD=10.0 recall_MF=0.121 (drops 88% of MON+FORTE)
+  KK+R_ROOM      n=678 avgR=0.3459 CI95=(0.1832, 0.5192) sumR=234.5 DD=-29.8 return/DD=7.87 recall_MF=0.19 (drops 81% of MON+FORTE)
+  GENUINE_ROOM   n=337 avgR=0.2501 CI95=(0.0415, 0.4859) sumR=84.3 DD=-26.7 return/DD=3.16 recall_MF=0.103 (drops 90% of MON+FORTE)
+  base return/DD=3.76
+
+### ATTACK 7: LOOK-AHEAD verification
+  clean_sky causal re-derive: checked=300 mismatches=0 (0=causal & faithful)
+  q4_fresh: uses H4 DEMAND with born_t<=cj_t (line 44 evaluator bisect on H4Db) — causal by construction
+  asof_bar uses t-tf (last CLOSED 4H bar) — confirmed line 21-24 build_engine3_features.py
+====================================================================================================
+DONE

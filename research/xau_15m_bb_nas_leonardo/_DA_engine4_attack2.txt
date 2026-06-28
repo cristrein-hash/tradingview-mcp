@@ -1,0 +1,20 @@
+### ATTACK 1b: null-of-max restrito a regras n>=300 (small-n rules inflam o max)
+  regras n>=300 (excl take-all): ['M1 anti-knife(macro)', 'KNIFEKILL_v2(flow)', 'M2 bullpullback+demand', 'voices>=2', 'R_ROOM sky>=1.5', 'R_CONV fresh+room', 'KK + voices>=2', 'KK + R_ROOM']
+  null-of-max(n>=300): mean=0.1798 p95=0.2756 p99=0.3313
+    R_ROOM sky>=1.5        obs=0.3288 maxnull_p=0.0107 CLEARS
+    R_CONV fresh+room      obs=0.5238 maxnull_p=0.0000 CLEARS
+    KK + R_ROOM            obs=0.3459 maxnull_p=0.0067 CLEARS
+    KNIFEKILL_v2(flow)     obs=0.1229 maxnull_p=0.8823 FAILS
+
+### R_CONV GENUINE (q4_fresh<=30 & 1.5<=sky<99) — full gauntlet
+  base: {'n': 115, 'wr': 46.1, 'sumR': 94.4, 'avgR': 0.821, 'dd': -13.3, 'mf': 4}
+  ex-2025: {'n': 42, 'wr': 38.1, 'sumR': 15.7, 'avgR': 0.3745, 'dd': -11.3, 'mf': 1}  (base ex2025 avgR=0.0498)
+  top5 share=56.6% rm-top5 avgR=0.3729 max=14.0
+  LOO avgR min=0.6732 max=0.9603
+  single null p=0.0005  | maxnull_p=0.0000
+
+### SENTINEL CHARACTER: is 'no supply above' = strong-uptrend/ATH beta?
+  h4n_trend: SENTINEL up%=99.7 dn%=0.3 | NONSENT up%=53.6 dn%=46.4
+  h1n_trend: SENTINEL up%=100.0 dn%=0.0 | NONSENT up%=66.6 dn%=33.4
+  sentinel year dist: 2024=197 2025=404 2026=87
+  sentinel ex-2025 avgR=0.1435  vs nonsent ex-2025 avgR=0.0363
