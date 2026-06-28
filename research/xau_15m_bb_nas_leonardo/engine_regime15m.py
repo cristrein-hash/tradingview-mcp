@@ -28,8 +28,8 @@ def ema_at(i,n):
     return e
 # pré-computa emas/slopes
 E20=[ema_at(i,20) for i in range(len(DK))]; E50=[ema_at(i,50) for i in range(len(DK))]; E100=[ema_at(i,100) for i in range(len(DK))]
-def raw_label(i,N,eff_thr,slope_thr):
-    if i<max(N,30): return "RANGE"
+def raw_label(i,N,eff_thr,slope_thr,R_thr):
+    if i<max(2*N,40): return "RANGE"
     a=atr(i) or 1.0
     slope=(E50[i]-E50[i-5])/a
     seg=DC[i-N:i+1]; net=seg[-1]-seg[0]; path=sum(abs(seg[j]-seg[j-1]) for j in range(1,len(seg))); eff=abs(net)/path if path>0 else 0
@@ -40,17 +40,24 @@ def raw_label(i,N,eff_thr,slope_thr):
     sec_bull= E50[i]>E100[i] and slope100>0
     sec_bear= E50[i]<E100[i] and slope100<0
     contained= eff<eff_thr and 0.15<=pos<=0.85 and abs(slope)<slope_thr
+    # --- ONSET DE BAIXA (estrutural, causal) ---
+    peak=max(DH[i-30:i+1]); retreat=(peak-DC[i])/a
+    lower_high= max(DH[i-N:i]) < max(DH[i-2*N:i-N])
+    below_ema_fall= DC[i]<E50[i] and (E50[i]-E50[i-5])<0
+    broke_low= DC[i] < min(DL[i-N:i-2])
+    bear_struct= (broke_low and below_ema_fall) or (retreat>=R_thr and lower_high and below_ema_fall) or (trend_dn) or (sec_bear and pos<0.6 and not contained)
+    if bear_struct: return "BEAR"
     if trend_up or (sec_bull and pos>0.55 and not contained): return "BULL"
-    if trend_dn or (sec_bear and pos<0.55 and not contained): return "BEAR"
     return "RANGE"
-def classify(N,eff_thr,slope_thr,K):
-    raw=[raw_label(i,N,eff_thr,slope_thr) for i in range(len(DK))]
+def classify(N,eff_thr,slope_thr,R_thr,K,Kbear):
+    raw=[raw_label(i,N,eff_thr,slope_thr,R_thr) for i in range(len(DK))]
     out=[]; cur="RANGE"; pend=None; pn=0
     for v in raw:
         if v==cur: pend=None; pn=0
         elif v==pend: pn+=1
         else: pend=v; pn=1
-        if pn>=K: cur=pend; pend=None; pn=0
+        need=Kbear if pend=="BEAR" else K   # BEAR confirma mais rápido (assimétrico)
+        if pn>=need: cur=pend; pend=None; pn=0
         out.append(cur)
     return out
 def cris_at(t):
@@ -72,11 +79,11 @@ def score(lab):
     glob=ag/sum(cnt.values())
     return glob,bal,{c:round(per[c]/cnt[c],2) for c in cnt}
 best=None
-for N,eff_thr,slope_thr,K in itertools.product((10,15,20),(0.30,0.40,0.50),(0.05,0.10,0.20),(3,5,8)):
-    lab=classify(N,eff_thr,slope_thr,K); glob,bal,pt=score(lab)
-    if best is None or bal>best[0]: best=(bal,glob,pt,(N,eff_thr,slope_thr,K),lab)
+for N,eff_thr,slope_thr,R_thr,K,Kbear in itertools.product((10,15,20),(0.30,0.40,0.50),(0.05,0.10,0.20),(2.0,3.0,4.0),(5,8),(2,3,5)):
+    lab=classify(N,eff_thr,slope_thr,R_thr,K,Kbear); glob,bal,pt=score(lab)
+    if best is None or bal>best[0]: best=(bal,glob,pt,(N,eff_thr,slope_thr,R_thr,K,Kbear),lab)
 bal,glob,pt,par,lab=best
-print(f"melhor config (balanceada): N={par[0]} eff_thr={par[1]} slope_thr={par[2]} K={par[3]}")
+print(f"melhor config (balanceada): N={par[0]} eff_thr={par[1]} slope_thr={par[2]} R_thr={par[3]} K={par[4]} Kbear={par[5]}")
 print(f"concordância GLOBAL={100*glob:.1f}% | BALANCEADA(média por tipo)={100*bal:.1f}% | por tipo: {pt}")
 # zonas geradas (merge dias consecutivos mesmo label) na cobertura
 segs=[]; cur=None
