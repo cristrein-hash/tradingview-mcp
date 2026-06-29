@@ -49,10 +49,14 @@ else:
 events.sort(key=lambda e:e["release_ts"])
 for e in events: e["hours_until"]=round((e["release_ts"]-NOWT)/3600,1)
 imminent=[e for e in events if 0<=e["hours_until"]<=96]
-# ---- Camada texto: news/Fed via coletor RSS keyless (snapshots/news_feed.json) ----
+# ---- Camada texto: Fed RSS (keyless) + Alpha Vantage market news (key) ----
 nf=H/"snapshots/news_feed.json"; news_recent=[]
 if nf.exists():
     try: news_recent=json.loads(nf.read_text()).get("recent_le7d",[])
+    except Exception: pass
+mn=H/"snapshots/market_news.json"; market_news=[]
+if mn.exists():
+    try: market_news=json.loads(mn.read_text()).get("recent_le72h",[])
     except Exception: pass
 nfp_next=next((e for e in imminent if e["event"].lower().startswith("nonfarm")),None)
 nfp_bias=(nfp_next or {}).get("direction",{}).get("bias") if nfp_next else None
@@ -71,8 +75,10 @@ for s in WL["sources"]:
         st="ok" if not stale else "partial_stale"
     elif s["id"]=="FED_RSS":
         st="live_keyless_fed_rss" if news_recent else "no_data"
+    elif s["kind"]=="news":
+        st="live_av_news" if market_news else "needs_vendor_key"   # Reuters/Bloomberg/FT abastecidos via Alpha Vantage
     elif s["tier"]=="tier2":
-        st="needs_vendor_key"   # Reuters/Bloomberg/FT = key de vendor OU Alpha Vantage (av-news MCP)
+        st="context_on_demand"   # WGC/LBMA/CME gold-commentary = agente sob demanda
     elif s["kind"]=="calendar":
         if s["id"]=="FOREXFACTORY": st="live_keyless" if events else "no_data"  # feed JSON FairEconomy
         else: st="cross_check_webfetch"  # TradingEconomics = cross-check on-demand
@@ -86,6 +92,7 @@ state={
  "layer_A_imminent_le96h":imminent,
  "layer_B_slow_macro":layerB,
  "layer_text_news_recent":news_recent[:10],
+ "layer_market_news_recent":market_news[:12],
  "source_health":health,
  "stale_series":stale,
  # schema external_* (consumo claude_recheck) — neutro até Tier-2 agents (Phase 3)
@@ -111,5 +118,5 @@ for e in imminent:
 from collections import Counter as _C
 _hc=_C(h['status'] for h in health)
 print(f"\nsource_health: "+" ".join(f"{k}={v}" for k,v in _hc.items()))
-print(f"news/Fed (keyless): {len(news_recent)} itens recentes ≤7d -> abastece fed-tone/news/source-reliability")
+print(f"news/Fed (keyless): {len(news_recent)} ≤7d | market news (Alpha Vantage): {len(market_news)} ≤72h -> abastece fed-tone/news/geopolitical/risk")
 print(f"external_risk_level={state['external_factors']['external_risk_level']} | freeze -> snapshots/latest.json")

@@ -15,8 +15,9 @@ def tier1_context():
     if p.exists():
         s=json.loads(p.read_text())
         return {"tier1":s.get("tier1_macro_recorded_context",{}),"events":s.get("layer_A_imminent_le96h",[]),
-                "layerB":s.get("layer_B_slow_macro",{}),"news":s.get("layer_text_news_recent",[])}
-    return {"tier1":{},"events":[],"layerB":{},"news":[]}
+                "layerB":s.get("layer_B_slow_macro",{}),"news_fed":s.get("layer_text_news_recent",[]),
+                "news_market":s.get("layer_market_news_recent",[])}
+    return {"tier1":{},"events":[],"layerB":{},"news_fed":[],"news_market":[]}
 SYS="""Você é o External Context Synthesizer (XAU/ouro) do módulo External Factors v2. Skills de referência (12):
 economic-calendar-reader, event-severity, fed-tone-interpreter, gold-driver-analyzer, macro-regime-builder,
 usd-regime-analyzer, yield-curve-reader, news-validation, news-deduplication, risk-classification,

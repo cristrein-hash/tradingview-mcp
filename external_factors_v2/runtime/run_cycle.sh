@@ -12,6 +12,8 @@ echo "=== $(date -u +%FT%TZ) ===" >> "$LOG"
 /usr/bin/python3 collectors/forexfactory_collect.py >> "$LOG" 2>&1 || echo "[warn] forexfactory_collect falhou" >> "$LOG"
 # 2b) news/Fed (keyless): RSS oficial Fed -> abastece skills de texto (fed-tone/news/source-reliability)
 /usr/bin/python3 collectors/fed_news_collect.py >> "$LOG" 2>&1 || echo "[warn] fed_news_collect falhou" >> "$LOG"
+# 2c) market news (Alpha Vantage, key): rate-limited 90min -> geopolitical-impact + news ampla
+/usr/bin/python3 collectors/av_news_collect.py >> "$LOG" 2>&1 || echo "[warn] av_news_collect falhou" >> "$LOG"
 # 3) ciclo do monitor (overlay consenso + freeze latest.json)
 /usr/bin/python3 runtime/monitor_external_factors.py >> "$LOG" 2>&1
 # 4) frota Tier-2 LLM via `claude -p` (DENTRO do plano Max — Opção B; sem billing de API).

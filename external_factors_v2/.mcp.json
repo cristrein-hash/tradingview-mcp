@@ -1,21 +1,11 @@
 {
-  "_comment": "External Factors v2 — MCP servers financeiros (whitelist, versões pinadas). Keys via .env (gitignored). FRED OMITIDO de propósito: Tier-1 já é keyless em Python (fred_collect.py). Calendário primário = coletor ForexFactory keyless; FMP aqui é p/ histórico de consenso/backtest. Servers Python via uvx (uv instalado). Aprovar via /mcp ou 'claude mcp list'.",
+  "_comment": "External Factors v2 — MCP servers. DECISÕES (2026-06-29): (1) worldbank = MCP user-scope (keyless, ativo via 'claude mcp add --scope user'). (2) av-news = MCP só p/ uso INTERATIVO ad-hoc; o DAEMON usa collectors/av_news_collect.py (rate-limited 90min) p/ feeding constante — rodar AV como MCP+collector estouraria o free 25/dia. Aprovar via /mcp quando quiser usar interativo. (3) FMP REMOVIDO: free tier não cobre economic-calendar (Restricted); ForexFactory cobre calendário keyless. (4) FRED omitido: Tier-1 já keyless em Python. Keys via raiz .env (gitignored).",
   "mcpServers": {
-    "worldbank": {
-      "command": "uvx",
-      "args": ["world-bank-mcp-server@0.1.0"],
-      "_source": "https://pypi.org/project/world-bank-mcp-server (anshumax) — KEYLESS, macro amplo WB/IMF (Camada B)"
-    },
     "av-news": {
       "command": "uvx",
-      "args": ["marketdata-mcp-server@0.3.1", "${ALPHAVANTAGE_API_KEY}"],
-      "env": { "ALPHAVANTAGE_API_KEY": "${ALPHAVANTAGE_API_KEY}" },
-      "_source": "https://github.com/alphavantage/alpha_vantage_mcp (oficial) — NEWS_SENTIMENT ticker/source-tagged. Key grátis (limite ~25/dia)"
-    },
-    "fmp-calendar": {
-      "type": "http",
-      "url": "https://financialmodelingprep.com/mcp?apikey=${FMP_API_KEY}",
-      "_source": "FMP oficial remoto — histórico de consenso/actual p/ backtest da direção. Key grátis (250/dia). ⚠️ key vai na URL (logs)"
+      "args": ["marketdata-mcp-server@0.3.1", "${ALPHA_VANTAGE_API_KEY}"],
+      "env": { "ALPHA_VANTAGE_API_KEY": "${ALPHA_VANTAGE_API_KEY}" },
+      "_source": "https://github.com/alphavantage/alpha_vantage_mcp — uso interativo ad-hoc (daemon usa o collector)"
     }
   }
 }
