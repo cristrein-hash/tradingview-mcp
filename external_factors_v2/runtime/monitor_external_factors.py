@@ -64,6 +64,11 @@ if gf.exists():
     try: gold=json.loads(gf.read_text())
     except Exception: pass
 gold_ok=bool(gold.get("price_comex",{}).get("price_usd") or gold.get("cot_comex",{}).get("noncomm_net") is not None)
+# ---- Fed path (proxy CME FedWatch via slope da curva, keyless) snapshots/fed_path.json ----
+fpf=H/"snapshots/fed_path.json"; fed_path={}
+if fpf.exists():
+    try: fed_path=json.loads(fpf.read_text())
+    except Exception: pass
 nfp_next=next((e for e in imminent if e["event"].lower().startswith("nonfarm")),None)
 nfp_bias=(nfp_next or {}).get("direction",{}).get("bias") if nfp_next else None
 # CPI/FOMC/PCE = via Calendar agent (Phase 3); marcados pendentes
@@ -89,6 +94,8 @@ for s in WL["sources"]:
         st="price_via_comex_futures"  # fixing descontinuado no FRED; benchmark=GCUSD
     elif s["id"]=="WGC":
         st="context_on_demand"  # relatórios demanda/ETF/central-bank (sem API free)
+    elif s["id"]=="CME_FEDWATCH":
+        st="live_proxy_curve" if fed_path.get("rate_path_bias") else "no_data"  # ZQ paywalled -> slope curva keyless
     elif s["tier"]=="tier2":
         st="context_on_demand"
     elif s["kind"]=="calendar":
@@ -106,6 +113,7 @@ state={
  "layer_text_news_recent":news_recent[:10],
  "layer_market_news_recent":market_news[:12],
  "layer_gold_canonical":{"price_comex":gold.get("price_comex"),"cot_comex":gold.get("cot_comex"),"wgc":gold.get("wgc")},
+ "layer_fed_path":{k:fed_path.get(k) for k in ("target_midpoint","sofr_overnight","short_curve","slope_6m_1m_bp","rate_path_bias","gold_read","next_fomc","_meta")},
  "source_health":health,
  "stale_series":stale,
  # schema external_* (consumo claude_recheck) — neutro até Tier-2 agents (Phase 3)
@@ -134,4 +142,5 @@ print(f"\nsource_health: "+" ".join(f"{k}={v}" for k,v in _hc.items()))
 print(f"news/Fed (keyless): {len(news_recent)} ≤7d | market news (Alpha Vantage): {len(market_news)} ≤72h -> abastece fed-tone/news/geopolitical/risk")
 _gp=gold.get("price_comex",{}); _gc=gold.get("cot_comex",{})
 print(f"OURO (CME/COMEX): preço {_gp.get('price_usd')} ({_gp.get('change_pct')}%) | COT net {_gc.get('noncomm_net')} ({_gc.get('report_date')}) -> abastece gold-driver")
+print(f"FED PATH (proxy FedWatch keyless): midpoint={fed_path.get('target_midpoint')} SOFR={fed_path.get('sofr_overnight')} | slope6m-1m={fed_path.get('slope_6m_1m_bp')}bp -> {fed_path.get('rate_path_bias')} (gold {fed_path.get('gold_read')})")
 print(f"external_risk_level={state['external_factors']['external_risk_level']} | freeze -> snapshots/latest.json")
