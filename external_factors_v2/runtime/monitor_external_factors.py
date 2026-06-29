@@ -49,6 +49,11 @@ else:
 events.sort(key=lambda e:e["release_ts"])
 for e in events: e["hours_until"]=round((e["release_ts"]-NOWT)/3600,1)
 imminent=[e for e in events if 0<=e["hours_until"]<=96]
+# ---- Camada texto: news/Fed via coletor RSS keyless (snapshots/news_feed.json) ----
+nf=H/"snapshots/news_feed.json"; news_recent=[]
+if nf.exists():
+    try: news_recent=json.loads(nf.read_text()).get("recent_le7d",[])
+    except Exception: pass
 nfp_next=next((e for e in imminent if e["event"].lower().startswith("nonfarm")),None)
 nfp_bias=(nfp_next or {}).get("direction",{}).get("bias") if nfp_next else None
 # CPI/FOMC/PCE = via Calendar agent (Phase 3); marcados pendentes
@@ -64,8 +69,10 @@ health=[]
 for s in WL["sources"]:
     if s["kind"]=="macro_numeric" and s["id"] in ("FRED",):
         st="ok" if not stale else "partial_stale"
+    elif s["id"]=="FED_RSS":
+        st="live_keyless_fed_rss" if news_recent else "no_data"
     elif s["tier"]=="tier2":
-        st="pending_phase3"   # news/gold-commentary só wired na frota LLM
+        st="needs_vendor_key"   # Reuters/Bloomberg/FT = key de vendor OU Alpha Vantage (av-news MCP)
     elif s["kind"]=="calendar":
         if s["id"]=="FOREXFACTORY": st="live_keyless" if events else "no_data"  # feed JSON FairEconomy
         else: st="cross_check_webfetch"  # TradingEconomics = cross-check on-demand
@@ -78,6 +85,7 @@ state={
  "layer_A_immediate_events":events,
  "layer_A_imminent_le96h":imminent,
  "layer_B_slow_macro":layerB,
+ "layer_text_news_recent":news_recent[:10],
  "source_health":health,
  "stale_series":stale,
  # schema external_* (consumo claude_recheck) — neutro até Tier-2 agents (Phase 3)
@@ -100,5 +108,8 @@ for e in imminent:
     extra=f" | consenso {e.get('consensus')} vs ant {e.get('previous')} -> dir={e.get('direction',{}).get('bias')}" if e.get('consensus_k') is not None else (f" | consenso {e.get('consensus')}" if e.get('consensus') else "")
     src=" [ForexFactory]" if e.get("source","").startswith("ForexFactory") else ""
     print(f"  [{e['impact']}] {e['event']} — {e['date']} (em {e['hours_until']}h){src} | {e['driver']}{extra}")
-print(f"\nsource_health: ok={sum(1 for h in health if h['status']=='ok')} pending_phase3={sum(1 for h in health if h['status']=='pending_phase3')} calendar_partial={sum(1 for h in health if h['status']=='deterministic_partial')}")
+from collections import Counter as _C
+_hc=_C(h['status'] for h in health)
+print(f"\nsource_health: "+" ".join(f"{k}={v}" for k,v in _hc.items()))
+print(f"news/Fed (keyless): {len(news_recent)} itens recentes ≤7d -> abastece fed-tone/news/source-reliability")
 print(f"external_risk_level={state['external_factors']['external_risk_level']} | freeze -> snapshots/latest.json")
