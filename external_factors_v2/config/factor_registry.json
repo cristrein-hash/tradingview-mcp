@@ -23,6 +23,11 @@
     {"id": "news_risk",     "input": "whitelisted_news_text",   "labels": ["risk_on","risk_off","neutral"], "output_numeric": false, "phase": 3},
     {"id": "event_severity","input": "calendar_event_meta",     "labels": ["low","med","high"], "output_numeric": false, "phase": 3},
     {"id": "geo_severity",  "input": "geopolitical_news_text",  "labels": ["low","med","high"], "output_numeric": false, "phase": 3},
-    {"id": "gold_driver",   "input": "wgc_lbma_cme_commentary", "labels": ["supportive","neutral","bearish"], "output_numeric": false, "phase": 3}
+    {"id": "gold_driver",   "input": "wgc_lbma_cme_commentary", "labels": ["supportive","neutral","bearish"], "output_numeric": false, "phase": 3},
+    {"id": "macro_regime",  "input": "tier1_yields_usd_vix_fedpolicy", "labels": ["risk_on","risk_off","neutral","tightening","easing"], "output_numeric": false, "phase": 3},
+    {"id": "usd_regime",    "input": "tier1_usd_broad_dxy_drivers", "labels": ["strong","weak","ranging"], "output_numeric": false, "phase": 3},
+    {"id": "yield_curve",   "input": "tier1_2s10s_real_breakeven", "labels": ["steepening","flattening","inverted","neutral"], "output_numeric": false, "phase": 3},
+    {"id": "risk_sentiment","input": "cross_asset_vix_curve_news", "labels": ["risk_on","risk_off","neutral"], "output_numeric": false, "phase": 3},
+    {"id": "source_reliability", "input": "news_source_id", "labels": ["high","medium","low","reject"], "output_numeric": false, "phase": 3}
   ]
 }
