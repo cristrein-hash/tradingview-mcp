@@ -1,0 +1,26 @@
+{
+  "_meta": {
+    "module": "external_factors_v2",
+    "created": "2026-06-29",
+    "principle": "NUNCA internet->Claude->trade. Só fontes autorizadas. Cada fonte taggeada por tier + headless_safe.",
+    "tiers": {
+      "tier1": "macro numérico DETERMINÍSTICO, tem histórico, backtestável, pode virar edge se validado",
+      "tier2": "LLM-interpretado (texto->label), realtime-only, NÃO-backtestável, contexto/flag human-in-loop, nunca edge, nunca emite número"
+    }
+  },
+  "sources": [
+    {"id": "FRED",        "tier": "tier1", "kind": "macro_numeric", "access": "public_csv",  "endpoint": "https://fred.stlouisfed.org/graph/fredgraph.csv?id={SERIES}", "auth": "none", "headless_safe": true, "note": "KEYLESS — export público fredgraph.csv (verificado 2026-06-29). Espinha do Tier-1."},
+    {"id": "FRED_API",    "tier": "tier1", "kind": "macro_numeric", "access": "api",         "endpoint": "https://api.stlouisfed.org/fred", "auth": "api_key_optional", "headless_safe": true, "note": "ALFRED vintages (valor as-of release, anti-revisão) requer key grátis. Opcional/upgrade."},
+    {"id": "UST",         "tier": "tier1", "kind": "macro_numeric", "access": "api",         "endpoint": "https://api.fiscaldata.treasury.gov", "auth": "none", "headless_safe": true, "note": "US Treasury yields oficiais, keyless."},
+    {"id": "CME_FEDWATCH","tier": "tier1", "kind": "rates_prob",    "access": "derived",     "endpoint": "fed_funds_futures", "auth": "none", "headless_safe": true, "note": "Prob. de hike/cut via futuros; derivar de FRED/CME público."},
+    {"id": "OPENECON_MCP","tier": "tier1", "kind": "macro_numeric", "access": "mcp",         "endpoint": "open-economic-data-mcp", "auth": "varies", "headless_safe": false, "note": "FRED/IMF/BIS/WorldBank/Eurostat. SÓ pesquisa interativa, NÃO no path daemon (auth)."},
+    {"id": "FOREXFACTORY","tier": "tier1", "kind": "calendar",      "access": "scrape_api",  "endpoint": "economic_calendar", "auth": "none", "headless_safe": true, "note": "Calendário: event_time + actual/consensus (numérico). Severidade=numérica."},
+    {"id": "TRADINGECON", "tier": "tier1", "kind": "calendar",      "access": "api",         "endpoint": "tradingeconomics", "auth": "api_key", "headless_safe": true, "note": "Calendário macro; key grátis tier limitado."},
+    {"id": "REUTERS",     "tier": "tier2", "kind": "news",          "access": "news_mcp",    "endpoint": "finance-news-mcp", "auth": "varies", "headless_safe": false, "note": "News TEXTO p/ classificação LLM (label only). Phase 3."},
+    {"id": "BLOOMBERG",   "tier": "tier2", "kind": "news",          "access": "news_mcp",    "endpoint": "finance-news-mcp", "auth": "varies", "headless_safe": false, "note": "idem"},
+    {"id": "FT_WSJ_AP",   "tier": "tier2", "kind": "news",          "access": "news_mcp",    "endpoint": "finance-news-mcp", "auth": "varies", "headless_safe": false, "note": "idem"},
+    {"id": "WGC",         "tier": "tier2", "kind": "gold_commentary","access": "web",        "endpoint": "https://www.gold.org", "auth": "none", "headless_safe": true, "note": "World Gold Council — narrativa gold-driver (label). Phase 3."},
+    {"id": "LBMA",        "tier": "tier2", "kind": "gold_commentary","access": "web",        "endpoint": "https://www.lbma.org.uk", "auth": "none", "headless_safe": true, "note": "idem"},
+    {"id": "CME",         "tier": "tier2", "kind": "gold_positioning","access": "web",       "endpoint": "https://www.cmegroup.com", "auth": "none", "headless_safe": true, "note": "COT/positioning narrativa. Phase 3."}
+  ]
+}

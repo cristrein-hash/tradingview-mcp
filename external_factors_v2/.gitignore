@@ -1,0 +1,5 @@
+snapshots/
+*.key
+.env
+.venv-agents/
+snapshots/macro_panel.jsonl
