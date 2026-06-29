@@ -58,6 +58,12 @@ mn=H/"snapshots/market_news.json"; market_news=[]
 if mn.exists():
     try: market_news=json.loads(mn.read_text()).get("recent_le72h",[])
     except Exception: pass
+# ---- Ouro: fontes canônicas (CME/COMEX preço+COT, keyless+FMP) snapshots/gold_data.json ----
+gf=H/"snapshots/gold_data.json"; gold={}
+if gf.exists():
+    try: gold=json.loads(gf.read_text())
+    except Exception: pass
+gold_ok=bool(gold.get("price_comex",{}).get("price_usd") or gold.get("cot_comex",{}).get("noncomm_net") is not None)
 nfp_next=next((e for e in imminent if e["event"].lower().startswith("nonfarm")),None)
 nfp_bias=(nfp_next or {}).get("direction",{}).get("bias") if nfp_next else None
 # CPI/FOMC/PCE = via Calendar agent (Phase 3); marcados pendentes
@@ -77,8 +83,14 @@ for s in WL["sources"]:
         st="live_keyless_fed_rss" if news_recent else "no_data"
     elif s["kind"]=="news":
         st="live_av_news" if market_news else "needs_vendor_key"   # Reuters/Bloomberg/FT abastecidos via Alpha Vantage
+    elif s["id"]=="CME":
+        st="live_gold_cme" if gold_ok else "no_data"   # preço GCUSD + COT positioning
+    elif s["id"]=="LBMA":
+        st="price_via_comex_futures"  # fixing descontinuado no FRED; benchmark=GCUSD
+    elif s["id"]=="WGC":
+        st="context_on_demand"  # relatórios demanda/ETF/central-bank (sem API free)
     elif s["tier"]=="tier2":
-        st="context_on_demand"   # WGC/LBMA/CME gold-commentary = agente sob demanda
+        st="context_on_demand"
     elif s["kind"]=="calendar":
         if s["id"]=="FOREXFACTORY": st="live_keyless" if events else "no_data"  # feed JSON FairEconomy
         else: st="cross_check_webfetch"  # TradingEconomics = cross-check on-demand
@@ -93,6 +105,7 @@ state={
  "layer_B_slow_macro":layerB,
  "layer_text_news_recent":news_recent[:10],
  "layer_market_news_recent":market_news[:12],
+ "layer_gold_canonical":{"price_comex":gold.get("price_comex"),"cot_comex":gold.get("cot_comex"),"wgc":gold.get("wgc")},
  "source_health":health,
  "stale_series":stale,
  # schema external_* (consumo claude_recheck) — neutro até Tier-2 agents (Phase 3)
@@ -119,4 +132,6 @@ from collections import Counter as _C
 _hc=_C(h['status'] for h in health)
 print(f"\nsource_health: "+" ".join(f"{k}={v}" for k,v in _hc.items()))
 print(f"news/Fed (keyless): {len(news_recent)} ≤7d | market news (Alpha Vantage): {len(market_news)} ≤72h -> abastece fed-tone/news/geopolitical/risk")
+_gp=gold.get("price_comex",{}); _gc=gold.get("cot_comex",{})
+print(f"OURO (CME/COMEX): preço {_gp.get('price_usd')} ({_gp.get('change_pct')}%) | COT net {_gc.get('noncomm_net')} ({_gc.get('report_date')}) -> abastece gold-driver")
 print(f"external_risk_level={state['external_factors']['external_risk_level']} | freeze -> snapshots/latest.json")
