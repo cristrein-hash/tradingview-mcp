@@ -31,7 +31,7 @@ def main():
         d=r.get("predicted_gold_dir")
         if d not in ("bullish","bearish","neutral"): continue
         hz=r.get("horizon_days")
-        if not isinstance(hz,(int,float)) or hz<=0: hz=90   # default quando vago/null
+        if not isinstance(hz,(int,float)) or hz<=0: hz=90; r["horizon_days"]=90   # default quando vago/null (persiste p/ auditoria)
         anchor=r.get("published_ts") or r.get("collected_ts")
         if not anchor: continue
         end=int(anchor+hz*86400)
