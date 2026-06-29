@@ -20,7 +20,11 @@ echo "=== $(date -u +%FT%TZ) ===" >> "$LOG"
 /usr/bin/python3 collectors/fedwatch_collect.py >> "$LOG" 2>&1 || echo "[warn] fedwatch_collect falhou" >> "$LOG"
 # 2f) teorias núcleo humano (não-dealer, RSS keyless) -> ledger + análise comparativa Tier-2
 /usr/bin/python3 collectors/theory_sources_collect.py >> "$LOG" 2>&1 || echo "[warn] theory_sources_collect falhou" >> "$LOG"
-# 2g) forward-scoring das teorias (hit-rate/Brier por fonte; fase acumulando até claims+horizontes)
+# 2f2) extrai CLAIM falsificável (dir+horizonte) via claude -p (Max, cap 8/ciclo) -> popula ledger
+if command -v claude >/dev/null 2>&1 || [ -x "$HOME/.local/bin/claude" ]; then
+  PATH="$HOME/.local/bin:$PATH" /usr/bin/python3 runtime/theory_extract.py >> "$LOG" 2>&1 || echo "[warn] theory_extract falhou" >> "$LOG"
+fi
+# 2g) forward-scoring REAL (hit-rate/Brier vs preço real do ouro no horizonte; weight ativa scored>=10)
 /usr/bin/python3 runtime/theory_score.py >> "$LOG" 2>&1 || echo "[warn] theory_score falhou" >> "$LOG"
 # 3) ciclo do monitor (overlay consenso + freeze latest.json)
 /usr/bin/python3 runtime/monitor_external_factors.py >> "$LOG" 2>&1

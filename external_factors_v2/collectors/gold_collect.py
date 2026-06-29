@@ -54,13 +54,46 @@ def cot_gold():
             "noncomm_net_read":("net_long (managed money comprado)" if (net or 0)>0 else "net_short (managed money vendido)") if net is not None else None,
             "comm_long":n("comm_positions_long_all"),"comm_short":n("comm_positions_short_all"),
             "source":"CFTC COT (keyless) — non-commercial = managed money proxy (smart money)"}
+HIST=SNAP/"gold_price_history.jsonl"
+def append_history(price):
+    """log diário de preço GCUSD (base do forward-scoring de teorias). dedup por dia."""
+    if price is None: return
+    today=dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d")
+    if HIST.exists():
+        lines=HIST.read_text().splitlines()
+        if lines:
+            try:
+                if json.loads(lines[-1]).get("date")==today: return  # já tem hoje
+            except Exception: pass
+    with open(HIST,"a") as fh: fh.write(json.dumps({"ts":NOWT,"date":today,"price":price})+"\n")
+def backfill_history():
+    """seed histórico EOD via FMP (best-effort; se gated, segue forward-only)."""
+    if HIST.exists() and HIST.read_text().strip(): return
+    if not FMP: return
+    raw=curl(f"https://financialmodelingprep.com/stable/historical-price-eod/light?symbol=GCUSD&apikey={FMP}")
+    try:
+        d=json.loads(raw)
+        rows=d if isinstance(d,list) else d.get("historical",[])
+        if not rows: print("  (backfill FMP historical gated/vazio -> forward-only)"); return
+        seen=set(); out=[]
+        for r in rows:
+            dd=str(r.get("date",""))[:10]; px=r.get("price") or r.get("close")
+            if dd and px and dd not in seen:
+                seen.add(dd); out.append({"ts":int(dt.datetime.strptime(dd,"%Y-%m-%d").replace(tzinfo=dt.timezone.utc).timestamp()),"date":dd,"price":px})
+        out.sort(key=lambda x:x["date"])
+        with open(HIST,"w") as fh:
+            for r in out: fh.write(json.dumps(r)+"\n")
+        print(f"  backfill FMP historical: {len(out)} dias de GCUSD")
+    except Exception: print("  (backfill FMP historical falhou -> forward-only)")
 def main():
+    backfill_history()
     gold={"_meta":{"built_ts":NOWT,"note":"fontes canônicas de ouro: CME/COMEX preço(FMP GCUSD)+posicionamento(CFTC COT). LBMA fixing descontinuado no FRED. WGC=context_on_demand."},
           "price_comex":gold_price(),"cot_comex":cot_gold(),
           "wgc":{"status":"context_on_demand","note":"World Gold Council: demanda/ETF/central-bank-buying via relatórios; agente lê sob demanda (sem API free)"},
           "lbma":{"status":"price_via_comex_futures","note":"LBMA fixing descontinuado no FRED (HTML); benchmark = GCUSD futures acima"}}
-    (SNAP/"gold_data.json").write_text(json.dumps(gold,indent=1,ensure_ascii=False))
     p=gold["price_comex"]; ct=gold["cot_comex"]
+    append_history(p.get("price_usd") if isinstance(p,dict) else None)
+    (SNAP/"gold_data.json").write_text(json.dumps(gold,indent=1,ensure_ascii=False))
     print("OURO (fontes canônicas):")
     print(f"  CME/COMEX preço: {p.get('price_usd')} USD ({p.get('change_pct')}%) vol={p.get('volume')}" if "price_usd" in p else f"  preço: {p.get('error')}")
     print(f"  CME/COMEX COT: net non-comm={ct.get('noncomm_net')} -> {ct.get('noncomm_net_read')} (report {ct.get('report_date')})" if "noncomm_net" in ct else f"  COT: {ct.get('error')}")

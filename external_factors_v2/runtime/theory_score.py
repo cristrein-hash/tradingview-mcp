@@ -1,52 +1,92 @@
 #!/usr/bin/env python3
-"""FORWARD-SCORING das TEORIAS (scaffold honesto).
-META (Cris): agregar teorias do núcleo credível e deixar a REALIDADE dar nota progressivamente ao longo da
-produção -> ML/validação REAL (não opinião-como-feature). Método: cada teoria do ledger recebe (1) um CLAIM
-falsificável + direção prevista p/ ouro + horizonte (extração = passo LLM Tier-2, fleet), depois (2) o scorer
-compara a direção prevista com o RETORNO REAL do ouro no horizonte -> hit/miss -> atualiza credibility-weight
-por FONTE (hit-rate + Brier). Forward genuíno no tempo (NÃO OOS histórico fitado = permitido pelo cânone).
-⚠️ HOJE: claims ainda não extraídos e outcomes ainda não venceram horizonte -> reporta 'acumulando'. Honesto:
-só fica significativo após semanas/meses de produção. Determinístico, py3.9. Lê snapshots/theory_ledger.jsonl."""
+"""FORWARD-SCORING das TEORIAS (scorer REAL).
+A realidade dá nota a cada claim: ancora no published_ts (data em que o analista falou — as-of, sem look-ahead),
+mede o retorno REAL do ouro (gold_price_history GCUSD) no horizonte e marca hit/miss + Brier. Atualiza
+credibility-weight por FONTE (weight = hit_rate quando scored>=10; senão 0.5 neutro). Calcula um CONSENSO
+ponderado (contexto, NUNCA gate — Fase 4). Forward genuíno no tempo (NÃO OOS fitado: a previsão precede o preço).
+Determinístico, py3.9. Lê theory_ledger.jsonl + gold_price_history.jsonl -> theory_scoreboard.json."""
 import json,datetime as dt
 from pathlib import Path
 H=Path(__file__).parent.parent; SNAP=H/"snapshots"
-LEDGER=SNAP/"theory_ledger.jsonl"; NOWT=int(dt.datetime.now(dt.timezone.utc).timestamp())
-def load():
-    if not LEDGER.exists(): return []
+LEDGER=SNAP/"theory_ledger.jsonl"; HIST=SNAP/"gold_price_history.jsonl"
+NOWT=int(dt.datetime.now(dt.timezone.utc).timestamp()); BAND=0.005  # ±0.5% banda do neutral
+def load_jsonl(p):
+    if not p.exists(): return []
     out=[]
-    for ln in LEDGER.read_text().splitlines():
+    for ln in p.read_text().splitlines():
         try: out.append(json.loads(ln))
         except Exception: pass
     return out
+def price_at(hist,ts,tol=8*86400):
+    """preço mais próximo no tempo (EOD diário); None se nada dentro de tol."""
+    best=None;bd=None
+    for h in hist:
+        d=abs(h["ts"]-ts)
+        if bd is None or d<bd: bd=d;best=h
+    return best["price"] if (best and bd is not None and bd<=tol) else None
 def main():
-    led=load()
-    by_src={}
-    for e in led: by_src.setdefault(e["source_id"],{"total":0,"with_claim":0,"scored":0,"hits":0,"briers":[]})
-    for e in led:
-        s=by_src[e["source_id"]]; s["total"]+=1
-        if e.get("claim"): s["with_claim"]+=1
-        if e.get("scored"):
+    rows=load_jsonl(LEDGER); hist=load_jsonl(HIST); changed=0
+    for r in rows:
+        if r.get("scored") or not r.get("gold_relevant"): continue
+        d=r.get("predicted_gold_dir")
+        if d not in ("bullish","bearish","neutral"): continue
+        hz=r.get("horizon_days")
+        if not isinstance(hz,(int,float)) or hz<=0: hz=90   # default quando vago/null
+        anchor=r.get("published_ts") or r.get("collected_ts")
+        if not anchor: continue
+        end=int(anchor+hz*86400)
+        if end>NOWT: continue                      # horizonte não venceu -> pendente
+        p0=price_at(hist,anchor); p1=price_at(hist,end)
+        if p0 is None or p1 is None: continue       # sem preço cobrindo -> não pontua
+        ret=(p1-p0)/p0; up=ret>0
+        hit = (d=="bullish" and ret>BAND) or (d=="bearish" and ret<-BAND) or (d=="neutral" and abs(ret)<=BAND)
+        prob_up=1.0 if d=="bullish" else (0.0 if d=="bearish" else 0.5)
+        r["scored"]=True; r["outcome"]="hit" if hit else "miss"; r["ret"]=round(ret,4)
+        r["brier"]=round((prob_up-(1.0 if up else 0.0))**2,3); r["outcome_ts"]=NOWT
+        r["p_anchor"]=p0; r["p_horizon"]=p1; changed+=1
+    if changed:
+        with open(LEDGER,"w") as fh:
+            for r in rows: fh.write(json.dumps(r,ensure_ascii=False)+"\n")
+    # scoreboard por fonte
+    by={}
+    for r in rows:
+        s=by.setdefault(r["source_id"],{"total":0,"extracted":0,"claims":0,"scored":0,"hits":0,"briers":[]})
+        s["total"]+=1
+        if r.get("extracted"): s["extracted"]+=1
+        if r.get("gold_relevant"): s["claims"]+=1
+        if r.get("scored"):
             s["scored"]+=1
-            if e.get("outcome")=="hit": s["hits"]+=1
-            if isinstance(e.get("brier"),(int,float)): s["briers"].append(e["brier"])
+            if r.get("outcome")=="hit": s["hits"]+=1
+            if isinstance(r.get("brier"),(int,float)): s["briers"].append(r["brier"])
     board=[]
-    for sid,s in by_src.items():
-        hit_rate=round(s["hits"]/s["scored"],3) if s["scored"] else None
-        brier=round(sum(s["briers"])/len(s["briers"]),3) if s["briers"] else None
-        # credibility weight = começa 0.5 (neutro), move com hit-rate quando houver amostra (>=10 scored)
-        weight=0.5 if not s["scored"] or s["scored"]<10 else round(hit_rate,3)
-        board.append({"source_id":sid,"theories_total":s["total"],"with_claim":s["with_claim"],
-                      "scored":s["scored"],"hit_rate":hit_rate,"brier":brier,"credibility_weight":weight,
-                      "status":"acumulando" if s["scored"]<10 else "ativo"})
-    board.sort(key=lambda x:(x["scored"],x["theories_total"]),reverse=True)
-    state={"_meta":{"built_ts":NOWT,"method":"forward hit-rate + Brier por fonte; weight ativa em scored>=10",
-            "honest_note":"claims ainda não extraídos (passo LLM) e horizontes não vencidos -> fase ACUMULANDO; significativo só após semanas/meses de produção"},
-           "scoreboard":board,"ledger_total":len(led),
-           "scored_total":sum(s["scored"] for s in by_src.values()),
-           "with_claim_total":sum(s["with_claim"] for s in by_src.values())}
+    for sid,s in by.items():
+        hr=round(s["hits"]/s["scored"],3) if s["scored"] else None
+        br=round(sum(s["briers"])/len(s["briers"]),3) if s["briers"] else None
+        weight=round(hr,3) if (s["scored"]>=10 and hr is not None) else 0.5
+        board.append({"source_id":sid,"theories":s["total"],"claims":s["claims"],"scored":s["scored"],
+                      "hit_rate":hr,"brier":br,"credibility_weight":weight,
+                      "status":"ativo" if s["scored"]>=10 else "acumulando"})
+    board.sort(key=lambda x:(x["scored"],x["claims"]),reverse=True)
+    wmap={b["source_id"]:b["credibility_weight"] for b in board}
+    # CONSENSO ponderado (contexto, NUNCA gate) — claims atuais bull/bear publicados ≤60d
+    num=den=0;n=0
+    for r in rows:
+        if not r.get("gold_relevant"): continue
+        d=r.get("predicted_gold_dir")
+        if d not in ("bullish","bearish"): continue
+        if (NOWT-(r.get("published_ts") or r.get("collected_ts") or NOWT))>60*86400: continue
+        w=wmap.get(r["source_id"],0.5); num+=w*(1 if d=="bullish" else -1); den+=w; n+=1
+    net=round(num/den,3) if den else 0.0
+    consensus="bullish-lean" if net>0.2 else ("bearish-lean" if net<-0.2 else "mixed/neutral")
+    state={"_meta":{"built_ts":NOWT,"method":"hit-rate+Brier por fonte (ancora published_ts, preço GCUSD real no horizonte); weight ativa scored>=10",
+            "gate":"CONTEXTO/flag — consenso NUNCA dispara trade (Fase 4: sign-off+default-deny)"},
+           "scoreboard":board,"ledger_total":len(rows),
+           "scored_total":sum(b["scored"] for b in board),"claims_total":sum(b["claims"] for b in board),
+           "price_history_days":len(hist),
+           "theory_consensus":{"net_weighted":net,"label":consensus,"n_claims":n,"note":"ponderado por credibility_weight; contexto, não-gate"}}
     (SNAP/"theory_scoreboard.json").write_text(json.dumps(state,indent=1,ensure_ascii=False))
-    print(f"THEORY FORWARD-SCORING (scaffold): ledger {len(led)} | claims {state['with_claim_total']} | scored {state['scored_total']}")
-    for b in board: print(f"  {b['source_id']:14} teorias={b['theories_total']:3} claims={b['with_claim']:3} scored={b['scored']:3} hit={b['hit_rate']} weight={b['credibility_weight']} [{b['status']}]")
-    print("  -> fase ACUMULANDO (precisa claims+horizontes vencidos); honesto. " )
+    print(f"THEORY SCORING: ledger {len(rows)} | claims {state['claims_total']} | scored {state['scored_total']} (+{changed} agora) | hist {len(hist)}d")
+    for b in board: print(f"  {b['source_id']:14} claims={b['claims']:3} scored={b['scored']:3} hit={b['hit_rate']} brier={b['brier']} weight={b['credibility_weight']} [{b['status']}]")
+    print(f"  CONSENSO ponderado: {consensus} (net {net}, n={n}) — CONTEXTO, nunca gate")
     print(f"-> {SNAP/'theory_scoreboard.json'}")
 if __name__=="__main__": main()
