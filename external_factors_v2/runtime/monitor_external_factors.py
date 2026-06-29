@@ -5,8 +5,12 @@
 - Camada B (macro lento): tendência de real-yield/USD/curva (rotação de smart money)
 - source_health por fonte canônica (ok/stale/pending) + freeze do estado.
 Determinístico, Python 3.9 (sem SDK). LaunchAgent persistente = sign-off do Cris (este roda on-demand)."""
-import json,subprocess,bisect,datetime as dt
+import json,subprocess,bisect,datetime as dt,sys
 from pathlib import Path
+sys.path.insert(0,str(Path(__file__).parent))
+try:
+    from load_env import load_env; load_env()
+except Exception: pass
 H=Path(__file__).parent.parent
 NOW=dt.datetime.now(dt.timezone.utc); NOWT=int(NOW.timestamp())
 WL=json.loads((H/"config/sources_whitelist.json").read_text())
@@ -52,9 +56,26 @@ for dd in range(0,40):
         events.append({"event":"Nonfarm Payrolls (NFP)","date":str(d),"release_ts":at830utc(d),"impact":"HIGH","layer":"A","driver":"USD->GOLD reação imediata"})
         adp=d-dt.timedelta(days=2)
         if adp>=today: events.append({"event":"ADP Private Payrolls","date":str(adp),"release_ts":at830utc(adp),"impact":"med","layer":"A","driver":"USD/labor preview"})
+# ---- OVERLAY consenso REAL (calendar_consensus.json) — corrige data (shift de feriado) + anexa consenso/direção ----
+ccf=H/"snapshots/calendar_consensus.json"
+if ccf.exists():
+    try:
+        cc=json.loads(ccf.read_text())
+        for rev in cc.get("upcoming_high_impact",[]):
+            rname=rev.get("event","").split("(")[0].strip().lower()
+            rmonth=rev.get("release_date","")[:7]
+            # remove evento determinístico do mesmo tipo no mesmo mês (data real prevalece)
+            events=[e for e in events if not (e["event"].split("(")[0].strip().lower()==rname and e["date"][:7]==rmonth)]
+            events.append({"event":rev["event"],"date":rev["release_date"],"release_ts":rev["release_ts"],
+                "impact":rev.get("impact","HIGH"),"layer":rev.get("layer","A"),"driver":rev.get("driver","USD->GOLD"),
+                "consensus_k":rev.get("consensus_k"),"previous_k":rev.get("previous_k"),"actual_k":rev.get("actual_k"),
+                "direction":rev.get("direction"),"source":rev.get("source"),"source_override":True})
+    except Exception as ex: print("[warn] calendar_consensus overlay falhou:",ex)
 events.sort(key=lambda e:e["release_ts"])
 for e in events: e["hours_until"]=round((e["release_ts"]-NOWT)/3600,1)
 imminent=[e for e in events if 0<=e["hours_until"]<=96]
+nfp_next=next((e for e in imminent if e["event"].lower().startswith("nonfarm")),None)
+nfp_bias=(nfp_next or {}).get("direction",{}).get("bias") if nfp_next else None
 # CPI/FOMC/PCE = via Calendar agent (Phase 3); marcados pendentes
 # ---- Camada B: macro lento (rotação) ----
 layerB={
@@ -86,7 +107,8 @@ state={
  # schema external_* (consumo claude_recheck) — neutro até Tier-2 agents (Phase 3)
  "external_factors":{"external_bias":"unknown","external_risk_level":"event_window" if imminent else "normal",
    "external_trade_validation":"neutral","external_confidence":0,"external_fetch_ok":True,"external_stale":bool(stale),
-   "external_main_reasons":[f"{e['event']} em {e['hours_until']}h" for e in imminent],
+   "external_event_direction_bias":nfp_bias,
+   "external_main_reasons":[f"{e['event']} em {e['hours_until']}h"+(f" (consenso {e['consensus_k']}K vs ant {e['previous_k']}K -> {e.get('direction',{}).get('bias')})" if e.get('consensus_k') else "") for e in imminent],
    "external_us10y_real":tier1.get("us10y_real",{}).get("value"),"external_usd_broad":tier1.get("usd_broad",{}).get("value"),
    "external_vix":tier1.get("vix",{}).get("value")}
 }
@@ -98,6 +120,9 @@ print(f"=== EXTERNAL FACTORS MONITOR — ciclo {state['_meta']['cycle_dt']} ==="
 print(f"Tier-1 macro (recorded_context): {sum(1 for v in tier1.values() if v.get('fresh'))}/{len(tier1)} fresh | stale: {stale or 'nenhum'}")
 print(f"  real_yield_10y={tier1.get('us10y_real',{}).get('value')} (Δ20={tier1.get('us10y_real',{}).get('chg20')}) | USD_broad={tier1.get('usd_broad',{}).get('value')} (Δ20={tier1.get('usd_broad',{}).get('chg20')}) | VIX={tier1.get('vix',{}).get('value')}")
 print(f"\nCamada A — eventos imediatos próximos (≤96h): {len(imminent)}")
-for e in imminent: print(f"  [{e['impact']}] {e['event']} — {e['date']} (em {e['hours_until']}h) | {e['driver']}")
+for e in imminent:
+    extra=f" | consenso {e['consensus_k']}K vs ant {e['previous_k']}K -> dir={e.get('direction',{}).get('bias')}" if e.get('consensus_k') else ""
+    src=" [FONTE REAL]" if e.get("source_override") else ""
+    print(f"  [{e['impact']}] {e['event']} — {e['date']} (em {e['hours_until']}h){src} | {e['driver']}{extra}")
 print(f"\nsource_health: ok={sum(1 for h in health if h['status']=='ok')} pending_phase3={sum(1 for h in health if h['status']=='pending_phase3')} calendar_partial={sum(1 for h in health if h['status']=='deterministic_partial')}")
 print(f"external_risk_level={state['external_factors']['external_risk_level']} | freeze -> snapshots/latest.json")

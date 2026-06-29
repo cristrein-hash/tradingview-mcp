@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- External Factors v2 — monitoração constante (Camada A/B). Carregar com sign-off:
+     cp este plist -> ~/Library/LaunchAgents/ ; launchctl load -w ~/Library/LaunchAgents/com.cristrein.external-factors-v2.plist
+     Intervalo 30min (Tier-1 cadência diária/mensal; eventos checados por proximidade). -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.cristrein.external-factors-v2</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>/Users/cristrein/tradingview-mcp/external_factors_v2/runtime/run_cycle.sh</string>
+  </array>
+  <key>StartInterval</key><integer>1800</integer>
+  <key>RunAtLoad</key><true/>
+  <key>StandardOutPath</key><string>/Users/cristrein/tradingview-mcp/external_factors_v2/snapshots/launchd.out.log</string>
+  <key>StandardErrorPath</key><string>/Users/cristrein/tradingview-mcp/external_factors_v2/snapshots/launchd.err.log</string>
+  <key>WorkingDirectory</key><string>/Users/cristrein/tradingview-mcp/external_factors_v2</string>
+</dict>
+</plist>
