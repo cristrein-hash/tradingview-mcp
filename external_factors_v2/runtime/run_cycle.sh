@@ -18,6 +18,10 @@ echo "=== $(date -u +%FT%TZ) ===" >> "$LOG"
 /usr/bin/python3 collectors/gold_collect.py >> "$LOG" 2>&1 || echo "[warn] gold_collect falhou" >> "$LOG"
 # 2e) fed path (proxy CME FedWatch via slope da curva, keyless) -> macro-regime/gold-driver
 /usr/bin/python3 collectors/fedwatch_collect.py >> "$LOG" 2>&1 || echo "[warn] fedwatch_collect falhou" >> "$LOG"
+# 2f) teorias núcleo humano (não-dealer, RSS keyless) -> ledger + análise comparativa Tier-2
+/usr/bin/python3 collectors/theory_sources_collect.py >> "$LOG" 2>&1 || echo "[warn] theory_sources_collect falhou" >> "$LOG"
+# 2g) forward-scoring das teorias (hit-rate/Brier por fonte; fase acumulando até claims+horizontes)
+/usr/bin/python3 runtime/theory_score.py >> "$LOG" 2>&1 || echo "[warn] theory_score falhou" >> "$LOG"
 # 3) ciclo do monitor (overlay consenso + freeze latest.json)
 /usr/bin/python3 runtime/monitor_external_factors.py >> "$LOG" 2>&1
 # 4) frota Tier-2 LLM via `claude -p` (DENTRO do plano Max — Opção B; sem billing de API).

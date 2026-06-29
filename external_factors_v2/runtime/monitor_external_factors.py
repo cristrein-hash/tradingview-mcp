@@ -69,6 +69,12 @@ fpf=H/"snapshots/fed_path.json"; fed_path={}
 if fpf.exists():
     try: fed_path=json.loads(fpf.read_text())
     except Exception: pass
+# ---- Teorias (núcleo humano credível não-dealer) snapshots/theory_feed.json ----
+tff=H/"snapshots/theory_feed.json"; theory={}
+if tff.exists():
+    try: theory=json.loads(tff.read_text())
+    except Exception: pass
+theory_recent=theory.get("recent",[])
 nfp_next=next((e for e in imminent if e["event"].lower().startswith("nonfarm")),None)
 nfp_bias=(nfp_next or {}).get("direction",{}).get("bias") if nfp_next else None
 # CPI/FOMC/PCE = via Calendar agent (Phase 3); marcados pendentes
@@ -104,6 +110,14 @@ for s in WL["sources"]:
     else:
         st="configured"
     health.append({"id":s["id"],"tier":s["tier"],"status":st,"headless_safe":s["headless_safe"]})
+# fontes de TEORIA (núcleo humano não-dealer) — keyless RSS (dedup vs whitelist)
+_hids={h["id"] for h in health}
+for tsid in (theory.get("_meta",{}).get("sources") or []):
+    if tsid in _hids:
+        for h in health:
+            if h["id"]==tsid: h["status"]="live_theory_rss" if theory_recent else h["status"]
+        continue
+    health.append({"id":tsid,"tier":"tier2","status":"live_theory_rss" if theory_recent else "no_data","headless_safe":True})
 state={
  "_meta":{"module":"external_factors_v2","cycle_ts":NOWT,"cycle_dt":NOW.strftime("%Y-%m-%d %H:%M UTC"),"status_classification":"recorded_context (Tier-1 sem edge validado; uso=contexto/flag human-in-loop)"},
  "tier1_macro_recorded_context":tier1,
@@ -114,6 +128,7 @@ state={
  "layer_market_news_recent":market_news[:12],
  "layer_gold_canonical":{"price_comex":gold.get("price_comex"),"cot_comex":gold.get("cot_comex"),"wgc":gold.get("wgc")},
  "layer_fed_path":{k:fed_path.get(k) for k in ("target_midpoint","sofr_overnight","short_curve","slope_6m_1m_bp","rate_path_bias","gold_read","next_fomc","_meta")},
+ "layer_theory_core":{"recent":theory_recent[:12],"ledger_total":theory.get("ledger_total"),"new_this_cycle":theory.get("new_this_cycle")},
  "source_health":health,
  "stale_series":stale,
  # schema external_* (consumo claude_recheck) — neutro até Tier-2 agents (Phase 3)
@@ -143,4 +158,5 @@ print(f"news/Fed (keyless): {len(news_recent)} ≤7d | market news (Alpha Vantag
 _gp=gold.get("price_comex",{}); _gc=gold.get("cot_comex",{})
 print(f"OURO (CME/COMEX): preço {_gp.get('price_usd')} ({_gp.get('change_pct')}%) | COT net {_gc.get('noncomm_net')} ({_gc.get('report_date')}) -> abastece gold-driver")
 print(f"FED PATH (proxy FedWatch keyless): midpoint={fed_path.get('target_midpoint')} SOFR={fed_path.get('sofr_overnight')} | slope6m-1m={fed_path.get('slope_6m_1m_bp')}bp -> {fed_path.get('rate_path_bias')} (gold {fed_path.get('gold_read')})")
+print(f"TEORIAS (núcleo não-dealer): {len(theory_recent)} recentes | ledger total {theory.get('ledger_total')} (+{theory.get('new_this_cycle')} novas) -> análise comparativa vs EF técnico (Tier-2)")
 print(f"external_risk_level={state['external_factors']['external_risk_level']} | freeze -> snapshots/latest.json")

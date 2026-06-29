@@ -17,8 +17,8 @@ def tier1_context():
         return {"tier1":s.get("tier1_macro_recorded_context",{}),"events":s.get("layer_A_imminent_le96h",[]),
                 "layerB":s.get("layer_B_slow_macro",{}),"news_fed":s.get("layer_text_news_recent",[]),
                 "news_market":s.get("layer_market_news_recent",[]),"gold":s.get("layer_gold_canonical",{}),
-                "fed_path":s.get("layer_fed_path",{})}
-    return {"tier1":{},"events":[],"layerB":{},"news_fed":[],"news_market":[],"gold":{},"fed_path":{}}
+                "fed_path":s.get("layer_fed_path",{}),"theories":s.get("layer_theory_core",{}).get("recent",[])}
+    return {"tier1":{},"events":[],"layerB":{},"news_fed":[],"news_market":[],"gold":{},"fed_path":{},"theories":[]}
 SYS="""Você é o External Context Synthesizer (XAU/ouro) do módulo External Factors v2. Skills de referência (12):
 economic-calendar-reader, event-severity, fed-tone-interpreter, gold-driver-analyzer, macro-regime-builder,
 usd-regime-analyzer, yield-curve-reader, news-validation, news-deduplication, risk-classification,
@@ -29,7 +29,8 @@ REGRAS DURAS (fronteira de determinismo):
 - Camada A = reação imediata (NFP/CPI/FOMC; NFP valida ~2,6x reação no ouro). Camada B = macro lento (real-yield/USD/curva).
 - REGRA DE DIREÇÃO NFP (canônica, não invente): surpresa = actual − consenso. surpresa>0 (jobs FORTES) -> USD↑ -> ouro BEARISH. surpresa<0 (jobs fracos) -> USD↓ -> ouro BULLISH. A direção autoritativa é a determinística (capture_nfp_actual); você só ecoa esta regra.
 - NÍVEL macro estático NÃO provou edge (Fase 1 null) -> confidence baixo, é contexto.
-- Sem evidência clara -> neutral/unknown. Honestidade > narrativa."""
+- Sem evidência clara -> neutral/unknown. Honestidade > narrativa.
+- ANÁLISE COMPARATIVA TEORIAS×TÉCNICO: recebes 'theories' (núcleo humano credível NÃO-dealer: Gold Observer/Lyn Alden/In Gold We Trust/MacroVoices). Para cada tema relevante, COMPARE a leitura humana com o nosso EF técnico (Tier-1 real-yields/USD/VIX, fed_path slope, gold COT, eventos). Reporta ACORDOS e DIVERGÊNCIAS (ex.: 'humanos bullish CB-demand vs técnico headwind USD+no-cut'). Cada teoria é HIPÓTESE a ser testada pela realidade ao longo do tempo (forward-scoring), NUNCA verdade nem sinal. Marca viés da fonte. Saída em external_directional_notes (labels, sem número novo)."""
 INSTR="""Produza EXCLUSIVAMENTE um objeto JSON (nada antes/depois) com as chaves:
 {"external_bias":"long|short|neutral|unknown","external_risk_level":"normal|event_window|elevated",
  "external_trade_validation":"neutral","external_confidence":0-100,
