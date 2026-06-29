@@ -1,0 +1,21 @@
+{
+  "_comment": "External Factors v2 — MCP servers financeiros (whitelist, versões pinadas). Keys via .env (gitignored). FRED OMITIDO de propósito: Tier-1 já é keyless em Python (fred_collect.py). Calendário primário = coletor ForexFactory keyless; FMP aqui é p/ histórico de consenso/backtest. Servers Python via uvx (uv instalado). Aprovar via /mcp ou 'claude mcp list'.",
+  "mcpServers": {
+    "worldbank": {
+      "command": "uvx",
+      "args": ["world-bank-mcp-server@0.1.0"],
+      "_source": "https://pypi.org/project/world-bank-mcp-server (anshumax) — KEYLESS, macro amplo WB/IMF (Camada B)"
+    },
+    "av-news": {
+      "command": "uvx",
+      "args": ["marketdata-mcp-server@0.3.1", "${ALPHAVANTAGE_API_KEY}"],
+      "env": { "ALPHAVANTAGE_API_KEY": "${ALPHAVANTAGE_API_KEY}" },
+      "_source": "https://github.com/alphavantage/alpha_vantage_mcp (oficial) — NEWS_SENTIMENT ticker/source-tagged. Key grátis (limite ~25/dia)"
+    },
+    "fmp-calendar": {
+      "type": "http",
+      "url": "https://financialmodelingprep.com/mcp?apikey=${FMP_API_KEY}",
+      "_source": "FMP oficial remoto — histórico de consenso/actual p/ backtest da direção. Key grátis (250/dia). ⚠️ key vai na URL (logs)"
+    }
+  }
+}

@@ -38,39 +38,14 @@ for s in REG["tier1_series"]:
     age=(NOWT-lt[0])/86400; fresh= age<=CAD.get(s["cadence"],3)*2
     tier1[s["id"]]={"value":lt[1],"obs_age_days":round(age,1),"fresh":fresh,"chg20":chg(s["id"],20),"driver":s["driver"]}
     if not fresh: stale.append(s["id"])
-# ---- Camada A: calendário de eventos US alto-impacto (determinístico) ----
-def at830utc(d):  # 8:30 ET -> 12:30 UTC (EDT mar-nov aprox)
-    return int(dt.datetime(d.year,d.month,d.day,12,30,tzinfo=dt.timezone.utc).timestamp())
-def first_friday(y,m):
-    d=dt.date(y,m,1)
-    while d.weekday()!=4: d+=dt.timedelta(days=1)
-    return d
-events=[]
-today=NOW.date()
-for dd in range(0,40):
-    d=today+dt.timedelta(days=dd)
-    if d.weekday()==3:  # quinta = jobless claims
-        events.append({"event":"Initial Jobless Claims","date":str(d),"release_ts":at830utc(d),"impact":"med","layer":"A","driver":"USD/labor"})
-    # NFP = 1ª sexta do mês
-    if d.weekday()==4 and d==first_friday(d.year,d.month):
-        events.append({"event":"Nonfarm Payrolls (NFP)","date":str(d),"release_ts":at830utc(d),"impact":"HIGH","layer":"A","driver":"USD->GOLD reação imediata"})
-        adp=d-dt.timedelta(days=2)
-        if adp>=today: events.append({"event":"ADP Private Payrolls","date":str(adp),"release_ts":at830utc(adp),"impact":"med","layer":"A","driver":"USD/labor preview"})
-# ---- OVERLAY consenso REAL (calendar_consensus.json) — corrige data (shift de feriado) + anexa consenso/direção ----
-ccf=H/"snapshots/calendar_consensus.json"
-if ccf.exists():
-    try:
-        cc=json.loads(ccf.read_text())
-        for rev in cc.get("upcoming_high_impact",[]):
-            rname=rev.get("event","").split("(")[0].strip().lower()
-            rmonth=rev.get("release_date","")[:7]
-            # remove evento determinístico do mesmo tipo no mesmo mês (data real prevalece)
-            events=[e for e in events if not (e["event"].split("(")[0].strip().lower()==rname and e["date"][:7]==rmonth)]
-            events.append({"event":rev["event"],"date":rev["release_date"],"release_ts":rev["release_ts"],
-                "impact":rev.get("impact","HIGH"),"layer":rev.get("layer","A"),"driver":rev.get("driver","USD->GOLD"),
-                "consensus_k":rev.get("consensus_k"),"previous_k":rev.get("previous_k"),"actual_k":rev.get("actual_k"),
-                "direction":rev.get("direction"),"source":rev.get("source"),"source_override":True})
-    except Exception as ex: print("[warn] calendar_consensus overlay falhou:",ex)
+# ---- Camada A: calendário via coletor ForexFactory (keyless, snapshots/ff_calendar.json) ----
+# Substitui o gerador 1ª-sexta (bug shift feriado) + overlay manual. Datas/consenso/actual REAIS do feed FF.
+ffc=H/"snapshots/ff_calendar.json"; events=[]
+if ffc.exists():
+    try: events=json.loads(ffc.read_text()).get("events",[])
+    except Exception as ex: print("[warn] ff_calendar read falhou:",ex)
+else:
+    print("[warn] ff_calendar.json ausente — rode collectors/forexfactory_collect.py")
 events.sort(key=lambda e:e["release_ts"])
 for e in events: e["hours_until"]=round((e["release_ts"]-NOWT)/3600,1)
 imminent=[e for e in events if 0<=e["hours_until"]<=96]
@@ -92,7 +67,8 @@ for s in WL["sources"]:
     elif s["tier"]=="tier2":
         st="pending_phase3"   # news/gold-commentary só wired na frota LLM
     elif s["kind"]=="calendar":
-        st="deterministic_partial"  # NFP/jobless gerados; CPI/FOMC via agent
+        if s["id"]=="FOREXFACTORY": st="live_keyless" if events else "no_data"  # feed JSON FairEconomy
+        else: st="cross_check_webfetch"  # TradingEconomics = cross-check on-demand
     else:
         st="configured"
     health.append({"id":s["id"],"tier":s["tier"],"status":st,"headless_safe":s["headless_safe"]})
@@ -108,7 +84,7 @@ state={
  "external_factors":{"external_bias":"unknown","external_risk_level":"event_window" if imminent else "normal",
    "external_trade_validation":"neutral","external_confidence":0,"external_fetch_ok":True,"external_stale":bool(stale),
    "external_event_direction_bias":nfp_bias,
-   "external_main_reasons":[f"{e['event']} em {e['hours_until']}h"+(f" (consenso {e['consensus_k']}K vs ant {e['previous_k']}K -> {e.get('direction',{}).get('bias')})" if e.get('consensus_k') else "") for e in imminent],
+   "external_main_reasons":[f"{e['event']} em {e['hours_until']}h"+(f" (consenso {e.get('consensus')} vs ant {e.get('previous')} -> {e.get('direction',{}).get('bias')})" if e.get('consensus_k') is not None else "") for e in imminent],
    "external_us10y_real":tier1.get("us10y_real",{}).get("value"),"external_usd_broad":tier1.get("usd_broad",{}).get("value"),
    "external_vix":tier1.get("vix",{}).get("value")}
 }
@@ -121,8 +97,8 @@ print(f"Tier-1 macro (recorded_context): {sum(1 for v in tier1.values() if v.get
 print(f"  real_yield_10y={tier1.get('us10y_real',{}).get('value')} (Δ20={tier1.get('us10y_real',{}).get('chg20')}) | USD_broad={tier1.get('usd_broad',{}).get('value')} (Δ20={tier1.get('usd_broad',{}).get('chg20')}) | VIX={tier1.get('vix',{}).get('value')}")
 print(f"\nCamada A — eventos imediatos próximos (≤96h): {len(imminent)}")
 for e in imminent:
-    extra=f" | consenso {e['consensus_k']}K vs ant {e['previous_k']}K -> dir={e.get('direction',{}).get('bias')}" if e.get('consensus_k') else ""
-    src=" [FONTE REAL]" if e.get("source_override") else ""
+    extra=f" | consenso {e.get('consensus')} vs ant {e.get('previous')} -> dir={e.get('direction',{}).get('bias')}" if e.get('consensus_k') is not None else (f" | consenso {e.get('consensus')}" if e.get('consensus') else "")
+    src=" [ForexFactory]" if e.get("source","").startswith("ForexFactory") else ""
     print(f"  [{e['impact']}] {e['event']} — {e['date']} (em {e['hours_until']}h){src} | {e['driver']}{extra}")
 print(f"\nsource_health: ok={sum(1 for h in health if h['status']=='ok')} pending_phase3={sum(1 for h in health if h['status']=='pending_phase3')} calendar_partial={sum(1 for h in health if h['status']=='deterministic_partial')}")
 print(f"external_risk_level={state['external_factors']['external_risk_level']} | freeze -> snapshots/latest.json")
