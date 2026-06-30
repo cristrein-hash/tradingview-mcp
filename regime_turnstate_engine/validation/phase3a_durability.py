@@ -29,8 +29,9 @@ for t,kind in m8:
     rsi=S[i].get("rsi"); ema=S[i].get("ema21")
     if rsi is None or ema is None: continue
     # LABEL: MFE forward na direção da reversão, em ATR
-    if kind=="BOT": mfe=(max(H[i+1:i+K+1])-Lo[i])/a; favor=lambda x:x  # bottom -> sobe
-    else:           mfe=(H[i]-min(Lo[i+1:i+K+1]))/a; favor=lambda x:x
+    # LABEL em % do preço (NÃO /ATR_atual) -> independe do denominador dos preditores (evita correlação espúria)
+    if kind=="BOT": mfe=100*(max(H[i+1:i+K+1])-Lo[i])/C[i]
+    else:           mfe=100*(H[i]-min(Lo[i+1:i+K+1]))/C[i]
     # PREDITORES no pivô (causal), orientados: maior = mais favorável à reversão
     dist_ema=(C[i]-ema)/a;  dist_ema = -dist_ema if kind=="BOT" else dist_ema   # BOT abaixo da ema = +
     rsi_exh = (50-rsi) if kind=="BOT" else (rsi-50)                              # oversold/overbought
@@ -42,7 +43,7 @@ for t,kind in m8:
     rows.append({"t":t,"kind":kind,"mfe":mfe,"dist_ema":dist_ema,"rsi_exh":rsi_exh,"atr_comp":atr_comp,"leg":leg,"velo":velo,"swept":swept})
 mfes=sorted(r["mfe"] for r in rows); med=mfes[len(mfes)//2]
 for r in rows: r["durable"]= r["mfe"]>=med
-nd=sum(r["durable"] for r in rows); print(f"FASE 3a corrigida — pivôs M8 usáveis: {len(rows)} | DURÁVEL(>={med:.1f}ATR MFE) {nd} / FIZZLE {len(rows)-nd}")
+nd=sum(r["durable"] for r in rows); print(f"FASE 3a corrigida — pivôs M8 usáveis: {len(rows)} | DURÁVEL(>={med:.1f}% MFE) {nd} / FIZZLE {len(rows)-nd}")
 print(f"\nfeature | média DURÁVEL | média FIZZLE | diff | null p(|>=|real|)")
 feats=["dist_ema","rsi_exh","atr_comp","leg","velo","swept"]
 random.seed(7)
