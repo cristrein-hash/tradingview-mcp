@@ -302,4 +302,36 @@ bh, th = res[("PRIOR=imediato", "pct", 0.20)]
 print(f"  causal pct-k0.2 BOTTOM: {stats(bh)}  vs  TOP: {stats(th)}")
 print("  -> se TOP.avgR >= BOTTOM.avgR o 'edge' e' inespecifico de direcao (ruido de band larga)")
 
+# ============================================================================
+# PONTO 7 — (independent-DA finding) REGIME dos 6 vencedores hand-drawn.
+# A tese e' "BEAR capitula perto do bottom anterior / retest no RANGE". Se os 6
+# hits ocorrem em BULL/RANGE-uptrend (nao BEAR/pos-BEAR), eles nem instanciam a tese.
+# ============================================================================
+from collections import Counter
+
+
+def reg_at(t):
+    for s in segs:
+        if s["start"] <= t <= s["end"]:
+            return s["regime"]
+    return "?"
+
+
+print("\n" + "=" * 100)
+print("PONTO 7 — regime dos 6 vencedores hand-drawn (a tese pede BEAR/pos-BEAR)")
+print("=" * 100)
+regs = Counter(reg_at(x["t"]) for x in hits)
+for x in hits:
+    print(f"   hit R={x['R']:+.2f}  regime={reg_at(x['t'])}  ({dds(x['t'])})")
+print(f"   -> distribuicao de regime dos hits: {dict(regs)}")
+print("   -> 0 hits em BEAR/pos-BEAR => o 6/6 NAO instancia a tese 'bear capitula no bottom anterior'")
+
+print("\n   avgR por regime no livro elegivel (>=2023):")
+byreg = {}
+for x in Y23:
+    byreg.setdefault(reg_at(x["t"]), []).append(x["R"])
+for rg, rs in sorted(byreg.items()):
+    print(f"      {rg:6}: N={len(rs)} WR={100 * sum(1 for v in rs if v > 0) / len(rs):.0f}% "
+          f"avgR={sum(rs) / len(rs):+.3f}")
+
 print("\n(fim — reprodução salva; ver verdict no relatório)")
