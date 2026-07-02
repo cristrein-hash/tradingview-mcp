@@ -3,10 +3,12 @@
 reappears in all_boxes, the build's [born_t,last_t] alive-window spans the GAP where the zone was NOT
 on chart -> 'alive at t' check leaks (treats a removed-then-resurrected zone as continuously alive).
 Also reports the no_atr drop (warmup) and pre_existing zone count. Reads RAW for 2 blocks. Verified 2026-06-25."""
-import json, gzip, glob
+import json, gzip, glob, sys
 from pathlib import Path
 from collections import defaultdict
-RAW = Path("/Volumes/GUTS_ LACIE/TradingData/raw_replay/XAUUSD/15M")
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # repo root for config import
+from config import paths as CP
+RAW = CP.raw("raw_replay", "XAUUSD", "15M")
 
 
 def grp(rec, key, sub):
