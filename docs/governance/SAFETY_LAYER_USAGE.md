@@ -29,6 +29,12 @@ Saída: tabela `SEVERITY | check | file:line | reason` + sumário. **Exit 0 semp
 - **Banner** adicionado a `scripts/backtest_xau_4h_demand_breakout_v2.py` (cluster histórico) → classificado INFO. (`breakout_continuation_v1.py` é D1A ACTIVE_CANDIDATE, não tocado; não dispara o scanner.)
 - **Não escondido:** o Caminho B SLIM-contaminated permanece WARNING (TRUE_RISK).
 
+## Calibração guardrail-filename (2026-07-02, pós-Wave 2A — autorizada Cris)
+- **Falso positivo detectado na Wave 2A:** `scripts/memory/generate_wave2a_seed.py:30` virou WARNING porque a lista de cards contém o filename `feedback_never_use_slim_features.md` — o card que **proíbe** SLIM (regex `CONSUME` casa `slim_features` dentro do nome). Nada consome SLIM.
+- **Regra adicionada (`GUARDRAIL_CARD`, por LINHA):** ocorrência de filename `never_use_slim*.md` = **INFO** ("guardrail memory-card filename — allowed"). Por ser por-linha (`continue`, não `break`), **não mascara** consumo real de SLIM em outra linha do mesmo ficheiro — estritamente mais visível que a classificação por-ficheiro.
+- **Não é allowlist cega:** nenhum diretório inteiro liberado; só o padrão exato do filename do card guardrail.
+- **Baseline pós-calibração:** `BLOCKER=0 · WARNING=1 · INFO=50` (INFO +3: gerador, doc de validação 2A e MEMORY_ARCHIVE agora classificados pela regra explícita). **WARNING único = Caminho B TRUE_RISK, intocado.**
+
 ## Critérios para passar report-only → blocking (NÃO agora)
 scanner estável · falsos-positivos acima revistos + allowlist documentada · aprovação explícita do Cris. Só então considerar exit-code não-zero / pre-commit / gate de CI.
 

@@ -21,6 +21,10 @@ NEG_MD = re.compile(r"proib|forbidden|nunca|never|n[aã]o\s+usar|not\s+use|do_no
 # D1A RAW-in-memory: build_entry_anatomy etc. reuse the AUDITED interpreter on RAW (allowed; SLIM-file mode NOT used).
 # Do NOT touch D1A/Breakout Continuation; classify as INFO via allowlist.
 D1A_RAW_INMEM_PREFIX = "my-strategy/research/revalidation/XAU_4H_BREAKOUT_D1A/"
+# Guardrail memory-card filename referenced as a string (e.g. memory seed generators listing
+# feedback_never_use_slim_features.md): the card FORBIDS slim — the reference is not consumption.
+# Per-LINE rule (not per-file): a guardrail filename never masks real consumption elsewhere in the file.
+GUARDRAIL_CARD = re.compile(r"never_use_slim[a-z_]*\.md")
 
 
 def tracked():
@@ -51,6 +55,12 @@ def run():
         for i, line in enumerate(text.splitlines(), 1):
             if not CONSUME.search(line):
                 continue
+            if GUARDRAIL_CARD.search(line):
+                findings.append({"severity": "INFO", "check": "slim_policy", "file": rel, "line": i,
+                                 "pattern": "slim",
+                                 "reason": "SLIM occurrence is a guardrail memory-card filename (card FORBIDS slim) — allowed",
+                                 "action": "Reference to the no-slim guardrail card; keep scanning for real consumption."})
+                continue  # do NOT break: guardrail reference must not mask real consumption below
             if historical:
                 sev, reason = "INFO", "SLIM reference in authorized historical/guard/RAW-in-memory context (allowed)"
             elif is_md:
