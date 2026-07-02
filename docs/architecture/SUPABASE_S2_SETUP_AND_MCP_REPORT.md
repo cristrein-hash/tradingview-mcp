@@ -1,7 +1,8 @@
 # SUPABASE S2 — SETUP & MCP REPORT (2026-07-02)
 
 **Modo:** read-only recon + docs. **Sem conexão remota, sem aplicar schema, sem migrar dados, sem instalar nada, sem secrets no repo.**
-**Projeto DEV (Cris):** `trading-system-memory-dev` · URL `https://vgfofofzptrtjvtuyzy.supabase.co` · ref `vgfofofzptrtjvtuyzy`.
+**Projeto DEV (Cris):** `trading-system-memory-dev` · URL `https://vgfofofozptrtjvtuyzy.supabase.co` · ref `vgfofofozptrtjvtuyzy`.
+> ⚠️ **Correção (2026-07-02, §5.e):** o ref correto é `vgfofofozptrtjvtuyzy` (20 chars). As secções §5.a–5.d abaixo registam `vgfofofzptrtjvtuyzy` (19 chars, typo — falta um `o`); mantidas como histórico.
 
 ## ⭐ STATUS UPDATE — schema aplicado (Cris, 2026-07-02)
 - **Schema APLICADO manualmente** via **Supabase Dashboard → SQL Editor** no projeto **DEV** `trading-system-memory-dev`. `supabase/schema.sql` executado com sucesso.
@@ -78,6 +79,23 @@ CLI/Docker/psql, `.env` gitignore/staging, MCP config, git sync. Nenhum comando 
   - `SELECT count(*) FROM decisions;` → esperado **0**.
   - Sem INSERT/UPDATE/DELETE/migration/schema-change. Se aparecer ferramenta de escrita → PARAR.
 - **Estado:** MCP configurado (read-only, project-scoped, token em env) · **validação adiada para sessão que carregue o MCP** · nenhuma conexão/mutation nesta sessão.
+
+## 5.e MCP read-only VALIDADO ✅ (2026-07-02, nova sessão)
+- **Sessão nova** com `SUPABASE_ACCESS_TOKEN` no env; MCP `supabase-dev` carregado (`claude mcp get supabase-dev` → ✔ Connected, stdio, `--read-only`, sem token na config).
+- **Bloqueio inicial:** `list_tables` → `Invalid project ref: vgfofofzptrtjvtuyzy`. **Causa-raiz: typo no project-ref** — 19 chars em vez de 20. Ref correto descoberto via Management API read-only (`GET /v1/projects`): **`vgfofofozptrtjvtuyzy`** (`trading-system-memory-dev`, eu-west-1, ACTIVE_HEALTHY). O typo estava na config MCP e propagado nos docs (§1–5.d).
+- **Correção aplicada (config local, não-Supabase):** `claude mcp remove supabase-dev -s local` + re-add com `--read-only --project-ref=vgfofofozptrtjvtuyzy`; reconectado pelo Cris via `/mcp`.
+- **Testes read-only executados (via MCP):**
+  | Teste | Resultado | Esperado |
+  |---|---|---|
+  | `list_tables` (schema public) | **11 tabelas**, todas `rls_enabled: true`, 0 rows | ✅ 11 |
+  | `SELECT count(*) FROM memory_items` | **0** | ✅ 0 |
+  | `SELECT count(*) FROM decisions` | **0** | ✅ 0 |
+  | `SELECT current_user, current_setting('transaction_read_only')` | **`supabase_read_only_user`** · `tx_read_only = on` | ✅ enforcement read-only no Postgres |
+- Tabelas: `memory_items · decisions · artifacts · agent_runs · safety_reports · external_factor_events · market_context_snapshots · trade_journal_events · episode_context_links · source_registry · retrieval_queries`.
+- **Nota RLS:** §STATUS UPDATE dizia "bloco RLS não aplicado", mas `list_tables` reporta `rls_enabled: true` em todas as 11 tabelas (RLS ativo, presumivelmente sem policies — comportamento default do Supabase dashboard). Sem efeito na validação read-only; registar para a fase de policies.
+- **Write tools:** o MCP expõe tools com nome de escrita (`apply_migration`, `deploy_edge_function`, etc.) mesmo em `--read-only`; **nenhuma foi invocada**. O enforcement real é server-side via role `supabase_read_only_user` (confirmado acima).
+- **Sem INSERT/UPDATE/DELETE/migration/schema-change. Sem service role. Sem secrets impressos.**
+- **Estado: VALIDADO** — MCP supabase-dev operacional em read-only, project-scoped ao DEV.
 
 ## 6. Security / secrets status
 - `.env` **gitignored** (✅), existe localmente, **não trackeado** (✅). Nenhum secret impresso/colado.
