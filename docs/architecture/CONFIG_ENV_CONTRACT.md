@@ -41,8 +41,11 @@
 | `/Volumes/GUTS_ LACIE/TradingData/raw_replay/...` | ~55 | RAW replay (HD) | `RAW_DATA_ROOT` | `raw("raw_replay", ...)` |
 | `/Volumes/GUTS_ LACIE/TradingData/slim_features/...` | 2 | SLIM (proibido) | — | não migrar (cluster HISTORICAL) |
 
+## Nota EF collectors (verificado 2026-07-02)
+EF collectors already portable via module-relative paths (`Path(__file__).parent.parent` + `snapshots/`); no migration required; avoid config import to preserve daemon isolation. (Nenhum `/Users/cristrein`, `/tmp`, `/Volumes` hardcoded nos 7 collectors.)
+
 ## Lista priorizada de migração (opt-in, por ficheiro, com aprovação)
-1. **EF v2 collectors (produto, não-runtime)** — baixo risco; adotar `external_factor()`/`raw()`. (runtime/plist = gate).
+1. ~~EF v2 collectors~~ — **já portáveis, sem migração** (ver nota acima).
 2. **Helpers partilhados em `scripts/`** que o produto chama.
 3. **RTSE `validation/` (114 ficheiros)** — oportunístico; trocar 2 literais por ficheiro (`repo(...)` + `causal_segments()`), 3–5 primeiro como referência, validar output idêntico.
 4. **`my-strategy/research/backtests/` + `research/` labs** — por último.

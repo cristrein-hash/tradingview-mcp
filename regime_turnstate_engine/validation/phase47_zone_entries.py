@@ -7,15 +7,17 @@ Nível/zona = hi/lo do regime anterior (causal, conhecido no fecho dele). SEM rs
 import json,csv,io,contextlib,sys,bisect,datetime as dt
 from pathlib import Path
 from collections import defaultdict
-VAL=Path("/Users/cristrein/tradingview-mcp/regime_turnstate_engine/validation");sys.path.insert(0,str(VAL))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # repo root for config import (robust, no daemon/global sys.path)
+from config import paths as CP
+VAL=CP.repo("regime_turnstate_engine","validation");sys.path.insert(0,str(VAL))
 with contextlib.redirect_stdout(io.StringIO()): import phase10_hybrid_regime as P
 reg=P.run(0.03,1.15,0.88);T=P.T;H=P.H;L=P.L;C=P.C
-segs=sorted(json.load(open("/tmp/causal_segments_v10.json")),key=lambda s:s['start'])
+segs=sorted(json.load(open(CP.causal_segments())),key=lambda s:s['start'])
 def seg_idx(t):
     for i in range(len(segs)):
         if segs[i]['start']<=t<=segs[i]['end']: return i
     return None
-D=Path("/Users/cristrein/tradingview-mcp/my-strategy/research/revalidation/XAU_4H_L2_BPT_BOS_CHOCH/v1/results")
+D=CP.ruler("XAU_4H_L2_BPT_BOS_CHOCH","v1","results")
 tr=[]
 for r in csv.DictReader(open(D/"l2_bpt_regua_structural.csv")):
     bi=int(r["bar_idx"]);t=T[bi];idx=seg_idx(t)
