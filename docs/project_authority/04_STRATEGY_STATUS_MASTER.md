@@ -18,6 +18,7 @@
 | `WATCH_ONLY` | May be observed/logged but must not issue live/urgent entries. |
 | `DISABLED` | Must not participate in live classification or Telegram entry routing. |
 | `LIVE_DORMANT` | Historically wired or present but dormant; must not be assumed active. |
+| `USER_APPROVED_NOT_PRODUCTION` | Research strategy explicitly approved by the user (logic/numbers/causality confirmed + visual review by user), but deliberately NOT promoted to production. No live routing, no runtime, no execution. Documented caveats remain in force. |
 
 ---
 
@@ -50,6 +51,7 @@ SLIM/proxy results are historical artifacts only unless explicitly re-authorized
 | `Caminho B FINAL` | 1H | `SUSPECT / CRITICAL` | Do not use for promotion | Contaminated by SLIM 4H/proxy features and synthetic swing-low proxy. |
 | Legacy `XAUUSD_4H_LONG_REJECTION_SWING` | 4H | `REJECTED` | Disabled/dormant | Legacy rejected path. |
 | Legacy `XAUUSD_1H_LONG_REJECTION_EXECUTION` | 1H | `REJECTED` | Disabled/dormant | Replaced then superseded; no active use. |
+| `L2/BPT XAU 4H LONG · RTSE V2 zona-pura` | 4H | `USER_APPROVED_NOT_PRODUCTION` | Not wired; no runtime/Telegram/monitor/catalog/strategy_rules | Escopo B integral (BULL+RANGE+BEAR), N17 +36.2R. OK final + visual review by Cris 2026-07-02. See §4.4. |
 
 ---
 
@@ -124,6 +126,27 @@ Current value:
 - Not valid as strategy proof.
 - Several labs relied on slim/proxy-derived fields.
 - Any findings must be rechecked through RAW before reuse.
+
+---
+
+### 4.4 L2/BPT XAU 4H LONG · RTSE V2 zona-pura
+
+**Status:** `USER_APPROVED_NOT_PRODUCTION`
+**Flags:** `OK_FINAL_BY_CRIS_2026_07_02` · `VISUAL_REVIEW_COMPLETED_BY_USER` · `FINAL_APPROVED_BY_USER`
+**Escopo aprovado:** B — integral (BULL + RANGE + BEAR), **N17 · +36.2R · WR53% · avgR+2.13 · DD−4.1 · streak3**.
+
+Module: `regime_turnstate_engine/validation/` (`phase48_bear_deep_zone.py` = canonical panel; regime via `phase10_hybrid_regime.py`). R = let-run HZ120 + SL_CONTEXT − 0.35R cost. Data = RAW 4H OHLC + L2/BPT ruler (no SLIM). Causality confirmed (no look-ahead, DA Q1 PASS).
+
+Full detail: `docs/L2_BPT_XAU_4H_LONG_V2_STRATEGY_CONFIRMATION_SHEET.md` (11-section confirmation sheet + DA verdict + 17-trade list) and `docs/L2_BPT_XAU_4H_LONG_RTSE_CHECKPOINT_2026_07_02.md`.
+
+**Caveats aceites (permanecem documentados, não escondidos):**
+
+- RANGE is part of the approved strategy but flagged **beta / concentrated / selection-overfit risk** (March-2023 episode alone = +20.6R of +23.7R RANGE).
+- BEAR is part of the approved strategy via `phase48` but **n=1**; must NOT be treated as a statistical core.
+- The phrase "RANGE+BEAR coração" is **calibrated**; do not use as a strong thesis. Defensible core = structural per-regime selection skeleton + let-run convexity.
+- **NOT_PRODUCTION.** No Telegram, no monitor, no catalog, no strategy_rules, no runtime, no automatic execution.
+
+**Before any future operationalization (not authorized here):** model slippage/gap (trades with risk > 80 pts), reproduce `phase40_debug_2024.py` (the "2024 piora"), and pass the standard promotion policy (§5). This entry does NOT constitute production promotion.
 
 ---
 

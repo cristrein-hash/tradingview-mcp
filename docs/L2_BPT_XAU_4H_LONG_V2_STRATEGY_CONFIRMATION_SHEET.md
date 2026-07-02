@@ -2,6 +2,7 @@
 
 **Data:** 2026-07-02
 **STATUS:** `USER_APPROVED_NOT_PRODUCTION` (Cris 2026-07-02, escopo B — integral + caveats) · **NOT_PRODUCTION**
+**FLAGS:** `OK_FINAL_BY_CRIS_2026_07_02` · `VISUAL_REVIEW_COMPLETED_BY_USER` · `FINAL_APPROVED_BY_USER` · escopo B integral + caveats
 **Natureza:** confirmação integral pré-OK-final. Sem mudar lógica, sem otimizar, sem procurar gates novos, sem rebaixar a tese. Números reproduzidos a partir dos scripts aprovados (`phase47/48`), não backtest novo. Devil's Advocate executado (secção 8).
 **Regras respeitadas:** sem produção, sem Telegram/monitor/catalog/strategy_rules/runtime, sem push, sem editar status master.
 
