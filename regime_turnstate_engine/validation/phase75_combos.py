@@ -6,10 +6,12 @@ from pathlib import Path
 from statistics import mean
 from collections import defaultdict
 COST=0.35;HZ=120
-VAL=Path("/Users/cristrein/tradingview-mcp/regime_turnstate_engine/validation");sys.path.insert(0,str(VAL))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # repo root for config import (robust, no daemon/global sys.path)
+from config import paths as CP
+VAL=CP.repo("regime_turnstate_engine","validation");sys.path.insert(0,str(VAL))
 with contextlib.redirect_stdout(io.StringIO()): import phase10_hybrid_regime as P
 reg=P.run(0.03,1.15,0.88);T=P.T;H=P.H;L=P.L;C=P.C;n4=len(C)
-segs=sorted(json.load(open("/tmp/causal_segments_v10.json")),key=lambda s:s['start'])
+segs=sorted(json.load(open(CP.causal_segments())),key=lambda s:s['start'])
 for s in segs: s['bars']=(s['end']-s['start'])/14400
 def seg_idx(t):
     for i in range(len(segs)):
@@ -69,7 +71,7 @@ def stats(rows):
         cum+=r;peak=max(peak,cum);dd=min(dd,cum-peak);st=st+1 if r<=0 else 0;mx=max(mx,st)
     return n,100*w/n,s,s/n,dd,mx,sum(1 for _,r in rows if r>=3)
 # capitulação V2 (10)
-Dr=Path("/Users/cristrein/tradingview-mcp/my-strategy/research/revalidation/XAU_4H_L2_BPT_BOS_CHOCH/v1/results")
+Dr=CP.ruler("XAU_4H_L2_BPT_BOS_CHOCH","v1","results")
 capit=[]
 for r in csv.DictReader(open(Dr/"l2_bpt_regua_structural.csv")):
     bi=int(r["bar_idx"]);entry=float(r["entry"]);sl=float(r["sl"]);t=T[bi];idx=seg_idx(t)
