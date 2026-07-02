@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# LEGACY_PRE_CANON / DO_NOT_USE_AS_CANONICAL — convencao pre-canon (width 12 / label R). PLOTTING_CANON_MASTER_REQUIRED: docs/project_authority/PLOTTING_CANON_MASTER.md e a autoridade para novos plots (R2 2026-07-02).
 """Gera os 31 trades V3 GATILHO-DE-ZONA em formato de plotagem canónico (long_position, TICKS, largura 12 barras).
 Regras = phase50: BULL toque-zona-top OU fallback-demanda · BEAR toque-zona-capitulação-profunda · RANGE fundo pos<0.34.
 SL=fundo-zona−0.5ATR. Exit real=let-run HZ120 (cor win/loss). Emite /tmp/v3_zona_trades.json + linhas pipe p/ desenho."""

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# HISTORICAL_ONE_SHOT / DO_NOT_USE_AS_CANONICAL — width original mantida. PLOTTING_CANON_MASTER_REQUIRED: ler docs/project_authority/PLOTTING_CANON_MASTER.md antes de qualquer novo plot (R2 2026-07-02).
 """Plota a variante KEEP-swept-em-cluster (nova base SWEPT) de 2025-08-01 em diante (termina no fim do BULL pré-BEAR
 2026, pois base exclui BEAR). Canônico: long_position (stop/target em ticks) + #N verde/vermelho. Requer pause flag.
 NÃO captura screenshot, NÃO limpa (Cris já limpou)."""

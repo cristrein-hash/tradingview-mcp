@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# LEGACY_PRE_CANON / DO_NOT_USE_AS_CANONICAL — convencao pre-canon (width 12 / label R). PLOTTING_CANON_MASTER_REQUIRED: docs/project_authority/PLOTTING_CANON_MASTER.md e a autoridade para novos plots (R2 2026-07-02).
 """Gera dados de plotagem canónica dos 39 trades do ESQUELETO + RANGE só-FUNDO (perfil segurabilidade: +47,9R DD−8,1 streak6).
 Regras: BEAR capitulação-refinada · BULL 1ª+pullback(dist<=3) · RANGE só-fundo(pos<0,34). SL=SL_CONTEXT(régua), let-run.
 Convenção: long_position, stopLevel/profitLevel em TICKS (mintick 0,01), alvo +3R, largura 12 barras, borda verde/vermelha."""

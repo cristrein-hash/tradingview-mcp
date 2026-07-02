@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# LEGACY_PRE_CANON / DO_NOT_USE_AS_CANONICAL — convencao pre-canon (width 12 / label R). PLOTTING_CANON_MASTER_REQUIRED: docs/project_authority/PLOTTING_CANON_MASTER.md e a autoridade para novos plots (R2 2026-07-02).
 """Cris: TODOS os trades de CAPITULAÇÃO merecem let-run (potencial pós-fundo enorme). A régua V2 já calcula R com
 let-run HZ120, mas o PLOT desenhava caixa curta (12b/+3R) que esconde o potencial. Aqui: identifica os trades de
 capitulação entre os 17 V2, computa o let-run REAL (barra de saída, preço, R) e emite JSON de plotagem com a caixa

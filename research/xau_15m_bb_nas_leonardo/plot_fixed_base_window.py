@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# HISTORICAL_ONE_SHOT / DO_NOT_USE_AS_CANONICAL — width original mantida. PLOTTING_CANON_MASTER_REQUIRED: ler docs/project_authority/PLOTTING_CANON_MASTER.md antes de qualquer novo plot (R2 2026-07-02).
 """Plota TODOS os trades da BASE FIXA (3120+h4_up&h1d_up) na janela 2025-08-01 -> 2026-01-01 (fixed_base_h4h1.csv).
 Canônico: long_position (stopLevel/profitLevel em TICKS) + label #N, verde=win/vermelho=loss. exit = entry + R*(entry-sl).
 Requer pause flag. NÃO captura screenshot (Cris vê o chart). Salva window CSV reprodutível."""

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# EXCEPTION_PLOT — excecao PONTUAL text-only autorizada pelo Cris 2026-06-26; DO_NOT_REUSE sem nova autorizacao explicita. PLOTTING_CANON_MASTER_REQUIRED (canon = long_position+label, nunca text-only) (R2 2026-07-02).
 """Plotagem SIMPLES dos candidatos Stage-B (a pedido de Cris): labels de TEXTO apenas — VERDE=LONG, VERMELHO=SHORT,
 com NUMERAÇÃO do candidato (ordem temporal 1..N). SHORT acima / LONG abaixo do preço de entrada. Chart
 PEPPERSTONE:XAUUSD / 15. NÃO long_position (override consciente p/ revisão visual de N candidatos). NÃO apaga

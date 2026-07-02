@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# HISTORICAL_ONE_SHOT / DO_NOT_USE_AS_CANONICAL — width original mantida. PLOTTING_CANON_MASTER_REQUIRED: ler docs/project_authority/PLOTTING_CANON_MASTER.md antes de qualquer novo plot (R2 2026-07-02).
 """Plot canônico dos 21 trades da célula Engine7 (BULL+RSI<30+4 vozes). long_position+#N verde/vermelho. Requer pause flag."""
 import sys,csv,json
 from pathlib import Path

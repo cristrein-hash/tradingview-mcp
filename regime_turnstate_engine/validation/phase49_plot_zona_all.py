@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# LEGACY_PRE_CANON / DO_NOT_USE_AS_CANONICAL — convencao pre-canon (width 12 / label R). PLOTTING_CANON_MASTER_REQUIRED: docs/project_authority/PLOTTING_CANON_MASTER.md e a autoridade para novos plots (R2 2026-07-02).
 """Gera plot canónico de TODAS as operações da estratégia V2 ZONA-PURA em todo o período disponível.
 Regra: BULL entry na zona-top [hi_prev-amp/3, hi_prev] · BEAR entry na zona-capitulação-profunda (lo min acumulação 180d) ·
 RANGE entry no fundo (pos<0.34). SL=SL_CONTEXT(régua), let-run. long_position: stopLevel/profitLevel TICKS, largura 12 barras."""

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# EXCEPTION_PLOT / REPORT_MODE_REQUIRED — screenshots autorizados SO para este engine (Cris 2026-06-26); reports devem declarar color_mode (label verde-only aqui NAO e outcome-mode completo). PLOTTING_CANON_MASTER_REQUIRED (R2 2026-07-02).
 """Plotagem CANÔNICA dos trades do candidato v2 + screenshots de janelas-chave p/ inspecao visual (aprofundar, nao
 concluir). long_position nativo (entry/sl do CSV, target=entry+3R, largura 10), label #N verde. Captura screenshots
 de janelas (winning cluster vs losing) p/ comparar CARATER de mercado. Cris autorizou screenshot via MCP p/ esta engine.

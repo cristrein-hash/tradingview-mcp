@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# LEGACY_PRE_CANON / DO_NOT_USE_AS_CANONICAL — convencao pre-canon (width 12 / label R). PLOTTING_CANON_MASTER_REQUIRED: docs/project_authority/PLOTTING_CANON_MASTER.md e a autoridade para novos plots (R2 2026-07-02).
 """Plota os 13 trades L2-EXTRA (1 L2 após cada V2, máquina de estado do phase56) com let-run REAL (caixa estendida)
 e label AZUL numerado #L1..#L13. Mantém os 17 V2 já no chart. Emite /tmp/l2extra_trades.json + linhas pipe p/ desenho."""
 import json,io,contextlib,sys,bisect,csv,datetime as dt

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# LEGACY_PRE_CANON / DO_NOT_USE_AS_CANONICAL — convencao pre-canon (width 12 / label R). PLOTTING_CANON_MASTER_REQUIRED: docs/project_authority/PLOTTING_CANON_MASTER.md e a autoridade para novos plots (R2 2026-07-02).
 """Gera dados de PLOT CANÓNICO (long_position + label R) dos trades da BASE L2/BPT (universo 276 + SL_CONTEXT + let-run)
 a partir de 2023. Convenção canónica (alert-bridge/draw_xau_4h_trades.py): long_position com stopLevel/profitLevel em
 TICKS (mintick 0.01), alvo +3R, label = R realizado (letrun_struct). Saída JSON p/ plotagem via MCP."""

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# HISTORICAL_ONE_SHOT / DO_NOT_USE_AS_CANONICAL — width original mantida. PLOTTING_CANON_MASTER_REQUIRED: ler docs/project_authority/PLOTTING_CANON_MASTER.md antes de qualquer novo plot (R2 2026-07-02).
 """Plotagem CANÔNICA dos trades selecionados pelo combo Engine 2 (entry2_selected_trades.csv) p/ revisão visual (Cris).
 long_position entry/SL/exit em TICKS + label #N VERDE(win)/VERMELHO(loss). Requer pause flag. NÃO screenshot, NÃO draw_clear."""
 import sys,csv,json

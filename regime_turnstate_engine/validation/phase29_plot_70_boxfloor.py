@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# LEGACY_PRE_CANON / DO_NOT_USE_AS_CANONICAL — convencao pre-canon (width 12 / label R). PLOTTING_CANON_MASTER_REQUIRED: docs/project_authority/PLOTTING_CANON_MASTER.md e a autoridade para novos plots (R2 2026-07-02).
 """Cris: plotar os 70 trades INTRA-RANGE com SL = PISO da BOX INTEIRA (demanda-origem do range), buffer 0.1ATR.
 Convenção canónica long_position: stopLevel/profitLevel em TICKS (mintick 0.01), cor da borda = win(verde)/loss(vermelho).
 SL=box_floor−0.1ATR (piso do range da box INTEIRA — o que o Cris pediu; NOTA: hindsight parcial). let-run HZ120 p/ exit.

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# LEGACY_PRE_CANON / DO_NOT_USE_AS_CANONICAL — convencao pre-canon (width 12 / label R). PLOTTING_CANON_MASTER_REQUIRED: docs/project_authority/PLOTTING_CANON_MASTER.md e a autoridade para novos plots (R2 2026-07-02).
 """Cris: validação VISUAL da medição fundo/meio/topo. Para cada REGIME BOX (2023+) que contém trades, gerar as 2 linhas
 que dividem a box em terços: fundo(<0.34) / meio(0.34-0.67) / topo(>=0.67). Níveis = lo+1/3·amp e lo+2/3·amp.
 ⚠️ Usa hi/lo FINAL da box (geometria completa) — a medição CAUSAL (phase33) classifica cada entrada pelo running-min/max
