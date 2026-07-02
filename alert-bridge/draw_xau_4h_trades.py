@@ -3,6 +3,13 @@
 draw_xau_4h_trades.py — desenha trades do top combo do backtest XAU 4H
 como long_position nativos do TradingView, para visualização.
 
+🚨 AUTORIDADE: docs/project_authority/PLOTTING_CANON_MASTER.md (APPROVED 2026-07-02).
+   LER O MASTER ANTES DE QUALQUER PLOT. Este script é a referência viva do HELPER
+   (price_to_ticks_offset, MCPClient); em divergência de convenção, o MASTER prevalece.
+   Reconciliado 2026-07-02 (Batch R1): draw_clear gated (default NO_CLEAR), screenshot
+   gated (default skip), label #<id cronológico>, largura da caixa = BOX_BARS=20
+   (separada do horizon de outcome, que permanece intacto).
+
 Pré-requisitos:
     - touch /tmp/claude_recheck.paused
     - launchctl bootout gui/<uid>/com.cristrein.claude-{intraday-,}monitor
@@ -60,10 +67,12 @@ PAUSE_FLAG = Path("/tmp/claude_recheck.paused")
 
 SYMBOL = "PEPPERSTONE:XAUUSD"
 TIMEFRAME = "240"
-HORIZON_BARS = 10  # exit
+HORIZON_BARS = 10  # exit (OUTCOME: close_R medido em H=10 — NÃO alterar; não é a largura da caixa)
 TARGET_R_MULT = 2.7  # média histórica do top combo H=10
 STOP_R_MULT = 1.0
 MINTICK = 0.01  # XAUUSD (Pepperstone)
+BOX_BARS = 20        # largura canônica da caixa long_position (PLOTTING_CANON_MASTER §10, 4H=20)
+BAR_SECONDS = 14400  # 4H
 
 
 def price_to_ticks_offset(entry_price, level_price, mintick=MINTICK):
@@ -209,6 +218,10 @@ def main():
     p.add_argument("--horizon", type=int, default=HORIZON_BARS)
     p.add_argument("--target-r", type=float, default=TARGET_R_MULT)
     p.add_argument("--stop-r", type=float, default=STOP_R_MULT)
+    p.add_argument("--authorized-clear", action="store_true",
+                   help="autorização EXPLÍCITA do Cris para draw_clear (PLOTTING_CANON_MASTER §11; default NO_CLEAR)")
+    p.add_argument("--screenshot", action="store_true",
+                   help="captura screenshot SÓ com pedido explícito do Cris (canon §5; default skip)")
     args = p.parse_args()
 
     if not PAUSE_FLAG.exists():
@@ -234,10 +247,17 @@ def main():
         client.call_tool("chart_set_timeframe", {"timeframe": TIMEFRAME})
         time.sleep(1)
 
-        # Limpa desenhos
-        print("Limpando desenhos atuais...")
-        clr = client.call_tool("draw_clear")
-        print(f"  {clr}")
+        # Limpa desenhos — GATED (default NO_CLEAR, PLOTTING_CANON_MASTER §11)
+        if args.authorized_clear:
+            print("Limpando desenhos atuais (--authorized-clear)...")
+            clr = client.call_tool("draw_clear")
+            print(f"  {clr}")
+        else:
+            print("DRAW_CLEAR BLOQUEADO — default NO_CLEAR (PLOTTING_CANON_MASTER §11). "
+                  "Plotagem será ADITIVA. Use --authorized-clear SOMENTE com autorização explícita do Cris.")
+            if args.clear_only:
+                print("--clear-only sem --authorized-clear: nada a fazer (bloqueado).")
+                return 1
 
         if args.clear_only:
             print("clear-only: saindo.")
@@ -295,7 +315,8 @@ def main():
             r1 = client.call_tool("draw_shape", {
                 "shape": "long_position",
                 "point": {"time": c['entry_time'], "price": c['entry_price']},
-                "point2": {"time": c['exit_time'], "price": c['target_price']},
+                # largura canônica 20 barras (MASTER §10); outcome/horizon NÃO afetado
+                "point2": {"time": c['entry_time'] + BOX_BARS * BAR_SECONDS, "price": c['target_price']},
                 "overrides": json.dumps({
                     "stopLevel": price_to_ticks_offset(c['entry_price'], c['stop_price']),
                     "profitLevel": price_to_ticks_offset(c['entry_price'], c['target_price']),
@@ -306,9 +327,10 @@ def main():
             else:
                 print(f"  bar {c['bar_index']}: long_position falhou — {r1}")
 
-            # Label com R obtido (acima do entry pra não sobrepor)
-            label_y = c['target_price'] + 0.3 * c['atr']
-            label_text = f"+{c['close_R']:.1f}R" if c['close_R'] > 0 else f"{c['close_R']:.1f}R"
+            # Label canônico #<id cronológico> a 0.5R do entry (MASTER §4/§7); cor = outcome-mode
+            R_dollars = c['entry_price'] - c['stop_price']
+            label_y = c['entry_price'] + 0.5 * R_dollars
+            label_text = f"#{k + 1}"
             r2 = client.call_tool("draw_shape", {
                 "shape": "text",
                 "point": {"time": c['entry_time'], "price": label_y},
@@ -325,11 +347,14 @@ def main():
 
         print(f"\nDesenhos criados: {drawn_count} long_position + labels")
 
-        # Screenshot
-        print("\nScreenshot...")
-        SCREENSHOTS_DIR.mkdir(parents=True, exist_ok=True)
-        sshot = client.call_tool("capture_screenshot", {"region": "chart"})
-        print(f"  {sshot}")
+        # Screenshot — GATED (canon §5: nunca screenshot sem pedido explícito)
+        if args.screenshot:
+            print("\nScreenshot (--screenshot, autorizado)...")
+            SCREENSHOTS_DIR.mkdir(parents=True, exist_ok=True)
+            sshot = client.call_tool("capture_screenshot", {"region": "chart"})
+            print(f"  {sshot}")
+        else:
+            print("\nSCREENSHOT_SKIPPED (canon §5 — verificação = success + draw_list; use --screenshot só a pedido do Cris)")
 
     finally:
         if not args.no_restore and original_symbol:

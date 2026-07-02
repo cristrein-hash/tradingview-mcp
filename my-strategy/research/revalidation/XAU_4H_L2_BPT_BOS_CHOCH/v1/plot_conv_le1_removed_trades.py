@@ -35,6 +35,9 @@ cli = MCPClient(); print("MCP start..."); cli.start()
 st = cli.call_tool("chart_get_state"); print(f"chart: {st.get('symbol')} {st.get('resolution')}")
 cli.call_tool("chart_set_symbol", {"symbol": SYMBOL}); time.sleep(1)
 cli.call_tool("chart_set_timeframe", {"timeframe": TIMEFRAME}); time.sleep(1)
+# HISTORICAL_ONE_SHOT / DO_NOT_USE_AS_CANONICAL (Cris 2026-07-02). AUTORIDADE: PLOTTING_CANON_MASTER.md.
+if "--authorized-clear" not in sys.argv:
+    sys.exit("DRAW_CLEAR_BLOCKED — HISTORICAL_ONE_SHOT; requer --authorized-clear (autorizacao explicita Cris; PLOTTING_CANON_MASTER §11)")
 print("draw_clear:", cli.call_tool("draw_clear"))
 drawn = 0
 for k, t in enumerate(sorted(trades, key=lambda x: x["entry_time"])):

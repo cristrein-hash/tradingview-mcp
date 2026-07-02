@@ -54,7 +54,7 @@ print(f"L2/BPT trades: N={len(trades)} WR={100*wn/len(trades):.1f}% sumR={sm:.1f
 # ---- plot 4H ----
 sys.path.insert(0,"/Users/cristrein/tradingview-mcp/alert-bridge")
 from draw_xau_4h_trades import MCPClient, price_to_ticks_offset
-PAUSE=Path("/tmp/claude_recheck.paused"); SYMBOL,TF,BAR_S,WIDTH="PEPPERSTONE:XAUUSD","240",14400,6; GREEN,RED="#1a8917","#cc0000"
+PAUSE=Path("/tmp/claude_recheck.paused"); SYMBOL,TF,BAR_S,WIDTH="PEPPERSTONE:XAUUSD","240",14400,20; GREEN,RED="#1a8917","#cc0000"
 if not PAUSE.exists(): print("ERRO: pause flag ausente"); sys.exit(1)
 c=MCPClient(); c.start(); drawn=0; fails=[]; chart={}
 try:

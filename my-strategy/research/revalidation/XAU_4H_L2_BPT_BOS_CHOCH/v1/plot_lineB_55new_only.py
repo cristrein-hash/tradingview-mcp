@@ -47,6 +47,9 @@ cli = MCPClient(); cli.start()
 st = cli.call_tool("chart_get_state")
 if st.get("symbol") != SYMBOL: cli.call_tool("chart_set_symbol", {"symbol": SYMBOL}); time.sleep(1)
 if str(st.get("resolution")) != TIMEFRAME: cli.call_tool("chart_set_timeframe", {"timeframe": TIMEFRAME}); time.sleep(1)
+# HISTORICAL_ONE_SHOT / DO_NOT_USE_AS_CANONICAL (Cris 2026-07-02). AUTORIDADE: PLOTTING_CANON_MASTER.md.
+if "--authorized-clear" not in sys.argv:
+    sys.exit("DRAW_CLEAR_BLOCKED — HISTORICAL_ONE_SHOT; requer --authorized-clear (autorizacao explicita Cris; PLOTTING_CANON_MASTER §11)")
 print("draw_clear:", cli.call_tool("draw_clear"))
 lp = 0
 for i in new:

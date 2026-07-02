@@ -7,7 +7,7 @@ from pathlib import Path
 REPO=Path("/Users/cristrein/tradingview-mcp"); sys.path.insert(0,str(REPO/"alert-bridge"))
 from draw_xau_4h_trades import MCPClient, price_to_ticks_offset
 HERE=Path(__file__).parent; PAUSE=Path("/tmp/claude_recheck.paused")
-SYMBOL,TF,BAR_S,WIDTH="PEPPERSTONE:XAUUSD","15",900,12
+SYMBOL,TF,BAR_S,WIDTH="PEPPERSTONE:XAUUSD","15",900,10  # canon 15M=10 (PLOTTING_CANON_MASTER §10, Cris 2026-07-02)
 GREEN,RED="#1a8917","#cc0000"
 def main():
     if not PAUSE.exists(): print("ERRO: pause flag ausente"); return 1

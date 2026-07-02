@@ -109,6 +109,10 @@ try:
     if str(st.get("resolution"))!=TF: c.call_tool("chart_set_timeframe",{"timeframe":TF})
     chk=c.call_tool("chart_get_state"); sym,res=chk.get("symbol"),str(chk.get("resolution"))
     if not (str(sym).endswith("XAUUSD") and res==TF): c.stop(); print(json.dumps({"HARD_STOP":f"{sym}/{res}"})); sys.exit(1)
+    # HISTORICAL_ONE_SHOT / DO_NOT_USE_AS_CANONICAL — width original mantida (Cris 2026-07-02).
+    # AUTORIDADE: docs/project_authority/PLOTTING_CANON_MASTER.md. draw_clear gated (default NO_CLEAR, MASTER §11).
+    if "--authorized-clear" not in sys.argv:
+        c.stop(); print(json.dumps({"ABORT": "DRAW_CLEAR_BLOCKED — HISTORICAL_ONE_SHOT; requer --authorized-clear (autorizacao explicita Cris; PLOTTING_CANON_MASTER §11)"})); sys.exit(1)
     c.call_tool("draw_clear"); dl0=c.call_tool("draw_list"); chart["before"]=dl0.get("count") if isinstance(dl0,dict) else None
     for x in out:
         entry,sl,ex,t,win,num=x["entry"],x["sl"],x["exit"],x["cj_t"],x["win"],x["num"]
