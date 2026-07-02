@@ -1,0 +1,63 @@
+# SUPABASE S2 — SETUP & MCP REPORT (2026-07-02)
+
+**Modo:** read-only recon + docs. **Sem conexão remota, sem aplicar schema, sem migrar dados, sem instalar nada, sem secrets no repo.**
+**Projeto DEV (Cris):** `trading-system-memory-dev` · URL `https://vgfofofzptrtjvtuyzy.supabase.co` · ref `vgfofofzptrtjvtuyzy`. Schema NÃO aplicado; sem dados; runtime não conectado.
+
+## 1. O que foi verificado (read-only)
+CLI/Docker/psql, `.env` gitignore/staging, MCP config, git sync. Nenhum comando de escrita/conexão.
+
+## 2. CLI / local status
+| Ferramenta | Estado |
+|---|---|
+| `supabase` CLI | **NÃO instalado** (`command not found`) |
+| `docker` | **NÃO instalado** (daemon indisponível) |
+| `psql` | **NÃO instalado** |
+- **Consequência:** não é possível `supabase start` (local Postgres) nem aplicar/validar o schema localmente **nesta máquina agora**. **Não instalei nada** (regra: reportar se faltar).
+
+## 3. Cloud project status
+- Projeto DEV criado pelo Cris (`vgfofofzptrtjvtuyzy`). **Schema NÃO aplicado** · **sem dados** · **sem conexão do runtime/Claude**. Nada mutado remotamente.
+
+## 4. Schema status
+- `supabase/schema.sql` = **draft S1 versionado** (12 tabelas). **Não aplicado** (nem local nem remoto).
+- Sem CLI/psql/Docker local → **via de aplicação = manual pelo dashboard** (Cris), quando autorizado (ver §Instruções manuais no `supabase/README.md`). **Não aplicar sem autorização explícita.**
+
+## 5. MCP status & plano
+- **Não há** `.mcp.json` nem MCP Supabase configurado. **Nada conectado.**
+- **Plano de ligação (NÃO executado):** MCP oficial Supabase, **project-scoped** a `vgfofofzptrtjvtuyzy`, **read-only**, **sem service role**. Auth via `claude /mcp` (browser/PAT) **só quando Cris autorizar**.
+  - Comando-plano (a correr só sob autorização; PAT = Personal Access Token, NÃO service role, fora do repo):
+    ```
+    claude mcp add supabase-dev --scope local -- \
+      npx -y @supabase/mcp-server-supabase@latest \
+      --read-only --project-ref=vgfofofzptrtjvtuyzy
+    # o PAT vai por variável de ambiente/prompt de auth, NUNCA no repo
+    ```
+  - **Tratar o MCP como write-capable até prova contrária.** `--read-only` reduz risco, mas confirmar comportamento antes de qualquer operação com efeito.
+- Qualquer passo que exija token/browser-auth/mutation remota → **PARAR e pedir autorização** (não feito neste bloco).
+
+## 6. Security / secrets status
+- `.env` **gitignored** (✅), existe localmente, **não trackeado** (✅). Nenhum secret impresso/colado.
+- `.env.example` = **só placeholders** (`SUPABASE_URL/ANON_KEY/SERVICE_ROLE_KEY/DB_URL/ENV`).
+- **`SUPABASE_SERVICE_ROLE_KEY` nunca** no MCP/Claude/commits. MCP usa PAT read-only project-scoped.
+- Credenciais reais vivem **só** no `.env` local (Cris preenche; não colar no chat).
+
+## 7. Read-only / write-capable assessment
+- Estado atual: **nenhuma conexão** → risco zero agora.
+- Quando ligar: MCP `--read-only` + project-scoped DEV; testes permitidos = list tables / SELECT simples (após schema aplicado). **Sem INSERT/UPDATE/DELETE/migration.** Assumir write-capable até verificar.
+
+## 8. Testes executados
+**Nenhum teste de conexão/DB** (sem CLI/DB/MCP e sem autorização). Só recon local read-only.
+
+## 9. Próximos passos
+1. **Aplicar schema (Cris, manual):** dashboard Supabase DEV → SQL Editor → colar `supabase/schema.sql` → run (dev). OU instalar CLI/Docker/psql (reportar antes) para via local.
+2. Preencher `.env` local com vars DEV (não colar no chat; não commitar).
+3. **Autorizar** ligação MCP read-only project-scoped (§5) — só então testar list/SELECT.
+4. S3: scripts de ingestão mínimos (pointers), após schema aplicado + MCP validado.
+
+## 10. Riscos
+- Instalar CLI/Docker sem reportar (evitado). · Colar secrets no chat/repo (evitado). · MCP com service role (proibido; usar PAT read-only). · Aplicar schema remoto sem autorização (evitado). · Assumir read-only sem verificar (mitigado: tratar write-capable até prova).
+
+## 11. Rollback
+Doc-only: apagar este report + a secção manual do README. Nenhuma conexão/mutação para reverter. `.env` local é do Cris (fora do git).
+
+## 12. Confirmação
+**Nenhum dado trading/RAW/MEMORY migrado. Nenhuma conexão remota. Nenhum schema aplicado. Nenhum runtime tocado. Nenhum secret no repo.**

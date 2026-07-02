@@ -10,7 +10,10 @@ Store estruturado de **memória/índice** do Agentic OS (não fonte de verdade).
 - este README.
 
 ## Setup manual (quando autorizado — S2)
-1. **Local primeiro** (recomendado): `supabase init` + `supabase start` (Docker) → aplicar `schema.sql` no Postgres local.
+> **Nota (2026-07-02):** nesta máquina NÃO há `supabase` CLI, Docker nem `psql` (ver `docs/architecture/SUPABASE_S2_SETUP_AND_MCP_REPORT.md`). Até instalar tooling local, usar a **via dashboard** (opção 0).
+
+0. **Via dashboard (sem tooling local, DEV):** projeto `trading-system-memory-dev` → SQL Editor → colar `supabase/schema.sql` → Run (só DEV; RLS fica no bloco comentado para aplicar depois de validar).
+1. **Local primeiro** (se instalar CLI/Docker): `supabase init` + `supabase start` (Docker) → aplicar `schema.sql` no Postgres local.
    ```bash
    psql "$SUPABASE_DB_URL" -f supabase/schema.sql
    ```
