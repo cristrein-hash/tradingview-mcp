@@ -42,6 +42,20 @@ CLI/Docker/psql, `.env` gitignore/staging, MCP config, git sync. Nenhum comando 
   - **Tratar o MCP como write-capable até prova contrária.** `--read-only` reduz risco, mas confirmar comportamento antes de qualquer operação com efeito.
 - Qualquer passo que exija token/browser-auth/mutation remota → **PARAR e pedir autorização** (não feito neste bloco).
 
+## 5.b MCP read-only setup — PLAN + capability check (2026-07-02, NÃO executado)
+- **Capability check (read-only, sem token/conexão):** `node v25` + `npx 11` + `claude` CLI presentes. Pacote `@supabase/mcp-server-supabase@latest` baixa e parseia args (usa `parseArgs`). Flags `--read-only` e `--project-ref` conforme doc oficial (confirmar no add; se rejeitados → PARAR).
+- **Comando proposto (a correr só com PAT + autorização):**
+  ```
+  claude mcp add supabase-dev -s local -- \
+    npx -y @supabase/mcp-server-supabase@latest --read-only --project-ref=vgfofofzptrtjvtuyzy
+  # PAT via env SUPABASE_ACCESS_TOKEN — NUNCA no chat/repo/comando visível
+  ```
+- **Token:** PAT gerado pelo Cris (Account → Access Tokens → `claude-mcp-trading-system-memory-dev-readonly`); passado por env/auth, **nunca colado no chat**; vive na config MCP local (`~/.claude.json`, fora do repo). **NUNCA service role.**
+- **Project-scoped:** `vgfofofzptrtjvtuyzy` (só DEV). **Read-only:** `--read-only` (tratar write-capable até prova).
+- **Testes planeados (só-leitura):** list tables · `SELECT count(*)`/`limit` em tabela vazia · sem INSERT/UPDATE/DELETE/migração.
+- **Rollback:** `claude mcp remove supabase-dev`.
+- **Estado:** **PENDENTE** — aguarda PAT do Cris + autorização para executar o `add`. Não configurado nesta sessão.
+
 ## 6. Security / secrets status
 - `.env` **gitignored** (✅), existe localmente, **não trackeado** (✅). Nenhum secret impresso/colado.
 - `.env.example` = **só placeholders** (`SUPABASE_URL/ANON_KEY/SERVICE_ROLE_KEY/DB_URL/ENV`).
