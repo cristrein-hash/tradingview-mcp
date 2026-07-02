@@ -3,9 +3,11 @@
 Dump compacto: top-level keys, nomes de study_values/pine_boxes/pine_labels/pine_shapes, e UMA amostra de cada
 estrutura relevante (Custom OB zona, NAS label, SMC label, bubbles, RSI, ohlcv). Fonte: RAW gz EXCLUSIVO.
 NÃO produz resultado de backtest — só inspeção de estrutura. Verified 2026-06-25."""
-import gzip, json
+import gzip, json, sys
 from pathlib import Path
-RAW = Path("/Volumes/GUTS_ LACIE/TradingData/raw_replay/XAUUSD/15M")
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # repo root for config import
+from config import paths as CP
+RAW = CP.raw("raw_replay", "XAUUSD", "15M")
 BLOCK = RAW / "XAUUSD_15m_replay_2024-05-25_to_2024-08-25.jsonl.gz"
 def short(o, n=240):
     s = json.dumps(o, ensure_ascii=False, default=str); return s if len(s) <= n else s[:n] + "…"

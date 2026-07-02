@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """DA RAW probe: confirm buffer cap, NAS label.x vs snapshot bar, and label price semantics.
 Reads one RAW gz block EXCLUSIVELY. Verified 2026-06-25."""
-import gzip, json
+import gzip, json, sys
 from pathlib import Path
-RAW = Path("/Volumes/GUTS_ LACIE/TradingData/raw_replay/XAUUSD/15M")
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # repo root for config import
+from config import paths as CP
+RAW = CP.raw("raw_replay", "XAUUSD", "15M")
 BLOCK = RAW / "XAUUSD_15m_replay_2024-05-25_to_2024-08-25.jsonl.gz"
 
 
