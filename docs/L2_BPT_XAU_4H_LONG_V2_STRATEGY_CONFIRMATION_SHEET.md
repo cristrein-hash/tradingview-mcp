@@ -1,7 +1,7 @@
 # STRATEGY CONFIRMATION SHEET — L2/BPT XAU 4H LONG · RTSE V2 ZONA-PURA
 
 **Data:** 2026-07-02
-**STATUS:** `USER_APPROVED_PENDING_FINAL_CONFIRMATION` · **NOT_PRODUCTION**
+**STATUS:** `USER_APPROVED_NOT_PRODUCTION` (Cris 2026-07-02, escopo B — integral + caveats) · **NOT_PRODUCTION**
 **Natureza:** confirmação integral pré-OK-final. Sem mudar lógica, sem otimizar, sem procurar gates novos, sem rebaixar a tese. Números reproduzidos a partir dos scripts aprovados (`phase47/48`), não backtest novo. Devil's Advocate executado (secção 8).
 **Regras respeitadas:** sem produção, sem Telegram/monitor/catalog/strategy_rules/runtime, sem push, sem editar status master.
 
@@ -200,6 +200,18 @@ Justificação:
 **Portanto: recomendo B, com um ponto de decisão (D-parcial) sobre a definição BEAR.** Não recomendo C (isolar BULL+bull_break) porque BULL sozinho é fraco (+4,5R/6) e bull_break não é parte da V2. Não rebaixo para lead de pesquisa.
 
 **Precisas decidir:** (i) B integral com caveats? e (ii) confirmar `phase48` como a definição BEAR canónica (assumindo BEAR=n1)?
+
+### DECISÕES REGISTADAS (Cris 2026-07-02)
+- ✅ **(ii) `phase48_bear_deep_zone.py` = definição BEAR canónica. BEAR = n=1** (capitulação profunda 2023-10-06, bar_idx 5826) assumido explicitamente. Variante `phase47` (BEAR idx-3..idx-1, N25) descartada. Painel canónico = **N17**.
+- ✅ **(i) ESCOPO = B — V2 ZONA-PURA INTEGRAL, `USER_APPROVED_NOT_PRODUCTION`.**
+  - **Escopo aprovado: BULL + RANGE + BEAR** (os 3 regimes, N17 +36,2R).
+  - **Caveats aceites (parte da estratégia, não escondidos):**
+    - **RANGE** — parte da estratégia aprovada, **marcado como risco beta / concentrado / selection-overfit**.
+    - **BEAR** — parte da estratégia aprovada via `phase48`, mas **n=1**; **NÃO tratar como coração estatístico**.
+    - A linguagem **"RANGE+BEAR coração" fica CALIBRADA** — não usar como tese forte.
+    - Estratégia **aprovada pelo utilizador, mas NOT_PRODUCTION**.
+    - **Sem Telegram, sem monitor, sem catalog, sem strategy_rules, sem runtime.**
+  - **Não rebaixar para lead. Não reduzir a BULL-only. Não esconder caveats.**
 
 ---
 
