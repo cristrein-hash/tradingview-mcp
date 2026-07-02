@@ -56,6 +56,18 @@ CLI/Docker/psql, `.env` gitignore/staging, MCP config, git sync. Nenhum comando 
 - **Rollback:** `claude mcp remove supabase-dev`.
 - **Estado:** **PENDENTE** — aguarda PAT do Cris + autorização para executar o `add`. Não configurado nesta sessão.
 
+## 5.c MCP remoto (hosted) FALHOU — HTTP 400 → fallback local npx/PAT (2026-07-02)
+- **Tentativa (Cris):** MCP **remoto hosted** `type:http` → `https://mcp.supabase.com/mcp?project_ref=vgfofofzptrtjvtuyzy&read_only=true` (registado em `.mcp.json` project-scope).
+- **Resultado:** **HTTP 400** na URL. Sem autenticação concluída, **sem dados migrados, sem mutation, sem token exposto**.
+- **Ação:** **NÃO** re-autenticar no remoto. Configuração removida:
+  ```
+  claude mcp remove supabase-dev
+  # -> "Removed MCP server supabase-dev from project config" (.mcp.json agora {"mcpServers":{}})
+  ```
+  (`.mcp.json` untracked; ficou com `mcpServers` vazio; sem `supabase-dev` em `~/.claude.json`.)
+- **Decisão:** abandonar o **remote OAuth com query params** (HTTP 400) e usar o **fallback local npx/PAT read-only** (§5.b) — só quando o Cris autorizar e fornecer o PAT (não pelo chat).
+- **Estado:** nenhum MCP Supabase configurado. Aguarda autorização para o `add` local (§5.b).
+
 ## 6. Security / secrets status
 - `.env` **gitignored** (✅), existe localmente, **não trackeado** (✅). Nenhum secret impresso/colado.
 - `.env.example` = **só placeholders** (`SUPABASE_URL/ANON_KEY/SERVICE_ROLE_KEY/DB_URL/ENV`).
