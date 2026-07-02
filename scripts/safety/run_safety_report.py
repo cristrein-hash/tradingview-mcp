@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+"""run_safety_report.py — REPORT-ONLY aggregator for the Agentic OS safety layer.
+
+Runs check_forbidden_paths + check_slim_policy + check_hardcoded_product_paths and
+prints a single severity table + summary. ALWAYS exit 0 (report-only; never blocks).
+Usage: python scripts/safety/run_safety_report.py
+"""
+from __future__ import annotations
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import check_forbidden_paths, check_slim_policy, check_hardcoded_product_paths  # noqa: E402
+
+SEV_ORDER = {"BLOCKER": 0, "WARNING": 1, "INFO": 2, "ALLOWED_WITH_APPROVAL": 3}
+
+
+def main():
+    findings = []
+    for mod in (check_forbidden_paths, check_slim_policy, check_hardcoded_product_paths):
+        try:
+            findings.extend(mod.run())
+        except Exception as e:  # a scanner error must not break the report
+            print(f"[scanner error in {mod.__name__}: {e}]")
+    findings.sort(key=lambda f: (SEV_ORDER.get(f["severity"], 9), f["check"], f["file"], f.get("line", 0)))
+
+    print("=" * 100)
+    print("AGENTIC OS — SAFETY REPORT (report-only, exit 0)")
+    print("=" * 100)
+    print(f"{'SEVERITY':9} {'CHECK':24} {'FILE:LINE':52} REASON")
+    print("-" * 100)
+    for f in findings:
+        loc = f"{f['file']}:{f.get('line','')}"
+        print(f"{f['severity']:9} {f['check']:24} {loc:52.52} {f['reason']}")
+
+    counts = {}
+    for f in findings:
+        counts[f["severity"]] = counts.get(f["severity"], 0) + 1
+    print("-" * 100)
+    print("SUMMARY:", ", ".join(f"{k}={counts.get(k,0)}" for k in ("BLOCKER", "WARNING", "INFO")) or "none",
+          f"| total={len(findings)}")
+    print("Mode: REPORT-ONLY. Nothing blocked. See docs/governance/SAFETY_LAYER_USAGE.md.")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
