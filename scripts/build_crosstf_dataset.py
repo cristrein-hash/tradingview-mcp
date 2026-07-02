@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# [STATUS 2026-07-02] HISTORICAL_COMPATIBILITY / RAW_IN_MEMORY_ALLOWED / SLIM_MODE_FORBIDDEN / DO_NOT_USE_SLIM_FOR_VALIDATION
+# SLIM output mode is FORBIDDEN. Kept only to sustain D1A/Breakout Continuation ACTIVE_CANDIDATE backtests.
+# See docs/cleanup/SLIM_CLUSTER_STATUS_HISTORICAL_COMPATIBILITY.md
 """build_crosstf_dataset.py — canonical cross-timeframe analytical layer (schema crosstf_v2).
 
 Joins the canonical slim feature datasets (schema_version=2, from

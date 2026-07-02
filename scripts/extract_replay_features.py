@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# [STATUS 2026-07-02] HISTORICAL_COMPATIBILITY / RAW_IN_MEMORY_ALLOWED / SLIM_MODE_FORBIDDEN / DO_NOT_USE_SLIM_FOR_VALIDATION
+# SLIM output mode is FORBIDDEN. Only RAW-in-memory reuse of the interpreter is allowed
+# (sustains D1A/Breakout Continuation ACTIVE_CANDIDATE). See docs/cleanup/SLIM_CLUSTER_STATUS_HISTORICAL_COMPATIBILITY.md
 """extract_replay_features.py — Canonical Feature Extraction Layer (schema v2).
 
 Official, single extractor. Reads RAW replay .jsonl.gz (registry source-of-truth)
