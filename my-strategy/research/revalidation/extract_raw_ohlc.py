@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """Extrai série OHLC limpa do RAW replay (raw_replay/XAUUSD) -> caches locais. 4H 2020-2026 + 1H 2024-2026.
 Dedup por time via campo ohlcv (snapshots sobrepostos; última ocorrência = barra finalizada). RAW ONLY."""
-import json,gzip
+import json,gzip,os,sys
 from pathlib import Path
-RAW=Path("/Volumes/GUTS_ LACIE/TradingData/raw_replay/XAUUSD")
-OUT=Path("/Users/cristrein/tradingview-mcp/my-strategy/research/revalidation")
+sys.path.insert(0, str(Path(__file__).resolve().parents[3]))  # repo root for config import
+from config import paths as CP
+RAW=CP.raw("raw_replay","XAUUSD")
+OUT=Path(os.environ.get("L2_OHLC_OUT_DIR", CP.private("research","revalidation")))  # default byte-identical; override for sandbox test
 def extract(files,outname):
     bars={}
     for f in files:

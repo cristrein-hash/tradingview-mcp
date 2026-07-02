@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """Extrai OHLC 30M do RAW replay (HD) -> raw_30m_ohlc.jsonl. MESMO método canônico do extract_raw_ohlc.py:
 dedup por time via campo ohlcv (última ocorrência = barra finalizada). RAW ONLY. Determinístico."""
-import json,gzip,datetime as dt
+import json,gzip,datetime as dt,os,sys
 from pathlib import Path
-RAW=Path("/Volumes/GUTS_ LACIE/TradingData/raw_replay/XAUUSD/30M")
-OUT=Path(__file__).parent
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # repo root for config import
+from config import paths as CP
+RAW=CP.raw("raw_replay","XAUUSD","30M")
+OUT=Path(os.environ.get("RTSE_30M_OUT_DIR", Path(__file__).parent))  # default byte-identical; override for sandbox test
 files=["XAUUSD_30m_replay_2024-05-25_to_2024-11-25.jsonl.gz","XAUUSD_30m_replay_2024-11-25_to_2025-05-25.jsonl.gz",
        "XAUUSD_30m_replay_2025-05-25_to_2025-11-25.jsonl.gz","XAUUSD_30m_replay_2025-11-25_to_2026-05-25.jsonl.gz"]
 bars={}
