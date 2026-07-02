@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# [STATUS 2026-07-02] HISTORICAL_COMPATIBILITY / RAW_IN_MEMORY_ALLOWED / SLIM_MODE_FORBIDDEN / DO_NOT_USE_SLIM_FOR_VALIDATION
+# Part of the deferred SLIM cluster (imports build_crosstf_dataset). SLIM output/validation is FORBIDDEN.
+# See docs/cleanup/SLIM_CLUSTER_STATUS_HISTORICAL_COMPATIBILITY.md
 """backtest_xau_4h_demand_breakout_v2.py — R-real revalidation of XAU_4H_DEMAND_BREAKOUT.
 
 Reads ONLY: my-strategy/research/revalidation/XAU_4H_DEMAND_BREAKOUT/v2/config.json

@@ -13,6 +13,14 @@ REPO = Path(__file__).resolve().parents[2]
 SLIM = re.compile(r"slim_feature|slim_features|\bSLIM\b|\bslim\b")
 # lines that consume slim as input/validation (the forbidden use)
 CONSUME = re.compile(r"slim_features|SLIM_BASE|SLIM_ROOT|load_slim|slim_schema")
+# a .md that PRESCRIBES slim as validation/source (dangerous) vs merely describing it (allowed doc)
+DANGEROUS_MD = re.compile(
+    r"(use|usar|com)\s+slim.*(valid|gate|source)|slim.*(as|como)\s+(source of truth|validation|valida)", re.I)
+# negation/forbidding context: the line STATES the policy (slim forbidden), it does not prescribe slim
+NEG_MD = re.compile(r"proib|forbidden|nunca|never|n[aã]o\s+usar|not\s+use|do_not|n[aã]o\s+[ée]\s+valid|jamais|sem\s+slim", re.I)
+# D1A RAW-in-memory: build_entry_anatomy etc. reuse the AUDITED interpreter on RAW (allowed; SLIM-file mode NOT used).
+# Do NOT touch D1A/Breakout Continuation; classify as INFO via allowlist.
+D1A_RAW_INMEM_PREFIX = "my-strategy/research/revalidation/XAU_4H_BREAKOUT_D1A/"
 
 
 def tracked():
@@ -37,12 +45,19 @@ def run():
             or "HISTORICAL_COMPATIBILITY" in text or "DO_NOT_USE_SLIM" in text
             or "SLIM_MODE_FORBIDDEN" in text or "_source_guard" in rel
             or "never_use_slim" in rel.lower()
+            or rel.startswith(D1A_RAW_INMEM_PREFIX)  # RAW-in-memory audited interpreter (allowed; do not touch D1A)
         )
+        is_md = rel.endswith(".md")
         for i, line in enumerate(text.splitlines(), 1):
             if not CONSUME.search(line):
                 continue
             if historical:
-                sev, reason = "INFO", "SLIM reference in authorized historical/guard context (allowed)"
+                sev, reason = "INFO", "SLIM reference in authorized historical/guard/RAW-in-memory context (allowed)"
+            elif is_md:
+                if DANGEROUS_MD.search(line) and not NEG_MD.search(line):
+                    sev, reason = "WARNING", "documentation appears to PRESCRIBE SLIM as validation/source — review"
+                else:
+                    sev, reason = "INFO", "SLIM described in documentation (non-executable)"
             elif rel.startswith("docs/"):
                 sev, reason = "INFO", "SLIM mentioned in documentation"
             else:
