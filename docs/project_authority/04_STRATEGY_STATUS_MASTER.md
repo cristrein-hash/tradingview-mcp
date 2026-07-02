@@ -52,6 +52,18 @@ SLIM/proxy results are historical artifacts only unless explicitly re-authorized
 | Legacy `XAUUSD_4H_LONG_REJECTION_SWING` | 4H | `REJECTED` | Disabled/dormant | Legacy rejected path. |
 | Legacy `XAUUSD_1H_LONG_REJECTION_EXECUTION` | 1H | `REJECTED` | Disabled/dormant | Replaced then superseded; no active use. |
 | `L2/BPT XAU 4H LONG · RTSE V2 zona-pura` | 4H | `USER_APPROVED_NOT_PRODUCTION` | Not wired; no runtime/Telegram/monitor/catalog/strategy_rules | Escopo B integral (BULL+RANGE+BEAR), N17 +36.2R. OK final + visual review by Cris 2026-07-02. See §4.4. |
+| `XAU 15M LONG · swept-runner` (+ #4, 8ATR, regime-v5) | 15M | `USER_APPROVED_NOT_PRODUCTION` | Not wired; research | N435 WR47.6% +291.5R; approved (Cris 2026-06-28); needs slippage for OFICIAL_FN. NEXT review block: 15M regime re-adaptation. |
+| `External Factors v2` | — | `LIVE_PASSIVE_CONTEXT_DAEMON` | LaunchAgent `com.cristrein.external-factors-v2` (cycling ~30min) | Passive-logging context; NOT integrated into trading (gate Fase 4). Only Camada-A event-reaction validated. |
+
+---
+
+## 3.1 Runtime reconciliation (Production Logic Re-Audit 2026-07-02)
+
+Per `docs/architecture/PRODUCTION_LOGIC_REAUDIT_20260702.md`:
+
+- **Live runtime = narrow:** tv-webhook-receiver + cloudflared tunnel + External Factors v2 (passive) + MCP server. **NO auto-trading; NO broker execution.**
+- **4H strategy layer = DORMANT/SUPERSEDED:** `xau-l1-cycle` PAUSED (not loaded), `monitor_xau_4h_strategies.py` not running, cron empty, XAU 4H logs stale (10-jun). Older memory calling the 4H suite "core system (2026-06-03)" is **superseded**; treat those (V1.4g-RWS-A6-A7, Caminho B LONG, Regime Classifier v3) as **DORMANT** until re-verified.
+- **Do not restart** any daemon (esp. `xau-l1-cycle`) without explicit authorization + the runbook (`PRODUCTION_RUNBOOK_20260702.md`).
 
 ---
 
