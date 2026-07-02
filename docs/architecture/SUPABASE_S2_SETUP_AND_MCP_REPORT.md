@@ -68,6 +68,17 @@ CLI/Docker/psql, `.env` gitignore/staging, MCP config, git sync. Nenhum comando 
 - **Decisão:** abandonar o **remote OAuth com query params** (HTTP 400) e usar o **fallback local npx/PAT read-only** (§5.b) — só quando o Cris autorizar e fornecer o PAT (não pelo chat).
 - **Estado:** nenhum MCP Supabase configurado. Aguarda autorização para o `add` local (§5.b).
 
+## 5.d MCP local configurado (Cris) — config OK, validação PENDENTE de reload de sessão (2026-07-02)
+- **Configurado pelo Cris** (terminal separado, fallback local npx): server `supabase-dev`, `@supabase/mcp-server-supabase@latest`, `--read-only`, `--project-ref=vgfofofzptrtjvtuyzy`, `SUPABASE_ACCESS_TOKEN` em **env local** (não service role).
+- **Verificação read-only da config (`~/.claude.json`):** presente 1×; contém `--read-only` + `project-ref=vgfofofzptrtjvtuyzy` + `mcp-server-supabase`. **Nenhum token no ficheiro de config** (só referência env) → sem secret no repo/config versionável.
+- **⚠️ BLOQUEIO desta sessão:** as ferramentas MCP `supabase-dev` **não estão registadas nesta sessão do Claude Code** (foi adicionada a quente noutro terminal *após* o arranque). `ToolSearch` não as encontra. **Os testes read-only (list tables / SELECT count) NÃO foram executados nesta sessão** — e **não** foram fabricados resultados.
+- **Como validar (próxima sessão):** reiniciar o Claude Code (ou nova sessão) para carregar o MCP `supabase-dev`; então correr, só-leitura:
+  - `list tables` → esperado: 11 tabelas.
+  - `SELECT count(*) FROM memory_items;` → esperado **0**.
+  - `SELECT count(*) FROM decisions;` → esperado **0**.
+  - Sem INSERT/UPDATE/DELETE/migration/schema-change. Se aparecer ferramenta de escrita → PARAR.
+- **Estado:** MCP configurado (read-only, project-scoped, token em env) · **validação adiada para sessão que carregue o MCP** · nenhuma conexão/mutation nesta sessão.
+
 ## 6. Security / secrets status
 - `.env` **gitignored** (✅), existe localmente, **não trackeado** (✅). Nenhum secret impresso/colado.
 - `.env.example` = **só placeholders** (`SUPABASE_URL/ANON_KEY/SERVICE_ROLE_KEY/DB_URL/ENV`).
