@@ -1,7 +1,15 @@
 # SUPABASE S2 — SETUP & MCP REPORT (2026-07-02)
 
 **Modo:** read-only recon + docs. **Sem conexão remota, sem aplicar schema, sem migrar dados, sem instalar nada, sem secrets no repo.**
-**Projeto DEV (Cris):** `trading-system-memory-dev` · URL `https://vgfofofzptrtjvtuyzy.supabase.co` · ref `vgfofofzptrtjvtuyzy`. Schema NÃO aplicado; sem dados; runtime não conectado.
+**Projeto DEV (Cris):** `trading-system-memory-dev` · URL `https://vgfofofzptrtjvtuyzy.supabase.co` · ref `vgfofofzptrtjvtuyzy`.
+
+## ⭐ STATUS UPDATE — schema aplicado (Cris, 2026-07-02)
+- **Schema APLICADO manualmente** via **Supabase Dashboard → SQL Editor** no projeto **DEV** `trading-system-memory-dev`. `supabase/schema.sql` executado com sucesso.
+- **11 tabelas criadas:** `memory_items · decisions · artifacts · agent_runs · safety_reports · external_factor_events · market_context_snapshots · trade_journal_events · episode_context_links · source_registry · retrieval_queries` (+ extensão `pgcrypto`).
+- **`memory_embeddings` NÃO criada** — pgvector ficou comentado de propósito (`DEFERRED / pgvector optional`; ativar só se/quando busca semântica for necessária).
+- **Nenhum dado inserido.** Nenhum RAW/candle/backtest/log/trade-journal migrado. Bloco **RLS não aplicado** (fica comentado até validação dev + separação anon/service-role).
+- **Nenhum secret** no chat/repo. **MCP ainda NÃO configurado.**
+- **Próximo passo:** configurar **MCP Supabase project-scoped (`vgfofofzptrtjvtuyzy`) + `--read-only`**, PAT (nunca service role), auth via `/mcp` — **só sob autorização** (plano em §5). Testes iniciais permitidos: `list tables` / `SELECT` simples; sem INSERT/UPDATE/DELETE/migração.
 
 ## 1. O que foi verificado (read-only)
 CLI/Docker/psql, `.env` gitignore/staging, MCP config, git sync. Nenhum comando de escrita/conexão.
