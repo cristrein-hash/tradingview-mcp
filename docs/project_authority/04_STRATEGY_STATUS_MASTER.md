@@ -52,7 +52,7 @@ SLIM/proxy results are historical artifacts only unless explicitly re-authorized
 | Legacy `XAUUSD_4H_LONG_REJECTION_SWING` | 4H | `REJECTED` | Disabled/dormant | Legacy rejected path. |
 | Legacy `XAUUSD_1H_LONG_REJECTION_EXECUTION` | 1H | `REJECTED` | Disabled/dormant | Replaced then superseded; no active use. |
 | `L2/BPT XAU 4H LONG · RTSE V2 zona-pura` | 4H | `USER_APPROVED_NOT_PRODUCTION` | Not wired; no runtime/Telegram/monitor/catalog/strategy_rules | Escopo B integral (BULL+RANGE+BEAR), N17 +36.2R. OK final + visual review by Cris 2026-07-02. See §4.4. |
-| `XAU 15M LONG · swept-runner` (+ #4, 8ATR, regime-v5) | 15M | `USER_APPROVED_NOT_PRODUCTION` | Not wired; research | N435 WR47.6% +291.5R; approved (Cris 2026-06-28); needs slippage for OFICIAL_FN. NEXT review block: 15M regime re-adaptation. |
+| `XAU 15M LONG · swept-runner` (+ #4, 8ATR, regime-v5) | 15M | `USER_APPROVED_NOT_PRODUCTION` · **OFICIAL_FN** | Not wired; no runtime/Telegram; manual/proxy only | N435 WR47.6% +291.5R; approved (Cris 2026-06-28). **OFICIAL_FN stamped by Cris 2026-07-03** — cost condition PASSED (Lab E COST_ROBUST: SB $0.80 → +233.6R, r/DD 16.4, all years +). Re-adaptation labs em curso (E ✅ → A next). |
 | `External Factors v2` | — | `LIVE_PASSIVE_CONTEXT_DAEMON` | LaunchAgent `com.cristrein.external-factors-v2` (cycling ~30min) | Passive-logging context; NOT integrated into trading (gate Fase 4). Only Camada-A event-reaction validated. |
 
 ---
@@ -164,8 +164,10 @@ Full detail: `docs/L2_BPT_XAU_4H_LONG_V2_STRATEGY_CONFIRMATION_SHEET.md` (11-sec
 
 ### 4.5 XAU 15M LONG · swept-runner (base #4, regime-v5)
 
-**Status:** `USER_APPROVED_NOT_PRODUCTION` (Cris 2026-06-28) · zero SLIM (source guard) · zero runtime.
+**Status:** `USER_APPROVED_NOT_PRODUCTION` · **`OFICIAL_FN` (carimbado Cris 2026-07-03)** · zero SLIM (source guard) · zero runtime.
 Audit completo: `docs/architecture/XAU_15M_LONG_REGIME_READAPTATION_AUDIT_20260702.md`.
+
+**OFICIAL_FN (2026-07-03):** a condição de custo — única pendência técnica — foi cumprida no **Lab E (COST_ROBUST, DA-verificado)**: cenário realista SB ($0,80 round-trip) mantém +233,6R (80% do bruto), r/DD 16,4, todos os anos positivos, runners 53→51. Caveat registrado: 2024/risco-$-baixo frágil sob modelo conservador. **OFICIAL_FN ≠ produção:** segue sem runtime/Telegram/monitor/catalog/strategy_rules — operação manual/proxy apenas; qualquer wiring exige o promotion policy §5 completo + autorização. Recomendado antes de operar: calibrar custo com fills reais e re-rodar Lab E. Docs: `XAU_15M_LONG_LAB_E_SLIPPAGE_COST_{PREREG,DA,REPORT}_20260703.md`.
 
 Decisões Cris 2026-07-02 (reconciliação):
 - **Regime detector v5 MTF hour-causal = CANÔNICO atual** (`REGIME_V5_CAUSAL_CANON_RETAINED`); v1–v4 superseded. Não recalibrar override por ora.
