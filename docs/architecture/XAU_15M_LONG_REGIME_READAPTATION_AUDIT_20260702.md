@@ -63,6 +63,11 @@ E. (Menor) Reconciliar docs 00/05/07 (conflitos #1/#2).
 
 Nenhum destes foi iniciado — bloco atual é audit-only. Ordem/escolha = Cris.
 
+## Addendum (2026-07-03, pós-aprovação)
+
+1. **Correção de cobertura RAW (conflito #4):** leitura direta do HD revelou o 8º bloco `2026-02-25→2026-05-25_rerun_customOBbaseline` — cobertura real termina **2026-05-25**, não 2026-02; gap verdadeiro = 2026-05-25→presente (~5,5 semanas). Detalhe: `RAW_15M_EXTENSION_PLAN_MAR_JUN_2026.md` §0.
+2. **Split LONG/SHORT (decisão Cris):** toda a estratégia/análise deste audit é **XAU 15M LONG** (LONG-only). `XAU 15M SHORT` = estratégia futura separada, nunca espelho. Ver `XAU_15M_LONG_SHORT_STRATEGY_SPLIT_DECISION_20260702.md`.
+
 ## 8. Critérios de aceitação (cumpridos)
 
 - [x] Estado real mapeado (estratégia, detector, artefatos, RAW, runtime) · [x] conflitos memória/docs identificados (5) · [x] RAW/source mapping preliminar (§4, fonte única sancionada) · [x] plotting canon aplicado como regra, zero plot · [x] próximos passos propostos sem auto-decisão · [x] zero backtest/produção/chart/RAW-write · [x] commit local, sem push sem autorização.

@@ -168,7 +168,9 @@ PEPPERSTONE:XAUUSD
 15M for XAU 15M LONG research (approved strategy, not production)
 ```
 
-**RAW 15M coverage (reconciliação 2026-07-02):** dataset RAW 15M sancionado = `raw_replay/XAUUSD/15M` no HD externo, cobertura **2024-05 → 2026-02**. Extensão mar→jun-2026 = bloco futuro autorizado separadamente (`RAW_15M_EXTENSION_PLAN_MAR_JUN_2026`); nunca coletar fora do `safe_backtest_window.sh`.
+**RAW 15M coverage (reconciliação 2026-07-02; corrigido 2026-07-03):** dataset RAW 15M sancionado = `raw_replay/XAUUSD/15M` no HD externo, cobertura real **2024-05-25 → 2026-05-25** (8 blocos com manifest; correção em `RAW_15M_EXTENSION_PLAN_MAR_JUN_2026.md` §0). Extensão (gap 2026-05-25→presente) = bloco futuro autorizado separadamente; nunca coletar fora do `safe_backtest_window.sh`.
+
+**Split 15M LONG/SHORT (Cris 2026-07-02):** a estratégia 15M existente é **LONG-only**; `XAU 15M SHORT` será estratégia futura SEPARADA (lógica própria, nunca espelho/inversão de gates; regime detector = roteador/contexto, não direção automática). Ver `04_STRATEGY_STATUS_MASTER.md` §4.5.
 
 ---
 

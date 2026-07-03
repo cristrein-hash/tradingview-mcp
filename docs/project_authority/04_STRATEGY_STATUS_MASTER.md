@@ -174,6 +174,11 @@ Decisões Cris 2026-07-02 (reconciliação):
 - **Pendência única p/ OFICIAL_FN = slippage/custos** (só com manifest/predicados/sanity, bloco próprio).
 - Re-adaptação de regime na **linha atual** do 15M (não mover p/ RTSE agora; integração futura se provar valor).
 
+**SPLIT LONG/SHORT (decisão Cris 2026-07-02, `XAU_15M_LONG_SHORT_STRATEGY_SPLIT_DECISION_20260702.md`):**
+- A estratégia 15M construída até agora é **SOMENTE LONG** (`XAU 15M LONG`). Toda análise atual do 15M permanece LONG-only.
+- **`XAU 15M SHORT` = estratégia FUTURA SEPARADA** (`DEFERRED_AFTER_XAU_15M_LONG`), com lógica própria — **NUNCA espelho do LONG, NUNCA gates LONG invertidos** (espelho simétrico já refutado com dados).
+- **Regime detector = roteador/contexto/camada de especialização por regime — NÃO direção automática nem licença para misturar estratégias** (direção-por-regime já refutada como beta-overlay).
+
 ---
 
 ## 5. Current Promotion Policy
