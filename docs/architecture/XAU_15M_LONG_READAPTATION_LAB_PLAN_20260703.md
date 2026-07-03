@@ -42,7 +42,8 @@ SL widening como pad · filtro ingênuo de lateness-em-preço · veto macro-BEAR
 - Unidade = EPISÓDIO, nunca trade isolado; trigger de re-entry pré-definido (sem jardim de bifurcações).
 - **Null anti-circularidade obrigatório:** baseline de bounce ambiente ≥ X ATR pós-low em 96b (o furo apontado pelo DA) + desconto do R já monetizado por entradas subsequentes existentes.
 
-### Lab E — Slippage/cost (pendência OFICIAL_FN)
+### Lab E — Slippage/cost (pendência OFICIAL_FN) — ✅ EXECUTADO 2026-07-03: **COST_ROBUST**
+SB realista ($0,80 RT): +233,6R (80% do bruto), r/DD 16,4, todos anos+, runners 53→51. Caveat: 2024/risco-$-baixo frágil (modelo conservador). Condição de custo do OFICIAL_FN **PASSED** (marcação do status = decisão Cris). **Regra nova transversal: labs futuros reportam painel bruto E líquido-SB.** Docs: PREREG/DA/REPORT `XAU_15M_LONG_LAB_E_SLIPPAGE_COST_*_20260703.md`.
 - Cenários: spread/slippage por sessão (Ásia pior) · custo fixo por trade em R (risco mediano ~2,1 ATR → custo relativo) · sensibilidade do painel a 0,05/0,10/0,20R de custo.
 - Campos: entry/SL/exit reais da base; **manifesto próprio antes da execução** (fonte, período, predicados, exemplos).
 
