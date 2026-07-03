@@ -21,7 +21,10 @@ SL widening como pad · filtro ingênuo de lateness-em-preço · veto macro-BEAR
 
 ## 5. Candidate labs (pré-registro obrigatório antes de rodar — §7)
 
-### Lab A — Trigger geometry (confirmação mais barata) — lever nº 1
+### Lab A — Trigger geometry — ✅ EXECUTADO 2026-07-03: **TRIGGER_GEOMETRY_FAILS (escopo: execução pós-sinal)**
+17 execuções testadas (grid limit + 4 propostas de engine multi-agentes + nulls + through): **NENHUMA bate market@cj em líquido-SB** (base 233,6 vs melhor 207,6); mecanismo = seleção adversa medida (missed base-avgR 1,4-2,7 vs filled 0,23-0,55; runners não retestam); p null=0,506. **PRESERVE market@cj como execução canônica · DISCARD família limit/retest pós-sinal (forbidden path novo)** · gatilho NO NÍVEL DO SINAL (A1/A3/A4) segue BLOCKED/aberto p/ rodada com builder re-scan. Docs: `XAU_15M_LONG_LAB_A_ENTRY_GEOMETRY_{PREREG,DA,REPORT}_20260703.md`. Próximo: **Lab B**.
+
+### Lab A (spec original) — Trigger geometry (confirmação mais barata) — lever nº 1
 - **Objetivo:** reduzir o custo estrutural de confirmação (~2,1 ATR mediano) sem perder a causalidade do fundo confirmado.
 - **Hipótese:** existe geometria de confirmação (reclaim de nível · altura fixa tipo 5ATR A2 · CHoCH-15M/HTF · close acima de barra-chave) que entra mais perto do flush low, preservando os 53 runners e o WR da base.
 - **Dados:** primitives atuais (RAW-only); reusar substrato de candidatos pré-gate.
