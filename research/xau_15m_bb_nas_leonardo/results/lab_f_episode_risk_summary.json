@@ -1,0 +1,8 @@
+{
+ "rows": 28,
+ "baselines": {
+  "BASE": 233.6,
+  "P1": 257.1
+ },
+ "ledger": "13 configs \u00d7 2 linhas; nulls D9; Bonferroni \u03b1\u22480,004; nenhuma config extra"
+}
