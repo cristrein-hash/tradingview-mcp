@@ -162,6 +162,20 @@ Full detail: `docs/L2_BPT_XAU_4H_LONG_V2_STRATEGY_CONFIRMATION_SHEET.md` (11-sec
 
 ---
 
+### 4.5 XAU 15M LONG · swept-runner (base #4, regime-v5)
+
+**Status:** `USER_APPROVED_NOT_PRODUCTION` (Cris 2026-06-28) · zero SLIM (source guard) · zero runtime.
+Audit completo: `docs/architecture/XAU_15M_LONG_REGIME_READAPTATION_AUDIT_20260702.md`.
+
+Decisões Cris 2026-07-02 (reconciliação):
+- **Regime detector v5 MTF hour-causal = CANÔNICO atual** (`REGIME_V5_CAUSAL_CANON_RETAINED`); v1–v4 superseded. Não recalibrar override por ora.
+- Marcação **BEAR-jan-2026** do Cris = `MACRO_CONTEXT_REVIEW_LAYER` **pendente** — camada de contexto macro, NÃO override automático (`BEAR_JAN_MACRO_CONTEXT_LAYER_PENDING`).
+- **RAW 15M termina 2026-02**; extensão mar→jun-2026 = bloco futuro autorizado separadamente (`RAW_15M_EXTENSION_PLAN_MAR_JUN_2026`, plan-only primeiro).
+- **Pendência única p/ OFICIAL_FN = slippage/custos** (só com manifest/predicados/sanity, bloco próprio).
+- Re-adaptação de regime na **linha atual** do 15M (não mover p/ RTSE agora; integração futura se provar valor).
+
+---
+
 ## 5. Current Promotion Policy
 
 No strategy may be promoted unless all conditions are true:

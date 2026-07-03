@@ -134,6 +134,8 @@ Do not restart decommissioned systems unless explicitly requested.
 | Capitulation 4H | Rejected under R-real. |
 | Body60 1H | Rejected. |
 | Caminho A / Caminho B recent official paths | Critical contamination due to SLIM/proxy features. |
+| XAU 15M LONG · swept-runner (base #4, regime-v5) | `USER_APPROVED_NOT_PRODUCTION` (Cris 2026-06-28). 100% causal stack, RAW-only (source guard), zero SLIM. No production/runtime. Sole OFICIAL_FN pending = slippage/costs. Canonical detail: `04_STRATEGY_STATUS_MASTER.md` §3/§4.5. |
+| L2/BPT XAU 4H LONG · RTSE V2 zona-pura | `USER_APPROVED_NOT_PRODUCTION` (Cris 2026-07-02). See `04_STRATEGY_STATUS_MASTER.md` §4.4. |
 
 ---
 

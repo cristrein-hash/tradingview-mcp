@@ -124,6 +124,8 @@ Restore daemon/cron unless user explicitly says not to.
 Verify health.
 ```
 
+**XAU 15M (reconciliação 2026-07-02):** NÃO existe runtime 15M — nenhum daemon, monitor, cron ou LaunchAgent executa a estratégia XAU 15M LONG (`USER_APPROVED_NOT_PRODUCTION`, research-only). `run_xau_15m_pullback_ohlcv.py` é coletor histórico offline, não runtime. Não assumir nem criar runtime 15M sem autorização explícita.
+
 ---
 
 ### 3.5 Cron / Scheduled Monitor
@@ -163,7 +165,10 @@ Canonical symbol/timeframe for most XAU chart work:
 ```text
 PEPPERSTONE:XAUUSD
 4H or 1H depending task
+15M for XAU 15M LONG research (approved strategy, not production)
 ```
+
+**RAW 15M coverage (reconciliação 2026-07-02):** dataset RAW 15M sancionado = `raw_replay/XAUUSD/15M` no HD externo, cobertura **2024-05 → 2026-02**. Extensão mar→jun-2026 = bloco futuro autorizado separadamente (`RAW_15M_EXTENSION_PLAN_MAR_JUN_2026`); nunca coletar fora do `safe_backtest_window.sh`.
 
 ---
 

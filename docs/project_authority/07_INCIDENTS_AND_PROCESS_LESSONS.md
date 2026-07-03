@@ -161,19 +161,20 @@ whether swing is required
 **Summary:**  
 TradingView long-position plotting was initially attempted with wrong parameters/offsets.
 
-**Correction:**  
-Use canonical drawing format from:
+**Correction (RECONCILED 2026-07-02 — original wording below was pre-ticks-bug and is WRONG):**
+A autoridade de plotagem é **`docs/project_authority/PLOTTING_CANON_MASTER.md`** — ler ANTES de qualquer plot. Helper canônico: `alert-bridge/draw_xau_4h_trades.py` (`price_to_ticks_offset`).
+
+Key rule (correta, pós-descoberta do bug de ticks 2026-06-11):
 
 ```text
-alert-bridge/draw_xau_4h_trades.py
+stopLevel / profitLevel são OFFSETS EM TICKS a partir do entry —
+NUNCA preços absolutos. XAUUSD mintick = 0.01:
+  stopLevel   = round((entry − stop)   / 0.01)
+  profitLevel = round((target − entry) / 0.01)
+point2 = (entry_time + width×bar_seconds, target_price)  # width: 4H=20, 15M=10
 ```
 
-Key rule:
-
-```text
-point2 / stopLevel / profitLevel must be absolute price levels,
-not R-offsets.
-```
+> ⚠️ O wording original deste incidente ("must be absolute price levels") datava de antes de 2026-06-11 e REINTRODUZIRIA o bug de ticks se seguido. Em conflito, o PLOTTING_CANON_MASTER prevalece.
 
 ---
 
