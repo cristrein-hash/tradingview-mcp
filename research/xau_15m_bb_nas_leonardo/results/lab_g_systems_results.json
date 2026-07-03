@@ -1,0 +1,163 @@
+{
+ "A": {
+  "N": 53,
+  "g": {
+   "sum": 29.8,
+   "wr": 62.3,
+   "avg": 0.562,
+   "dd": -3.0,
+   "rdd": 9.93,
+   "stkL": 3,
+   "run": 2
+  },
+  "q": {
+   "sum": 25.9,
+   "wr": 60.4,
+   "avg": 0.488,
+   "dd": -3.2,
+   "rdd": 8.07,
+   "stkL": 3,
+   "run": 2
+  },
+  "yrs": {
+   "2024": 4.1,
+   "2025": 22.9,
+   "2026": -1.1
+  },
+  "cells": {
+   "RANGE": {
+    "N": 0,
+    "net": 0,
+    "power": ""
+   },
+   "BULL": {
+    "N": 53,
+    "net": 25.9,
+    "power": ""
+   },
+   "BEAR": {
+    "N": 0,
+    "net": 0,
+    "power": ""
+   }
+  },
+  "convex": {
+   "risk_med": 11.68,
+   "win_avgR": 1.43,
+   "share_R3": 3.8
+  }
+ },
+ "B": {
+  "N": 182,
+  "g": {
+   "sum": 52.9,
+   "wr": 47.3,
+   "avg": 0.29,
+   "dd": -11.3,
+   "rdd": 4.68,
+   "stkL": 7,
+   "run": 14
+  },
+  "q": {
+   "sum": 33.9,
+   "wr": 45.1,
+   "avg": 0.186,
+   "dd": -13.6,
+   "rdd": 2.49,
+   "stkL": 7,
+   "run": 14
+  },
+  "yrs": {
+   "2024": 10.8,
+   "2025": 17.9,
+   "2026": 5.2
+  },
+  "cells": {
+   "RANGE": {
+    "N": 55,
+    "net": -2.9,
+    "power": ""
+   },
+   "BULL": {
+    "N": 127,
+    "net": 36.8,
+    "power": ""
+   },
+   "BEAR": {
+    "N": 0,
+    "net": 0,
+    "power": ""
+   }
+  },
+  "convex": {
+   "risk_med": 8.52,
+   "win_avgR": 1.61,
+   "share_R3": 7.7
+  }
+ },
+ "B_amputated_BULL": {
+  "N": 127,
+  "g": {
+   "sum": 49.6,
+   "wr": 52.0,
+   "avg": 0.39,
+   "dd": -6.1,
+   "rdd": 8.08,
+   "stkL": 7,
+   "run": 10
+  },
+  "q": {
+   "sum": 36.8,
+   "wr": 49.6,
+   "avg": 0.289,
+   "dd": -6.9,
+   "rdd": 5.31,
+   "stkL": 7,
+   "run": 10
+  },
+  "yrs": {
+   "2024": 16.2,
+   "2025": 14.4,
+   "2026": 6.2
+  },
+  "cells": {
+   "RANGE": {
+    "N": 0,
+    "net": 0,
+    "power": ""
+   },
+   "BULL": {
+    "N": 127,
+    "net": 36.8,
+    "power": ""
+   },
+   "BEAR": {
+    "N": 0,
+    "net": 0,
+    "power": ""
+   }
+  },
+  "convex": {
+   "risk_med": 8.91,
+   "win_avgR": 1.59,
+   "share_R3": 7.9
+  }
+ },
+ "nulls": {
+  "A": {
+   "freq": 94.8,
+   "context": 91.0,
+   "time": 79.8
+  },
+  "B": {
+   "freq": 93.8,
+   "context": 80.0,
+   "time": 95.2
+  }
+ },
+ "overlap_AB": 13,
+ "A_base435": 32,
+ "B_base435": 54,
+ "status": "EXPLORATORY_CALIBRATION",
+ "ledger": "2 tentativas congeladas + 1 amputa\u00e7\u00e3o pr\u00e9-autorizada; fam\u00edlia ~18 olhadas"
+}
