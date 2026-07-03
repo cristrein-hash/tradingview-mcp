@@ -1,0 +1,57 @@
+{
+ "P1": {
+  "net": 257.0983971662032,
+  "p_null": 0.726,
+  "anticipated": 127,
+  "phantom_n": 147,
+  "phantom_net": -2.3,
+  "kill": false,
+  "fn": 4
+ },
+ "P2": {
+  "net": 162.83021845693688,
+  "fill": 319,
+  "miss_base_avg": -0.56,
+  "p_null": 0.65,
+  "kill": false,
+  "fn": 2
+ },
+ "P3": {
+  "cut": 1,
+  "runner_kill": 0,
+  "p_rand": 0.708,
+  "conc": 0.0,
+  "net": 232.47385326419166,
+  "delta": -1.2,
+  "p_perm": 0.688,
+  "kill": false,
+  "fn": 4
+ },
+ "P4": {
+  "cut": 148,
+  "runner_kill": 14,
+  "p_rand": 0.702,
+  "conc": 0.0,
+  "net": 142.04837368925396,
+  "delta": -91.6,
+  "p_perm": 0.716,
+  "transfer": false,
+  "kill": true,
+  "fn": 1
+ },
+ "P5": {
+  "go": true,
+  "net_w": 113.8,
+  "stk_obs": 8,
+  "boot_stk_q95_base": 13,
+  "boot_stk_q95_budget": 13,
+  "boot_dd_q95_base": 22.7,
+  "boot_dd_q95_budget": 9.8
+ },
+ "P6": {
+  "ran": true,
+  "net": 257.1,
+  "p_null": 0.7,
+  "fn": 4
+ }
+}

@@ -1,60 +1,49 @@
-# LAB A — ENTRY GEOMETRY · RELATÓRIO FINAL (2026-07-03)
+# LAB A RODADA 2 — ENTRY REDESIGN · RELATÓRIO (2026-07-03)
 
-## 1. Executive verdict
+> Rodada 1 (execução pós-sinal, FAILS) no git history (c95d711). Esta rodada = redesenho amplo discovery-first (mandato Cris), Lab B dobrado para dentro. **Este relatório traz DADOS; não propõe finalização de processo** — continuidade é decisão do Cris. Fluxo: brief (`..._ENTRY_DISCOVERY_BRIEF_20260703.md`) → prereg (6 hipóteses congeladas) → execução → DA independente (1 bug material corrigido, re-executado) → este doc.
 
-**TRIGGER_GEOMETRY_FAILS** — **escopo obrigatório (DA):** o que falhou é a **EXECUÇÃO PÓS-SINAL** (limit/retest/cap/reclaim depois do sinal completo). O gatilho no NÍVEL DO SINAL (confirmação k3, altura, CHoCH — famílias A1/A3/A4) permanece **NÃO-TESTADO** (BLOCKED por exigir builder re-scan; rodada futura). Dentro do espaço testado: **market no close de cj é a melhor execução — resultado negativo limpo, mecanismo quantificado.**
+## 1. Baseline (fail-loud, reproduzida em toda execução)
+N435 · WR_liq 46,0% · bruto +291,5 / **NET +233,6** · DD −14,2 · r/DD 16,4 · streak −8/+6 · anos 13,6/183,4/36,6 · 73% meses+ · pior mês −5,0 · runners 53. **FN-gate 4/6 — a própria base falha WR_liq≥50 e streak≤6** (referência para tudo abaixo).
 
-## 2. Baseline reproduction
+## 2. STREAK_ANATOMY (diagnóstico comum, passo 0)
+36 loss-runs ≥3: **15 intra-episódio · 20 dentro de ≤2 semanas · só 1 espalhada → 97% concentradas**. A dor de streak NÃO é espalhada — é cluster de calendário/episódio (padrão phase31/L2 confirmado no 15M).
 
-S0 market@cj: **bruto +291,5 / líquido-SB +233,6** — reproduzido (fail-loud + verificação independente do DA).
+## 3. Painéis (bruto | NET-SB $0,80; nulls pós-correção DA)
 
-## 3. Variants tested (17 execuções, todas pré-registradas/A6 aceitas; nenhuma omitida)
+| Hipótese | N | WR_liq | NET | DD | r/DD | stk | runners | p(null) | kill |
+|---|---|---|---|---|---|---|---|---|---|
+| **BASE market@cj** | 435 | 46,0 | **233,6** | −14,2 | 16,4 | −8 | 53 | — | — |
+| **P1 disp-early** (127 antecip.) | 435 | 46,7 | **257,1** | −13,5 | 19,0 | −8 | 56 | 0,726 | não |
+| P2 stop-continuação (miss=0) | 435 | 38,2 | 162,8 | −8,8 | 18,5 | −13 | 38 | 0,650 | não (kill-PASS) |
+| P3 skip-ceiling | 434 | 45,9 | 232,5 | −14,2 | 16,3 | −8 | 53 | 0,69-0,71 | não |
+| P4 skip-capx | 287 | 45,3 | 142,0 | −16,7 | 8,5 | −7 | 35 | 0,70-0,72 | **SIM** |
+| P5 budget (R ponderado) | 435 | 46,0 | 113,8* | −5,9 | 19,2 | −8 | 16* | — | não |
+| P6 COMBO (≡P1) | 435 | 46,7 | 257,1 | −13,5 | 19,0 | −8 | 56 | 0,700 | — |
 
-Grid δ (0,3/0,5/0,8 ATR × W8/16) · mid-risk · pHigh · **4 propostas dos agentes** (CAP20 condicional + vizinhança 1,8/2,2 · RECLAIM fill-on-hold · HLDEF higher-low · CR2 depth c/ piso de custo) · nulls delay cj+2/cj+4 · regime THROUGH (fill exige low ≤ L−$0,40) nas 5 principais. Engine multi-agentes real: 4 perspectivas (mecânica/estrutura/custo-risco/DA-pré), 9 propostas, 4 aceitas por desenho pré-resultado, não-aceitas registradas (SPLIT/CJLOW/MS1/MS3/CR1).
+\*P5 em unidades ponderadas (0,5/0,3/0,2R por posição na cadeia) — não comparável 1:1; leitura honesta em §4.5.
 
-## 4. Gross vs SB-net panel (números pós-correção DA)
+## 4. Leitura por hipótese (dados + escopo obrigatório do DA)
+1. **P1 TRIG_DISP_EARLY** — +23,5R pareado, DD/r-DD/runners/pior-mês melhoram, todos anos melhoram. **MAS**: (a) null justo timing-com-piso (med +28,8) → **p=0,726 = zero evidência de informação no deslocamento**; o ganho é mecânica de timing (entrar mais cedo/mais baixo com piso); o valor causal do disp lens é **controle de fantasmas** (147 entradas live-only custam só −2,3R); (b) classe fantasma não-coberta (fractais que falham confirmação — fora do dataset) estimada pelo DA em −2,2 a −3R → **tradeable honesto ≈ +252 NET (~+19R vs base)**; (c) residual dos gates cj (knife/h1_pos/HTF em p+1/p+2) declarado e NÃO bounded; (d) WR e streak NÃO mudam (falhas FN pré-existentes da base). Rótulo: **PROMISING_NEEDS_VISUAL** (com as 4 ressalvas acima carregadas).
+2. **P2 EXEC_STOP_CONT** — **FAILS** no painel (−71R vs base; compressão de R por entry mais alto), robusto à física same-bar (±4,3R). **Achado valioso: kill-criterion PASSOU** — os 116 misses têm base-avgR −0,56 (são losers): o buy-stop de continuação tem a física de seleção INVERTIDA vs limit (rodada 1) como teorizado; ele filtra losers de verdade, só que paga caro demais nos winners. DD −8,8 e pior streak −13.
+3. **P3 SKIP_CEILING** — **FAILS por vacuidade honesta**: corta 1/435. As lentes de teto (válidas no L2 4H) quase não disparam na base 15M porque **h1_pos/pos20/HTF-up já excluem contexto de teto** (lente supply: 20,1% do universo, 0,9% dos 435). Não há losers-sob-teto sobrando para cortar NA BASE FILTRADA.
+4. **P4 SKIP_CAPX** — **KILL**: runner-kill 14 (critério duro), transferência de monotonicidade FAIL (s1 +0,92 > s2 +0,83; s0 +0,45 ainda positivo), −91,6R NET cortados. Descartado sem re-fitting (prereg).
+5. **P5 EPISODE_RISK_BUDGET** — risco-normalizado: **R/unidade-alocada 0,537→0,572 (+7%) · DD obs −14,2→−5,9 · DD q95 bootstrap 22,7→9,8 · pior mês −5,0→−1,8** · NET absoluto cai a 49% (113,8). Streak em contagem invariante POR CONSTRUÇÃO (nota DA — não é achado). É contabilidade de risco, não seleção: reduz exposição aos clusters multi-stop que a ANATOMY mostrou serem 97% da dor.
+6. **P6 COMBO** — só P1 sobreviveu ao gate individual → COMBO≡P1 (reconciliação exata).
 
-| Variante | miss% | bruto | **NET** | DD | r/DD | runners |
-|---|---|---|---|---|---|---|
-| **BASE market@cj** | 0 | **291,5** | **233,6** | −14,2 | **16,4** | 51 |
-| A6_CR2 (melhor alt.) | 11,0 | 269,8 | 207,6 | −17,8 | 11,7 | 49 |
-| LIM_0.3ATR_W16 | 10,1 | 264,5 | 198,2 | −22,5 | 8,8 | 46 |
-| A6_CAP20 | 17,0 | 238,0 | 179,1 | −26,2 | 6,8 | 47 |
-| LIM_pHigh_W16 | 23,4 | 245,8 | 178,1 | −25,7 | 6,9 | 45 |
-| NULL_delay_cj2 | 0 | 260,0 | 173,0 | −38,9 | 4,5 | 51 |
-| A6_HLDEF | 17,7 | 231,7 | 162,0 | −26,1 | 6,2 | 40 |
-| NULL_delay_cj4 | 0 | 244,2 | 153,5 | −43,4 | 3,5 | 44 |
-| A6_RECLAIM | 43,9 | 152,7 | 102,6 | −29,4 | 3,5 | 35 |
-| LIM_mid_risk | 36,8 | 160,1 | 80,8 | −48,0 | 1,7 | 34 |
+## 5. Ledger de multiplicidade
+7 tentativas (P1-P6 + absorption score pré-descartado no discovery). **Nada com p<0,05 sob nulls corretos.** Zero varredura/grid; agregações congeladas; runner-kill e kill-criteria aplicados como pré-registrados.
 
-THROUGH (anti-otimismo de touch): todas pioram mais 15-50R — o negativo é robusto ao regime de fill.
+## 6. FundedNext gate (objetivo da rodada: WR≥50, streak≤5-6)
+**Nenhuma hipótese move WR_liq ou streak** — P1 melhora lucro/DD/runners mas WR 46,7 e streak −8 seguem os da base; P5 reduz a PROFUNDIDADE da dor (DD/pior mês) sem mudar contagem. As alavancas testadas movem sumR/DD, não WR/streak. Dado para a continuidade (decisão Cris): o eixo WR/streak permanece não-resolvido pelas famílias trigger/execução/skip-convergente/budget desta rodada; a ANATOMY (97% cluster) aponta a natureza episódica/calendário da dor.
 
-## 5. risk_usd impact
+## 7. DA verdict (independente; não commitou — verificado)
+1 bug material (null P1 sem piso → manchetes falsas; corrigido, re-executado, números deste doc = pós-correção, batem com verificação independente) + 1 bug de reporte (P5 streak trivial). P1/P5 = POSITIVO_COM_RESSALVA_GRAVE · P2/P3/P4 = CONFIRMA_NEGATIVO · P6≡P1. Doc: `XAU_15M_LONG_LAB_A_ENTRY_GEOMETRY_DA_20260703.md`.
 
-Limits reduzem risk_usd mediano ($8,2 → $3,7-7,2) e ganham R nos fills (delta pareado +27 a +91R), **mas nunca compensam os winners perdidos**.
-
-## 6. Runner preservation — o mecanismo da falha
-
-**Seleção adversa medida (não presumida):** em TODAS as variantes limit, o base-avgR dos MISSES é 1,4-2,7 vs 0,23-0,55 dos filled — **quem não retesta é justamente o runner** (8-36 runners perdidos por variante). Todo loser atravessa o limit por definição (caminho ao SL passa por L); o winner só enche se voltar. Fill-rate null corrigido: p=0,506 — a melhor variante é **indistinguível de jogar fora 11% da base ao acaso** (a melhora de preço é cancelada 1:1 pela seleção adversa). Delay nulls: atrasar sem profundidade também perde (−60/−80R NET).
-
-## 7. Annual/episode robustness
-
-A6_CR2 perde nos **três anos** (9,8<13,6 · 173,0<183,4 · 24,8<36,6) — 2025 não carrega o veredito. Jackknife-episódio (398 eps): sem dependência de episódio único. **17/17 negativas com o mesmo mecanismo = multiplicidade a FAVOR do negativo** (com esse nº de tentativas, um vencedor espúrio era o esperado; zero apareceu).
-
-## 8. DA verdict
-
-DA independente (real; script `_DA_lab_a_geometry_attack.py`; **não commitou**): achou **2 bugs materiais nos números publicados** — same-bar-stop indevido em entradas at-close (corrompia delay-nulls e RECLAIM; corrigidos: 173,0/153,5/102,6 — "RECLAIM pior de todas" era FALSO, pior é mid-risk) e fill-rate null com custo fixo (p 0,806→0,506). Ataques dissolvidos: horizonte ancorado (Δ=0,0), same-bar em limit fills (física correta), custo SB (física do Lab E; déficit de CR2 é 21,7R bruto + só 4,3R de custo). Script corrigido e re-executado; números do relatório = pós-correção, batem com a verificação independente. Veredito DA: **FAILS escopado a pós-sinal**.
-
-## 9. What changes for Lab B/C/D
-
-- **Lab B (próximo):** intocado e REFORÇADO — se a execução não melhora o painel, o lever restante do formato conhecido é **eliminação por contexto** (cortar losers sem tocar runners). Pontes dos agentes registradas: fills sob banda de supply = pior seleção adversa (leitura para B).
-- **Lab C:** SL_CONTEXT herda o aviso — SL mais largo interage com custo (Lab E) e com o trail; avaliar líquido-SB.
-- **Lab D:** re-entry paga round-trip por tentativa + herda a física da seleção adversa aqui medida (o retest que enche tende a ser o ruim).
-- **Rodada futura (fora de B/C/D):** redesenho no NÍVEL DO SINAL (A1/A3/A4 via builder re-scan) — única via restante para atacar o custo de confirmação; requer bloco próprio.
-
-## 10. Recommendation
-
-- **PRESERVE:** entrada market no close de cj como execução canônica da base #4 (validada contra 17 alternativas).
-- **DISCARD:** família limit/retest/cap/reclaim pós-sinal (forbidden path novo — não re-testar sem dados de fill reais que mudem a física).
-- **Needs visual review:** NÃO (negativo limpo; nada a inspecionar).
-- **Next lab: B — context elimination** (posição-no-regime + supply + room_above como leitura convergente assimétrica).
+## 8. Vereditos da rodada (por hipótese, sem finalização de processo)
+- **P1: PROMISING_NEEDS_VISUAL** (~+19R tradeable, DD/runners melhores; sem info-edge sobre timing; residual declarado; exige builder re-scan p/ gates exatos em p+1/p+2 e reconciliação visual do Cris antes de qualquer status).
+- **P2: FAILS** (painel) com kill-PASS registrado como conhecimento de física de fill.
+- **P3: FAILS** (vacuidade na base — lentes de teto já cobertas pelos gates).
+- **P4: FAILS** (KILL runner-kill+transferência).
+- **P5: PROMISING_NEEDS_VISUAL** como camada de CONTABILIDADE (risk-shape), condicionada a decisão do Cris sobre trade-off lucro-absoluto × dor.
+- **P6: ≡P1.**
+Diferidas/registradas para rodadas futuras (do discovery, sem execução aqui): SL_CONTEXT (Lab C) · ladder pós-P2 · re-entry qualificada (Lab D) · box-pos estrutural do regime (Lab B r2) · confirmação especializada por regime (builder) · re-run integral sobre RAW estendido mar-jun/2026.
