@@ -1,5 +1,13 @@
 # L1 EMA21 CONTINUATION — REFINAMENTO APROVADO (2026-06-16)
 
+> 🚨 **CORREÇÃO DE CANON (decisão Cris 2026-07-03): a regra de SL OFICIAL da L1 é a V1 = `zona_OB_low − 0,1·ATR`.**
+> Diagnóstico reproduzível (`reports/_diag_l1_sl_rule_match.py`): os outcomes salvos em `l1_approved34.json`
+> (base do pipeline poc-cut8 + regime v5 → `l1_FINAL_regime_gated.json`, **N24 · 18W · 75% · +45,2R**, o
+> conjunto FINAL aprovado e plotado) reproduzem **34/34 sob a V1** (painel +35,2 dos 34) e só 32/34 sob a
+> regra `max(zona_OB_low, swing6_low) − 0,1·ATR` descrita abaixo. **A regra max(zona,swing6) fica como
+> ESTUDO IN-SAMPLE documentado (não-oficial)**; as menções abaixo a ela como "exit aprovado" ficam
+> SUPERSEDED por esta correção. Artefato V1 = o aprovado.
+
 **Decisão do Cris:** APROVADO **sem OOS** — período 2020-01→2026-04 cobre todos os regimes e transições; sample suficiente; **risco assumido pelo Cris**. Validação por proxy + análise visual (Cris confirmou superior à versão anterior em todos os aspectos).
 
 ## Configuração aprovada (sobre a base-rule L1 já existente)
