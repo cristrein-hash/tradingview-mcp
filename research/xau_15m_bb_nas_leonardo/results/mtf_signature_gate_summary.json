@@ -1,0 +1,25 @@
+{
+ "gate_pass_universe": 358,
+ "universe_covered": 4499,
+ "no_1h_coverage": 240,
+ "E1": {
+  "N": 19,
+  "net": 4.5,
+  "runner_kill": 52,
+  "pct_random": 27.6,
+  "pct_year": 45.4,
+  "pct_episode": 38.4
+ },
+ "E2": {
+  "N": 358,
+  "net": -13.6,
+  "freq_wk": 3.77,
+  "overlap_base": 19
+ },
+ "targets": {
+  "m35": 35,
+  "gate35": 3,
+  "sysA21_pass": 0
+ },
+ "status": "EXPLORATORY_CALIBRATION"
+}

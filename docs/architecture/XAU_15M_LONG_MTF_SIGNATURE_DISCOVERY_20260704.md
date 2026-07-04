@@ -1,5 +1,7 @@
 # XAU 15M LONG — MTF STRUCTURAL SIGNATURE · DISCOVERY (2026-07-04)
 
+> 🚨 **ATUALIZAÇÃO (mesmo dia): ASSINATURA REFUTADA no gate test** — o lift era artefato de fill-fiction (alvos avaliados no preço-âncora retroativo ~3,3 ATR abaixo do mercado; com preço real no MESMO instante: 6% ≈ controles 8%). Ver `XAU_15M_LONG_MTF_SIGNATURE_GATE_{REPORT,DA}_20260704.md`. Camadas sugestivas preço-dependentes (inside_demand/demanda empilhada) = contaminadas; pistas preço-independentes (CHoCH/absorção/anti-iniciativa/NAS) = não-refutadas mas nunca validadas. Lição de método: reprecificar alvos ao close real antes de qualquer lift.
+
 **Status: EXPLORATORY_CALIBRATION sobre HINDSIGHT_TARGET_SET** (não é validação, não é produção, não é aprovação).
 
 ## Origem
