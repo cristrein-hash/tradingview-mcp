@@ -1,5 +1,7 @@
 # RECLAIM-QUIETO v1.0 — ENTRY INDEPENDENTE XAU 15M LONG · SPEC CONGELADA (2026-07-04)
 
+> 🔴 **OUTCOME ONE-SHOT LIDO (GO Cris, mesmo dia): SISTEMA MORTO PELOS PRÓPRIOS KILL-CRITERIA.** N157 · NET +6,0 (avg 0,038) · WR_liq 35% · DD −16,5 · **streak −11 (hard ≤5 FAIL)** · indistinguível dos 3 nulls (pct 51-57%) · sem top-5 = −31 · nenhum ano sobrevive sem top-2 · 1 mês = 165% do sum · **ablação: remover QUALQUER lente melhora ou iguala (sem CHoCH: +21,1)** — as lentes reconhecem o ARQUÉTIPO do operador mas não carregam edge de outcome nesta frequência. One-shot respeitado: zero remendo, zero re-tuning. Ver `reclaim_quieto_v1_outcome_oneshot_20260704.py` + results. Lição: estilo ≠ edge; o reconhecimento do arquétipo (2,7× no perfil) não transfere para outcomes com exit let-run.
+
 **Status: DESIGN OUTCOME-BLIND SELADO** — nenhuma leitura de outcome feita (g_R/letrun nunca abertos em nenhuma fase; verificado no código). Leitura de outcome = **ONE-SHOT, requer autorização explícita do Cris**. Origem: mandato Cris (re-mapeamento reprecificado + entry independente, SEM comparação com bases/entries anteriores).
 
 ## 1. Re-mapeamento REPRECIFICADO (fundamento)
