@@ -16,7 +16,12 @@ FORBIDDEN = [  # tokens que, se aparecerem como FONTE de dados, provam uso de de
     "_DA_L1_", "raw_features_2020_2026",
 ]
 # tokens que provam leitura de fonte permitida (pelo menos um deve existir num script que lê dados)
-ALLOWED_TOKENS = ["raw_replay/XAUUSD/15M", "primitives", "build_causal_primitives"]
+# calibração 2026-07-04: exec do engine sancionado = cadeia permitida (o engine lê primitives e passa o guard)
+ALLOWED_TOKENS = ["raw_replay/XAUUSD/15M", "primitives", "build_causal_primitives",
+                  "engine_substrate4_v5_hourcausal",
+                  # intermediário sancionado (determinístico, gerado por lab_g_context_inventory.py guard-PASS
+                  # a partir de engine+primitives; regenerável; NUNCA fonte de verdade — RAW segue autoridade)
+                  "lab_g_candidates.jsonl"]
 
 def scan(script: Path):
     txt = script.read_text(errors="ignore")
@@ -27,6 +32,10 @@ def scan(script: Path):
             # ignora se o token aparece só em comentário de NEGAÇÃO explícita ("não usar", "NÃO", "proibido")
             line = txt.splitlines()[ln - 1] if ln - 1 < len(txt.splitlines()) else ""
             if re.search(r"(não|nao|never|proib|forbidden|NÃO|guard|FORBIDDEN)", line, re.I):
+                continue
+            # calibração 2026-07-04 (classe GUARDRAIL_CARD): token como NOME DE CAMPO sendo ESCRITO
+            # (f["macro_bear"]=...) não é leitura de fonte proibida — só flagra uso como FONTE de dados.
+            if re.search(r'\[["\']' + re.escape(tok) + r'["\']\]\s*=[^=]', line):
                 continue
             viol.append((tok, ln, line.strip()[:90]))
     reads_data = any(t in txt for t in (["gzip.open", "json.load", "open("]))
