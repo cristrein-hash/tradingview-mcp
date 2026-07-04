@@ -1,41 +1,41 @@
-# RAW 15M EXTENSION — COLLECT TO TODAY · RELATÓRIO (2026-07-04)
+# RAW 15M EXTENSION — COLLECT TO TODAY · RELATÓRIO FINAL (2026-07-04)
 
 ## 1. Executive verdict
-**RAW_EXTENSION_BLOCKED** — coleta executada com janela segura e produção restaurada, MAS o bloco coletado **não tem paridade de layout com o baseline dos 8 blocos**: `Smart Money Concepts [LuxAlgo]` e `NAS TOP BOTTOM DETECTOR` **não reportaram payload em nenhum dos 2709 registros** (presentes no `chart_get_state` pré-coleta, ausentes no export). Hard stop do protocolo ("cobertura coletada não bate") acionado ANTES de qualquer escrita no HD. **RAW vivo 100% intocado. Zero promoção. Zero rollback necessário.** Kill-check do Sistema A NÃO executado (R10 exige RAW/derivados validados).
+**RAW_EXTENSION_COMPLETE_KILLCHECK_DONE** — 9º bloco coletado (run-2, após fix de visibilidade SMC/NAS pelo Cris), validado, promovido ao HD com manifest/roundtrip, derivados reconstruídos com prefixo byte-idêntico, e kill-check virgem do Sistema A executado com spec congelada → **VIRGIN_INCONCLUSIVE_N_LT_20 (N=0; janela 100% BEAR)**. DA independente: **CONFIRMA** tudo.
+Histórico do bloco: run-1 (mesma sessão) foi **BLOCKED** por drift de indicadores (SMC/NAS invisíveis; relatório da falha preservado no git history deste mesmo arquivo, commit `feaae36`) — o fix foi manual do Cris.
 
 ## 2. Coverage before/after
-Antes: 8 blocos, 2024-05-25 → 2026-05-25 (intactos). Depois: **INALTERADO** (bloco novo rejeitado em staging).
+- Antes: 8 blocos, 2024-05-25 → 2026-05-25.
+- **Depois: 9 blocos, 2024-05-25 → 2026-07-03 16:30 UTC** (fim = último bar antes do fechamento de 4-jul). Gap remanescente: zero até a data da coleta.
 
-## 3-6. Paths, checksums, counts, gaps
-- Staging (retido para forense, LOCAL apenas): `alert-bridge/logs/backtests/XAUUSD_15m_replay_2026-05-25_to_2026-07-04.jsonl` (8000 registros brutos) · `.normalized.jsonl` (**2709 barras reais**, sha256 `0a9d87cf...b25ac0` → correção pós-dedupe `0a9d87cf0ed0f4a0f693fb0ea271a2aa618226f21c4932273e7fc10fb33a96bd`) · `.normalized.jsonl.gz` (594K — o tamanho anômalo vs ~130M históricos foi o gatilho da inspeção; sha256 `4e9c1a70...`, roundtrip YES) · `.checkpoint.json` (**deletar antes de re-coleta** — senão o coletor resume do bar 7999).
-- Qualidade de série (R4 PASS): junção contígua com o 8º bloco (1ª nova 00:15; overlap 2 por design) · 0 dup (1 soluço consecutivo deduplicado keep-first) · 0 não-monotônico · 30 gaps legítimos (fds/sessão/Memorial Day) · range real 2026-05-24 23:45 → **2026-07-03 16:30 UTC** (fim = early close de sexta pré-feriado). CSV: `results/raw_15m_extension_gap_report_20260704.csv` · JSON: `results/raw_15m_extension_validation_20260704.json`.
+## 3-5. Paths, checksums, counts
+- **HD:** `TradingData/raw_replay/XAUUSD/15M/XAUUSD_15m_replay_2026-05-25_to_2026-07-04.jsonl.gz` (59M · sha256 `52e9d748a9c8be338147010bf65673290e966c648c5c937020411cbdb28ea705`) + manifest `TradingData/manifests/XAUUSD_15m_replay_2026-05-25_to_2026-07-04_manifest.txt`. Original local: `alert-bridge/logs/backtests/XAUUSD_15m_replay_2026-05-25_to_2026-07-04.normalized.jsonl` (547MB · sha256 `525931aa3c3cce6cc024da271faa8c59e88ae5d4bfe16750a284045580e28199`) — retido até aprovação de deleção. **Roundtrip triplo-verificado (DA recomputou).**
+- 2710 snapshots reais (cauda pós-replay de 5290 registros aparada; **nota de risco residual do DA: o STAGE bruto não-trimado contém 1 barra realtime além do fim do replay — rebuilds futuros devem partir do gz do HD, nunca do STAGE bruto**) → 2714 barras curadas.
+- Densidade de indicadores (DA): NAS 73,3/kbar · SMC 75,9 · OB 220,0 — ≥ 8º bloco (50,6/71,8/211,8); consistente com bear.
+
+## 6. Gap/duplicate report
+0 buracos · 0 INSPECT · 29 gaps legítimos (fds/sessão/Memorial Day) · barra final flat (convenção idêntica aos blocos históricos — o 8º também termina flat) · overlap 6 barras idênticas ao 8º exceto a barra final flat do PRÓPRIO 8º (8º permanece autoritativo via `setdefault` do engine). Cross-check run-1×run-2 na série curada: **0 mismatches em 2714 barras** (a investigação da "divergência de 197 barras" revelou que era artefato de convenção de identidade — corrida de captura auto-curada pelo last-write-wins do builder; validação v2 reescrita para a convenção correta, DA confirmou fidelidade ao builder).
 
 ## 7. Source guard
-Cadeia de promoção PASS (builder/bubbles/engine/engine3). 2 falso-positivos pré-existentes documentados no manifest (token `macro_bear` = atribuição de campo; allowed-token não vê leitura via exec do engine) — **pendência: calibração do guard** (classe GUARDRAIL_CARD).
+Cadeia de promoção PASS; 2 falso-positivos pré-existentes documentados (manifest §R4/R6); pendência de calibração registrada.
 
-## 8-9. Promotion / derived rebuilds
-**NÃO executados** (bloqueados pelo veredito). Nada no HD; primitives/bubbles/candidates oficiais intocados.
+## 8-9. Promotion & derived rebuilds
+- RAW: promovido após R4v2 PASS (protocolo sha→gz→sha→HD→gzip-t→roundtrip→manifest).
+- Primitives 9º bloco: sandbox-first → validado (2714 bars · NAS 199 · SMC 206 · OB 597 · RSI 99%) → promovido (sha `92c50759...`). Bubbles 9º: sandbox → auditoria de mapping/causalidade OK (1017; BUY-up 70,7% >> SELL-up 27,8%; known_at≥t) → promovido (sha `4a095938...`). *(primitives/bubbles não são versionados no git — paths+sha aqui e no manifest.)*
+- Candidates: backup → rebuild oficial → **PREFIX PASS: 4502 antigos byte-idênticos + 240 aditivos** (nos dois arquivos); universo Lab G: 4499 byte-idênticos + 240.
 
 ## 10. Validation of old prefix
-Intocado por construção (blocos independentes; nenhuma escrita).
+Blocos antigos imutáveis por construção; candidates/universo byte-idênticos (acima); **baseline #4 reproduz na base estendida: N435 +291,5** (fail-loud + DA).
 
 ## 11. Kill-check
-**NÃO executado** (pré-condição falhou). Preparação preservada: dependência do Sistema A de `htf_demand_any` medida = **0/53 picks históricos** (bound sólido para quando a coleta válida existir); htf_4H termina 2026-06-09 e htf_1D 2026-05-24 (staleness declarada; extensão HTF = pendência separada).
+**VIRGIN_INCONCLUSIVE_N_LT_20 (N=0).** Janela 100% BEAR (v5h recomputado 240/240 pelo DA); Sistema A BULL-only ficou integralmente de fora (~−12% de queda sem nenhum LONG — stand-aside como desenhado). Bounds htf irrelevantes com N=0. Doc: `XAU_15M_SYSTEM_A_VIRGIN_KILLCHECK_20260704.md`.
 
-## 12. What was NOT touched
-RAW vivo (8 blocos) · manifests · primitives/bubbles/htf oficiais · produção (receiver vivo o tempo todo; pause flag criada e removida pela própria janela com trap; daemon 4H permaneceu parado como estava antes) · estratégias/gates/detector · Telegram · Supabase.
+## 12. What was not touched
+Produção (receiver vivo; janela pausou/restaurou sozinha claude_recheck; daemon 4H permaneceu parado como antes) · blocos 1-8 e seus manifests · estratégias/gates/detector · Telegram · Supabase (delta pendente registrado) · SHORT.
 
-## 13. Diagnóstico técnico (para o fix)
-- Capturados em 2709/2709: **Custom OB Detector v11 — Alert ✓ · Market Order Bubbles ✓ · RSI ✓** (+ HTF Power of Three°, extra).
-- Ausentes em 2709/2709 (desde o registro 0): **LuxAlgo SMC · NAS TOP BOTTOM** — exatamente os dois estudos com 500+ objetos de desenho.
-- `chart_get_state` lista estudos EXISTENTES; o leitor pine só lê estudos **VISÍVEIS** (contrato conhecido do MCP). Hipótese principal: os dois estão **ocultos (olhinho) ou em estado de erro** no chart desde as sessões de plotting — verificação/correção é ação MANUAL no TradingView (fora do protocolo da janela).
-- Probe reproduzível: `research/xau_15m_bb_nas_leonardo/_probe_extension_indicator_drift_20260704.py`.
+## 13. Rollback instructions
+RAW: remover `XAUUSD_15m_replay_2026-05-25_to_2026-07-04.jsonl.gz` + manifest do HD (blocos 1-8 imunes). Primitives/bubbles: deletar os 2 ficheiros novos (aditivos). Candidates: restaurar backups (sha `f8debb6f.../47c24cb6...` em `scratchpad/derivados_sandbox/backup_candidates/`).
 
-## 14. Rollback instructions
-Nada a reverter (nada promovido). Forense local pode ser apagada com autorização após re-coleta válida.
-
-## 15. Next recommended action (aguarda Cris)
-1. **Cris confere no chart** (10s): LuxAlgo SMC e NAS TOP BOTTOM visíveis (olhinho aberto) e sem erro; se em erro, re-adicionar/recarregar.
-2. Apagar `checkpoint.json` + staging antigo.
-3. **Re-autorizar a re-coleta do MESMO bloco** (re-run do período, não é 2º bloco) — pipeline inteiro daqui em diante já está pronto e validado (R4-R10 re-executam sem mudanças).
-4. (Opcional junto) reconectar o MCP da sessão (`/mcp`) para eu verificar visibilidade dos estudos antes da nova janela.
+## 14. Next action (decisão Cris)
+- O kill-check REAL do Sistema A precisa de janela virgem NÃO-BEAR → continuar a extensão em blocos futuros (mesmo pipeline, agora todo validado) quando o mercado der amostra.
+- Pendências que este bloco deixou registradas: extensão htf_4H/1D (staleness) · calibração do source guard · Supabase delta seed · aprovação de deleção dos originais locais (run-1 forense + STAGE bruto) após confirmação.

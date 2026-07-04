@@ -1,14 +1,14 @@
 {
- "n_candidates": 4499,
- "weeks": 104,
- "per_week_avg": 43.3,
+ "n_candidates": 4739,
+ "weeks": 110,
+ "per_week_avg": 43.1,
  "regime_dist": {
   "RANGE": 1461,
   "BULL": 2132,
-  "BEAR": 906
+  "BEAR": 1146
  },
  "bear_pullback_candidates": 34,
- "rsi_div_rate": 0.071,
+ "rsi_div_rate": 0.073,
  "builder_fields": [
   "above_ema21",
   "atr_compression_pre",
@@ -87,5 +87,5 @@
   "g_regime_flip5d",
   "g_bear_pullback_ok"
  ],
- "R_pos_rate_all": 0.344
+ "R_pos_rate_all": 0.343
 }

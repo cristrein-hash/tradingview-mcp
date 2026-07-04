@@ -1,0 +1,23 @@
+{
+ "verdict": "VIRGIN_INCONCLUSIVE_N_LT_20",
+ "window": "2026-05-25T00:00 -> 2026-07-03T16:30 UTC",
+ "candidates_virgin": 240,
+ "regimes": {
+  "RANGE": 0,
+  "BULL": 0,
+  "BEAR": 240
+ },
+ "frozen": {
+  "tag": "A frozen (asof-stale htf)",
+  "N": 0
+ },
+ "bound_htf0": {
+  "tag": "bound htf:=0",
+  "N": 0
+ },
+ "bound_htf1": {
+  "tag": "bound htf:=1",
+  "N": 0
+ },
+ "note": "janela inteira classificada BEAR pelo v5h (queda ~4560\u2192~4000); Sistema A \u00e9 BULL-only por constru\u00e7\u00e3o \u2192 stand-aside integral. Lane BEAR-pullback congelada tamb\u00e9m sem casos. Zero reotimiza\u00e7\u00e3o."
+}
