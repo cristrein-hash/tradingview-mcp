@@ -1,0 +1,3195 @@
+{
+ "extracted_at": "2026-07-04T11:16:12.482627",
+ "chart": {
+  "symbol": "PEPPERSTONE:XAUUSD",
+  "resolution": "15"
+ },
+ "count": 35,
+ "shapes": [
+  {
+   "id": "t1d45r",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "t1d45r",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 3299.82,
+      "time": 1754073000
+     },
+     {
+      "price": 3299.82,
+      "time": 1754274600
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 1649,
+     "profitLevel": 4846,
+     "qty": 15.16070345664017,
+     "amountTarget": 50734.69,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "e3uSj5",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "e3uSj5",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 3353.43,
+      "time": 1754420400
+     },
+     {
+      "price": 3353.43,
+      "time": 1754449200
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 1072,
+     "profitLevel": 4846,
+     "qty": 23.320895522388494,
+     "amountTarget": 51130.13,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "NpmHGM",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "NpmHGM",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 3326.21,
+      "time": 1755893700
+     },
+     {
+      "price": 3326.21,
+      "time": 1756089000
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 1505,
+     "profitLevel": 4763,
+     "qty": 16.611295681062924,
+     "amountTarget": 50791.2,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "hsOEgw",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "hsOEgw",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 3375.29,
+      "time": 1756296900
+     },
+     {
+      "price": 3375.29,
+      "time": 1756384200
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 1134,
+     "profitLevel": 7463,
+     "qty": 22.04585537918843,
+     "amountTarget": 51645.28,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "6DLWcb",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "6DLWcb",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 3405.59,
+      "time": 1756475100
+     },
+     {
+      "price": 3405.59,
+      "time": 1756691100
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 1298,
+     "profitLevel": 7567,
+     "qty": 19.26040061633279,
+     "amountTarget": 51457.43,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "teE8Tg",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "teE8Tg",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 3485.8,
+      "time": 1756836000
+     },
+     {
+      "price": 3485.8,
+      "time": 1756914300
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 1361,
+     "profitLevel": 6000,
+     "qty": 18.36884643644362,
+     "amountTarget": 51102.13,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "svZFGC",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "svZFGC",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 3527.24,
+      "time": 1756981800
+     },
+     {
+      "price": 3527.24,
+      "time": 1757060100
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 1690,
+     "profitLevel": 6681,
+     "qty": 14.792899408284342,
+     "amountTarget": 50988.31,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "7L4acJ",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "7L4acJ",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 3589.51,
+      "time": 1757326500
+     },
+     {
+      "price": 3589.51,
+      "time": 1757404800
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 1278,
+     "profitLevel": 6618,
+     "qty": 19.561815336462917,
+     "amountTarget": 51294.6,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "umsHuG",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "umsHuG",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 3626,
+      "time": 1757483100
+     },
+     {
+      "price": 3626,
+      "time": 1757513700
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 989,
+     "profitLevel": 3007,
+     "qty": 25.278058645096383,
+     "amountTarget": 50760.11,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "6hlsXP",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "6hlsXP",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 3620.23,
+      "time": 1757613600
+     },
+     {
+      "price": 3620.23,
+      "time": 1757647800
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 989,
+     "profitLevel": 6186,
+     "qty": 25.278058645096383,
+     "amountTarget": 51563.7,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "JKkLYW",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "JKkLYW",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 3638.17,
+      "time": 1758195000
+     },
+     {
+      "price": 3638.17,
+      "time": 1758273300
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 1319,
+     "profitLevel": 11175,
+     "qty": 18.953752843062848,
+     "amountTarget": 52118.08,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "6qde5q",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "6qde5q",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 3633.84,
+      "time": 1757916900
+     },
+     {
+      "price": 3633.84,
+      "time": 1757995200
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 1031,
+     "profitLevel": 4288,
+     "qty": 24.248302618816812,
+     "amountTarget": 51039.77,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "tlqDi1",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "tlqDi1",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 3730.13,
+      "time": 1758825900
+     },
+     {
+      "price": 3730.13,
+      "time": 1759142700
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 1217,
+     "profitLevel": 10489,
+     "qty": 20.542317173377032,
+     "amountTarget": 52154.68,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "m5TNAo",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "m5TNAo",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 3808.59,
+      "time": 1759244400
+     },
+     {
+      "price": 3808.59,
+      "time": 1759319100
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 2028,
+     "profitLevel": 7677,
+     "qty": 12.327416173569897,
+     "amountTarget": 50946.38,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "XDE5Om",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "XDE5Om",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 3837.92,
+      "time": 1759437000
+     },
+     {
+      "price": 3837.92,
+      "time": 1759511700
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 2028,
+     "profitLevel": 12422,
+     "qty": 12.327416173569897,
+     "amountTarget": 51531.31,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "Abz9aJ",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "Abz9aJ",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 3966.12,
+      "time": 1760097600
+     },
+     {
+      "price": 3966.12,
+      "time": 1760414400
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 2354,
+     "profitLevel": 20391,
+     "qty": 10.620220900594749,
+     "amountTarget": 52165.57,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "EQg8oV",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "EQg8oV",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 4118.51,
+      "time": 1760466600
+     },
+     {
+      "price": 4118.51,
+      "time": 1760610600
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 2502,
+     "profitLevel": 23258,
+     "qty": 9.992006394883918,
+     "amountTarget": 52323.94,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "nmAkvW",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "nmAkvW",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 4252.96,
+      "time": 1760970600
+     },
+     {
+      "price": 4252.96,
+      "time": 1761021900
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 3484,
+     "profitLevel": 10893,
+     "qty": 7.175660160734758,
+     "amountTarget": 50781.64,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "VveF6u",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "VveF6u",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 4063.56,
+      "time": 1761323400
+     },
+     {
+      "price": 4063.56,
+      "time": 1761540300
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 2846,
+     "profitLevel": 9895,
+     "qty": 8.784258608573426,
+     "amountTarget": 50869.2,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "ztqo8F",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "ztqo8F",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 3935.49,
+      "time": 1761808500
+     },
+     {
+      "price": 3935.49,
+      "time": 1762172100
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 2306,
+     "profitLevel": 8930,
+     "qty": 10.84128360797921,
+     "amountTarget": 50968.13,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "RbZioG",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "RbZioG",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 3940.4,
+      "time": 1762324200
+     },
+     {
+      "price": 3940.4,
+      "time": 1762511400
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 2258,
+     "profitLevel": 19529,
+     "qty": 11.07174490699738,
+     "amountTarget": 52162.2,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "l7U36o",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "l7U36o",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 4114.59,
+      "time": 1762949700
+     },
+     {
+      "price": 4114.59,
+      "time": 1763009100
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 1963,
+     "profitLevel": 10451,
+     "qty": 12.735608762098758,
+     "amountTarget": 51331,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "M6t8i2",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "M6t8i2",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 4016.94,
+      "time": 1763468100
+     },
+     {
+      "price": 4016.94,
+      "time": 1763550900
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 2453,
+     "profitLevel": 9127,
+     "qty": 10.191602119853158,
+     "amountTarget": 50930.19,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "D1mZyV",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "D1mZyV",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 4045.4,
+      "time": 1763742600
+     },
+     {
+      "price": 4045.4,
+      "time": 1764102600
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 2895,
+     "profitLevel": 18842,
+     "qty": 8.635578583765032,
+     "amountTarget": 51627.12,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "37HM4V",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "37HM4V",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 4165.62,
+      "time": 1764333900
+     },
+     {
+      "price": 4165.62,
+      "time": 1764693900
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 3092,
+     "profitLevel": 8636,
+     "qty": 8.085381630012918,
+     "amountTarget": 50698.25,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "9ktRNN",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "9ktRNN",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 4179.36,
+      "time": 1764824400
+     },
+     {
+      "price": 4179.36,
+      "time": 1764867600
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 3337,
+     "profitLevel": 6273,
+     "qty": 7.491759065028493,
+     "amountTarget": 50469.96,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "n7qkT3",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "n7qkT3",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 4182.79,
+      "time": 1765263600
+     },
+     {
+      "price": 4182.79,
+      "time": 1765450800
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 2748,
+     "profitLevel": 16732,
+     "qty": 9.09752547307147,
+     "amountTarget": 51522.2,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "EO0bU9",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "EO0bU9",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 4287.31,
+      "time": 1765887300
+     },
+     {
+      "price": 4287.31,
+      "time": 1766074500
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 2699,
+     "profitLevel": 20559,
+     "qty": 9.262689885142407,
+     "amountTarget": 51904.32,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "BkeaRs",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "BkeaRs",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 4337.85,
+      "time": 1766169900
+     },
+     {
+      "price": 4337.85,
+      "time": 1766542500
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 2405,
+     "profitLevel": 16094,
+     "qty": 10.395010395010317,
+     "amountTarget": 51672.97,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "2SZFmj",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "2SZFmj",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 4423.13,
+      "time": 1767868200
+     },
+     {
+      "price": 4423.13,
+      "time": 1768321800
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 3708,
+     "profitLevel": 27808,
+     "qty": 6.742179072276173,
+     "amountTarget": 51874.87,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "P7Upci",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "P7Upci",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 4669.43,
+      "time": 1768871700
+     },
+     {
+      "price": 4669.43,
+      "time": 1769152500
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 4326,
+     "profitLevel": 26479,
+     "qty": 5.779010633379536,
+     "amountTarget": 51530.22,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "gYgT6D",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "gYgT6D",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 5081.69,
+      "time": 1769527800
+     },
+     {
+      "price": 5081.69,
+      "time": 1769645700
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 4149,
+     "profitLevel": 42727,
+     "qty": 6.025548324897597,
+     "amountTarget": 52574.54,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "EFr2XB",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "EFr2XB",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 4670.31,
+      "time": 1770066900
+     },
+     {
+      "price": 4670.31,
+      "time": 1770109200
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 8033,
+     "profitLevel": 35400,
+     "qty": 3.1121623303871204,
+     "amountTarget": 51101.71,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "zL4chs",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "zL4chs",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 4744.46,
+      "time": 1770342300
+     },
+     {
+      "price": 4744.46,
+      "time": 1770606900
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 5738,
+     "profitLevel": 32752,
+     "qty": 4.356918787033801,
+     "amountTarget": 51426.98,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  },
+  {
+   "id": "RPsNWf",
+   "name": "long_position",
+   "props": {
+    "success": true,
+    "entity_id": "RPsNWf",
+    "available_methods": [],
+    "points": [
+     {
+      "price": 4924.55,
+      "time": 1771416900
+     },
+     {
+      "price": 4924.55,
+      "time": 1771508700
+     }
+    ],
+    "properties": {
+     "linecolor": "#787B86",
+     "textcolor": "#ffffff",
+     "stopBackground": "rgba(242, 54, 69, 0.2)",
+     "profitBackground": "rgba(8, 153, 129, 0.2)",
+     "stopBackgroundTransparency": 80,
+     "profitBackgroundTransparency": 80,
+     "linewidth": 1,
+     "fontsize": 12,
+     "compact": false,
+     "riskDisplayMode": "percents",
+     "accountSize": 50000,
+     "lotSize": 1,
+     "risk": 0.5,
+     "leverage": 10000,
+     "alwaysShowStats": false,
+     "showPriceLabels": true,
+     "qtyPrecision": "default",
+     "currency": "NONE",
+     "infoBlocks": {
+      "tpPriceOffset": {
+       "visible": true
+      },
+      "tpPercentOffset": {
+       "visible": true
+      },
+      "tpTickOffset": {
+       "visible": true
+      },
+      "tpAmount": {
+       "visible": true
+      },
+      "tpPL": {
+       "visible": false
+      },
+      "openClosePL": {
+       "visible": true
+      },
+      "qty": {
+       "visible": true
+      },
+      "riskRewardRatio": {
+       "visible": true
+      },
+      "slPriceOffset": {
+       "visible": true
+      },
+      "slPercentOffset": {
+       "visible": true
+      },
+      "slTickOffset": {
+       "visible": true
+      },
+      "slAmount": {
+       "visible": true
+      },
+      "slPL": {
+       "visible": false
+      }
+     },
+     "frozen": false,
+     "visible": true,
+     "stopLevel": 3531,
+     "profitLevel": 31692,
+     "qty": 7.080147267063075,
+     "amountTarget": 52243.84,
+     "amountStop": 49750,
+     "entryPointCurrencyRate": 1,
+     "closePointCurrencyRate": 1
+    },
+    "selectable": true,
+    "name": "long_position"
+   }
+  }
+ ]
+}
