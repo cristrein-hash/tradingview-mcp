@@ -1,0 +1,86 @@
+{
+ "(8, 0.5)": {
+  "zones": 257,
+  "recall": 5,
+  "base_rate": 0.0262,
+  "lift": 3.18,
+  "val_hits": 5
+ },
+ "(8, 1.0)": {
+  "zones": 257,
+  "recall": 8,
+  "base_rate": 0.0482,
+  "lift": 2.77,
+  "val_hits": 8
+ },
+ "(8, 1.5)": {
+  "zones": 257,
+  "recall": 10,
+  "base_rate": 0.0759,
+  "lift": 2.2,
+  "val_hits": 10
+ },
+ "(12, 0.5)": {
+  "zones": 135,
+  "recall": 2,
+  "base_rate": 0.0137,
+  "lift": 2.44,
+  "val_hits": 2
+ },
+ "(12, 1.0)": {
+  "zones": 135,
+  "recall": 4,
+  "base_rate": 0.0247,
+  "lift": 2.7,
+  "val_hits": 4
+ },
+ "(12, 1.5)": {
+  "zones": 135,
+  "recall": 5,
+  "base_rate": 0.0397,
+  "lift": 2.1,
+  "val_hits": 5
+ },
+ "(16, 0.5)": {
+  "zones": 83,
+  "recall": 0,
+  "base_rate": 0.0082,
+  "lift": 0.0,
+  "val_hits": 0
+ },
+ "(16, 1.0)": {
+  "zones": 83,
+  "recall": 1,
+  "base_rate": 0.0142,
+  "lift": 1.17,
+  "val_hits": 1
+ },
+ "(16, 1.5)": {
+  "zones": 83,
+  "recall": 3,
+  "base_rate": 0.0219,
+  "lift": 2.29,
+  "val_hits": 3
+ },
+ "(24, 0.5)": {
+  "zones": 46,
+  "recall": 0,
+  "base_rate": 0.0019,
+  "lift": 0.0,
+  "val_hits": 0
+ },
+ "(24, 1.0)": {
+  "zones": 46,
+  "recall": 0,
+  "base_rate": 0.0035,
+  "lift": 0.0,
+  "val_hits": 0
+ },
+ "(24, 1.5)": {
+  "zones": 46,
+  "recall": 0,
+  "base_rate": 0.0059,
+  "lift": 0.0,
+  "val_hits": 0
+ }
+}

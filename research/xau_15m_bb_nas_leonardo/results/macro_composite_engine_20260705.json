@@ -1,0 +1,56 @@
+{
+ "C1 G1&nivelA": {
+  "n": 110,
+  "hit": 0.3,
+  "sum": 12.1,
+  "stk": 19,
+  "recall": 8,
+  "p_null": 0.31925,
+  "gt_members": 10
+ },
+ "C2 C1&spike": {
+  "n": 62,
+  "hit": 0.242,
+  "sum": -6.4,
+  "stk": 20,
+  "recall": 6,
+  "p_null": 0.771,
+  "gt_members": 8
+ },
+ "C3 C1&reclaim": {
+  "n": 49,
+  "hit": 0.367,
+  "sum": 20.2,
+  "stk": 11,
+  "recall": 4,
+  "p_null": 0.1055,
+  "gt_members": 4
+ },
+ "C4 C1&spike&recl": {
+  "n": 28,
+  "hit": 0.321,
+  "sum": 6.6,
+  "stk": 11,
+  "recall": 3,
+  "p_null": 0.36575,
+  "gt_members": 3
+ },
+ "C5 G1&dL0&nivelA": {
+  "n": 85,
+  "hit": 0.282,
+  "sum": 3.6,
+  "stk": 16,
+  "recall": 7,
+  "p_null": 0.485,
+  "gt_members": 9
+ },
+ "C6 C4|C5spk": {
+  "n": 57,
+  "hit": 0.246,
+  "sum": -5.0,
+  "stk": 19,
+  "recall": 5,
+  "p_null": 0.73925,
+  "gt_members": 7
+ }
+}

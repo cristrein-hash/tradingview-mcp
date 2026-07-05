@@ -1,0 +1,50 @@
+{
+ "ZB w32 zh0.5": {
+  "zones": 130,
+  "recall": 2,
+  "base": 0.0183,
+  "lift": 1.82
+ },
+ "ZB w32 zh1.0": {
+  "zones": 130,
+  "recall": 3,
+  "base": 0.0272,
+  "lift": 1.84
+ },
+ "ZB w96 zh0.5": {
+  "zones": 17,
+  "recall": 0,
+  "base": 0.0034,
+  "lift": 0.0
+ },
+ "ZB w96 zh1.0": {
+  "zones": 17,
+  "recall": 0,
+  "base": 0.0046,
+  "lift": 0.0
+ },
+ "ZC M24 c2.0 zh0.5": {
+  "zones": 4,
+  "recall": 0,
+  "base": 0.0003,
+  "lift": 0.0
+ },
+ "ZC M24 c2.0 zh1.0": {
+  "zones": 4,
+  "recall": 0,
+  "base": 0.0003,
+  "lift": 0.0
+ },
+ "ZC M48 c3.0 zh0.5": {
+  "zones": 9,
+  "recall": 0,
+  "base": 0.0028,
+  "lift": 0.0
+ },
+ "ZC M48 c3.0 zh1.0": {
+  "zones": 9,
+  "recall": 0,
+  "base": 0.0039,
+  "lift": 0.0
+ }
+}
