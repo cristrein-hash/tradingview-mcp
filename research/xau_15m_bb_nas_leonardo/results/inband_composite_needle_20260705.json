@@ -1,0 +1,59 @@
+{
+ "snapshot_bands": {
+  "g_atr_spike": [
+   1.04,
+   1.78
+  ],
+  "g_sweep_depth": [
+   0.04,
+   2.11
+  ],
+  "legpos60": [
+   0.0,
+   0.195
+  ],
+  "n_supply_overhead": [
+   19,
+   158
+  ],
+  "rsi_low": [
+   31.1,
+   43.7
+  ]
+ },
+ "looks": {
+  "D1 C2&spike&sweep": {
+   "n": 202,
+   "hit": 0.342,
+   "net": 49.2,
+   "stk": 12,
+   "gtp": 12,
+   "p": 0.00375
+  },
+  "D2 C2&legpos&supply": {
+   "n": 215,
+   "hit": 0.27,
+   "net": -9.4,
+   "stk": 13,
+   "gtp": 9,
+   "p": 0.40775
+  },
+  "D3 C3&spike": {
+   "n": 26,
+   "hit": 0.385,
+   "net": 11.5,
+   "stk": 5,
+   "gtp": 6,
+   "p": 0.116
+  },
+  "D4 C2&rsi&vdry": {
+   "n": 79,
+   "hit": 0.316,
+   "net": 11.3,
+   "stk": 9,
+   "gtp": 10,
+   "p": 0.1535
+  }
+ },
+ "multiplicity_note": "12 looks em-banda acumulados hoje (B1-4, C1-4, D1-4)"
+}
