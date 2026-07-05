@@ -43,7 +43,8 @@ def strip_sql(text):
 def run_query(token, sql):
     req = urllib.request.Request(
         API, data=json.dumps({"query": sql}).encode(),
-        headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+        headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json",
+                 "User-Agent": "tradingview-mcp-memory-applier/1.0"},
         method="POST")
     with urllib.request.urlopen(req, timeout=60) as r:
         return json.loads(r.read().decode() or "null")
