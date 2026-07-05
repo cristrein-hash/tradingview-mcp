@@ -1,0 +1,148 @@
+{
+ "ctx": "CTX-B cascade>=5",
+ "n_ctx": 97,
+ "base_hit": 0.454,
+ "top": [
+  {
+   "g": "L07_atr_spike&L09_oversold1h",
+   "n": 20,
+   "hit": 0.55,
+   "net3": 22.1,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L07_atr_spike&L08_demanda",
+   "n": 24,
+   "hit": 0.542,
+   "net3": 25.4,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L07_atr_spike",
+   "n": 25,
+   "hit": 0.52,
+   "net3": 24.4,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L06_reclaim_forte&L09_oversold1h",
+   "n": 27,
+   "hit": 0.519,
+   "net3": 28.5,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L06_reclaim_forte&L08_demanda&L09_oversold1h",
+   "n": 27,
+   "hit": 0.519,
+   "net3": 28.5,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L06_reclaim_forte&L09_oversold1h&L08_demanda",
+   "n": 27,
+   "hit": 0.519,
+   "net3": 28.5,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L08_demanda&L09_oversold1h&L06_reclaim_forte",
+   "n": 27,
+   "hit": 0.519,
+   "net3": 28.5,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L08_demanda&L09_oversold1h",
+   "n": 62,
+   "hit": 0.516,
+   "net3": 60.4,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L09_oversold1h",
+   "n": 63,
+   "hit": 0.508,
+   "net3": 59.4,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L07_atr_spike&L12_nao_bear",
+   "n": 20,
+   "hit": 0.5,
+   "net3": 17.5,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L09_oversold1h&L12_nao_bear",
+   "n": 44,
+   "hit": 0.5,
+   "net3": 38.4,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L02_legbase&L08_demanda&L09_oversold1h",
+   "n": 42,
+   "hit": 0.5,
+   "net3": 39.0,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L02_legbase&L09_oversold1h&L08_demanda",
+   "n": 42,
+   "hit": 0.5,
+   "net3": 39.0,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L02_legbase&L09_oversold1h&L12_nao_bear",
+   "n": 32,
+   "hit": 0.5,
+   "net3": 28.3,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L02_legbase&L12_nao_bear&L09_oversold1h",
+   "n": 32,
+   "hit": 0.5,
+   "net3": 28.3,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L03_below_ema21&L09_oversold1h&L12_nao_bear",
+   "n": 36,
+   "hit": 0.5,
+   "net3": 31.5,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L03_below_ema21&L12_nao_bear&L09_oversold1h",
+   "n": 36,
+   "hit": 0.5,
+   "net3": 31.5,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L04_deep_pull&L08_demanda&L09_oversold1h",
+   "n": 42,
+   "hit": 0.5,
+   "net3": 39.0,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L04_deep_pull&L09_oversold1h&L08_demanda",
+   "n": 42,
+   "hit": 0.5,
+   "net3": 39.0,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L04_deep_pull&L09_oversold1h&L12_nao_bear",
+   "n": 32,
+   "hit": 0.5,
+   "net3": 28.3,
+   "p_fam": 1.0
+  }
+ ],
+ "finalists": []
+}

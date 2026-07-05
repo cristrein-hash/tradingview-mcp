@@ -1,0 +1,148 @@
+{
+ "ctx": "CTX-A cascade>=4",
+ "n_ctx": 228,
+ "base_hit": 0.346,
+ "top": [
+  {
+   "g": "L06_reclaim_forte&L09_oversold1h",
+   "n": 58,
+   "hit": 0.431,
+   "net3": 39.3,
+   "p_fam": 0.9585
+  },
+  {
+   "g": "L01_oversold15&L06_reclaim_forte",
+   "n": 24,
+   "hit": 0.417,
+   "net3": 15.8,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L08_demanda&L09_oversold1h",
+   "n": 141,
+   "hit": 0.397,
+   "net3": 66.2,
+   "p_fam": 0.979
+  },
+  {
+   "g": "L07_atr_spike&L09_oversold1h",
+   "n": 58,
+   "hit": 0.397,
+   "net3": 28.2,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L06_reclaim_forte&L08_demanda",
+   "n": 87,
+   "hit": 0.391,
+   "net3": 43.5,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L09_oversold1h",
+   "n": 146,
+   "hit": 0.384,
+   "net3": 60.8,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L06_reclaim_forte",
+   "n": 89,
+   "hit": 0.382,
+   "net3": 41.4,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L02_legbase&L07_atr_spike",
+   "n": 50,
+   "hit": 0.38,
+   "net3": 21.4,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L04_deep_pull&L07_atr_spike",
+   "n": 50,
+   "hit": 0.38,
+   "net3": 21.4,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L05_swept&L07_atr_spike",
+   "n": 29,
+   "hit": 0.379,
+   "net3": 12.0,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L05_swept&L06_reclaim_forte",
+   "n": 53,
+   "hit": 0.377,
+   "net3": 24.7,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L09_oversold1h&L12_nao_bear",
+   "n": 106,
+   "hit": 0.377,
+   "net3": 38.7,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L06_reclaim_forte&L11_eql_swept",
+   "n": 59,
+   "hit": 0.373,
+   "net3": 25.6,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L03_below_ema21&L07_atr_spike",
+   "n": 54,
+   "hit": 0.37,
+   "net3": 20.2,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L06_reclaim_forte&L12_nao_bear",
+   "n": 73,
+   "hit": 0.37,
+   "net3": 28.9,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L07_atr_spike&L12_nao_bear",
+   "n": 57,
+   "hit": 0.368,
+   "net3": 20.3,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L04_deep_pull&L08_demanda",
+   "n": 109,
+   "hit": 0.367,
+   "net3": 40.2,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L02_legbase&L08_demanda",
+   "n": 108,
+   "hit": 0.361,
+   "net3": 37.3,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L07_atr_spike&L08_demanda",
+   "n": 72,
+   "hit": 0.361,
+   "net3": 24.5,
+   "p_fam": 1.0
+  },
+  {
+   "g": "L09_oversold1h&L11_eql_swept",
+   "n": 89,
+   "hit": 0.36,
+   "net3": 28.9,
+   "p_fam": 1.0
+  }
+ ],
+ "finalists": []
+}
