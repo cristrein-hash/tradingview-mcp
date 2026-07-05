@@ -1,3 +1,4 @@
 # APPLY LOG — deltas de memória Supabase
 
 - 2026-07-05 21:52 UTC · `memory_delta_20260705.sql` · memory_items 245→261 · tag-rows 16/16 · OK
+- 2026-07-05 22:09 UTC · `memory_delta_20260705_loader_x_retrace.sql` · memory_items 261→262 · tag-rows 1/1 · OK
