@@ -1,0 +1,912 @@
+{
+ "covered": 4,
+ "missed": 56,
+ "missed_rows": [
+  {
+   "ft": 1754013600,
+   "flo": 3283.09,
+   "covered": false,
+   "gates": [
+    "cascata=1"
+   ],
+   "reg": "RANGE",
+   "casc": 1,
+   "demand": 1,
+   "rsi1h": 38.2,
+   "reclaim": 2.01,
+   "legpos": 0.0,
+   "oracle_r": 2.90499618288235
+  },
+  {
+   "ft": 1756166400,
+   "flo": 3351.37,
+   "covered": false,
+   "gates": [
+    "cascata=0"
+   ],
+   "reg": "RANGE",
+   "casc": 0,
+   "demand": 1,
+   "rsi1h": 33.9,
+   "reclaim": 8.62,
+   "legpos": 0.0,
+   "oracle_r": 2.955127665797266
+  },
+  {
+   "ft": 1756217700,
+   "flo": 3370.4,
+   "covered": false,
+   "gates": [
+    "cascata=2",
+    "rsi1h=57"
+   ],
+   "reg": "RANGE",
+   "casc": 2,
+   "demand": 1,
+   "rsi1h": 56.7,
+   "reclaim": 2.48,
+   "legpos": 0.544,
+   "oracle_r": 2.809953676208573
+  },
+  {
+   "ft": 1756305900,
+   "flo": 3383.14,
+   "covered": false,
+   "gates": [
+    "cascata=0",
+    "rsi1h=48"
+   ],
+   "reg": "RANGE",
+   "casc": 0,
+   "demand": 1,
+   "rsi1h": 47.8,
+   "reclaim": 2.44,
+   "legpos": 0.098,
+   "oracle_r": 2.7765808896868434
+  },
+  {
+   "ft": 1756386900,
+   "flo": 3398.12,
+   "covered": false,
+   "gates": [
+    "cascata=0",
+    "rsi1h=56",
+    "veto_macroleg"
+   ],
+   "reg": "RANGE",
+   "casc": 0,
+   "demand": 1,
+   "rsi1h": 56.0,
+   "reclaim": 3.3,
+   "legpos": 0.398,
+   "oracle_r": 2.8874722448282473
+  },
+  {
+   "ft": 1756476900,
+   "flo": 3432.22,
+   "covered": false,
+   "gates": [
+    "cascata=0",
+    "rsi1h=60",
+    "veto_macroleg"
+   ],
+   "reg": "RANGE",
+   "casc": 0,
+   "demand": 1,
+   "rsi1h": 60.4,
+   "reclaim": 4.81,
+   "legpos": 0.165,
+   "oracle_r": 2.8070994299099183
+  },
+  {
+   "ft": 1756731600,
+   "flo": 3468.75,
+   "covered": false,
+   "gates": [
+    "cascata=1",
+    "rsi1h=63",
+    "veto_macroleg"
+   ],
+   "reg": "RANGE",
+   "casc": 1,
+   "demand": 1,
+   "rsi1h": 63.0,
+   "reclaim": 2.6,
+   "legpos": 0.568,
+   "oracle_r": 2.912833005159974
+  },
+  {
+   "ft": 1756955700,
+   "flo": 3514.46,
+   "covered": false,
+   "gates": [
+    "cascata=1",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 1,
+   "demand": 1,
+   "rsi1h": 40.4,
+   "reclaim": 2.19,
+   "legpos": 0.0,
+   "oracle_r": 2.9506855587942624
+  },
+  {
+   "ft": 1757025900,
+   "flo": 3540.14,
+   "covered": false,
+   "gates": [
+    "cascata=1",
+    "rsi1h=48",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 1,
+   "demand": 1,
+   "rsi1h": 47.6,
+   "reclaim": 4.0,
+   "legpos": 0.284,
+   "oracle_r": 2.6347865784067825
+  },
+  {
+   "ft": 1757082600,
+   "flo": 3573.05,
+   "covered": false,
+   "gates": [
+    "cascata=0",
+    "rsi1h=72",
+    "sem_demanda",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 0,
+   "demand": 0,
+   "rsi1h": 71.9,
+   "reclaim": 1.55,
+   "legpos": 0.548,
+   "oracle_r": 2.902838503712955
+  },
+  {
+   "ft": 1757593800,
+   "flo": 3613.13,
+   "covered": false,
+   "gates": [
+    "cascata=0",
+    "rsi1h=46",
+    "reclaim=1.4",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 0,
+   "demand": 1,
+   "rsi1h": 45.6,
+   "reclaim": 1.4,
+   "legpos": 0.0,
+   "oracle_r": 0.2480150347459826
+  },
+  {
+   "ft": 1757900700,
+   "flo": 3629.85,
+   "covered": false,
+   "gates": [
+    "cascata=1"
+   ],
+   "reg": "BULL",
+   "casc": 1,
+   "demand": 1,
+   "rsi1h": 38.0,
+   "reclaim": 2.21,
+   "legpos": 0.0,
+   "oracle_r": 2.8373227980478735
+  },
+  {
+   "ft": 1758203100,
+   "flo": 3627.74,
+   "covered": false,
+   "gates": [
+    "cascata=0",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 0,
+   "demand": 1,
+   "rsi1h": 38.4,
+   "reclaim": 1.88,
+   "legpos": 0.0,
+   "oracle_r": 2.947646915842419
+  },
+  {
+   "ft": 1758246300,
+   "flo": 3632.18,
+   "covered": false,
+   "gates": [
+    "cascata=0",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 0,
+   "demand": 1,
+   "rsi1h": 39.6,
+   "reclaim": 3.33,
+   "legpos": 0.099,
+   "oracle_r": 2.9020148202584397
+  },
+  {
+   "ft": 1758742200,
+   "flo": 3718.39,
+   "covered": false,
+   "gates": [
+    "cascata=2",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 2,
+   "demand": 1,
+   "rsi1h": 33.8,
+   "reclaim": 2.94,
+   "legpos": 0.0,
+   "oracle_r": 2.915094911759356
+  },
+  {
+   "ft": 1758894300,
+   "flo": 3757.55,
+   "covered": false,
+   "gates": [
+    "cascata=1",
+    "rsi1h=55",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 1,
+   "demand": 1,
+   "rsi1h": 54.6,
+   "reclaim": 2.66,
+   "legpos": 0.522,
+   "oracle_r": 2.8333035661129897
+  },
+  {
+   "ft": 1759225500,
+   "flo": 3793.11,
+   "covered": false,
+   "gates": [
+    "cascata=1",
+    "reclaim=1.4",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 1,
+   "demand": 1,
+   "rsi1h": 37.9,
+   "reclaim": 1.44,
+   "legpos": 0.0,
+   "oracle_r": 2.880838387062445
+  },
+  {
+   "ft": 1759420800,
+   "flo": 3827.22,
+   "covered": false,
+   "gates": [
+    "cascata=2",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 2,
+   "demand": 1,
+   "rsi1h": 30.2,
+   "reclaim": 1.56,
+   "legpos": 0.0,
+   "oracle_r": 2.9347072026117123
+  },
+  {
+   "ft": 1759824000,
+   "flo": 3940.64,
+   "covered": false,
+   "gates": [
+    "cascata=1",
+    "rsi1h=49",
+    "reclaim=1.5",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 1,
+   "demand": 1,
+   "rsi1h": 48.9,
+   "reclaim": 1.46,
+   "legpos": 0.0,
+   "oracle_r": 2.878030187528582
+  },
+  {
+   "ft": 1760069700,
+   "flo": 3948.01,
+   "covered": false,
+   "gates": [
+    "cascata=1",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 1,
+   "demand": 1,
+   "rsi1h": 36.7,
+   "reclaim": 2.19,
+   "legpos": 0.019,
+   "oracle_r": 2.9324625830649897
+  },
+  {
+   "ft": 1760104800,
+   "flo": 3970.62,
+   "covered": false,
+   "gates": [
+    "cascata=1",
+    "rsi1h=46",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 1,
+   "demand": 1,
+   "rsi1h": 45.8,
+   "reclaim": 2.15,
+   "legpos": 0.399,
+   "oracle_r": 2.92857051748109
+  },
+  {
+   "ft": 1760424300,
+   "flo": 4090.51,
+   "covered": false,
+   "gates": [
+    "cascata=1",
+    "rsi1h=54",
+    "reclaim=1.4",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 1,
+   "demand": 1,
+   "rsi1h": 54.3,
+   "reclaim": 1.39,
+   "legpos": 0.0,
+   "oracle_r": 2.966032814727201
+  },
+  {
+   "ft": 1760531400,
+   "flo": 4176.32,
+   "covered": false,
+   "gates": [
+    "rsi1h=60",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 5,
+   "demand": 1,
+   "rsi1h": 60.3,
+   "reclaim": 1.59,
+   "legpos": 0.459,
+   "oracle_r": 2.921019970664562
+  },
+  {
+   "ft": 1760720400,
+   "flo": 4186.44,
+   "covered": false,
+   "gates": [
+    "cascata=2",
+    "reclaim=1.5",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 2,
+   "demand": 1,
+   "rsi1h": 32.1,
+   "reclaim": 1.46,
+   "legpos": 0.0,
+   "oracle_r": 2.964812848337094
+  },
+  {
+   "ft": 1761642000,
+   "flo": 3886.62,
+   "covered": false,
+   "gates": [
+    "cascata=1",
+    "reclaim=1.4"
+   ],
+   "reg": "BEAR",
+   "casc": 1,
+   "demand": 1,
+   "rsi1h": 21.9,
+   "reclaim": 1.42,
+   "legpos": 0.0,
+   "oracle_r": 2.932125325737834
+  },
+  {
+   "ft": 1761793200,
+   "flo": 3915.33,
+   "covered": false,
+   "gates": [
+    "cascata=1"
+   ],
+   "reg": "BEAR",
+   "casc": 1,
+   "demand": 1,
+   "rsi1h": 34.3,
+   "reclaim": 1.63,
+   "legpos": 0.0,
+   "oracle_r": 2.9464632269289974
+  },
+  {
+   "ft": 1762292700,
+   "flo": 3930.32,
+   "covered": false,
+   "gates": [
+    "cascata=1",
+    "reclaim=1.2"
+   ],
+   "reg": "RANGE",
+   "casc": 1,
+   "demand": 1,
+   "rsi1h": 28.4,
+   "reclaim": 1.16,
+   "legpos": 0.025,
+   "oracle_r": 2.862886244552168
+  },
+  {
+   "ft": 1762449300,
+   "flo": 3965.82,
+   "covered": false,
+   "gates": [
+    "cascata=2",
+    "rsi1h=48"
+   ],
+   "reg": "RANGE",
+   "casc": 2,
+   "demand": 1,
+   "rsi1h": 47.8,
+   "reclaim": 1.8,
+   "legpos": 0.0,
+   "oracle_r": 2.8358204579436332
+  },
+  {
+   "ft": 1762530300,
+   "flo": 3983.87,
+   "covered": false,
+   "gates": [
+    "cascata=0",
+    "rsi1h=47"
+   ],
+   "reg": "RANGE",
+   "casc": 0,
+   "demand": 1,
+   "rsi1h": 46.7,
+   "reclaim": 4.42,
+   "legpos": 0.0,
+   "oracle_r": 2.898290924281226
+  },
+  {
+   "ft": 1762925400,
+   "flo": 4098.71,
+   "covered": false,
+   "gates": [
+    "cascata=1",
+    "rsi1h=42"
+   ],
+   "reg": "RANGE",
+   "casc": 1,
+   "demand": 1,
+   "rsi1h": 42.2,
+   "reclaim": 2.33,
+   "legpos": 0.035,
+   "oracle_r": 2.8894951308792134
+  },
+  {
+   "ft": 1763451000,
+   "flo": 3997.7,
+   "covered": false,
+   "gates": [
+    "cascata=0"
+   ],
+   "reg": "BULL",
+   "casc": 0,
+   "demand": 1,
+   "rsi1h": 36.7,
+   "reclaim": 2.73,
+   "legpos": 0.0,
+   "oracle_r": 2.9462329457624836
+  },
+  {
+   "ft": 1763712000,
+   "flo": 4022.39,
+   "covered": false,
+   "gates": [
+    "cascata=2"
+   ],
+   "reg": "BULL",
+   "casc": 2,
+   "demand": 1,
+   "rsi1h": 35.7,
+   "reclaim": 1.81,
+   "legpos": 0.0,
+   "oracle_r": 2.9490244091155278
+  },
+  {
+   "ft": 1763726400,
+   "flo": 4034.75,
+   "covered": false,
+   "gates": [
+    "cascata=2"
+   ],
+   "reg": "BULL",
+   "casc": 2,
+   "demand": 1,
+   "rsi1h": 40.5,
+   "reclaim": 3.18,
+   "legpos": 0.129,
+   "oracle_r": 2.924804458021417
+  },
+  {
+   "ft": 1764081900,
+   "flo": 4110.92,
+   "covered": false,
+   "gates": [
+    "SEM_CANDIDATO"
+   ],
+   "reg": null,
+   "casc": 0,
+   "demand": 0,
+   "rsi1h": null,
+   "reclaim": null,
+   "legpos": null,
+   "oracle_r": 2.948282947687277
+  },
+  {
+   "ft": 1764319500,
+   "flo": 4155.22,
+   "covered": false,
+   "gates": [
+    "cascata=1",
+    "rsi1h=51",
+    "reclaim=1.2"
+   ],
+   "reg": "BULL",
+   "casc": 1,
+   "demand": 1,
+   "rsi1h": 50.9,
+   "reclaim": 1.18,
+   "legpos": 0.03,
+   "oracle_r": 2.949622392846378
+  },
+  {
+   "ft": 1764691200,
+   "flo": 4166.86,
+   "covered": false,
+   "gates": [
+    "cascata=1",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 1,
+   "demand": 1,
+   "rsi1h": 32.3,
+   "reclaim": 1.89,
+   "legpos": 0.0,
+   "oracle_r": 2.9321586276659533
+  },
+  {
+   "ft": 1765260900,
+   "flo": 4173.92,
+   "covered": false,
+   "gates": [
+    "cascata=0"
+   ],
+   "reg": "BULL",
+   "casc": 0,
+   "demand": 1,
+   "rsi1h": 38.3,
+   "reclaim": 2.56,
+   "legpos": 0.0,
+   "oracle_r": 2.839908519153821
+  },
+  {
+   "ft": 1765395000,
+   "flo": 4181.8,
+   "covered": false,
+   "gates": [
+    "cascata=0",
+    "rsi1h=59"
+   ],
+   "reg": "BULL",
+   "casc": 0,
+   "demand": 1,
+   "rsi1h": 59.2,
+   "reclaim": 5.42,
+   "legpos": 0.0,
+   "oracle_r": 2.879312945841672
+  },
+  {
+   "ft": 1765432800,
+   "flo": 4204.48,
+   "covered": false,
+   "gates": [
+    "cascata=0",
+    "rsi1h=47",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 0,
+   "demand": 1,
+   "rsi1h": 47.1,
+   "reclaim": 1.62,
+   "legpos": 0.344,
+   "oracle_r": 2.8903487301991344
+  },
+  {
+   "ft": 1765557000,
+   "flo": 4257.28,
+   "covered": false,
+   "gates": [
+    "cascata=1",
+    "rsi1h=48",
+    "reclaim=1.3",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 1,
+   "demand": 1,
+   "rsi1h": 48.2,
+   "reclaim": 1.31,
+   "legpos": 0.0,
+   "oracle_r": 2.9567308620989405
+  },
+  {
+   "ft": 1765873800,
+   "flo": 4275.41,
+   "covered": false,
+   "gates": [
+    "cascata=3",
+    "reclaim=0.9",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 3,
+   "demand": 1,
+   "rsi1h": 36.7,
+   "reclaim": 0.91,
+   "legpos": 0.083,
+   "oracle_r": -1.0954149699272464
+  },
+  {
+   "ft": 1766069100,
+   "flo": 4308.51,
+   "covered": false,
+   "gates": [
+    "cascata=0",
+    "rsi1h=50"
+   ],
+   "reg": "BULL",
+   "casc": 0,
+   "demand": 1,
+   "rsi1h": 49.8,
+   "reclaim": 3.01,
+   "legpos": 0.0,
+   "oracle_r": 2.961717647139248
+  },
+  {
+   "ft": 1766114100,
+   "flo": 4312.93,
+   "covered": false,
+   "gates": [
+    "cascata=1",
+    "rsi1h=43",
+    "reclaim=0.8",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 1,
+   "demand": 1,
+   "rsi1h": 42.7,
+   "reclaim": 0.79,
+   "legpos": 0.064,
+   "oracle_r": 2.8889109303709577
+  },
+  {
+   "ft": 1766502000,
+   "flo": 4430.48,
+   "covered": false,
+   "gates": [
+    "cascata=2",
+    "rsi1h=45",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 2,
+   "demand": 1,
+   "rsi1h": 45.4,
+   "reclaim": 2.46,
+   "legpos": 0.0,
+   "oracle_r": 2.957989182214422
+  },
+  {
+   "ft": 1767874500,
+   "flo": 4407.47,
+   "covered": false,
+   "gates": [
+    "cascata=1"
+   ],
+   "reg": "RANGE",
+   "casc": 1,
+   "demand": 1,
+   "rsi1h": 39.9,
+   "reclaim": 2.01,
+   "legpos": 0.0,
+   "oracle_r": 2.9417300958852075
+  },
+  {
+   "ft": 1768579200,
+   "flo": 4567.72,
+   "covered": false,
+   "gates": [
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 4,
+   "demand": 1,
+   "rsi1h": 35.9,
+   "reclaim": 3.62,
+   "legpos": 0.0,
+   "oracle_r": 2.9700365714346866
+  },
+  {
+   "ft": 1769024700,
+   "flo": 4755.55,
+   "covered": false,
+   "gates": [
+    "cascata=1",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 1,
+   "demand": 1,
+   "rsi1h": 40.6,
+   "reclaim": 3.11,
+   "legpos": 0.0,
+   "oracle_r": 2.9713260914646473
+  },
+  {
+   "ft": 1769463000,
+   "flo": 4989.92,
+   "covered": false,
+   "gates": [
+    "cascata=1",
+    "veto_macroleg"
+   ],
+   "reg": "BULL",
+   "casc": 1,
+   "demand": 1,
+   "rsi1h": 41.6,
+   "reclaim": 2.2,
+   "legpos": 0.0,
+   "oracle_r": 2.954442840000814
+  },
+  {
+   "ft": 1770056100,
+   "flo": 4618.87,
+   "covered": false,
+   "gates": [
+    "cascata=0",
+    "reclaim=0.6"
+   ],
+   "reg": "BEAR",
+   "casc": 0,
+   "demand": 1,
+   "rsi1h": 40.8,
+   "reclaim": 0.58,
+   "legpos": 0.527,
+   "oracle_r": 2.9814918250052056
+  },
+  {
+   "ft": 1770336900,
+   "flo": 4654.86,
+   "covered": false,
+   "gates": [
+    "cascata=2"
+   ],
+   "reg": "BEAR",
+   "casc": 2,
+   "demand": 1,
+   "rsi1h": 38.6,
+   "reclaim": 3.06,
+   "legpos": 0.0,
+   "oracle_r": 2.988925594829044
+  },
+  {
+   "ft": 1774251000,
+   "flo": 4129.41,
+   "covered": false,
+   "gates": [
+    "cascata=3",
+    "sem_demanda"
+   ],
+   "reg": "BEAR",
+   "casc": 3,
+   "demand": 0,
+   "rsi1h": 17.7,
+   "reclaim": 3.75,
+   "legpos": 0.0,
+   "oracle_r": 2.991131803569449
+  },
+  {
+   "ft": 1774317600,
+   "flo": 4305.94,
+   "covered": false,
+   "gates": [
+    "cascata=0"
+   ],
+   "reg": "BEAR",
+   "casc": 0,
+   "demand": 1,
+   "rsi1h": 40.9,
+   "reclaim": 1.81,
+   "legpos": 0.238,
+   "oracle_r": 2.9838428835836486
+  },
+  {
+   "ft": 1774555200,
+   "flo": 4351.28,
+   "covered": false,
+   "gates": [
+    "cascata=0",
+    "reclaim=1.4"
+   ],
+   "reg": "BEAR",
+   "casc": 0,
+   "demand": 1,
+   "rsi1h": 32.7,
+   "reclaim": 1.42,
+   "legpos": 0.0,
+   "oracle_r": 2.9831583506010366
+  },
+  {
+   "ft": 1781133300,
+   "flo": 4025.08,
+   "covered": false,
+   "gates": [
+    "cascata=0",
+    "sem_demanda"
+   ],
+   "reg": "BEAR",
+   "casc": 0,
+   "demand": 0,
+   "rsi1h": 20.4,
+   "reclaim": 1.56,
+   "legpos": 0.0,
+   "oracle_r": 2.978952432497444
+  },
+  {
+   "ft": 1782324000,
+   "flo": 3959.14,
+   "covered": false,
+   "gates": [
+    "cascata=1",
+    "sem_demanda"
+   ],
+   "reg": "BEAR",
+   "casc": 1,
+   "demand": 0,
+   "rsi1h": 28.4,
+   "reclaim": 1.56,
+   "legpos": 0.0,
+   "oracle_r": 2.974203831191714
+  },
+  {
+   "ft": 1782781200,
+   "flo": 3942.5,
+   "covered": false,
+   "gates": [
+    "cascata=2"
+   ],
+   "reg": "BEAR",
+   "casc": 2,
+   "demand": 1,
+   "rsi1h": 27.0,
+   "reclaim": 2.52,
+   "legpos": 0.0,
+   "oracle_r": 2.9520340558203677
+  }
+ ]
+}
