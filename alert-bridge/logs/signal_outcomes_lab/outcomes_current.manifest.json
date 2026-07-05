@@ -1,0 +1,37 @@
+{
+  "source_run_id": "backfill_2026-05-28_xau_full_v2",
+  "source_outcomes_path": "alert-bridge/logs/signal_outcomes_lab/backfill_2026-05-28_xau_full_v2/outcomes_backfill_2026-05-28_xau_full_v2.jsonl",
+  "source_outcomes_sha256": "76db3fd4c92d5ab3b932a47c7c4648a54c8907c93c34ba7ddb7397a9ae8a2f4c",
+  "source_manifest_path": "alert-bridge/logs/signal_outcomes_lab/backfill_2026-05-28_xau_full_v2/outcomes_backfill_2026-05-28_xau_full_v2.manifest.json",
+  "source_manifest_sha256": "44771c775c919e63362000728d8936f6ae50cd64043300af103ee1474166b9ca",
+  "source_legacy_comparison_report": "alert-bridge/logs/signal_outcomes_lab/backfill_2026-05-28_xau_full_v2/legacy_comparison_report.md",
+  "source_legacy_comparison_sha256": "d829038d6e368a66bcc62084d8379f972b66622a5c6fb7e830eddbceeda9e06c",
+  "created_at": "2026-05-28T15:20:57.941435+00:00",
+  "outcomes_count": 72,
+  "distinct_outcome_ids": 72,
+  "coverage_scope": "XAUUSD_ONLY",
+  "non_xau_status": "PENDING_NO_CANONICAL_DATA",
+  "non_xau_excluded_bases": [
+    "ETHUSD",
+    "XAGUSD",
+    "EURUSD",
+    "US500"
+  ],
+  "note": "technical current rollup only; consumers not reactivated",
+  "evaluator_version": "v0.1.0",
+  "current_outcomes_path": "alert-bridge/logs/signal_outcomes_lab/outcomes_current.jsonl",
+  "current_outcomes_sha256": "76db3fd4c92d5ab3b932a47c7c4648a54c8907c93c34ba7ddb7397a9ae8a2f4c",
+  "consumer_status": {
+    "auto_d2r_daily.py": "NOT_REPOINTED",
+    "weekly_review.py::check_enrich_v2": "NOT_REPOINTED",
+    "report_indicator_edge.py": "NOT_REPOINTED",
+    "com.cristrein.d2r-daily": "PAUSED",
+    "com.cristrein.enrich-indicator-outcomes": "DECOMMISSIONED"
+  },
+  "verdict_counts_inherited_from_source": {
+    "OUTCOME_DIVERGES_SIGN": 2,
+    "OUTCOME_AGREES": 53,
+    "LEGACY_INCOMPLETE": 16,
+    "OUTCOME_DIVERGES_MAGNITUDE": 1
+  }
+}
