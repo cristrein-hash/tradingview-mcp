@@ -1,0 +1,8 @@
+{
+ "coverage": 11,
+ "total_gt": 34,
+ "gap_atr_median": 6.44,
+ "matches_R_sum": 10.9,
+ "matches_R_pos": 4,
+ "matches_R3": 2
+}

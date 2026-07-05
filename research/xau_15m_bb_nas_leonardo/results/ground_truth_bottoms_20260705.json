@@ -1,0 +1,602 @@
+[
+{
+"circle_t": 1754036100,
+"circle_price": 3280.43,
+"flush_t": 1754013600,
+"flush_low": 3283.09,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1754020800,
+"higher_low": 3290.45
+},
+{
+"circle_t": 1755872100,
+"circle_price": 3320.95,
+"flush_t": 1755867600,
+"flush_low": 3323.39,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1755877500,
+"higher_low": 3367.42
+},
+{
+"circle_t": 1756166400,
+"circle_price": 3350.46,
+"flush_t": 1756166400,
+"flush_low": 3351.37,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1756171800,
+"higher_low": 3371.95
+},
+{
+"circle_t": 1756275750,
+"circle_price": 3364.89,
+"flush_t": 1756217700,
+"flush_low": 3370.4,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1756226700,
+"higher_low": 3382.54
+},
+{
+"circle_t": 1756349550,
+"circle_price": 3380.86,
+"flush_t": 1756305900,
+"flush_low": 3383.14,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1756317600,
+"higher_low": 3392.18
+},
+{
+"circle_t": 1756474650,
+"circle_price": 3394.76,
+"flush_t": 1756386900,
+"flush_low": 3398.12,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1756395000,
+"higher_low": 3404.37
+},
+{
+"circle_t": 1756695150,
+"circle_price": 3428.75,
+"flush_t": 1756476900,
+"flush_low": 3432.22,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1756484100,
+"higher_low": 3442.15
+},
+{
+"circle_t": 1756815750,
+"circle_price": 3461.71,
+"flush_t": 1756731600,
+"flush_low": 3468.75,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1756737000,
+"higher_low": 3473.41
+},
+{
+"circle_t": 1756973250,
+"circle_price": 3507.87,
+"flush_t": 1756955700,
+"flush_low": 3514.46,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1756965600,
+"higher_low": 3524.29
+},
+{
+"circle_t": 1757062350,
+"circle_price": 3536.9,
+"flush_t": 1757025900,
+"flush_low": 3540.14,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1757031300,
+"higher_low": 3549.04
+},
+{
+"circle_t": 1757314350,
+"circle_price": 3573.99,
+"flush_t": 1757082600,
+"flush_low": 3573.05,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1757091600,
+"higher_low": 3590.45
+},
+{
+"circle_t": 1757596050,
+"circle_price": 3606.95,
+"flush_t": 1757593800,
+"flush_low": 3613.13,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1757597400,
+"higher_low": 3618.3
+},
+{
+"circle_t": 1757907450,
+"circle_price": 3620.34,
+"flush_t": 1757900700,
+"flush_low": 3629.85,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1757904300,
+"higher_low": 3639.92
+},
+{
+"circle_t": 1758213900,
+"circle_price": 3624.1,
+"flush_t": 1758203100,
+"flush_low": 3627.74,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1758218400,
+"higher_low": 3640.43
+},
+{
+"circle_t": 1758290850,
+"circle_price": 3633.73,
+"flush_t": 1758246300,
+"flush_low": 3632.18,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1758263400,
+"higher_low": 3643.42
+},
+{
+"circle_t": 1758744000,
+"circle_price": 3720.96,
+"flush_t": 1758742200,
+"flush_low": 3718.39,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1758754800,
+"higher_low": 3739.04
+},
+{
+"circle_t": 1759105350,
+"circle_price": 3755.27,
+"flush_t": 1758894300,
+"flush_low": 3757.55,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1758903300,
+"higher_low": 3771.34
+},
+{
+"circle_t": 1759233600,
+"circle_price": 3793.22,
+"flush_t": 1759225500,
+"flush_low": 3793.11,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1759230900,
+"higher_low": 3804.4
+},
+{
+"circle_t": 1759424400,
+"circle_price": 3821.35,
+"flush_t": 1759420800,
+"flush_low": 3827.22,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1759427100,
+"higher_low": 3840.57
+},
+{
+"circle_t": 1759829850,
+"circle_price": 3938.61,
+"flush_t": 1759824000,
+"flush_low": 3940.64,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1759831200,
+"higher_low": 3954.05
+},
+{
+"circle_t": 1760082300,
+"circle_price": 3941.35,
+"flush_t": 1760069700,
+"flush_low": 3948.01,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1760074200,
+"higher_low": 3965.49
+},
+{
+"circle_t": 1760116950,
+"circle_price": 3967.45,
+"flush_t": 1760104800,
+"flush_low": 3970.62,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1760112900,
+"higher_low": 3977.46
+},
+{
+"circle_t": 1760450400,
+"circle_price": 4090.16,
+"flush_t": 1760424300,
+"flush_low": 4090.51,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1760435100,
+"higher_low": 4121.68
+},
+{
+"circle_t": 1760543550,
+"circle_price": 4170.37,
+"flush_t": 1760531400,
+"flush_low": 4176.32,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1760539500,
+"higher_low": 4191.63
+},
+{
+"circle_t": 1760818500,
+"circle_price": 4185.61,
+"flush_t": 1760720400,
+"flush_low": 4186.44,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1760728500,
+"higher_low": 4212.76
+},
+{
+"circle_t": 1761645600,
+"circle_price": 3881.45,
+"flush_t": 1761642000,
+"flush_low": 3886.62,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1761650100,
+"higher_low": 3910.84
+},
+{
+"circle_t": 1761807600,
+"circle_price": 3914.73,
+"flush_t": 1761793200,
+"flush_low": 3915.33,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1761802200,
+"higher_low": 3947.02
+},
+{
+"circle_t": 1762294950,
+"circle_price": 3929.86,
+"flush_t": 1762292700,
+"flush_low": 3930.32,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1762299900,
+"higher_low": 3930.93
+},
+{
+"circle_t": 1762461000,
+"circle_price": 3960.24,
+"flush_t": 1762449300,
+"flush_low": 3965.82,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1762462800,
+"higher_low": 3977.88
+},
+{
+"circle_t": 1762539300,
+"circle_price": 3981.36,
+"flush_t": 1762530300,
+"flush_low": 3983.87,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1762535700,
+"higher_low": 3992.38
+},
+{
+"circle_t": 1762933950,
+"circle_price": 4096.6,
+"flush_t": 1762925400,
+"flush_low": 4098.71,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1762934400,
+"higher_low": 4112.11
+},
+{
+"circle_t": 1763444700,
+"circle_price": 3992.95,
+"flush_t": 1763451000,
+"flush_low": 3997.7,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1763458200,
+"higher_low": 4030.12
+},
+{
+"circle_t": 1763726850,
+"circle_price": 4023.53,
+"flush_t": 1763712000,
+"flush_low": 4022.39,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1763721000,
+"higher_low": 4032.08
+},
+{
+"circle_t": 1763965350,
+"circle_price": 4034.47,
+"flush_t": 1763726400,
+"flush_low": 4034.75,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1763735400,
+"higher_low": 4061.7
+},
+{
+"circle_t": 1764087750,
+"circle_price": 4105.48,
+"flush_t": 1764081900,
+"flush_low": 4110.92,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1764085500,
+"higher_low": 4120.81
+},
+{
+"circle_t": 1764319500,
+"circle_price": 4154.4,
+"flush_t": 1764319500,
+"flush_low": 4155.22,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1764325800,
+"higher_low": 4160.22
+},
+{
+"circle_t": 1764692100,
+"circle_price": 4164.19,
+"flush_t": 1764691200,
+"flush_low": 4166.86,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1764700200,
+"higher_low": 4183.34
+},
+{
+"circle_t": 1765260900,
+"circle_price": 4169.02,
+"flush_t": 1765260900,
+"flush_low": 4173.92,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1765264500,
+"higher_low": 4176.02
+},
+{
+"circle_t": 1765401300,
+"circle_price": 4175.0,
+"flush_t": 1765395000,
+"flush_low": 4181.8,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1765400400,
+"higher_low": 4221.41
+},
+{
+"circle_t": 1765459800,
+"circle_price": 4200.25,
+"flush_t": 1765432800,
+"flush_low": 4204.48,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1765436400,
+"higher_low": 4210.61
+},
+{
+"circle_t": 1765563750,
+"circle_price": 4255.34,
+"flush_t": 1765557000,
+"flush_low": 4257.28,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1765566000,
+"higher_low": 4289.86
+},
+{
+"circle_t": 1765876500,
+"circle_price": 4268.22,
+"flush_t": 1765873800,
+"flush_low": 4275.41,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1765878300,
+"higher_low": 4276.51
+},
+{
+"circle_t": 1766073600,
+"circle_price": 4302.7,
+"flush_t": 1766069100,
+"flush_low": 4308.51,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1766078100,
+"higher_low": 4321.95
+},
+{
+"circle_t": 1766159550,
+"circle_price": 4309.94,
+"flush_t": 1766114100,
+"flush_low": 4312.93,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1766117700,
+"higher_low": 4316.79
+},
+{
+"circle_t": 1766502900,
+"circle_price": 4429.42,
+"flush_t": 1766502000,
+"flush_low": 4430.48,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1766507400,
+"higher_low": 4455.73
+},
+{
+"circle_t": 1767168450,
+"circle_price": 4269.99,
+"flush_t": 1767160800,
+"flush_low": 4273.96,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1767170700,
+"higher_low": 4303.52
+},
+{
+"circle_t": 1767379050,
+"circle_price": 4299.12,
+"flush_t": 1767184200,
+"flush_low": 4306.98,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1767194100,
+"higher_low": 4327.06
+},
+{
+"circle_t": 1767882600,
+"circle_price": 4407.54,
+"flush_t": 1767874500,
+"flush_low": 4407.47,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1767877200,
+"higher_low": 4417.21
+},
+{
+"circle_t": 1768692600,
+"circle_price": 4567.37,
+"flush_t": 1768579200,
+"flush_low": 4567.72,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1768583700,
+"higher_low": 4576.85
+},
+{
+"circle_t": 1769059800,
+"circle_price": 4760.4,
+"flush_t": 1769024700,
+"flush_low": 4755.55,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1769039100,
+"higher_low": 4777.5
+},
+{
+"circle_t": 1769472000,
+"circle_price": 4987.61,
+"flush_t": 1769463000,
+"flush_low": 4989.92,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1769474700,
+"higher_low": 5013.76
+},
+{
+"circle_t": 1770078600,
+"circle_price": 4613.93,
+"flush_t": 1770056100,
+"flush_low": 4618.87,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1770059700,
+"higher_low": 4631.16
+},
+{
+"circle_t": 1770351300,
+"circle_price": 4641.89,
+"flush_t": 1770336900,
+"flush_low": 4654.86,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1770339600,
+"higher_low": 4693.53
+},
+{
+"circle_t": 1771366500,
+"circle_price": 4832.77,
+"flush_t": 1771336800,
+"flush_low": 4841.9,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1771340400,
+"higher_low": 4849.24
+},
+{
+"circle_t": 1774269000,
+"circle_price": 4117.27,
+"flush_t": 1774251000,
+"flush_low": 4129.41,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1774259100,
+"higher_low": 4223.63
+},
+{
+"circle_t": 1774328400,
+"circle_price": 4291.93,
+"flush_t": 1774317600,
+"flush_low": 4305.94,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1774325700,
+"higher_low": 4326.63
+},
+{
+"circle_t": 1774565100,
+"circle_price": 4333.76,
+"flush_t": 1774555200,
+"flush_low": 4351.28,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1774557900,
+"higher_low": 4372.67
+},
+{
+"circle_t": 1781173800,
+"circle_price": 4018.96,
+"flush_t": 1781133300,
+"flush_low": 4025.08,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1781136000,
+"higher_low": 4036.22
+},
+{
+"circle_t": 1782382500,
+"circle_price": 3948.89,
+"flush_t": 1782324000,
+"flush_low": 3959.14,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1782327600,
+"higher_low": 3973.44
+},
+{
+"circle_t": 1782780300,
+"circle_price": 3914.37,
+"flush_t": 1782781200,
+"flush_low": 3942.5,
+"snap_mode": "anchored",
+"snap_win_bars": 120,
+"higher_low_t": 1782784800,
+"higher_low": 3952.55
+}
+]

@@ -1,0 +1,16 @@
+{
+ "fold1 (treino\u21922025-06 \u00b7 avalia 2025H2)": {
+  "k": 115,
+  "hit_top": 0.226,
+  "net_top": -25.7,
+  "base": 0.302,
+  "p_null": 0.935
+ },
+ "fold2 (treino\u21922025-12 \u00b7 avalia 2026)": {
+  "k": 113,
+  "hit_top": 0.292,
+  "net_top": 19.1,
+  "base": 0.235,
+  "p_null": 0.155
+ }
+}
