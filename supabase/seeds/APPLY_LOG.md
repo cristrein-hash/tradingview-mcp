@@ -11,3 +11,4 @@
 - 2026-07-06 16:24 UTC · `memory_delta_20260706_event_level.sql` · memory_items 268→269 · tag-rows 1/1 · OK
 - 2026-07-06 16:47 UTC · `memory_delta_20260706_reclaim_envelope.sql` · memory_items 269→270 · tag-rows 1/1 · OK
 - 2026-07-06 17:14 UTC · `memory_delta_20260706_ordering_cascade.sql` · memory_items 270→271 · tag-rows 1/1 · OK
+- 2026-07-06 17:32 UTC · `memory_delta_20260706_event_selection.sql` · memory_items 271→272 · tag-rows 1/1 · OK
