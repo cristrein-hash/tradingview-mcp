@@ -1,0 +1,34 @@
+{
+ "triagem_q0_100": {
+  "kept": 469,
+  "fund_kept": 50,
+  "circ": 58,
+  "dens": 8.4,
+  "hit": 26.0,
+  "p_null": 0.0
+ },
+ "triagem_q02_98": {
+  "kept": 388,
+  "fund_kept": 43,
+  "circ": 52,
+  "dens": 8.0,
+  "hit": 25.5,
+  "p_null": 0.0
+ },
+ "causal_q0_100": {
+  "kept": 488,
+  "fund_kept": 50,
+  "circ": 58,
+  "dens": 8.8,
+  "hit": 28.6,
+  "p_null": 0.0
+ },
+ "causal_q02_98": {
+  "kept": 435,
+  "fund_kept": 46,
+  "circ": 54,
+  "dens": 8.5,
+  "hit": 29.0,
+  "p_null": 0.0
+ }
+}
