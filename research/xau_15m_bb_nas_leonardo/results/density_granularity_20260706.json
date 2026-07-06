@@ -1,0 +1,32 @@
+{
+ "L0": {
+  "events": 4739,
+  "with_bottom": 124,
+  "density": 37.2,
+  "circ": 58
+ },
+ "L1": {
+  "events": 2580,
+  "with_bottom": 75,
+  "density": 33.4,
+  "circ": 58
+ },
+ "L2": {
+  "events": 1398,
+  "with_bottom": 61,
+  "density": 21.9,
+  "circ": 58
+ },
+ "L3": {
+  "events": 797,
+  "with_bottom": 50,
+  "density": 14.9,
+  "circ": 58
+ },
+ "L4": {
+  "events": 604,
+  "with_bottom": 55,
+  "density": 10.0,
+  "circ": 58
+ }
+}
