@@ -1,0 +1,62 @@
+{
+ "M3_recall100": {
+  "kept": 683,
+  "kf": 50,
+  "dens": 12.7,
+  "hit": 27.7
+ },
+ "M3_recall97": {
+  "kept": 571,
+  "kf": 48,
+  "dens": 10.9,
+  "hit": 27.6
+ },
+ "M3_recall93": {
+  "kept": 517,
+  "kf": 46,
+  "dens": 10.2,
+  "hit": 28.0
+ },
+ "M3_recall90": {
+  "kept": 495,
+  "kf": 45,
+  "dens": 10.0,
+  "hit": 27.5
+ },
+ "M4_recall100": {
+  "kept": 797,
+  "kf": 50,
+  "dens": 14.9,
+  "hit": 27.6
+ },
+ "M4_recall97": {
+  "kept": 797,
+  "kf": 50,
+  "dens": 14.9,
+  "hit": 27.6
+ },
+ "M4_recall93": {
+  "kept": 593,
+  "kf": 47,
+  "dens": 11.6,
+  "hit": 27.9
+ },
+ "M4_recall90": {
+  "kept": 593,
+  "kf": 47,
+  "dens": 11.6,
+  "hit": 27.9
+ },
+ "M2_fam": {
+  "kept": 328,
+  "kf": 50,
+  "dens": 5.6,
+  "hit": 29.6
+ },
+ "M5_hibrido": {
+  "kept": 320,
+  "kf": 48,
+  "dens": 5.7,
+  "hit": 29.7
+ }
+}
