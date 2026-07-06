@@ -1,0 +1,152 @@
+{
+ "BANDA": [
+  {
+   "k": "killzone",
+   "win": 1,
+   "sosia": 0,
+   "sep": 1.0
+  },
+  {
+   "k": "htf_demand_confluence",
+   "win": 0,
+   "sosia": 1,
+   "sep": 1.0
+  },
+  {
+   "k": "h1n_in_demand",
+   "win": 0,
+   "sosia": 1,
+   "sep": 1.0
+  },
+  {
+   "k": "h1_trend",
+   "win": -1,
+   "sosia": 0,
+   "sep": 1.0
+  },
+  {
+   "k": "g_atr_spike",
+   "win": 1.4,
+   "sosia": 1.05,
+   "sep": 0.8
+  },
+  {
+   "k": "g_atr",
+   "win": 9.0,
+   "sosia": 5.35,
+   "sep": 0.66
+  },
+  {
+   "k": "h4n_dist_demand_atr",
+   "win": 0.34,
+   "sosia": -0.02,
+   "sep": 0.64
+  },
+  {
+   "k": "rsi_min8",
+   "win": 32.0,
+   "sosia": 37.6,
+   "sep": 0.54
+  }
+ ],
+ "FUNDO": [
+  {
+   "k": "h4n_clean_sky_atr",
+   "win": 1.13,
+   "sosia": 0.31,
+   "sep": 1.08
+  },
+  {
+   "k": "htf_demand_confluence",
+   "win": 0,
+   "sosia": 1,
+   "sep": 1.0
+  },
+  {
+   "k": "h1n_in_demand",
+   "win": 0,
+   "sosia": 1,
+   "sep": 1.0
+  },
+  {
+   "k": "g_box480",
+   "win": 0.356,
+   "sosia": 0.138,
+   "sep": 1.0
+  },
+  {
+   "k": "h1n_clean_sky_atr",
+   "win": 2.98,
+   "sosia": 0.98,
+   "sep": 0.93
+  },
+  {
+   "k": "sell_bub_w",
+   "win": 17,
+   "sosia": 5,
+   "sep": 0.86
+  },
+  {
+   "k": "g_atr",
+   "win": 11.18,
+   "sosia": 6.5,
+   "sep": 0.64
+  },
+  {
+   "k": "g_sweep_depth",
+   "win": 2.35,
+   "sosia": 0.85,
+   "sep": 0.62
+  }
+ ],
+ "RASO": [
+  {
+   "k": "h4n_dist_demand_atr",
+   "win": 2.23,
+   "sosia": 0.32,
+   "sep": 1.07
+  },
+  {
+   "k": "g_atr",
+   "win": 9.67,
+   "sosia": 4.41,
+   "sep": 1.06
+  },
+  {
+   "k": "swept_prior_low",
+   "win": 1,
+   "sosia": 0,
+   "sep": 1.0
+  },
+  {
+   "k": "reclaim_ema_bars",
+   "win": 2,
+   "sosia": 0,
+   "sep": 1.0
+  },
+  {
+   "k": "killzone",
+   "win": 1,
+   "sosia": 0,
+   "sep": 1.0
+  },
+  {
+   "k": "htf_demand_any",
+   "win": 0,
+   "sosia": 1,
+   "sep": 1.0
+  },
+  {
+   "k": "h4n_in_demand",
+   "win": 0,
+   "sosia": 1,
+   "sep": 1.0
+  },
+  {
+   "k": "h1n_clean_sky_atr",
+   "win": 99,
+   "sosia": 1.57,
+   "sep": 0.99
+  }
+ ]
+}
