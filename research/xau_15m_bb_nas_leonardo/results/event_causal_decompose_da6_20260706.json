@@ -1,0 +1,34 @@
+{
+ "task3": {
+  "S1": {
+   "n_ev": 303,
+   "first_hit": 0.254,
+   "best_in_acc": 0.541,
+   "oracle_any_in_ev": 0.611,
+   "circ": 39
+  },
+  "S2": {
+   "n_ev": 154,
+   "first_hit": 0.266,
+   "best_in_acc": 0.584,
+   "oracle_any_in_ev": 0.688,
+   "circ": 24
+  },
+  "S3": {
+   "n_ev": 268,
+   "first_hit": 0.257,
+   "best_in_acc": 0.563,
+   "oracle_any_in_ev": 0.608,
+   "circ": 39
+  },
+  "S4": {
+   "n_ev": 323,
+   "first_hit": 0.263,
+   "best_in_acc": 0.557,
+   "oracle_any_in_ev": 0.625,
+   "circ": 42
+  }
+ },
+ "base_ev_bottom": 0.063,
+ "allc_hit": 0.276
+}

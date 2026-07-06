@@ -1,0 +1,32 @@
+{
+ "S1": {
+  "n": 303,
+  "prec_fund": 0.102,
+  "lift": 1.6,
+  "first": 0.254,
+  "rand_in_acc": 0.258,
+  "best_in_acc": 0.541,
+  "exp_max_null": 0.479,
+  "evt_has_3R": 0.611
+ },
+ "S3": {
+  "n": 268,
+  "prec_fund": 0.116,
+  "lift": 1.8,
+  "first": 0.257,
+  "rand_in_acc": 0.267,
+  "best_in_acc": 0.563,
+  "exp_max_null": 0.497,
+  "evt_has_3R": 0.608
+ },
+ "S4": {
+  "n": 323,
+  "prec_fund": 0.102,
+  "lift": 1.6,
+  "first": 0.263,
+  "rand_in_acc": 0.262,
+  "best_in_acc": 0.557,
+  "exp_max_null": 0.494,
+  "evt_has_3R": 0.625
+ }
+}
