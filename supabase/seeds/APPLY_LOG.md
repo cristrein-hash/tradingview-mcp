@@ -7,3 +7,4 @@
 - 2026-07-05 23:01 UTC · `memory_delta_20260706_coverage_oracle.sql` · memory_items 264→265 · tag-rows 1/1 · OK
 - 2026-07-06 09:44 UTC · `memory_delta_20260706_family_density.sql` · memory_items 265→266 · tag-rows 1/1 · OK
 - 2026-07-06 14:06 UTC · `memory_delta_20260706_density_reframe.sql` · memory_items 266→267 · tag-rows 1/1 · OK
+- 2026-07-06 15:38 UTC · `memory_delta_20260706_raw_indicators.sql` · memory_items 267→268 · tag-rows 1/1 · OK
