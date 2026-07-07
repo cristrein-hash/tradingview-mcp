@@ -13,3 +13,4 @@
 - 2026-07-06 17:14 UTC · `memory_delta_20260706_ordering_cascade.sql` · memory_items 270→271 · tag-rows 1/1 · OK
 - 2026-07-06 17:32 UTC · `memory_delta_20260706_event_selection.sql` · memory_items 271→272 · tag-rows 1/1 · OK
 - 2026-07-07 09:54 UTC · `memory_delta_20260707_pltdm_assimilation.sql` · memory_items 272→273 · tag-rows 1/1 · OK
+- 2026-07-07 10:27 UTC · `memory_delta_20260707_pltdm_refutation.sql` · memory_items 273→274 · tag-rows 1/1 · OK
