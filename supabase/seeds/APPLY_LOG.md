@@ -20,3 +20,4 @@
 - 2026-07-07 16:08 UTC · `memory_delta_20260707_lookahead_gate_rule.sql` · memory_items 277→278 · tag-rows 1/1 · OK
 - 2026-07-07 16:30 UTC · `memory_delta_20260707_multiagent_impulse_er.sql` · memory_items 278→279 · tag-rows 1/1 · OK
 - 2026-07-07 17:21 UTC · `memory_delta_20260707_phase_classifier_mining_artifact.sql` · memory_items 279→280 · tag-rows 1/1 · OK
+- 2026-07-07 19:22 UTC · `memory_delta_20260707_fractal_htf_demand.sql` · memory_items 280→281 · tag-rows 1/1 · OK
