@@ -1,0 +1,119 @@
+{
+  "results": [
+    {
+      "oof_hit": 0.647,
+      "N_keep": 51,
+      "poison_ratio": 0.73,
+      "y2025": "20/27",
+      "y2026": "13/24",
+      "base": "52/96 (54.2%)",
+      "mining_null_p": 0.01,
+      "null_median": 0.536,
+      "verdict": "SINAL (P<0.1 & hit>base)",
+      "_label": "SOLO::htf_demand_retest",
+      "_K": 12
+    },
+    {
+      "oof_hit": 0.64,
+      "N_keep": 50,
+      "poison_ratio": 0.77,
+      "y2025": "20/27",
+      "y2026": "12/23",
+      "base": "52/96 (54.2%)",
+      "mining_null_p": 0.02,
+      "null_median": 0.545,
+      "verdict": "SINAL (P<0.1 & hit>base)",
+      "_label": "PAIR::demand_retest+htf_position_room",
+      "_K": 16
+    },
+    {
+      "oof_hit": 0.635,
+      "N_keep": 52,
+      "poison_ratio": 0.76,
+      "y2025": "19/27",
+      "y2026": "14/25",
+      "base": "52/96 (54.2%)",
+      "mining_null_p": 0.03,
+      "null_median": 0.547,
+      "verdict": "SINAL (P<0.1 & hit>base)",
+      "_label": "ALL_CONCAT (6 familias)",
+      "_K": 57
+    },
+    {
+      "oof_hit": 0.632,
+      "N_keep": 57,
+      "poison_ratio": 0.7,
+      "y2025": "21/30",
+      "y2026": "15/27",
+      "base": "52/96 (54.2%)",
+      "mining_null_p": 0.055,
+      "null_median": 0.544,
+      "verdict": "SINAL (P<0.1 & hit>base)",
+      "_label": "PAIR::demand_retest+fractal_alignment",
+      "_K": 39
+    },
+    {
+      "oof_hit": 0.6,
+      "N_keep": 55,
+      "poison_ratio": 0.86,
+      "y2025": "19/28",
+      "y2026": "14/27",
+      "base": "52/96 (54.2%)",
+      "mining_null_p": 0.15,
+      "null_median": 0.539,
+      "verdict": "ARTEFATO/sem-edge",
+      "_label": "BEST_FAMILIES_CONCAT (htf_demand_retest+fractal_alignment+htf_position_room)",
+      "_K": 43
+    },
+    {
+      "oof_hit": 0.6,
+      "N_keep": 60,
+      "poison_ratio": 0.8,
+      "y2025": "19/30",
+      "y2026": "17/30",
+      "base": "52/96 (54.2%)",
+      "mining_null_p": 0.155,
+      "null_median": 0.534,
+      "verdict": "ARTEFATO/sem-edge",
+      "_label": "SOLO::fractal_alignment",
+      "_K": 27
+    },
+    {
+      "oof_hit": 0.575,
+      "N_keep": 73,
+      "poison_ratio": 0.77,
+      "y2025": "26/35",
+      "y2026": "16/38",
+      "base": "52/96 (54.2%)",
+      "mining_null_p": 0.205,
+      "null_median": 0.53,
+      "verdict": "ARTEFATO/sem-edge",
+      "_label": "SOLO::htf_position_room",
+      "_K": 4
+    }
+  ],
+  "best": {
+    "oof_hit": 0.647,
+    "N_keep": 51,
+    "poison_ratio": 0.73,
+    "y2025": "20/27",
+    "y2026": "13/24",
+    "base": "52/96 (54.2%)",
+    "mining_null_p": 0.01,
+    "null_median": 0.536,
+    "verdict": "SINAL (P<0.1 & hit>base)",
+    "_label": "SOLO::htf_demand_retest",
+    "_K": 12
+  },
+  "best_breakdown": {
+    "kept_winners": 33,
+    "kept_losers": 18,
+    "cut_winners": 19,
+    "cut_losers": 26,
+    "total_winners": 52,
+    "total_losers": 44,
+    "winner_retention": 0.635,
+    "loser_cut_rate": 0.591
+  },
+  "signal_found": true
+}

@@ -1,0 +1,43 @@
+{
+  "oof": {
+    "oof_hit": 0.6,
+    "N_keep": 60,
+    "poison_ratio": 0.8,
+    "y2025": "19/30",
+    "y2026": "17/30",
+    "base": "52/96 (54.2%)",
+    "mining_null_p": 0.155,
+    "null_median": 0.534,
+    "verdict": "ARTEFATO/sem-edge"
+  },
+  "feat_names": [
+    "dir_4H",
+    "pos_4H",
+    "mat_4H",
+    "ext_4H",
+    "rng_4H",
+    "dir_1D",
+    "pos_1D",
+    "mat_1D",
+    "ext_1D",
+    "rng_1D",
+    "dir_1W",
+    "pos_1W",
+    "mat_1W",
+    "ext_1W",
+    "rng_1W",
+    "align_4H_1D",
+    "align_1D_1W",
+    "dir_sum",
+    "both_up",
+    "both_down",
+    "conflict_4H_1D",
+    "A_markup",
+    "B_init",
+    "C_distrib",
+    "D_bear",
+    "top_conf",
+    "fresh_conf"
+  ],
+  "causal_ok": true
+}
