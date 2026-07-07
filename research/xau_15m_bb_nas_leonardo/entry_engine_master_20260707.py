@@ -117,7 +117,7 @@ for e in EV:
     if en is None: continue
     f={**seq_feats(en["t"]),**struct_feats(e),**casc_feats(e,en["t"])}
     rows.append({"kind":e["kind"],"t":en["t"],"d":ds(en["t"]),"out":en["out"],"reclaim_lag":en["reclaim_lag"],
-                 "risk":round(en["risk"],2),**f})
+                 "risk":round(en["risk"],2),"ent":round(en["ent"],2),"sl":round(en["sl"],2),"tgt":round(en["tgt"],2),**f})
 def year(d): return d[:4]
 def panel(sel,tag):
     if not sel: print(f"  {tag:<28} N0"); return
