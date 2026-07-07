@@ -1,0 +1,19 @@
+{
+ "oof_hit": 0.525,
+ "base": 0.542,
+ "score": {
+  "N_kept": 59,
+  "hit3r_kept": 0.525,
+  "winners_kept": 31,
+  "losers_kept": 28,
+  "winners_cut": 21,
+  "losers_cut": 16,
+  "poison_ratio": 1.31,
+  "y2025": "15/22",
+  "y2026": "16/37",
+  "base": "52/96 (54.2%)"
+ },
+ "mining_null_p": 0.605,
+ "null_median": 0.542,
+ "verdict": "NO_EDGE_OOF"
+}
