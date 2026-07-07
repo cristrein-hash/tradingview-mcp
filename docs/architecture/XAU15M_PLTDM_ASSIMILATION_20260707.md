@@ -47,6 +47,15 @@ Empurrar recall acima de ~26/42 exige N>200. Os ~16 fundos MISSED são pullbacks
 - `bottom_polarity_ladder_20260707.py` — escada ascendente por regime (achado 15/8).
 - `bottom_pltdm_confluence_20260707.py` — detector confluência + fronteira. Saída: `results/pltdm_confluence_20260707.json`.
 
+## 6b. CORREÇÃO DE MIOPIA + REFUTAÇÃO DA HIPÓTESE "SIGNIFICÂNCIA" (2026-07-07, pós-rejeição do Cris)
+Cris rejeitou a fronteira recall×N: *"ainda estás a achar fundos de forma míope, não por evento contextual… não me sugiras mais seguimentos indutivos."* Diagnóstico aceito: zigzag r=3 = **local** (poucas barras); os PLT/DM abrangem **semanas**. O erro é tratar 954 pivôs/145 zonas como pool e filtrar — num markup de 2 anos quase todo topo é rompido (78/90), densidade é inevitável.
+
+Tentativas de escala macro (não aceitáveis, registradas p/ não repetir):
+- `bottom_macro_event_20260707.py` (swing diário + retorno a qualquer zona macro): N177 dens 11:1.
+- `bottom_active_demand_20260707.py` (máquina de UMA demanda ativa = último higher-low): N58-105, dens 6-9:1, MAS **MISSED inclui os próprios fundos PLT/DM do Cris** (09-02/04/11/30, 10-14/15/17) → "último higher-low" ≠ a DM dele.
+
+**REFUTAÇÃO CENTRAL** (`plt_significance_20260707.py`): medida a história de largo-contexto dos 10 PLT do Cris ANTES do rompimento. **Os PLT NÃO são resistências significativas** — mediana **1 reação** (vários com 0; 09-11@3625 e 10-14@4178 = topos frescos, span 0d). Topos genéricos rompidos têm **MAIS** história (mediana 4 reações). 31% dos genéricos já batem a fasquia de significância dos PLT → significância **não seleciona**. **CONCLUSÃO: o que define um PLT não é atributo estático da barra; é a POSIÇÃO SEQUENCIAL no markup — a referência da perna corrente, marcada ao CAMINHAR a estrutura perna-a-perna.** A diferença N926→N54 existe, mas vive no **processo sequencial (caminhada das pernas)**, não numa feature de snapshot. Todo filtro por-barra/pool bate no muro por procurar propriedade onde há processo. → Paradigma proposto ao Cris (aguarda decisão): (1) autômato de caminhada de pernas [1 referência/perna]; (2) Cris marca as pernas macro e eu ancoro; (3) leitura evento-a-evento 1-a-1 sem produzir N/densidade até o critério estar claro.
+
 ## 7. Próximo (fork p/ Cris decidir — regras são guias, não leis)
 1. Aceitar N101 (alta-precisão) OU N228 (recall 26/42) como set de eventos → seguir para **entry 3×1** e **famílias**.
 2. OU marcar mais PLT/DM em janelas fora ago-out/2025 para estender o guia.
