@@ -1,0 +1,28 @@
+{
+ "features": [
+  "dist_4h_demand",
+  "near_4h_demand_below",
+  "is_4h_retest",
+  "mindist_4h_demand",
+  "4h_leg_maturity",
+  "4h_leg_pos",
+  "dist_1d_demand",
+  "near_1d_demand_below",
+  "is_1d_retest",
+  "mindist_1d_demand",
+  "1d_leg_maturity",
+  "1d_leg_pos"
+ ],
+ "oof": {
+  "oof_hit": 0.647,
+  "N_keep": 51,
+  "poison_ratio": 0.73,
+  "y2025": "20/27",
+  "y2026": "13/24",
+  "base": "52/96 (54.2%)",
+  "mining_null_p": 0.01,
+  "null_median": 0.536,
+  "verdict": "SINAL (P<0.1 & hit>base)"
+ },
+ "feature_file": "/Users/cristrein/tradingview-mcp/research/xau_15m_bb_nas_leonardo/results/mtf_feat_htf_demand_retest.json"
+}
