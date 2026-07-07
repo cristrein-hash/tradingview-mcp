@@ -16,24 +16,37 @@
 | `circle` (fundos) | 50 | fundos marcados (círculos vermelhos) |
 | `long_position` #C/#S + labels | 65 | os 65 trades plotados (30 ✓ / 35 ✗) |
 
-## 2. Achado 1 — ESTRUTURA MACRO: todos os fundos são pullback em BULL macro
+## 2. Achado 1 — ESTRUTURA MACRO: DOIS regimes de fundo (corrigido — Cris: há fundos BEAR)
 
-Estrutura dos ~6-9 meses anteriores a cada vela de fundo (causal, agregação diária, EMA50/EMA100):
-**42/42 fundos em regime BULL macro** (bull% 80-100%, EMA50>EMA100 em quase todos). O ouro esteve em
-tendência de alta macro todo o período. **Regra estrutural 0: só procurar fundo LONG quando o macro é BULL.**
+CORREÇÃO: a 1ª medição (EMA50>EMA100 secular) mascarava correções BEAR de médio prazo (numa queda de
+−22% a EMA50 fica acima da EMA100 pela subida anterior). Com regime MULTI-ESCALA (secular 6-9m /
+médio 1-2m via EMA20-EMA40+slope / curto), os 42 fundos dividem-se em TRÊS famílias por regime MÉDIO:
 
-Duas sub-famílias por profundidade da retração da perna de alta macro (`retr_up_macro`):
-- **RASO** (retr 0,06-0,35): pullback superficial em BULL forte — a maioria (set-out/2025, dez/2025).
-- **CORREÇÃO** (retr 0,44-1,0): fundo de correção profunda em BULL (fev/mar/mai/jun 2026).
+| regime médio | n | retr_up | drop_mid | d_vale | descrição |
+|--------------|---|---------|----------|--------|-----------|
+| **BULL-pullback** | 26 | 0,17 | 2,8 ATR | 0 | pullback raso, entra no low, alta continua |
+| **BEAR-reversal** | 12 | 0,73 | 7,4 ATR | 2 | fim de queda profunda, reversão de tendência (mar-jun/2026) |
+| RANGE-base | 4 | 0,34 | 5,8 ATR | 19 | base lateral longa (ago/2025, nov/2025) |
 
-## 3. Achado 2 — regra "PERNA BEAR CLARA ANTECEDE" = ponto intermediário de correção
+**Diferenças a compreender (mudam a detecção):**
+- **BULL-pullback**: correção rasa (devolve ~17% da perna de alta), o fundo É o low, tendência de alta segue.
+  Detecção: contexto BULL + pullback + reação rápida.
+- **BEAR-reversal**: queda profunda (devolve ~73%, drop 7-11 ATR), o fundo é o FIM da perna de baixa.
+  Detecção: contexto BEAR + capitulação + reversão estrutural (CHoCH+ que encerra a queda).
 
-Os 3 inválidos (05/08/16-mar-2026) têm **drop_before 8,8-9,1 ATR-dia** mas ficam ANTES do fundo final; a
-queda continua depois deles. O fundo VÁLIDO da mesma correção é 23-24-mar (retr_up 0,72-0,86 = fundo profundo).
-**A diferença não é o tamanho do drop** (fundo válido 04-mai tem drop 10,6 ATR) — é se a estrutura **já
-reverteu** (fundo final = válido) ou **ainda cai** (intermediário = inválido). Detecção causal: o fundo final
-tem reversão estrutural confirmada (CHoCH+/higher-low/varredura), o intermediário não. "Pequena acumulação"
-(13-jan) = drop_before só 0,8 ATR → fundo raso demais, sem capitulação real.
+**Regra 0 revisada:** procurar fundo LONG em BULL (pullback) E em BEAR (reversão do fim da queda) —
+com lógicas DIFERENTES. Não é "só BULL".
+
+**IMPORTANTE (Cris): as regras dele são GUIAS, não leis imutáveis** — capturar o espírito, não aplicar
+cortes rígidos por regime.
+
+## 3. Achado 2 — "PERNA BEAR CLARA ANTECEDE" (guia) = a perna de baixa ainda não terminou
+
+Os 3 inválidos (05/08/16-mar) têm `d_vale` 27-36 (o low real foi há muito; são bounces intermediários e a
+queda continua depois) — vs os fundos BEAR VÁLIDOS de 23-24-mar com `d_vale` 0-3 (o fundo É o low recente que
+reverteu). O espírito do guia: **rejeitar pontos onde a perna de baixa AINDA NÃO terminou; aceitar onde ela
+terminou** — vale em BULL e em BEAR. Não é "tamanho do drop" nem "regime BEAR = inválido". "Pequena acumulação"
+(13-jan) = drop só 0,8 ATR, retr 0,04 → sem capitulação/pullback real, ruído.
 
 ## 4. Achado 3 — ENTRY: no retest da zona, 1,5h-38h após o fundo
 
