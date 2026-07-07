@@ -1,0 +1,17 @@
+{
+ "obs": {
+  "h4_phase": 0.4861111111111111,
+  "d1_phase": 0.5147058823529411,
+  "leg_maturity_nested": 0.4675324675324675,
+  "htf_demand_retest": 0.6470588235294118,
+  "fractal_alignment": 0.6,
+  "htf_position_room": 0.5753424657534246
+ },
+ "best_obs": 0.6470588235294118,
+ "best_fam": "htf_demand_retest",
+ "p_best6_ge_0647": 0.08,
+ "p_best6_ge_bestobs": 0.08,
+ "best6_median": 0.5901639344262295,
+ "best6_q95": 0.660377358490566,
+ "marginal_p": 0.01
+}
