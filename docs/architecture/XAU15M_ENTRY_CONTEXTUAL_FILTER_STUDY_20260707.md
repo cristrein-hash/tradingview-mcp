@@ -32,5 +32,10 @@ Melhor filtro limpo = room: **R & supply_above≥0,35 = 72% hit-3R N25 (2025:73%
 - **Room = dial opcional de risco** (não filtro grátis): exigir room-à-supply sobe hit-3R (72%) trocando por menos winners; decisão do Cris sobre o trade-off. É a exaustão ex-ante defensável (não sabes ex-ante quem rompe).
 - **Diferenciação fina** (bull-genuíno-em-bear, range-demand, exaustão-sem-poison) = precisa do read visual do Cris OU features que não temos (momentum de rutura da perna). Não mecanizável limpo com o set atual.
 
+## 6b. Tentativa "vencer o muro como no PLT/DM" (mudança de representação) = LOOKAHEAD apanhado
+Cris: "como venceste o PLT/DM? faz o mesmo." Lição PLT/DM = trocar snapshot-feature por PROCESSO sequencial (caminhada de pernas). Apliquei aqui: estado sequencial da escada + **subir a ESCALA do master walk**. Resultado espetacular e robusto por-ano: r=6 54% → r=8 61% → r=9 68% → r=10 76% → **r=12 80% (N30, 2025:88%/2026:71%)**. **MAS = LOOKAHEAD:** a caminhada só rotula um low como "demanda r=12" depois de a subida de 12-ATR o confirmar — e essa subida É o movimento vencedor. Selecionar demandas r=12 = selecionar winners por construção. **Teste causal (`causal_priorleg_test_20260707.py`): a perna ANTERIOR causal (momentum passado, conhecido ANTES do entry) NÃO separa — WIN med 12,59 vs LOSE med 12,77; filtrar dá ≤58%.** Portanto o ganho de escala era artefato de lookahead, apanhado.
+
+**Natureza do muro (≠ PLT/DM):** PLT/DM era DETETAR estrutura que existe causalmente (venci mudando representação). Aqui a distinção winner/loser depende de a perna ROMPER no FUTURO — o "estado sequencial" que separaria é o próprio resultado, não está na estrutura pré-entry. **"Qual perna rompe" não é causalmente previsível pela estrutura anterior nestes dados.** reclaim-R (61%, causal, validado) = o que é causalmente conhecível.
+
 ## 7. Artefatos
 `entry_macro_context` / `entry_struct_state` / `feature_battery_20260707.py` + results/*.json (commit desta sessão). Bateria: `results/feature_battery_20260707.json` (96 × 12 features + outcome).
