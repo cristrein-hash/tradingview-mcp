@@ -1,0 +1,674 @@
+{
+ "1": {
+  "regime": "RANGE",
+  "in_pullback": "",
+  "frac_leg": 0.73,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "2": {
+  "regime": "RANGE",
+  "in_pullback": "",
+  "frac_leg": 0.77,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "3": {
+  "regime": "RANGE",
+  "in_pullback": "",
+  "frac_leg": 0.78,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "4": {
+  "regime": "RANGE",
+  "in_pullback": "",
+  "frac_leg": 0.84,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "5": {
+  "regime": "RANGE",
+  "in_pullback": "",
+  "frac_leg": 0.85,
+  "out": "0",
+  "fam": "R"
+ },
+ "6": {
+  "regime": "RANGE",
+  "in_pullback": "",
+  "frac_leg": 0.9,
+  "out": "0",
+  "fam": "R"
+ },
+ "7": {
+  "regime": "RANGE",
+  "in_pullback": "",
+  "frac_leg": 0.92,
+  "out": "0",
+  "fam": "R"
+ },
+ "8": {
+  "regime": "RANGE",
+  "in_pullback": "",
+  "frac_leg": 0.96,
+  "out": "0",
+  "fam": "R"
+ },
+ "9": {
+  "regime": "RANGE",
+  "in_pullback": "",
+  "frac_leg": 0.98,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "10": {
+  "regime": "RANGE",
+  "in_pullback": "",
+  "frac_leg": 1.0,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "11": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.02,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "12": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.03,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "13": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.04,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "14": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.04,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "15": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.07,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "16": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.11,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "17": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.12,
+  "out": "0",
+  "fam": "C"
+ },
+ "18": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.17,
+  "out": "0",
+  "fam": "C"
+ },
+ "19": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.21,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "20": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.22,
+  "out": "0",
+  "fam": "C"
+ },
+ "21": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.26,
+  "out": "0",
+  "fam": "C"
+ },
+ "22": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.3,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "23": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.32,
+  "out": "0",
+  "fam": "C"
+ },
+ "24": {
+  "regime": "BULL",
+  "in_pullback": "BEAR-in-BULL",
+  "frac_leg": 0.35,
+  "out": "0",
+  "fam": "MGMT"
+ },
+ "25": {
+  "regime": "BULL",
+  "in_pullback": "BEAR-in-BULL",
+  "frac_leg": 0.36,
+  "out": "0",
+  "fam": "C"
+ },
+ "26": {
+  "regime": "BULL",
+  "in_pullback": "BEAR-in-BULL",
+  "frac_leg": 0.4,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "27": {
+  "regime": "BULL",
+  "in_pullback": "BEAR-in-BULL",
+  "frac_leg": 0.43,
+  "out": "0",
+  "fam": "D"
+ },
+ "28": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.45,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "29": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.48,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "30": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.49,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "31": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.5,
+  "out": "0",
+  "fam": "C"
+ },
+ "32": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.54,
+  "out": "0",
+  "fam": "MGMT"
+ },
+ "33": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.56,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "34": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.58,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "35": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.58,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "36": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.62,
+  "out": "0",
+  "fam": "C"
+ },
+ "37": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.62,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "38": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.64,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "39": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.67,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "40": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.68,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "41": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.69,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "42": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.7,
+  "out": "0",
+  "fam": "C"
+ },
+ "43": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.71,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "44": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.72,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "45": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.73,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "46": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.76,
+  "out": "0",
+  "fam": "C"
+ },
+ "47": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.82,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "48": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.85,
+  "out": "0",
+  "fam": "C"
+ },
+ "49": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.89,
+  "out": "0",
+  "fam": "D"
+ },
+ "50": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.9,
+  "out": "0",
+  "fam": "D"
+ },
+ "51": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.93,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "52": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.95,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "53": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.95,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "54": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 0.96,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "55": {
+  "regime": "BULL",
+  "in_pullback": "",
+  "frac_leg": 1.0,
+  "out": "0",
+  "fam": "C"
+ },
+ "56": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.04,
+  "out": "0",
+  "fam": "C"
+ },
+ "57": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.07,
+  "out": "0",
+  "fam": "C"
+ },
+ "58": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.08,
+  "out": "0",
+  "fam": "C"
+ },
+ "59": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.08,
+  "out": "0",
+  "fam": "C"
+ },
+ "60": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.11,
+  "out": "0",
+  "fam": "C"
+ },
+ "61": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.13,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "62": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.17,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "63": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.17,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "64": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.18,
+  "out": "0",
+  "fam": "MGMT"
+ },
+ "65": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.21,
+  "out": "0",
+  "fam": "C"
+ },
+ "66": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.22,
+  "out": "0",
+  "fam": "D"
+ },
+ "67": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.27,
+  "out": "0",
+  "fam": "D"
+ },
+ "68": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.28,
+  "out": "0",
+  "fam": "D"
+ },
+ "69": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.31,
+  "out": "0",
+  "fam": "D"
+ },
+ "70": {
+  "regime": "BEAR",
+  "in_pullback": "BULL-in-BEAR",
+  "frac_leg": 0.35,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "71": {
+  "regime": "BEAR",
+  "in_pullback": "BULL-in-BEAR",
+  "frac_leg": 0.37,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "72": {
+  "regime": "BEAR",
+  "in_pullback": "BULL-in-BEAR",
+  "frac_leg": 0.37,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "73": {
+  "regime": "BEAR",
+  "in_pullback": "BULL-in-BEAR",
+  "frac_leg": 0.39,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "74": {
+  "regime": "BEAR",
+  "in_pullback": "BULL-in-BEAR",
+  "frac_leg": 0.4,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "75": {
+  "regime": "BEAR",
+  "in_pullback": "BULL-in-BEAR",
+  "frac_leg": 0.4,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "76": {
+  "regime": "BEAR",
+  "in_pullback": "BULL-in-BEAR",
+  "frac_leg": 0.44,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "77": {
+  "regime": "BEAR",
+  "in_pullback": "BULL-in-BEAR",
+  "frac_leg": 0.44,
+  "out": "0",
+  "fam": "MGMT"
+ },
+ "78": {
+  "regime": "BEAR",
+  "in_pullback": "BULL-in-BEAR",
+  "frac_leg": 0.46,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "79": {
+  "regime": "BEAR",
+  "in_pullback": "BULL-in-BEAR",
+  "frac_leg": 0.5,
+  "out": "0",
+  "fam": "C"
+ },
+ "80": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.58,
+  "out": "0",
+  "fam": "D"
+ },
+ "81": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.61,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "82": {
+  "regime": "BEAR",
+  "in_pullback": "BULL-in-BEAR",
+  "frac_leg": 0.64,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "83": {
+  "regime": "BEAR",
+  "in_pullback": "BULL-in-BEAR",
+  "frac_leg": 0.64,
+  "out": "0",
+  "fam": "C"
+ },
+ "84": {
+  "regime": "BEAR",
+  "in_pullback": "BULL-in-BEAR",
+  "frac_leg": 0.65,
+  "out": "0",
+  "fam": "C"
+ },
+ "85": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.69,
+  "out": "0",
+  "fam": "C"
+ },
+ "86": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.74,
+  "out": "0",
+  "fam": "D"
+ },
+ "87": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.75,
+  "out": "0",
+  "fam": "D"
+ },
+ "88": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.79,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "89": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.84,
+  "out": "0",
+  "fam": "D"
+ },
+ "90": {
+  "regime": "BEAR",
+  "in_pullback": "BULL-in-BEAR",
+  "frac_leg": 0.88,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "91": {
+  "regime": "BEAR",
+  "in_pullback": "BULL-in-BEAR",
+  "frac_leg": 0.91,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "92": {
+  "regime": "BEAR",
+  "in_pullback": "BULL-in-BEAR",
+  "frac_leg": 0.91,
+  "out": "0",
+  "fam": "D"
+ },
+ "93": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.95,
+  "out": "0",
+  "fam": "D"
+ },
+ "94": {
+  "regime": "BEAR",
+  "in_pullback": "",
+  "frac_leg": 0.95,
+  "out": "0",
+  "fam": "D"
+ },
+ "95": {
+  "regime": "NONE",
+  "in_pullback": "",
+  "frac_leg": null,
+  "out": "1",
+  "fam": "WIN"
+ },
+ "96": {
+  "regime": "NONE",
+  "in_pullback": "",
+  "frac_leg": null,
+  "out": "1",
+  "fam": "WIN"
+ }
+}
