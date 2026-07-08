@@ -1,0 +1,2 @@
+claim_id,block,number,metric,script,input_file,output_file,source_ref,checksum,raw_or_derived,status,report_path
+EXAMPLE-1,XAU_15M_<LAB>,0.542,hit3r_base,research/xau_15m_bb_nas_leonardo/<lab>_analysis.py,research/xau_15m_bb_nas_leonardo/results/n96_exhaustive_mtf_features.csv,research/xau_15m_bb_nas_leonardo/results/<lab>_results.csv,build_causal_primitives.py RAW-15M,sha256:PENDING,VERIFIED_DERIVED,EXPLORATORY,docs/architecture/XAU_15M_<LAB>_ROUND_20260708.md
