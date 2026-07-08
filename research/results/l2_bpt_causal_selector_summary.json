@@ -1,0 +1,141 @@
+{
+ "reproduces_17": true,
+ "base_signals": 245,
+ "selected": [
+  4918,
+  4926,
+  5016,
+  5103,
+  5826,
+  5875,
+  6376,
+  6791,
+  7149,
+  7549,
+  8133,
+  8216,
+  8236,
+  8893,
+  8905,
+  8978,
+  9007
+ ],
+ "by_regime": {
+  "BULL": 6,
+  "RANGE": 10,
+  "BEAR": 1
+ },
+ "params_baseline": {
+  "BAND": 3,
+  "POS_THR": 0.34,
+  "MIN_BARS": 15,
+  "WIN_DAYS": 180
+ },
+ "sensitivity": [
+  {
+   "variation": "BASELINE (3,0.34,15,180)",
+   "params": {},
+   "N": 17,
+   "overlap17": 17,
+   "added": [],
+   "dropped": []
+  },
+  {
+   "variation": "BAND amp/2 (banda mais larga)",
+   "params": {
+    "BAND": 2.0
+   },
+   "N": 17,
+   "overlap17": 17,
+   "added": [],
+   "dropped": []
+  },
+  {
+   "variation": "BAND amp/4 (banda mais estreita)",
+   "params": {
+    "BAND": 4.0
+   },
+   "N": 15,
+   "overlap17": 15,
+   "added": [],
+   "dropped": [
+    5016,
+    7149
+   ]
+  },
+  {
+   "variation": "POS_THR 0.30",
+   "params": {
+    "POS_THR": 0.3
+   },
+   "N": 17,
+   "overlap17": 17,
+   "added": [],
+   "dropped": []
+  },
+  {
+   "variation": "POS_THR 0.40",
+   "params": {
+    "POS_THR": 0.4
+   },
+   "N": 24,
+   "overlap17": 17,
+   "added": [
+    4899,
+    4908,
+    7065,
+    7454,
+    7710,
+    7731,
+    9105
+   ],
+   "dropped": []
+  },
+  {
+   "variation": "MIN 10 barras",
+   "params": {
+    "MIN": 10
+   },
+   "N": 17,
+   "overlap17": 17,
+   "added": [],
+   "dropped": []
+  },
+  {
+   "variation": "MIN 20 barras",
+   "params": {
+    "MIN": 20
+   },
+   "N": 17,
+   "overlap17": 17,
+   "added": [],
+   "dropped": []
+  },
+  {
+   "variation": "WIN 120 dias",
+   "params": {
+    "WIN": 120
+   },
+   "N": 17,
+   "overlap17": 17,
+   "added": [],
+   "dropped": []
+  },
+  {
+   "variation": "WIN 240 dias",
+   "params": {
+    "WIN": 240
+   },
+   "N": 17,
+   "overlap17": 17,
+   "added": [],
+   "dropped": []
+  }
+ ],
+ "source": {
+  "regime": "config.paths.causal_segments (phase10 causal)",
+  "raw": "phase10 T/H/L",
+  "signals": "l2_bpt_regua_structural.csv",
+  "note": "zero SLIM/proxy, zero lookahead"
+ }
+}
