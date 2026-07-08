@@ -1,0 +1,379 @@
+[
+ {
+  "variant": "BASELINE regime-flip cap500",
+  "SELECT-17": {
+   "N": 17,
+   "sumR": 105.3,
+   "WR": 59,
+   "maxDD": -4.1,
+   "streak": 3,
+   "retDD": 26.0,
+   "avg_hold": 284,
+   "max_hold": 500,
+   "exposure_days": 805,
+   "worst": -1.35,
+   "#6": 1.15
+  },
+  "FULL-245": {
+   "N": 245,
+   "sumR": 399.2,
+   "WR": 31,
+   "maxDD": -71.8,
+   "streak": 22,
+   "retDD": 5.6,
+   "avg_hold": 165,
+   "max_hold": 500,
+   "exposure_days": 6729,
+   "worst": -1.35,
+   "#6": 1.15
+  }
+ },
+ {
+  "variant": "hold-cap 360",
+  "SELECT-17": {
+   "N": 17,
+   "sumR": 76.3,
+   "WR": 59,
+   "maxDD": -4.1,
+   "streak": 3,
+   "retDD": 18.9,
+   "avg_hold": 225,
+   "max_hold": 360,
+   "exposure_days": 638,
+   "worst": -1.35,
+   "#6": 2.55
+  },
+  "FULL-245": {
+   "N": 245,
+   "sumR": 282.8,
+   "WR": 31,
+   "maxDD": -65.9,
+   "streak": 22,
+   "retDD": 4.3,
+   "avg_hold": 129,
+   "max_hold": 360,
+   "exposure_days": 5284,
+   "worst": -1.35,
+   "#6": 2.55
+  }
+ },
+ {
+  "variant": "hold-cap 240",
+  "SELECT-17": {
+   "N": 17,
+   "sumR": 65.8,
+   "WR": 59,
+   "maxDD": -4.1,
+   "streak": 3,
+   "retDD": 16.2,
+   "avg_hold": 159,
+   "max_hold": 240,
+   "exposure_days": 449,
+   "worst": -1.35,
+   "#6": 2.01
+  },
+  "FULL-245": {
+   "N": 245,
+   "sumR": 225.1,
+   "WR": 31,
+   "maxDD": -53.1,
+   "streak": 14,
+   "retDD": 4.2,
+   "avg_hold": 97,
+   "max_hold": 240,
+   "exposure_days": 3947,
+   "worst": -1.35,
+   "#6": 2.01
+  }
+ },
+ {
+  "variant": "stop-width cap <=100pt",
+  "SELECT-17": {
+   "N": 15,
+   "sumR": 95.8,
+   "WR": 60,
+   "maxDD": -4.1,
+   "streak": 3,
+   "retDD": 23.7,
+   "avg_hold": 294,
+   "max_hold": 500,
+   "exposure_days": 735,
+   "worst": -1.35,
+   "#6": 1.15
+  },
+  "FULL-245": {
+   "N": 220,
+   "sumR": 360.4,
+   "WR": 30,
+   "maxDD": -69.7,
+   "streak": 20,
+   "retDD": 5.2,
+   "avg_hold": 167,
+   "max_hold": 500,
+   "exposure_days": 6135,
+   "worst": -1.35,
+   "#6": 1.15
+  }
+ },
+ {
+  "variant": "stop-width cap <=80pt",
+  "SELECT-17": {
+   "N": 13,
+   "sumR": 77.4,
+   "WR": 62,
+   "maxDD": -2.7,
+   "streak": 2,
+   "retDD": 28.7,
+   "avg_hold": 296,
+   "max_hold": 500,
+   "exposure_days": 642,
+   "worst": -1.35,
+   "#6": 1.15
+  },
+  "FULL-245": {
+   "N": 205,
+   "sumR": 319.8,
+   "WR": 29,
+   "maxDD": -68.3,
+   "streak": 19,
+   "retDD": 4.7,
+   "avg_hold": 167,
+   "max_hold": 500,
+   "exposure_days": 5720,
+   "worst": -1.35,
+   "#6": 1.15
+  }
+ },
+ {
+  "variant": "stop-width cap <=60pt",
+  "SELECT-17": {
+   "N": 12,
+   "sumR": 55.6,
+   "WR": 58,
+   "maxDD": -2.7,
+   "streak": 2,
+   "retDD": 20.6,
+   "avg_hold": 280,
+   "max_hold": 500,
+   "exposure_days": 560,
+   "worst": -1.35,
+   "#6": 1.15
+  },
+  "FULL-245": {
+   "N": 190,
+   "sumR": 262.2,
+   "WR": 28,
+   "maxDD": -65.6,
+   "streak": 17,
+   "retDD": 4.0,
+   "avg_hold": 161,
+   "max_hold": 500,
+   "exposure_days": 5091,
+   "worst": -1.35,
+   "#6": 1.15
+  }
+ },
+ {
+  "variant": "gap-buffer -0.5R (stops>80pt)",
+  "SELECT-17": {
+   "N": 17,
+   "sumR": 104.3,
+   "WR": 59,
+   "maxDD": -4.6,
+   "streak": 3,
+   "retDD": 22.9,
+   "avg_hold": 284,
+   "max_hold": 500,
+   "exposure_days": 805,
+   "worst": -1.85,
+   "#6": 1.15
+  },
+  "FULL-245": {
+   "N": 245,
+   "sumR": 392.7,
+   "WR": 31,
+   "maxDD": -72.8,
+   "streak": 22,
+   "retDD": 5.4,
+   "avg_hold": 165,
+   "max_hold": 500,
+   "exposure_days": 6729,
+   "worst": -1.85,
+   "#6": 1.15
+  }
+ },
+ {
+  "variant": "gap-buffer -1.0R (stops>80pt)",
+  "SELECT-17": {
+   "N": 17,
+   "sumR": 103.3,
+   "WR": 59,
+   "maxDD": -5.1,
+   "streak": 3,
+   "retDD": 20.5,
+   "avg_hold": 284,
+   "max_hold": 500,
+   "exposure_days": 805,
+   "worst": -2.35,
+   "#6": 1.15
+  },
+  "FULL-245": {
+   "N": 245,
+   "sumR": 386.2,
+   "WR": 31,
+   "maxDD": -73.8,
+   "streak": 22,
+   "retDD": 5.2,
+   "avg_hold": 165,
+   "max_hold": 500,
+   "exposure_days": 6729,
+   "worst": -2.35,
+   "#6": 1.15
+  }
+ },
+ {
+  "variant": "partial 50%@+2R + BE",
+  "SELECT-17": {
+   "N": 17,
+   "sumR": 56.0,
+   "WR": 76,
+   "maxDD": -2.1,
+   "streak": 1,
+   "retDD": 27.3,
+   "avg_hold": 262,
+   "max_hold": 500,
+   "exposure_days": 742,
+   "worst": -1.35,
+   "#6": 1.4
+  },
+  "FULL-245": {
+   "N": 245,
+   "sumR": 170.5,
+   "WR": 45,
+   "maxDD": -50.0,
+   "streak": 12,
+   "retDD": 3.4,
+   "avg_hold": 144,
+   "max_hold": 500,
+   "exposure_days": 5872,
+   "worst": -1.35,
+   "#6": 1.4
+  }
+ },
+ {
+  "variant": "DD-guard halt@-15R",
+  "SELECT-17": {
+   "N": 17,
+   "sumR": 105.3,
+   "WR": 59,
+   "maxDD": -4.1,
+   "streak": 3,
+   "retDD": 26.0,
+   "avg_hold": 284,
+   "max_hold": 500,
+   "exposure_days": 805,
+   "worst": -1.35,
+   "#6": 1.15
+  },
+  "FULL-245": {
+   "N": 37,
+   "sumR": 41.7,
+   "WR": 32,
+   "maxDD": -15.6,
+   "streak": 12,
+   "retDD": 2.7,
+   "avg_hold": 219,
+   "max_hold": 500,
+   "exposure_days": 1350,
+   "worst": -1.35,
+   "#6": null
+  }
+ },
+ {
+  "variant": "streak-pause after 3",
+  "SELECT-17": {
+   "N": 17,
+   "sumR": 105.3,
+   "WR": 59,
+   "maxDD": -4.1,
+   "streak": 3,
+   "retDD": 26.0,
+   "avg_hold": 284,
+   "max_hold": 500,
+   "exposure_days": 805,
+   "worst": -1.35,
+   "#6": 1.15
+  },
+  "FULL-245": {
+   "N": 245,
+   "sumR": 399.2,
+   "WR": 31,
+   "maxDD": -71.8,
+   "streak": 22,
+   "retDD": 5.6,
+   "avg_hold": 165,
+   "max_hold": 500,
+   "exposure_days": 6729,
+   "worst": -1.35,
+   "#6": 1.15
+  }
+ },
+ {
+  "variant": "max-concurrent 2",
+  "SELECT-17": {
+   "N": 13,
+   "sumR": 98.5,
+   "WR": 69,
+   "maxDD": -4.1,
+   "streak": 3,
+   "retDD": 24.3,
+   "avg_hold": 330,
+   "max_hold": 500,
+   "exposure_days": 714,
+   "worst": -1.35,
+   "#6": 1.15
+  },
+  "FULL-245": {
+   "N": 93,
+   "sumR": 119.1,
+   "WR": 30,
+   "maxDD": -18.4,
+   "streak": 12,
+   "retDD": 6.5,
+   "avg_hold": 157,
+   "max_hold": 500,
+   "exposure_days": 2438,
+   "worst": -1.35,
+   "#6": null
+  }
+ },
+ {
+  "variant": "max-concurrent 1",
+  "SELECT-17": {
+   "N": 7,
+   "sumR": 60.0,
+   "WR": 71,
+   "maxDD": -2.7,
+   "streak": 2,
+   "retDD": 22.2,
+   "avg_hold": 336,
+   "max_hold": 500,
+   "exposure_days": 392,
+   "worst": -1.35,
+   "#6": null
+  },
+  "FULL-245": {
+   "N": 59,
+   "sumR": 68.9,
+   "WR": 27,
+   "maxDD": -9.7,
+   "streak": 12,
+   "retDD": 7.1,
+   "avg_hold": 130,
+   "max_hold": 500,
+   "exposure_days": 1277,
+   "worst": -1.35,
+   "#6": null
+  }
+ }
+]

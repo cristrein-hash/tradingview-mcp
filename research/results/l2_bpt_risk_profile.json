@@ -1,0 +1,189 @@
+[
+ {
+  "bi": 4918,
+  "entry_d": "2023-03-08",
+  "exit_d": "2023-05-25",
+  "reg": "RANGE",
+  "risk_pts": 16.4,
+  "R": 8.23,
+  "mot": "BEAR",
+  "hold_bars": 329,
+  "exit_bar": 5247
+ },
+ {
+  "bi": 4926,
+  "entry_d": "2023-03-09",
+  "exit_d": "2023-05-25",
+  "reg": "RANGE",
+  "risk_pts": 19.7,
+  "R": 6.28,
+  "mot": "BEAR",
+  "hold_bars": 321,
+  "exit_bar": 5247
+ },
+ {
+  "bi": 5016,
+  "entry_d": "2023-03-30",
+  "exit_d": "2023-04-03",
+  "reg": "BULL",
+  "risk_pts": 25.8,
+  "R": -1.35,
+  "mot": "STOP",
+  "hold_bars": 8,
+  "exit_bar": 5024
+ },
+ {
+  "bi": 5103,
+  "entry_d": "2023-04-21",
+  "exit_d": "2023-05-18",
+  "reg": "BULL",
+  "risk_pts": 18.0,
+  "R": -1.35,
+  "mot": "STOP",
+  "hold_bars": 115,
+  "exit_bar": 5218
+ },
+ {
+  "bi": 5826,
+  "entry_d": "2023-10-06",
+  "exit_d": "2024-02-05",
+  "reg": "BEAR",
+  "risk_pts": 19.3,
+  "R": 9.65,
+  "mot": "CAP",
+  "hold_bars": 500,
+  "exit_bar": 6326
+ },
+ {
+  "bi": 5875,
+  "entry_d": "2023-10-18",
+  "exit_d": "2024-02-15",
+  "reg": "BULL",
+  "risk_pts": 36.9,
+  "R": 1.15,
+  "mot": "CAP",
+  "hold_bars": 500,
+  "exit_bar": 6375
+ },
+ {
+  "bi": 6376,
+  "entry_d": "2024-02-15",
+  "exit_d": "2024-06-12",
+  "reg": "RANGE",
+  "risk_pts": 21.1,
+  "R": 14.23,
+  "mot": "CAP",
+  "hold_bars": 500,
+  "exit_bar": 6876
+ },
+ {
+  "bi": 6791,
+  "entry_d": "2024-05-23",
+  "exit_d": "2024-06-07",
+  "reg": "RANGE",
+  "risk_pts": 23.5,
+  "R": -1.35,
+  "mot": "STOP",
+  "hold_bars": 64,
+  "exit_bar": 6855
+ },
+ {
+  "bi": 7149,
+  "entry_d": "2024-08-15",
+  "exit_d": "2024-12-10",
+  "reg": "BULL",
+  "risk_pts": 22.2,
+  "R": 10.87,
+  "mot": "CAP",
+  "hold_bars": 500,
+  "exit_bar": 7649
+ },
+ {
+  "bi": 7549,
+  "entry_d": "2024-11-18",
+  "exit_d": "2025-03-17",
+  "reg": "RANGE",
+  "risk_pts": 33.4,
+  "R": 11.97,
+  "mot": "CAP",
+  "hold_bars": 500,
+  "exit_bar": 8049
+ },
+ {
+  "bi": 8133,
+  "entry_d": "2025-04-04",
+  "exit_d": "2025-04-06",
+  "reg": "RANGE",
+  "risk_pts": 30.0,
+  "R": -1.35,
+  "mot": "STOP",
+  "hold_bars": 2,
+  "exit_bar": 8135
+ },
+ {
+  "bi": 8216,
+  "entry_d": "2025-04-25",
+  "exit_d": "2025-04-30",
+  "reg": "RANGE",
+  "risk_pts": 25.2,
+  "R": -1.35,
+  "mot": "STOP",
+  "hold_bars": 21,
+  "exit_bar": 8237
+ },
+ {
+  "bi": 8236,
+  "entry_d": "2025-04-30",
+  "exit_d": "2025-05-14",
+  "reg": "RANGE",
+  "risk_pts": 97.6,
+  "R": -1.35,
+  "mot": "STOP",
+  "hold_bars": 58,
+  "exit_bar": 8294
+ },
+ {
+  "bi": 8893,
+  "entry_d": "2025-10-01",
+  "exit_d": "2026-01-28",
+  "reg": "BULL",
+  "risk_pts": 82.6,
+  "R": 19.77,
+  "mot": "CAP",
+  "hold_bars": 500,
+  "exit_bar": 9393
+ },
+ {
+  "bi": 8905,
+  "entry_d": "2025-10-03",
+  "exit_d": "2026-01-29",
+  "reg": "BULL",
+  "risk_pts": 65.9,
+  "R": 21.74,
+  "mot": "BEAR",
+  "hold_bars": 492,
+  "exit_bar": 9397
+ },
+ {
+  "bi": 8978,
+  "entry_d": "2025-10-21",
+  "exit_d": "2025-10-28",
+  "reg": "RANGE",
+  "risk_pts": 173.1,
+  "R": -1.35,
+  "mot": "STOP",
+  "hold_bars": 28,
+  "exit_bar": 9006
+ },
+ {
+  "bi": 9007,
+  "entry_d": "2025-10-28",
+  "exit_d": "2026-01-29",
+  "reg": "RANGE",
+  "risk_pts": 124.6,
+  "R": 10.89,
+  "mot": "BEAR",
+  "hold_bars": 390,
+  "exit_bar": 9397
+ }
+]
