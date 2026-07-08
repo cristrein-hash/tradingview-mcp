@@ -5,7 +5,7 @@
 -- NAO APLICADO automaticamente. Aplicar so com autorizacao explicita do Cris via scripts/supabase/apply_memory_delta.py.
 -- Zero RAW/candles/secrets/outputs massivos. Idempotente (on conflict do nothing).
 -- ROLLBACK: delete from memory_items where tags @> array['seed:memory_delta_open_state_checkpoint_20260708'];
--- Total: 4 rows.
+-- Total: 5 rows. (UPDATE Cris 2026-07-08: L2/BPT trend-exit promovido a OFICIAL; swept-runner rebaixado.)
 -- ============================================================================
 begin;
 insert into memory_items (id, scope, visibility, category, title, body, tags, source_ref, status) values
@@ -30,10 +30,19 @@ insert into memory_items (id, scope, visibility, category, title, body, tags, so
 (
   md5('seed:memory_delta_open_state_checkpoint_20260708:memory_items:l2bpt-trend-exit')::uuid,
   'product', 'internal', 'project',
-  'L2/BPT XAU 4H trend-exit / regime-flip = EXPLORATORY_NOT_APPROVED / NOT_FOR_DECISION (2026-07-08)',
-  'Estudo exploratorio de gestao de exit por tendencia (Cris: em macro-regime BULL segurar na tendencia, nao cortar em horizonte fixo). Regua oficial L2/BPT PERMANECE SL_CONTEXT + let-run HZ120 (nao alterada). Regime-flip (segura ate regime virar BEAR, cap 500): SELECT-17 +105.3R (retDD 26x, streak3, DD-4.1) vs let-run120 +36.2R; FULL-245 ~+399R (online-causal +385.7R). CAUSALIDADE = PASS (DA reimplementou FSM online byte-identico na era de trading; regime-flip NAO e look-ahead; filtro >=15-bar significancia so na selecao de entrada, nao no exit). MAS ~78% do ganho nos 17 e HORIZONTE/exposicao (120->500 barras), replicavel por hold-500 burro (+90.3R); o detector de regime adiciona so ~+15R sobre hold500, sobre 2 topos macro IN-SAMPLE (detector calibrado as ground-truth boxes do Cris) -> N~2 eventos. #6 = winner mecanico +1.15R (CAP-driven), NAO +3R; os +3R do #6 = leitura discricionaria/target estrutural do Cris, ainda nao mecanizada. Full-base DD -57 a -72 / streak 22 = HOSTIL a prop; a tameness dos 17 vem da selecao de entrada, nao do exit. Teto-hindsight dos alvos desenhados = +87.6R (rejeitado por Cris como exagero; DA: 67% dos alvos em precos nunca vistos a entrada = hindsight). STATUS = EXPLORATORY_NOT_APPROVED; proximo = prereg formal (full-base, DD/streak control, gap-model, benchmark vs hold-500, DA) antes de qualquer adocao. NAO producao.',
-  array['seed:memory_delta_open_state_checkpoint_20260708','l2-bpt-trend-exit','exploratory-not-approved','not-for-decision','regime-flip-causal','horizonte-vs-regime'],
-  'docs/architecture/L2_BPT_TREND_EXIT_EXPLORATORY_CHECKPOINT_20260708.md; research/l2_bpt_trailing_exit_test.py',
+  'L2/BPT XAU 4H trend-exit / regime-flip = USER_APPROVED_OFFICIAL_NOT_PRODUCTION (Cris 2026-07-08)',
+  'DECISAO CRIS 2026-07-08: estrategia XAU 4H LONG L2/BPT com novo exit trend-exit/regime-flip = OFICIAL APROVADA (USER_APPROVED_OFFICIAL_NOT_PRODUCTION = OFFICIAL_APPROVED_PENDING_PRODUCTION_AUTHORIZATION). O exit passa de let-run HZ120 (superseded) para: segurar enquanto o regime/tendencia persiste, sair na virada/invalidacao estrutural (hold ate regime virar BEAR, SL estrutural stop-first, cap horizonte). Causal barra-a-barra, DA confirmou NAO e look-ahead (FSM online byte-identico na era de trading). Numeros: SELECT-17 +105.3R (retDD 26x, streak3, DD-4.1) vs let-run120 +36.2R e hold500 +90.3R; FULL-245 ~+385.7R a +399.2R. #6 = winner mecanico +1.15R; o alvo +3R do #6 = leitura humana discricionaria (nao regra mecanica). CAVEATS ACEITOS pelo Cris: (1) ~78% do ganho nos 17 vem de HORIZONTE/exposicao (120->500), nao so inteligencia de regime (detector adiciona ~+15R sobre hold500, 2 topos in-sample); (2) full-base DD ~-72 / streak 22 = hostil a prop -> producao futura exige camada de execucao/risco (gestao DD, modelo de gap nos stops largos 2025). Operacional: NOT_PRODUCTION, NO_RUNTIME, NO_TELEGRAM, NO_AUTO_TRADING, NO_STRATEGY_RULES_WIRING, NO_MONITOR, NO_BROKER, PRODUCTION_PENDING_EXPLICIT_CRIS_AUTHORIZATION. Status canonico: L2_BPT_TREND_EXIT_OFFICIAL_APPROVAL_20260708.md (checkpoint tecnico/DA em L2_BPT_TREND_EXIT_EXPLORATORY_CHECKPOINT_20260708.md).',
+  array['seed:memory_delta_open_state_checkpoint_20260708','l2-bpt-trend-exit','user-approved-official-not-production','production-pending-auth','regime-flip-causal','horizonte-vs-regime'],
+  'docs/architecture/L2_BPT_TREND_EXIT_OFFICIAL_APPROVAL_20260708.md; docs/project_authority/04_STRATEGY_STATUS_MASTER.md sec 4.4; research/l2_bpt_trailing_exit_test.py',
+  'active'
+),
+(
+  md5('seed:memory_delta_open_state_checkpoint_20260708:memory_items:swept-runner-rebased')::uuid,
+  'product', 'internal', 'project',
+  'XAU 15M LONG swept-runner = RESEARCH_BASE_NOT_OFFICIAL (rebaixado Cris 2026-07-08; ex-OFICIAL_FN revogado)',
+  'DECISAO CRIS 2026-07-08: o swept-runner NAO e mais estrategia oficial e NAO e OFICIAL_FN (carimbo anterior REVOGADO). Passa a servir de BASE de markup-demand + base para estudos futuros da 15M LONG + fonte de aprendizado/contexto. NAO pode ser descrito como OFICIAL_FN nem estrategia aprovada oficial. NAO pode ir a producao. NAO pode ser usado para Telegram/runtime/strategy_rules. Metricas historicas (N435 WR47.6% +291.5R / +233.6 SB, r/DD 16.4) ficam como REFERENCIA DE PESQUISA, nao como aprovacao. Status = RESEARCH_BASE_NOT_OFFICIAL. Status master 04 sec 4.5 atualizado.',
+  array['seed:memory_delta_open_state_checkpoint_20260708','swept-runner','research-base-not-official','oficial-fn-revogado','not-production'],
+  'docs/project_authority/04_STRATEGY_STATUS_MASTER.md sec 4.5; docs/architecture/OPEN_STATE_CHECKPOINT_20260708.md',
   'active'
 ),
 (

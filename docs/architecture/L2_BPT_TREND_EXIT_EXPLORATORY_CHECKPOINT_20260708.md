@@ -1,6 +1,8 @@
 # L2/BPT XAU 4H — Trend-Exit / Regime-Flip · Exploratory Checkpoint
 
-**Cris 2026-07-08.** Estudo exploratório de gestão de exit por tendência. **Status: `EXPLORATORY_NOT_APPROVED`.** Não produção, não altera a régua aprovada (SL_CONTEXT + let-run HZ120 permanece a oficial).
+> **STATUS UPDATE — Cris 2026-07-08:** o que estava como `EXPLORATORY_NOT_APPROVED` foi **promovido por decisão do Cris** para **`USER_APPROVED_OFFICIAL_NOT_PRODUCTION`**. Este doc permanece como **checkpoint técnico/DA** (histórico não apagado); o **status canónico** agora está em **`L2_BPT_TREND_EXIT_OFFICIAL_APPROVAL_20260708.md`**. A régua de exit oficial da L2/BPT passa a ser o **trend-exit / regime-flip**; os caveats abaixo permanecem aceitos e documentados.
+
+**Cris 2026-07-08.** Estudo exploratório de gestão de exit por tendência (agora oficializado — ver addendum acima). Não produção.
 
 ## Objetivo
 Cris: em macro-regime BULL o exit deve seguir a tendência (segurar enquanto o regime/estrutura aguenta, sair na quebra), não cortar no horizonte fixo de 120 barras. Testar se um exit causal de gestão-de-tendência recupera R sobre o let-run, sem look-ahead e sem aumentar losers.

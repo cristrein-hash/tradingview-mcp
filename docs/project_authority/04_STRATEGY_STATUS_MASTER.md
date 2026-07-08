@@ -51,8 +51,9 @@ SLIM/proxy results are historical artifacts only unless explicitly re-authorized
 | `Caminho B FINAL` | 1H | `SUSPECT / CRITICAL` | Do not use for promotion | Contaminated by SLIM 4H/proxy features and synthetic swing-low proxy. |
 | Legacy `XAUUSD_4H_LONG_REJECTION_SWING` | 4H | `REJECTED` | Disabled/dormant | Legacy rejected path. |
 | Legacy `XAUUSD_1H_LONG_REJECTION_EXECUTION` | 1H | `REJECTED` | Disabled/dormant | Replaced then superseded; no active use. |
-| `L2/BPT XAU 4H LONG · RTSE V2 zona-pura` | 4H | `USER_APPROVED_NOT_PRODUCTION` | Not wired; no runtime/Telegram/monitor/catalog/strategy_rules | Escopo B integral (BULL+RANGE+BEAR), N17 +36.2R. OK final + visual review by Cris 2026-07-02. See §4.4. |
-| `XAU 15M LONG · swept-runner` (+ #4, 8ATR, regime-v5) | 15M | `USER_APPROVED_NOT_PRODUCTION` · **OFICIAL_FN** | Not wired; no runtime/Telegram; manual/proxy only | N435 WR47.6% +291.5R; approved (Cris 2026-06-28). **OFICIAL_FN stamped by Cris 2026-07-03** — cost condition PASSED (Lab E COST_ROBUST: SB $0.80 → +233.6R, r/DD 16.4, all years +). Re-adaptation labs em curso (E ✅ → A next). |
+| `L2/BPT XAU 4H LONG · trend-exit / regime-flip` | 4H | `USER_APPROVED_OFFICIAL_NOT_PRODUCTION` (OFFICIAL_APPROVED_PENDING_PRODUCTION_AUTHORIZATION) | Not wired; no runtime/Telegram/monitor/broker/strategy_rules; production pending explicit Cris auth | **Nova estratégia oficial aprovada (Cris 2026-07-08).** L2/BPT + novo exit trend-exit (segura enquanto regime/tendência persiste, sai na virada). SELECT-17 +105.3R (retDD 26×, streak3) vs +36.2R let-run; FULL ~+385.7R. Causalidade DA=PASS (não look-ahead). Caveats aceitos: ~78% do ganho=horizonte/exposição; full-base DD−72/streak22 (produção exige camada exec/risco). #6 mecânico +1.15R. See §4.4 + `L2_BPT_TREND_EXIT_OFFICIAL_APPROVAL_20260708.md`. |
+| `L2/BPT XAU 4H LONG · RTSE V2 zona-pura (let-run, superseded exit)` | 4H | `SUPERSEDED_BY_TREND_EXIT` | Not wired | Exit let-run HZ120 (N17 +36.2R) — substituído pelo trend-exit oficial acima; entrada/seleção mantidas. Histórico §4.4. |
+| `XAU 15M LONG · swept-runner` (+ #4, 8ATR, regime-v5) | 15M | `RESEARCH_BASE_NOT_OFFICIAL` (rebased Cris 2026-07-08; ex-OFICIAL_FN) | Not official; not production; not Telegram/runtime/strategy_rules | **REBAIXADO por decisão do Cris 2026-07-08: NÃO é estratégia oficial, NÃO é OFICIAL_FN.** Serve de **base de markup-demand + estudos futuros da 15M LONG + contexto/aprendizado**. Métricas históricas (N435 +291.5R) retidas como referência de pesquisa, não como estratégia aprovada. Não pode ir a produção/Telegram/runtime. See §4.5. |
 | `XAU 15M LONG · N96 ENTRY ENGINE` | 15M | `USER_APPROVED_NOT_PRODUCTION` | Not wired; no runtime/Telegram/monitor/broker/strategy_rules | Markup-demand pullback engine, 96 entries, 52W/44L, fixed 3R. Approved by Cris 2026-07-08. Includes intra-BEAR capitulation skip (SKIP if BEAR-v5 & 1D_px_vs_ema≥0 → 13L/0W, +4…+13R, DA=PROFITABLE_BUT_FRAGILE). RANGE/BULL-excess/D-deep = review-layers only, NOT gates. See §4.6. |
 | `External Factors v2` | — | `LIVE_PASSIVE_CONTEXT_DAEMON` | LaunchAgent `com.cristrein.external-factors-v2` (cycling ~30min) | Passive-logging context; NOT integrated into trading (gate Fase 4). Only Camada-A event-reaction validated. |
 
@@ -144,7 +145,9 @@ Current value:
 
 ### 4.4 L2/BPT XAU 4H LONG · RTSE V2 zona-pura
 
-**Status:** `USER_APPROVED_NOT_PRODUCTION`
+> **UPDATE Cris 2026-07-08:** o **exit** desta estratégia foi promovido de let-run HZ120 (+36.2R) para o **trend-exit / regime-flip** = **`USER_APPROVED_OFFICIAL_NOT_PRODUCTION`** (SELECT-17 +105.3R). Entrada/seleção zona-pura mantidas. Status canónico: `L2_BPT_TREND_EXIT_OFFICIAL_APPROVAL_20260708.md`. O texto abaixo descreve a versão let-run (histórico técnico; exit superseded).
+
+**Status (versão let-run, histórico):** `SUPERSEDED_BY_TREND_EXIT` · (antes `USER_APPROVED_NOT_PRODUCTION`)
 **Flags:** `OK_FINAL_BY_CRIS_2026_07_02` · `VISUAL_REVIEW_COMPLETED_BY_USER` · `FINAL_APPROVED_BY_USER`
 **Escopo aprovado:** B — integral (BULL + RANGE + BEAR), **N17 · +36.2R · WR53% · avgR+2.13 · DD−4.1 · streak3**.
 
@@ -165,7 +168,9 @@ Full detail: `docs/L2_BPT_XAU_4H_LONG_V2_STRATEGY_CONFIRMATION_SHEET.md` (11-sec
 
 ### 4.5 XAU 15M LONG · swept-runner (base #4, regime-v5)
 
-**Status:** `USER_APPROVED_NOT_PRODUCTION` · **`OFICIAL_FN` (carimbado Cris 2026-07-03)** · zero SLIM (source guard) · zero runtime.
+> **REBAIXAMENTO Cris 2026-07-08:** `RESEARCH_BASE_NOT_OFFICIAL`. O swept-runner **NÃO é mais estratégia oficial** e **NÃO é OFICIAL_FN**. Passa a servir de **base de markup-demand + estudos futuros da 15M LONG + contexto/aprendizado**. Não descrever como estratégia aprovada oficial; não produção/Telegram/runtime/strategy_rules. As métricas abaixo ficam como referência de pesquisa (histórico), não como aprovação. O carimbo OFICIAL_FN anterior está **revogado por esta decisão**.
+
+**Status (revogado — histórico):** ex-`USER_APPROVED_NOT_PRODUCTION` · ex-**`OFICIAL_FN`** → agora `RESEARCH_BASE_NOT_OFFICIAL`.
 Audit completo: `docs/architecture/XAU_15M_LONG_REGIME_READAPTATION_AUDIT_20260702.md`.
 
 **OFICIAL_FN (2026-07-03):** a condição de custo — única pendência técnica — foi cumprida no **Lab E (COST_ROBUST, DA-verificado)**: cenário realista SB ($0,80 round-trip) mantém +233,6R (80% do bruto), r/DD 16,4, todos os anos positivos, runners 53→51. Caveat registrado: 2024/risco-$-baixo frágil sob modelo conservador. **OFICIAL_FN ≠ produção:** segue sem runtime/Telegram/monitor/catalog/strategy_rules — operação manual/proxy apenas; qualquer wiring exige o promotion policy §5 completo + autorização. Recomendado antes de operar: calibrar custo com fills reais e re-rodar Lab E. Docs: `XAU_15M_LONG_LAB_E_SLIPPAGE_COST_{PREREG,DA,REPORT}_20260703.md`.

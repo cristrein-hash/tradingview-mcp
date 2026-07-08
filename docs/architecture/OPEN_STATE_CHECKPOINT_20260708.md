@@ -40,8 +40,10 @@ Nenhum output massivo, nenhum RAW, nenhum secret. Tudo pequeno e reproduzível.
 - `scripts/safety/run_xau_15m_lab_gate.py` (runner, `--help` OK) · `check_xau_15m_raw_lineage.py` · `check_xau_15m_structural_first.py` · `check_xau_15m_claims_ledger.py`.
 - **Regra-mãe:** *sem `macro_regime` + `leg_state` + `family_label`, nenhum indicador vira evidência.* Sem `XAU_15M_LAB_GATE_PASS`, lab não está completo.
 
-## 5. Estado L2/BPT trend-exit / regime-flip (EXPLORATORY)
-Detalhe em `L2_BPT_TREND_EXIT_EXPLORATORY_CHECKPOINT_20260708.md`. Resumo honesto:
+## 5. Estado L2/BPT trend-exit / regime-flip + Swept-runner
+> **UPDATE Cris 2026-07-08:** (a) **L2/BPT trend-exit promovido a `USER_APPROVED_OFFICIAL_NOT_PRODUCTION`** — status canónico `L2_BPT_TREND_EXIT_OFFICIAL_APPROVAL_20260708.md`; caveats abaixo permanecem aceitos. (b) **Swept-runner rebaixado a `RESEARCH_BASE_NOT_OFFICIAL`** (ex-OFICIAL_FN revogado) — base de markup-demand + estudos futuros da 15M LONG, não estratégia oficial, não produção.
+
+Detalhe técnico/DA em `L2_BPT_TREND_EXIT_EXPLORATORY_CHECKPOINT_20260708.md`. Resumo honesto:
 - Estudo criado; **DA executado** (2×). **Causalidade PASS — regime-flip NÃO é look-ahead** (FSM online byte-idêntico na era de trading).
 - **SELECT-17:** let-run120 **+36.2R** / hold500-burro **+90.3R** / regime-flip **+105.3R** (retDD 26×, streak 3, DD −4.1). Versão online-causal: **+105.3R (idêntico)**.
 - **FULL-245:** let-run120 **+52.5R** / hold500 **+257.6R** / regime-flip ~**+399.2R** (online-causal **+385.7R**; gap = warmup pré-2023).

@@ -3,16 +3,18 @@
 **Cris 2026-07-08.** Review do seed `supabase/seeds/memory_delta_open_state_checkpoint_20260708.sql`. **NÃO aplicado.** Aplicação só com autorização explícita.
 
 ## Seed
-- `seed:memory_delta_open_state_checkpoint_20260708` · **4 rows** · idempotente (`on conflict (id) do nothing`) · rollback comentado no topo.
+- `seed:memory_delta_open_state_checkpoint_20260708` · **5 rows** · idempotente (`on conflict (id) do nothing`) · rollback comentado no topo.
 - Só `insert into memory_items` (nenhum UPDATE/DELETE/DDL). MCP segue read-only.
+- **UPDATE Cris 2026-07-08:** row 3 corrigido de EXPLORATORY → **USER_APPROVED_OFFICIAL_NOT_PRODUCTION**; adicionado row 5 (swept-runner rebaixado).
 
 ## Rows
 | # | id-slug | category | conteúdo |
 |---|---|---|---|
 | 1 | n96-approved | project | XAU 15M N96 = USER_APPROVED_NOT_PRODUCTION + intra-BEAR filter + review-layers |
 | 2 | protocol-active | reference | XAU_15M_RESEARCH_EXECUTION_PROTOCOL_V1 = ACTIVE + blockers + regra-mãe |
-| 3 | l2bpt-trend-exit | project | L2/BPT trend-exit = EXPLORATORY_NOT_APPROVED / NOT_FOR_DECISION + caveats honestos |
-| 4 | open-state | project | Git synced (b517312), untracked KEEP_COMMIT, decisões abertas |
+| 3 | l2bpt-trend-exit | project | **L2/BPT trend-exit = USER_APPROVED_OFFICIAL_NOT_PRODUCTION** + caveats aceitos |
+| 4 | open-state | project | Git synced, untracked KEEP_COMMIT, decisões abertas |
+| 5 | swept-runner-rebased | project | **Swept-runner = RESEARCH_BASE_NOT_OFFICIAL** (ex-OFICIAL_FN revogado) |
 
 ## Guardas cumpridas
 - **Zero RAW/candles/secrets.** Zero outputs massivos (só sumários/decisões).
