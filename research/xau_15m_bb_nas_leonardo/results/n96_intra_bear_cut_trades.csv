@@ -1,0 +1,14 @@
+trade,timestamp,regime_v5_causal,1D_px_vs_ema,1D_ema_trend,1D_rsi,close_R,SB_net_R,familia,motivo,CDR_gestao,resultado,stale_HTF
+#24,2025-10-22 16:30,BEAR,1.386,7.538,59.78,-1,unavailable_N96,MGMT,repique raso em BEAR (preco no/acima da EMA 1D = nao-capitulacao),MGMT,LOSER,fresh
+#25,2025-10-24 12:30,BEAR,4.534,12.112,59.34,-1,unavailable_N96,C,repique raso em BEAR (preco no/acima da EMA 1D = nao-capitulacao),C,LOSER,fresh
+#55,2026-01-29 20:30,BEAR,14.994,6.397,90.05,-1,unavailable_N96,C,repique raso em BEAR (preco no/acima da EMA 1D = nao-capitulacao),C,LOSER,fresh
+#56,2026-02-04 19:00,BEAR,3.529,4.854,56.09,-1,unavailable_N96,C,repique raso em BEAR (preco no/acima da EMA 1D = nao-capitulacao),C,LOSER,fresh
+#57,2026-02-10 02:00,BEAR,7.854,1.622,58.07,-1,unavailable_N96,C,repique raso em BEAR (preco no/acima da EMA 1D = nao-capitulacao),C,LOSER,fresh
+#58,2026-02-10 17:15,BEAR,9.475,2.019,58.07,-1,unavailable_N96,C,repique raso em BEAR (preco no/acima da EMA 1D = nao-capitulacao),C,LOSER,fresh
+#59,2026-02-11 16:30,BEAR,7.83,2.653,56.87,-1,unavailable_N96,C,repique raso em BEAR (preco no/acima da EMA 1D = nao-capitulacao),C,LOSER,fresh
+#66,2026-03-04 20:30,BEAR,5.178,6.92,52.53,-1,unavailable_N96,D,repique raso em BEAR (preco no/acima da EMA 1D = nao-capitulacao),D,LOSER,fresh
+#67,2026-03-11 00:15,BEAR,12.21,3.402,55.84,-1,unavailable_N96,D,repique raso em BEAR (preco no/acima da EMA 1D = nao-capitulacao),D,LOSER,fresh
+#79,2026-04-15 11:45,BEAR,6.784,1.219,54.4,-1,unavailable_N96,C,repique raso em BEAR (preco no/acima da EMA 1D = nao-capitulacao),C,LOSER,fresh
+#83,2026-05-06 13:30,BEAR,1.757,-5.008,,-1,unavailable_N96,C,repique raso em BEAR (preco no/acima da EMA 1D = nao-capitulacao),C,LOSER,fresh
+#84,2026-05-07 23:45,BEAR,3.095,-3.932,49.83,-1,unavailable_N96,C,repique raso em BEAR (preco no/acima da EMA 1D = nao-capitulacao),C,LOSER,fresh
+#85,2026-05-13 15:15,BEAR,0.617,0.432,51.51,-1,unavailable_N96,C,repique raso em BEAR (preco no/acima da EMA 1D = nao-capitulacao),C,LOSER,fresh

@@ -1,0 +1,45 @@
+trade,n,familia,regime_v5_causal,cortado_intra_BEAR,nota_Cris
+#5,5,R,RANGE,nao,
+#6,6,R,RANGE,nao,
+#7,7,R,RANGE,nao,
+#8,8,R,RANGE,nao,
+#17,17,C,BULL,nao,
+#18,18,C,BULL,nao,
+#20,20,C,BULL,nao,
+#21,21,C,BULL,nao,
+#23,23,C,BULL,nao,
+#24,24,MGMT,BEAR,SIM,BE em gestao humana (nao filtrar)
+#25,25,C,BEAR,SIM,
+#27,27,D,RANGE,nao,
+#31,31,C,RANGE,nao,
+#32,32,MGMT,BULL,nao,entrada antecipada; certo era esperar demanda inferior (#33) = timing/gestao
+#36,36,C,BULL,nao,
+#42,42,C,BULL,nao,
+#46,46,C,BULL,nao,
+#48,48,C,RANGE,nao,
+#49,49,D,BULL,nao,
+#50,50,D,BULL,nao,
+#55,55,C,BEAR,SIM,C distribuicao/topo range-bear
+#56,56,C,BEAR,SIM,C distribuicao/topo range-bear
+#57,57,C,BEAR,SIM,C distribuicao/topo range-bear
+#58,58,C,BEAR,SIM,C distribuicao/topo range-bear
+#59,59,C,BEAR,SIM,C distribuicao/topo range-bear
+#60,60,C,RANGE,nao,C distribuicao/topo range-bear
+#64,64,MGMT,BULL,nao,quase-winner recuperavel por gestao (nao filtrar)
+#65,65,C,BULL,nao,
+#66,66,D,BEAR,SIM,
+#67,67,D,BEAR,SIM,
+#68,68,D,RANGE,nao,
+#69,69,D,RANGE,nao,
+#77,77,MGMT,BEAR,nao,quase-winner recuperavel por gestao (nao filtrar)
+#79,79,C,BEAR,SIM,
+#80,80,D,BEAR,nao,D bear ativo
+#83,83,C,BEAR,SIM,
+#84,84,C,BEAR,SIM,
+#85,85,C,BEAR,SIM,
+#86,86,D,BEAR,nao,
+#87,87,D,BEAR,nao,
+#89,89,D,BEAR,nao,
+#92,92,D,BEAR,nao,
+#93,93,D,BEAR,nao,
+#94,94,D,BEAR,nao,
