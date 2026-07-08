@@ -53,6 +53,7 @@ SLIM/proxy results are historical artifacts only unless explicitly re-authorized
 | Legacy `XAUUSD_1H_LONG_REJECTION_EXECUTION` | 1H | `REJECTED` | Disabled/dormant | Replaced then superseded; no active use. |
 | `L2/BPT XAU 4H LONG · RTSE V2 zona-pura` | 4H | `USER_APPROVED_NOT_PRODUCTION` | Not wired; no runtime/Telegram/monitor/catalog/strategy_rules | Escopo B integral (BULL+RANGE+BEAR), N17 +36.2R. OK final + visual review by Cris 2026-07-02. See §4.4. |
 | `XAU 15M LONG · swept-runner` (+ #4, 8ATR, regime-v5) | 15M | `USER_APPROVED_NOT_PRODUCTION` · **OFICIAL_FN** | Not wired; no runtime/Telegram; manual/proxy only | N435 WR47.6% +291.5R; approved (Cris 2026-06-28). **OFICIAL_FN stamped by Cris 2026-07-03** — cost condition PASSED (Lab E COST_ROBUST: SB $0.80 → +233.6R, r/DD 16.4, all years +). Re-adaptation labs em curso (E ✅ → A next). |
+| `XAU 15M LONG · N96 ENTRY ENGINE` | 15M | `USER_APPROVED_NOT_PRODUCTION` | Not wired; no runtime/Telegram/monitor/broker/strategy_rules | Markup-demand pullback engine, 96 entries, 52W/44L, fixed 3R. Approved by Cris 2026-07-08. Includes intra-BEAR capitulation skip (SKIP if BEAR-v5 & 1D_px_vs_ema≥0 → 13L/0W, +4…+13R, DA=PROFITABLE_BUT_FRAGILE). RANGE/BULL-excess/D-deep = review-layers only, NOT gates. See §4.6. |
 | `External Factors v2` | — | `LIVE_PASSIVE_CONTEXT_DAEMON` | LaunchAgent `com.cristrein.external-factors-v2` (cycling ~30min) | Passive-logging context; NOT integrated into trading (gate Fase 4). Only Camada-A event-reaction validated. |
 
 ---
@@ -182,6 +183,22 @@ Decisões Cris 2026-07-02 (reconciliação):
 - **Regime detector = roteador/contexto/camada de especialização por regime — NÃO direção automática nem licença para misturar estratégias** (direção-por-regime já refutada como beta-overlay).
 
 ---
+
+### 4.6 XAU 15M LONG · N96 ENTRY ENGINE
+
+**STATUS: `USER_APPROVED_NOT_PRODUCTION`** (Cris 2026-07-08). Full record: `docs/architecture/XAU_15M_N96_ENTRY_ENGINE_USER_APPROVAL_20260708.md`.
+
+**Components (approved):**
+- N96 entry engine (markup-demand pullbacks, 96 entries, 52W/44L, fixed 3R, +112R).
+- **intra-BEAR capitulation skip:** within BEAR v5 hour-causal, SKIP if `1D_px_vs_ema ≥ 0` (shallow bounce). Cuts 13 losers / 0 winners, +4…+13R by detector. DA = `PROFITABLE_BUT_FRAGILE`.
+- **RANGE/distribution:** NOT a gate — review-layer / gestão / size-down only.
+- **BULL-excess RSI-HTF (~80):** NOT a gate — review-layer only (perm-P=0.028 but cuts 3 winners).
+- **D-bear-active:** no additional gate survives multiplicity (mining-null best +6R P=0.40); intra-BEAR suffices; deep-bear knife = weak review-layer only.
+- **Human management preserved (never auto-cut):** #24, #32, #64, #77 (BE/timing/quase-winner).
+
+**NOT included:** no production, no runtime, no Telegram, no auto-trading, no strategy_rules wiring, no monitor, no broker.
+
+**Caveats:** small-N per regime; daily/4H HTF primitives freeze 2026-05-24/06-09 (filter can't fire live until extended); forward on Cris's live ops = final arbiter. Docs: `XAU_15M_N96_{INTRA_BEAR_CAPITULATION_FILTER,INTRA_BEAR_CUT_TRADES,LOSER_FAMILY_MAP_CORRECTED,RANGE_DISTRIBUTION_FILTER_ROUND/DA,D_BEAR_ACTIVE_FILTER_ROUND/DA}_20260708.md`.
 
 ## 5. Current Promotion Policy
 
