@@ -1,0 +1,118 @@
+{
+ "D_losers": [
+  27,
+  49,
+  50,
+  66,
+  67,
+  68,
+  69,
+  80,
+  86,
+  87,
+  89,
+  92,
+  93,
+  94
+ ],
+ "cut_by_intraBEAR": [
+  66,
+  67
+ ],
+ "remain": [
+  27,
+  49,
+  50,
+  68,
+  69,
+  80,
+  86,
+  87,
+  89,
+  92,
+  93,
+  94
+ ],
+ "deep_bear_pool": {
+  "N": 24,
+  "winners_capitulation": [
+   26,
+   70,
+   71,
+   72,
+   73,
+   74,
+   75,
+   76,
+   78,
+   81,
+   82,
+   88,
+   90,
+   91,
+   95,
+   96
+  ],
+  "losers_knife": [
+   77,
+   80,
+   86,
+   87,
+   89,
+   92,
+   93,
+   94
+  ]
+ },
+ "subfamilies": {
+  "D3_lower_high_bounce": [
+   27,
+   68
+  ],
+  "D5_outro": [
+   49,
+   50,
+   69,
+   80,
+   87
+  ],
+  "D2_repique_raso": [
+   66,
+   67
+  ],
+  "D4_capitulacao_valida": [
+   86,
+   89,
+   92,
+   93,
+   94
+  ]
+ },
+ "top_discriminators_deep": [
+  [
+   "rangewidth_atr_15m",
+   0.781
+  ],
+  [
+   "1D_ema_trend",
+   0.219
+  ],
+  [
+   "demand_room_4h",
+   0.777
+  ],
+  [
+   "4H_dem_below",
+   0.777
+  ],
+  [
+   "4H_atr_rel",
+   0.77
+  ],
+  [
+   "15M_dem_below",
+   0.77
+  ]
+ ],
+ "note": "SEM veredito. DA arbitra gate/review/management vs intra-BEAR ja basta."
+}
