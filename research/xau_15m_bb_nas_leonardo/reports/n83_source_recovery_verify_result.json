@@ -1,0 +1,78 @@
+{
+  "pdf_claim": {
+    "trades": "96 -> 83",
+    "wr": "62,7%",
+    "sumR": "+125"
+  },
+  "pdf_role": "provenance bridge ONLY (nao validacao)",
+  "base_N": 96,
+  "base_W": 52,
+  "base_L": 44,
+  "cut_ids": [
+    24,
+    25,
+    55,
+    56,
+    57,
+    58,
+    59,
+    66,
+    67,
+    79,
+    83,
+    84,
+    85
+  ],
+  "cut_n": 13,
+  "cut_csv_rows": 13,
+  "cut_all_losers_csv": true,
+  "cut_all_losers_base": true,
+  "blind_predicate_selects": [
+    24,
+    25,
+    55,
+    56,
+    57,
+    58,
+    59,
+    66,
+    67,
+    79,
+    83,
+    84,
+    85
+  ],
+  "blind_matches_cutlist": true,
+  "blind_zero_winners": true,
+  "latent_edge_note": "generator `or -99` trata 1D_px_vs_ema==0.0 como KEEP (falsy); 0 ocorrencias no dataset",
+  "derived": {
+    "N83": 83,
+    "W": 52,
+    "L": 31,
+    "WR_pct": 62.7,
+    "sumR_3R": 125.0
+  },
+  "match_pdf": {
+    "N_96_to_83": true,
+    "WR_62_7": true,
+    "sumR_125": true
+  },
+  "predicate": {
+    "name": "intra-BEAR capitulation filter",
+    "rule": "SKIP se macro_regime==BEAR (v5 hour-causal) E 1D_px_vs_ema >= 0 (ultimo bar 1D FECHADO, ATR-norm); KEEP capitulacao funda; BULL/RANGE sem filtro",
+    "fields": [
+      "macro_regime_v5_causal",
+      "1D_px_vs_ema"
+    ],
+    "causal": "sim (regime hour-causal + 1D bar fechado; DA causalidade PASS)",
+    "source_doc": "/Users/cristrein/tradingview-mcp/docs/architecture/XAU_15M_N96_INTRA_BEAR_CAPITULATION_FILTER_20260708.md",
+    "source_outputs": [
+      "/Users/cristrein/tradingview-mcp/research/xau_15m_bb_nas_leonardo/results/n96_intra_bear_cut_list.json",
+      "/Users/cristrein/tradingview-mcp/research/xau_15m_bb_nas_leonardo/results/n96_intra_bear_cut_trades.csv"
+    ],
+    "status": "USER_APPROVED_NOT_PRODUCTION (Cris 2026-07-08) · PROFITABLE_BUT_FRAGILE (+4..+13R conforme detector; nunca citar +13 solto)",
+    "nulls": "feature-search P=0.005 · within-bear P=0.001 · joint P=0.007",
+    "caveats": "N pequeno; 11/13 cortes num unico bear (2026); HTF congela 2026-05-24"
+  },
+  "verdict": "SOURCE_RECOVERED"
+}
