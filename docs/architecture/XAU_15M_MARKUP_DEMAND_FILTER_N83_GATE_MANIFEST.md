@@ -1,7 +1,7 @@
 # XAU 15M — LAB GATE MANIFEST · MARKUP-DEMAND + FILTER N83
 
 **Data:** 2026-07-09 · **Protocolo:** `XAU_15M_RESEARCH_EXECUTION_PROTOCOL_V1 = ACTIVE` · **Stage:** 1 (Gate manifest)
-**Status:** **`PASS_READY_FOR_TEST_AUTHORIZATION`** (recovery 2026-07-09; era `BLOCKED_MISSING_N83`) — **lab ainda NÃO autorizado a correr** (aguarda autorização explícita do Cris; nenhum backtest corrido).
+**Status:** **`BLOCKED_BASE_EVENT_SELECTION_LOOKAHEAD`** (re-bloqueado 2026-07-09 pelo SL/exit review; historial: BLOCKED_MISSING_N83 → PASS pós-recovery → re-BLOCKED) — **lab ainda NÃO autorizado a correr** (aguarda autorização explícita do Cris; nenhum backtest corrido).
 
 > **RECOVERY 2026-07-09:** o Cris corrigiu — o PDF `~/Desktop/Sistema_Agentico_Trading_XAU_LONG_PT.pdf` (2026-07-08) reporta "Markup-Demanda + Filtro Capitulação · 96 → 83 · 62,7% · +125". Usado **só como ponte de proveniência**, levou à fonte real: **"Filter N83" = INTRA-BEAR CAPITULATION FILTER** (`SKIP se BEAR-v5-causal & 1D_px_vs_ema≥0`; 13L/0W cortados; ids 24,25,55-59,66,67,79,83-85). Verificação mecânica das 3 métricas a partir do repo: `research/xau_15m_bb_nas_leonardo/reports/n83_source_recovery_verify.py` = **SOURCE_RECOVERED** (52W/31L=62,7% · +125R@3R). Proveniência: `n96_fase1_fase2_maps.py` → `results/n96_intra_bear_cut_{list.json,trades.csv}` → doc `XAU_15M_N96_INTRA_BEAR_CAPITULATION_FILTER_20260708.md` → commit `a32b25a`. Status do filtro: `USER_APPROVED_NOT_PRODUCTION` · `PROFITABLE_BUT_FRAGILE` (+4…+13R conforme detector).
 

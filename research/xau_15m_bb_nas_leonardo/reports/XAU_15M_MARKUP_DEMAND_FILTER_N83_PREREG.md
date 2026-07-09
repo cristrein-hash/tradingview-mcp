@@ -75,11 +75,11 @@ timestamp alignment · no future leak (outcome forward-only já é) · no outcom
 source DA · causality DA · mapping DA · metric DA · overfit/selection DA — **via Agent tool real** (Stage 7 do protocolo).
 
 ## 13. Critérios de PASS para autorizar teste futuro
-Todos os campos mapeados RAW/source ✅ · **N83 definido por predicado real ✅ (recuperado)** · unidade congelada ✅ · manifest completo ✅ · nenhum outcome leak como input ✅ · nenhum proxy ✅ · sanity ready ✅ (pendência leve: family_label 96/96 se algum estudo futuro a usar como gate). → **CUMPRIDO: `PASS_READY_FOR_TEST_AUTHORIZATION`.**
+Todos os campos mapeados RAW/source ✅ · **N83 definido por predicado real ✅ (recuperado)** · unidade congelada ✅ · manifest completo ✅ · nenhum outcome leak como input ✅ · nenhum proxy ✅ · sanity ready ✅ (pendência leve: family_label 96/96 se algum estudo futuro a usar como gate). → ~~CUMPRIDO~~ **SUPERSEDED: base re-bloqueada (`BLOCKED_BASE_EVENT_SELECTION_LOOKAHEAD`, ver §1).**
 
 ## 14. Critérios de BLOCKED (histórico)
 - ~~`BLOCKED_MISSING_N83`~~ → **resolvido por recovery 2026-07-09** (PDF como ponte → fonte real no repo).
 - Restante: nenhum. Caveats herdados do filtro: `PROFITABLE_BUT_FRAGILE` (+4…+13R), N pequeno, concentração 2026, HTF congela 2026-05-24.
 
 ## Estado / próximo passo
-`PREREG_ONLY_NOT_TESTED` · **`PASS_READY_FOR_TEST_AUTHORIZATION`** · **NÃO rodar teste sem autorização explícita do Cris.** A base (N96) e o filtro (intra-BEAR capitulation → N83) estão definidos, causais e mapeados; qualquer estudo novo sobre esta combinação passa primeiro pelos blockers do gate 15M (`run_xau_15m_lab_gate.py`). PRODUÇÃO/Telegram/broker/runtime = intocados.
+`PREREG_ONLY_NOT_TESTED` · **`BLOCKED_BASE_EVENT_SELECTION_LOOKAHEAD`** (era PASS pós-recovery; re-bloqueado pelo SL/exit review) · **NÃO rodar teste.** A base (N96) e o filtro (intra-BEAR capitulation → N83) estão definidos, causais e mapeados; qualquer estudo novo sobre esta combinação passa primeiro pelos blockers do gate 15M (`run_xau_15m_lab_gate.py`). PRODUÇÃO/Telegram/broker/runtime = intocados.

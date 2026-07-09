@@ -1,5 +1,7 @@
 # XAU 15M LONG · N96 Entry Engine · User Approval
 
+> 🚨 **CONTAMINATION NOTICE (2026-07-09):** a base N96 subjacente foi INVALIDADA por **event-selection lookahead** (94/96 entries antes da confirmação do pivô zz r=6; ver `research/xau_15m_bb_nas_leonardo/reports/XAU_15M_N83_SL_EXIT_FINAL_DA.md`). As métricas de base (+112R/54,2% · 96→83/62,7%/+125R) são **RESULTADOS HISTÓRICOS CONTAMINADOS** — não usar como validação. O FILTRO capitulation em si foi RE-VALIDADO causal out-of-population na base reparada (22L/0W, P=0,0016) — ver canon `XAU_15M_MARKUP_DEMAND_CURRENT_STATUS_CANON.md`. Patch do STATUS_MASTER proposto, aguarda Cris.
+
 **Cris 2026-07-08.** Registo oficial de aprovação da estratégia atual.
 
 ## Decisão do Cris

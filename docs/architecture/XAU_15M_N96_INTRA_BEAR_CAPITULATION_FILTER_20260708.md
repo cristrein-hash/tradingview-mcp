@@ -1,5 +1,7 @@
 # XAU 15M LONG · N96 · Intra-BEAR Capitulation Filter
 
+> 🚨 **CONTAMINATION NOTICE (2026-07-09):** as métricas de BASE neste doc (N96, +112→+125R) derivam da base com **event-selection lookahead** (INVALIDADA; ver `XAU_15M_N83_SL_EXIT_FINAL_DA.md`) = resultados históricos contaminados. **O FILTRO em si sobreviveu:** re-validado causal **out-of-population** na base reparada live-fireable (corta 22=22L/0W; P exato 0,0016; episódico 0,0047; 14/14 losers novos) — status `VALIDATED_CAUSAL_RISK_CONTROL` no canon `XAU_15M_MARKUP_DEMAND_CURRENT_STATUS_CANON.md`.
+
 **Cris 2026-07-08.** Registo correto do achado, substituindo o veredito prematuro anterior.
 
 ## Status
