@@ -1,0 +1,298 @@
+{
+  "window": [
+    "2025-08-24 00:30",
+    "2025-10-17 13:00"
+  ],
+  "n_PLT": 10,
+  "n_DM": 11,
+  "stage1": {
+    "n_grid": 162,
+    "n_survivors_pregrid": 0,
+    "sample_degenerate": {
+      "cfg": {
+        "M": 12,
+        "K_up": 4,
+        "K_down": 3,
+        "D_flush": 1.5,
+        "mom": 16
+      },
+      "metrics": {
+        "legs_per_month": 0.36,
+        "dur_med_h": 10.0,
+        "pct_up": 0.1,
+        "pct_down": 99.9,
+        "pct_flat": 0,
+        "n_legs": 7
+      },
+      "plausible": false
+    }
+  },
+  "amendment": {
+    "id": "A1",
+    "reason": "grid pré-registado 162/162 IMPLAUSÍVEL: D_flush em ATR15 sobre running-peak dispara em pullback normal (2 ATR15 ≈ 0.25%% vs 6%% do v5) e satura LEG_DOWN — defeito de transposição de escala PREVISTO pelo DA (ataque B). Sub-grid com override OFF segue ao estágio 2; redesenho do flush override = DECISÃO DO CRIS (F2).",
+    "subgrid": 18,
+    "survivors": 8
+  },
+  "stage1b_survivors": [
+    {
+      "cfg": {
+        "M": 15,
+        "K_up": 5,
+        "K_down": 5,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "metrics": {
+        "legs_per_month": 19.93,
+        "dur_med_h": 18.0,
+        "pct_up": 38.86,
+        "pct_down": 32.36,
+        "pct_flat": 28.78,
+        "n_legs": 385
+      }
+    },
+    {
+      "cfg": {
+        "M": 24,
+        "K_up": 5,
+        "K_down": 5,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "metrics": {
+        "legs_per_month": 18.58,
+        "dur_med_h": 20.0,
+        "pct_up": 38.46,
+        "pct_down": 29.15,
+        "pct_flat": 32.39,
+        "n_legs": 359
+      }
+    },
+    {
+      "cfg": {
+        "M": 15,
+        "K_up": 6,
+        "K_down": 5,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "metrics": {
+        "legs_per_month": 17.55,
+        "dur_med_h": 20.0,
+        "pct_up": 39.59,
+        "pct_down": 34.84,
+        "pct_flat": 25.57,
+        "n_legs": 339
+      }
+    },
+    {
+      "cfg": {
+        "M": 15,
+        "K_up": 6,
+        "K_down": 3,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "metrics": {
+        "legs_per_month": 18.58,
+        "dur_med_h": 18.0,
+        "pct_up": 38.59,
+        "pct_down": 38.61,
+        "pct_flat": 22.79,
+        "n_legs": 359
+      }
+    },
+    {
+      "cfg": {
+        "M": 12,
+        "K_up": 6,
+        "K_down": 5,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "metrics": {
+        "legs_per_month": 18.12,
+        "dur_med_h": 19.0,
+        "pct_up": 40.54,
+        "pct_down": 34.75,
+        "pct_flat": 24.71,
+        "n_legs": 350
+      }
+    },
+    {
+      "cfg": {
+        "M": 24,
+        "K_up": 6,
+        "K_down": 5,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "metrics": {
+        "legs_per_month": 16.88,
+        "dur_med_h": 21.0,
+        "pct_up": 39.03,
+        "pct_down": 30.6,
+        "pct_flat": 30.37,
+        "n_legs": 326
+      }
+    },
+    {
+      "cfg": {
+        "M": 12,
+        "K_up": 6,
+        "K_down": 3,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "metrics": {
+        "legs_per_month": 19.05,
+        "dur_med_h": 18.0,
+        "pct_up": 39.47,
+        "pct_down": 38.29,
+        "pct_flat": 22.25,
+        "n_legs": 368
+      }
+    },
+    {
+      "cfg": {
+        "M": 24,
+        "K_up": 6,
+        "K_down": 3,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "metrics": {
+        "legs_per_month": 18.33,
+        "dur_med_h": 19.0,
+        "pct_up": 38.31,
+        "pct_down": 34.22,
+        "pct_flat": 27.48,
+        "n_legs": 354
+      }
+    }
+  ],
+  "stage2": [
+    {
+      "cfg": {
+        "M": 15,
+        "K_up": 5,
+        "K_down": 5,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "PLT": "6/10",
+      "DM": "4/11",
+      "n_cand_window": 74,
+      "fp_per_day": 1.17,
+      "precision": 0.135,
+      "passes": false
+    },
+    {
+      "cfg": {
+        "M": 24,
+        "K_up": 5,
+        "K_down": 5,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "PLT": "6/10",
+      "DM": "4/11",
+      "n_cand_window": 64,
+      "fp_per_day": 0.99,
+      "precision": 0.156,
+      "passes": false
+    },
+    {
+      "cfg": {
+        "M": 15,
+        "K_up": 6,
+        "K_down": 5,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "PLT": "6/10",
+      "DM": "3/11",
+      "n_cand_window": 64,
+      "fp_per_day": 1.01,
+      "precision": 0.141,
+      "passes": false
+    },
+    {
+      "cfg": {
+        "M": 15,
+        "K_up": 6,
+        "K_down": 3,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "PLT": "6/10",
+      "DM": "3/11",
+      "n_cand_window": 68,
+      "fp_per_day": 1.08,
+      "precision": 0.132,
+      "passes": false
+    },
+    {
+      "cfg": {
+        "M": 12,
+        "K_up": 6,
+        "K_down": 5,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "PLT": "5/10",
+      "DM": "3/11",
+      "n_cand_window": 56,
+      "fp_per_day": 0.88,
+      "precision": 0.143,
+      "passes": false
+    },
+    {
+      "cfg": {
+        "M": 24,
+        "K_up": 6,
+        "K_down": 5,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "PLT": "4/10",
+      "DM": "3/11",
+      "n_cand_window": 48,
+      "fp_per_day": 0.75,
+      "precision": 0.146,
+      "passes": false
+    },
+    {
+      "cfg": {
+        "M": 12,
+        "K_up": 6,
+        "K_down": 3,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "PLT": "5/10",
+      "DM": "3/11",
+      "n_cand_window": 62,
+      "fp_per_day": 0.99,
+      "precision": 0.129,
+      "passes": false
+    },
+    {
+      "cfg": {
+        "M": 24,
+        "K_up": 6,
+        "K_down": 3,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "PLT": "4/10",
+      "DM": "3/11",
+      "n_cand_window": 56,
+      "fp_per_day": 0.9,
+      "precision": 0.125,
+      "passes": false
+    }
+  ],
+  "final": null,
+  "gate": "BLOCKED_F15_GATE"
+}

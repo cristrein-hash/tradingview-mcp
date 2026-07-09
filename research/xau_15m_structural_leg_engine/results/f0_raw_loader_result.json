@@ -1,0 +1,252 @@
+{
+  "n_bars": 49804,
+  "t_min": "2024-05-24 19:45",
+  "t_max": "2026-07-03 16:15",
+  "per_block": [
+    {
+      "file": "XAUUSD_15m_replay_2024-05-25_to_2024-08-25.jsonl.gz",
+      "snapshot_lines": 5951,
+      "new_bars": 5955,
+      "t_min": 1716579900,
+      "t_max": 1724623200
+    },
+    {
+      "file": "XAUUSD_15m_replay_2024-08-25_to_2024-11-25.jsonl.gz",
+      "snapshot_lines": 5976,
+      "new_bars": 5974,
+      "t_min": 1724624100,
+      "t_max": 1732492800
+    },
+    {
+      "file": "XAUUSD_15m_replay_2024-11-25_to_2025-02-25.jsonl.gz",
+      "snapshot_lines": 5831,
+      "new_bars": 5829,
+      "t_min": 1732493700,
+      "t_max": 1740441600
+    },
+    {
+      "file": "XAUUSD_15m_replay_2025-02-25_to_2025-05-25.jsonl.gz",
+      "snapshot_lines": 5794,
+      "new_bars": 5792,
+      "t_min": 1740442500,
+      "t_max": 1748210400
+    },
+    {
+      "file": "XAUUSD_15m_replay_2025-05-25_to_2025-08-25.jsonl.gz",
+      "snapshot_lines": 5954,
+      "new_bars": 5952,
+      "t_min": 1748211300,
+      "t_max": 1756080000
+    },
+    {
+      "file": "XAUUSD_15m_replay_2025-08-25_to_2025-11-25.jsonl.gz",
+      "snapshot_lines": 6060,
+      "new_bars": 6058,
+      "t_min": 1756080900,
+      "t_max": 1764028800
+    },
+    {
+      "file": "XAUUSD_15m_replay_2025-11-25_to_2026-02-25.jsonl.gz",
+      "snapshot_lines": 5831,
+      "new_bars": 5829,
+      "t_min": 1764029700,
+      "t_max": 1771977600
+    },
+    {
+      "file": "XAUUSD_15m_replay_2026-02-25_to_2026-05-25_rerun_customOBbaseline.jsonl.gz",
+      "snapshot_lines": 5710,
+      "new_bars": 5708,
+      "t_min": 1771978500,
+      "t_max": 1779667200
+    },
+    {
+      "file": "XAUUSD_15m_replay_2026-05-25_to_2026-07-04.jsonl.gz",
+      "snapshot_lines": 2710,
+      "new_bars": 2708,
+      "t_min": 1779668100,
+      "t_max": 1783096200
+    }
+  ],
+  "n_conflicts": 0,
+  "never_closed_excluded": [
+    "2026-07-03 16:30"
+  ],
+  "n_gaps": 546,
+  "gaps_by_kind": {
+    "weekend": 108,
+    "other": 20,
+    "session_break": 418
+  },
+  "gaps_non_trivial": [
+    {
+      "from": "2024-05-27 18:15",
+      "to": "2024-05-27 22:00",
+      "hours": 3.75,
+      "kind": "other"
+    },
+    {
+      "from": "2024-06-19 18:15",
+      "to": "2024-06-19 22:00",
+      "hours": 3.75,
+      "kind": "other"
+    },
+    {
+      "from": "2024-07-04 18:15",
+      "to": "2024-07-04 22:00",
+      "hours": 3.75,
+      "kind": "other"
+    },
+    {
+      "from": "2024-09-02 18:15",
+      "to": "2024-09-02 22:00",
+      "hours": 3.75,
+      "kind": "other"
+    },
+    {
+      "from": "2024-11-28 19:15",
+      "to": "2024-11-28 23:00",
+      "hours": 3.75,
+      "kind": "other"
+    },
+    {
+      "from": "2024-12-24 18:30",
+      "to": "2024-12-25 23:00",
+      "hours": 28.5,
+      "kind": "other"
+    },
+    {
+      "from": "2024-12-31 19:45",
+      "to": "2025-01-01 23:00",
+      "hours": 27.25,
+      "kind": "other"
+    },
+    {
+      "from": "2025-01-20 19:15",
+      "to": "2025-01-20 23:00",
+      "hours": 3.75,
+      "kind": "other"
+    },
+    {
+      "from": "2025-02-17 19:30",
+      "to": "2025-02-17 23:00",
+      "hours": 3.5,
+      "kind": "other"
+    },
+    {
+      "from": "2025-04-17 20:45",
+      "to": "2025-04-20 22:00",
+      "hours": 73.25,
+      "kind": "other"
+    },
+    {
+      "from": "2025-05-26 18:15",
+      "to": "2025-05-26 22:00",
+      "hours": 3.75,
+      "kind": "other"
+    },
+    {
+      "from": "2025-06-19 18:15",
+      "to": "2025-06-19 22:00",
+      "hours": 3.75,
+      "kind": "other"
+    },
+    {
+      "from": "2025-09-01 18:15",
+      "to": "2025-09-01 22:00",
+      "hours": 3.75,
+      "kind": "other"
+    },
+    {
+      "from": "2025-11-27 19:15",
+      "to": "2025-11-27 23:00",
+      "hours": 3.75,
+      "kind": "other"
+    },
+    {
+      "from": "2025-12-24 18:45",
+      "to": "2025-12-25 23:00",
+      "hours": 28.25,
+      "kind": "other"
+    },
+    {
+      "from": "2025-12-31 19:45",
+      "to": "2026-01-01 23:00",
+      "hours": 27.25,
+      "kind": "other"
+    },
+    {
+      "from": "2026-01-19 19:30",
+      "to": "2026-01-19 23:00",
+      "hours": 3.5,
+      "kind": "other"
+    },
+    {
+      "from": "2026-02-16 19:15",
+      "to": "2026-02-16 23:00",
+      "hours": 3.75,
+      "kind": "other"
+    },
+    {
+      "from": "2026-04-02 20:45",
+      "to": "2026-04-05 22:00",
+      "hours": 73.25,
+      "kind": "other"
+    },
+    {
+      "from": "2026-05-25 18:15",
+      "to": "2026-05-25 22:00",
+      "hours": 3.75,
+      "kind": "other"
+    }
+  ],
+  "block_boundaries": [
+    {
+      "from": "2024-08-25 22:00",
+      "to": "2024-08-25 22:15"
+    },
+    {
+      "from": "2024-11-25 00:00",
+      "to": "2024-11-25 00:15"
+    },
+    {
+      "from": "2025-02-25 00:00",
+      "to": "2025-02-25 00:15"
+    },
+    {
+      "from": "2025-05-25 22:00",
+      "to": "2025-05-25 22:15"
+    },
+    {
+      "from": "2025-08-25 00:00",
+      "to": "2025-08-25 00:15"
+    },
+    {
+      "from": "2025-11-25 00:00",
+      "to": "2025-11-25 00:15"
+    },
+    {
+      "from": "2026-02-25 00:00",
+      "to": "2026-02-25 00:15"
+    },
+    {
+      "from": "2026-05-25 00:00",
+      "to": "2026-05-25 00:15"
+    }
+  ],
+  "raw_sha256": {
+    "XAUUSD_15m_replay_2024-05-25_to_2024-08-25.jsonl.gz": "sha256:1551b81a42431952da811893662b47354c24a3e3db9799481d210db8ee64e1a3",
+    "XAUUSD_15m_replay_2024-08-25_to_2024-11-25.jsonl.gz": "sha256:5a2a73ea690b95eb3392bae9e8e54d705001fb1822a7174f99dde75a1b69370c",
+    "XAUUSD_15m_replay_2024-11-25_to_2025-02-25.jsonl.gz": "sha256:90f47825796cb3be9c61a3270866ad602f395bc0a9b82e4d611ee42f3c3cfac7",
+    "XAUUSD_15m_replay_2025-02-25_to_2025-05-25.jsonl.gz": "sha256:e87654a1ec6641ac83b71fb525260f4445154f448b439ccd26e20e9ba37e02f5",
+    "XAUUSD_15m_replay_2025-05-25_to_2025-08-25.jsonl.gz": "sha256:65daec32315c36d093f653890a9895c23a92e426480bb08ed9a7699d9723d148",
+    "XAUUSD_15m_replay_2025-08-25_to_2025-11-25.jsonl.gz": "sha256:32ad44a1a0c555cca65e01363605f0ca1d3a16c9288e3ff49c2a8445924209f7",
+    "XAUUSD_15m_replay_2025-11-25_to_2026-02-25.jsonl.gz": "sha256:230e5e0f38eefaac193cbd7ad60ad9e0ab635f20a17ced77a49cc459e3113edc",
+    "XAUUSD_15m_replay_2026-02-25_to_2026-05-25_rerun_customOBbaseline.jsonl.gz": "sha256:ecb1788dbad696015369f34afc52336a1c90d9da2eb65e060095695196e73e9a",
+    "XAUUSD_15m_replay_2026-05-25_to_2026-07-04.jsonl.gz": "sha256:52e9d748a9c8be338147010bf65673290e966c648c5c937020411cbdb28ea705"
+  },
+  "cache": {
+    "path": "/Users/cristrein/tradingview-mcp/research/xau_15m_structural_leg_engine/results/f0_bars_cache.jsonl",
+    "sha256": "sha256:e968f17ba15f3b08b4266f13c9e3ca9c6e62d020695fdf3288ff89ac0a72113b",
+    "source_ref": "derivado 1:1 dos 9 RAW .jsonl.gz do manifest (tails ohlcv, dedup por bar time, assert OHLC)"
+  }
+}

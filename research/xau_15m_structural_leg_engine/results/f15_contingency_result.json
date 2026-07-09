@@ -1,0 +1,119 @@
+{
+  "design": "conting\u00eancia pr\u00e9-registada eff x slope sobre sub-grid A1; top-6/c\u00e9lula",
+  "n_looks": 192,
+  "best": [
+    {
+      "eff": 0.25,
+      "slope": 0.15,
+      "cfg": {
+        "M": 15,
+        "K_up": 5,
+        "K_down": 5,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "PLT": 6,
+      "DM": 4,
+      "passes": false
+    },
+    {
+      "eff": 0.25,
+      "slope": 0.15,
+      "cfg": {
+        "M": 24,
+        "K_up": 5,
+        "K_down": 5,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "PLT": 6,
+      "DM": 4,
+      "passes": false
+    },
+    {
+      "eff": 0.25,
+      "slope": 0.2,
+      "cfg": {
+        "M": 15,
+        "K_up": 5,
+        "K_down": 5,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "PLT": 6,
+      "DM": 4,
+      "passes": false
+    },
+    {
+      "eff": 0.25,
+      "slope": 0.2,
+      "cfg": {
+        "M": 24,
+        "K_up": 5,
+        "K_down": 5,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "PLT": 6,
+      "DM": 4,
+      "passes": false
+    },
+    {
+      "eff": 0.3,
+      "slope": 0.15,
+      "cfg": {
+        "M": 24,
+        "K_up": 5,
+        "K_down": 5,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "PLT": 6,
+      "DM": 4,
+      "passes": false
+    },
+    {
+      "eff": 0.35,
+      "slope": 0.15,
+      "cfg": {
+        "M": 24,
+        "K_up": 5,
+        "K_down": 5,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "PLT": 6,
+      "DM": 4,
+      "passes": false
+    },
+    {
+      "eff": 0.35,
+      "slope": 0.2,
+      "cfg": {
+        "M": 24,
+        "K_up": 5,
+        "K_down": 5,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "PLT": 6,
+      "DM": 4,
+      "passes": false
+    },
+    {
+      "eff": 0.35,
+      "slope": 0.2,
+      "cfg": {
+        "M": 12,
+        "K_up": 6,
+        "K_down": 5,
+        "D_flush": Infinity,
+        "mom": 24
+      },
+      "PLT": 6,
+      "DM": 4,
+      "passes": false
+    }
+  ],
+  "any_pass": false
+}

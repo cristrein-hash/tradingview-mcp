@@ -1,0 +1,32 @@
+{
+  "config": {
+    "M": 15,
+    "K_up": 5,
+    "K_down": 5,
+    "D_flush": 2.0,
+    "mom": 24
+  },
+  "n_bars": 49804,
+  "n_legs": 11,
+  "legs_per_month": 0.43,
+  "leg_dur_median_h": 10.8,
+  "occupancy_pct": {
+    "LEG_DOWN": 99.7,
+    "LEG_FLAT": 0.1,
+    "LEG_UP": 0.2
+  },
+  "phase_pct": {
+    "ACTIVE": 0.1,
+    "DEEP": 99.5,
+    "IMPULSE": 0.1,
+    "NEUTRAL": 0.1,
+    "PULLBACK": 0.0,
+    "SHALLOW_BOUNCE": 0.2
+  },
+  "n_anchors": 22,
+  "truncation_test": {
+    "pass": true,
+    "n_samples": 12
+  },
+  "provisional_note": "leg_phase/retr_fam com defaults mid-grid REPORT-ONLY; event layer N\u00c3O calibrada"
+}

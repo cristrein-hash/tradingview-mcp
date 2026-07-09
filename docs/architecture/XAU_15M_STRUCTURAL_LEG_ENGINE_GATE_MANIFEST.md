@@ -28,6 +28,16 @@
       "path": "/Users/cristrein/tradingview-mcp/research/xau_15m_bb_nas_leonardo/results/catalog_manual_tags_20260707.json",
       "source_ref": "marcação manual do Cris no chart TradingView XAUUSD/15 extraída via MCP em 2026-07-07 (42 notes VELA DE FUNDO + 50 circles + 4 INVALIDO + 1 POLARIDADE_TOPO + 24 ENTRY + 65 trades); ground truth de CALIBRAÇÃO, nunca feature",
       "checksum": "sha256:8171b99d3ae5298116e71b2d8b34cd940a76201fe9283e068b843933954ae59f"
+    },
+    {
+      "path": "/Users/cristrein/tradingview-mcp/research/xau_15m_bb_nas_leonardo/results/manual_shapes_pltdm_20260707.json",
+      "source_ref": "snapshot bruto das shapes manuais do Cris (10 PLT + 11 DM text_notes) extraído via MCP em 2026-07-07; GT do gate F1.5 (DA F0-F1.5 correção 1)",
+      "checksum": "sha256:b5c70f921cb94138ad2ebb95563930a86431021819ca37dacf67a7325a5d9fc7"
+    },
+    {
+      "path": "/Users/cristrein/tradingview-mcp/research/xau_15m_structural_leg_engine/results/f0_bars_cache.jsonl",
+      "source_ref": "derivação 1:1 dos 9 RAW .jsonl.gz do manifest (tails ohlcv CLOSED, dedup por bar time, assert OHLC) por f0_raw_loader.py; verificado por sha ao ler (DA F0-F1.5 correção 2)",
+      "checksum": "sha256:e968f17ba15f3b08b4266f13c9e3ca9c6e62d020695fdf3288ff89ac0a72113b"
     }
   ],
   "banned_sources_explicit": [

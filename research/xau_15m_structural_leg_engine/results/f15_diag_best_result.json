@@ -1,0 +1,52 @@
+{
+  "config_exploratorio": {
+    "M": 15,
+    "K_up": 5,
+    "K_down": 5,
+    "D_flush": null,
+    "mom": 24
+  },
+  "fundos_pre2026_proximity": "16/25",
+  "misses": [
+    "2025-12-19 01:45",
+    "2025-11-04 23:00",
+    "2025-10-15 09:00",
+    "2025-10-14 06:00",
+    "2025-09-30 09:00",
+    "2025-09-02 07:00",
+    "2025-08-01 02:00",
+    "2025-05-15 16:00",
+    "2025-04-09 02:00"
+  ],
+  "invalido_states": [
+    {
+      "date": "2026-03-05 18:00",
+      "leg_dir": "LEG_DOWN",
+      "leg_phase": "ACTIVE",
+      "macro": "BEAR",
+      "is_reject_state": true
+    },
+    {
+      "date": "2026-03-08 23:00",
+      "leg_dir": "LEG_FLAT",
+      "leg_phase": "NEUTRAL",
+      "macro": "BEAR",
+      "is_reject_state": false
+    },
+    {
+      "date": "2026-03-16 00:00",
+      "leg_dir": "LEG_DOWN",
+      "leg_phase": "DEEP",
+      "macro": "RANGE",
+      "is_reject_state": false
+    },
+    {
+      "date": "2026-01-13 19:00",
+      "leg_dir": "LEG_FLAT",
+      "leg_phase": "NEUTRAL",
+      "macro": "BULL",
+      "is_reject_state": false
+    }
+  ],
+  "nota": "REPORT-ONLY exploratório (gate BLOCKED, nada congelado); fundos = leg bottoms de pernas macro fechadas vs matcher v2; holdout 2026 intocado"
+}
