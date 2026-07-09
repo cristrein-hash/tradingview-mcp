@@ -1,0 +1,248 @@
+{
+  "baseline_3R": {
+    "sumR": 125.0,
+    "WR": 62.7,
+    "DD": -4.0,
+    "streak": 4
+  },
+  "alts": {
+    "CHAND_2": {
+      "n": 83,
+      "W": 48,
+      "L": 35,
+      "WR": 57.8,
+      "sumR": 32.8,
+      "PF": 4.6,
+      "avgR": 0.4,
+      "medianR": 0.07,
+      "maxDD_R": -1.1,
+      "streak": 4,
+      "avg_bars": 12.8,
+      "per_year": {
+        "2025": {
+          "n": 44,
+          "sumR": 16.9
+        },
+        "2026": {
+          "n": 39,
+          "sumR": 15.9
+        }
+      }
+    },
+    "CHAND_3": {
+      "n": 83,
+      "W": 50,
+      "L": 33,
+      "WR": 60.2,
+      "sumR": 51.5,
+      "PF": 5.62,
+      "avgR": 0.62,
+      "medianR": 0.15,
+      "maxDD_R": -1.7,
+      "streak": 4,
+      "avg_bars": 23.9,
+      "per_year": {
+        "2025": {
+          "n": 44,
+          "sumR": 24.9
+        },
+        "2026": {
+          "n": 39,
+          "sumR": 26.7
+        }
+      }
+    },
+    "CHAND_4": {
+      "n": 83,
+      "W": 55,
+      "L": 28,
+      "WR": 66.3,
+      "sumR": 65.1,
+      "PF": 6.96,
+      "avgR": 0.78,
+      "medianR": 0.33,
+      "maxDD_R": -2.1,
+      "streak": 4,
+      "avg_bars": 35.1,
+      "per_year": {
+        "2025": {
+          "n": 44,
+          "sumR": 21.8
+        },
+        "2026": {
+          "n": 39,
+          "sumR": 43.3
+        }
+      }
+    },
+    "CHAND_5": {
+      "n": 83,
+      "W": 52,
+      "L": 31,
+      "WR": 62.7,
+      "sumR": 90.3,
+      "PF": 8.71,
+      "avgR": 1.09,
+      "medianR": 0.25,
+      "maxDD_R": -1.3,
+      "streak": 3,
+      "avg_bars": 49.7,
+      "per_year": {
+        "2025": {
+          "n": 44,
+          "sumR": 41.8
+        },
+        "2026": {
+          "n": 39,
+          "sumR": 48.5
+        }
+      }
+    },
+    "CHAND_6": {
+      "n": 83,
+      "W": 50,
+      "L": 33,
+      "WR": 60.2,
+      "sumR": 104.2,
+      "PF": 8.51,
+      "avgR": 1.26,
+      "medianR": 0.16,
+      "maxDD_R": -2.2,
+      "streak": 4,
+      "avg_bars": 65.7,
+      "per_year": {
+        "2025": {
+          "n": 44,
+          "sumR": 55.3
+        },
+        "2026": {
+          "n": 39,
+          "sumR": 48.9
+        }
+      }
+    },
+    "CHAND_8": {
+      "n": 83,
+      "W": 50,
+      "L": 33,
+      "WR": 60.2,
+      "sumR": 128.8,
+      "PF": 6.53,
+      "avgR": 1.55,
+      "medianR": 0.36,
+      "maxDD_R": -3.8,
+      "streak": 4,
+      "avg_bars": 98.2,
+      "per_year": {
+        "2025": {
+          "n": 44,
+          "sumR": 67.8
+        },
+        "2026": {
+          "n": 39,
+          "sumR": 61.0
+        }
+      }
+    },
+    "ATRT_2": {
+      "n": 83,
+      "W": 53,
+      "L": 30,
+      "WR": 63.9,
+      "sumR": 41.0,
+      "PF": 5.1,
+      "avgR": 0.49,
+      "medianR": 0.28,
+      "maxDD_R": -1.2,
+      "streak": 4,
+      "avg_bars": 19.6,
+      "per_year": {
+        "2025": {
+          "n": 44,
+          "sumR": 22.3
+        },
+        "2026": {
+          "n": 39,
+          "sumR": 18.7
+        }
+      }
+    },
+    "ATRT_3": {
+      "n": 83,
+      "W": 48,
+      "L": 35,
+      "WR": 57.8,
+      "sumR": 54.8,
+      "PF": 5.35,
+      "avgR": 0.66,
+      "medianR": 0.19,
+      "maxDD_R": -2.1,
+      "streak": 4,
+      "avg_bars": 33.2,
+      "per_year": {
+        "2025": {
+          "n": 44,
+          "sumR": 18.8
+        },
+        "2026": {
+          "n": 39,
+          "sumR": 36.0
+        }
+      }
+    },
+    "RLAD": {
+      "n": 83,
+      "W": 61,
+      "L": 22,
+      "WR": 73.5,
+      "sumR": 143.0,
+      "PF": 7.5,
+      "avgR": 1.72,
+      "medianR": 1.0,
+      "maxDD_R": -4.0,
+      "streak": 4,
+      "avg_bars": 97.2,
+      "per_year": {
+        "2025": {
+          "n": 44,
+          "sumR": 80.0
+        },
+        "2026": {
+          "n": 39,
+          "sumR": 63.0
+        }
+      }
+    },
+    "SWBUF": {
+      "n": 83,
+      "W": 55,
+      "L": 28,
+      "WR": 66.3,
+      "sumR": 64.6,
+      "PF": 7.57,
+      "avgR": 0.78,
+      "medianR": 0.26,
+      "maxDD_R": -1.1,
+      "streak": 3,
+      "avg_bars": 37.2,
+      "per_year": {
+        "2025": {
+          "n": 44,
+          "sumR": 27.3
+        },
+        "2026": {
+          "n": 39,
+          "sumR": 37.2
+        }
+      }
+    }
+  },
+  "null_exposure_best": {
+    "best": "RLAD",
+    "obs": 143.0,
+    "null_mean": 100.5,
+    "null_p95": 118.3,
+    "p_null_ge_obs": 0.0
+  },
+  "caveat": "população N83 congelada (base com event-selection lookahead) — achados condicionais"
+}

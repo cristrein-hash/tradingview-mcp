@@ -28,3 +28,6 @@
 
 ## Confirmação negativa
 Sem produção/Telegram/broker/runtime/strategy_rules/monitor · sem chart/plot/screenshot · sem sinal · prereg/manifest atualizados. **PRODUÇÃO: NOT_AUTHORIZED.**
+
+## Addendum (ordem Cris): TRAILING testado antes de concluir
+Trailing ratchet real (10 regras + 5 vizinhos, DA focado PASS_EXPLORATORY): **nenhum bate o 3R material+robusto**. Único acima = RLAD (+143 vs 125), mas ~90% do excesso = exposição (null duration-matched 138,8; ratchet +4,2R), **delay-1-bar inverte (113<125)**, winners avg 2,70R, best-of-15. → **3R fixo confirmado como exit; RLAD = EXPLORATORY p/ base reparada.** Doc `XAU_15M_N83_EXIT_TRAILING_REPORT.md`.

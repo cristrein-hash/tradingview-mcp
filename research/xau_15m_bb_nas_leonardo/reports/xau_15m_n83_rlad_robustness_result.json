@@ -1,0 +1,139 @@
+{
+  "variants": {
+    "lag1_step1_(orig)": {
+      "n": 83,
+      "W": 42,
+      "L": 41,
+      "WR": 50.6,
+      "sumR": 101.0,
+      "PF": 7.31,
+      "avgR": 1.22,
+      "medianR": 1.0,
+      "maxDD_R": -3.0,
+      "streak": 6,
+      "per_year": {
+        "2025": 60.0,
+        "2026": 41.0
+      },
+      "per_quarter": {
+        "2025Q3": 27.0,
+        "2025Q4": 33.0,
+        "2026Q1": 23.0,
+        "2026Q2": 12.0,
+        "2026Q3": 6.0
+      },
+      "neg_quarters": 0,
+      "jack_drop_best": 92.0
+    },
+    "lag1_step0.5": {
+      "n": 83,
+      "W": 49,
+      "L": 34,
+      "WR": 59.0,
+      "sumR": 86.0,
+      "PF": 6.38,
+      "avgR": 1.04,
+      "medianR": 0.5,
+      "maxDD_R": -3.0,
+      "streak": 6,
+      "per_year": {
+        "2025": 47.5,
+        "2026": 38.5
+      },
+      "per_quarter": {
+        "2025Q3": 26.5,
+        "2025Q4": 21.0,
+        "2026Q1": 18.0,
+        "2026Q2": 14.0,
+        "2026Q3": 6.5
+      },
+      "neg_quarters": 0,
+      "jack_drop_best": 79.5
+    },
+    "lag1.5_step0.5": {
+      "n": 83,
+      "W": 55,
+      "L": 28,
+      "WR": 66.3,
+      "sumR": 129.5,
+      "PF": 7.17,
+      "avgR": 1.56,
+      "medianR": 1.0,
+      "maxDD_R": -4.0,
+      "streak": 4,
+      "per_year": {
+        "2025": 76.5,
+        "2026": 53.0
+      },
+      "per_quarter": {
+        "2025Q3": 28.0,
+        "2025Q4": 48.5,
+        "2026Q1": 31.0,
+        "2026Q2": 12.5,
+        "2026Q3": 9.5
+      },
+      "neg_quarters": 0,
+      "jack_drop_best": 119.0
+    },
+    "lag2_step1": {
+      "n": 83,
+      "W": 43,
+      "L": 40,
+      "WR": 51.8,
+      "sumR": 138.0,
+      "PF": 7.27,
+      "avgR": 1.66,
+      "medianR": 1.0,
+      "maxDD_R": -4.0,
+      "streak": 5,
+      "per_year": {
+        "2025": 86.0,
+        "2026": 52.0
+      },
+      "per_quarter": {
+        "2025Q3": 30.0,
+        "2025Q4": 56.0,
+        "2026Q1": 33.0,
+        "2026Q2": 11.0,
+        "2026Q3": 8.0
+      },
+      "neg_quarters": 0,
+      "jack_drop_best": 128.0
+    },
+    "act2R_lag1_step1": {
+      "n": 83,
+      "W": 61,
+      "L": 22,
+      "WR": 73.5,
+      "sumR": 143.0,
+      "PF": 7.5,
+      "avgR": 1.72,
+      "medianR": 1.0,
+      "maxDD_R": -4.0,
+      "streak": 4,
+      "per_year": {
+        "2025": 80.0,
+        "2026": 63.0
+      },
+      "per_quarter": {
+        "2025Q3": 30.0,
+        "2025Q4": 50.0,
+        "2026Q1": 34.0,
+        "2026Q2": 19.0,
+        "2026Q3": 10.0
+      },
+      "neg_quarters": 0,
+      "jack_drop_best": 134.0
+    }
+  },
+  "orig_slippage": {
+    "slip0.05_sumR": 141.3,
+    "slip0.10_sumR": 139.6
+  },
+  "orig_delay_1bar": {
+    "n": 83,
+    "sumR": 113.0
+  },
+  "orig_definition": "lock=floor(maxR)-1 quando maxR>=2 (ativação implícita a +2R; nunca BE-a-1R)",
+  "baseline_3R_sumR": 125.0
+}
