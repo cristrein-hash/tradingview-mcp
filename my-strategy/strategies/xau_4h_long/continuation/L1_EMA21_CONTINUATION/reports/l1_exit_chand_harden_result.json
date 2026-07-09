@@ -1,0 +1,371 @@
+{
+  "H": 300,
+  "sets": {
+    "FINAL-24": {
+      "N": 24,
+      "kcurve": {
+        "3.0": {
+          "sumR": 31.5,
+          "WR": 71,
+          "maxDD_R": -1.7,
+          "streak": 3,
+          "ret_DD": 18.6,
+          "p_null": 0.998
+        },
+        "3.5": {
+          "sumR": 25.6,
+          "WR": 67,
+          "maxDD_R": -2.2,
+          "streak": 3,
+          "ret_DD": 11.6,
+          "p_null": 1.0
+        },
+        "4.0": {
+          "sumR": 52.2,
+          "WR": 79,
+          "maxDD_R": -1.6,
+          "streak": 1,
+          "ret_DD": 32.6,
+          "p_null": 0.963
+        },
+        "4.5": {
+          "sumR": 55.6,
+          "WR": 75,
+          "maxDD_R": -1.9,
+          "streak": 2,
+          "ret_DD": 29.3,
+          "p_null": 0.943
+        },
+        "5.0": {
+          "sumR": 123.7,
+          "WR": 79,
+          "maxDD_R": -2.1,
+          "streak": 3,
+          "ret_DD": 58.9,
+          "p_null": 0.045
+        },
+        "5.5": {
+          "sumR": 117.1,
+          "WR": 75,
+          "maxDD_R": -2.3,
+          "streak": 3,
+          "ret_DD": 50.9,
+          "p_null": 0.08
+        },
+        "6.0": {
+          "sumR": 109.1,
+          "WR": 71,
+          "maxDD_R": -2.6,
+          "streak": 3,
+          "ret_DD": 42.0,
+          "p_null": 0.157
+        },
+        "6.5": {
+          "sumR": 110.7,
+          "WR": 67,
+          "maxDD_R": -2.8,
+          "streak": 3,
+          "ret_DD": 39.5,
+          "p_null": 0.138
+        },
+        "7.0": {
+          "sumR": 112.4,
+          "WR": 62,
+          "maxDD_R": -3.0,
+          "streak": 3,
+          "ret_DD": 37.5,
+          "p_null": 0.118
+        }
+      },
+      "per_year_CHAND_5": {
+        "2020": {
+          "n": 2,
+          "sumR": 1.9,
+          "wins": 2
+        },
+        "2021": {
+          "n": 1,
+          "sumR": -1.0,
+          "wins": 0
+        },
+        "2022": {
+          "n": 1,
+          "sumR": 0.3,
+          "wins": 1
+        },
+        "2023": {
+          "n": 2,
+          "sumR": 3.5,
+          "wins": 2
+        },
+        "2024": {
+          "n": 7,
+          "sumR": 3.5,
+          "wins": 4
+        },
+        "2025": {
+          "n": 10,
+          "sumR": 108.3,
+          "wins": 9
+        },
+        "2026": {
+          "n": 1,
+          "sumR": 7.2,
+          "wins": 1
+        }
+      },
+      "jackknife_CHAND_5": {
+        "full": 123.7,
+        "jack_min": 73.8,
+        "jack_max": 124.7,
+        "top_R": 50.0,
+        "top2_share": 0.55
+      },
+      "null_mean": 87.8
+    },
+    "SCANNER-31-V1": {
+      "N": 31,
+      "kcurve": {
+        "3.0": {
+          "sumR": 25.1,
+          "WR": 55,
+          "maxDD_R": -2.3,
+          "streak": 3,
+          "ret_DD": 10.9,
+          "p_null": 1.0
+        },
+        "3.5": {
+          "sumR": 18.8,
+          "WR": 48,
+          "maxDD_R": -3.4,
+          "streak": 3,
+          "ret_DD": 5.5,
+          "p_null": 1.0
+        },
+        "4.0": {
+          "sumR": 44.9,
+          "WR": 58,
+          "maxDD_R": -3.3,
+          "streak": 2,
+          "ret_DD": 13.6,
+          "p_null": 0.963
+        },
+        "4.5": {
+          "sumR": 48.3,
+          "WR": 58,
+          "maxDD_R": -3.9,
+          "streak": 4,
+          "ret_DD": 12.4,
+          "p_null": 0.948
+        },
+        "5.0": {
+          "sumR": 116.7,
+          "WR": 61,
+          "maxDD_R": -3.1,
+          "streak": 4,
+          "ret_DD": 37.6,
+          "p_null": 0.05
+        },
+        "5.5": {
+          "sumR": 109.6,
+          "WR": 58,
+          "maxDD_R": -3.3,
+          "streak": 4,
+          "ret_DD": 33.2,
+          "p_null": 0.107
+        },
+        "6.0": {
+          "sumR": 101.8,
+          "WR": 55,
+          "maxDD_R": -3.6,
+          "streak": 4,
+          "ret_DD": 28.3,
+          "p_null": 0.186
+        },
+        "6.5": {
+          "sumR": 103.7,
+          "WR": 52,
+          "maxDD_R": -3.8,
+          "streak": 4,
+          "ret_DD": 27.3,
+          "p_null": 0.162
+        },
+        "7.0": {
+          "sumR": 105.4,
+          "WR": 48,
+          "maxDD_R": -4.2,
+          "streak": 4,
+          "ret_DD": 25.1,
+          "p_null": 0.144
+        }
+      },
+      "per_year_CHAND_5": {
+        "2020": {
+          "n": 3,
+          "sumR": 0.9,
+          "wins": 2
+        },
+        "2021": {
+          "n": 2,
+          "sumR": -1.7,
+          "wins": 0
+        },
+        "2022": {
+          "n": 1,
+          "sumR": 0.3,
+          "wins": 1
+        },
+        "2023": {
+          "n": 3,
+          "sumR": 2.5,
+          "wins": 2
+        },
+        "2024": {
+          "n": 7,
+          "sumR": 3.1,
+          "wins": 4
+        },
+        "2025": {
+          "n": 12,
+          "sumR": 106.3,
+          "wins": 9
+        },
+        "2026": {
+          "n": 3,
+          "sumR": 5.2,
+          "wins": 1
+        }
+      },
+      "jackknife_CHAND_5": {
+        "full": 116.7,
+        "jack_min": 66.7,
+        "jack_max": 117.7,
+        "top_R": 50.0,
+        "top2_share": 0.58
+      },
+      "null_mean": 81.8
+    },
+    "ESTUDO-34": {
+      "N": 34,
+      "kcurve": {
+        "3.0": {
+          "sumR": 23.9,
+          "WR": 53,
+          "maxDD_R": -3.2,
+          "streak": 3,
+          "ret_DD": 7.5,
+          "p_null": 0.999
+        },
+        "3.5": {
+          "sumR": 17.1,
+          "WR": 47,
+          "maxDD_R": -4.4,
+          "streak": 3,
+          "ret_DD": 3.9,
+          "p_null": 1.0
+        },
+        "4.0": {
+          "sumR": 43.0,
+          "WR": 56,
+          "maxDD_R": -4.3,
+          "streak": 3,
+          "ret_DD": 10.0,
+          "p_null": 0.957
+        },
+        "4.5": {
+          "sumR": 46.2,
+          "WR": 53,
+          "maxDD_R": -4.9,
+          "streak": 5,
+          "ret_DD": 9.4,
+          "p_null": 0.938
+        },
+        "5.0": {
+          "sumR": 114.1,
+          "WR": 56,
+          "maxDD_R": -3.1,
+          "streak": 4,
+          "ret_DD": 36.8,
+          "p_null": 0.056
+        },
+        "5.5": {
+          "sumR": 107.3,
+          "WR": 53,
+          "maxDD_R": -3.3,
+          "streak": 4,
+          "ret_DD": 32.5,
+          "p_null": 0.095
+        },
+        "6.0": {
+          "sumR": 99.1,
+          "WR": 50,
+          "maxDD_R": -3.7,
+          "streak": 4,
+          "ret_DD": 26.8,
+          "p_null": 0.176
+        },
+        "6.5": {
+          "sumR": 100.7,
+          "WR": 47,
+          "maxDD_R": -3.9,
+          "streak": 4,
+          "ret_DD": 25.8,
+          "p_null": 0.157
+        },
+        "7.0": {
+          "sumR": 102.4,
+          "WR": 44,
+          "maxDD_R": -5.5,
+          "streak": 4,
+          "ret_DD": 18.6,
+          "p_null": 0.136
+        }
+      },
+      "per_year_CHAND_5": {
+        "2020": {
+          "n": 3,
+          "sumR": 0.9,
+          "wins": 2
+        },
+        "2021": {
+          "n": 2,
+          "sumR": -1.7,
+          "wins": 0
+        },
+        "2022": {
+          "n": 1,
+          "sumR": 0.3,
+          "wins": 1
+        },
+        "2023": {
+          "n": 4,
+          "sumR": 1.5,
+          "wins": 2
+        },
+        "2024": {
+          "n": 8,
+          "sumR": 2.5,
+          "wins": 4
+        },
+        "2025": {
+          "n": 13,
+          "sumR": 105.3,
+          "wins": 9
+        },
+        "2026": {
+          "n": 3,
+          "sumR": 5.2,
+          "wins": 1
+        }
+      },
+      "jackknife_CHAND_5": {
+        "full": 114.1,
+        "jack_min": 64.1,
+        "jack_max": 115.1,
+        "top_R": 50.0,
+        "top2_share": 0.59
+      },
+      "null_mean": 78.5
+    }
+  }
+}

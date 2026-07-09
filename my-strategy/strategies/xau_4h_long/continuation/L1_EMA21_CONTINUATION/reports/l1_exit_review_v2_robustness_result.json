@@ -1,0 +1,120 @@
+{
+  "H": 300,
+  "trials": 2000,
+  "sets": {
+    "FINAL-24": {
+      "E": {
+        "obs_sumR": 113.5,
+        "jackknife": {
+          "full": 113.5,
+          "jack_min": 76.8,
+          "jack_max": 114.5,
+          "top_R": 36.7
+        },
+        "null_mean": 87.8,
+        "null_p95": 123.0,
+        "p_null_ge_obs": 0.108
+      },
+      "D": {
+        "obs_sumR": 43.3,
+        "jackknife": {
+          "full": 43.3,
+          "jack_min": 28.5,
+          "jack_max": 44.3,
+          "top_R": 14.9
+        },
+        "null_mean": 88.7,
+        "null_p95": 124.9,
+        "p_null_ge_obs": 0.99
+      },
+      "B": {
+        "obs_sumR": 132.2,
+        "jackknife": {
+          "full": 132.2,
+          "jack_min": 94.4,
+          "jack_max": 133.2,
+          "top_R": 37.8
+        },
+        "null_mean": 87.6,
+        "null_p95": 122.9,
+        "p_null_ge_obs": 0.017
+      }
+    },
+    "SCANNER-31-V1": {
+      "E": {
+        "obs_sumR": 106.5,
+        "jackknife": {
+          "full": 106.5,
+          "jack_min": 69.8,
+          "jack_max": 107.5,
+          "top_R": 36.7
+        },
+        "null_mean": 81.8,
+        "null_p95": 118.0,
+        "p_null_ge_obs": 0.127
+      },
+      "D": {
+        "obs_sumR": 36.6,
+        "jackknife": {
+          "full": 36.6,
+          "jack_min": 21.8,
+          "jack_max": 37.6,
+          "top_R": 14.9
+        },
+        "null_mean": 81.0,
+        "null_p95": 117.8,
+        "p_null_ge_obs": 0.982
+      },
+      "B": {
+        "obs_sumR": 125.2,
+        "jackknife": {
+          "full": 125.2,
+          "jack_min": 87.4,
+          "jack_max": 126.2,
+          "top_R": 37.8
+        },
+        "null_mean": 81.2,
+        "null_p95": 116.8,
+        "p_null_ge_obs": 0.021
+      }
+    },
+    "ESTUDO-34": {
+      "E": {
+        "obs_sumR": 103.5,
+        "jackknife": {
+          "full": 103.5,
+          "jack_min": 66.8,
+          "jack_max": 104.5,
+          "top_R": 36.7
+        },
+        "null_mean": 78.7,
+        "null_p95": 113.0,
+        "p_null_ge_obs": 0.112
+      },
+      "D": {
+        "obs_sumR": 34.8,
+        "jackknife": {
+          "full": 34.8,
+          "jack_min": 19.9,
+          "jack_max": 35.8,
+          "top_R": 14.9
+        },
+        "null_mean": 78.4,
+        "null_p95": 113.6,
+        "p_null_ge_obs": 0.987
+      },
+      "B": {
+        "obs_sumR": 122.2,
+        "jackknife": {
+          "full": 122.2,
+          "jack_min": 84.4,
+          "jack_max": 123.2,
+          "top_R": 37.8
+        },
+        "null_mean": 78.8,
+        "null_p95": 115.1,
+        "p_null_ge_obs": 0.018
+      }
+    }
+  }
+}

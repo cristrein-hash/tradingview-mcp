@@ -1,0 +1,281 @@
+{
+  "H": 300,
+  "sets": {
+    "FINAL-24": {
+      "N": 24,
+      "baseline_A": {
+        "sumR": 48.0,
+        "maxDD_R": -3.0,
+        "ret_DD": 16.0
+      },
+      "rules": {
+        "CHAND_4": {
+          "sumR": 52.2,
+          "WR": 79,
+          "maxDD_R": -1.6,
+          "streak": 1,
+          "ret_DD": 32.6,
+          "avgR": 2.17,
+          "exits_gt3R": 5,
+          "avg_bars": 36.7,
+          "rcr": 0.264
+        },
+        "CHAND_5": {
+          "sumR": 123.7,
+          "WR": 79,
+          "maxDD_R": -2.1,
+          "streak": 3,
+          "ret_DD": 58.9,
+          "avgR": 5.16,
+          "exits_gt3R": 8,
+          "avg_bars": 70.9,
+          "rcr": 0.672
+        },
+        "CHAND_6": {
+          "sumR": 109.1,
+          "WR": 71,
+          "maxDD_R": -2.6,
+          "streak": 3,
+          "ret_DD": 42.0,
+          "avgR": 4.54,
+          "exits_gt3R": 7,
+          "avg_bars": 75.5,
+          "rcr": 0.61
+        },
+        "CHAND_8": {
+          "sumR": 100.1,
+          "WR": 54,
+          "maxDD_R": -3.2,
+          "streak": 4,
+          "ret_DD": 31.3,
+          "avgR": 4.17,
+          "exits_gt3R": 7,
+          "avg_bars": 95.8,
+          "rcr": 0.59
+        },
+        "CHAND_10": {
+          "sumR": 113.3,
+          "WR": 50,
+          "maxDD_R": -5.4,
+          "streak": 5,
+          "ret_DD": 21.0,
+          "avgR": 4.72,
+          "exits_gt3R": 9,
+          "avg_bars": 120.2,
+          "rcr": 0.667
+        },
+        "SWINGW_1": {
+          "sumR": 57.9,
+          "WR": 79,
+          "maxDD_R": -2.0,
+          "streak": 2,
+          "ret_DD": 29.0,
+          "avgR": 2.41,
+          "exits_gt3R": 6,
+          "avg_bars": 49.8,
+          "rcr": 0.308
+        }
+      },
+      "anatomy": {
+        "n_winners": 18,
+        "median_maxpullback_ATR": 22.52,
+        "median_maxpullback_R": 11.41,
+        "winners_median_pullback_ATR": 22.52,
+        "winners_median_pullback_R": 11.41,
+        "pct_trades_pullback_le_2ATR": 0,
+        "pct_trades_pullback_le_4ATR": 0,
+        "median_MFE_R": 9.1
+      },
+      "null_best_retDD": {
+        "rule": "CHAND_5",
+        "obs_sumR": 123.7,
+        "null_mean": 87.8,
+        "p_null_ge_obs": 0.045
+      }
+    },
+    "SCANNER-31-V1": {
+      "N": 31,
+      "baseline_A": {
+        "sumR": 37.0,
+        "maxDD_R": -4.0,
+        "ret_DD": 9.2
+      },
+      "rules": {
+        "CHAND_4": {
+          "sumR": 44.9,
+          "WR": 58,
+          "maxDD_R": -3.3,
+          "streak": 2,
+          "ret_DD": 13.6,
+          "avgR": 1.45,
+          "exits_gt3R": 5,
+          "avg_bars": 30.2,
+          "rcr": 0.264
+        },
+        "CHAND_5": {
+          "sumR": 116.7,
+          "WR": 61,
+          "maxDD_R": -3.1,
+          "streak": 4,
+          "ret_DD": 37.6,
+          "avgR": 3.76,
+          "exits_gt3R": 8,
+          "avg_bars": 56.6,
+          "rcr": 0.672
+        },
+        "CHAND_6": {
+          "sumR": 101.8,
+          "WR": 55,
+          "maxDD_R": -3.6,
+          "streak": 4,
+          "ret_DD": 28.3,
+          "avgR": 3.28,
+          "exits_gt3R": 7,
+          "avg_bars": 59.1,
+          "rcr": 0.61
+        },
+        "CHAND_8": {
+          "sumR": 93.1,
+          "WR": 42,
+          "maxDD_R": -6.2,
+          "streak": 6,
+          "ret_DD": 15.0,
+          "avgR": 3.0,
+          "exits_gt3R": 7,
+          "avg_bars": 74.8,
+          "rcr": 0.59
+        },
+        "CHAND_10": {
+          "sumR": 106.3,
+          "WR": 39,
+          "maxDD_R": -8.4,
+          "streak": 7,
+          "ret_DD": 12.7,
+          "avgR": 3.43,
+          "exits_gt3R": 9,
+          "avg_bars": 93.7,
+          "rcr": 0.667
+        },
+        "SWINGW_1": {
+          "sumR": 49.9,
+          "WR": 58,
+          "maxDD_R": -3.5,
+          "streak": 3,
+          "ret_DD": 14.3,
+          "avgR": 1.61,
+          "exits_gt3R": 6,
+          "avg_bars": 39.3,
+          "rcr": 0.308
+        }
+      },
+      "anatomy": {
+        "n_winners": 17,
+        "median_maxpullback_ATR": 20.53,
+        "median_maxpullback_R": 11.27,
+        "winners_median_pullback_ATR": 22.55,
+        "winners_median_pullback_R": 11.48,
+        "pct_trades_pullback_le_2ATR": 0,
+        "pct_trades_pullback_le_4ATR": 0,
+        "median_MFE_R": 9.5
+      },
+      "null_best_retDD": {
+        "rule": "CHAND_5",
+        "obs_sumR": 116.7,
+        "null_mean": 81.8,
+        "p_null_ge_obs": 0.05
+      }
+    },
+    "ESTUDO-34": {
+      "N": 34,
+      "baseline_A": {
+        "sumR": 38.0,
+        "maxDD_R": -4.0,
+        "ret_DD": 9.5
+      },
+      "rules": {
+        "CHAND_4": {
+          "sumR": 43.0,
+          "WR": 56,
+          "maxDD_R": -4.3,
+          "streak": 3,
+          "ret_DD": 10.0,
+          "avgR": 1.27,
+          "exits_gt3R": 5,
+          "avg_bars": 28.2,
+          "rcr": 0.264
+        },
+        "CHAND_5": {
+          "sumR": 114.1,
+          "WR": 56,
+          "maxDD_R": -3.1,
+          "streak": 4,
+          "ret_DD": 36.8,
+          "avgR": 3.35,
+          "exits_gt3R": 8,
+          "avg_bars": 52.4,
+          "rcr": 0.672
+        },
+        "CHAND_6": {
+          "sumR": 99.1,
+          "WR": 50,
+          "maxDD_R": -3.7,
+          "streak": 4,
+          "ret_DD": 26.8,
+          "avgR": 2.91,
+          "exits_gt3R": 7,
+          "avg_bars": 55.7,
+          "rcr": 0.61
+        },
+        "CHAND_8": {
+          "sumR": 90.1,
+          "WR": 38,
+          "maxDD_R": -7.4,
+          "streak": 6,
+          "ret_DD": 12.2,
+          "avgR": 2.65,
+          "exits_gt3R": 7,
+          "avg_bars": 70.0,
+          "rcr": 0.59
+        },
+        "CHAND_10": {
+          "sumR": 103.3,
+          "WR": 35,
+          "maxDD_R": -10.4,
+          "streak": 8,
+          "ret_DD": 9.9,
+          "avgR": 3.04,
+          "exits_gt3R": 9,
+          "avg_bars": 87.2,
+          "rcr": 0.667
+        },
+        "SWINGW_1": {
+          "sumR": 48.2,
+          "WR": 56,
+          "maxDD_R": -4.5,
+          "streak": 3,
+          "ret_DD": 10.7,
+          "avgR": 1.42,
+          "exits_gt3R": 6,
+          "avg_bars": 37.5,
+          "rcr": 0.308
+        }
+      },
+      "anatomy": {
+        "n_winners": 18,
+        "median_maxpullback_ATR": 19.73,
+        "median_maxpullback_R": 11.25,
+        "winners_median_pullback_ATR": 22.52,
+        "winners_median_pullback_R": 11.41,
+        "pct_trades_pullback_le_2ATR": 0,
+        "pct_trades_pullback_le_4ATR": 0,
+        "median_MFE_R": 10.0
+      },
+      "null_best_retDD": {
+        "rule": "CHAND_5",
+        "obs_sumR": 114.1,
+        "null_mean": 78.5,
+        "p_null_ge_obs": 0.056
+      }
+    }
+  }
+}

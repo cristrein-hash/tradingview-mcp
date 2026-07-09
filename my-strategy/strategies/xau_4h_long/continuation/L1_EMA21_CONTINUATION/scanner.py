@@ -55,7 +55,7 @@ ZONE_W_ATR_MIN = 0.6       # largura da zona OB / ATR >= 0.6
 DIST_ZONE_ATR_MAX = 1.81   # (entry-zone_high)/ATR <= 1.81
 NAS_DIST_SHIFT1_MIN = 1.31 # NAS_DISTANCE_FROM_EMA_ATR no bar i-1 >= 1.31
 SWING_N = 6                # swing low das últimas 6 barras (<= bar i)
-SL_ATR_BUFFER = 0.1        # SL = max(zone_OB_low, swing6_low) - 0.1*ATR
+SL_ATR_BUFFER = 0.1        # SL OFICIAL V1 (Cris 2026-07-03) = zone_OB_low - 0.1*ATR  (era max(zona,swing6): SUPERSEDED)
 TARGET_R = 3.0             # +3R
 
 
@@ -244,17 +244,22 @@ def refined_filter(S, i):
 
 
 def structural_sl(S, i):
-    """SL estrutural = max(zone_OB_low, swing6_low) - 0.1*ATR (fallback swing6 se sem zona)."""
+    """SL estrutural OFICIAL V1 (canon Cris 2026-07-03) = zone_OB_low - 0.1*ATR.
+    SUPERSEDED (revogada, NÃO usar): max(zone_OB_low, swing6_low) - 0.1*ATR.
+    Reconciliação 2026-07-09: alinhado ao canon V1 (era max(zona,swing6), drift corrigido).
+    Fallback swing6 só se não houver zona (a base-rule exige zona tocada → não ocorre em operacional)."""
     atr = S.ATR14[i] or 0.0
     dz = demand_zone(S, i)
-    sw6 = min(S.L[max(0, i - SWING_N + 1):i + 1])
-    base = max(dz[1], sw6) if dz else sw6
+    if dz is not None:
+        base = dz[1]                                        # V1: zone_OB_low APENAS (não max com swing6)
+    else:
+        base = min(S.L[max(0, i - SWING_N + 1):i + 1])      # fallback defensivo (sem zona)
     return base - SL_ATR_BUFFER * atr
 
 
 def evaluate(S, i):
     """Avalia o bar i. Gate: base-rule -> RSI exhaustion -> filtro refinado (stack v1 + NAS SHIFT1).
-    Exit aprovado: SL estrutural max(zone,swing6)-0.1ATR + target +3R. Tudo causal (close do bar i)."""
+    Exit aprovado: SL estrutural V1 = zone_OB_low-0.1ATR + target +3R. Tudo causal (close do bar i)."""
     passed, reason = gate_trace(S, i)
     rvm = rsi_vs_ma(S, i)
     exhaustion_gate = (rvm is not None and round(rvm, 2) <= RSI_VS_MA_THR)

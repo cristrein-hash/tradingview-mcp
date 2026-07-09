@@ -1,0 +1,398 @@
+{
+  "scanner_SL_rule": "V1 zone_OB_low-0.1ATR",
+  "TARGET_R": 3.0,
+  "FINAL24": {
+    "N": 24,
+    "W": 18,
+    "L": 6,
+    "WR": 75,
+    "sumR": 45.2,
+    "PF": 8.53
+  },
+  "ESTUDO34": {
+    "N": 34,
+    "W": 18,
+    "L": 16,
+    "WR": 53,
+    "sumR": 35.2,
+    "PF": 3.2
+  },
+  "scanner_operational_count": 31,
+  "scanner31_v1": {
+    "N": 31,
+    "W": 17,
+    "L": 14,
+    "WR": 55,
+    "sumR": 34.2,
+    "PF": 3.44,
+    "res": {
+      "STOP": 14,
+      "TARGET": 15,
+      "TIME": 2
+    },
+    "monumentais_mfe>=6R": 5,
+    "unmatched_ts": [],
+    "forwardsim_mismatches": [
+      {
+        "ts": "2024-08-12T10:00:00",
+        "study_res": "TIME",
+        "forwardsim": "TARGET"
+      },
+      {
+        "ts": "2025-11-27T03:00:00",
+        "study_res": "TIME",
+        "forwardsim": "TARGET"
+      }
+    ]
+  },
+  "estudo34_menos_scanner31": [
+    "2023-10-23T22:00",
+    "2024-04-10T22:00",
+    "2025-04-01T22:00"
+  ],
+  "divergences": [],
+  "verdict": "PASS",
+  "scanner31_v1_trades": [
+    {
+      "ts": "2020-03-30T02:00:00",
+      "entry": 1619.74,
+      "sl_v1": 1593.45,
+      "target": 1698.6,
+      "outcome": "STOP",
+      "R": -1.0,
+      "mfe": 0.28,
+      "forwardsim_check": "STOP",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2020-07-30T22:00:00",
+      "entry": 1965.13,
+      "sl_v1": 1939.84,
+      "target": 2041.0,
+      "outcome": "TARGET",
+      "R": 3.0,
+      "mfe": 4.35,
+      "forwardsim_check": "TARGET",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2020-12-30T19:00:00",
+      "entry": 1894.44,
+      "sl_v1": 1870.74,
+      "target": 1965.55,
+      "outcome": "STOP",
+      "R": -1.0,
+      "mfe": 2.74,
+      "forwardsim_check": "STOP",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2021-06-02T18:00:00",
+      "entry": 1908.24,
+      "sl_v1": 1891.63,
+      "target": 1958.08,
+      "outcome": "STOP",
+      "R": -1.0,
+      "mfe": 0.08,
+      "forwardsim_check": "STOP",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2021-09-01T18:00:00",
+      "entry": 1814.1,
+      "sl_v1": 1800.95,
+      "target": 1853.56,
+      "outcome": "STOP",
+      "R": -1.0,
+      "mfe": 1.51,
+      "forwardsim_check": "STOP",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2022-02-21T15:00:00",
+      "entry": 1904.82,
+      "sl_v1": 1885.64,
+      "target": 1962.36,
+      "outcome": "TARGET",
+      "R": 3.0,
+      "mfe": 3.63,
+      "forwardsim_check": "TARGET",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2023-01-03T03:00:00",
+      "entry": 1841.94,
+      "sl_v1": 1823.31,
+      "target": 1897.82,
+      "outcome": "TARGET",
+      "R": 3.0,
+      "mfe": 4.67,
+      "forwardsim_check": "TARGET",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2023-05-04T22:00:00",
+      "entry": 2051.9,
+      "sl_v1": 2037.79,
+      "target": 2094.24,
+      "outcome": "STOP",
+      "R": -1.0,
+      "mfe": 0.01,
+      "forwardsim_check": "STOP",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2023-12-21T19:00:00",
+      "entry": 2045.76,
+      "sl_v1": 2026.64,
+      "target": 2103.11,
+      "outcome": "STOP",
+      "R": -1.0,
+      "mfe": 2.23,
+      "forwardsim_check": "STOP",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2024-01-31T23:00:00",
+      "entry": 2047.04,
+      "sl_v1": 2028.05,
+      "target": 2104.01,
+      "outcome": "STOP",
+      "R": -1.0,
+      "mfe": 0.97,
+      "forwardsim_check": "STOP",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2024-04-02T18:00:00",
+      "entry": 2280.47,
+      "sl_v1": 2255.04,
+      "target": 2356.77,
+      "outcome": "TARGET",
+      "R": 3.0,
+      "mfe": 5.94,
+      "forwardsim_check": "TARGET",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2024-05-14T18:00:00",
+      "entry": 2357.84,
+      "sl_v1": 2330.75,
+      "target": 2439.1,
+      "outcome": "TARGET",
+      "R": 3.0,
+      "mfe": 3.4,
+      "forwardsim_check": "TARGET",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2024-08-12T06:00:00",
+      "entry": 2442.67,
+      "sl_v1": 2415.53,
+      "target": 2524.09,
+      "outcome": "TARGET",
+      "R": 3.0,
+      "mfe": 3.28,
+      "forwardsim_check": "TARGET",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2024-08-12T10:00:00",
+      "entry": 2454.23,
+      "sl_v1": 2424.06,
+      "target": 2544.73,
+      "outcome": "TIME",
+      "R": 2.05,
+      "mfe": 2.57,
+      "forwardsim_check": "TARGET",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2024-10-22T18:00:00",
+      "entry": 2748.8,
+      "sl_v1": 2726.85,
+      "target": 2814.65,
+      "outcome": "STOP",
+      "R": -1.0,
+      "mfe": 0.44,
+      "forwardsim_check": "STOP",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2024-10-28T02:00:00",
+      "entry": 2738.35,
+      "sl_v1": 2715.74,
+      "target": 2806.17,
+      "outcome": "STOP",
+      "R": -1.0,
+      "mfe": 2.29,
+      "forwardsim_check": "STOP",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2025-01-02T19:00:00",
+      "entry": 2657.96,
+      "sl_v1": 2643.74,
+      "target": 2700.61,
+      "outcome": "STOP",
+      "R": -1.0,
+      "mfe": 0.5,
+      "forwardsim_check": "STOP",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2025-02-12T23:00:00",
+      "entry": 2908.8,
+      "sl_v1": 2879.62,
+      "target": 2996.35,
+      "outcome": "STOP",
+      "R": -1.0,
+      "mfe": 1.07,
+      "forwardsim_check": "STOP",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2025-03-17T18:00:00",
+      "entry": 3000.86,
+      "sl_v1": 2976.91,
+      "target": 3072.71,
+      "outcome": "TARGET",
+      "R": 3.0,
+      "mfe": 5.3,
+      "forwardsim_check": "TARGET",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2025-03-20T18:00:00",
+      "entry": 3044.61,
+      "sl_v1": 3021.16,
+      "target": 3114.96,
+      "outcome": "STOP",
+      "R": -1.0,
+      "mfe": 0.12,
+      "forwardsim_check": "STOP",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2025-04-15T14:00:00",
+      "entry": 3227.86,
+      "sl_v1": 3191.13,
+      "target": 3338.05,
+      "outcome": "TARGET",
+      "R": 3.0,
+      "mfe": 7.41,
+      "forwardsim_check": "TARGET",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2025-08-26T18:00:00",
+      "entry": 3393.62,
+      "sl_v1": 3350.02,
+      "target": 3524.43,
+      "outcome": "TARGET",
+      "R": 3.0,
+      "mfe": 6.44,
+      "forwardsim_check": "TARGET",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2025-08-27T18:00:00",
+      "entry": 3397.45,
+      "sl_v1": 3382.05,
+      "target": 3443.64,
+      "outcome": "TARGET",
+      "R": 3.0,
+      "mfe": 18.0,
+      "forwardsim_check": "TARGET",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2025-09-12T02:00:00",
+      "entry": 3653.18,
+      "sl_v1": 3618.29,
+      "target": 3757.86,
+      "outcome": "TARGET",
+      "R": 3.0,
+      "mfe": 3.95,
+      "forwardsim_check": "TARGET",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2025-09-25T18:00:00",
+      "entry": 3749.4,
+      "sl_v1": 3715.2,
+      "target": 3852.01,
+      "outcome": "TARGET",
+      "R": 3.0,
+      "mfe": 9.06,
+      "forwardsim_check": "TARGET",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2025-11-27T03:00:00",
+      "entry": 4157.48,
+      "sl_v1": 4106.53,
+      "target": 4310.32,
+      "outcome": "TIME",
+      "R": 1.12,
+      "mfe": 2.1,
+      "forwardsim_check": "TARGET",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2025-12-11T19:00:00",
+      "entry": 4279.79,
+      "sl_v1": 4217.95,
+      "target": 4465.31,
+      "outcome": "TARGET",
+      "R": 3.0,
+      "mfe": 4.37,
+      "forwardsim_check": "TARGET",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2025-12-16T23:00:00",
+      "entry": 4314.32,
+      "sl_v1": 4268.51,
+      "target": 4451.74,
+      "outcome": "TARGET",
+      "R": 3.0,
+      "mfe": 5.14,
+      "forwardsim_check": "TARGET",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2026-01-15T07:00:00",
+      "entry": 4619.76,
+      "sl_v1": 4566.35,
+      "target": 4779.99,
+      "outcome": "STOP",
+      "R": -1.0,
+      "mfe": 0.09,
+      "forwardsim_check": "STOP",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2026-01-20T07:00:00",
+      "entry": 4726.64,
+      "sl_v1": 4655.56,
+      "target": 4939.88,
+      "outcome": "TARGET",
+      "R": 3.0,
+      "mfe": 12.26,
+      "forwardsim_check": "TARGET",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    },
+    {
+      "ts": "2026-04-10T10:00:00",
+      "entry": 4775.03,
+      "sl_v1": 4693.52,
+      "target": 5019.55,
+      "outcome": "STOP",
+      "R": -1.0,
+      "mfe": 0.25,
+      "forwardsim_check": "STOP",
+      "source": "scanner.py(V1) entry/sl/target + outcome canónico V1 de l1_approved34.json (match by unix ts)"
+    }
+  ]
+}

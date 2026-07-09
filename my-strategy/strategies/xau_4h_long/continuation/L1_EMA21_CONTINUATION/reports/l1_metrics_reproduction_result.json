@@ -1,0 +1,44 @@
+{
+  "FINAL24": {
+    "N": 24,
+    "W": 18,
+    "L": 6,
+    "WR": 75,
+    "sumR": 45.2,
+    "PF": 8.53
+  },
+  "ESTUDO34": {
+    "N": 34,
+    "W": 18,
+    "L": 16,
+    "WR": 53,
+    "sumR": 35.2,
+    "PF": 3.2,
+    "res": {
+      "STOP": 16,
+      "TARGET": 16,
+      "TIME": 2
+    }
+  },
+  "SL_config": {
+    "SL_ATR_BUFFER": 0.1,
+    "TARGET_R": 3.0,
+    "scanner_SL_rule": "max(zone_OB_low,swing6_low)-0.1ATR",
+    "OFICIAL_V1": "zone_OB_low-0.1ATR (Cris 2026-07-03)"
+  },
+  "SCANNER_fullscan": {
+    "bars": 10077,
+    "operational_raw": 31,
+    "states": {
+      "no_candidate": 10014,
+      "blocked_l1_refined_filter": 28,
+      "operational_candidate": 31,
+      "blocked_exhaustion": 4
+    },
+    "NOTE": "operacional RAW pre-cooldown; realizacao 31 (17T/13S/1T/+40R) exige harness+forward-sim sob SL do scanner (=max, NAO V1); nenhum artifact salvo canonico dos 31 encontrado (rebuild_v2=NOT_VALIDATION,3 trades)"
+  },
+  "divergences": [
+    "SL DIVERGENCIA: scanner.py implementa max(zone,swing6)-0.1ATR (SUPERSEDED); OFICIAL=V1 zone_OB_low-0.1ATR"
+  ],
+  "verdict": "PARTIAL"
+}

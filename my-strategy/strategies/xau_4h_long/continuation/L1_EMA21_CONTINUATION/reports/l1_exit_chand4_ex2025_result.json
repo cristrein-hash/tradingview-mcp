@@ -1,0 +1,173 @@
+{
+  "H": 300,
+  "sets": {
+    "FINAL-24": {
+      "ALL": {
+        "A": {
+          "n": 24,
+          "sumR": 48.0,
+          "WR": 75,
+          "maxDD_R": -3.0,
+          "streak": 3,
+          "ret_DD": 16.0
+        },
+        "CHAND_4": {
+          "n": 24,
+          "sumR": 52.2,
+          "WR": 79,
+          "maxDD_R": -1.6,
+          "streak": 1,
+          "ret_DD": 32.2
+        }
+      },
+      "2025": {
+        "A": {
+          "n": 10,
+          "sumR": 26.0,
+          "WR": 90,
+          "maxDD_R": -1.0,
+          "streak": 1,
+          "ret_DD": 26.0
+        },
+        "CHAND_4": {
+          "n": 10,
+          "sumR": 35.5,
+          "WR": 80,
+          "maxDD_R": -1.0,
+          "streak": 1,
+          "ret_DD": 35.5
+        }
+      },
+      "EX-2025": {
+        "A": {
+          "n": 14,
+          "sumR": 22.0,
+          "WR": 64,
+          "maxDD_R": -2.0,
+          "streak": 2,
+          "ret_DD": 11.0
+        },
+        "CHAND_4": {
+          "n": 14,
+          "sumR": 16.7,
+          "WR": 79,
+          "maxDD_R": -1.0,
+          "streak": 1,
+          "ret_DD": 16.7
+        }
+      }
+    },
+    "SCANNER-31-V1": {
+      "ALL": {
+        "A": {
+          "n": 31,
+          "sumR": 37.0,
+          "WR": 55,
+          "maxDD_R": -4.0,
+          "streak": 4,
+          "ret_DD": 9.2
+        },
+        "CHAND_4": {
+          "n": 31,
+          "sumR": 44.9,
+          "WR": 58,
+          "maxDD_R": -3.3,
+          "streak": 2,
+          "ret_DD": 13.5
+        }
+      },
+      "2025": {
+        "A": {
+          "n": 12,
+          "sumR": 24.0,
+          "WR": 75,
+          "maxDD_R": -2.0,
+          "streak": 2,
+          "ret_DD": 12.0
+        },
+        "CHAND_4": {
+          "n": 12,
+          "sumR": 33.6,
+          "WR": 67,
+          "maxDD_R": -2.7,
+          "streak": 2,
+          "ret_DD": 12.4
+        }
+      },
+      "EX-2025": {
+        "A": {
+          "n": 19,
+          "sumR": 13.0,
+          "WR": 42,
+          "maxDD_R": -3.0,
+          "streak": 3,
+          "ret_DD": 4.3
+        },
+        "CHAND_4": {
+          "n": 19,
+          "sumR": 11.3,
+          "WR": 53,
+          "maxDD_R": -2.5,
+          "streak": 2,
+          "ret_DD": 4.6
+        }
+      }
+    },
+    "ESTUDO-34": {
+      "ALL": {
+        "A": {
+          "n": 34,
+          "sumR": 38.0,
+          "WR": 53,
+          "maxDD_R": -4.0,
+          "streak": 4,
+          "ret_DD": 9.5
+        },
+        "CHAND_4": {
+          "n": 34,
+          "sumR": 43.0,
+          "WR": 56,
+          "maxDD_R": -4.3,
+          "streak": 3,
+          "ret_DD": 9.9
+        }
+      },
+      "2025": {
+        "A": {
+          "n": 13,
+          "sumR": 23.0,
+          "WR": 69,
+          "maxDD_R": -2.0,
+          "streak": 2,
+          "ret_DD": 11.5
+        },
+        "CHAND_4": {
+          "n": 13,
+          "sumR": 32.6,
+          "WR": 62,
+          "maxDD_R": -3.7,
+          "streak": 2,
+          "ret_DD": 8.8
+        }
+      },
+      "EX-2025": {
+        "A": {
+          "n": 21,
+          "sumR": 15.0,
+          "WR": 43,
+          "maxDD_R": -4.0,
+          "streak": 4,
+          "ret_DD": 3.8
+        },
+        "CHAND_4": {
+          "n": 21,
+          "sumR": 10.5,
+          "WR": 52,
+          "maxDD_R": -3.5,
+          "streak": 3,
+          "ret_DD": 3.0
+        }
+      }
+    }
+  }
+}
