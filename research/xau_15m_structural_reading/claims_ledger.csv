@@ -18,3 +18,4 @@ SKIP_P_S1,0.53,p S1 arredondado,skip_family_discovery.py,live_fireable_candidate
 SKIP_P_S5,0.62,p S5 arredondado,skip_family_discovery.py,live_fireable_candidates.csv,skip_family_discovery_result.json,RAW 15M via F0,VERIFIED_DERIVED,REVIEW_LAYER,=0.623
 SKIP_BASE_N,166,n da base causal live-fireable,skip_family_discovery.py,live_fireable_candidates.csv,skip_family_discovery_result.json,RAW 15M via F0,VERIFIED_DERIVED,REVIEW_LAYER,120L/46W
 SKIP_POOL,71.4,pct losers pool BEAR sem S2a (comparador correto S3-only),DA agent (sonda),live_fireable_candidates.csv,F0_?,RAW 15M via F0,VERIFIED_DERIVED,REVIEW_LAYER,40L/56
+P3A_PREREG,0,Fase 3A BEAR-only composite preregistrado NAO testado (universo n=78 congelado sha 44012c97308ed910),freeze_bear_universe.py,skip_family_discovery_ledger.csv,bear_universe_frozen.json + XAU_15M_BEAR_ONLY_SKIP_COMPOSITE_PREREG.md,RAW 15M via F0 + base causal,VERIFIED_DERIVED,NOT_FOR_DECISION,PREREG_ONLY_NOT_TESTED
