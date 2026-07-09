@@ -3,7 +3,8 @@
 **Versão:** 1.0 · **Data:** 2026-07-09 · **Protocolo:** `XAU_15M_RESEARCH_EXECUTION_PROTOCOL_V1 = ACTIVE`
 
 ## 1. Status
-**`PREREG_ONLY_NOT_TESTED`** · **`PASS_READY_FOR_TEST_AUTHORIZATION`** (recovery 2026-07-09; era `BLOCKED_MISSING_N83`).
+**`BLOCKED_BASE_EVENT_SELECTION_LOOKAHEAD`** (SL/exit review 2026-07-09; era `PASS_READY_FOR_TEST_AUTHORIZATION` pós-recovery).
+**🚨 SL/EXIT REVIEW (FINAL DA = FAIL_LEAK_OR_NOT_REPRODUCIBLE):** a base N96 tem **event-selection lookahead** — 94/96 entries disparam ANTES da confirmação do pivô de demanda (zz r=6 confirma com rally FUTURO de 6 ATR; mediana 20 barras cedo; 0 lower-lows entre entry e confirmação = survivorship). Análogo live-fireable ≈ **N173 · WR 28,3% · +23R** vs backtest 54,2%/+112R. Os headline numbers (62,7%/+125R) **não são reproduzíveis por executor causal**. Achados condicionais que transferem p/ base reparada: SL V1 domina alternativas; 3R fixo = perfil FN; 4R/timestop = beta. Docs: `XAU_15M_N83_SL_EXIT_{FINAL_DA,STATUS_UPDATE}.md` + `xau_15m_n83_confirmation_leak_check_result.json`. **Pré-condição de qualquer teste futuro: reparar a base (entries gated em conf_i OU universo live-fireable ~173) — decisão do Cris.**
 **RECOVERY:** o Cris corrigiu o diagnóstico — o PDF do Desktop (`Sistema_Agentico_Trading_XAU_LONG_PT.pdf`, 2026-07-08, tabela "A SUITE APROVADA") reporta **Markup-Demanda + Filtro Capitulação · 15M · 96 → 83 · 62,7% · +125R**. Usando o PDF **só como ponte de proveniência** (não validação), a fonte real foi recuperada e verificada mecanicamente do repo (`reports/n83_source_recovery_verify.py` → `SOURCE_RECOVERED`): **"Filter N83" = INTRA-BEAR CAPITULATION FILTER sobre o N96** (96−13 cortados=83 · 52W/31L=62,65%≈62,7% · 52×3−31×1=+125R — match exato nas 3 métricas). Nenhum backtest novo corrido.
 
 ## 2. Objetivo

@@ -1,0 +1,31 @@
+{
+  "n": 83,
+  "exit_classification": "FIXED_3R (tgt=ent+3*risk) + horizon 1440 bars (sem time-stop explícito)",
+  "exit_source": "entry_engine_master_20260707.py linhas 76-80",
+  "outcome_derivation": "first-touch forward j+1..j+1440; SL checado ANTES do target no MESMO bar (conservador)",
+  "outcomes": {
+    "SL": 31,
+    "TGT": 52,
+    "TIME": 0
+  },
+  "timeouts": 0,
+  "plus3_minus1_is_executable": true,
+  "both_touch_same_bar_ids": [],
+  "both_touch_count": 0,
+  "uses_mfe_future": "NÃO (MFE nunca é trigger)",
+  "visual_hindsight": "NÃO",
+  "known_before_trade": "SIM — tgt fixado no fecho do bar de entry (ent, risk conhecidos)",
+  "executable_live": "SIM — ordem limite no target + stop no SL; sem decisão discricionária",
+  "time_in_trade_bars": {
+    "min": 9,
+    "p25": 36,
+    "median": 61,
+    "p75": 144,
+    "max": 535
+  },
+  "notes": [
+    "+125R do PDF = 52*3-31*1 sob este modelo; com 0 timeouts o scoring +3/-1 = modelo executável first-touch",
+    "caveat de execução restante: slippage/spread/gap (stress na Fase 9), não estrutura do modelo"
+  ],
+  "verdict": "EXIT_CAUSAL_FIXED3R_OK"
+}

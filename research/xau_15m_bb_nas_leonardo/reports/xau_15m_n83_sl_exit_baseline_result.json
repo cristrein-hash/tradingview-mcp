@@ -1,0 +1,145 @@
+{
+  "model": "executável first-touch (== +3/-1; 0 timeouts, 0 both-touch)",
+  "N96": {
+    "n": 96,
+    "W": 52,
+    "L": 44,
+    "WR": 54.2,
+    "sumR": 112.0,
+    "PF": 3.55,
+    "avgR": 1.17,
+    "medianR": 3.0,
+    "maxDD_R": -6.0,
+    "streak": 6
+  },
+  "N83": {
+    "n": 83,
+    "W": 52,
+    "L": 31,
+    "WR": 62.7,
+    "sumR": 125.0,
+    "PF": 5.03,
+    "avgR": 1.51,
+    "medianR": 3.0,
+    "maxDD_R": -4.0,
+    "streak": 4
+  },
+  "delta_filter": "remove 13 losers/0 winners = +13R e -13 trades",
+  "per_year_n83": {
+    "2025": {
+      "n": 44,
+      "W": 29,
+      "L": 15,
+      "WR": 65.9,
+      "sumR": 72.0,
+      "PF": 5.8,
+      "avgR": 1.64,
+      "medianR": 3.0,
+      "maxDD_R": -4.0,
+      "streak": 4
+    },
+    "2026": {
+      "n": 39,
+      "W": 23,
+      "L": 16,
+      "WR": 59.0,
+      "sumR": 53.0,
+      "PF": 4.31,
+      "avgR": 1.36,
+      "medianR": 3.0,
+      "maxDD_R": -4.0,
+      "streak": 4
+    }
+  },
+  "per_regime_n83": {
+    "BEAR": {
+      "n": 24,
+      "W": 16,
+      "L": 8,
+      "WR": 66.7,
+      "sumR": 40.0,
+      "PF": 6.0,
+      "avgR": 1.67,
+      "medianR": 3.0,
+      "maxDD_R": -3.0,
+      "streak": 3
+    },
+    "BULL": {
+      "n": 38,
+      "W": 25,
+      "L": 13,
+      "WR": 65.8,
+      "sumR": 62.0,
+      "PF": 5.77,
+      "avgR": 1.63,
+      "medianR": 3.0,
+      "maxDD_R": -2.0,
+      "streak": 2
+    },
+    "RANGE": {
+      "n": 21,
+      "W": 11,
+      "L": 10,
+      "WR": 52.4,
+      "sumR": 23.0,
+      "PF": 3.3,
+      "avgR": 1.1,
+      "medianR": 3.0,
+      "maxDD_R": -4.0,
+      "streak": 4
+    }
+  },
+  "per_family_losers_n83": {
+    "C": {
+      "n": 12,
+      "W": 0,
+      "L": 12,
+      "WR": 0.0,
+      "sumR": -12.0,
+      "PF": 0.0,
+      "avgR": -1.0,
+      "medianR": -1.0,
+      "maxDD_R": -12.0,
+      "streak": 12
+    },
+    "D": {
+      "n": 12,
+      "W": 0,
+      "L": 12,
+      "WR": 0.0,
+      "sumR": -12.0,
+      "PF": 0.0,
+      "avgR": -1.0,
+      "medianR": -1.0,
+      "maxDD_R": -12.0,
+      "streak": 12
+    },
+    "MGMT": {
+      "n": 3,
+      "W": 0,
+      "L": 3,
+      "WR": 0.0,
+      "sumR": -3.0,
+      "PF": 0.0,
+      "avgR": -1.0,
+      "medianR": -1.0,
+      "maxDD_R": -3.0,
+      "streak": 3
+    },
+    "R": {
+      "n": 4,
+      "W": 0,
+      "L": 4,
+      "WR": 0.0,
+      "sumR": -4.0,
+      "PF": 0.0,
+      "avgR": -1.0,
+      "medianR": -1.0,
+      "maxDD_R": -4.0,
+      "streak": 4
+    }
+  },
+  "leg_state": "todos = MARKUP demand (unidade da base; per-leg_state trivial)",
+  "time_in_trade": "median 61 bars / p75 144 / max 535 (audit F4)",
+  "verdict": "BASELINE_REPRODUCED"
+}

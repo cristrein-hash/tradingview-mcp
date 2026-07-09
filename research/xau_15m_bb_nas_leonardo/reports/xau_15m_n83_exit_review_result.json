@@ -1,0 +1,134 @@
+{
+  "design": "pré-registrado; SL atual V1 fixo; muda SÓ exit",
+  "alts": {
+    "B_fixed_2R": {
+      "n": 83,
+      "W": 61,
+      "L": 22,
+      "WR": 73.5,
+      "sumR": 100.0,
+      "PF": 5.55,
+      "avgR": 1.2,
+      "medianR": 2.0,
+      "maxDD_R": -4.0,
+      "streak": 4,
+      "avg_bars": 62.9,
+      "per_year": {
+        "2025": {
+          "n": 44,
+          "WR": 75.0,
+          "sumR": 55.0
+        },
+        "2026": {
+          "n": 39,
+          "WR": 71.8,
+          "sumR": 45.0
+        }
+      }
+    },
+    "C_fixed_3R_current": {
+      "n": 83,
+      "W": 52,
+      "L": 31,
+      "WR": 62.7,
+      "sumR": 125.0,
+      "PF": 5.03,
+      "avgR": 1.51,
+      "medianR": 3.0,
+      "maxDD_R": -4.0,
+      "streak": 4,
+      "avg_bars": 94.5,
+      "per_year": {
+        "2025": {
+          "n": 44,
+          "WR": 65.9,
+          "sumR": 72.0
+        },
+        "2026": {
+          "n": 39,
+          "WR": 59.0,
+          "sumR": 53.0
+        }
+      }
+    },
+    "D_fixed_4R": {
+      "n": 83,
+      "W": 49,
+      "L": 34,
+      "WR": 59.0,
+      "sumR": 162.0,
+      "PF": 5.76,
+      "avgR": 1.95,
+      "medianR": 4.0,
+      "maxDD_R": -5.0,
+      "streak": 5,
+      "avg_bars": 121.8,
+      "per_year": {
+        "2025": {
+          "n": 44,
+          "WR": 61.4,
+          "sumR": 91.0
+        },
+        "2026": {
+          "n": 39,
+          "WR": 56.4,
+          "sumR": 71.0
+        }
+      }
+    },
+    "F_timestop_288b": {
+      "n": 83,
+      "W": 41,
+      "L": 42,
+      "WR": 49.4,
+      "sumR": 211.6,
+      "PF": 6.04,
+      "avgR": 2.55,
+      "medianR": -1.0,
+      "maxDD_R": -6.0,
+      "streak": 6,
+      "avg_bars": 187.3,
+      "per_year": {
+        "2025": {
+          "n": 44,
+          "WR": 50.0,
+          "sumR": 110.5
+        },
+        "2026": {
+          "n": 39,
+          "WR": 48.7,
+          "sumR": 101.1
+        }
+      }
+    },
+    "H_3R_cap288": {
+      "n": 83,
+      "W": 52,
+      "L": 31,
+      "WR": 62.7,
+      "sumR": 121.0,
+      "PF": 4.9,
+      "avgR": 1.46,
+      "medianR": 3.0,
+      "maxDD_R": -4.0,
+      "streak": 4,
+      "avg_bars": 91.0,
+      "per_year": {
+        "2025": {
+          "n": 44,
+          "WR": 65.9,
+          "sumR": 69.4
+        },
+        "2026": {
+          "n": 39,
+          "WR": 59.0,
+          "sumR": 51.6
+        }
+      }
+    }
+  },
+  "not_tested": {
+    "E_partial_runner": "sem base causal pré-registrada (regra de parcial não definida) — NOT_TESTED",
+    "G_structure_bb_nas_exit": "fonte causal de exit estrutural não definida no prereg — NOT_TESTED"
+  }
+}

@@ -1,0 +1,2 @@
+# N83 EXIT REVIEW (F7) — relatório
+**2026-07-09.** (JSON: `xau_15m_n83_exit_review_result.json`) 2R=100R/WR73,5 · **3R atual=125R/WR62,7/stk4** · 4R=162R/WR59/stk5 · timestop288=211,6R/WR49,4/stk6/1negQ · 3R+cap288=121R. E(partial)/G(estrutural) = NOT_TESTED (sem base causal pré-registrada, declarado). Decisão condicional: `KEEP_FIXED_3R` (mandato do programa 15M; perfil FN); 4R/timestop = EXPLORATORY (beta de exposição: random-hold médio +144 > 125).

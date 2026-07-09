@@ -1,0 +1,135 @@
+{
+  "design": "pré-registrado; target=ent+3*(ent-sl_alt); first-touch SL-first; horizon 1440",
+  "alts": {
+    "A_current_demand_0.1ATR": {
+      "n": 83,
+      "W": 52,
+      "L": 31,
+      "WR": 62.7,
+      "sumR": 125.0,
+      "PF": 5.03,
+      "avgR": 1.51,
+      "medianR": 3.0,
+      "maxDD_R": -4.0,
+      "streak": 4,
+      "skipped_degenerate": 0,
+      "per_year": {
+        "2025": {
+          "n": 44,
+          "WR": 65.9,
+          "sumR": 72.0
+        },
+        "2026": {
+          "n": 39,
+          "WR": 59.0,
+          "sumR": 53.0
+        }
+      }
+    },
+    "C_swing12_0.1ATR": {
+      "n": 83,
+      "W": 50,
+      "L": 33,
+      "WR": 60.2,
+      "sumR": 117.0,
+      "PF": 4.55,
+      "avgR": 1.41,
+      "medianR": 3.0,
+      "maxDD_R": -5.0,
+      "streak": 5,
+      "skipped_degenerate": 0,
+      "per_year": {
+        "2025": {
+          "n": 44,
+          "WR": 61.4,
+          "sumR": 64.0
+        },
+        "2026": {
+          "n": 39,
+          "WR": 59.0,
+          "sumR": 53.0
+        }
+      }
+    },
+    "D_atr1.5_entry": {
+      "n": 83,
+      "W": 41,
+      "L": 42,
+      "WR": 49.4,
+      "sumR": 81.0,
+      "PF": 2.93,
+      "avgR": 0.98,
+      "medianR": -1.0,
+      "maxDD_R": -5.0,
+      "streak": 5,
+      "skipped_degenerate": 0,
+      "per_year": {
+        "2025": {
+          "n": 44,
+          "WR": 52.3,
+          "sumR": 48.0
+        },
+        "2026": {
+          "n": 39,
+          "WR": 46.2,
+          "sumR": 33.0
+        }
+      }
+    },
+    "E_hybrid_min_demand_swing": {
+      "n": 83,
+      "W": 51,
+      "L": 32,
+      "WR": 61.4,
+      "sumR": 121.0,
+      "PF": 4.78,
+      "avgR": 1.46,
+      "medianR": 3.0,
+      "maxDD_R": -5.0,
+      "streak": 5,
+      "skipped_degenerate": 0,
+      "per_year": {
+        "2025": {
+          "n": 44,
+          "WR": 63.6,
+          "sumR": 68.0
+        },
+        "2026": {
+          "n": 39,
+          "WR": 59.0,
+          "sumR": 53.0
+        }
+      }
+    },
+    "F_wider_demand_0.5ATR": {
+      "n": 83,
+      "W": 49,
+      "L": 34,
+      "WR": 59.0,
+      "sumR": 113.0,
+      "PF": 4.32,
+      "avgR": 1.36,
+      "medianR": 3.0,
+      "maxDD_R": -5.0,
+      "streak": 5,
+      "skipped_degenerate": 0,
+      "per_year": {
+        "2025": {
+          "n": 44,
+          "WR": 61.4,
+          "sumR": 64.0
+        },
+        "2026": {
+          "n": 39,
+          "WR": 56.4,
+          "sumR": 49.0
+        }
+      }
+    }
+  },
+  "notes": [
+    "R normalizado ao risco de CADA alternativa (comparável em unidades de risco)",
+    "nenhum SL usa low futuro; swing12 = lows ATÉ o entry j (inclusive)",
+    "TIME nas alternativas largas = fecho no cutoff (executável)"
+  ]
+}

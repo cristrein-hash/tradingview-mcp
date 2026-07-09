@@ -1,0 +1,3 @@
+# N83 SL AUDIT (F3) — relatório
+**2026-07-09.** SL = `demand_low − 0,1·ATR[demand_bar]` (STRUCTURAL_DEMAND_SL, V1). Preço causal; 0 missing; 0 gap-through; dist mediana 2,65 ATR (JSON: `xau_15m_n83_sl_audit_result.json`).
+**⚠️ CORREÇÃO (FINAL DA):** o campo `known_before_trade: SIM (pivô confirmado ci<j)` do JSON está **ERRADO** — o teste usado foi `i<j`; o correto é `conf_i<=j`, e **94/96 entries disparam ANTES da confirmação do pivô** (`xau_15m_n83_confirmation_leak_check_result.json`). O PREÇO do SL é causal; a SELEÇÃO do evento não é. Verdict corrigido: `SL_PRICE_CAUSAL_EVENT_SELECTION_LEAKED`.

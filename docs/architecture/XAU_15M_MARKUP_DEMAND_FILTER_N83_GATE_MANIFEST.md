@@ -31,4 +31,4 @@ DA: `research/xau_15m_bb_nas_leonardo/reports/XAU_15M_MARKUP_DEMAND_FILTER_N83_P
 ## Confirmação negativa
 Nenhum backtest · nenhuma produção · nenhum Telegram · nenhum broker · nenhum runtime/strategy_rules/monitor · nenhum chart/plot/screenshot.
 
-**GATE: PRONTO PARA AUTORIZAÇÃO (PASS_READY_FOR_TEST_AUTHORIZATION). Nenhum teste corre sem autorização explícita do Cris.**
+**GATE: 🚨 RE-BLOQUEADO (2026-07-09, SL/exit review) = `BLOCKED_BASE_EVENT_SELECTION_LOOKAHEAD`.** O FINAL DA do bloco SL/exit (FAIL_LEAK_OR_NOT_REPRODUCIBLE) mediu que **94/96 entries da base N96 disparam antes da confirmação do pivô** (zz r=6 = rally futuro de 6 ATR; survivorship 0/94) → headline 62,7%/+125R não-reproduzível por executor causal (live-fireable ≈ N173/28,3%/+23R). Achados SL/exit (V1 domina; 3R fixo FN; 4R/timestop=beta) = condicionais, transferem p/ base reparada. **Pré-condição: reparar a base (conf_i-gated OU universo ~173) — decisão do Cris.** Docs `research/.../reports/XAU_15M_N83_SL_EXIT_{FINAL_DA,STATUS_UPDATE}.md`.

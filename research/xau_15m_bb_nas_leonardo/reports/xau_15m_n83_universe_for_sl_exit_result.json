@@ -1,0 +1,37 @@
+{
+  "N96": 96,
+  "N83": 83,
+  "cut_ids": [
+    24,
+    25,
+    55,
+    56,
+    57,
+    58,
+    59,
+    66,
+    67,
+    79,
+    83,
+    84,
+    85
+  ],
+  "cut_all_losers": true,
+  "predicate": "SKIP se macro_regime==BEAR (v5 causal) e 1D_px_vs_ema>=0",
+  "unit": "markup-demand episode -> entry causal reclaim EMA21 (congelada)",
+  "regimes_n96": {
+    "BULL": 38,
+    "BEAR": 37,
+    "RANGE": 21
+  },
+  "regimes_n83": {
+    "BULL": 38,
+    "BEAR": 24,
+    "RANGE": 21
+  },
+  "timeout_ids_n96": [],
+  "timeouts_in_n83": [],
+  "families_mapped_losers": 44,
+  "byte_match": "PASS (asserts na lib: t/ent/sl/tgt/out 96/96)",
+  "verdict": "UNIVERSE_FROZEN"
+}

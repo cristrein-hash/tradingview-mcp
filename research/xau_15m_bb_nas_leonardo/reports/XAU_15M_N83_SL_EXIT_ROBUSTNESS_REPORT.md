@@ -1,0 +1,2 @@
+# N83 SL/EXIT ROBUSTNESS (F9) — relatório
+**2026-07-09.** (JSON: `xau_15m_n83_sl_exit_robustness_result.json`) 3R: 0 trimestres neg · jack −3 · slippage −5R (light/heavy) · delay-1-bar inalterado. 4R/timestop: mais sumR mas WR/stk/DD piores; excesso = beta de exposição (null random-hold médio +144). Boundary do filtro ±0,5 = **robustez-por-vazio** (0 trades na janela; não-informativo). 0 gap-through = medido mas sample-limited (114 gaps ≥24h na série; risco de cauda residual). 21/83 trades sobrepostos (máx 3 concorrentes) — exposição simultânea até 3R não modelada.
