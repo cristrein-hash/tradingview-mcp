@@ -1,0 +1,26 @@
+{
+  "BULL": {
+    "n": 45,
+    "losers": 25,
+    "loser_rate": 0.56
+  },
+  "BEAR": {
+    "n": 78,
+    "losers": 61,
+    "loser_rate": 0.78
+  },
+  "RANGE": {
+    "n": 43,
+    "losers": 34,
+    "loser_rate": 0.79
+  },
+  "S4_covered": 0,
+  "S1_in_BULL": {
+    "marked": 28,
+    "losers": 17
+  },
+  "S3_only_vs_S2a": {
+    "n": 35,
+    "losers": 30
+  }
+}

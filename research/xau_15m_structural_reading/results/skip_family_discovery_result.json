@@ -1,0 +1,178 @@
+{
+  "prereg": "XAU_15M_SKIP_FAMILY_DISCOVERY_PREREG.md",
+  "base_sha16": "6d1d8cb1e731adce",
+  "base": {
+    "n": 166,
+    "losers": 120,
+    "winners": 46
+  },
+  "s2b_quartil_descritivo": 3.3,
+  "familias": {
+    "F_S1": {
+      "marked": 65,
+      "losers_marked": 45,
+      "winners_marked": 20,
+      "by_macro": {
+        "BULL": 28,
+        "BEAR": 13,
+        "RANGE": 24
+      }
+    },
+    "F_S2a": {
+      "marked": 22,
+      "losers_marked": 21,
+      "winners_marked": 1,
+      "by_macro": {
+        "BULL": 0,
+        "BEAR": 22,
+        "RANGE": 0
+      }
+    },
+    "F_S2b": {
+      "marked": 20,
+      "losers_marked": 18,
+      "winners_marked": 2,
+      "by_macro": {
+        "BULL": 0,
+        "BEAR": 20,
+        "RANGE": 0
+      }
+    },
+    "F_S3": {
+      "marked": 46,
+      "losers_marked": 40,
+      "winners_marked": 6,
+      "by_macro": {
+        "BULL": 0,
+        "BEAR": 46,
+        "RANGE": 0
+      }
+    },
+    "F_S4": {
+      "marked": 0,
+      "losers_marked": 0,
+      "winners_marked": 0,
+      "by_macro": {
+        "BULL": 0,
+        "BEAR": 0,
+        "RANGE": 0
+      }
+    },
+    "F_S5": {
+      "marked": 39,
+      "losers_marked": 31,
+      "winners_marked": 8,
+      "by_macro": {
+        "BULL": 0,
+        "BEAR": 0,
+        "RANGE": 39
+      }
+    }
+  },
+  "nulls_p_estratificado": {
+    "F_S1": 0.531,
+    "F_S2a": 0.0155,
+    "F_S2b": 0.1215,
+    "F_S3": 0.025,
+    "F_S4": null,
+    "F_S5": 0.623
+  },
+  "overlap": {
+    "F_S1∩F_S2a": {
+      "jaccard": 0.1,
+      "both": 8,
+      "only_x": 57,
+      "only_y": 14
+    },
+    "F_S1∩F_S2b": {
+      "jaccard": 0.09,
+      "both": 7,
+      "only_x": 58,
+      "only_y": 13
+    },
+    "F_S1∩F_S3": {
+      "jaccard": 0.02,
+      "both": 2,
+      "only_x": 63,
+      "only_y": 44
+    },
+    "F_S1∩F_S4": {
+      "jaccard": 0.0,
+      "both": 0,
+      "only_x": 65,
+      "only_y": 0
+    },
+    "F_S1∩F_S5": {
+      "jaccard": 0.3,
+      "both": 24,
+      "only_x": 41,
+      "only_y": 15
+    },
+    "F_S2a∩F_S2b": {
+      "jaccard": 0.68,
+      "both": 17,
+      "only_x": 5,
+      "only_y": 3
+    },
+    "F_S2a∩F_S3": {
+      "jaccard": 0.19,
+      "both": 11,
+      "only_x": 11,
+      "only_y": 35
+    },
+    "F_S2a∩F_S4": {
+      "jaccard": 0.0,
+      "both": 0,
+      "only_x": 22,
+      "only_y": 0
+    },
+    "F_S2a∩F_S5": {
+      "jaccard": 0.0,
+      "both": 0,
+      "only_x": 22,
+      "only_y": 39
+    },
+    "F_S2b∩F_S3": {
+      "jaccard": 0.18,
+      "both": 10,
+      "only_x": 10,
+      "only_y": 36
+    },
+    "F_S2b∩F_S4": {
+      "jaccard": 0.0,
+      "both": 0,
+      "only_x": 20,
+      "only_y": 0
+    },
+    "F_S2b∩F_S5": {
+      "jaccard": 0.0,
+      "both": 0,
+      "only_x": 20,
+      "only_y": 39
+    },
+    "F_S3∩F_S4": {
+      "jaccard": 0.0,
+      "both": 0,
+      "only_x": 46,
+      "only_y": 0
+    },
+    "F_S3∩F_S5": {
+      "jaccard": 0.0,
+      "both": 0,
+      "only_x": 46,
+      "only_y": 39
+    },
+    "F_S4∩F_S5": {
+      "jaccard": 0.0,
+      "both": 0,
+      "only_x": 0,
+      "only_y": 39
+    }
+  },
+  "s2a_vs_s2b_losers": {
+    "S2a_only_losers": 4,
+    "S2b_only_losers": 1,
+    "both": 17
+  },
+  "note": "MEDIDOR + marcações descritivas — nunca regra; leitura = READER; caminho = CRIS"
+}
