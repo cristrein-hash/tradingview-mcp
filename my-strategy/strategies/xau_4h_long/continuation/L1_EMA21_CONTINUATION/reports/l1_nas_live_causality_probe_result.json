@@ -1,0 +1,39 @@
+{
+  "part1_ledger": {
+    "n_entries": 27,
+    "distinct_bar_times": 27,
+    "dedup_ok": true,
+    "monotonic_increasing": false,
+    "gap_all_multiple_of_4H": false,
+    "gap_min_bars": -20387,
+    "gap_max_bars": 20389,
+    "persist_after_bar_close_ok": true,
+    "persist_violations": [],
+    "nas_values_are_real_floats": true,
+    "first_bar_iso": "2026-06-16T10:00:00",
+    "last_bar_iso": "2026-06-23T06:00:00",
+    "sample_head": {
+      "bar_time": 1781604000,
+      "nas_dist": 0.7492028759591292,
+      "persisted_at": "2026-06-16T15:55:12.306095+00:00"
+    },
+    "sample_tail": {
+      "bar_time": 1782194400,
+      "nas_dist": -2.907466009808442,
+      "persisted_at": "2026-06-23T10:05:11.610955+00:00"
+    },
+    "status": "INCONSISTENT"
+  },
+  "part2_mcp_readonly": {
+    "attempted": true,
+    "chart_symbol": "PEPPERSTONE:XAUUSD",
+    "chart_tf": "240",
+    "returns_per_bar_series": false,
+    "distinct_timestamps": false,
+    "timestamps_are_4H_spaced": null,
+    "has_dist_field": true,
+    "series_sample": [],
+    "can_get_i_minus_1_direct": false,
+    "status": "SERIES_INCOMPLETE"
+  }
+}
