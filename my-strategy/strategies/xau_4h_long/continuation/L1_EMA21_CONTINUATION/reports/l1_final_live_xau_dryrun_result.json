@@ -1,0 +1,51 @@
+{
+  "phase": "final_live_xau_dryrun",
+  "chart_prep": {
+    "symbol_before": "PEPPERSTONE:XAUUSD",
+    "tf_before": "60",
+    "set_tf": true,
+    "symbol_after": "PEPPERSTONE:XAUUSD",
+    "tf_after": "240"
+  },
+  "snapshot_attempts": [],
+  "snapshot_meta": {
+    "symbol": "PEPPERSTONE:XAUUSD",
+    "timeframe": "240",
+    "n_ohlcv": 300,
+    "n_nas_series": 8,
+    "n_rsi_series": 8,
+    "n_ob_zones": 0
+  },
+  "dry_run": {
+    "eval_bar_time": 1783548000,
+    "previous_closed_bar_time": 1783533600,
+    "forming_bar_excluded": true,
+    "bar_closed_confirmed": true,
+    "nas_live_n_bars": 8,
+    "nas_shift1_source": null,
+    "nas_shift1_value": null,
+    "nas_shift1_ledger_status": "not_in_ledger",
+    "state": "blocked_missing_nas_shift1_ledger",
+    "operational": false,
+    "reason": "sem registro de ledger válido p/ i-1 (1783533600); status=not_in_ledger"
+  },
+  "state_bucket": "blocked_missing_nas_shift1_ledger",
+  "risk_slot_state": {
+    "open_l1_positions": 0,
+    "max_open_l1_positions": 2,
+    "aggregate_open_risk_eur": 0,
+    "next_position_risk_eur": 100.0,
+    "max_total_l1_open_risk_eur": 200.0,
+    "duplicate_same_bar_status": "clear",
+    "capacity_decision": "ALLOW_MANUAL_APPROVAL"
+  },
+  "would_send_payload": null,
+  "would_send": false,
+  "verdict": "PASS_READY_FOR_GO_LIVE_DECISION",
+  "telegram_tripwire": {
+    "notify_called": false,
+    "subprocess_run_called": false,
+    "telegram_zero": true
+  },
+  "production_authorized": false
+}

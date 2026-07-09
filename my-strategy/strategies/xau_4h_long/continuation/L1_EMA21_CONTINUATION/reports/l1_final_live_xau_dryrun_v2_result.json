@@ -1,0 +1,61 @@
+{
+  "phase": "final_live_xau_dryrun_v2",
+  "chart_prep": {
+    "symbol": "PEPPERSTONE:XAUUSD",
+    "tf": "240"
+  },
+  "snapshot_attempts": [],
+  "snapshot_meta": {
+    "symbol": "PEPPERSTONE:XAUUSD",
+    "timeframe": "240",
+    "n_ohlcv": 300,
+    "n_nas_series": 8,
+    "n_ob_zones": 13
+  },
+  "cold_real_ledger": {
+    "state": "no_candidate",
+    "operational": false,
+    "eval_bar_time": 1783562400,
+    "previous_closed_bar_time": 1783548000,
+    "nas_shift1_ledger_status": "ok"
+  },
+  "warm_full_gate": {
+    "seeded_i_minus_1": {
+      "bar_time": 1783548000,
+      "nas_dist": -0.8430532940248814
+    },
+    "eval_bar_time": 1783562400,
+    "forming_bar_excluded": true,
+    "bar_closed_confirmed": true,
+    "nas_shift1_source": "ledger_frozen",
+    "nas_shift1_value": -0.8430532940248814,
+    "nas_shift1_ledger_status": "ok",
+    "state": "no_candidate",
+    "operational": false,
+    "reason": "regime_d1_not_BULL",
+    "rsi_vs_ma": -2.3,
+    "entry": 4082.15,
+    "sl": null,
+    "target": null,
+    "gate_ran_end_to_end": true
+  },
+  "warm_state_bucket": "no_candidate",
+  "risk_slot_state": {
+    "open_l1_positions": 0,
+    "max_open_l1_positions": 2,
+    "aggregate_open_risk_eur": 0,
+    "next_position_risk_eur": 100,
+    "max_total_l1_open_risk_eur": 200.0,
+    "duplicate_same_bar_status": "clear",
+    "capacity_decision": "ALLOW_MANUAL_APPROVAL"
+  },
+  "would_send_payload": null,
+  "would_send": false,
+  "verdict": "PASS_READY_FOR_GO_LIVE_DECISION",
+  "telegram_tripwire": {
+    "notify_called": false,
+    "subprocess_run_called": false,
+    "telegram_zero": true
+  },
+  "production_authorized": false
+}
