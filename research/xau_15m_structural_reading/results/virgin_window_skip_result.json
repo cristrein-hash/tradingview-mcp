@@ -1,0 +1,111 @@
+{
+  "prereg": "XAU_15M_BEAR_ONLY_SKIP_VIRGIN_WINDOW_2024_25_PREREG.md",
+  "consistency_check": {
+    "known_166": 166,
+    "reimpl_n": 166,
+    "match_exact_t": 166,
+    "match_rate_vs_known": 1.0
+  },
+  "frozen": {
+    "window": [
+      "2024-07-01",
+      "2025-04-08"
+    ],
+    "n_candidates": 136,
+    "by_macro": {
+      "BULL": 86,
+      "BEAR": 17,
+      "RANGE": 33
+    },
+    "n_bear": 17,
+    "flags_frozen_before_outcomes": true,
+    "underpowered": false
+  },
+  "bear_resolved": {
+    "n": 17,
+    "L": 12,
+    "W": 5,
+    "TIME_excluded": 0
+  },
+  "composites": {
+    "A_S2a": {
+      "skipped": 5,
+      "losers_skipped": 4,
+      "winners_skipped": 1,
+      "losers_remaining": 8,
+      "winners_preserved": 4,
+      "skip_precision": 0.8,
+      "false_skip_rate": 0.2
+    },
+    "B_S3": {
+      "skipped": 2,
+      "losers_skipped": 1,
+      "winners_skipped": 1,
+      "losers_remaining": 11,
+      "winners_preserved": 4,
+      "skip_precision": 0.5,
+      "false_skip_rate": 0.2
+    },
+    "C_OR": {
+      "skipped": 7,
+      "losers_skipped": 5,
+      "winners_skipped": 2,
+      "losers_remaining": 7,
+      "winners_preserved": 3,
+      "skip_precision": 0.71,
+      "false_skip_rate": 0.4
+    },
+    "D_AND": {
+      "skipped": 0,
+      "losers_skipped": 0,
+      "winners_skipped": 0,
+      "losers_remaining": 12,
+      "winners_preserved": 5,
+      "skip_precision": null,
+      "false_skip_rate": 0.0
+    }
+  },
+  "overlap": {
+    "both": 0,
+    "S2a_only": 5,
+    "S3_only": 2,
+    "S3_only_losers": 1
+  },
+  "nulls_cluster_aware": {
+    "B_S3": 0.4925,
+    "C_OR": 0.2515
+  },
+  "per_week": {
+    "2024-W47": {
+      "n": 2,
+      "L": 0,
+      "skipped_C": 1
+    },
+    "2024-W48": {
+      "n": 4,
+      "L": 3,
+      "skipped_C": 1
+    },
+    "2024-W49": {
+      "n": 4,
+      "L": 4,
+      "skipped_C": 1
+    },
+    "2024-W50": {
+      "n": 3,
+      "L": 2,
+      "skipped_C": 3
+    },
+    "2024-W51": {
+      "n": 3,
+      "L": 2,
+      "skipped_C": 1
+    },
+    "2024-W52": {
+      "n": 1,
+      "L": 1,
+      "skipped_C": 0
+    }
+  },
+  "note": "ONE-SHOT; zero tuning; leitura = READER; verdict só após DA"
+}
