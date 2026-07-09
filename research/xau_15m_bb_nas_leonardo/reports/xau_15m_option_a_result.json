@@ -1,0 +1,102 @@
+{
+  "design": "prereg Opção A congelado (entries só de conf_i; janela 24 de conf_i)",
+  "n_universe": 97,
+  "risk_atr_median": 6.18,
+  "universe_panel": {
+    "n": 97,
+    "W": 36,
+    "L": 61,
+    "WR": 37.1,
+    "sumR": 47.0,
+    "PF": 1.77,
+    "avgR": 0.48,
+    "medianR": -1.0,
+    "maxDD_R": -18.0,
+    "streak": 17
+  },
+  "filter": {
+    "n_skip": 14,
+    "losers_cut": 14,
+    "winners_cut": 0
+  },
+  "kept_panel": {
+    "n": 83,
+    "W": 36,
+    "L": 47,
+    "WR": 43.4,
+    "sumR": 61.0,
+    "PF": 2.3,
+    "avgR": 0.73,
+    "medianR": -1.0,
+    "maxDD_R": -13.0,
+    "streak": 12
+  },
+  "kept_per_year": {
+    "2025": {
+      "n": 44,
+      "W": 22,
+      "L": 22,
+      "WR": 50.0,
+      "sumR": 44.0,
+      "PF": 3.0,
+      "avgR": 1.0,
+      "medianR": 3.0,
+      "maxDD_R": -7.0,
+      "streak": 7
+    },
+    "2026": {
+      "n": 39,
+      "W": 14,
+      "L": 25,
+      "WR": 35.9,
+      "sumR": 17.0,
+      "PF": 1.68,
+      "avgR": 0.44,
+      "medianR": -1.0,
+      "maxDD_R": -13.0,
+      "streak": 12
+    }
+  },
+  "kept_per_regime": {
+    "BEAR": {
+      "n": 24,
+      "W": 6,
+      "L": 18,
+      "WR": 25.0,
+      "sumR": 0.0,
+      "PF": 1.0,
+      "avgR": 0.0,
+      "medianR": -1.0,
+      "maxDD_R": -13.0,
+      "streak": 12
+    },
+    "BULL": {
+      "n": 37,
+      "W": 22,
+      "L": 15,
+      "WR": 59.5,
+      "sumR": 51.0,
+      "PF": 4.4,
+      "avgR": 1.38,
+      "medianR": 3.0,
+      "maxDD_R": -3.0,
+      "streak": 3
+    },
+    "RANGE": {
+      "n": 22,
+      "W": 8,
+      "L": 14,
+      "WR": 36.4,
+      "sumR": 10.0,
+      "PF": 1.71,
+      "avgR": 0.45,
+      "medianR": -1.0,
+      "maxDD_R": -7.0,
+      "streak": 7
+    }
+  },
+  "timeouts": 6,
+  "comparison_option_b": {
+    "kept": "n144 WR31.9 +40R(marginal) DD-15 stk15"
+  }
+}

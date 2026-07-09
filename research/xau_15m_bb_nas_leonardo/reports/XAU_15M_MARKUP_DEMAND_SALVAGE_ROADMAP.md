@@ -17,3 +17,6 @@ Abandonar N96/N83 como estratégia; manter: filtro capitulation (risk-control tr
 1. **Executar Opção A primeiro** — é o teste direto de "salvar a demanda de perna original" e custa pouco (motor pronto).
 2. **Se A falhar → abrir BULL bucket lab** (caminho B) como investigação própria.
 3. **Nenhuma produção 15M até um caminho passar** protocolo completo + DA + decisão do Cris.
+
+## UPDATE 2026-07-09 (pós-execução Opção A + salvage)
+Opção A executada: **A-BULL = melhor candidato de resgate** (n37 · 59,5% · +51R · DD−3seq · convergência 2 anos) MAS `PARTIAL_PROMISING_NOT_VALIDATED` (p cluster-aware ≈0,12; 53% num cluster; concorrência; dormante desde mar/26; mecanismo real = CONTINUAÇÃO-DE-IMPULSO pós-confirmação, não pullback). Caminho A concluído; próximo = visual Cris dos 37 + forward ledger (barato, decisivo). Doc `XAU_15M_OPTION_A_SALVAGE_REPORT.md`.
