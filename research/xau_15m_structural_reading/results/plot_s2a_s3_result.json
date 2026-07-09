@@ -1,0 +1,14 @@
+{
+  "summary": {
+    "S2a_total": 22,
+    "S2a_L": 21,
+    "S2a_W": 1,
+    "S3_total": 46,
+    "S3_L": 40,
+    "S3_W": 6,
+    "boxes": 57
+  },
+  "drawn": 57,
+  "requested": 57,
+  "fails": []
+}
