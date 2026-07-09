@@ -1,0 +1,29 @@
+{
+  "phase": "preproduction_telegram_lock",
+  "repo_plist_active_send_flag": false,
+  "plist_note_present": true,
+  "deployed_plist_exists": true,
+  "deployed_plist_active_send_flag": false,
+  "deployed_plist_note_present": true,
+  "plist_has_send_telegram_flag": false,
+  "send_true_no_env": {
+    "result": {
+      "sent": false,
+      "dry_run": true,
+      "skip": "PRODUCTION_NOT_AUTHORIZED — Telegram hard-locked (env L1_PRODUCTION_AUTHORIZED!=1)"
+    },
+    "subprocess_called": false,
+    "pass": true
+  },
+  "send_false_dryrun": {
+    "subprocess_called": true,
+    "args": [
+      "/Library/Developer/CommandLineTools/usr/bin/python3",
+      "/Users/cristrein/tradingview-mcp/my-strategy/strategies/xau_4h_long/continuation/L1_EMA21_CONTINUATION/telegram_notify.py"
+    ],
+    "no_send_flag_in_args": true,
+    "pass": true
+  },
+  "production_authorized_default_false": true,
+  "verdict": "PASS"
+}

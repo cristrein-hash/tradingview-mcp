@@ -1,0 +1,32 @@
+{
+  "phase": "preproduction_shift1_final_check",
+  "guards": {
+    "corrupt_2017_rejected": true,
+    "conflicting_dup_rejected": true,
+    "wrong_symbol_rejected": true,
+    "valid_read_ok": true,
+    "missing_i_minus_1_none": true
+  },
+  "guards_all_pass": true,
+  "dry_run_final": {
+    "state": "blocked_missing_nas_shift1_ledger",
+    "bucket": "insufficient_source (fail-closed)",
+    "operational": false,
+    "eval_bar_time": 1783548000,
+    "previous_closed_bar_time": 1783533600,
+    "forming_bar_excluded": true,
+    "bar_closed_confirmed": true,
+    "nas_shift1_ledger_status": "not_in_ledger",
+    "nas_shift1_source": null,
+    "nas_shift1_value": null,
+    "reason": "sem registro de ledger válido p/ i-1 (1783533600); status=not_in_ledger"
+  },
+  "telegram_tripwire": {
+    "notify_called": false,
+    "subprocess_run_called": false,
+    "telegram_zero": true
+  },
+  "would_send_telegram": false,
+  "operational_note": "não-operacional",
+  "verdict": "PASS"
+}

@@ -6,6 +6,12 @@
   inverno (UTC+0) UTC 03/07/11/15/19/23 -> local 03/07/11/15/19/23. launchd StartCalendarInterval
   usa o TZ local -> horários 03:05/07:05/11:05/15:05/19:05/23:05 (5 min de atraso pós-fechamento).
   RunAtLoad=false (só roda nos horários). Logs próprios (não-legacy). Único p/ esta L1 (XAU_240).
+
+  ⛔ 2026-07-09 PRE-PRODUCTION HARD-LOCK: `--send-telegram` REMOVIDO deste plist.
+  Telegram disabled until Cris explicitly authorizes production.
+  Mesmo se este plist for carregado (não deve ser), roda em dry-run e NÃO envia Telegram.
+  Defesa em profundidade: além desta remoção, runtime_xau.notify() exige env
+  L1_PRODUCTION_AUTHORIZED=1 p/ envio real. NÃO carregar este plist sem autorização explícita.
 -->
 <plist version="1.0">
 <dict>
@@ -15,7 +21,7 @@
     <string>/usr/bin/python3</string>
     <string>run_l1_cycle.py</string>
     <string>--manage-chart</string>
-    <string>--send-telegram</string>
+    <!-- --send-telegram REMOVIDO (pre-production hard-lock 2026-07-09) -->
   </array>
   <key>WorkingDirectory</key>
   <string>/Users/cristrein/tradingview-mcp/my-strategy/strategies/xau_4h_long/continuation/L1_EMA21_CONTINUATION</string>

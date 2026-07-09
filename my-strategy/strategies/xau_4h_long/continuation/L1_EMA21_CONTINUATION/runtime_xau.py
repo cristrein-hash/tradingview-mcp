@@ -13,7 +13,7 @@ Regime D-1 = regime_L1_v4 (fonte EXPLÍCITA nova; regime legacy v1 B/regime_B_v3
 não-autoridade). Se o feed regime_L1_v4 não cobrir D-1 recente → no_candidate/regime_l1_v4_stale.
 Com regime_L1_v4 fresco, avalia normalmente (regime != BULL → no_candidate; BULL → segue gate).
 """
-import json, sys, argparse, hashlib, subprocess
+import json, sys, argparse, hashlib, subprocess, os
 from pathlib import Path
 from datetime import datetime, timezone
 
@@ -299,11 +299,22 @@ def evaluate(snapshot):
             "reason": out.get("gate_reason", out["state"])}
 
 
+def _production_authorized():
+    """HARD-LOCK de código (pre-production 2026-07-09): envio real de Telegram exige autorização
+    EXPLÍCITA de produção via env `L1_PRODUCTION_AUTHORIZED=1`. Default = NÃO autorizado.
+    Telegram disabled until Cris explicitly authorizes production. Só PREVINE envio, nunca ativa."""
+    return os.environ.get("L1_PRODUCTION_AUTHORIZED", "") == "1"
+
+
 def notify(cand, send, dedup_path):
-    """Dispara candidate notification via telegram_notify.py se operacional+allowlist+não-dedup."""
+    """Dispara candidate notification via telegram_notify.py se operacional+allowlist+não-dedup.
+    HARD-LOCK: mesmo com send=True, NÃO envia sem env L1_PRODUCTION_AUTHORIZED=1 (dry-run forçado)."""
     sh = cand["signal_hash"]
     if not cand.get("operational"):
         return {"sent": False, "skip": f"não-operacional ({cand.get('state')})"}
+    if send and not _production_authorized():
+        return {"sent": False, "dry_run": True,
+                "skip": "PRODUCTION_NOT_AUTHORIZED — Telegram hard-locked (env L1_PRODUCTION_AUTHORIZED!=1)"}
     if not telegram_allowed(GROUP, CONSUMER):
         return {"sent": False, "skip": "consumer fora da allowlist do grupo"}
     if already_sent(dedup_path, sh):

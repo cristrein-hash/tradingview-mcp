@@ -1,0 +1,27 @@
+{
+  "phase": "preproduction_nas_visibility",
+  "chart_symbol": "PEPPERSTONE:XAUUSD",
+  "chart_tf": "240",
+  "is_xau_4h": true,
+  "visible": true,
+  "toggled_visible": false,
+  "nas_study_name": "NAS TOP BOTTOM DETECTOR",
+  "n_bars": 8,
+  "has_distance_all": true,
+  "timestamps_4h_distinct": true,
+  "last3": [
+    {
+      "time": 1783533600,
+      "dist": -0.7285966824837034
+    },
+    {
+      "time": 1783548000,
+      "dist": -0.8430532940248814
+    },
+    {
+      "time": 1783562400,
+      "dist": -0.9228718762675381
+    }
+  ],
+  "verdict": "PASS"
+}
