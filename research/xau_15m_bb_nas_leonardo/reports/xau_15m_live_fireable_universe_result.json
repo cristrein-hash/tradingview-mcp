@@ -1,0 +1,57 @@
+{
+  "n_live_fireable": 166,
+  "expected_approx": 173,
+  "matched_n96": 73,
+  "extra": 93,
+  "outcomes": {
+    "TGT": 46,
+    "SL": 120,
+    "TIME": 0
+  },
+  "WR_resolved_pct": 27.7,
+  "sumR_3R_model": 18.0,
+  "regime_coverage": {
+    "BULL": 45,
+    "BEAR": 78,
+    "RANGE": 43
+  },
+  "px1d_available": 166,
+  "duplicate_bars": 0,
+  "sanity_1d_vs_cut_csv": {
+    "n": 8,
+    "max_abs_diff": 0.0,
+    "sample": [
+      {
+        "n": 24,
+        "mine": 1.386,
+        "orig": 1.386,
+        "diff": 0.0
+      },
+      {
+        "n": 25,
+        "mine": 4.534,
+        "orig": 4.534,
+        "diff": 0.0
+      },
+      {
+        "n": 56,
+        "mine": 3.529,
+        "orig": 3.529,
+        "diff": 0.0
+      },
+      {
+        "n": 57,
+        "mine": 7.854,
+        "orig": 7.854,
+        "diff": 0.0
+      },
+      {
+        "n": 67,
+        "mine": 12.21,
+        "orig": 12.21,
+        "diff": 0.0
+      }
+    ]
+  },
+  "family_label": "não disponível ex-ante p/ candidatos novos (rótulo pós-hoc de losers) — declarado"
+}

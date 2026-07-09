@@ -1,0 +1,105 @@
+{
+  "filter": "SKIP se regime==BEAR e px_vs_ema_1d>=0 (inalterado)",
+  "n_base": 166,
+  "n_skipped": 22,
+  "n_kept": 144,
+  "skip_by_outcome": {
+    "losers_cut": 22,
+    "winners_cut": 0
+  },
+  "base_panel": {
+    "n": 166,
+    "W": 46,
+    "L": 120,
+    "WR": 27.7,
+    "sumR": 18.0,
+    "PF": 1.15,
+    "avgR": 0.11,
+    "medianR": -1.0,
+    "maxDD_R": -26.0,
+    "streak": 15
+  },
+  "kept_panel": {
+    "n": 144,
+    "W": 46,
+    "L": 98,
+    "WR": 31.9,
+    "sumR": 40.0,
+    "PF": 1.41,
+    "avgR": 0.28,
+    "medianR": -1.0,
+    "maxDD_R": -15.0,
+    "streak": 15
+  },
+  "kept_per_year": {
+    "2025": {
+      "n": 70,
+      "W": 25,
+      "L": 45,
+      "WR": 35.7,
+      "sumR": 30.0,
+      "PF": 1.67,
+      "avgR": 0.43,
+      "medianR": -1.0,
+      "maxDD_R": -15.0,
+      "streak": 15
+    },
+    "2026": {
+      "n": 74,
+      "W": 21,
+      "L": 53,
+      "WR": 28.4,
+      "sumR": 10.0,
+      "PF": 1.19,
+      "avgR": 0.14,
+      "medianR": -1.0,
+      "maxDD_R": -15.0,
+      "streak": 11
+    }
+  },
+  "kept_per_regime": {
+    "BEAR": {
+      "n": 56,
+      "W": 17,
+      "L": 39,
+      "WR": 30.4,
+      "sumR": 12.0,
+      "PF": 1.31,
+      "avgR": 0.21,
+      "medianR": -1.0,
+      "maxDD_R": -15.0,
+      "streak": 11
+    },
+    "BULL": {
+      "n": 45,
+      "W": 20,
+      "L": 25,
+      "WR": 44.4,
+      "sumR": 35.0,
+      "PF": 2.4,
+      "avgR": 0.78,
+      "medianR": -1.0,
+      "maxDD_R": -7.0,
+      "streak": 7
+    },
+    "RANGE": {
+      "n": 43,
+      "W": 9,
+      "L": 34,
+      "WR": 20.9,
+      "sumR": -7.0,
+      "PF": 0.79,
+      "avgR": -0.16,
+      "medianR": -1.0,
+      "maxDD_R": -15.0,
+      "streak": 15
+    }
+  },
+  "contaminated_reference": {
+    "N83": 83,
+    "WR": 62.7,
+    "sumR": 125.0,
+    "nota": "NÃO comparável como validação — base com survivorship"
+  },
+  "matched_orig_cut_in_universe": 8
+}

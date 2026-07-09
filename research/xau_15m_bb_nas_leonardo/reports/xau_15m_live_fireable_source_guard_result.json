@@ -1,0 +1,18 @@
+{
+  "n": 166,
+  "candidate_and_trigger_use_only_bars_lte_j": true,
+  "candidates_with_lower_low_after_entry": 79,
+  "pct_lower_low_after_entry": 47.6,
+  "survivorship_signature_broken": true,
+  "feature_timestamps": "1D: bars_upto rule (t_bar+86400<=entry) verificado por sanity diff 0.0 vs CSV original; regime: v5 hour-causal verbatim (último 1H fechado <= t)",
+  "selection_fields": [
+    "zz-state online",
+    "running low",
+    "EMA21 reclaim",
+    "janela 24",
+    "higher-low vs último L confirmado"
+  ],
+  "outcome_used_in_selection": false,
+  "n96_membership_used_in_selection": false,
+  "verdict": "SOURCE_GUARD_PASS"
+}

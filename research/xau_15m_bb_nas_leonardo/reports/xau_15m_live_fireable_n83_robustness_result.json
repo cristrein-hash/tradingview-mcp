@@ -1,0 +1,88 @@
+{
+  "kept_per_quarter": {
+    "2025Q3": {
+      "n": 37,
+      "sumR": 3.0
+    },
+    "2025Q4": {
+      "n": 33,
+      "sumR": 27.0
+    },
+    "2026Q1": {
+      "n": 32,
+      "sumR": 16.0
+    },
+    "2026Q2": {
+      "n": 39,
+      "sumR": -11.0
+    },
+    "2026Q3": {
+      "n": 3,
+      "sumR": 5.0
+    }
+  },
+  "neg_quarters": 1,
+  "jack_drop_top_winner": 37.0,
+  "jack_drop_top3_winners": 31.0,
+  "null_random_bear_cuts": {
+    "trials": 2000,
+    "P_cut22_zero_winners": 0.0005,
+    "mean_winners_cut": 4.8,
+    "obs": "filtro cortou 22 com 0 winners"
+  },
+  "boundary_px_vs_ema": {
+    "-0.5": {
+      "n_kept": 144,
+      "sumR": 40.0,
+      "winners_cut": 0
+    },
+    "-0.25": {
+      "n_kept": 144,
+      "sumR": 40.0,
+      "winners_cut": 0
+    },
+    "0.0": {
+      "n_kept": 144,
+      "sumR": 40.0,
+      "winners_cut": 0
+    },
+    "0.25": {
+      "n_kept": 144,
+      "sumR": 40.0,
+      "winners_cut": 0
+    },
+    "0.5": {
+      "n_kept": 144,
+      "sumR": 40.0,
+      "winners_cut": 0
+    }
+  },
+  "boundary_population_near_0": 0,
+  "slip_0.05": {
+    "sumR": 38.2,
+    "WR": 31.9
+  },
+  "slip_0.10": {
+    "sumR": 36.4,
+    "WR": 31.9
+  },
+  "delay_1bar": {
+    "n": 144,
+    "sumR": 40.0,
+    "WR": 31.9
+  },
+  "session_split": {
+    "asia(0-7)": {
+      "n": 70,
+      "sumR": 26.0
+    },
+    "eu(8-15)": {
+      "n": 35,
+      "sumR": 13.0
+    },
+    "us(16-23)": {
+      "n": 39,
+      "sumR": 1.0
+    }
+  }
+}
