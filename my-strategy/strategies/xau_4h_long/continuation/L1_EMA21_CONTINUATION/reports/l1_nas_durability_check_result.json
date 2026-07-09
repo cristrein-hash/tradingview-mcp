@@ -1,0 +1,19 @@
+{
+  "phase": "nas_durability",
+  "live": {
+    "symbol": "PEPPERSTONE:US500",
+    "tf": "60",
+    "nas_visible": true,
+    "n_bars": 8,
+    "distance_present": true,
+    "last_dist": 0.3812922737840066,
+    "pass": true
+  },
+  "startup_guard_empty_nas": {
+    "state": "blocked_missing_nas_live_series",
+    "operational": false,
+    "pass": true
+  },
+  "telegram_tripwire_zero": true,
+  "verdict": "PASS"
+}

@@ -242,6 +242,15 @@ def evaluate(snapshot):
     base["signal_hash"] = signal_hash(sym, tf, base["candidate_timestamp"])
     base["bar_diagnostics"] = diag
 
+    # STARTUP FAIL-CLOSED (2026-07-09): se a série NAS live sumiu (estudo oculto/não-computado no chart),
+    # bloqueia EXPLÍCITO com estado claro ANTES de qualquer alinhamento. NÃO tenta consertar o chart
+    # automaticamente (isso é decisão operacional c/ log/guard). Sem envio.
+    _nas_series = snapshot.get("nas_series") or []
+    if len(_nas_series) == 0:
+        return {**base, "operational": False, "state": "blocked_missing_nas_live_series",
+                "reason": "série NAS live vazia (estudo NAS oculto/não-computado) — startup fail-closed",
+                "bar_diagnostics": diag}
+
     # ALINHAMENTO POR TIMESTAMP (nunca índice / nunca forming): study-values do bar FECHADO via
     # data_get_study_values_at_bar. Exige match EXATO de time p/ NAS(eval), NAS(i-1) e RSI(eval).
     al = align_study_values(eval_bar_time, previous_closed_bar_time,

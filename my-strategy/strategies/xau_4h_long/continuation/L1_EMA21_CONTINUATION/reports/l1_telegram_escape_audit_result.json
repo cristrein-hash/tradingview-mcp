@@ -1,0 +1,14 @@
+{
+  "phase": "telegram_escape_audit",
+  "has_production_gate": true,
+  "gate_before_send": true,
+  "run_test_send_no_env": {
+    "returncode": 0,
+    "blocked_msg_present": true,
+    "dryrun_forced": true,
+    "no_real_send": true,
+    "pass": true
+  },
+  "env_L1_PRODUCTION_AUTHORIZED_unset": true,
+  "verdict": "PASS"
+}

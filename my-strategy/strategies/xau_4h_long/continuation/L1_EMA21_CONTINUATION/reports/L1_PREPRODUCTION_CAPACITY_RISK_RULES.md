@@ -1,6 +1,8 @@
 # L1 EMA21 4H LONG Continuation — REGRAS DE CAPACIDADE / RISCO / POSIÇÕES (pré-produção)
 
-**Data:** 2026-07-09 · **Status:** `FROZEN_PROPOSAL_NOT_WIRED` · **Produção:** `NOT_AUTHORIZED`
+> ⛔ **SUPERSEDED (2026-07-09) por `L1_RISK_CAPACITY_JOURNAL_RULES.md`.** Esta proposta antiga (max **3** posições / **1.0R** agregado / 0.33R / equal_split) foi **REVOGADA**. A política canónica agora é €-based: max **2** posições / **€200** agregado / **€100** por posição / fixed_equal — espelhada em `capacity_journal.py`. Manter este ficheiro só como histórico.
+
+**Data:** 2026-07-09 · **Status:** `SUPERSEDED` (era `FROZEN_PROPOSAL_NOT_WIRED`) · **Produção:** `NOT_AUTHORIZED`
 
 Regras congeladas ANTES de qualquer go-live. **Não integradas em produção** (documento; broker não conectado; execução manual). Auditadas contra o código existente, não wired.
 

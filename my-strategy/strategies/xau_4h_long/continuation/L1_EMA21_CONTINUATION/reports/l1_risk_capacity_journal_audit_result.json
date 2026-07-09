@@ -1,0 +1,163 @@
+{
+  "phase": "risk_capacity_journal",
+  "rules": {
+    "max_open_l1_positions": 2,
+    "max_same_symbol_l1_positions": 2,
+    "max_total_l1_open_risk_eur": 200.0,
+    "position_risk_mode": "fixed_equal",
+    "each_position_risk_eur": 100.0,
+    "duplicate_same_bar_signal": "BLOCK",
+    "opposite_position_hedge": "NOT_ALLOWED_FOR_L1",
+    "broker_execution": "MANUAL_APPROVAL_ONLY",
+    "telegram_signal": "HUMAN_REVIEW_ONLY",
+    "auto_broker_execution": "NOT_AUTHORIZED_YET"
+  },
+  "tests": {
+    "empty_allows_slot0": {
+      "r": {
+        "allow": true,
+        "reasons": [],
+        "slot_index": 0,
+        "open_before": 0,
+        "open_after": 1,
+        "risk_before": 0,
+        "risk_after": 100,
+        "decision_state": "ALLOW_MANUAL_APPROVAL"
+      },
+      "pass": true
+    },
+    "one_open_allows_slot1": {
+      "r": {
+        "allow": true,
+        "reasons": [],
+        "slot_index": 1,
+        "open_before": 1,
+        "open_after": 2,
+        "risk_before": 100.0,
+        "risk_after": 200.0,
+        "decision_state": "ALLOW_MANUAL_APPROVAL"
+      },
+      "pass": true
+    },
+    "two_open_blocks": {
+      "r": {
+        "allow": false,
+        "reasons": [
+          "max_open_l1_positions_reached",
+          "max_same_symbol_l1_positions_reached",
+          "aggregate_open_risk_exceeds_limit"
+        ],
+        "slot_index": null,
+        "open_before": 2,
+        "open_after": 2,
+        "risk_before": 200.0,
+        "risk_after": 200.0,
+        "decision_state": "BLOCK"
+      },
+      "pass": true
+    },
+    "duplicate_bar_blocks": {
+      "r": {
+        "allow": false,
+        "reasons": [
+          "duplicate_same_bar_signal"
+        ],
+        "slot_index": null,
+        "open_before": 1,
+        "open_after": 1,
+        "risk_before": 100.0,
+        "risk_after": 100.0,
+        "decision_state": "BLOCK"
+      },
+      "pass": true
+    },
+    "short_blocks": {
+      "r": {
+        "allow": false,
+        "reasons": [
+          "direction_not_LONG_L1_is_long_only"
+        ],
+        "slot_index": null,
+        "open_before": 0,
+        "open_after": 0,
+        "risk_before": 0,
+        "risk_after": 0,
+        "decision_state": "BLOCK"
+      },
+      "pass": true
+    },
+    "hedge_present_blocks": {
+      "r": {
+        "allow": false,
+        "reasons": [
+          "hedge_or_opposite_position_present"
+        ],
+        "slot_index": null,
+        "open_before": 1,
+        "open_after": 1,
+        "risk_before": 100.0,
+        "risk_after": 100.0,
+        "decision_state": "BLOCK"
+      },
+      "pass": true
+    },
+    "per_position_risk_blocks": {
+      "r": {
+        "allow": false,
+        "reasons": [
+          "per_position_risk_exceeds_limit"
+        ],
+        "slot_index": null,
+        "open_before": 0,
+        "open_after": 0,
+        "risk_before": 0,
+        "risk_after": 0,
+        "decision_state": "BLOCK"
+      },
+      "pass": true
+    },
+    "aggregate_risk_blocks": {
+      "r": {
+        "allow": false,
+        "reasons": [
+          "aggregate_open_risk_exceeds_limit"
+        ],
+        "slot_index": null,
+        "open_before": 1,
+        "open_after": 1,
+        "risk_before": 150.0,
+        "risk_after": 150.0,
+        "decision_state": "BLOCK"
+      },
+      "pass": true
+    },
+    "aggregate_exact_200_ok": {
+      "risk_after": 200.0,
+      "pass": true
+    },
+    "missing_fields_blocks": {
+      "r": {
+        "allow": false,
+        "reasons": [
+          "missing_symbol_or_bar_time"
+        ],
+        "slot_index": null,
+        "open_before": 0,
+        "open_after": 0,
+        "risk_before": 0,
+        "risk_after": 0,
+        "decision_state": "BLOCK"
+      },
+      "pass": true
+    },
+    "journal_all_fields": {
+      "missing": [],
+      "human_status": "PENDING_REVIEW",
+      "broker_status": "NOT_EXECUTED_MANUAL_ONLY",
+      "telegram_status": "NOT_SENT",
+      "pass": true
+    }
+  },
+  "all_pass": true,
+  "verdict": "PASS"
+}

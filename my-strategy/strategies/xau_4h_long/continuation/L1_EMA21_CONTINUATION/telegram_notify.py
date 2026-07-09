@@ -16,10 +16,17 @@ Uso:
   python3 scanner.py --at <ts> | python3 telegram_notify.py --send     # envio real (1 candidato operacional)
   python3 telegram_notify.py --test --send                             # 1 envio de teste marcado
 """
-import json, sys, argparse
+import json, sys, argparse, os
 from pathlib import Path
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
+
+
+def _production_authorized():
+    """HARD-LOCK (2026-07-09): envio real de Telegram exige env L1_PRODUCTION_AUTHORIZED=1.
+    Fecha o escape manual `--send` — mesmo invocado diretamente, NÃO envia sem autorização de produção.
+    Telegram disabled until Cris explicitly authorizes production. Só PREVINE envio, nunca ativa."""
+    return os.environ.get("L1_PRODUCTION_AUTHORIZED", "") == "1"
 
 ALLOWLIST = {"L1_EMA21_CONTINUATION"}
 STRATEGY_LABEL = "L1 · EMA21 CONTINUATION"
@@ -109,6 +116,12 @@ def main():
     if bad:
         print(f"error: mensagem contém frase proibida {bad} — abortado.", file=sys.stderr); return 2
 
+    if args.send and not _production_authorized():
+        print("[notify] PRODUCTION_NOT_AUTHORIZED — envio bloqueado (env L1_PRODUCTION_AUTHORIZED!=1). "
+              "Telegram disabled until Cris explicitly authorizes production.")
+        print("=== DRY-RUN FORÇADO (hard-lock) ===")
+        print(text)
+        return 0
     if args.send:
         ok = send_telegram(text)
         print(f"[notify] SENT={ok} (TELEGRAM_LIVE)")

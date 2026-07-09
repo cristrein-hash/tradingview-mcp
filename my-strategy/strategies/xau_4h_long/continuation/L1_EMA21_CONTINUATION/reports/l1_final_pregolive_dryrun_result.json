@@ -1,0 +1,57 @@
+{
+  "phase": "final_pregolive_dryrun",
+  "would_send_real": false,
+  "live_state": {
+    "error": "snapshot incompleto após retries (MCP hiccup) — live eval pulado; demo abaixo válida"
+  },
+  "live_would_send": null,
+  "live_note": "snapshot indisponível; sem envio (fail-closed)",
+  "demo_would_send_payload": {
+    "strategy": "L1 · EMA21 CONTINUATION",
+    "symbol": "PEPPERSTONE:XAUUSD",
+    "timeframe": "240",
+    "bar_time": "2026-07-08T22:00:00",
+    "entry": 2000.0,
+    "sl": 1980.0,
+    "target": 2060.0,
+    "nas_shift1_source": "ledger_frozen",
+    "nas_shift1_value": 1.42,
+    "state": "operational_candidate",
+    "slot_index": 0,
+    "slot_usage": "1/2",
+    "max_positions": 2,
+    "aggregate_risk_eur": 100.0,
+    "max_aggregate_risk_eur": 200.0,
+    "capacity_decision": "ALLOW_MANUAL_APPROVAL",
+    "manual_approval_required": true,
+    "broker_execution": "MANUAL_APPROVAL_ONLY",
+    "telegram_status": "NOT_SENT_DRYRUN"
+  },
+  "demo_would_send_with_1_open": {
+    "strategy": "L1 · EMA21 CONTINUATION",
+    "symbol": "PEPPERSTONE:XAUUSD",
+    "timeframe": "240",
+    "bar_time": "2026-07-08T22:00:00",
+    "entry": 2000.0,
+    "sl": 1980.0,
+    "target": 2060.0,
+    "nas_shift1_source": "ledger_frozen",
+    "nas_shift1_value": 1.42,
+    "state": "operational_candidate",
+    "slot_index": 1,
+    "slot_usage": "2/2",
+    "max_positions": 2,
+    "aggregate_risk_eur": 200.0,
+    "max_aggregate_risk_eur": 200.0,
+    "capacity_decision": "ALLOW_MANUAL_APPROVAL",
+    "manual_approval_required": true,
+    "broker_execution": "MANUAL_APPROVAL_ONLY",
+    "telegram_status": "NOT_SENT_DRYRUN"
+  },
+  "telegram_tripwire": {
+    "notify_called": false,
+    "subprocess_run_called": false,
+    "telegram_zero": true
+  },
+  "verdict": "PASS"
+}
