@@ -1,0 +1,179 @@
+{
+  "phase": "chart_state_fix",
+  "chart_symbol": "PEPPERSTONE:XAUUSD",
+  "chart_tf": "240",
+  "is_xau_4h": true,
+  "nas_entity_from_state": "pkqE7L",
+  "nas_name_from_state": "NAS TOP BOTTOM DETECTOR",
+  "nas_entity_used": "pkqE7L",
+  "visible_before": true,
+  "series_before": [
+    {
+      "name": "NAS TOP BOTTOM DETECTOR",
+      "last_index": 303,
+      "n_bars": 8,
+      "sample": [
+        {
+          "time": 1783533600,
+          "dist": -0.7285966824837034,
+          "values_keys": [
+            "NAS BOTTOM / LONG",
+            "NAS TOP / SHORT",
+            "NAS_LONG_SIGNAL",
+            "NAS_SHORT_SIGNAL",
+            "NAS_BOTTOM_SIGNAL",
+            "NAS_TOP_SIGNAL",
+            "NAS_DISTANCE_FROM_EMA_ATR",
+            "NAS_RSI",
+            "NAS LONG",
+            "NAS SHORT"
+          ]
+        },
+        {
+          "time": 1783548000,
+          "dist": -0.8430532940248814,
+          "values_keys": [
+            "NAS BOTTOM / LONG",
+            "NAS TOP / SHORT",
+            "NAS_LONG_SIGNAL",
+            "NAS_SHORT_SIGNAL",
+            "NAS_BOTTOM_SIGNAL",
+            "NAS_TOP_SIGNAL",
+            "NAS_DISTANCE_FROM_EMA_ATR",
+            "NAS_RSI",
+            "NAS LONG",
+            "NAS SHORT"
+          ]
+        },
+        {
+          "time": 1783562400,
+          "dist": -1.063084896740051,
+          "values_keys": [
+            "NAS BOTTOM / LONG",
+            "NAS TOP / SHORT",
+            "NAS_LONG_SIGNAL",
+            "NAS_SHORT_SIGNAL",
+            "NAS_BOTTOM_SIGNAL",
+            "NAS_TOP_SIGNAL",
+            "NAS_DISTANCE_FROM_EMA_ATR",
+            "NAS_RSI",
+            "NAS LONG",
+            "NAS SHORT"
+          ]
+        }
+      ]
+    }
+  ],
+  "toggle_result": "skip (já visível ou visible desconhecido)",
+  "visible_after": true,
+  "series_after": [
+    {
+      "name": "NAS TOP BOTTOM DETECTOR",
+      "last_index": 303,
+      "n_bars": 8,
+      "sample": [
+        {
+          "time": 1783533600,
+          "dist": -0.7285966824837034,
+          "values_keys": [
+            "NAS BOTTOM / LONG",
+            "NAS TOP / SHORT",
+            "NAS_LONG_SIGNAL",
+            "NAS_SHORT_SIGNAL",
+            "NAS_BOTTOM_SIGNAL",
+            "NAS_TOP_SIGNAL",
+            "NAS_DISTANCE_FROM_EMA_ATR",
+            "NAS_RSI",
+            "NAS LONG",
+            "NAS SHORT"
+          ]
+        },
+        {
+          "time": 1783548000,
+          "dist": -0.8430532940248814,
+          "values_keys": [
+            "NAS BOTTOM / LONG",
+            "NAS TOP / SHORT",
+            "NAS_LONG_SIGNAL",
+            "NAS_SHORT_SIGNAL",
+            "NAS_BOTTOM_SIGNAL",
+            "NAS_TOP_SIGNAL",
+            "NAS_DISTANCE_FROM_EMA_ATR",
+            "NAS_RSI",
+            "NAS LONG",
+            "NAS SHORT"
+          ]
+        },
+        {
+          "time": 1783562400,
+          "dist": -1.063084896740051,
+          "values_keys": [
+            "NAS BOTTOM / LONG",
+            "NAS TOP / SHORT",
+            "NAS_LONG_SIGNAL",
+            "NAS_SHORT_SIGNAL",
+            "NAS_BOTTOM_SIGNAL",
+            "NAS_TOP_SIGNAL",
+            "NAS_DISTANCE_FROM_EMA_ATR",
+            "NAS_RSI",
+            "NAS LONG",
+            "NAS SHORT"
+          ]
+        }
+      ]
+    }
+  ],
+  "rsi_control": [
+    {
+      "name": "Relative Strength Index",
+      "last_index": 303,
+      "n_bars": 8,
+      "sample": [
+        {
+          "time": 1783533600,
+          "dist": null,
+          "values_keys": [
+            "RSI",
+            "Plot",
+            "RSI-based MA",
+            "plot_8",
+            "plot_11",
+            "Regular Bullish Divergence",
+            "Regular Bearish Divergence"
+          ]
+        },
+        {
+          "time": 1783548000,
+          "dist": null,
+          "values_keys": [
+            "RSI",
+            "Plot",
+            "RSI-based MA",
+            "plot_8",
+            "plot_11",
+            "Regular Bullish Divergence",
+            "Regular Bearish Divergence"
+          ]
+        },
+        {
+          "time": 1783562400,
+          "dist": null,
+          "values_keys": [
+            "RSI",
+            "Plot",
+            "RSI-based MA",
+            "Regular Bullish",
+            "plot_8",
+            "plot_11",
+            "Regular Bullish Divergence",
+            "Regular Bearish Divergence"
+          ]
+        }
+      ]
+    }
+  ],
+  "nas_in_datawindow_after": true,
+  "distance_in_datawindow_after": true,
+  "phase_pass": true,
+  "timestamps_ok": true
+}

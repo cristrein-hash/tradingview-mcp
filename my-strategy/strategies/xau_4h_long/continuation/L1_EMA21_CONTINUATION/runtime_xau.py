@@ -42,42 +42,85 @@ STATE_DIR = HERE / ".runtime_state"
 FEATURE_HISTORY = STATE_DIR / "l1_feature_history.jsonl"  # NAS por bar p/ SHIFT1 causal (gitignored)
 FEATURE_HISTORY_MAX = 600
 
+# --- wiring ledger NAS SHIFT1 (2026-07-09, fail-closed; NÃO altera threshold/SHIFT1/SL/exit) ---
+SYMBOL_EXPECTED = "PEPPERSTONE:XAUUSD"
+TF_EXPECTED = "240"
+NAS_THRESHOLD = 1.31                 # espelha scanner.NAS_DIST_SHIFT1_MIN — só p/ registro, NÃO altera
+LEDGER_XCHECK_TOL = 0.05             # tolerância cross-check live-vs-ledger do SHIFT1
+LEDGER_BARTIME_MAX_AGE_DAYS = 30     # guard: rejeita bar_time distante de now (ex.: corrupção 2017)
 
-def persist_feature(bar_time, nas_dist):
-    """Append-only: grava (bar_time, nas_dist) do bar atual p/ uso SHIFT1 em ciclos futuros.
-    Dedup por bar_time. NÃO usa futuro. Rotação simples."""
-    if bar_time is None:
-        return
+
+def _bar_time_plausible(bar_time, ref_time=None):
+    """Guard causal p/ bar_time (unix-seconds). Rejeita corrupção (ex.: 2017 no meio de 2026) e
+    valores fora de época. ref_time default = agora. Retorna (ok: bool, reason: str)."""
+    if not isinstance(bar_time, (int, float)):
+        return False, "not_number"
+    if bar_time < 1_500_000_000 or bar_time > 4_000_000_000:   # ~2017-07 .. ~2096 -> fora = absurdo
+        return False, "epoch_out_of_range"
+    ref = ref_time if ref_time is not None else datetime.now(timezone.utc).timestamp()
+    if abs(ref - bar_time) > LEDGER_BARTIME_MAX_AGE_DAYS * 86400:
+        return False, "far_from_ref"
+    return True, "ok"
+
+
+def persist_feature(bar_time, nas_dist, symbol=SYMBOL_EXPECTED, timeframe=TF_EXPECTED,
+                    source_study="pkqE7L", source_method="data_get_study_values_at_bar"):
+    """Append-only FAIL-CLOSED: grava o NAS da barra FECHADA p/ SHIFT1 causal em ciclos futuros.
+    Guard: rejeita bar_time corrupto/absurdo (ex.: 2017) e nas não-numérico. Dedup por bar_time;
+    rejeita duplicado CONFLITANTE (valor divergente = corrupção/ambiguidade). NÃO usa futuro.
+    Retorna (ok: bool, status: str)."""
+    ok, why = _bar_time_plausible(bar_time)
+    if not ok:
+        return False, f"rejected_bar_time:{why}"
+    if not isinstance(nas_dist, (int, float)):
+        return False, "rejected_nas_not_number"
     STATE_DIR.mkdir(exist_ok=True)
-    seen = set()
+    existing = {}
     if FEATURE_HISTORY.exists():
         for ln in FEATURE_HISTORY.read_text().splitlines():
-            try: seen.add(json.loads(ln)["bar_time"])
+            try:
+                r = json.loads(ln); existing[r.get("bar_time")] = r.get("nas_dist")
             except Exception: pass
-    if bar_time in seen:
-        return
+    if bar_time in existing:
+        if existing[bar_time] is not None and abs(existing[bar_time] - nas_dist) > 1e-9:
+            return False, "conflicting_duplicate"
+        return True, "already_present"
+    rec = {"bar_time": bar_time, "nas_dist": nas_dist, "symbol": symbol, "timeframe": timeframe,
+           "threshold": NAS_THRESHOLD, "source_study_id": source_study, "source_method": source_method,
+           "persisted_at": datetime.now(timezone.utc).isoformat(), "closed_bar_confirmed": True}
     with open(FEATURE_HISTORY, "a") as f:
-        f.write(json.dumps({"bar_time": bar_time, "nas_dist": nas_dist,
-                            "persisted_at": datetime.now(timezone.utc).isoformat()}) + "\n")
-    # rotação: manter últimas N linhas
+        f.write(json.dumps(rec) + "\n")
     lines = FEATURE_HISTORY.read_text().splitlines()
     if len(lines) > FEATURE_HISTORY_MAX:
         FEATURE_HISTORY.write_text("\n".join(lines[-FEATURE_HISTORY_MAX:]) + "\n")
+    return True, "persisted"
 
 
-def nas_from_history(bar_time):
-    """NAS_DISTANCE persistido para um bar_time específico (i-1). None se ausente."""
-    if bar_time is None or not FEATURE_HISTORY.exists():
-        return None
-    val = None
+def nas_from_history(bar_time, symbol=SYMBOL_EXPECTED, timeframe=TF_EXPECTED):
+    """SHIFT1 causal = NAS_DISTANCE persistido (congelado no fecho de i-1). FAIL-CLOSED:
+    retorna (value|None, status). Guard bar_time + verifica symbol/timeframe. Registros antigos
+    (pré-enriquecimento, sem symbol/tf) são aceites por retrocompatibilidade."""
+    ok, why = _bar_time_plausible(bar_time)
+    if not ok:
+        return None, f"bar_time_guard:{why}"
+    if not FEATURE_HISTORY.exists():
+        return None, "no_ledger"
+    hit = None
     for ln in FEATURE_HISTORY.read_text().splitlines():
         try:
             r = json.loads(ln)
-            if r.get("bar_time") == bar_time:
-                val = r.get("nas_dist")
+            if r.get("bar_time") != bar_time:
+                continue
+            if r.get("symbol") not in (None, symbol):
+                continue
+            if r.get("timeframe") not in (None, timeframe):
+                continue
+            hit = r.get("nas_dist")
         except Exception:
             pass
-    return val
+    if hit is None:
+        return None, "not_in_ledger"
+    return hit, "ok"
 
 
 def align_study_values(eval_t, prev_t, nas_series, rsi_series):
@@ -204,9 +247,11 @@ def evaluate(snapshot):
     al = align_study_values(eval_bar_time, previous_closed_bar_time,
                             snapshot.get("nas_series"), snapshot.get("rsi_series"))
     base["study_alignment"] = al
-    # fallback/debug (não substitui a tool): persiste o NAS do eval_bar fechado quando alinhado
+    # CAPTURA (ledger write): persiste o NAS do eval_bar FECHADO p/ virar o SHIFT1 congelado do
+    # próximo ciclo. Guardado com symbol/tf/threshold/source; guard rejeita bar_time corrupto.
     if al["nas_eval_source_time"] == eval_bar_time and al["nas_eval_value"] is not None:
-        persist_feature(eval_bar_time, al["nas_eval_value"])
+        pok, pstatus = persist_feature(eval_bar_time, al["nas_eval_value"], symbol=sym, timeframe=tf)
+        base["ledger_persist_status"] = pstatus
     if not (al["nas_shift1_source_time"] == previous_closed_bar_time
             and al["rsi_eval_source_time"] == eval_bar_time
             and al["nas_eval_source_time"] == eval_bar_time):
@@ -214,9 +259,23 @@ def evaluate(snapshot):
                 "reason": (f"study-values não alinharam por time (eval={eval_bar_time}, "
                            f"prev={previous_closed_bar_time}); status={al['alignment_status']}")}
 
+    # WIRING LEDGER (fail-closed, 2026-07-09): SHIFT1 causal = registro CONGELADO de i-1 (persistido
+    # no fecho de i-1), não o valor da janela viva (imune a repaint). Cross-check com a série viva;
+    # bloqueia em ausência (sem ciclo anterior) OU mismatch (repaint/corrupção). NÃO altera 1.31.
+    live_shift1 = al["nas_shift1_value"]
+    ledger_shift1, led_status = nas_from_history(previous_closed_bar_time, sym, tf)
+    base["nas_shift1_ledger_status"] = led_status
+    if ledger_shift1 is None:
+        return {**base, "operational": False, "state": "blocked_missing_nas_shift1_ledger",
+                "reason": f"sem registro de ledger válido p/ i-1 ({previous_closed_bar_time}); status={led_status}"}
+    if live_shift1 is not None and abs(ledger_shift1 - live_shift1) > LEDGER_XCHECK_TOL:
+        return {**base, "operational": False, "state": "blocked_nas_shift1_ledger_mismatch",
+                "reason": f"ledger({ledger_shift1}) != live({live_shift1}) alem de {LEDGER_XCHECK_TOL}"}
+    nas_shift1_used = ledger_shift1   # fonte autoritária = ledger congelado (repaint-proof)
+
     # truncar OHLCV ATÉ o eval_bar (descarta forming) -> eval_bar = último bar da série
     S, info = build_live_series(bars[:closed_idx + 1], snapshot.get("ob_zones"),
-                                rsi_eval=al["rsi_eval_value"], nas_shift1=al["nas_shift1_value"])
+                                rsi_eval=al["rsi_eval_value"], nas_shift1=nas_shift1_used)
     if S is None:
         return {**base, "operational": False, "state": "blocked_missing_base_rule_live_fields",
                 "reason": f"campos live insuficientes: {info}"}
@@ -233,7 +292,8 @@ def evaluate(snapshot):
             "stop_price": out.get("stop_price"),
             "target_price": out.get("target_price"),
             "nas_eval_value": al["nas_eval_value"], "nas_eval_source_time": al["nas_eval_source_time"],
-            "nas_shift1_value": al["nas_shift1_value"], "nas_shift1_source_time": al["nas_shift1_source_time"],
+            "nas_shift1_value": nas_shift1_used, "nas_shift1_live_value": al["nas_shift1_value"],
+            "nas_shift1_source": "ledger_frozen", "nas_shift1_source_time": previous_closed_bar_time,
             "rsi_eval_value": al["rsi_eval_value"], "rsi_eval_source_time": al["rsi_eval_source_time"],
             "filter_trace": out.get("filter_trace"),
             "reason": out.get("gate_reason", out["state"])}

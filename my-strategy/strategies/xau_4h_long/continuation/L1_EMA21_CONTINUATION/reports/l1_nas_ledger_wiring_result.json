@@ -1,0 +1,49 @@
+{
+  "tests": {
+    "T3_corrupt_2017": {
+      "persist": [
+        false,
+        "rejected_bar_time:epoch_out_of_range"
+      ],
+      "read": [
+        null,
+        "bar_time_guard:epoch_out_of_range"
+      ],
+      "pass": true
+    },
+    "guard_conflicting_dup": {
+      "result": [
+        false,
+        "conflicting_duplicate"
+      ],
+      "pass": true
+    },
+    "T2_missing_ledger": {
+      "state": "blocked_missing_nas_shift1_ledger",
+      "ledger_status": "not_in_ledger",
+      "pass": true
+    },
+    "T1_uses_ledger_i_minus_1": {
+      "state": "no_candidate",
+      "ledger_status": "ok",
+      "nas_shift1_value": 1.5,
+      "nas_shift1_source": "ledger_frozen",
+      "pass": true
+    },
+    "T4_nas_i_not_used_as_i_minus_1": {
+      "nas_shift1_value": 1.5,
+      "eval_value_would_be": 9.99,
+      "pass": true
+    },
+    "T5_live_ledger_mismatch": {
+      "state": "blocked_nas_shift1_ledger_mismatch",
+      "pass": true
+    },
+    "guard_wrong_symbol_blocks": {
+      "state": "blocked_missing_nas_shift1_ledger",
+      "pass": true
+    }
+  },
+  "all_pass": true,
+  "verdict": "PASS"
+}
