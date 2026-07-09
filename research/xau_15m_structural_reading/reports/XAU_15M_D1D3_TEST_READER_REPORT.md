@@ -2,7 +2,32 @@
 
 > **STATUS (Cris 2026-07-09):** `PARTIAL_READING_NEEDS_EDITS` (edits aplicados) ·
 > `D2_CONFIRMED_AS_ANTI_TOP_BUY_SIGNATURE` · `D1_OPERATIONALIZATION_FAILED` ·
-> `NO_STRATEGY_VALIDATED` · `VISUAL_REVIEW_REQUIRED_BEFORE_ROUND_2`.
+> `NO_STRATEGY_VALIDATED` · ~~`VISUAL_REVIEW_REQUIRED_BEFORE_ROUND_2`~~ →
+> **`VISUAL_REVIEW_DONE_BY_CRIS_20260709` (3 prints, 9 episódios plotados em retângulos
+> proporcionais)**.
+
+## CONCLUSÃO VISUAL (Cris, 3 prints, 2026-07-09) — vinculante
+- **`D2_CONFIRMED_VISUALLY_AS_ANTI_TOP_BUY_VETO`** — C4 ("recuo pequeno dentro de topo — compra
+  cara"), C6 ("última tentativa de comprar força exausta"), C5+B4 (mesmo erro no mesmo dia: pausa
+  alta ≠ demanda). pos384>0,70 captura assinatura legítima de erro. **É VETO contextual, NUNCA
+  estratégia isolada.** B4 = "SKIP automático por leitura estrutural, sem indicador".
+- **`D1_MUST_BE_REWRITTEN_HTF_LEVEL_PLUS_STRUCTURE_ABOVE`** — "D1 medindo renovações de low é pobre
+  demais: olha para baixo, mas o que decide está ACIMA e no contexto maior." Separadores reais:
+  (1) nível HTF / bottom do regime anterior; (2) profundidade real da queda no contexto 1D/4H;
+  (3) falhas de bounce anteriores; (4) estrutura acima ainda dominando ou finalmente quebrando.
+- **`B1_B2_B3_VS_A6_IS_THE_KEY_CONTRAST_SET`** — B1/B2 = bounces com perna viva; B3 = flush
+  intermédio (faltava nível HTF final — seguiram-se ~600 pontos de queda); A6 = único candidato a
+  TAKE *se* no bottom HTF correto. Caveat do reader: é n=1 par/perna — o conjunto de contraste
+  operacional = 12 BEAR-reversal + 3 INVALIDO, TODOS no mesmo bear 2026 ⇒ calibração, nunca validação.
+- **Definição do Cris (canónica): "Fundo válido = o ponto onde uma perna relevante terminou dentro
+  de uma região estrutural correta."** Sem contexto superior, o sistema alterna entre marcar regiões
+  demais e entrar tarde/no topo.
+- **Vereditos por episódio (Cris):** C4 SKIP · C6 SKIP · B4 SKIP · B1 SKIP · B2 SKIP ·
+  B3 SKIP/REVIEW (nunca TAKE) · A6 TAKE-candidato só se no bottom HTF · C3 fora (gestão).
+- **Próximo medidor mínimo (a preregar, SÓ com ordem):** `HTF_depth_to_prior_regime_bottom` ·
+  `distance_to_prior_regime_bottom` · `failed_bounce_count_above` · `lower_high_pressure_above` —
+  medir se separam B1/B2/B3 de A6 (e dos 12 BEAR-reversal). **Sem entry. Sem backtest.**
+- **`NO_ENTRY_BACKTEST_UNTIL_CONTRAST_OPERATIONALIZED`**.
 > Leitura do Cris: D2/pos384>0,70 = assinatura real de compra-de-topo (preservar como leitura,
 > NUNCA transformar em estratégia isolada); "perna-mãe terminou?" ainda não operacionalizado —
 > vem de lower-highs/reclaims falhados/estrutura acima/nível HTF/profundidade 1D. Rodada 2 SÓ
