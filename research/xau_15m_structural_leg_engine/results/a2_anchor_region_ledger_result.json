@@ -1,0 +1,116 @@
+{
+  "spec": "XAU_15M_A2_ANCHOR_ONLY_SPEC_20260709.md v1.1",
+  "per_r": [
+    {
+      "r_cycle": 4,
+      "n_regions": 1396,
+      "n_bottom": 698,
+      "n_top": 698,
+      "regions_per_week": 12.8,
+      "bottoms_per_week": 6.4,
+      "top_converted_support": 666,
+      "latency_bars_p50_p90": [
+        16,
+        36
+      ],
+      "bottom_status": {
+        "active": 81,
+        "retested": 26,
+        "invalidated": 591
+      },
+      "retested_then_invalidated_by_context": {
+        "BEAR_CAPITULATION": {
+          "rate": 0.983,
+          "retested": 119,
+          "ret_then_inv": 117
+        },
+        "BULL_PULLBACK": {
+          "rate": 0.958,
+          "retested": 214,
+          "ret_then_inv": 205
+        },
+        "RANGE_BOTTOM": {
+          "rate": 0.921,
+          "retested": 190,
+          "ret_then_inv": 175
+        }
+      },
+      "top_buy_traps_pos96": 36,
+      "no_entry_on_confirmation_all": true
+    },
+    {
+      "r_cycle": 6,
+      "n_regions": 732,
+      "n_bottom": 366,
+      "n_top": 366,
+      "regions_per_week": 6.71,
+      "bottoms_per_week": 3.36,
+      "top_converted_support": 343,
+      "latency_bars_p50_p90": [
+        27,
+        59
+      ],
+      "bottom_status": {
+        "active": 53,
+        "retested": 20,
+        "invalidated": 293
+      },
+      "retested_then_invalidated_by_context": {
+        "BEAR_CAPITULATION": {
+          "rate": 0.985,
+          "retested": 67,
+          "ret_then_inv": 66
+        },
+        "BULL_PULLBACK": {
+          "rate": 0.935,
+          "retested": 108,
+          "ret_then_inv": 101
+        },
+        "RANGE_BOTTOM": {
+          "rate": 0.867,
+          "retested": 90,
+          "ret_then_inv": 78
+        }
+      },
+      "top_buy_traps_pos96": 5,
+      "no_entry_on_confirmation_all": true
+    },
+    {
+      "r_cycle": 8,
+      "n_regions": 456,
+      "n_bottom": 228,
+      "n_top": 228,
+      "regions_per_week": 4.18,
+      "bottoms_per_week": 2.09,
+      "top_converted_support": 211,
+      "latency_bars_p50_p90": [
+        40,
+        85
+      ],
+      "bottom_status": {
+        "active": 44,
+        "retested": 13,
+        "invalidated": 171
+      },
+      "retested_then_invalidated_by_context": {
+        "BEAR_CAPITULATION": {
+          "rate": 0.979,
+          "retested": 47,
+          "ret_then_inv": 46
+        },
+        "BULL_PULLBACK": {
+          "rate": 0.903,
+          "retested": 62,
+          "ret_then_inv": 56
+        },
+        "RANGE_BOTTOM": {
+          "rate": 0.882,
+          "retested": 51,
+          "ret_then_inv": 45
+        }
+      },
+      "top_buy_traps_pos96": 0,
+      "no_entry_on_confirmation_all": true
+    }
+  ]
+}

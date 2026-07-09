@@ -2,7 +2,9 @@
 
 > Protocolo: `docs/project_authority/XAU_15M_RESEARCH_EXECUTION_PROTOCOL_V1.md` (Stage 1 exige este
 > ficheiro em docs/architecture/ — movido do dir do lab no critical review, edit E9).
-> Criado 2026-07-09; v1.1 pós `XAU_15M_STRUCTURAL_LEG_ENGINE_CRITICAL_REVIEW_20260709.md` (edits E1-E13).
+> Criado 2026-07-09; v1.1 pós `XAU_15M_STRUCTURAL_LEG_ENGINE_CRITICAL_REVIEW_20260709.md` (edits E1-E13);
+> **v1.2 pós DA F0-F1.5 (derived_files+correções) e pós aprovação A2-ANCHOR-ONLY do Cris (stop-condition
+> reescrita na forma epistémica; r_cycle/pos96 no grid; outputs A2; ver chave `a2_anchor_only`).**
 > Espec congelada: `research/xau_15m_structural_leg_engine/XAU_15M_STRUCTURAL_LEG_ENGINE_SPEC_20260709.md` (v1.1).
 > STATUS: PRE-CODE — nenhum módulo escrito até aprovação explícita do Cris.
 
@@ -59,8 +61,12 @@
   "outputs": [
     "/Users/cristrein/tradingview-mcp/research/xau_15m_structural_leg_engine/results/leg_engine_events.csv",
     "/Users/cristrein/tradingview-mcp/research/xau_15m_structural_leg_engine/results/leg_engine_legs.csv",
-    "/Users/cristrein/tradingview-mcp/research/xau_15m_structural_leg_engine/results/gt_evaluation.csv"
+    "/Users/cristrein/tradingview-mcp/research/xau_15m_structural_leg_engine/results/gt_evaluation.csv",
+    "/Users/cristrein/tradingview-mcp/research/xau_15m_structural_leg_engine/results/a2_anchor_region_ledger_result.json",
+    "/Users/cristrein/tradingview-mcp/research/xau_15m_structural_leg_engine/results/a2_anchor_streaming_guard_result.json",
+    "/Users/cristrein/tradingview-mcp/research/xau_15m_structural_leg_engine/results/a2_anchor_gt_gate_result.json"
   ],
+  "a2_anchor_only": "aprovado Cris 2026-07-09: regioes-ancora publicadas SO apos confirmacao causal (known_at=fecho da barra de confirmacao); PROIBIDO entry/uso no bar de confirmacao ou antes de known_at; uso = reteste futuro; topo rompido por close vira converted_support (evento versionado, tese dos 35 prints); spec research/xau_15m_structural_leg_engine/XAU_15M_A2_ANCHOR_ONLY_SPEC_20260709.md (v1.1 pos-DA)",
   "claims_ledger": "/Users/cristrein/tradingview-mcp/research/xau_15m_structural_leg_engine/claims_ledger.csv",
   "scripts": [],
   "grid_preregistered": {
@@ -76,6 +82,8 @@
     "pb_min_atr": [1.0, 1.25, 1.5],
     "deep_thr_atr": [4, 5, 6],
     "base_min_bars": [32, 48, 64],
+    "r_cycle_atr15_A2": [4, 6, 8],
+    "pos96_trap_metric": "janela 96 barras anteriores ao extremo; trap se pos>0.67; constantes congeladas report-only (A2 v1.1)",
     "protocol": "calibração POR CAMADA com triagem em 2 estágios (edit E1): estágio 1 = plausibilidade GT-free; estágio 2 = só top<=20 configs vão ao matcher PLT/DM; contagem de flips PROIBIDA como feature de seleção; TODOS os looks (inclusive estágio 1) no claims ledger; holdout lido 1x",
     "stage1_preregistered": "correção DA C3 — janela de medição SÓ pré-holdout (2024-05-25 a 2025-12-31); bounds congelados: pernas/mês em [2,20], duração mediana de perna em [8h,120h], % tempo por leg_dir em [5%,85%], LEG_FLAT <=70%; ordenação do top-20 = menor nº de desvios do seed v5, desempate lexicográfico determinístico (GT-free)",
     "mining_null_f15": "recall PLT/DM do melhor config re-medido sob marcas deslocadas cluster-aware — GATE P<=0.05 (correção DA C5) + linha de sensibilidade com matcher apertado ±0.5d reportada",
@@ -113,7 +121,7 @@
     "paridade de LOGICA do port v5 falha (fixtures sinteticas deterministicas) => STOP (port defeituoso); correção DA C1: PROIBIDO correr/comparar contra serie derivada de primitives — paridade e de CODIGO (funcoes portadas verbatim + testes em fixtures), nunca de dados primitives-derived; divergencia em dados reais RAW vs memoria historica do canonico = investigar FONTE antes de declarar defeito",
     "divergencia OHLC em sobreposicao de borda de bloco => STOP fail-loud",
     "latency floor_known_at mediana > 2h nos BULL-pullback na F2 => reportar e aguardar decisao do Cris antes de F3",
-    "qualquer necessidade de pivot confirmado-por-rally => STOP (proibido; redesenhar)",
+    "USO RETROATIVO de pivot => STOP (forma epistemica, decisao Cris A2-ANCHOR-ONLY 2026-07-09: o proibido e entry/uso no evento de confirmacao ou backdating; reversor por threshold com known_at=fecho da confirmacao e uso SO-FUTURO esta PERMITIDO — regiao-ancora para reteste posterior)",
     "qualquer evento emitido em IMPULSE/DISTRIBUTION_TOP => bug, STOP",
     "producao/runtime/Telegram/broker => NUNCA (fora de escopo)"
   ]
@@ -121,9 +129,11 @@
 ```
 
 ## Notas
-- **PROIBIÇÕES ativas (Cris 2026-07-09):** primitives como fonte (qualquer uso), zigzag por rally
-  N·ATR como estrutura, port de features 4H como solução 15M. Este lab lê exclusivamente os 9
-  `.jsonl.gz` acima + o GT declarado.
+- **PROIBIÇÕES ativas (Cris 2026-07-09):** primitives como fonte (qualquer uso), USO RETROATIVO de
+  pivô (entry/uso no evento de confirmação, backdating, "fundo" comprado depois de descoberto — a
+  forma epistémica da proibição do zigzag; reversor por threshold com uso só-futuro = PERMITIDO,
+  decisão A2-ANCHOR-ONLY), port de features 4H como solução 15M. Este lab lê exclusivamente os 9
+  `.jsonl.gz` acima + os GT declarados.
 - Warmup-holes ~24h nas 8 fronteiras de bloco: carry do vetor de estado + eventos suprimidos por W
   barras pós-gap; GT em janela de warmup = `UNSCORABLE` explícito.
 - Âncoras: utilizáveis apenas para eventos com t ≥ t_known da âncora (edit E13).

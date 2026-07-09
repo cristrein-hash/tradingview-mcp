@@ -1,0 +1,13 @@
+{
+  "checks": {
+    "monotonic_known_at": "PASS",
+    "no_retro_use_and_confirmation_bar": "PASS",
+    "field_whitelist": "PASS",
+    "builder_gt_free": "PASS",
+    "truncation_true": "60/60 PASS",
+    "deterministic": "PASS"
+  },
+  "n_truncation_samples": 60,
+  "fails": [],
+  "status": "PASS"
+}

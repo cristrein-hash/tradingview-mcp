@@ -1,0 +1,676 @@
+{
+  "step1": [
+    {
+      "r": 4,
+      "PLT": 8,
+      "DM": 7,
+      "passes": false,
+      "n_top_win": 46,
+      "n_bot_win": 46,
+      "miss_plt": [
+        "2025-08-28 11:45",
+        "2025-09-11 10:15"
+      ],
+      "miss_dm": [
+        "2025-09-05 13:45",
+        "2025-09-15 02:15",
+        "2025-09-22 11:30",
+        "2025-10-15 13:00"
+      ]
+    },
+    {
+      "r": 6,
+      "PLT": 7,
+      "DM": 4,
+      "passes": false,
+      "n_top_win": 22,
+      "n_bot_win": 22,
+      "miss_plt": [
+        "2025-08-26 00:30",
+        "2025-08-28 11:45",
+        "2025-09-11 10:15"
+      ],
+      "miss_dm": [
+        "2025-09-02 18:45",
+        "2025-09-05 13:45",
+        "2025-09-15 02:15",
+        "2025-09-22 11:30",
+        "2025-09-24 19:30",
+        "2025-10-07 07:45",
+        "2025-10-15 13:00"
+      ]
+    },
+    {
+      "r": 8,
+      "PLT": 4,
+      "DM": 1,
+      "passes": false,
+      "n_top_win": 12,
+      "n_bot_win": 12,
+      "miss_plt": [
+        "2025-08-26 00:30",
+        "2025-08-28 11:45",
+        "2025-08-28 19:45",
+        "2025-09-02 01:30",
+        "2025-09-11 10:15",
+        "2025-10-14 05:00"
+      ],
+      "miss_dm": [
+        "2025-09-01 02:00",
+        "2025-09-02 18:45",
+        "2025-09-04 07:30",
+        "2025-09-05 13:45",
+        "2025-09-15 02:15",
+        "2025-09-22 11:30",
+        "2025-09-24 19:30",
+        "2025-10-07 07:45",
+        "2025-10-13 17:45",
+        "2025-10-15 13:00"
+      ]
+    }
+  ],
+  "step1_gate": "BLOCKED_A2_GT_GATE",
+  "r_frozen": null,
+  "baseline_f15": "PLT 6/10 · DM 4/11",
+  "step3_note": "REPORT-PARA-DECISÃO-DO-CRIS (sem dente automático); leitura ÚNICA por ordem explícita; consome os 13 BULL-2026 antes reservados (região-nível)",
+  "fundos_42": {
+    "agg": {
+      "n": 42,
+      "scorable": 42,
+      "covered_bottom": 10,
+      "covered_converted": 1,
+      "covered_any": 11,
+      "near_miss": 10,
+      "late_only": 18,
+      "miss": 3
+    },
+    "per_family": {
+      "MACRO_BEAR": {
+        "covered": 0,
+        "total": 14
+      },
+      "BULL_PULLBACK": {
+        "covered": 7,
+        "total": 7
+      },
+      "MACRO_RANGE": {
+        "covered": 1,
+        "total": 7
+      },
+      "MACRO_BULL": {
+        "covered": 0,
+        "total": 11
+      },
+      "RANGE_BOTTOM": {
+        "covered": 3,
+        "total": 3
+      }
+    },
+    "rows": [
+      {
+        "date": "2026-06-30 01:00",
+        "px": 3947.1,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "LATE_ONLY"
+      },
+      {
+        "date": "2026-06-24 18:00",
+        "px": 3958.2,
+        "bottom": "bottom_near",
+        "bottom_region": "B00979_r4",
+        "bottom_age_h": 5533.5,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "NEAR_MISS"
+      },
+      {
+        "date": "2026-06-10 23:00",
+        "px": 4021.8,
+        "bottom": "bottom_active",
+        "bottom_region": "B01003_r4",
+        "bottom_age_h": 4834.0,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "COVERED_BOTTOM"
+      },
+      {
+        "date": "2026-05-04 16:00",
+        "px": 4501.9,
+        "bottom": "bottom_near",
+        "bottom_region": "B01283_r4",
+        "bottom_age_h": 113.0,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "NEAR_MISS"
+      },
+      {
+        "date": "2026-03-26 20:00",
+        "px": 4353.5,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "LATE_ONLY"
+      },
+      {
+        "date": "2026-03-24 05:00",
+        "px": 4318.9,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "LATE_ONLY"
+      },
+      {
+        "date": "2026-03-23 07:00",
+        "px": 4101.5,
+        "bottom": "bottom_near",
+        "bottom_region": "B01007_r4",
+        "bottom_age_h": 2825.2,
+        "converted": "converted_near",
+        "converted_region": "T00998_r4",
+        "late_reconstruction": true,
+        "verdict": "NEAR_MISS"
+      },
+      {
+        "date": "2026-03-24 13:00",
+        "px": 4352.1,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": false,
+        "verdict": "MISS"
+      },
+      {
+        "date": "2026-03-27 11:00",
+        "px": 4404.7,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "LATE_ONLY"
+      },
+      {
+        "date": "2026-03-31 00:00",
+        "px": 4483.6,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "LATE_ONLY"
+      },
+      {
+        "date": "2026-03-31 10:00",
+        "px": 4533.4,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "LATE_ONLY"
+      },
+      {
+        "date": "2026-04-02 06:00",
+        "px": 4552.8,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "LATE_ONLY"
+      },
+      {
+        "date": "2026-02-17 14:00",
+        "px": 4842.2,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "LATE_ONLY"
+      },
+      {
+        "date": "2026-02-19 00:00",
+        "px": 4962.6,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "LATE_ONLY"
+      },
+      {
+        "date": "2026-02-06 00:00",
+        "px": 4656.7,
+        "bottom": "bottom_near",
+        "bottom_region": "B01125_r4",
+        "bottom_age_h": 72.0,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "NEAR_MISS"
+      },
+      {
+        "date": "2026-02-02 16:00",
+        "px": 4597.1,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "LATE_ONLY"
+      },
+      {
+        "date": "2026-01-08 12:00",
+        "px": 4408.8,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": "converted_near",
+        "converted_region": "T01076_r4",
+        "late_reconstruction": true,
+        "verdict": "NEAR_MISS"
+      },
+      {
+        "date": "2025-12-31 06:00",
+        "px": 4274.6,
+        "bottom": "bottom_active",
+        "bottom_region": "B01051_r4",
+        "bottom_age_h": 353.2,
+        "converted": "converted_near",
+        "converted_region": "T01018_r4",
+        "late_reconstruction": true,
+        "verdict": "COVERED_BOTTOM"
+      },
+      {
+        "date": "2025-12-19 01:45",
+        "px": 4310.2,
+        "bottom": "bottom_active",
+        "bottom_region": "B01055_r4",
+        "bottom_age_h": 36.0,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "COVERED_BOTTOM"
+      },
+      {
+        "date": "2025-12-02 16:15",
+        "px": 4162.6,
+        "bottom": "bottom_near",
+        "bottom_region": "B01015_r4",
+        "bottom_age_h": 98.2,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "NEAR_MISS"
+      },
+      {
+        "date": "2025-11-21 06:00",
+        "px": 4024.0,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "LATE_ONLY"
+      },
+      {
+        "date": "2025-11-18 08:00",
+        "px": 3997.7,
+        "bottom": "bottom_active",
+        "bottom_region": "B00983_r4",
+        "bottom_age_h": 199.5,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "COVERED_BOTTOM"
+      },
+      {
+        "date": "2025-11-04 23:00",
+        "px": 3931.2,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": false,
+        "verdict": "MISS"
+      },
+      {
+        "date": "2025-10-28 09:00",
+        "px": 3885.5,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": "converted_near",
+        "converted_region": "T00928_r4",
+        "late_reconstruction": true,
+        "verdict": "NEAR_MISS"
+      },
+      {
+        "date": "2025-10-17 17:00",
+        "px": 4186.0,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "LATE_ONLY"
+      },
+      {
+        "date": "2025-10-15 09:00",
+        "px": 4162.4,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": false,
+        "verdict": "MISS"
+      },
+      {
+        "date": "2025-10-14 06:00",
+        "px": 4089.0,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "LATE_ONLY"
+      },
+      {
+        "date": "2025-10-10 04:00",
+        "px": 3947.8,
+        "bottom": "bottom_active",
+        "bottom_region": "B00939_r4",
+        "bottom_age_h": 4.5,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "COVERED_BOTTOM"
+      },
+      {
+        "date": "2025-10-02 15:00",
+        "px": 3820.5,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "LATE_ONLY"
+      },
+      {
+        "date": "2025-09-30 09:00",
+        "px": 3792.8,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": "converted_near",
+        "converted_region": "T00916_r4",
+        "late_reconstruction": true,
+        "verdict": "NEAR_MISS"
+      },
+      {
+        "date": "2025-09-24 20:00",
+        "px": 3718.0,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "LATE_ONLY"
+      },
+      {
+        "date": "2025-09-18 13:00",
+        "px": 3628.0,
+        "bottom": "bottom_active",
+        "bottom_region": "B00901_r4",
+        "bottom_age_h": 82.2,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "COVERED_BOTTOM"
+      },
+      {
+        "date": "2025-09-11 11:00",
+        "px": 3612.8,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "LATE_ONLY"
+      },
+      {
+        "date": "2025-09-04 03:00",
+        "px": 3511.7,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": "converted_near",
+        "converted_region": "T00872_r4",
+        "late_reconstruction": true,
+        "verdict": "NEAR_MISS"
+      },
+      {
+        "date": "2025-09-02 07:00",
+        "px": 3468.8,
+        "bottom": "bottom_active",
+        "bottom_region": "B00871_r4",
+        "bottom_age_h": 13.2,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "COVERED_BOTTOM"
+      },
+      {
+        "date": "2025-08-27 04:00",
+        "px": 3374.7,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "LATE_ONLY"
+      },
+      {
+        "date": "2025-08-20 01:00",
+        "px": 3311.9,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": "converted_support",
+        "converted_region": "T00816_r4",
+        "late_reconstruction": true,
+        "verdict": "COVERED_CONVERTED"
+      },
+      {
+        "date": "2025-08-01 02:00",
+        "px": 3280.1,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "LATE_ONLY"
+      },
+      {
+        "date": "2025-06-30 02:00",
+        "px": 3245.3,
+        "bottom": "bottom_active",
+        "bottom_region": "B00607_r4",
+        "bottom_age_h": 765.2,
+        "converted": "converted_support",
+        "converted_region": "T00592_r4",
+        "late_reconstruction": false,
+        "verdict": "COVERED_BOTTOM"
+      },
+      {
+        "date": "2025-05-15 16:00",
+        "px": 3121.0,
+        "bottom": "bottom_active",
+        "bottom_region": "B00589_r4",
+        "bottom_age_h": 6.8,
+        "converted": "converted_near",
+        "converted_region": "T00524_r4",
+        "late_reconstruction": false,
+        "verdict": "COVERED_BOTTOM"
+      },
+      {
+        "date": "2025-04-09 02:00",
+        "px": 2957.5,
+        "bottom": "bottom_active",
+        "bottom_region": "B00529_r4",
+        "bottom_age_h": 27.8,
+        "converted": "converted_near",
+        "converted_region": "T00450_r4",
+        "late_reconstruction": false,
+        "verdict": "COVERED_BOTTOM"
+      },
+      {
+        "date": "2025-12-10 19:45",
+        "px": 4183.6,
+        "bottom": "bottom_near",
+        "bottom_region": "B01041_r4",
+        "bottom_age_h": 0.5,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": false,
+        "verdict": "NEAR_MISS"
+      }
+    ]
+  },
+  "circles_50": {
+    "agg": {
+      "n": 50,
+      "scorable": 50,
+      "covered_bottom": 10,
+      "covered_converted": 0,
+      "covered_any": 10,
+      "near_miss": 14,
+      "late_only": 21,
+      "miss": 5
+    }
+  },
+  "invalido_4": {
+    "agg": {
+      "n": 4,
+      "scorable": 4,
+      "covered_bottom": 3,
+      "covered_converted": 0,
+      "covered_any": 3,
+      "near_miss": 0,
+      "late_only": 1,
+      "miss": 0
+    },
+    "rows": [
+      {
+        "date": "2026-03-05 18:00",
+        "px": 5056.7,
+        "bottom": null,
+        "bottom_region": null,
+        "bottom_age_h": null,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "LATE_ONLY"
+      },
+      {
+        "date": "2026-03-08 23:00",
+        "px": 5026.3,
+        "bottom": "bottom_active",
+        "bottom_region": "B01179_r4",
+        "bottom_age_h": 124.2,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "COVERED_BOTTOM"
+      },
+      {
+        "date": "2026-03-16 00:00",
+        "px": 4966.8,
+        "bottom": "bottom_active",
+        "bottom_region": "B01159_r4",
+        "bottom_age_h": 579.2,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "COVERED_BOTTOM"
+      },
+      {
+        "date": "2026-01-13 19:00",
+        "px": 4573.6,
+        "bottom": "bottom_active",
+        "bottom_region": "B01095_r4",
+        "bottom_age_h": 5.8,
+        "converted": null,
+        "converted_region": null,
+        "late_reconstruction": true,
+        "verdict": "COVERED_BOTTOM"
+      }
+    ],
+    "rejected": 1
+  },
+  "precision_fp": {
+    "n_bottom_regions": 698,
+    "gt_touched": 16,
+    "precision_gt": 0.023,
+    "bottoms_per_week": 6.4,
+    "fp_regions_per_day": 0.89,
+    "top_buy_traps_pos96": 36,
+    "retested_then_invalidated_by_context": {
+      "BEAR_CAPITULATION": {
+        "rate": 0.983,
+        "retested": 119,
+        "ret_then_inv": 117
+      },
+      "BULL_PULLBACK": {
+        "rate": 0.958,
+        "retested": 214,
+        "ret_then_inv": 205
+      },
+      "RANGE_BOTTOM": {
+        "rate": 0.921,
+        "retested": 190,
+        "ret_then_inv": 175
+      }
+    }
+  },
+  "latency": {
+    "p50_p90_bars": [
+      16,
+      36
+    ]
+  }
+}
