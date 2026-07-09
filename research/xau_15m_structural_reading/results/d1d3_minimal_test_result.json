@@ -1,0 +1,504 @@
+{
+  "prereg": "XAU_15M_CONTEXTUAL_READER_NEXT_TEST_PREREG.md v1.1",
+  "note": "MEDIDOR PURO \u2014 sem cortes/votos/veredictos; registo narrativo = READER; caminho = CRIS",
+  "rows": [
+    {
+      "episode": "A1",
+      "utc": "2025-09-18 13:00",
+      "group_outcome_label_NOT_FOR_READING": "winner",
+      "D1": {
+        "bars_since_last_new_low": 324,
+        "n_low_renewals_last_192": 0,
+        "renewal_positions_bars_ago": []
+      },
+      "D2": {
+        "dev_atr": 15.0,
+        "range384_atr": 16.5,
+        "ratio": 0.91,
+        "pos384": 0.4,
+        "pos96": 0.34
+      },
+      "D3_failed_bounces": {
+        "K1.0": 2,
+        "K1.5": 2,
+        "K2.0": 2
+      },
+      "atr": 4.89
+    },
+    {
+      "episode": "A2",
+      "utc": "2025-10-10 04:00",
+      "group_outcome_label_NOT_FOR_READING": "winner",
+      "D1": {
+        "bars_since_last_new_low": 383,
+        "n_low_renewals_last_192": 0,
+        "renewal_positions_bars_ago": []
+      },
+      "D2": {
+        "dev_atr": 12.8,
+        "range384_atr": 17.8,
+        "ratio": 0.72,
+        "pos384": 0.31,
+        "pos96": 0.03
+      },
+      "D3_failed_bounces": {
+        "K1.0": 5,
+        "K1.5": 3,
+        "K2.0": 1
+      },
+      "atr": 8.99
+    },
+    {
+      "episode": "A3",
+      "utc": "2025-12-19 01:45",
+      "group_outcome_label_NOT_FOR_READING": "winner",
+      "D1": {
+        "bars_since_last_new_low": 261,
+        "n_low_renewals_last_192": 0,
+        "renewal_positions_bars_ago": []
+      },
+      "D2": {
+        "dev_atr": 11.1,
+        "range384_atr": 17.5,
+        "ratio": 0.63,
+        "pos384": 0.5,
+        "pos96": 0.22
+      },
+      "D3_failed_bounces": {
+        "K1.0": 1,
+        "K1.5": 1,
+        "K2.0": 1
+      },
+      "atr": 5.89
+    },
+    {
+      "episode": "A4",
+      "utc": "2025-10-17 17:00",
+      "group_outcome_label_NOT_FOR_READING": "winner",
+      "D1": {
+        "bars_since_last_new_low": 384,
+        "n_low_renewals_last_192": 0,
+        "renewal_positions_bars_ago": []
+      },
+      "D2": {
+        "dev_atr": 8.1,
+        "range384_atr": 12.7,
+        "ratio": 0.64,
+        "pos384": 0.43,
+        "pos96": 0.03
+      },
+      "D3_failed_bounces": {
+        "K1.0": 2,
+        "K1.5": 2,
+        "K2.0": 1
+      },
+      "atr": 23.76
+    },
+    {
+      "episode": "A5",
+      "utc": "2026-01-08 12:00",
+      "group_outcome_label_NOT_FOR_READING": "winner",
+      "D1": {
+        "bars_since_last_new_low": 342,
+        "n_low_renewals_last_192": 0,
+        "renewal_positions_bars_ago": []
+      },
+      "D2": {
+        "dev_atr": 13.9,
+        "range384_atr": 30.0,
+        "ratio": 0.47,
+        "pos384": 0.54,
+        "pos96": -0.06
+      },
+      "D3_failed_bounces": {
+        "K1.0": 8,
+        "K1.5": 7,
+        "K2.0": 5
+      },
+      "atr": 6.37
+    },
+    {
+      "episode": "A6",
+      "utc": "2026-03-23 07:00",
+      "group_outcome_label_NOT_FOR_READING": "winner",
+      "D1": {
+        "bars_since_last_new_low": 0,
+        "n_low_renewals_last_192": 27,
+        "renewal_positions_bars_ago": [
+          26,
+          25,
+          5,
+          4,
+          3,
+          2,
+          1,
+          0
+        ]
+      },
+      "D2": {
+        "dev_atr": 24.0,
+        "range384_atr": 24.0,
+        "ratio": 1.0,
+        "pos384": 0.0,
+        "pos96": -0.06
+      },
+      "D3_failed_bounces": {
+        "K1.0": 10,
+        "K1.5": 9,
+        "K2.0": 9
+      },
+      "atr": 38.32
+    },
+    {
+      "episode": "A7",
+      "utc": "2026-06-24 18:00",
+      "group_outcome_label_NOT_FOR_READING": "winner",
+      "D1": {
+        "bars_since_last_new_low": 0,
+        "n_low_renewals_last_192": 20,
+        "renewal_positions_bars_ago": [
+          28,
+          27,
+          24,
+          23,
+          21,
+          20,
+          19,
+          0
+        ]
+      },
+      "D2": {
+        "dev_atr": 22.5,
+        "range384_atr": 22.5,
+        "ratio": 1.0,
+        "pos384": 0.09,
+        "pos96": 0.14
+      },
+      "D3_failed_bounces": {
+        "K1.0": 10,
+        "K1.5": 8,
+        "K2.0": 7
+      },
+      "atr": 14.12
+    },
+    {
+      "episode": "A8",
+      "utc": "2026-06-30 01:00",
+      "group_outcome_label_NOT_FOR_READING": "winner",
+      "D1": {
+        "bars_since_last_new_low": 0,
+        "n_low_renewals_last_192": 1,
+        "renewal_positions_bars_ago": [
+          0
+        ]
+      },
+      "D2": {
+        "dev_atr": 16.3,
+        "range384_atr": 16.3,
+        "ratio": 1.0,
+        "pos384": 0.09,
+        "pos96": -0.23
+      },
+      "D3_failed_bounces": {
+        "K1.0": 6,
+        "K1.5": 5,
+        "K2.0": 5
+      },
+      "atr": 10.59
+    },
+    {
+      "episode": "A9",
+      "utc": "2025-08-20 01:00",
+      "group_outcome_label_NOT_FOR_READING": "winner",
+      "D1": {
+        "bars_since_last_new_low": 0,
+        "n_low_renewals_last_192": 11,
+        "renewal_positions_bars_ago": [
+          31,
+          30,
+          29,
+          27,
+          15,
+          8,
+          5,
+          0
+        ]
+      },
+      "D2": {
+        "dev_atr": 28.8,
+        "range384_atr": 28.8,
+        "ratio": 1.0,
+        "pos384": 0.03,
+        "pos96": 0.03
+      },
+      "D3_failed_bounces": {
+        "K1.0": 9,
+        "K1.5": 6,
+        "K2.0": 4
+      },
+      "atr": 2.18
+    },
+    {
+      "episode": "A10",
+      "utc": "2025-11-04 23:00",
+      "group_outcome_label_NOT_FOR_READING": "winner",
+      "D1": {
+        "bars_since_last_new_low": 348,
+        "n_low_renewals_last_192": 0,
+        "renewal_positions_bars_ago": []
+      },
+      "D2": {
+        "dev_atr": 19.9,
+        "range384_atr": 22.2,
+        "ratio": 0.9,
+        "pos384": 0.15,
+        "pos96": 0.09
+      },
+      "D3_failed_bounces": {
+        "K1.0": 5,
+        "K1.5": 5,
+        "K2.0": 3
+      },
+      "atr": 5.9
+    },
+    {
+      "episode": "B1",
+      "utc": "2026-03-05 18:00",
+      "group_outcome_label_NOT_FOR_READING": "negative",
+      "D1": {
+        "bars_since_last_new_low": 195,
+        "n_low_renewals_last_192": 0,
+        "renewal_positions_bars_ago": []
+      },
+      "D2": {
+        "dev_atr": 19.0,
+        "range384_atr": 19.0,
+        "ratio": 1.0,
+        "pos384": 0.18,
+        "pos96": 0.13
+      },
+      "D3_failed_bounces": {
+        "K1.0": 7,
+        "K1.5": 5,
+        "K2.0": 3
+      },
+      "atr": 22.3
+    },
+    {
+      "episode": "B2",
+      "utc": "2026-03-08 23:00",
+      "group_outcome_label_NOT_FOR_READING": "negative",
+      "D1": {
+        "bars_since_last_new_low": 307,
+        "n_low_renewals_last_192": 0,
+        "renewal_positions_bars_ago": []
+      },
+      "D2": {
+        "dev_atr": 17.4,
+        "range384_atr": 17.4,
+        "ratio": 1.0,
+        "pos384": 0.28,
+        "pos96": 0.3
+      },
+      "D3_failed_bounces": {
+        "K1.0": 4,
+        "K1.5": 4,
+        "K2.0": 4
+      },
+      "atr": 22.06
+    },
+    {
+      "episode": "B3",
+      "utc": "2026-03-16 00:00",
+      "group_outcome_label_NOT_FOR_READING": "negative",
+      "D1": {
+        "bars_since_last_new_low": 3,
+        "n_low_renewals_last_192": 16,
+        "renewal_positions_bars_ago": [
+          102,
+          33,
+          29,
+          28,
+          13,
+          8,
+          7,
+          3
+        ]
+      },
+      "D2": {
+        "dev_atr": 14.5,
+        "range384_atr": 14.5,
+        "ratio": 1.0,
+        "pos384": 0.2,
+        "pos96": 0.34
+      },
+      "D3_failed_bounces": {
+        "K1.0": 11,
+        "K1.5": 9,
+        "K2.0": 7
+      },
+      "atr": 18.75
+    },
+    {
+      "episode": "B4",
+      "utc": "2026-01-13 19:00",
+      "group_outcome_label_NOT_FOR_READING": "negative",
+      "D1": {
+        "bars_since_last_new_low": 303,
+        "n_low_renewals_last_192": 0,
+        "renewal_positions_bars_ago": []
+      },
+      "D2": {
+        "dev_atr": 4.7,
+        "range384_atr": 20.1,
+        "ratio": 0.24,
+        "pos384": 0.83,
+        "pos96": 0.36
+      },
+      "D3_failed_bounces": {
+        "K1.0": 2,
+        "K1.5": 1,
+        "K2.0": 0
+      },
+      "atr": 11.33
+    },
+    {
+      "episode": "C1",
+      "utc": "2025-09-16 22:00",
+      "group_outcome_label_NOT_FOR_READING": "negative",
+      "D1": {
+        "bars_since_last_new_low": 310,
+        "n_low_renewals_last_192": 0,
+        "renewal_positions_bars_ago": []
+      },
+      "D2": {
+        "dev_atr": 12.0,
+        "range384_atr": 44.3,
+        "ratio": 0.27,
+        "pos384": 0.87,
+        "pos96": 0.6
+      },
+      "D3_failed_bounces": {
+        "K1.0": 0,
+        "K1.5": 0,
+        "K2.0": 0
+      },
+      "atr": 2.03
+    },
+    {
+      "episode": "C2",
+      "utc": "2025-10-09 05:45",
+      "group_outcome_label_NOT_FOR_READING": "negative",
+      "D1": {
+        "bars_since_last_new_low": 377,
+        "n_low_renewals_last_192": 0,
+        "renewal_positions_bars_ago": []
+      },
+      "D2": {
+        "dev_atr": 9.7,
+        "range384_atr": 37.2,
+        "ratio": 0.26,
+        "pos384": 0.91,
+        "pos96": 0.67
+      },
+      "D3_failed_bounces": {
+        "K1.0": 4,
+        "K1.5": 2,
+        "K2.0": 0
+      },
+      "atr": 5.94
+    },
+    {
+      "episode": "C3",
+      "utc": "2025-10-19 22:00",
+      "group_outcome_label_NOT_FOR_READING": "negative",
+      "D1": {
+        "bars_since_last_new_low": 335,
+        "n_low_renewals_last_192": 0,
+        "renewal_positions_bars_ago": []
+      },
+      "D2": {
+        "dev_atr": 14.0,
+        "range384_atr": 21.0,
+        "ratio": 0.67,
+        "pos384": 0.58,
+        "pos96": 0.38
+      },
+      "D3_failed_bounces": {
+        "K1.0": 2,
+        "K1.5": 2,
+        "K2.0": 1
+      },
+      "atr": 13.72
+    },
+    {
+      "episode": "C4",
+      "utc": "2025-12-25 23:00",
+      "group_outcome_label_NOT_FOR_READING": "negative",
+      "D1": {
+        "bars_since_last_new_low": 346,
+        "n_low_renewals_last_192": 0,
+        "renewal_positions_bars_ago": []
+      },
+      "D2": {
+        "dev_atr": 9.2,
+        "range384_atr": 25.7,
+        "ratio": 0.36,
+        "pos384": 0.83,
+        "pos96": 0.53
+      },
+      "D3_failed_bounces": {
+        "K1.0": 3,
+        "K1.5": 2,
+        "K2.0": 1
+      },
+      "atr": 8.43
+    },
+    {
+      "episode": "C5",
+      "utc": "2026-01-13 13:30",
+      "group_outcome_label_NOT_FOR_READING": "negative",
+      "D1": {
+        "bars_since_last_new_low": 281,
+        "n_low_renewals_last_192": 0,
+        "renewal_positions_bars_ago": []
+      },
+      "D2": {
+        "dev_atr": 7.4,
+        "range384_atr": 29.0,
+        "ratio": 0.25,
+        "pos384": 0.95,
+        "pos96": 0.79
+      },
+      "D3_failed_bounces": {
+        "K1.0": 3,
+        "K1.5": 3,
+        "K2.0": 3
+      },
+      "atr": 7.67
+    },
+    {
+      "episode": "C6",
+      "utc": "2026-03-02 23:00",
+      "group_outcome_label_NOT_FOR_READING": "negative",
+      "D1": {
+        "bars_since_last_new_low": 368,
+        "n_low_renewals_last_192": 0,
+        "renewal_positions_bars_ago": []
+      },
+      "D2": {
+        "dev_atr": 11.9,
+        "range384_atr": 22.4,
+        "ratio": 0.53,
+        "pos384": 0.73,
+        "pos96": 0.5
+      },
+      "D3_failed_bounces": {
+        "K1.0": 4,
+        "K1.5": 2,
+        "K2.0": 0
+      },
+      "atr": 13.31
+    }
+  ]
+}
