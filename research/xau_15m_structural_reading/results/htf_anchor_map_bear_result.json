@@ -1,0 +1,592 @@
+{
+  "prereg": "XAU_15M_HTF_ANCHOR_OB_PREREG.md",
+  "n_episodios_regime": 27,
+  "episodios_2026": [
+    {
+      "regime": "BULL",
+      "start": "2025-09-02",
+      "end": "2025-10-21",
+      "bot": 3470.0,
+      "top": 4381.0
+    },
+    {
+      "regime": "BEAR",
+      "start": "2025-10-21",
+      "end": "2025-10-30",
+      "bot": 3887.0,
+      "top": 4162.0
+    },
+    {
+      "regime": "RANGE",
+      "start": "2025-10-30",
+      "end": "2025-11-16",
+      "bot": 3929.0,
+      "top": 4245.0
+    },
+    {
+      "regime": "BULL",
+      "start": "2025-11-16",
+      "end": "2026-01-04",
+      "bot": 3998.0,
+      "top": 4550.0
+    },
+    {
+      "regime": "RANGE",
+      "start": "2026-01-04",
+      "end": "2026-01-11",
+      "bot": 4345.0,
+      "top": 4517.0
+    },
+    {
+      "regime": "BULL",
+      "start": "2026-01-11",
+      "end": "2026-01-29",
+      "bot": 4513.0,
+      "top": 5598.0
+    },
+    {
+      "regime": "BEAR",
+      "start": "2026-01-29",
+      "end": "2026-02-13",
+      "bot": 4403.0,
+      "top": 5451.0
+    },
+    {
+      "regime": "RANGE",
+      "start": "2026-02-13",
+      "end": "2026-02-24",
+      "bot": 4842.0,
+      "top": 5250.0
+    },
+    {
+      "regime": "BULL",
+      "start": "2026-02-24",
+      "end": "2026-03-03",
+      "bot": 5016.0,
+      "top": 5419.0
+    },
+    {
+      "regime": "BEAR",
+      "start": "2026-03-03",
+      "end": "2026-03-11",
+      "bot": 4996.0,
+      "top": 5239.0
+    },
+    {
+      "regime": "BULL",
+      "start": "2026-03-11",
+      "end": "2026-03-13",
+      "bot": 5055.0,
+      "top": 5220.0
+    },
+    {
+      "regime": "RANGE",
+      "start": "2026-03-13",
+      "end": "2026-03-19",
+      "bot": 4727.0,
+      "top": 5128.0
+    }
+  ],
+  "bear_set": [
+    {
+      "tag": "FUNDO_BEAR",
+      "date": "2026-06-30 01:00",
+      "px": 3947.1,
+      "macro_at_mark": "BEAR",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": -73.7,
+      "dist_prior_range_bottom_atr": -73.7,
+      "px_vs_ema1d_atr": -22.9,
+      "lh_staircase_0_3": 1
+    },
+    {
+      "tag": "FUNDO_BEAR",
+      "date": "2026-06-24 18:00",
+      "px": 3958.2,
+      "macro_at_mark": "BEAR",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": -54.4,
+      "dist_prior_range_bottom_atr": -54.4,
+      "px_vs_ema1d_atr": -22.9,
+      "lh_staircase_0_3": 3
+    },
+    {
+      "tag": "FUNDO_BEAR",
+      "date": "2026-06-10 23:00",
+      "px": 4021.8,
+      "macro_at_mark": "BEAR",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": -46.6,
+      "dist_prior_range_bottom_atr": -46.6,
+      "px_vs_ema1d_atr": -29.0,
+      "lh_staircase_0_3": 1
+    },
+    {
+      "tag": "FUNDO_BEAR",
+      "date": "2026-05-04 16:00",
+      "px": 4501.9,
+      "macro_at_mark": "BEAR",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": -12.9,
+      "dist_prior_range_bottom_atr": -12.9,
+      "px_vs_ema1d_atr": -10.5,
+      "lh_staircase_0_3": 1
+    },
+    {
+      "tag": "FUNDO_BEAR",
+      "date": "2026-03-26 20:00",
+      "px": 4353.5,
+      "macro_at_mark": "BEAR",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": -19.6,
+      "dist_prior_range_bottom_atr": -19.6,
+      "px_vs_ema1d_atr": -24.8,
+      "lh_staircase_0_3": 1
+    },
+    {
+      "tag": "FUNDO_BEAR",
+      "date": "2026-03-24 05:00",
+      "px": 4318.9,
+      "macro_at_mark": "BEAR",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": -18.1,
+      "dist_prior_range_bottom_atr": -18.1,
+      "px_vs_ema1d_atr": -25.2,
+      "lh_staircase_0_3": 3
+    },
+    {
+      "tag": "FUNDO_BEAR",
+      "date": "2026-03-23 07:00",
+      "px": 4101.5,
+      "macro_at_mark": "BEAR",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": -16.3,
+      "dist_prior_range_bottom_atr": -16.3,
+      "px_vs_ema1d_atr": -21.7,
+      "lh_staircase_0_3": 3
+    },
+    {
+      "tag": "FUNDO_BEAR",
+      "date": "2026-03-24 13:00",
+      "px": 4352.1,
+      "macro_at_mark": "BEAR",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": -14.5,
+      "dist_prior_range_bottom_atr": -14.5,
+      "px_vs_ema1d_atr": -20.7,
+      "lh_staircase_0_3": 3
+    },
+    {
+      "tag": "FUNDO_BEAR",
+      "date": "2026-03-27 11:00",
+      "px": 4404.7,
+      "macro_at_mark": "BEAR",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": -30.2,
+      "dist_prior_range_bottom_atr": -30.2,
+      "px_vs_ema1d_atr": -35.7,
+      "lh_staircase_0_3": 2
+    },
+    {
+      "tag": "FUNDO_BEAR",
+      "date": "2026-03-31 00:00",
+      "px": 4483.6,
+      "macro_at_mark": "BEAR",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": -19.5,
+      "dist_prior_range_bottom_atr": -19.5,
+      "px_vs_ema1d_atr": -18.3,
+      "lh_staircase_0_3": 0
+    },
+    {
+      "tag": "FUNDO_BEAR",
+      "date": "2026-03-31 10:00",
+      "px": 4533.4,
+      "macro_at_mark": "BEAR",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": -19.9,
+      "dist_prior_range_bottom_atr": -19.9,
+      "px_vs_ema1d_atr": -18.3,
+      "lh_staircase_0_3": 0
+    },
+    {
+      "tag": "FUNDO_BEAR",
+      "date": "2026-04-02 06:00",
+      "px": 4552.8,
+      "macro_at_mark": "BEAR",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": -8.7,
+      "dist_prior_range_bottom_atr": -8.7,
+      "px_vs_ema1d_atr": -8.2,
+      "lh_staircase_0_3": 0
+    },
+    {
+      "tag": "INVALIDO",
+      "date": "2026-03-05 18:00",
+      "px": 5056.7,
+      "macro_at_mark": "BEAR",
+      "prev_episode": "BULL",
+      "dist_prior_episode_bottom_atr": 1.8,
+      "dist_prior_range_bottom_atr": 9.6,
+      "px_vs_ema1d_atr": -2.9,
+      "lh_staircase_0_3": 3
+    },
+    {
+      "tag": "INVALIDO",
+      "date": "2026-03-08 23:00",
+      "px": 5026.3,
+      "macro_at_mark": "BEAR",
+      "prev_episode": "BULL",
+      "dist_prior_episode_bottom_atr": 0.4,
+      "dist_prior_range_bottom_atr": 8.4,
+      "px_vs_ema1d_atr": -4.4,
+      "lh_staircase_0_3": 3
+    },
+    {
+      "tag": "INVALIDO",
+      "date": "2026-03-16 00:00",
+      "px": 4966.8,
+      "macro_at_mark": "RANGE",
+      "prev_episode": "BULL",
+      "dist_prior_episode_bottom_atr": -4.7,
+      "dist_prior_range_bottom_atr": 6.7,
+      "px_vs_ema1d_atr": -7.4,
+      "lh_staircase_0_3": 3
+    }
+  ],
+  "ref_bull": [
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2026-02-17 14:00",
+      "px": 4842.2,
+      "macro_at_mark": "RANGE",
+      "prev_episode": "BEAR",
+      "dist_prior_episode_bottom_atr": 24.8,
+      "dist_prior_range_bottom_atr": 28.1,
+      "px_vs_ema1d_atr": -5.9,
+      "lh_staircase_0_3": 3
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2026-02-19 00:00",
+      "px": 4962.6,
+      "macro_at_mark": "RANGE",
+      "prev_episode": "BEAR",
+      "dist_prior_episode_bottom_atr": 61.2,
+      "dist_prior_range_bottom_atr": 67.5,
+      "px_vs_ema1d_atr": 2.2,
+      "lh_staircase_0_3": 0
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2026-02-06 00:00",
+      "px": 4656.7,
+      "macro_at_mark": "BEAR",
+      "prev_episode": "BULL",
+      "dist_prior_episode_bottom_atr": 5.5,
+      "dist_prior_range_bottom_atr": 11.9,
+      "px_vs_ema1d_atr": -7.8,
+      "lh_staircase_0_3": 1
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2026-02-02 16:00",
+      "px": 4597.1,
+      "macro_at_mark": "BEAR",
+      "prev_episode": "BULL",
+      "dist_prior_episode_bottom_atr": 1.4,
+      "dist_prior_range_bottom_atr": 4.1,
+      "px_vs_ema1d_atr": -4.3,
+      "lh_staircase_0_3": 2
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2026-01-08 12:00",
+      "px": 4408.8,
+      "macro_at_mark": "RANGE",
+      "prev_episode": "BULL",
+      "dist_prior_episode_bottom_atr": 64.5,
+      "dist_prior_range_bottom_atr": 75.4,
+      "px_vs_ema1d_atr": 4.1,
+      "lh_staircase_0_3": 1
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2025-12-31 06:00",
+      "px": 4274.6,
+      "macro_at_mark": "BULL",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": 21.5,
+      "dist_prior_range_bottom_atr": 21.5,
+      "px_vs_ema1d_atr": -5.4,
+      "lh_staircase_0_3": 2
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2025-12-19 01:45",
+      "px": 4310.2,
+      "macro_at_mark": "BULL",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": 64.8,
+      "dist_prior_range_bottom_atr": 64.8,
+      "px_vs_ema1d_atr": 11.9,
+      "lh_staircase_0_3": 0
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2025-12-02 16:15",
+      "px": 4162.6,
+      "macro_at_mark": "BULL",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": 18.4,
+      "dist_prior_range_bottom_atr": 18.4,
+      "px_vs_ema1d_atr": 2.8,
+      "lh_staircase_0_3": 1
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2025-11-04 23:00",
+      "px": 3931.2,
+      "macro_at_mark": "RANGE",
+      "prev_episode": "BEAR",
+      "dist_prior_episode_bottom_atr": 7.6,
+      "dist_prior_range_bottom_atr": 116.0,
+      "px_vs_ema1d_atr": -17.1,
+      "lh_staircase_0_3": 2
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2025-10-28 09:00",
+      "px": 3885.5,
+      "macro_at_mark": "BEAR",
+      "prev_episode": "BULL",
+      "dist_prior_episode_bottom_atr": 32.6,
+      "dist_prior_range_bottom_atr": 50.1,
+      "px_vs_ema1d_atr": -14.0,
+      "lh_staircase_0_3": 3
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2025-10-17 17:00",
+      "px": 4186.0,
+      "macro_at_mark": "BULL",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": 39.6,
+      "dist_prior_range_bottom_atr": 39.6,
+      "px_vs_ema1d_atr": 8.7,
+      "lh_staircase_0_3": 0
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2025-10-15 09:00",
+      "px": 4162.4,
+      "macro_at_mark": "BULL",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": 124.8,
+      "dist_prior_range_bottom_atr": 124.8,
+      "px_vs_ema1d_atr": 33.9,
+      "lh_staircase_0_3": 0
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2025-10-14 06:00",
+      "px": 4089.0,
+      "macro_at_mark": "BULL",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": 59.4,
+      "dist_prior_range_bottom_atr": 59.4,
+      "px_vs_ema1d_atr": 14.1,
+      "lh_staircase_0_3": 0
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2025-10-10 04:00",
+      "px": 3947.8,
+      "macro_at_mark": "BULL",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": 78.0,
+      "dist_prior_range_bottom_atr": 78.0,
+      "px_vs_ema1d_atr": 13.0,
+      "lh_staircase_0_3": 1
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2025-10-02 15:00",
+      "px": 3820.5,
+      "macro_at_mark": "BULL",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": 51.8,
+      "dist_prior_range_bottom_atr": 51.8,
+      "px_vs_ema1d_atr": 9.8,
+      "lh_staircase_0_3": 0
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2025-09-30 09:00",
+      "px": 3792.8,
+      "macro_at_mark": "BULL",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": 50.3,
+      "dist_prior_range_bottom_atr": 50.3,
+      "px_vs_ema1d_atr": 10.3,
+      "lh_staircase_0_3": 0
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2025-09-24 20:00",
+      "px": 3718.0,
+      "macro_at_mark": "BULL",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": 97.0,
+      "dist_prior_range_bottom_atr": 97.0,
+      "px_vs_ema1d_atr": 19.3,
+      "lh_staircase_0_3": 1
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2025-09-18 13:00",
+      "px": 3628.0,
+      "macro_at_mark": "BULL",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": 78.0,
+      "dist_prior_range_bottom_atr": 78.0,
+      "px_vs_ema1d_atr": 11.6,
+      "lh_staircase_0_3": 0
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2025-09-11 11:00",
+      "px": 3612.8,
+      "macro_at_mark": "BULL",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": 93.0,
+      "dist_prior_range_bottom_atr": 93.0,
+      "px_vs_ema1d_atr": 28.4,
+      "lh_staircase_0_3": 1
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2025-09-04 03:00",
+      "px": 3511.7,
+      "macro_at_mark": "BULL",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": 32.5,
+      "dist_prior_range_bottom_atr": 32.5,
+      "px_vs_ema1d_atr": 11.8,
+      "lh_staircase_0_3": 0
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2025-09-02 07:00",
+      "px": 3468.8,
+      "macro_at_mark": "BULL",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": 52.3,
+      "dist_prior_range_bottom_atr": 52.3,
+      "px_vs_ema1d_atr": 19.1,
+      "lh_staircase_0_3": 0
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2025-08-27 04:00",
+      "px": 3374.7,
+      "macro_at_mark": "RANGE",
+      "prev_episode": "BULL",
+      "dist_prior_episode_bottom_atr": 51.2,
+      "dist_prior_range_bottom_atr": 100.6,
+      "px_vs_ema1d_atr": 7.8,
+      "lh_staircase_0_3": 0
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2025-06-30 02:00",
+      "px": 3245.3,
+      "macro_at_mark": "RANGE",
+      "prev_episode": "BULL",
+      "dist_prior_episode_bottom_atr": -0.0,
+      "dist_prior_range_bottom_atr": 23.2,
+      "px_vs_ema1d_atr": -17.1,
+      "lh_staircase_0_3": 1
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2025-05-15 16:00",
+      "px": 3121.0,
+      "macro_at_mark": "RANGE",
+      "prev_episode": "BULL",
+      "dist_prior_episode_bottom_atr": -10.3,
+      "dist_prior_range_bottom_atr": 5.4,
+      "px_vs_ema1d_atr": -19.3,
+      "lh_staircase_0_3": 3
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2025-04-09 02:00",
+      "px": 2957.5,
+      "macro_at_mark": "BULL",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": 37.4,
+      "dist_prior_range_bottom_atr": 37.4,
+      "px_vs_ema1d_atr": -7.4,
+      "lh_staircase_0_3": 3
+    },
+    {
+      "tag": "FUNDO_BULL_ref",
+      "date": "2025-12-10 19:45",
+      "px": 4183.6,
+      "macro_at_mark": "BULL",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": 23.1,
+      "dist_prior_range_bottom_atr": 23.1,
+      "px_vs_ema1d_atr": 1.7,
+      "lh_staircase_0_3": 1
+    }
+  ],
+  "ref_range": [
+    {
+      "tag": "FUNDO_RANGE_ref",
+      "date": "2025-11-21 06:00",
+      "px": 4024.0,
+      "macro_at_mark": "BULL",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": 10.0,
+      "dist_prior_range_bottom_atr": 10.0,
+      "px_vs_ema1d_atr": -4.8,
+      "lh_staircase_0_3": 1
+    },
+    {
+      "tag": "FUNDO_RANGE_ref",
+      "date": "2025-11-18 08:00",
+      "px": 3997.7,
+      "macro_at_mark": "BULL",
+      "prev_episode": "RANGE",
+      "dist_prior_episode_bottom_atr": 7.7,
+      "dist_prior_range_bottom_atr": 7.7,
+      "px_vs_ema1d_atr": -7.3,
+      "lh_staircase_0_3": 2
+    },
+    {
+      "tag": "FUNDO_RANGE_ref",
+      "date": "2025-08-20 01:00",
+      "px": 3311.9,
+      "macro_at_mark": "RANGE",
+      "prev_episode": "BULL",
+      "dist_prior_episode_bottom_atr": 30.4,
+      "dist_prior_range_bottom_atr": 87.7,
+      "px_vs_ema1d_atr": -16.4,
+      "lh_staircase_0_3": 1
+    },
+    {
+      "tag": "FUNDO_RANGE_ref",
+      "date": "2025-08-01 02:00",
+      "px": 3280.1,
+      "macro_at_mark": "RANGE",
+      "prev_episode": "BULL",
+      "dist_prior_episode_bottom_atr": 7.9,
+      "dist_prior_range_bottom_atr": 36.2,
+      "px_vs_ema1d_atr": -12.9,
+      "lh_staircase_0_3": 3
+    }
+  ],
+  "note": "MEDIDOR contínuo — sem cortes; leitura = READER; caminho = CRIS"
+}

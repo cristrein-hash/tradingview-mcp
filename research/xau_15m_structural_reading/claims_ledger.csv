@@ -1,0 +1,6 @@
+claim_id,number,metric,script,input_file,output_file,source_ref,raw_or_derived,status,note
+HTF_SEP,12/3,separacao perfeita fundos vs INVALIDO por dist_prior_episode_bottom_atr,htf_anchor_map_bear.py,results/f0_bars_cache.jsonl,htf_anchor_map_bear_result.json,RAW 15M via F0 (manifest HTF_ANCHOR_OB),VERIFIED_DERIVED,REVIEW_LAYER,calibracao mesmo-bear; GT queimado
+HTF_NULL,0.0022,null exato 1/455 (Bonferroni ~4 looks 0.0088),htf_ob_null_audit.py,results/htf_anchor_map_bear_result.json,XAU_15M_HTF_ANCHOR_OB_READER_REPORT.md,derivado dos medidores,VERIFIED_DERIVED,REVIEW_LAYER,exchangeability: n efetivo <15
+HTF_B3A6,-16.3,dist A6 vs B3 -4.7 (par-chave resolvido 3.5x),htf_anchor_map_bear.py,results/f0_bars_cache.jsonl,htf_anchor_map_bear_result.json,RAW 15M via F0,VERIFIED_DERIVED,REVIEW_LAYER,dev_atr relativo NAO separa (A8 16.3 em [14.5 17.4])
+OB_BULL,11/26,inside OB-1H fundos BULL (vs 2/6 C-losers) — sem discriminacao,ob_causal_check.py,RAW 1H/30M .jsonl.gz diretos,ob_causal_check_result.json,RAW HTF nativo (manifest),VERIFIED_RAW,REVIEW_LAYER,OB esteril nestas perguntas; densidade 9-30 zonas
+OB_RANGE,0/4,inside OB-30M bases RANGE,ob_causal_check.py,RAW 30M .jsonl.gz diretos,ob_causal_check_result.json,RAW HTF nativo,VERIFIED_RAW,EXPLORATORY,n=4 descritivo

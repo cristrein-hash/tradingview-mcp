@@ -1,0 +1,457 @@
+{
+  "prereg": "XAU_15M_HTF_ANCHOR_OB_PREREG.md",
+  "freeze": "2026-05-25",
+  "rows": [
+    {
+      "key": "C1_2025-09-16 22:00",
+      "grp": "C_LOSER",
+      "n_zonas": 21,
+      "inside": 0,
+      "dist_atr_below": 2.07
+    },
+    {
+      "key": "C2_2025-10-09 05:45",
+      "grp": "C_LOSER",
+      "n_zonas": 30,
+      "inside": 0,
+      "dist_atr_below": 4.53
+    },
+    {
+      "key": "C3_2025-10-19 22:00",
+      "grp": "C_LOSER",
+      "n_zonas": 24,
+      "inside": 0,
+      "dist_atr_below": 3.0
+    },
+    {
+      "key": "C4_2025-12-25 23:00",
+      "grp": "C_LOSER",
+      "n_zonas": 18,
+      "inside": 1,
+      "dist_atr_below": 5.31
+    },
+    {
+      "key": "C5_2026-01-13 13:30",
+      "grp": "C_LOSER",
+      "n_zonas": 16,
+      "inside": 1,
+      "dist_atr_below": 3.58
+    },
+    {
+      "key": "C6_2026-03-02 23:00",
+      "grp": "C_LOSER",
+      "n_zonas": 14,
+      "inside": 0,
+      "dist_atr_below": 3.72
+    },
+    {
+      "key": "BEARH_2026-03-23 07:00",
+      "grp": "FUNDO_BEAR_1H",
+      "n_zonas": 11,
+      "inside": 0,
+      "dist_atr_below": null
+    },
+    {
+      "key": "BEARH_2026-03-24 05:00",
+      "grp": "FUNDO_BEAR_1H",
+      "n_zonas": 13,
+      "inside": 0,
+      "dist_atr_below": 8.3
+    },
+    {
+      "key": "BEARH_2026-03-24 13:00",
+      "grp": "FUNDO_BEAR_1H",
+      "n_zonas": 14,
+      "inside": 0,
+      "dist_atr_below": 0.46
+    },
+    {
+      "key": "BEARH_2026-03-26 20:00",
+      "grp": "FUNDO_BEAR_1H",
+      "n_zonas": 16,
+      "inside": 0,
+      "dist_atr_below": 0.7
+    },
+    {
+      "key": "BEARH_2026-03-27 11:00",
+      "grp": "FUNDO_BEAR_1H",
+      "n_zonas": 16,
+      "inside": 0,
+      "dist_atr_below": 1.48
+    },
+    {
+      "key": "BEARH_2026-03-31 00:00",
+      "grp": "FUNDO_BEAR_1H",
+      "n_zonas": 16,
+      "inside": 0,
+      "dist_atr_below": 2.11
+    },
+    {
+      "key": "BEARH_2026-03-31 10:00",
+      "grp": "FUNDO_BEAR_1H",
+      "n_zonas": 17,
+      "inside": 0,
+      "dist_atr_below": 1.38
+    },
+    {
+      "key": "BEARH_2026-04-02 06:00",
+      "grp": "FUNDO_BEAR_1H",
+      "n_zonas": 18,
+      "inside": 1,
+      "dist_atr_below": 1.64
+    },
+    {
+      "key": "BEARH_2026-05-04 16:00",
+      "grp": "FUNDO_BEAR_1H",
+      "n_zonas": 17,
+      "inside": 0,
+      "dist_atr_below": 2.56
+    },
+    {
+      "key": "BEARH_2026-06-10 23:00",
+      "grp": "FUNDO_BEAR_1H",
+      "verdict": "UNSCORABLE_HTF_FREEZE"
+    },
+    {
+      "key": "BEARH_2026-06-24 18:00",
+      "grp": "FUNDO_BEAR_1H",
+      "verdict": "UNSCORABLE_HTF_FREEZE"
+    },
+    {
+      "key": "BEARH_2026-06-30 01:00",
+      "grp": "FUNDO_BEAR_1H",
+      "verdict": "UNSCORABLE_HTF_FREEZE"
+    },
+    {
+      "key": "BEARM_2026-03-23 07:00",
+      "grp": "FUNDO_BEAR_30M",
+      "n_zonas": 19,
+      "inside": 0,
+      "dist_atr_below": null
+    },
+    {
+      "key": "BEARM_2026-03-24 05:00",
+      "grp": "FUNDO_BEAR_30M",
+      "n_zonas": 22,
+      "inside": 1,
+      "dist_atr_below": 8.78
+    },
+    {
+      "key": "BEARM_2026-03-24 13:00",
+      "grp": "FUNDO_BEAR_30M",
+      "n_zonas": 20,
+      "inside": 0,
+      "dist_atr_below": 0.2
+    },
+    {
+      "key": "BEARM_2026-03-26 20:00",
+      "grp": "FUNDO_BEAR_30M",
+      "n_zonas": 19,
+      "inside": 0,
+      "dist_atr_below": 1.57
+    },
+    {
+      "key": "BEARM_2026-03-27 11:00",
+      "grp": "FUNDO_BEAR_30M",
+      "n_zonas": 19,
+      "inside": 0,
+      "dist_atr_below": 0.78
+    },
+    {
+      "key": "BEARM_2026-03-31 00:00",
+      "grp": "FUNDO_BEAR_30M",
+      "n_zonas": 19,
+      "inside": 0,
+      "dist_atr_below": 2.89
+    },
+    {
+      "key": "BEARM_2026-03-31 10:00",
+      "grp": "FUNDO_BEAR_30M",
+      "n_zonas": 20,
+      "inside": 0,
+      "dist_atr_below": 2.52
+    },
+    {
+      "key": "BEARM_2026-04-02 06:00",
+      "grp": "FUNDO_BEAR_30M",
+      "n_zonas": 21,
+      "inside": 1,
+      "dist_atr_below": 2.2
+    },
+    {
+      "key": "BEARM_2026-05-04 16:00",
+      "grp": "FUNDO_BEAR_30M",
+      "n_zonas": 11,
+      "inside": 0,
+      "dist_atr_below": null
+    },
+    {
+      "key": "BEARM_2026-06-10 23:00",
+      "grp": "FUNDO_BEAR_30M",
+      "verdict": "UNSCORABLE_HTF_FREEZE"
+    },
+    {
+      "key": "BEARM_2026-06-24 18:00",
+      "grp": "FUNDO_BEAR_30M",
+      "verdict": "UNSCORABLE_HTF_FREEZE"
+    },
+    {
+      "key": "BEARM_2026-06-30 01:00",
+      "grp": "FUNDO_BEAR_30M",
+      "verdict": "UNSCORABLE_HTF_FREEZE"
+    },
+    {
+      "key": "BULL_2025-04-09 02:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 13,
+      "inside": 1,
+      "dist_atr_below": 1.13
+    },
+    {
+      "key": "BULL_2025-05-15 16:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 14,
+      "inside": 1,
+      "dist_atr_below": 1.22
+    },
+    {
+      "key": "BULL_2025-06-30 02:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 13,
+      "inside": 0,
+      "dist_atr_below": 4.26
+    },
+    {
+      "key": "BULL_2025-08-27 04:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 9,
+      "inside": 0,
+      "dist_atr_below": 6.37
+    },
+    {
+      "key": "BULL_2025-09-02 07:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 14,
+      "inside": 1,
+      "dist_atr_below": 5.82
+    },
+    {
+      "key": "BULL_2025-09-04 03:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 15,
+      "inside": 0,
+      "dist_atr_below": 3.69
+    },
+    {
+      "key": "BULL_2025-09-11 11:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 22,
+      "inside": 0,
+      "dist_atr_below": 7.09
+    },
+    {
+      "key": "BULL_2025-09-18 13:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 20,
+      "inside": 0,
+      "dist_atr_below": 1.51
+    },
+    {
+      "key": "BULL_2025-09-24 20:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 21,
+      "inside": 1,
+      "dist_atr_below": 5.06
+    },
+    {
+      "key": "BULL_2025-09-30 09:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 21,
+      "inside": 0,
+      "dist_atr_below": 2.07
+    },
+    {
+      "key": "BULL_2025-10-02 15:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 23,
+      "inside": 0,
+      "dist_atr_below": 1.57
+    },
+    {
+      "key": "BULL_2025-10-10 04:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 28,
+      "inside": 1,
+      "dist_atr_below": 1.18
+    },
+    {
+      "key": "BULL_2025-10-14 06:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 27,
+      "inside": 0,
+      "dist_atr_below": 7.44
+    },
+    {
+      "key": "BULL_2025-10-15 09:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 26,
+      "inside": 0,
+      "dist_atr_below": 7.96
+    },
+    {
+      "key": "BULL_2025-10-17 17:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 24,
+      "inside": 0,
+      "dist_atr_below": 0.31
+    },
+    {
+      "key": "BULL_2025-10-28 09:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 18,
+      "inside": 0,
+      "dist_atr_below": 1.56
+    },
+    {
+      "key": "BULL_2025-11-04 23:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 17,
+      "inside": 1,
+      "dist_atr_below": 5.75
+    },
+    {
+      "key": "BULL_2025-12-02 16:15",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 12,
+      "inside": 1,
+      "dist_atr_below": 2.72
+    },
+    {
+      "key": "BULL_2025-12-10 19:45",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 11,
+      "inside": 1,
+      "dist_atr_below": 5.02
+    },
+    {
+      "key": "BULL_2025-12-19 01:45",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 13,
+      "inside": 1,
+      "dist_atr_below": 5.2
+    },
+    {
+      "key": "BULL_2025-12-31 06:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 15,
+      "inside": 1,
+      "dist_atr_below": 0.2
+    },
+    {
+      "key": "BULL_2026-01-08 12:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 18,
+      "inside": 1,
+      "dist_atr_below": 13.36
+    },
+    {
+      "key": "BULL_2026-02-02 16:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 14,
+      "inside": 0,
+      "dist_atr_below": 1.59
+    },
+    {
+      "key": "BULL_2026-02-06 00:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 15,
+      "inside": 0,
+      "dist_atr_below": 0.63
+    },
+    {
+      "key": "BULL_2026-02-17 14:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 16,
+      "inside": 0,
+      "dist_atr_below": 7.96
+    },
+    {
+      "key": "BULL_2026-02-19 00:00",
+      "grp": "FUNDO_BULL",
+      "n_zonas": 17,
+      "inside": 0,
+      "dist_atr_below": 4.9
+    },
+    {
+      "key": "RNG_2025-08-01 02:00",
+      "grp": "FUNDO_RANGE_30M",
+      "n_zonas": 12,
+      "inside": 0,
+      "dist_atr_below": 1.49
+    },
+    {
+      "key": "RNG_2025-08-20 01:00",
+      "grp": "FUNDO_RANGE_30M",
+      "n_zonas": 11,
+      "inside": 0,
+      "dist_atr_below": 11.59
+    },
+    {
+      "key": "RNG_2025-11-18 08:00",
+      "grp": "FUNDO_RANGE_30M",
+      "n_zonas": 11,
+      "inside": 0,
+      "dist_atr_below": 5.8
+    },
+    {
+      "key": "RNG_2025-11-21 06:00",
+      "grp": "FUNDO_RANGE_30M",
+      "n_zonas": 12,
+      "inside": 0,
+      "dist_atr_below": 1.62
+    },
+    {
+      "key": "INVH_2026-03-05 18:00",
+      "grp": "INVALIDO_1H",
+      "n_zonas": 13,
+      "inside": 0,
+      "dist_atr_below": 1.42
+    },
+    {
+      "key": "INVH_2026-03-08 23:00",
+      "grp": "INVALIDO_1H",
+      "n_zonas": 14,
+      "inside": 0,
+      "dist_atr_below": 0.05
+    },
+    {
+      "key": "INVH_2026-03-16 00:00",
+      "grp": "INVALIDO_1H",
+      "n_zonas": 14,
+      "inside": 0,
+      "dist_atr_below": 2.61
+    },
+    {
+      "key": "INVM_2026-03-05 18:00",
+      "grp": "INVALIDO_30M",
+      "n_zonas": 9,
+      "inside": 0,
+      "dist_atr_below": 1.77
+    },
+    {
+      "key": "INVM_2026-03-08 23:00",
+      "grp": "INVALIDO_30M",
+      "n_zonas": 10,
+      "inside": 0,
+      "dist_atr_below": 0.4
+    },
+    {
+      "key": "INVM_2026-03-16 00:00",
+      "grp": "INVALIDO_30M",
+      "n_zonas": 9,
+      "inside": 0,
+      "dist_atr_below": 4.46
+    }
+  ],
+  "note": "MEDIDOR contínuo — sem cortes; leitura = READER; caminho = CRIS"
+}
