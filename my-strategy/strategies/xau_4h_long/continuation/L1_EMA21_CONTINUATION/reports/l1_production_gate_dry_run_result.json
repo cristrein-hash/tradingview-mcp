@@ -1,0 +1,60 @@
+{
+  "phase": "production_gate_dry_run",
+  "telegram": "HARD_LOCKED (evaluate() direto; notify/main NÃO chamados)",
+  "snapshot_meta": {
+    "symbol": "PEPPERSTONE:XAUUSD",
+    "timeframe": "240",
+    "bar_time": 1783562400,
+    "n_ohlcv": 300,
+    "n_nas_series": 8,
+    "n_rsi_series": 8,
+    "n_ob_zones": 12
+  },
+  "dry_run": {
+    "state": "blocked_missing_nas_shift1_ledger",
+    "operational": false,
+    "candidate_timestamp": "2026-07-08T22:00:00",
+    "bar_diagnostics": {
+      "returned_last_bar_time": 1783562400,
+      "eval_bar_time": 1783548000,
+      "previous_closed_bar_time": 1783533600,
+      "forming_bar_excluded": true
+    },
+    "bar_closed_confirmed": true,
+    "forming_bar_excluded": true,
+    "nas_shift1_ledger_status": "not_in_ledger",
+    "nas_shift1_value_used": null,
+    "nas_shift1_source": null,
+    "nas_shift1_live_value": null,
+    "ledger_persist_status": "already_present",
+    "rsi_vs_ma": null,
+    "entry_price": null,
+    "stop_price": null,
+    "target_price": null,
+    "reason": "sem registro de ledger válido p/ i-1 (1783533600); status=not_in_ledger"
+  },
+  "state_bucket": "insufficient_source (fail-closed)",
+  "fail_closed_ok": true,
+  "warm_demo": {
+    "seeded_i_minus_1": {
+      "bar_time": 1783533600,
+      "nas_dist": -0.7285966824837034
+    },
+    "state": "no_candidate",
+    "nas_shift1_ledger_status": "ok",
+    "nas_shift1_value_used": -0.7285966824837034,
+    "nas_shift1_source": "ledger_frozen",
+    "operational": false,
+    "reason": "regime_d1_not_BULL",
+    "happy_path_ok": true
+  },
+  "hardlock": {
+    "method": "runtime tripwire em R.notify + subprocess.run (rebentam se chamados)",
+    "notify_called": false,
+    "subprocess_called": false,
+    "telegram_surface_zero": true,
+    "runtime_main_has_notify": true
+  },
+  "dry_run_pass": true,
+  "verdict": "PASS"
+}
