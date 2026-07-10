@@ -52,24 +52,26 @@ Retestes subsequentes da mesma região: novo evento só após nova saída (LOW >
 | Classe | Condição (todas causais em t) |
 |---|---|
 | `BULL_PULLBACK` | macro BULL · região válida (P2) · ciclo DOWN no reteste |
-| `RANGE_BASE` | macro RANGE · região BOTTOM · ciclo DOWN no reteste |
+| `BULL_VETADO_TOPO` | macro BULL · região válida · ciclo ainda UP no toque (sem pullback proporcional — risco de topo; NÃO é entry) |
+| `RANGE_BASE` | macro RANGE · região BOTTOM · ciclo DOWN no reteste · **fundo REAL do range** (ver §5.b — meio do range NÃO serve) |
 | `BEAR_CAPITULATION` | macro BEAR · região BOTTOM · px1d < 0 · ndesc < 2 |
 | `BEAR_BOUNCE_RASO` | macro BEAR · região BOTTOM · (px1d ≥ 0 OU ndesc ≥ 2) |
-| `UNCLASSIFIED` | resto: warmup · BULL/RANGE com ciclo UP no toque (micro pullback) · região TOP não convertida · conflito |
+| `UNCLASSIFIED` | resto: warmup · região TOP não convertida · RANGE fora do fundo real · conflito |
 
 ## §4 Saída por reteste (sem defesa/reclaim, sem outcome)
 `{t, região_id, kind, convertida?, macro, ciclo_dir, retrace_ciclo_atr, px1d, S3_ndesc, pos384(reportado), classe}`
 
-## §5 PONTOS ABERTOS — parar e perguntar (não codados até decisão Cris)
-- **(a) Definição de reteste**: 1 barra inteiramente acima da banda basta como "saiu"? Ou exigir
-  distância/tempo mínimo?
-- **(b) RANGE_BASE**: região BOTTOM válida em macro RANGE basta como "fundo real do range", ou
-  precisa régua de posição (ex.: pos384 baixo) para excluir zona antiga sentada no meio do range?
-- **(c) Veto D2**: proposta usa SÓ "ciclo não virou" como veto de topo (régua existente, sem número
-  novo); pos384 fica apenas reportado. Cris quer também corte numérico em pos384? (exigiria
-  threshold que não existe congelado — não invento).
-- **(d) BULL com toque mas ciclo ainda UP**: classificar `UNCLASSIFIED` (proposta) ou classe própria
-  `BULL_VETADO_TOPO` para ficar visível na revisão?
+## §5 PONTOS ABERTOS — decisões Cris 2026-07-10
+- **(a) RESOLVIDO**: reteste = saiu e voltou; **1 barra inteiramente acima da banda basta** como "saiu".
+- **(b) PARCIAL**: só macro RANGE **NÃO basta**; tem que ser **fundo REAL do range**; meio do range
+  não serve. **Mecânica ainda não fixada** — proposta em aberto (só peças A2, sem número novo):
+  fundo real = a banda da região **contém o extremo do último ciclo BOTTOM** (a região É o piso
+  estrutural corrente do range). Zona antiga no meio do range falha porque o extremo BOTTOM mais
+  recente está abaixo dela. → AGUARDA aprovação/correção do Cris antes de codar.
+- **(c) RESOLVIDO**: **NÃO usar pos384 como regra agora**. Veto de topo = só lógica estrutural:
+  ciclo ainda não virou → risco de topo. pos384 permanece apenas reportado na saída.
+- **(d) RESOLVIDO**: toque em BULL sem virada de ciclo = **`BULL_VETADO_TOPO`** (classe própria,
+  visível; NÃO é entry; não usar UNCLASSIFIED).
 
 ## §6 Gate (só após aprovação da spec; sem outcome)
 Classificar os retestes que precedem os 32 fundos cobertos pelo v2 e comparar a classe causal com a
