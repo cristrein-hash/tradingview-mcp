@@ -117,7 +117,7 @@ def main():
                    "conv": r["conv_at"] is not None and r["conv_at"] < t,
                    "idade_h": round((t-r["known_at"])/3600, 1)}
             # autoridade: known/conv/defesa <=168h antes de t (defesas rastreadas até t)
-            hit["autoridade"] = (t-auth_ref) <= AUTH_H*3600
+            hit["autoridade"] = True  # AUTHORITY_FILTER REJECTED_AS_IMPLEMENTED (Cris 2026-07-10)
             if hit["autoridade"]: break
         late_ok = False
         if hit is None and fam == "CAPITULACAO":

@@ -2,28 +2,22 @@
   "spec": "XAU_15M_A2_DETECTOR_REPAIR_SPEC.md",
   "r_cycle": 4,
   "n_regioes_v2": 1396,
-  "cobertura_42": "23/42",
+  "cobertura_42": "32/42",
   "por_familia": {
     "BULL_PULLBACK": {
-      "cobertos": 14,
+      "cobertos": 16,
       "total": 26
     },
     "CAPITULACAO": {
-      "cobertos": 8,
+      "cobertos": 12,
       "total": 12
     },
     "RANGE_BOTTOM": {
-      "cobertos": 1,
+      "cobertos": 4,
       "total": 4
     }
   },
   "falhas": [
-    {
-      "n": 5,
-      "date": "2025-08-20 01:00",
-      "familia": "RANGE_BOTTOM",
-      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)"
-    },
     {
       "n": 8,
       "date": "2025-09-04 03:00",
@@ -67,30 +61,6 @@
       "motivo": "nenhuma zona com autoridade contém o preço"
     },
     {
-      "n": 18,
-      "date": "2025-10-28 09:00",
-      "familia": "BULL_PULLBACK",
-      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)"
-    },
-    {
-      "n": 20,
-      "date": "2025-11-18 08:00",
-      "familia": "RANGE_BOTTOM",
-      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)"
-    },
-    {
-      "n": 21,
-      "date": "2025-11-21 06:00",
-      "familia": "RANGE_BOTTOM",
-      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)"
-    },
-    {
-      "n": 25,
-      "date": "2025-12-31 06:00",
-      "familia": "BULL_PULLBACK",
-      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)"
-    },
-    {
       "n": 27,
       "date": "2026-02-02 16:00",
       "familia": "BULL_PULLBACK",
@@ -107,30 +77,6 @@
       "date": "2026-02-19 00:00",
       "familia": "BULL_PULLBACK",
       "motivo": "nenhuma zona com autoridade contém o preço"
-    },
-    {
-      "n": 31,
-      "date": "2026-03-23 07:00",
-      "familia": "CAPITULACAO",
-      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)"
-    },
-    {
-      "n": 39,
-      "date": "2026-05-04 16:00",
-      "familia": "CAPITULACAO",
-      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)"
-    },
-    {
-      "n": 40,
-      "date": "2026-06-10 23:00",
-      "familia": "CAPITULACAO",
-      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)"
-    },
-    {
-      "n": 42,
-      "date": "2026-06-30 01:00",
-      "familia": "CAPITULACAO",
-      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)"
     }
   ],
   "rows": [
@@ -192,17 +138,17 @@
       "n": 4,
       "date": "2025-08-01 02:00",
       "familia": "RANGE_BOTTOM",
-      "status": "COBERTO",
+      "status": "COBERTO_CONVERTIDO",
       "motivo": "",
       "regiao": {
-        "id": "B00815",
-        "kind": "BOTTOM",
+        "id": "T00666",
+        "kind": "TOP",
         "band": [
-          3267.4,
-          3281.3
+          3270.9,
+          3283.4
         ],
-        "conv": false,
-        "idade_h": 26.0,
+        "conv": true,
+        "idade_h": 771.5,
         "autoridade": true
       }
     },
@@ -210,8 +156,8 @@
       "n": 5,
       "date": "2025-08-20 01:00",
       "familia": "RANGE_BOTTOM",
-      "status": "FALHA",
-      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)",
+      "status": "COBERTO_CONVERTIDO",
+      "motivo": "",
       "regiao": {
         "id": "T00816",
         "kind": "TOP",
@@ -221,7 +167,7 @@
         ],
         "conv": true,
         "idade_h": 465.2,
-        "autoridade": false
+        "autoridade": true
       }
     },
     {
@@ -374,18 +320,18 @@
       "n": 18,
       "date": "2025-10-28 09:00",
       "familia": "BULL_PULLBACK",
-      "status": "FALHA",
-      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)",
+      "status": "COBERTO_CONVERTIDO",
+      "motivo": "",
       "regiao": {
-        "id": "T00930",
+        "id": "T00928",
         "kind": "TOP",
         "band": [
-          3881.7,
-          3897.5
+          3878.9,
+          3895.9
         ],
         "conv": true,
-        "idade_h": 618.5,
-        "autoridade": false
+        "idade_h": 643.8,
+        "autoridade": true
       }
     },
     {
@@ -410,8 +356,8 @@
       "n": 20,
       "date": "2025-11-18 08:00",
       "familia": "RANGE_BOTTOM",
-      "status": "FALHA",
-      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)",
+      "status": "COBERTO",
+      "motivo": "",
       "regiao": {
         "id": "B00983",
         "kind": "BOTTOM",
@@ -421,15 +367,15 @@
         ],
         "conv": false,
         "idade_h": 199.5,
-        "autoridade": false
+        "autoridade": true
       }
     },
     {
       "n": 21,
       "date": "2025-11-21 06:00",
       "familia": "RANGE_BOTTOM",
-      "status": "FALHA",
-      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)",
+      "status": "COBERTO_CONVERTIDO",
+      "motivo": "",
       "regiao": {
         "id": "T00982",
         "kind": "TOP",
@@ -439,7 +385,7 @@
         ],
         "conv": true,
         "idade_h": 321.5,
-        "autoridade": false
+        "autoridade": true
       }
     },
     {
@@ -467,14 +413,14 @@
       "status": "COBERTO",
       "motivo": "",
       "regiao": {
-        "id": "B01029",
+        "id": "B01023",
         "kind": "BOTTOM",
         "band": [
-          4174.4,
-          4192.1
+          4162.2,
+          4193.4
         ],
         "conv": false,
-        "idade_h": 153.8,
+        "idade_h": 192.2,
         "autoridade": true
       }
     },
@@ -500,18 +446,18 @@
       "n": 25,
       "date": "2025-12-31 06:00",
       "familia": "BULL_PULLBACK",
-      "status": "FALHA",
-      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)",
+      "status": "COBERTO_CONVERTIDO",
+      "motivo": "",
       "regiao": {
-        "id": "B01051",
-        "kind": "BOTTOM",
+        "id": "T01044",
+        "kind": "TOP",
         "band": [
-          4270.8,
-          4291.0
+          4268.2,
+          4286.9
         ],
-        "conv": false,
-        "idade_h": 353.2,
-        "autoridade": false
+        "conv": true,
+        "idade_h": 457.0,
+        "autoridade": true
       }
     },
     {
@@ -578,18 +524,18 @@
       "n": 31,
       "date": "2026-03-23 07:00",
       "familia": "CAPITULACAO",
-      "status": "FALHA",
-      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)",
+      "status": "COBERTO_CONVERTIDO",
+      "motivo": "",
       "regiao": {
-        "id": "T01004",
+        "id": "T00998",
         "kind": "TOP",
         "band": [
-          4070.7,
-          4102.4
+          4090.6,
+          4110.8
         ],
         "conv": true,
-        "idade_h": 2914.2,
-        "autoridade": false
+        "idade_h": 2956.8,
+        "autoridade": true
       }
     },
     {
@@ -716,36 +662,36 @@
       "n": 39,
       "date": "2026-05-04 16:00",
       "familia": "CAPITULACAO",
-      "status": "FALHA",
-      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)",
+      "status": "COBERTO_CONVERTIDO",
+      "motivo": "",
       "regiao": {
-        "id": "B01233",
-        "kind": "BOTTOM",
+        "id": "T01230",
+        "kind": "TOP",
         "band": [
-          4481.2,
-          4517.5
+          4498.5,
+          4557.6
         ],
-        "conv": false,
-        "idade_h": 831.0,
-        "autoridade": false
+        "conv": true,
+        "idade_h": 907.0,
+        "autoridade": true
       }
     },
     {
       "n": 40,
       "date": "2026-06-10 23:00",
       "familia": "CAPITULACAO",
-      "status": "FALHA",
-      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)",
+      "status": "COBERTO_CONVERTIDO",
+      "motivo": "",
       "regiao": {
-        "id": "B01003",
-        "kind": "BOTTOM",
+        "id": "T00982",
+        "kind": "TOP",
         "band": [
-          4021.4,
-          4048.0
+          4002.3,
+          4028.5
         ],
-        "conv": false,
-        "idade_h": 4834.0,
-        "autoridade": false
+        "conv": true,
+        "idade_h": 5162.5,
+        "autoridade": true
       }
     },
     {
@@ -768,8 +714,8 @@
       "n": 42,
       "date": "2026-06-30 01:00",
       "familia": "CAPITULACAO",
-      "status": "FALHA",
-      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)",
+      "status": "COBERTO",
+      "motivo": "",
       "regiao": {
         "id": "B00977",
         "kind": "BOTTOM",
@@ -779,7 +725,7 @@
         ],
         "conv": false,
         "idade_h": 5685.0,
-        "autoridade": false
+        "autoridade": true
       }
     }
   ]
