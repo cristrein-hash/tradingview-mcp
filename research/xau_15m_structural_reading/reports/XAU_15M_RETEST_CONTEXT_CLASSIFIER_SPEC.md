@@ -63,11 +63,16 @@ Retestes subsequentes da mesma região: novo evento só após nova saída (LOW >
 
 ## §5 PONTOS ABERTOS — decisões Cris 2026-07-10
 - **(a) RESOLVIDO**: reteste = saiu e voltou; **1 barra inteiramente acima da banda basta** como "saiu".
-- **(b) PARCIAL**: só macro RANGE **NÃO basta**; tem que ser **fundo REAL do range**; meio do range
-  não serve. **Mecânica ainda não fixada** — proposta em aberto (só peças A2, sem número novo):
-  fundo real = a banda da região **contém o extremo do último ciclo BOTTOM** (a região É o piso
-  estrutural corrente do range). Zona antiga no meio do range falha porque o extremo BOTTOM mais
-  recente está abaixo dela. → AGUARDA aprovação/correção do Cris antes de codar.
+- **(b) EM ABERTO — proposta REFUTADA por revisão visual (Cris, prints 2026-07-10)**: só macro
+  RANGE **NÃO basta**; tem que ser **fundo REAL do range**; meio não serve. A proposta "banda
+  contém o extremo do último ciclo BOTTOM" foi REFUTADA pelo caso GT #21 (21-nov-2025): fundo
+  mais ALTO dentro do range, acima do low de 18-nov (#20), e entrada boa — fundo real ≠ piso
+  absoluto. **Achado adicional (prints)**: o `macro_at` 4H/1D só APROXIMA os ranges 15M —
+  trunca cedo (SEG 2 fecha 14-nov, range real segue até ~25-nov), engloba não-range (SEG 4),
+  encolhe range real (SEG 3/5 corrigidos pelo Cris); Cris distingue range ACUMULAÇÃO vs
+  DISTRIBUIÇÃO e REGIÃO PLT como âncora — invisíveis ao macro. Cris levantou (NÃO ordenado):
+  possível **segundo layer de regime detector específico 15M** para refinar regiões.
+  → BLOQUEADO até decisão do Cris.
 - **(c) RESOLVIDO**: **NÃO usar pos384 como regra agora**. Veto de topo = só lógica estrutural:
   ciclo ainda não virou → risco de topo. pos384 permanece apenas reportado na saída.
 - **(d) RESOLVIDO**: toque em BULL sem virada de ciclo = **`BULL_VETADO_TOPO`** (classe própria,
