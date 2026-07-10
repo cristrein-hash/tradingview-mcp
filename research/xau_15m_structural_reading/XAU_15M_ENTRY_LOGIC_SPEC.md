@@ -46,3 +46,35 @@ Se faltar uma parte: **sem entry.**
 ## Ponto principal
 O detector encontra **onde** o trade poderia existir. A entry decide **quando** o mercado confirmou
 que aquela região está viva. Esse é o caminho causal correto.
+
+## Definições operacionais (Cris, 2026-07-10 — respostas às 5 perguntas)
+
+### 1. DEFESA
+Não é "tocou e pronto". Defesa = preço entra/toca a região · **não fecha rompendo a região com
+força** · fecha **dentro ou acima** da região. Leitura simples: **tocou a demanda e não aceitou
+abaixo**. Uma barra pode bastar, desde que não seja rompimento claro. Não exigir várias barras
+no início.
+
+### 2. RECLAIM
+Não é só "fechou verde". Reclaim = **após defender a região**, fecha **acima do topo da barra de
+defesa OU acima do topo da região**. Ordem obrigatória: **defesa primeiro, reclaim depois**.
+Não comprar o primeiro toque.
+
+### 3. Mudança real de comportamento
+NÃO mecanizar demais por enquanto. Mecânica mínima: parou de fazer low novo · defendeu a região ·
+fez fechamento de retomada. "Mudança real" fica como **leitura do Reader**, não regra dura final.
+
+### 4. Entry / SL / alvo
+- entry = **fechamento da barra de reclaim**
+- SL = **piso da região − 0,1·ATR**
+- alvo inicial = **3R**
+- **Cuidado**: região larga demais → SL pesado → marcar como **RISCO_RUIM**, não forçar entrada.
+
+### 5. Topo esticado / D2
+D2 **NÃO** é filtro universal. Uso correto: veto contextual **em BULL**, quando a entrada está no
+**topo/alto da estrutura SEM pullback proporcional**. Não usar D2 para bloquear todo BULL alto.
+
+### Resumo final (Cris)
+Entry correta = **toque na região + defesa + reclaim**. Não compra rompimento. Não compra
+confirmação da região. Não compra primeiro bounce. D2 só veta compra de topo sem pullback
+suficiente.
