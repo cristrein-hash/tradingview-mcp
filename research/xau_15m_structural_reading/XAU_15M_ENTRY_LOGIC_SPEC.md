@@ -78,3 +78,18 @@ D2 **NÃO** é filtro universal. Uso correto: veto contextual **em BULL**, quand
 Entry correta = **toque na região + defesa + reclaim**. Não compra rompimento. Não compra
 confirmação da região. Não compra primeiro bounce. D2 só veta compra de topo sem pullback
 suficiente.
+
+## ORDEM DE LEITURA OBRIGATÓRIA (Cris, 2026-07-10 — correção à Etapa 1)
+
+**ERRO a evitar**: a máquina perguntar "houve reclaim?" ANTES de perguntar "que tipo de fundo é
+este?". Sequência mecânica reteste→defesa→reclaim sozinha NÃO lê contexto e repete erro antigo.
+
+Ordem correta:
+1. **Qual família estrutural?**
+2. **A região é válida para essa família?**
+3. **O movimento até ela faz sentido?**
+4. **O preço está corrigindo, capitulando ou só repicando?**
+5. **Só então** observar defesa/reclaim.
+
+**Defesa/reclaim são GATILHOS FINAIS, não a lógica da entry.
+A lógica da entry é CONTEXTO + FAMÍLIA + POSIÇÃO + REAÇÃO.**
