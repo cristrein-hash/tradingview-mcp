@@ -1,0 +1,314 @@
+{
+  "spec": "XAU_15M_PAUSE_RULER_SPEC.md",
+  "zonas_publicadas": 57,
+  "semanas_markup_bull": 60,
+  "densidade_zonas_por_semana_markup": 0.95,
+  "referencia_escada_cris": "~1/semana (ago-out 10 topos)",
+  "trava_sujeira": "OK",
+  "foco_10_bull": {
+    "recuperados": [],
+    "n": "0/10"
+  },
+  "cobertura_pause_only_42": "0/42",
+  "cobertura_combinada_v2_mais_pause": "23/42",
+  "causal": {
+    "known_at_monotonico": true,
+    "todas_cobrancas_known_antes_da_vela": true
+  },
+  "rows": [
+    {
+      "n": 1,
+      "date": "2025-04-09 02:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "COBERTO"
+    },
+    {
+      "n": 2,
+      "date": "2025-05-15 16:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "COBERTO_CONVERTIDO"
+    },
+    {
+      "n": 3,
+      "date": "2025-06-30 02:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "COBERTO_CONVERTIDO"
+    },
+    {
+      "n": 4,
+      "date": "2025-08-01 02:00",
+      "familia": "RANGE_BOTTOM",
+      "pause_zone": null,
+      "v2_status": "COBERTO"
+    },
+    {
+      "n": 5,
+      "date": "2025-08-20 01:00",
+      "familia": "RANGE_BOTTOM",
+      "pause_zone": null,
+      "v2_status": "FALHA"
+    },
+    {
+      "n": 6,
+      "date": "2025-08-27 04:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "COBERTO_CONVERTIDO"
+    },
+    {
+      "n": 7,
+      "date": "2025-09-02 07:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "COBERTO"
+    },
+    {
+      "n": 8,
+      "date": "2025-09-04 03:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "FALHA"
+    },
+    {
+      "n": 9,
+      "date": "2025-09-11 11:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "FALHA"
+    },
+    {
+      "n": 10,
+      "date": "2025-09-18 13:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "COBERTO"
+    },
+    {
+      "n": 11,
+      "date": "2025-09-24 20:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "FALHA"
+    },
+    {
+      "n": 12,
+      "date": "2025-09-30 09:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "FALHA"
+    },
+    {
+      "n": 13,
+      "date": "2025-10-02 15:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "FALHA"
+    },
+    {
+      "n": 14,
+      "date": "2025-10-10 04:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "COBERTO"
+    },
+    {
+      "n": 15,
+      "date": "2025-10-14 06:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "FALHA"
+    },
+    {
+      "n": 16,
+      "date": "2025-10-15 09:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "COBERTO_CONVERTIDO"
+    },
+    {
+      "n": 17,
+      "date": "2025-10-17 17:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "FALHA"
+    },
+    {
+      "n": 18,
+      "date": "2025-10-28 09:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "FALHA"
+    },
+    {
+      "n": 19,
+      "date": "2025-11-04 23:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "COBERTO"
+    },
+    {
+      "n": 20,
+      "date": "2025-11-18 08:00",
+      "familia": "RANGE_BOTTOM",
+      "pause_zone": null,
+      "v2_status": "FALHA"
+    },
+    {
+      "n": 21,
+      "date": "2025-11-21 06:00",
+      "familia": "RANGE_BOTTOM",
+      "pause_zone": null,
+      "v2_status": "FALHA"
+    },
+    {
+      "n": 22,
+      "date": "2025-12-02 16:15",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "COBERTO_CONVERTIDO"
+    },
+    {
+      "n": 23,
+      "date": "2025-12-10 19:45",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "COBERTO"
+    },
+    {
+      "n": 24,
+      "date": "2025-12-19 01:45",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "COBERTO"
+    },
+    {
+      "n": 25,
+      "date": "2025-12-31 06:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "FALHA"
+    },
+    {
+      "n": 26,
+      "date": "2026-01-08 12:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "COBERTO"
+    },
+    {
+      "n": 27,
+      "date": "2026-02-02 16:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "FALHA"
+    },
+    {
+      "n": 28,
+      "date": "2026-02-06 00:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "COBERTO"
+    },
+    {
+      "n": 29,
+      "date": "2026-02-17 14:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "FALHA"
+    },
+    {
+      "n": 30,
+      "date": "2026-02-19 00:00",
+      "familia": "BULL_PULLBACK",
+      "pause_zone": null,
+      "v2_status": "FALHA"
+    },
+    {
+      "n": 31,
+      "date": "2026-03-23 07:00",
+      "familia": "CAPITULACAO",
+      "pause_zone": null,
+      "v2_status": "FALHA"
+    },
+    {
+      "n": 32,
+      "date": "2026-03-24 05:00",
+      "familia": "CAPITULACAO",
+      "pause_zone": null,
+      "v2_status": "COBERTO_LATE_FLUSH"
+    },
+    {
+      "n": 33,
+      "date": "2026-03-24 13:00",
+      "familia": "CAPITULACAO",
+      "pause_zone": null,
+      "v2_status": "COBERTO"
+    },
+    {
+      "n": 34,
+      "date": "2026-03-26 20:00",
+      "familia": "CAPITULACAO",
+      "pause_zone": null,
+      "v2_status": "COBERTO"
+    },
+    {
+      "n": 35,
+      "date": "2026-03-27 11:00",
+      "familia": "CAPITULACAO",
+      "pause_zone": null,
+      "v2_status": "COBERTO_LATE_FLUSH"
+    },
+    {
+      "n": 36,
+      "date": "2026-03-31 00:00",
+      "familia": "CAPITULACAO",
+      "pause_zone": null,
+      "v2_status": "COBERTO_LATE_FLUSH"
+    },
+    {
+      "n": 37,
+      "date": "2026-03-31 10:00",
+      "familia": "CAPITULACAO",
+      "pause_zone": null,
+      "v2_status": "COBERTO_CONVERTIDO"
+    },
+    {
+      "n": 38,
+      "date": "2026-04-02 06:00",
+      "familia": "CAPITULACAO",
+      "pause_zone": null,
+      "v2_status": "COBERTO_CONVERTIDO"
+    },
+    {
+      "n": 39,
+      "date": "2026-05-04 16:00",
+      "familia": "CAPITULACAO",
+      "pause_zone": null,
+      "v2_status": "FALHA"
+    },
+    {
+      "n": 40,
+      "date": "2026-06-10 23:00",
+      "familia": "CAPITULACAO",
+      "pause_zone": null,
+      "v2_status": "FALHA"
+    },
+    {
+      "n": 41,
+      "date": "2026-06-24 18:00",
+      "familia": "CAPITULACAO",
+      "pause_zone": null,
+      "v2_status": "COBERTO_LATE_FLUSH"
+    },
+    {
+      "n": 42,
+      "date": "2026-06-30 01:00",
+      "familia": "CAPITULACAO",
+      "pause_zone": null,
+      "v2_status": "FALHA"
+    }
+  ]
+}

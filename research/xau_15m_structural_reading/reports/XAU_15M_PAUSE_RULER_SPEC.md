@@ -2,7 +2,9 @@
 
 > Escrita APERTADA e EX-ANTE, antes de rodar (ordem Cris). Complementa
 > `XAU_15M_A2_DETECTOR_REPAIR_SPEC.md`. Família-alvo: BULL_PULLBACK apenas.
-> STATUS: `SPEC_ONLY_NOT_TESTED`. Roda só com ordem.
+> STATUS: **`DISCARDED_BY_VISUAL_REVIEW (Cris 2026-07-10)`** — gate: densidade OK (0,95/sem) e
+> causal OK, mas cobertura 0/42 e revisão visual do Cris = "gera um monte de lixo". Descartado.
+> As zonas apanhadas não são os degraus reais da escada.
 
 ## 1. Contexto obrigatório (escopo)
 - Macro = BULL (v5 hour-causal) E perna de markup viva (máquina de ciclos em UP).
