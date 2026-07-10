@@ -1,0 +1,820 @@
+{
+  "spec": "XAU_15M_DEMAND_REGION_SPEC.md",
+  "convencoes_leitura": {
+    "zona_velha_h": 168,
+    "proximidade_atr": 1.5,
+    "furo_minimo_atr": 0.2
+  },
+  "rows": [
+    {
+      "n": 1,
+      "date": "2025-04-09 02:00",
+      "px": 2957.5,
+      "familia": "BULL_PULLBACK",
+      "verdict": "COVERED_BOTTOM",
+      "regiao": {
+        "id": "B00529_r4",
+        "kind": "BOTTOM",
+        "band": [
+          2955.21,
+          2966.11
+        ],
+        "gap_atr": 0.0,
+        "estado": "VIVA",
+        "furo_atr": null,
+        "idade_h": 27.8
+      },
+      "causa": "COVERED_OK"
+    },
+    {
+      "n": 2,
+      "date": "2025-05-15 16:00",
+      "px": 3121.0,
+      "familia": "BULL_PULLBACK",
+      "verdict": "COVERED_BOTTOM",
+      "regiao": {
+        "id": "B00589_r4",
+        "kind": "BOTTOM",
+        "band": [
+          3119.73,
+          3125.4
+        ],
+        "gap_atr": 0.0,
+        "estado": "VIVA",
+        "furo_atr": null,
+        "idade_h": 6.8
+      },
+      "causa": "COVERED_OK"
+    },
+    {
+      "n": 3,
+      "date": "2025-06-30 02:00",
+      "px": 3245.3,
+      "familia": "BULL_PULLBACK",
+      "verdict": "COVERED_BOTTOM",
+      "regiao": {
+        "id": "T00534_r4",
+        "kind": "TOP",
+        "band": [
+          3238.47,
+          3246.08
+        ],
+        "gap_atr": 0.0,
+        "estado": "INVALIDADA_05-01 03:15",
+        "furo_atr": 0.6,
+        "idade_h": 1851.8
+      },
+      "causa": "COVERED_ZONA_VELHA"
+    },
+    {
+      "n": 4,
+      "date": "2025-08-01 02:00",
+      "px": 3280.1,
+      "familia": "RANGE_BOTTOM",
+      "verdict": "LATE_ONLY",
+      "regiao": {
+        "id": "B00577_r4",
+        "kind": "BOTTOM",
+        "band": [
+          3273.92,
+          3281.02
+        ],
+        "gap_atr": 0.0,
+        "estado": "INVALIDADA_05-11 22:45",
+        "furo_atr": 0.28,
+        "idade_h": 2013.0
+      },
+      "causa": "GEOMETRIA"
+    },
+    {
+      "n": 5,
+      "date": "2025-08-20 01:00",
+      "px": 3311.9,
+      "familia": "RANGE_BOTTOM",
+      "verdict": "COVERED_CONVERTED",
+      "regiao": {
+        "id": "B00539_r4",
+        "kind": "BOTTOM",
+        "band": [
+          3311.84,
+          3317.1
+        ],
+        "gap_atr": 0.0,
+        "estado": "INVALIDADA_04-17 14:30",
+        "furo_atr": 0.87,
+        "idade_h": 2988.8
+      },
+      "causa": "COVERED_OK"
+    },
+    {
+      "n": 6,
+      "date": "2025-08-27 04:00",
+      "px": 3374.7,
+      "familia": "BULL_PULLBACK",
+      "verdict": "LATE_ONLY",
+      "regiao": {
+        "id": "T00618_r4",
+        "kind": "TOP",
+        "band": [
+          3373.02,
+          3375.84
+        ],
+        "gap_atr": 0.0,
+        "estado": "INVALIDADA_06-12 04:15",
+        "furo_atr": 0.59,
+        "idade_h": 1961.5
+      },
+      "causa": "GEOMETRIA"
+    },
+    {
+      "n": 7,
+      "date": "2025-09-02 07:00",
+      "px": 3468.8,
+      "familia": "BULL_PULLBACK",
+      "verdict": "COVERED_BOTTOM",
+      "regiao": {
+        "id": "B00871_r4",
+        "kind": "BOTTOM",
+        "band": [
+          3465.66,
+          3469.83
+        ],
+        "gap_atr": 0.0,
+        "estado": "VIVA",
+        "furo_atr": null,
+        "idade_h": 13.2
+      },
+      "causa": "COVERED_OK"
+    },
+    {
+      "n": 8,
+      "date": "2025-09-04 03:00",
+      "px": 3511.7,
+      "familia": "BULL_PULLBACK",
+      "verdict": "NEAR_MISS",
+      "regiao": {
+        "id": "T00872_r4",
+        "kind": "TOP",
+        "band": [
+          3504.26,
+          3509.14
+        ],
+        "gap_atr": 0.32,
+        "estado": "VIVA",
+        "furo_atr": null,
+        "idade_h": 44.8
+      },
+      "causa": "GEOMETRIA"
+    },
+    {
+      "n": 9,
+      "date": "2025-09-11 11:00",
+      "px": 3612.8,
+      "familia": "BULL_PULLBACK",
+      "verdict": "LATE_ONLY",
+      "regiao": null,
+      "causa": "LATE_ESTRUTURA_NAO_MAPEADA"
+    },
+    {
+      "n": 10,
+      "date": "2025-09-18 13:00",
+      "px": 3628.0,
+      "familia": "BULL_PULLBACK",
+      "verdict": "COVERED_BOTTOM",
+      "regiao": {
+        "id": "B00885_r4",
+        "kind": "BOTTOM",
+        "band": [
+          3627.84,
+          3630.21
+        ],
+        "gap_atr": 0.0,
+        "estado": "INVALIDADA_09-09 21:00",
+        "furo_atr": 0.46,
+        "idade_h": 227.5
+      },
+      "causa": "COVERED_OK"
+    },
+    {
+      "n": 11,
+      "date": "2025-09-24 20:00",
+      "px": 3718.0,
+      "familia": "BULL_PULLBACK",
+      "verdict": "LATE_ONLY",
+      "regiao": null,
+      "causa": "LATE_ESTRUTURA_NAO_MAPEADA"
+    },
+    {
+      "n": 12,
+      "date": "2025-09-30 09:00",
+      "px": 3792.8,
+      "familia": "BULL_PULLBACK",
+      "verdict": "NEAR_MISS",
+      "regiao": {
+        "id": "T00916_r4",
+        "kind": "TOP",
+        "band": [
+          3787.14,
+          3791.71
+        ],
+        "gap_atr": 0.1,
+        "estado": "VIVA",
+        "furo_atr": null,
+        "idade_h": 158.0
+      },
+      "causa": "GEOMETRIA"
+    },
+    {
+      "n": 13,
+      "date": "2025-10-02 15:00",
+      "px": 3820.5,
+      "familia": "BULL_PULLBACK",
+      "verdict": "LATE_ONLY",
+      "regiao": null,
+      "causa": "LATE_ESTRUTURA_NAO_MAPEADA"
+    },
+    {
+      "n": 14,
+      "date": "2025-10-10 04:00",
+      "px": 3947.8,
+      "familia": "BULL_PULLBACK",
+      "verdict": "COVERED_BOTTOM",
+      "regiao": {
+        "id": "B00939_r4",
+        "kind": "BOTTOM",
+        "band": [
+          3942.8,
+          3956.3
+        ],
+        "gap_atr": 0.0,
+        "estado": "VIVA",
+        "furo_atr": null,
+        "idade_h": 4.5
+      },
+      "causa": "COVERED_OK"
+    },
+    {
+      "n": 15,
+      "date": "2025-10-14 06:00",
+      "px": 4089.0,
+      "familia": "BULL_PULLBACK",
+      "verdict": "LATE_ONLY",
+      "regiao": null,
+      "causa": "LATE_ESTRUTURA_NAO_MAPEADA"
+    },
+    {
+      "n": 16,
+      "date": "2025-10-15 09:00",
+      "px": 4162.4,
+      "familia": "BULL_PULLBACK",
+      "verdict": "MISS",
+      "regiao": {
+        "id": "T00942_r4",
+        "kind": "TOP",
+        "band": [
+          4171.83,
+          4180.85
+        ],
+        "gap_atr": 1.28,
+        "estado": "INVALIDADA_10-15 02:45",
+        "furo_atr": 0.01,
+        "idade_h": 27.2
+      },
+      "causa": "INVALIDACAO_ERRADA"
+    },
+    {
+      "n": 17,
+      "date": "2025-10-17 17:00",
+      "px": 4186.0,
+      "familia": "BULL_PULLBACK",
+      "verdict": "LATE_ONLY",
+      "regiao": {
+        "id": "T00942_r4",
+        "kind": "TOP",
+        "band": [
+          4171.83,
+          4180.85
+        ],
+        "gap_atr": 0.21,
+        "estado": "INVALIDADA_10-15 02:45",
+        "furo_atr": 0.01,
+        "idade_h": 83.2
+      },
+      "causa": "INVALIDACAO_ERRADA"
+    },
+    {
+      "n": 18,
+      "date": "2025-10-28 09:00",
+      "px": 3885.5,
+      "familia": "BULL_PULLBACK",
+      "verdict": "NEAR_MISS",
+      "regiao": {
+        "id": "T00928_r4",
+        "kind": "TOP",
+        "band": [
+          3890.69,
+          3895.94
+        ],
+        "gap_atr": 0.4,
+        "estado": "VIVA",
+        "furo_atr": null,
+        "idade_h": 643.8
+      },
+      "causa": "GEOMETRIA"
+    },
+    {
+      "n": 19,
+      "date": "2025-11-04 23:00",
+      "px": 3931.2,
+      "familia": "BULL_PULLBACK",
+      "verdict": "MISS",
+      "regiao": {
+        "id": "B00965_r4",
+        "kind": "BOTTOM",
+        "band": [
+          3913.94,
+          3925.08
+        ],
+        "gap_atr": 1.04,
+        "estado": "VIVA",
+        "furo_atr": null,
+        "idade_h": 138.2
+      },
+      "causa": "GEOMETRIA"
+    },
+    {
+      "n": 20,
+      "date": "2025-11-18 08:00",
+      "px": 3997.7,
+      "familia": "RANGE_BOTTOM",
+      "verdict": "COVERED_BOTTOM",
+      "regiao": {
+        "id": "T00976_r4",
+        "kind": "TOP",
+        "band": [
+          3995.29,
+          4001.61
+        ],
+        "gap_atr": 0.0,
+        "estado": "INVALIDADA_11-06 14:30",
+        "furo_atr": 0.52,
+        "idade_h": 329.5
+      },
+      "causa": "COVERED_ZONA_VELHA"
+    },
+    {
+      "n": 21,
+      "date": "2025-11-21 06:00",
+      "px": 4024.0,
+      "familia": "RANGE_BOTTOM",
+      "verdict": "LATE_ONLY",
+      "regiao": {
+        "id": "B00957_r4",
+        "kind": "BOTTOM",
+        "band": [
+          4009.08,
+          4027.19
+        ],
+        "gap_atr": 0.0,
+        "estado": "INVALIDADA_10-27 14:15",
+        "furo_atr": 0.32,
+        "idade_h": 707.2
+      },
+      "causa": "GEOMETRIA"
+    },
+    {
+      "n": 22,
+      "date": "2025-12-02 16:15",
+      "px": 4162.6,
+      "familia": "BULL_PULLBACK",
+      "verdict": "NEAR_MISS",
+      "regiao": {
+        "id": "T00956_r4",
+        "kind": "TOP",
+        "band": [
+          4152.14,
+          4162.84
+        ],
+        "gap_atr": 0.0,
+        "estado": "INVALIDADA_11-14 11:30",
+        "furo_atr": 0.37,
+        "idade_h": 992.0
+      },
+      "causa": "GEOMETRIA"
+    },
+    {
+      "n": 23,
+      "date": "2025-12-10 19:45",
+      "px": 4183.6,
+      "familia": "BULL_PULLBACK",
+      "verdict": "NEAR_MISS",
+      "regiao": {
+        "id": "B01021_r4",
+        "kind": "BOTTOM",
+        "band": [
+          4180.13,
+          4186.88
+        ],
+        "gap_atr": 0.0,
+        "estado": "INVALIDADA_12-02 16:00",
+        "furo_atr": 0.88,
+        "idade_h": 198.8
+      },
+      "causa": "GEOMETRIA"
+    },
+    {
+      "n": 24,
+      "date": "2025-12-19 01:45",
+      "px": 4310.2,
+      "familia": "BULL_PULLBACK",
+      "verdict": "COVERED_BOTTOM",
+      "regiao": {
+        "id": "B01055_r4",
+        "kind": "BOTTOM",
+        "band": [
+          4305.86,
+          4311.14
+        ],
+        "gap_atr": 0.0,
+        "estado": "VIVA",
+        "furo_atr": null,
+        "idade_h": 36.0
+      },
+      "causa": "COVERED_OK"
+    },
+    {
+      "n": 25,
+      "date": "2025-12-31 06:00",
+      "px": 4274.6,
+      "familia": "BULL_PULLBACK",
+      "verdict": "COVERED_BOTTOM",
+      "regiao": {
+        "id": "T00950_r4",
+        "kind": "TOP",
+        "band": [
+          4264.47,
+          4275.45
+        ],
+        "gap_atr": 0.0,
+        "estado": "INVALIDADA_10-21 08:15",
+        "furo_atr": 1.28,
+        "idade_h": 1727.5
+      },
+      "causa": "COVERED_ZONA_VELHA"
+    },
+    {
+      "n": 26,
+      "date": "2026-01-08 12:00",
+      "px": 4408.8,
+      "familia": "BULL_PULLBACK",
+      "verdict": "NEAR_MISS",
+      "regiao": {
+        "id": "T01076_r4",
+        "kind": "TOP",
+        "band": [
+          4399.1,
+          4405.0
+        ],
+        "gap_atr": 0.6,
+        "estado": "VIVA",
+        "furo_atr": null,
+        "idade_h": 209.0
+      },
+      "causa": "GEOMETRIA"
+    },
+    {
+      "n": 27,
+      "date": "2026-02-02 16:00",
+      "px": 4597.1,
+      "familia": "BULL_PULLBACK",
+      "verdict": "LATE_ONLY",
+      "regiao": {
+        "id": "T01090_r4",
+        "kind": "TOP",
+        "band": [
+          4593.33,
+          4601.83
+        ],
+        "gap_atr": 0.0,
+        "estado": "INVALIDADA_01-12 14:30",
+        "furo_atr": 0.62,
+        "idade_h": 515.0
+      },
+      "causa": "GEOMETRIA"
+    },
+    {
+      "n": 28,
+      "date": "2026-02-06 00:00",
+      "px": 4656.7,
+      "familia": "BULL_PULLBACK",
+      "verdict": "NEAR_MISS",
+      "regiao": {
+        "id": "B01107_r4",
+        "kind": "BOTTOM",
+        "band": [
+          4651.47,
+          4665.38
+        ],
+        "gap_atr": 0.0,
+        "estado": "INVALIDADA_02-02 01:15",
+        "furo_atr": 0.11,
+        "idade_h": 416.0
+      },
+      "causa": "INVALIDACAO_ERRADA"
+    },
+    {
+      "n": 29,
+      "date": "2026-02-17 14:00",
+      "px": 4842.2,
+      "familia": "BULL_PULLBACK",
+      "verdict": "LATE_ONLY",
+      "regiao": {
+        "id": "T01112_r4",
+        "kind": "TOP",
+        "band": [
+          4825.9,
+          4841.76
+        ],
+        "gap_atr": 0.02,
+        "estado": "INVALIDADA_01-30 18:15",
+        "furo_atr": 0.29,
+        "idade_h": 633.0
+      },
+      "causa": "GEOMETRIA"
+    },
+    {
+      "n": 30,
+      "date": "2026-02-19 00:00",
+      "px": 4962.6,
+      "familia": "BULL_PULLBACK",
+      "verdict": "LATE_ONLY",
+      "regiao": {
+        "id": "T01114_r4",
+        "kind": "TOP",
+        "band": [
+          4962.94,
+          4967.91
+        ],
+        "gap_atr": 0.04,
+        "estado": "INVALIDADA_01-30 17:15",
+        "furo_atr": 0.91,
+        "idade_h": 639.5
+      },
+      "causa": "GEOMETRIA"
+    },
+    {
+      "n": 31,
+      "date": "2026-03-23 07:00",
+      "px": 4101.5,
+      "familia": "CAPITULACAO",
+      "verdict": "NEAR_MISS",
+      "regiao": {
+        "id": "T00992_r4",
+        "kind": "TOP",
+        "band": [
+          4097.33,
+          4113.11
+        ],
+        "gap_atr": 0.0,
+        "estado": "INVALIDADA_11-19 16:00",
+        "furo_atr": 0.07,
+        "idade_h": 3026.0
+      },
+      "causa": "INVALIDACAO_ERRADA"
+    },
+    {
+      "n": 32,
+      "date": "2026-03-24 05:00",
+      "px": 4318.9,
+      "familia": "CAPITULACAO",
+      "verdict": "LATE_ONLY",
+      "regiao": {
+        "id": "T01050_r4",
+        "kind": "TOP",
+        "band": [
+          4311.72,
+          4318.75
+        ],
+        "gap_atr": 0.0,
+        "estado": "INVALIDADA_12-16 16:30",
+        "furo_atr": 0.37,
+        "idade_h": 2353.8
+      },
+      "causa": "LATE_POR_NATUREZA"
+    },
+    {
+      "n": 33,
+      "date": "2026-03-24 13:00",
+      "px": 4352.1,
+      "familia": "CAPITULACAO",
+      "verdict": "MISS",
+      "regiao": {
+        "id": "B01223_r4",
+        "kind": "BOTTOM",
+        "band": [
+          4302.61,
+          4329.28
+        ],
+        "gap_atr": 0.88,
+        "estado": "VIVA",
+        "furo_atr": null,
+        "idade_h": 5.8
+      },
+      "causa": "GEOMETRIA"
+    },
+    {
+      "n": 34,
+      "date": "2026-03-26 20:00",
+      "px": 4353.5,
+      "familia": "CAPITULACAO",
+      "verdict": "LATE_ONLY",
+      "regiao": {
+        "id": "T01046_r4",
+        "kind": "TOP",
+        "band": [
+          4347.47,
+          4354.41
+        ],
+        "gap_atr": 0.0,
+        "estado": "INVALIDADA_12-18 17:15",
+        "furo_atr": 1.23,
+        "idade_h": 2500.5
+      },
+      "causa": "LATE_POR_NATUREZA"
+    },
+    {
+      "n": 35,
+      "date": "2026-03-27 11:00",
+      "px": 4404.7,
+      "familia": "CAPITULACAO",
+      "verdict": "LATE_ONLY",
+      "regiao": {
+        "id": "T01076_r4",
+        "kind": "TOP",
+        "band": [
+          4399.1,
+          4405.0
+        ],
+        "gap_atr": 0.0,
+        "estado": "INVALIDADA_03-23 00:45",
+        "furo_atr": 1.08,
+        "idade_h": 2080.0
+      },
+      "causa": "LATE_POR_NATUREZA"
+    },
+    {
+      "n": 36,
+      "date": "2026-03-31 00:00",
+      "px": 4483.6,
+      "familia": "CAPITULACAO",
+      "verdict": "LATE_ONLY",
+      "regiao": {
+        "id": "T01088_r4",
+        "kind": "TOP",
+        "band": [
+          4479.58,
+          4484.62
+        ],
+        "gap_atr": 0.0,
+        "estado": "INVALIDADA_02-02 06:45",
+        "furo_atr": 0.43,
+        "idade_h": 1942.8
+      },
+      "causa": "LATE_POR_NATUREZA"
+    },
+    {
+      "n": 37,
+      "date": "2026-03-31 10:00",
+      "px": 4533.4,
+      "familia": "CAPITULACAO",
+      "verdict": "LATE_ONLY",
+      "regiao": {
+        "id": "B01225_r4",
+        "kind": "BOTTOM",
+        "band": [
+          4526.15,
+          4537.43
+        ],
+        "gap_atr": 0.0,
+        "estado": "INVALIDADA_03-25 19:15",
+        "furo_atr": 1.0,
+        "idade_h": 142.2
+      },
+      "causa": "LATE_POR_NATUREZA"
+    },
+    {
+      "n": 38,
+      "date": "2026-04-02 06:00",
+      "px": 4552.8,
+      "familia": "CAPITULACAO",
+      "verdict": "LATE_ONLY",
+      "regiao": {
+        "id": "T01230_r4",
+        "kind": "TOP",
+        "band": [
+          4539.38,
+          4557.56
+        ],
+        "gap_atr": 0.0,
+        "estado": "INVALIDADA_03-30 14:00",
+        "furo_atr": 0.96,
+        "idade_h": 129.0
+      },
+      "causa": "LATE_POR_NATUREZA"
+    },
+    {
+      "n": 39,
+      "date": "2026-05-04 16:00",
+      "px": 4501.9,
+      "familia": "CAPITULACAO",
+      "verdict": "NEAR_MISS",
+      "regiao": {
+        "id": "B01217_r4",
+        "kind": "BOTTOM",
+        "band": [
+          4499.3,
+          4526.39
+        ],
+        "gap_atr": 0.0,
+        "estado": "INVALIDADA_03-20 19:30",
+        "furo_atr": 0.03,
+        "idade_h": 1101.2
+      },
+      "causa": "INVALIDACAO_ERRADA"
+    },
+    {
+      "n": 40,
+      "date": "2026-06-10 23:00",
+      "px": 4021.8,
+      "familia": "CAPITULACAO",
+      "verdict": "COVERED_BOTTOM",
+      "regiao": {
+        "id": "B00957_r4",
+        "kind": "BOTTOM",
+        "band": [
+          4009.08,
+          4027.19
+        ],
+        "gap_atr": 0.0,
+        "estado": "INVALIDADA_10-27 14:15",
+        "furo_atr": 0.32,
+        "idade_h": 5548.2
+      },
+      "causa": "COVERED_ZONA_VELHA"
+    },
+    {
+      "n": 41,
+      "date": "2026-06-24 18:00",
+      "px": 3958.2,
+      "familia": "CAPITULACAO",
+      "verdict": "NEAR_MISS",
+      "regiao": {
+        "id": "B00967_r4",
+        "kind": "BOTTOM",
+        "band": [
+          3959.09,
+          3968.77
+        ],
+        "gap_atr": 0.06,
+        "estado": "INVALIDADA_11-04 14:30",
+        "furo_atr": 0.82,
+        "idade_h": 5688.2
+      },
+      "causa": "GEOMETRIA"
+    },
+    {
+      "n": 42,
+      "date": "2026-06-30 01:00",
+      "px": 3947.1,
+      "familia": "CAPITULACAO",
+      "verdict": "LATE_ONLY",
+      "regiao": {
+        "id": "B00939_r4",
+        "kind": "BOTTOM",
+        "band": [
+          3942.8,
+          3956.3
+        ],
+        "gap_atr": 0.0,
+        "estado": "INVALIDADA_10-28 07:00",
+        "furo_atr": 0.02,
+        "idade_h": 6313.5
+      },
+      "causa": "LATE_POR_NATUREZA"
+    }
+  ],
+  "contagens_tabela": {
+    "BULL_PULLBACK|COVERED_OK": 6,
+    "BULL_PULLBACK|COVERED_ZONA_VELHA": 2,
+    "BULL_PULLBACK|GEOMETRIA": 11,
+    "BULL_PULLBACK|INVALIDACAO_ERRADA": 3,
+    "BULL_PULLBACK|LATE_ESTRUTURA_NAO_MAPEADA": 4,
+    "CAPITULACAO|COVERED_ZONA_VELHA": 1,
+    "CAPITULACAO|GEOMETRIA": 2,
+    "CAPITULACAO|INVALIDACAO_ERRADA": 2,
+    "CAPITULACAO|LATE_POR_NATUREZA": 7,
+    "RANGE_BOTTOM|COVERED_OK": 1,
+    "RANGE_BOTTOM|COVERED_ZONA_VELHA": 1,
+    "RANGE_BOTTOM|GEOMETRIA": 2
+  }
+}
