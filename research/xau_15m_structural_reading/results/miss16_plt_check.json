@@ -1,0 +1,87 @@
+{
+  "miss16": {
+    "utc": "2025-10-15 09:00",
+    "px": 4162.4
+  },
+  "chart": {
+    "symbol": "PEPPERSTONE:XAUUSD",
+    "tf": "15"
+  },
+  "rects_found": 1,
+  "rects": [
+    {
+      "id": "9ymUkm",
+      "name": "rectangle"
+    }
+  ],
+  "degrau_anterior": {
+    "pausa_top_px": 4179.7,
+    "pausa_top_utc": "2025-10-14 05:30",
+    "rompido_antes_do_16": "2025-10-15 01:15",
+    "low_barra_da_marca": 4202.7,
+    "low_REAL_pullback": 4164.0,
+    "low_REAL_utc": "2025-10-15 09:15"
+  },
+  "a2_tops_na_area": [
+    {
+      "id": "T00936_r4",
+      "extreme_px": 4059.15,
+      "extreme_utc": "10-08 16:30",
+      "band": [
+        4053.26,
+        4059.99
+      ],
+      "known_utc": "10-08 23:00",
+      "converted_utc": "10-13 05:15",
+      "conv_antes_16": true,
+      "invalidated_utc": "10-22 00:15",
+      "inv_antes_16": false,
+      "banda_contem_low16": false
+    },
+    {
+      "id": "T00938_r4",
+      "extreme_px": 4057.94,
+      "extreme_utc": "10-09 13:15",
+      "band": [
+        4053.69,
+        4058.55
+      ],
+      "known_utc": "10-09 14:00",
+      "converted_utc": "10-13 05:15",
+      "conv_antes_16": true,
+      "invalidated_utc": "10-22 00:15",
+      "inv_antes_16": false,
+      "banda_contem_low16": false
+    },
+    {
+      "id": "T00940_r4",
+      "extreme_px": 3994.36,
+      "extreme_utc": "10-10 00:45",
+      "band": [
+        3989.19,
+        3995.1
+      ],
+      "known_utc": "10-10 04:00",
+      "converted_utc": "10-10 09:15",
+      "conv_antes_16": true,
+      "invalidated_utc": "10-10 12:00",
+      "inv_antes_16": true,
+      "banda_contem_low16": false
+    },
+    {
+      "id": "T00942_r4",
+      "extreme_px": 4179.72,
+      "extreme_utc": "10-14 05:30",
+      "band": [
+        4171.83,
+        4180.85
+      ],
+      "known_utc": "10-14 05:45",
+      "converted_utc": "10-15 01:30",
+      "conv_antes_16": true,
+      "invalidated_utc": "10-15 02:45",
+      "inv_antes_16": true,
+      "banda_contem_low16": false
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "counts": {
+    "COVERED": 11,
+    "NEAR": 10,
+    "LATE": 18,
+    "MISS": 3
+  },
+  "drawn": 42,
+  "requested": 42,
+  "fails": []
+}
