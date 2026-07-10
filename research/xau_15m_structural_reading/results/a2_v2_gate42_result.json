@@ -1,0 +1,786 @@
+{
+  "spec": "XAU_15M_A2_DETECTOR_REPAIR_SPEC.md",
+  "r_cycle": 4,
+  "n_regioes_v2": 1396,
+  "cobertura_42": "23/42",
+  "por_familia": {
+    "BULL_PULLBACK": {
+      "cobertos": 14,
+      "total": 26
+    },
+    "CAPITULACAO": {
+      "cobertos": 8,
+      "total": 12
+    },
+    "RANGE_BOTTOM": {
+      "cobertos": 1,
+      "total": 4
+    }
+  },
+  "falhas": [
+    {
+      "n": 5,
+      "date": "2025-08-20 01:00",
+      "familia": "RANGE_BOTTOM",
+      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)"
+    },
+    {
+      "n": 8,
+      "date": "2025-09-04 03:00",
+      "familia": "BULL_PULLBACK",
+      "motivo": "nenhuma zona com autoridade contém o preço"
+    },
+    {
+      "n": 9,
+      "date": "2025-09-11 11:00",
+      "familia": "BULL_PULLBACK",
+      "motivo": "nenhuma zona com autoridade contém o preço"
+    },
+    {
+      "n": 11,
+      "date": "2025-09-24 20:00",
+      "familia": "BULL_PULLBACK",
+      "motivo": "nenhuma zona com autoridade contém o preço"
+    },
+    {
+      "n": 12,
+      "date": "2025-09-30 09:00",
+      "familia": "BULL_PULLBACK",
+      "motivo": "nenhuma zona com autoridade contém o preço"
+    },
+    {
+      "n": 13,
+      "date": "2025-10-02 15:00",
+      "familia": "BULL_PULLBACK",
+      "motivo": "nenhuma zona com autoridade contém o preço"
+    },
+    {
+      "n": 15,
+      "date": "2025-10-14 06:00",
+      "familia": "BULL_PULLBACK",
+      "motivo": "nenhuma zona com autoridade contém o preço"
+    },
+    {
+      "n": 17,
+      "date": "2025-10-17 17:00",
+      "familia": "BULL_PULLBACK",
+      "motivo": "nenhuma zona com autoridade contém o preço"
+    },
+    {
+      "n": 18,
+      "date": "2025-10-28 09:00",
+      "familia": "BULL_PULLBACK",
+      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)"
+    },
+    {
+      "n": 20,
+      "date": "2025-11-18 08:00",
+      "familia": "RANGE_BOTTOM",
+      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)"
+    },
+    {
+      "n": 21,
+      "date": "2025-11-21 06:00",
+      "familia": "RANGE_BOTTOM",
+      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)"
+    },
+    {
+      "n": 25,
+      "date": "2025-12-31 06:00",
+      "familia": "BULL_PULLBACK",
+      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)"
+    },
+    {
+      "n": 27,
+      "date": "2026-02-02 16:00",
+      "familia": "BULL_PULLBACK",
+      "motivo": "nenhuma zona com autoridade contém o preço"
+    },
+    {
+      "n": 29,
+      "date": "2026-02-17 14:00",
+      "familia": "BULL_PULLBACK",
+      "motivo": "nenhuma zona com autoridade contém o preço"
+    },
+    {
+      "n": 30,
+      "date": "2026-02-19 00:00",
+      "familia": "BULL_PULLBACK",
+      "motivo": "nenhuma zona com autoridade contém o preço"
+    },
+    {
+      "n": 31,
+      "date": "2026-03-23 07:00",
+      "familia": "CAPITULACAO",
+      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)"
+    },
+    {
+      "n": 39,
+      "date": "2026-05-04 16:00",
+      "familia": "CAPITULACAO",
+      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)"
+    },
+    {
+      "n": 40,
+      "date": "2026-06-10 23:00",
+      "familia": "CAPITULACAO",
+      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)"
+    },
+    {
+      "n": 42,
+      "date": "2026-06-30 01:00",
+      "familia": "CAPITULACAO",
+      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)"
+    }
+  ],
+  "rows": [
+    {
+      "n": 1,
+      "date": "2025-04-09 02:00",
+      "familia": "BULL_PULLBACK",
+      "status": "COBERTO",
+      "motivo": "",
+      "regiao": {
+        "id": "B00529",
+        "kind": "BOTTOM",
+        "band": [
+          2955.2,
+          2975.2
+        ],
+        "conv": false,
+        "idade_h": 27.8,
+        "autoridade": true
+      }
+    },
+    {
+      "n": 2,
+      "date": "2025-05-15 16:00",
+      "familia": "BULL_PULLBACK",
+      "status": "COBERTO_CONVERTIDO",
+      "motivo": "",
+      "regiao": {
+        "id": "T00524",
+        "kind": "TOP",
+        "band": [
+          3098.2,
+          3137.1
+        ],
+        "conv": true,
+        "idade_h": 1005.5,
+        "autoridade": true
+      }
+    },
+    {
+      "n": 3,
+      "date": "2025-06-30 02:00",
+      "familia": "BULL_PULLBACK",
+      "status": "COBERTO_CONVERTIDO",
+      "motivo": "",
+      "regiao": {
+        "id": "T00590",
+        "kind": "TOP",
+        "band": [
+          3240.9,
+          3252.7
+        ],
+        "conv": true,
+        "idade_h": 1080.2,
+        "autoridade": true
+      }
+    },
+    {
+      "n": 4,
+      "date": "2025-08-01 02:00",
+      "familia": "RANGE_BOTTOM",
+      "status": "COBERTO",
+      "motivo": "",
+      "regiao": {
+        "id": "B00815",
+        "kind": "BOTTOM",
+        "band": [
+          3267.4,
+          3281.3
+        ],
+        "conv": false,
+        "idade_h": 26.0,
+        "autoridade": true
+      }
+    },
+    {
+      "n": 5,
+      "date": "2025-08-20 01:00",
+      "familia": "RANGE_BOTTOM",
+      "status": "FALHA",
+      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)",
+      "regiao": {
+        "id": "T00816",
+        "kind": "TOP",
+        "band": [
+          3303.2,
+          3315.3
+        ],
+        "conv": true,
+        "idade_h": 465.2,
+        "autoridade": false
+      }
+    },
+    {
+      "n": 6,
+      "date": "2025-08-27 04:00",
+      "familia": "BULL_PULLBACK",
+      "status": "COBERTO_CONVERTIDO",
+      "motivo": "",
+      "regiao": {
+        "id": "T00856",
+        "kind": "TOP",
+        "band": [
+          3368.0,
+          3379.6
+        ],
+        "conv": true,
+        "idade_h": 53.8,
+        "autoridade": true
+      }
+    },
+    {
+      "n": 7,
+      "date": "2025-09-02 07:00",
+      "familia": "BULL_PULLBACK",
+      "status": "COBERTO",
+      "motivo": "",
+      "regiao": {
+        "id": "B00871",
+        "kind": "BOTTOM",
+        "band": [
+          3465.7,
+          3474.4
+        ],
+        "conv": false,
+        "idade_h": 13.2,
+        "autoridade": true
+      }
+    },
+    {
+      "n": 8,
+      "date": "2025-09-04 03:00",
+      "familia": "BULL_PULLBACK",
+      "status": "FALHA",
+      "motivo": "nenhuma zona com autoridade contém o preço",
+      "regiao": null
+    },
+    {
+      "n": 9,
+      "date": "2025-09-11 11:00",
+      "familia": "BULL_PULLBACK",
+      "status": "FALHA",
+      "motivo": "nenhuma zona com autoridade contém o preço",
+      "regiao": null
+    },
+    {
+      "n": 10,
+      "date": "2025-09-18 13:00",
+      "familia": "BULL_PULLBACK",
+      "status": "COBERTO",
+      "motivo": "",
+      "regiao": {
+        "id": "B00901",
+        "kind": "BOTTOM",
+        "band": [
+          3626.2,
+          3635.4
+        ],
+        "conv": false,
+        "idade_h": 82.2,
+        "autoridade": true
+      }
+    },
+    {
+      "n": 11,
+      "date": "2025-09-24 20:00",
+      "familia": "BULL_PULLBACK",
+      "status": "FALHA",
+      "motivo": "nenhuma zona com autoridade contém o preço",
+      "regiao": null
+    },
+    {
+      "n": 12,
+      "date": "2025-09-30 09:00",
+      "familia": "BULL_PULLBACK",
+      "status": "FALHA",
+      "motivo": "nenhuma zona com autoridade contém o preço",
+      "regiao": null
+    },
+    {
+      "n": 13,
+      "date": "2025-10-02 15:00",
+      "familia": "BULL_PULLBACK",
+      "status": "FALHA",
+      "motivo": "nenhuma zona com autoridade contém o preço",
+      "regiao": null
+    },
+    {
+      "n": 14,
+      "date": "2025-10-10 04:00",
+      "familia": "BULL_PULLBACK",
+      "status": "COBERTO",
+      "motivo": "",
+      "regiao": {
+        "id": "B00935",
+        "kind": "BOTTOM",
+        "band": [
+          3939.9,
+          3958.8
+        ],
+        "conv": false,
+        "idade_h": 64.2,
+        "autoridade": true
+      }
+    },
+    {
+      "n": 15,
+      "date": "2025-10-14 06:00",
+      "familia": "BULL_PULLBACK",
+      "status": "FALHA",
+      "motivo": "nenhuma zona com autoridade contém o preço",
+      "regiao": null
+    },
+    {
+      "n": 16,
+      "date": "2025-10-15 09:00",
+      "familia": "BULL_PULLBACK",
+      "status": "COBERTO_CONVERTIDO",
+      "motivo": "",
+      "regiao": {
+        "id": "T00942",
+        "kind": "TOP",
+        "band": [
+          4151.6,
+          4180.8
+        ],
+        "conv": true,
+        "idade_h": 27.2,
+        "autoridade": true
+      }
+    },
+    {
+      "n": 17,
+      "date": "2025-10-17 17:00",
+      "familia": "BULL_PULLBACK",
+      "status": "FALHA",
+      "motivo": "nenhuma zona com autoridade contém o preço",
+      "regiao": null
+    },
+    {
+      "n": 18,
+      "date": "2025-10-28 09:00",
+      "familia": "BULL_PULLBACK",
+      "status": "FALHA",
+      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)",
+      "regiao": {
+        "id": "T00930",
+        "kind": "TOP",
+        "band": [
+          3881.7,
+          3897.5
+        ],
+        "conv": true,
+        "idade_h": 618.5,
+        "autoridade": false
+      }
+    },
+    {
+      "n": 19,
+      "date": "2025-11-04 23:00",
+      "familia": "BULL_PULLBACK",
+      "status": "COBERTO",
+      "motivo": "",
+      "regiao": {
+        "id": "B00965",
+        "kind": "BOTTOM",
+        "band": [
+          3913.9,
+          3943.5
+        ],
+        "conv": false,
+        "idade_h": 138.2,
+        "autoridade": true
+      }
+    },
+    {
+      "n": 20,
+      "date": "2025-11-18 08:00",
+      "familia": "RANGE_BOTTOM",
+      "status": "FALHA",
+      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)",
+      "regiao": {
+        "id": "B00983",
+        "kind": "BOTTOM",
+        "band": [
+          3991.2,
+          4020.8
+        ],
+        "conv": false,
+        "idade_h": 199.5,
+        "autoridade": false
+      }
+    },
+    {
+      "n": 21,
+      "date": "2025-11-21 06:00",
+      "familia": "RANGE_BOTTOM",
+      "status": "FALHA",
+      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)",
+      "regiao": {
+        "id": "T00982",
+        "kind": "TOP",
+        "band": [
+          4002.3,
+          4028.5
+        ],
+        "conv": true,
+        "idade_h": 321.5,
+        "autoridade": false
+      }
+    },
+    {
+      "n": 22,
+      "date": "2025-12-02 16:15",
+      "familia": "BULL_PULLBACK",
+      "status": "COBERTO_CONVERTIDO",
+      "motivo": "",
+      "regiao": {
+        "id": "T01010",
+        "kind": "TOP",
+        "band": [
+          4159.7,
+          4174.0
+        ],
+        "conv": true,
+        "idade_h": 135.0,
+        "autoridade": true
+      }
+    },
+    {
+      "n": 23,
+      "date": "2025-12-10 19:45",
+      "familia": "BULL_PULLBACK",
+      "status": "COBERTO",
+      "motivo": "",
+      "regiao": {
+        "id": "B01029",
+        "kind": "BOTTOM",
+        "band": [
+          4174.4,
+          4192.1
+        ],
+        "conv": false,
+        "idade_h": 153.8,
+        "autoridade": true
+      }
+    },
+    {
+      "n": 24,
+      "date": "2025-12-19 01:45",
+      "familia": "BULL_PULLBACK",
+      "status": "COBERTO",
+      "motivo": "",
+      "regiao": {
+        "id": "B01053",
+        "kind": "BOTTOM",
+        "band": [
+          4290.0,
+          4319.9
+        ],
+        "conv": false,
+        "idade_h": 49.5,
+        "autoridade": true
+      }
+    },
+    {
+      "n": 25,
+      "date": "2025-12-31 06:00",
+      "familia": "BULL_PULLBACK",
+      "status": "FALHA",
+      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)",
+      "regiao": {
+        "id": "B01051",
+        "kind": "BOTTOM",
+        "band": [
+          4270.8,
+          4291.0
+        ],
+        "conv": false,
+        "idade_h": 353.2,
+        "autoridade": false
+      }
+    },
+    {
+      "n": 26,
+      "date": "2026-01-08 12:00",
+      "familia": "BULL_PULLBACK",
+      "status": "COBERTO",
+      "motivo": "",
+      "regiao": {
+        "id": "B01083",
+        "kind": "BOTTOM",
+        "band": [
+          4395.3,
+          4420.9
+        ],
+        "conv": false,
+        "idade_h": 68.8,
+        "autoridade": true
+      }
+    },
+    {
+      "n": 27,
+      "date": "2026-02-02 16:00",
+      "familia": "BULL_PULLBACK",
+      "status": "FALHA",
+      "motivo": "nenhuma zona com autoridade contém o preço",
+      "regiao": null
+    },
+    {
+      "n": 28,
+      "date": "2026-02-06 00:00",
+      "familia": "BULL_PULLBACK",
+      "status": "COBERTO",
+      "motivo": "",
+      "regiao": {
+        "id": "B01125",
+        "kind": "BOTTOM",
+        "band": [
+          4590.6,
+          4711.2
+        ],
+        "conv": false,
+        "idade_h": 72.0,
+        "autoridade": true
+      }
+    },
+    {
+      "n": 29,
+      "date": "2026-02-17 14:00",
+      "familia": "BULL_PULLBACK",
+      "status": "FALHA",
+      "motivo": "nenhuma zona com autoridade contém o preço",
+      "regiao": null
+    },
+    {
+      "n": 30,
+      "date": "2026-02-19 00:00",
+      "familia": "BULL_PULLBACK",
+      "status": "FALHA",
+      "motivo": "nenhuma zona com autoridade contém o preço",
+      "regiao": null
+    },
+    {
+      "n": 31,
+      "date": "2026-03-23 07:00",
+      "familia": "CAPITULACAO",
+      "status": "FALHA",
+      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)",
+      "regiao": {
+        "id": "T01004",
+        "kind": "TOP",
+        "band": [
+          4070.7,
+          4102.4
+        ],
+        "conv": true,
+        "idade_h": 2914.2,
+        "autoridade": false
+      }
+    },
+    {
+      "n": 32,
+      "date": "2026-03-24 05:00",
+      "familia": "CAPITULACAO",
+      "status": "COBERTO_LATE_FLUSH",
+      "motivo": "",
+      "regiao": {
+        "id": "B01223",
+        "kind": "BOTTOM_LATE_FLUSH",
+        "band": [
+          4302.6,
+          4366.7
+        ],
+        "known_h_apos": 2.2
+      }
+    },
+    {
+      "n": 33,
+      "date": "2026-03-24 13:00",
+      "familia": "CAPITULACAO",
+      "status": "COBERTO",
+      "motivo": "",
+      "regiao": {
+        "id": "B01223",
+        "kind": "BOTTOM",
+        "band": [
+          4302.6,
+          4366.7
+        ],
+        "conv": false,
+        "idade_h": 5.8,
+        "autoridade": true
+      }
+    },
+    {
+      "n": 34,
+      "date": "2026-03-26 20:00",
+      "familia": "CAPITULACAO",
+      "status": "COBERTO",
+      "motivo": "",
+      "regiao": {
+        "id": "B01223",
+        "kind": "BOTTOM",
+        "band": [
+          4302.6,
+          4366.7
+        ],
+        "conv": false,
+        "idade_h": 60.8,
+        "autoridade": true
+      }
+    },
+    {
+      "n": 35,
+      "date": "2026-03-27 11:00",
+      "familia": "CAPITULACAO",
+      "status": "COBERTO_LATE_FLUSH",
+      "motivo": "",
+      "regiao": {
+        "id": "B01229",
+        "kind": "BOTTOM_LATE_FLUSH",
+        "band": [
+          4403.1,
+          4429.2
+        ],
+        "known_h_apos": 4.0
+      }
+    },
+    {
+      "n": 36,
+      "date": "2026-03-31 00:00",
+      "familia": "CAPITULACAO",
+      "status": "COBERTO_LATE_FLUSH",
+      "motivo": "",
+      "regiao": {
+        "id": "B01233",
+        "kind": "BOTTOM_LATE_FLUSH",
+        "band": [
+          4481.2,
+          4517.5
+        ],
+        "known_h_apos": 1.0
+      }
+    },
+    {
+      "n": 37,
+      "date": "2026-03-31 10:00",
+      "familia": "CAPITULACAO",
+      "status": "COBERTO_CONVERTIDO",
+      "motivo": "",
+      "regiao": {
+        "id": "T01230",
+        "kind": "TOP",
+        "band": [
+          4498.5,
+          4557.6
+        ],
+        "conv": true,
+        "idade_h": 85.0,
+        "autoridade": true
+      }
+    },
+    {
+      "n": 38,
+      "date": "2026-04-02 06:00",
+      "familia": "CAPITULACAO",
+      "status": "COBERTO_CONVERTIDO",
+      "motivo": "",
+      "regiao": {
+        "id": "T01230",
+        "kind": "TOP",
+        "band": [
+          4498.5,
+          4557.6
+        ],
+        "conv": true,
+        "idade_h": 129.0,
+        "autoridade": true
+      }
+    },
+    {
+      "n": 39,
+      "date": "2026-05-04 16:00",
+      "familia": "CAPITULACAO",
+      "status": "FALHA",
+      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)",
+      "regiao": {
+        "id": "B01233",
+        "kind": "BOTTOM",
+        "band": [
+          4481.2,
+          4517.5
+        ],
+        "conv": false,
+        "idade_h": 831.0,
+        "autoridade": false
+      }
+    },
+    {
+      "n": 40,
+      "date": "2026-06-10 23:00",
+      "familia": "CAPITULACAO",
+      "status": "FALHA",
+      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)",
+      "regiao": {
+        "id": "B01003",
+        "kind": "BOTTOM",
+        "band": [
+          4021.4,
+          4048.0
+        ],
+        "conv": false,
+        "idade_h": 4834.0,
+        "autoridade": false
+      }
+    },
+    {
+      "n": 41,
+      "date": "2026-06-24 18:00",
+      "familia": "CAPITULACAO",
+      "status": "COBERTO_LATE_FLUSH",
+      "motivo": "",
+      "regiao": {
+        "id": "B01383",
+        "kind": "BOTTOM_LATE_FLUSH",
+        "band": [
+          3957.7,
+          3994.4
+        ],
+        "known_h_apos": 4.8
+      }
+    },
+    {
+      "n": 42,
+      "date": "2026-06-30 01:00",
+      "familia": "CAPITULACAO",
+      "status": "FALHA",
+      "motivo": "zona certa mas SEM AUTORIDADE (>168h sem defesa)",
+      "regiao": {
+        "id": "B00977",
+        "kind": "BOTTOM",
+        "band": [
+          3927.4,
+          3956.5
+        ],
+        "conv": false,
+        "idade_h": 5685.0,
+        "autoridade": false
+      }
+    }
+  ]
+}
