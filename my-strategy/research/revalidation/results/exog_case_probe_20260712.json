@@ -1,0 +1,383 @@
+{
+ "frozen_verdict_rule": "overlap <10% SEPARA · 10-30% PARCIAL · >30% NAO",
+ "cases": [
+  {
+   "case": "C1 V-turn pós-COVID",
+   "window": [
+    "2020-03-24",
+    "2020-04-12"
+   ],
+   "gt": "BULL",
+   "feats": {
+    "dxy_ret20": {
+     "n_caso": 13,
+     "med_caso": 2.102,
+     "p25_caso": 1.87,
+     "p75_caso": 3.616,
+     "med_prot": 0.713,
+     "p25_prot": -0.136,
+     "p75_prot": 1.651,
+     "overlap_pct": 14.2,
+     "verdict": "PARCIAL"
+    },
+    "dxy_slope": {
+     "n_caso": 13,
+     "med_caso": 0.17,
+     "p25_caso": 0.068,
+     "p75_caso": 0.268,
+     "med_prot": 0.357,
+     "p25_prot": -0.027,
+     "p75_prot": 0.695,
+     "overlap_pct": 39.8,
+     "verdict": "NAO"
+    },
+    "y_chg20": {
+     "n_caso": 13,
+     "med_caso": -0.326,
+     "p25_caso": -0.437,
+     "p75_caso": -0.099,
+     "med_prot": 0.092,
+     "p25_prot": -0.019,
+     "p75_prot": 0.204,
+     "overlap_pct": 7.9,
+     "verdict": "SEPARA"
+    },
+    "y_slope": {
+     "n_caso": 13,
+     "med_caso": -0.544,
+     "p25_caso": -0.696,
+     "p75_caso": -0.409,
+     "med_prot": 0.29,
+     "p25_prot": -0.106,
+     "p75_prot": 0.723,
+     "overlap_pct": 9.8,
+     "verdict": "SEPARA"
+    }
+   }
+  },
+  {
+   "case": "C2 nov/2024 BEAR",
+   "window": [
+    "2024-11-10",
+    "2024-11-18"
+   ],
+   "gt": "BEAR",
+   "feats": {
+    "dxy_ret20": {
+     "n_caso": 5,
+     "med_caso": 2.858,
+     "p25_caso": 2.652,
+     "p75_caso": 2.988,
+     "med_prot": 0.713,
+     "p25_prot": -0.136,
+     "p75_prot": 1.651,
+     "overlap_pct": 2.2,
+     "verdict": "SEPARA"
+    },
+    "dxy_slope": {
+     "n_caso": 5,
+     "med_caso": 1.18,
+     "p25_caso": 0.982,
+     "p75_caso": 1.202,
+     "med_prot": 0.357,
+     "p25_prot": -0.027,
+     "p75_prot": 0.695,
+     "overlap_pct": 3.1,
+     "verdict": "SEPARA"
+    },
+    "y_chg20": {
+     "n_caso": 5,
+     "med_caso": 0.348,
+     "p25_caso": 0.331,
+     "p75_caso": 0.415,
+     "med_prot": 0.092,
+     "p25_prot": -0.019,
+     "p75_prot": 0.204,
+     "overlap_pct": 7.0,
+     "verdict": "SEPARA"
+    },
+    "y_slope": {
+     "n_caso": 5,
+     "med_caso": 0.71,
+     "p25_caso": 0.709,
+     "p75_caso": 0.726,
+     "med_prot": 0.29,
+     "p25_prot": -0.106,
+     "p75_prot": 0.723,
+     "overlap_pct": 25.1,
+     "verdict": "PARCIAL"
+    }
+   }
+  },
+  {
+   "case": "C3 range 2021-22",
+   "window": [
+    "2021-08-31",
+    "2022-02-17"
+   ],
+   "gt": "RANGE",
+   "feats": {
+    "dxy_ret20": {
+     "n_caso": 115,
+     "med_caso": 0.265,
+     "p25_caso": -0.3,
+     "p75_caso": 1.498,
+     "med_prot": 0.26,
+     "p25_prot": -1.252,
+     "p75_prot": 1.814,
+     "overlap_pct": 49.9,
+     "verdict": "NAO"
+    },
+    "dxy_slope": {
+     "n_caso": 115,
+     "med_caso": 0.242,
+     "p25_caso": -0.064,
+     "p75_caso": 0.631,
+     "med_prot": 0.1,
+     "p25_prot": -0.479,
+     "p75_prot": 0.606,
+     "overlap_pct": 44.3,
+     "verdict": "NAO"
+    },
+    "y_chg20": {
+     "n_caso": 105,
+     "med_caso": 0.098,
+     "p25_caso": 0.014,
+     "p75_caso": 0.203,
+     "med_prot": 0.058,
+     "p25_prot": -0.101,
+     "p75_prot": 0.247,
+     "overlap_pct": 44.0,
+     "verdict": "NAO"
+    },
+    "y_slope": {
+     "n_caso": 105,
+     "med_caso": 0.35,
+     "p25_caso": 0.086,
+     "p75_caso": 0.825,
+     "med_prot": 0.208,
+     "p25_prot": -0.296,
+     "p75_prot": 0.71,
+     "overlap_pct": 42.3,
+     "verdict": "NAO"
+    }
+   }
+  },
+  {
+   "case": "C4 BULL abr-jun/21",
+   "window": [
+    "2021-04-09",
+    "2021-06-14"
+   ],
+   "gt": "BULL",
+   "feats": {
+    "dxy_ret20": {
+     "n_caso": 45,
+     "med_caso": -1.066,
+     "p25_caso": -1.634,
+     "p75_caso": -0.626,
+     "med_prot": 0.713,
+     "p25_prot": -0.136,
+     "p75_prot": 1.651,
+     "overlap_pct": 6.2,
+     "verdict": "SEPARA"
+    },
+    "dxy_slope": {
+     "n_caso": 45,
+     "med_caso": -0.602,
+     "p25_caso": -0.767,
+     "p75_caso": -0.31,
+     "med_prot": 0.357,
+     "p25_prot": -0.027,
+     "p75_prot": 0.695,
+     "overlap_pct": 4.4,
+     "verdict": "SEPARA"
+    },
+    "y_chg20": {
+     "n_caso": 46,
+     "med_caso": -0.048,
+     "p25_caso": -0.097,
+     "p75_caso": 0.02,
+     "med_prot": 0.092,
+     "p25_prot": -0.019,
+     "p75_prot": 0.204,
+     "overlap_pct": 20.9,
+     "verdict": "PARCIAL"
+    },
+    "y_slope": {
+     "n_caso": 46,
+     "med_caso": -0.132,
+     "p25_caso": -0.301,
+     "p75_caso": 0.089,
+     "med_prot": 0.29,
+     "p25_prot": -0.106,
+     "p75_prot": 0.723,
+     "overlap_pct": 24.2,
+     "verdict": "PARCIAL"
+    }
+   }
+  },
+  {
+   "case": "C5 BULL fev-abr/22",
+   "window": [
+    "2022-02-16",
+    "2022-04-25"
+   ],
+   "gt": "BULL",
+   "feats": {
+    "dxy_ret20": {
+     "n_caso": 46,
+     "med_caso": 1.927,
+     "p25_caso": 0.678,
+     "p75_caso": 2.556,
+     "med_prot": 0.713,
+     "p25_prot": -0.136,
+     "p75_prot": 1.651,
+     "overlap_pct": 18.1,
+     "verdict": "PARCIAL"
+    },
+    "dxy_slope": {
+     "n_caso": 46,
+     "med_caso": 0.671,
+     "p25_caso": 0.296,
+     "p75_caso": 0.938,
+     "med_prot": 0.357,
+     "p25_prot": -0.027,
+     "p75_prot": 0.695,
+     "overlap_pct": 25.7,
+     "verdict": "PARCIAL"
+    },
+    "y_chg20": {
+     "n_caso": 47,
+     "med_caso": 0.345,
+     "p25_caso": 0.11,
+     "p75_caso": 0.62,
+     "med_prot": 0.092,
+     "p25_prot": -0.019,
+     "p75_prot": 0.204,
+     "overlap_pct": 7.0,
+     "verdict": "SEPARA"
+    },
+    "y_slope": {
+     "n_caso": 47,
+     "med_caso": 0.814,
+     "p25_caso": 0.222,
+     "p75_caso": 1.19,
+     "med_prot": 0.29,
+     "p25_prot": -0.106,
+     "p75_prot": 0.723,
+     "overlap_pct": 19.1,
+     "verdict": "PARCIAL"
+    }
+   }
+  },
+  {
+   "case": "C6 BEAR gigante",
+   "window": [
+    "2020-08-11",
+    "2021-04-09"
+   ],
+   "gt": "BEAR",
+   "feats": {
+    "dxy_ret20": {
+     "n_caso": 166,
+     "med_caso": -0.144,
+     "p25_caso": -1.154,
+     "p75_caso": 0.659,
+     "med_prot": 0.713,
+     "p25_prot": -0.136,
+     "p75_prot": 1.651,
+     "overlap_pct": 24.8,
+     "verdict": "PARCIAL"
+    },
+    "dxy_slope": {
+     "n_caso": 166,
+     "med_caso": -0.096,
+     "p25_caso": -0.536,
+     "p75_caso": 0.278,
+     "med_prot": 0.357,
+     "p25_prot": -0.027,
+     "p75_prot": 0.695,
+     "overlap_pct": 19.0,
+     "verdict": "PARCIAL"
+    },
+    "y_chg20": {
+     "n_caso": 172,
+     "med_caso": 0.107,
+     "p25_caso": 0.039,
+     "p75_caso": 0.174,
+     "med_prot": 0.092,
+     "p25_prot": -0.019,
+     "p75_prot": 0.204,
+     "overlap_pct": 47.4,
+     "verdict": "NAO"
+    },
+    "y_slope": {
+     "n_caso": 172,
+     "med_caso": 0.486,
+     "p25_caso": 0.184,
+     "p75_caso": 0.809,
+     "med_prot": 0.29,
+     "p25_prot": -0.106,
+     "p75_prot": 0.723,
+     "overlap_pct": 37.2,
+     "verdict": "NAO"
+    }
+   }
+  },
+  {
+   "case": "C7 BEAR jun-ago/21",
+   "window": [
+    "2021-06-11",
+    "2021-08-31"
+   ],
+   "gt": "BEAR",
+   "feats": {
+    "dxy_ret20": {
+     "n_caso": 56,
+     "med_caso": 0.836,
+     "p25_caso": 0.413,
+     "p75_caso": 2.09,
+     "med_prot": 0.713,
+     "p25_prot": -0.136,
+     "p75_prot": 1.651,
+     "overlap_pct": 45.1,
+     "verdict": "NAO"
+    },
+    "dxy_slope": {
+     "n_caso": 56,
+     "med_caso": 0.602,
+     "p25_caso": 0.318,
+     "p75_caso": 0.849,
+     "med_prot": 0.357,
+     "p25_prot": -0.027,
+     "p75_prot": 0.695,
+     "overlap_pct": 30.5,
+     "verdict": "NAO"
+    },
+    "y_chg20": {
+     "n_caso": 57,
+     "med_caso": -0.12,
+     "p25_caso": -0.18,
+     "p75_caso": -0.039,
+     "med_prot": 0.092,
+     "p25_prot": -0.019,
+     "p75_prot": 0.204,
+     "overlap_pct": 14.0,
+     "verdict": "PARCIAL"
+    },
+    "y_slope": {
+     "n_caso": 57,
+     "med_caso": -0.412,
+     "p25_caso": -0.664,
+     "p75_caso": -0.215,
+     "med_prot": 0.29,
+     "p25_prot": -0.106,
+     "p75_prot": 0.723,
+     "overlap_pct": 15.8,
+     "verdict": "PARCIAL"
+    }
+   }
+  }
+ ]
+}
