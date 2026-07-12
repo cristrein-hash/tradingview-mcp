@@ -24,3 +24,4 @@
 - 2026-07-08 16:50 UTC · `memory_delta_open_state_checkpoint_20260708.sql` · memory_items 281→286 · tag-rows 5/5 · OK
 - 2026-07-10 16:19 UTC · `memory_delta_20260710_session_close.sql` · memory_items 286→292 · tag-rows 6/6 · OK
 - 2026-07-12 15:27 UTC · `memory_delta_20260712_regime_detector_session.sql` · memory_items 292→296 · tag-rows 4/4 · OK
+- 2026-07-12 18:10 UTC · `memory_delta_20260712_leg_field_exog.sql` · memory_items 296→299 · tag-rows 3/3 · OK
