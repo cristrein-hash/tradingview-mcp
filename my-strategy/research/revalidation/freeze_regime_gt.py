@@ -3,8 +3,8 @@
 Fonte: results/cris_regime_overlays_20260712.json (lido via MCP do chart — desenhos do Cris).
 Regras congeladas AQUI, ANTES de qualquer tuning/contenção (anti-overfit):
   - GT = janelas COLORIDAS do Cris (verde=BULL, vermelho=BEAR, laranja=RANGE).
-  - Cinza = flag CONFUSO (zona onde o detector atual não sustenta rótulo) — NÃO é rótulo;
-    excluída do scoring; reportada à parte.
+  - Cinza (CONFUSO) = DESCARTADO do GT (ordem Cris 2026-07-12: redundante — dentro dela ele
+    organizou BULL/BEAR/RANGE corretamente com janelas coloridas; não contabilizar).
   - BORDAS = APROXIMADAS (Cris: "não fiz desenhos com precisão de vela nas bordas/transições;
     fiz aproximado"). Tolerância congelada: ±3 dias (±18 barras 4H) em cada borda EXCLUÍDOS
     do scoring de concordância.
@@ -29,7 +29,7 @@ def main():
             notes.append({"id": r["id"], "text": r["text"]}); continue
         bg = r.get("bg") or ""
         reg = next((v for k, v in COLOR2REG.items() if k in bg), None)
-        if reg is None: continue      # sólidos = retângulos do plot do detector (não-GT)
+        if reg is None or reg == "CONFUSO": continue   # sólidos = plot do detector; CONFUSO descartado (Cris)
         ts = sorted(p["time"] for p in r["points"])
         px = sorted(p["price"] for p in r["points"])
         wins.append({"id": r["id"], "regime": reg, "t0": ts[0], "t1": ts[1],
@@ -44,7 +44,7 @@ def main():
           "borders": "APPROXIMATE — tolerância ±3 dias por borda EXCLUÍDA do scoring (congelado)",
           "border_tolerance_s": BORDER_TOL_S,
           "scoring": ("concordância barra-a-barra SÓ dentro das janelas coloridas, excluindo "
-                      "±tolerância nas bordas; CONFUSO excluído (flag); fora das janelas sem GT; "
+                      "±tolerância nas bordas; CONFUSO descartado do GT (redundante, Cris); fora das janelas sem GT; "
                       "métrica intrínseca — NUNCA P&L de trades"),
           "hindsight_caveat": "GT desenhado vendo histórico completo — árbitro de leitura, não de causalidade",
           "n_windows": len(wins), "windows": wins, "notes": notes}

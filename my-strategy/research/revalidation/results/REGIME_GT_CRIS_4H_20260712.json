@@ -5,9 +5,9 @@
  "source": "desenhos manuais do Cris no chart 4H XAUUSD, lidos via MCP (commit eda003b)",
  "borders": "APPROXIMATE — tolerância ±3 dias por borda EXCLUÍDA do scoring (congelado)",
  "border_tolerance_s": 259200,
- "scoring": "concordância barra-a-barra SÓ dentro das janelas coloridas, excluindo ±tolerância nas bordas; CONFUSO excluído (flag); fora das janelas sem GT; métrica intrínseca — NUNCA P&L de trades",
+ "scoring": "concordância barra-a-barra SÓ dentro das janelas coloridas, excluindo ±tolerância nas bordas; CONFUSO descartado do GT (redundante, Cris); fora das janelas sem GT; métrica intrínseca — NUNCA P&L de trades",
  "hindsight_caveat": "GT desenhado vendo histórico completo — árbitro de leitura, não de causalidade",
- "n_windows": 20,
+ "n_windows": 19,
  "windows": [
   {
    "id": "1ogx1o",
@@ -58,16 +58,6 @@
    "d1": "2021-06-14",
    "px_lo": 1722.98,
    "px_hi": 1919.16
-  },
-  {
-   "id": "yFbNp6",
-   "regime": "CONFUSO",
-   "t0": 1618236000,
-   "t1": 1647597600,
-   "d0": "2021-04-12",
-   "d1": "2022-03-18",
-   "px_lo": 1675.7,
-   "px_hi": 2070.8
   },
   {
    "id": "DFlQDx",
