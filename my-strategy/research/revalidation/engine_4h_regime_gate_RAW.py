@@ -65,9 +65,11 @@ def stable_prevday(ts):
     di=bisect.bisect_left(DK,ts//86400)-1
     return "RANGE" if di<0 else stable[di]
 def ovr_at(ts):
+    # CAUSAL FIX 2026-07-12 (ordem Cris): t do RAW = ABERTURA da barra; usar a última barra
+    # FECHADA <= ts (open+dur <= ts), não a barra em formação que contém ts (close futuro = leak).
     if ts>=T1MIN:
-        j=bisect.bisect_right(TS1,ts)-1; return OV1[j] if j>=0 else False
-    j=bisect.bisect_right(TS4,ts)-1; return OV4[j] if j>=0 else False
+        j=bisect.bisect_right(TS1,ts-3600)-1; return OV1[j] if j>=0 else False
+    j=bisect.bisect_right(TS4,ts-14400)-1; return OV4[j] if j>=0 else False
 def regime_at(ts):
     st=stable_prevday(ts); return "BEAR" if (ovr_at(ts) or st=="BEAR") else st
 def regime_prevday_close(date_ep):
