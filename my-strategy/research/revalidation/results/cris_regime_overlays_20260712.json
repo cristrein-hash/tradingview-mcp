@@ -1,0 +1,617 @@
+{
+ "mine_n": 86,
+ "cris": [
+  {
+   "id": "2ijplg",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 1671.25,
+     "time": 1583892000
+    },
+    {
+     "price": 1560.74,
+     "time": 1584036000
+    }
+   ],
+   "color": "#4caf50",
+   "bg": "#4caf50",
+   "transparency": 80,
+   "text": null
+  },
+  {
+   "id": "zeBdmQ",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 1597.93,
+     "time": 1584050400
+    },
+    {
+     "price": 1451.19,
+     "time": 1585015200
+    }
+   ],
+   "color": "#b22833",
+   "bg": "#b22833",
+   "transparency": 80,
+   "text": null
+  },
+  {
+   "id": "EQsFaK",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 1644.6,
+     "time": 1585029600
+    },
+    {
+     "price": 1558.46,
+     "time": 1585332000
+    }
+   ],
+   "color": "#4caf50",
+   "bg": "#4caf50",
+   "transparency": 80,
+   "text": null
+  },
+  {
+   "id": "E9TaIR",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 2075.21,
+     "time": 1586728800
+    },
+    {
+     "price": 1659.6,
+     "time": 1597140000
+    }
+   ],
+   "color": "#4caf50",
+   "bg": "#4caf50",
+   "transparency": 80,
+   "text": null
+  },
+  {
+   "id": "5NY4Az",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 2015.45,
+     "time": 1597154400
+    },
+    {
+     "price": 1862.58,
+     "time": 1597788000
+    }
+   ],
+   "color": "#b22833",
+   "bg": "#b22833",
+   "transparency": 80,
+   "text": null
+  },
+  {
+   "id": "QZFKL4",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 1998.01,
+     "time": 1597802400
+    },
+    {
+     "price": 1848.63,
+     "time": 1601330400
+    }
+   ],
+   "color": "#ff9800",
+   "bg": "#ff9800",
+   "transparency": 80,
+   "text": null
+  },
+  {
+   "id": "1u5B95",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 3370.97,
+     "time": 1745416800
+    },
+    {
+     "price": 3234.4,
+     "time": 1746050400
+    }
+   ],
+   "color": "#b22833",
+   "bg": "#b22833",
+   "transparency": 80,
+   "text": null
+  },
+  {
+   "id": "rJfIqV",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 3270.97,
+     "time": 1746064800
+    },
+    {
+     "price": 3201.67,
+     "time": 1746396000
+    }
+   ],
+   "color": "#4caf50",
+   "bg": "#4caf50",
+   "transparency": 80,
+   "text": null
+  },
+  {
+   "id": "8GxkQx",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 5597.91,
+     "time": 1768172400
+    },
+    {
+     "price": 4512.67,
+     "time": 1769684400
+    }
+   ],
+   "color": "#4caf50",
+   "bg": "#4caf50",
+   "transparency": 80,
+   "text": null
+  },
+  {
+   "id": "1ffTZF",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 5495.74,
+     "time": 1769698800
+    },
+    {
+     "price": 4402.72,
+     "time": 1770951600
+    }
+   ],
+   "color": "#b22833",
+   "bg": "#b22833",
+   "transparency": 80,
+   "text": null
+  },
+  {
+   "id": "WUTG5G",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 5238.6,
+     "time": 1772550000
+    },
+    {
+     "price": 4996.22,
+     "time": 1773180000
+    }
+   ],
+   "color": "#b22833",
+   "bg": "#b22833",
+   "transparency": 80,
+   "text": null
+  },
+  {
+   "id": "trdG0d",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 5220.28,
+     "time": 1773194400
+    },
+    {
+     "price": 5054.86,
+     "time": 1773352800
+    }
+   ],
+   "color": "#4caf50",
+   "bg": "#4caf50",
+   "transparency": 80,
+   "text": null
+  },
+  {
+   "id": "h67ASM",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 2018.7381211599038,
+     "time": 1597154400
+    },
+    {
+     "price": 1676.0327833322249,
+     "time": 1617976800
+    }
+   ],
+   "color": "rgba(255, 255, 255, 0)",
+   "bg": "rgba(242, 54, 69, 0.246)",
+   "transparency": 50,
+   "text": null
+  },
+  {
+   "id": "BgYEWr",
+   "name": "text_note",
+   "points": [
+    {
+     "price": 1669.7339245428227,
+     "time": 1605754800
+    },
+    {
+     "price": 1580.4166741279473,
+     "time": 1605668400
+    }
+   ],
+   "color": null,
+   "bg": "rgba(255, 255, 255, 1)",
+   "transparency": null,
+   "text": "ISSO TUDO É BEAR COM  LEGS DE PULLBACK BULL INTERNAS"
+  },
+  {
+   "id": "yFbNp6",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 2070.797179307194,
+     "time": 1618236000
+    },
+    {
+     "price": 1675.702127738721,
+     "time": 1647597600
+    }
+   ],
+   "color": "rgba(255, 255, 255, 0)",
+   "bg": "rgba(184, 184, 184, 0.246)",
+   "transparency": 50,
+   "text": null
+  },
+  {
+   "id": "kU86KC",
+   "name": "text_note",
+   "points": [
+    {
+     "price": 1939.4967089974293,
+     "time": 1632909600
+    },
+    {
+     "price": 1983.6614126470774,
+     "time": 1632909600
+    }
+   ],
+   "color": null,
+   "bg": "rgba(255, 255, 255, 1)",
+   "transparency": null,
+   "text": "ESTE PERIODO EM CINZA CLARO ESTÁ UM TANTO CONFUSO"
+  },
+  {
+   "id": "rcxw6f",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 1919.1607055710338,
+     "time": 1617976800
+    },
+    {
+     "price": 1722.9751833646123,
+     "time": 1623636000
+    }
+   ],
+   "color": "rgba(255, 255, 255, 0)",
+   "bg": "rgba(76, 175, 80, 0.246)",
+   "transparency": 50,
+   "text": null
+  },
+  {
+   "id": "DFlQDx",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 1869.2225726457627,
+     "time": 1623434400
+    },
+    {
+     "price": 1677.793063098891,
+     "time": 1630447200
+    }
+   ],
+   "color": "rgba(255, 255, 255, 0)",
+   "bg": "rgba(242, 54, 69, 0.246)",
+   "transparency": 50,
+   "text": null
+  },
+  {
+   "id": "UdE2VQ",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 1877.5455947999747,
+     "time": 1630447200
+    },
+    {
+     "price": 1720.420514081617,
+     "time": 1645124400
+    }
+   ],
+   "color": "rgba(255, 255, 255, 0)",
+   "bg": "rgba(255, 152, 0, 0.246)",
+   "transparency": 50,
+   "text": null
+  },
+  {
+   "id": "d7FMvF",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 1910.837683416822,
+     "time": 1651672800
+    },
+    {
+     "price": 1615.964898524746,
+     "time": 1667862000
+    }
+   ],
+   "color": "rgba(255, 255, 255, 0)",
+   "bg": "rgba(242, 54, 69, 0.246)",
+   "transparency": 50,
+   "text": null
+  },
+  {
+   "id": "i1jxhI",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 2072.542113841509,
+     "time": 1645052400
+    },
+    {
+     "price": 1866.844566315988,
+     "time": 1650852000
+    }
+   ],
+   "color": "rgba(255, 255, 255, 0)",
+   "bg": "rgba(76, 175, 80, 0.246)",
+   "transparency": 50,
+   "text": null
+  },
+  {
+   "id": "KElwUJ",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 1674.2260536042286,
+     "time": 1667833200
+    },
+    {
+     "price": 2049.9510537086485,
+     "time": 1681999200
+    }
+   ],
+   "color": "rgba(255, 255, 255, 0)",
+   "bg": "rgba(76, 175, 80, 0.246)",
+   "transparency": 50,
+   "text": null
+  },
+  {
+   "id": "IypkQX",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 1988.0904154574646,
+     "time": 1685124000
+    },
+    {
+     "price": 1808.5834112365053,
+     "time": 1698156000
+    }
+   ],
+   "color": "rgba(255, 255, 255, 0)",
+   "bg": "rgba(242, 54, 69, 0.246)",
+   "transparency": 50,
+   "text": null
+  },
+  {
+   "id": "BL7xXl",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 2089.188158149933,
+     "time": 1702278000
+    },
+    {
+     "price": 1971.4768448260795,
+     "time": 1709694000
+    }
+   ],
+   "color": "rgba(255, 255, 255, 0)",
+   "bg": "rgba(255, 152, 0, 0.246)",
+   "transparency": 50,
+   "text": null
+  },
+  {
+   "id": "LMmUfF",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 2432.8100728023924,
+     "time": 1709607600
+    },
+    {
+     "price": 2089.188158149933,
+     "time": 1714341600
+    }
+   ],
+   "color": "rgba(255, 255, 255, 0)",
+   "bg": "rgba(76, 175, 80, 0.246)",
+   "transparency": 50,
+   "text": null
+  },
+  {
+   "id": "73DdMF",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 2143.8823037347533,
+     "time": 1698127200
+    },
+    {
+     "price": 1931.0507372199083,
+     "time": 1702249200
+    }
+   ],
+   "color": "rgba(255, 255, 255, 0)",
+   "bg": "rgba(76, 175, 80, 0.246)",
+   "transparency": 50,
+   "text": null
+  },
+  {
+   "id": "IsGTYv",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 2348.3908480953874,
+     "time": 1720432800
+    },
+    {
+     "price": 2790.7000254335007,
+     "time": 1731092400
+    }
+   ],
+   "color": "rgba(255, 255, 255, 0)",
+   "bg": "rgba(76, 175, 80, 0.246)",
+   "transparency": 50,
+   "text": null
+  },
+  {
+   "id": "NXqXO1",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 2687.65129335003,
+     "time": 1731279600
+    },
+    {
+     "price": 2537.4824801692985,
+     "time": 1731898800
+    }
+   ],
+   "color": "rgba(255, 255, 255, 0)",
+   "bg": "rgba(242, 54, 69, 0.246)",
+   "transparency": 50,
+   "text": null
+  },
+  {
+   "id": "0lR2qY",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 2726.208150788326,
+     "time": 1731884400
+    },
+    {
+     "price": 2580.0979541800466,
+     "time": 1736809200
+    }
+   ],
+   "color": "rgba(255, 255, 255, 0)",
+   "bg": "rgba(255, 152, 0, 0.246)",
+   "transparency": 50,
+   "text": null
+  },
+  {
+   "id": "D3EK4S",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 4245.774417889683,
+     "time": 1761804000
+    },
+    {
+     "price": 3928.325550926593,
+     "time": 1764572400
+    }
+   ],
+   "color": "rgba(255, 255, 255, 0)",
+   "bg": "rgba(255, 152, 0, 0.246)",
+   "transparency": 50,
+   "text": null
+  },
+  {
+   "id": "rDm2jq",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 5495.880711915118,
+     "time": 1769742000
+    },
+    {
+     "price": 3937.5384744173966,
+     "time": 1783893600
+    }
+   ],
+   "color": "rgba(255, 255, 255, 0)",
+   "bg": "rgba(242, 54, 69, 0.246)",
+   "transparency": 50,
+   "text": null
+  },
+  {
+   "id": "iPKwz6",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 1672.8915349119468,
+     "time": 1583892000
+    },
+    {
+     "price": 1451.0036753898044,
+     "time": 1585029600
+    }
+   ],
+   "color": "rgba(255, 255, 255, 0)",
+   "bg": "rgba(242, 54, 69, 0.246)",
+   "transparency": 50,
+   "text": null
+  },
+  {
+   "id": "L5P8J5",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 1558.7515760961344,
+     "time": 1585029600
+    },
+    {
+     "price": 1690.1345001832078,
+     "time": 1586728800
+    }
+   ],
+   "color": "rgba(255, 255, 255, 0)",
+   "bg": "rgba(76, 175, 80, 0.246)",
+   "transparency": 50,
+   "text": null
+  },
+  {
+   "id": "1ogx1o",
+   "name": "rectangle",
+   "points": [
+    {
+     "price": 1703.3423073665642,
+     "time": 1582254000
+    },
+    {
+     "price": 1562.2273148285965,
+     "time": 1583892000
+    }
+   ],
+   "color": "rgba(255, 255, 255, 0)",
+   "bg": "rgba(76, 175, 80, 0.246)",
+   "transparency": 50,
+   "text": null
+  }
+ ]
+}
