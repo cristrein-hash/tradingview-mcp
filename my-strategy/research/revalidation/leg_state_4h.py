@@ -70,6 +70,85 @@ def build_leg_series():
         out.append({"t": t, "macro": macro, "leg": leg, "leg_dir": leg_dir, "leg_age": age})
     return out
 
+def build_leg_series_v2():
+    """v2 (4 correções, ordem Cris 2026-07-12):
+    C1 estrutura por QUEBRA DE NÍVEL causal: fecho da barra j acima do último HIGH confirmado =
+       evento UP conhecido no fecho de j (consumido a partir da barra j+1); espelho para LOW.
+       Um evento por nível (re-arma quando novo pivot confirma). Mata a cegueira em impulso.
+    C2 âncora macro: evento CONTRA o macro exige confirmação dupla (2 eventos na mesma direção);
+       a favor ou com macro RANGE, imediata. Mata IMPULSO_UP dentro de bear.
+    C3 estrutura NEUTRA → ACUMULACAO se macro != BEAR, DISTRIBUICAO se macro == BEAR.
+    C4 (plot) fica no replot: borda = macro, preenchimento = leg.
+    Eventos de par de pivots (como v1) continuam: avaliados quando um pivot confirma."""
+    hi, lo = zigzag(R_LEG)
+    TS4, C4 = R1.TS4, R1.ENG.C4
+    H4, L4 = R1.H4, R1.L4
+    def ext_time(p, conf, arr):
+        j = bisect.bisect_right(TS4, conf)-1
+        for k in range(j, max(0, j-300), -1):
+            if abs(arr[k]-p) < 1e-9: return TS4[k]
+        return conf
+    HI = [(c, p, ext_time(p, c, H4)) for c, p, _ in hi]
+    LO = [(c, p, ext_time(p, c, L4)) for c, p, _ in lo]
+    out = []
+    struct = "NEUTRA"; pending = None
+    lastH = lastL = None; brokenH = brokenL = True
+    hprices, lprices = [], []
+    ih = il = 0
+    last_pivot = None       # ('H'|'L', ext_t) mais recente confirmado
+    for i, t in enumerate(TS4):
+        macro = R1.BASE[t]
+        def apply(ev):
+            nonlocal struct, pending
+            if ev == "NEUTRA":
+                struct = "NEUTRA"; pending = None; return
+            if ev == struct: pending = None; return
+            contra = (ev == "UP" and macro == "BEAR") or (ev == "DOWN" and macro == "BULL")
+            if contra:
+                if pending == ev: struct = ev; pending = None
+                else: pending = ev
+            else:
+                struct = ev; pending = None
+        # 1) pivots confirmados até t
+        while ih < len(HI) and HI[ih][0] <= t:
+            lastH = HI[ih][1]; brokenH = False
+            hprices.append(lastH); last_pivot = ("H", HI[ih][2]); ih += 1
+            if len(hprices) >= 2 and len(lprices) >= 2:
+                if hprices[-1] > hprices[-2] and lprices[-1] > lprices[-2]: apply("UP")
+                elif hprices[-1] < hprices[-2] and lprices[-1] < lprices[-2]: apply("DOWN")
+                else: apply("NEUTRA")
+        while il < len(LO) and LO[il][0] <= t:
+            lastL = LO[il][1]; brokenL = False
+            lprices.append(lastL); last_pivot = ("L", LO[il][2]); il += 1
+            if len(hprices) >= 2 and len(lprices) >= 2:
+                if hprices[-1] > hprices[-2] and lprices[-1] > lprices[-2]: apply("UP")
+                elif hprices[-1] < hprices[-2] and lprices[-1] < lprices[-2]: apply("DOWN")
+                else: apply("NEUTRA")
+        # 2) quebras de nível no fecho da barra ANTERIOR (i-1 fechou em t)
+        if i >= 1:
+            c_prev = C4[i-1]
+            if lastH is not None and not brokenH and c_prev > lastH:
+                brokenH = True; apply("UP")
+            if lastL is not None and not brokenL and c_prev < lastL:
+                brokenL = True; apply("DOWN")
+        # 3) leg_dir + rótulo
+        if last_pivot is None:
+            out.append({"t": t, "macro": macro, "leg": "WARMUP", "leg_dir": None, "leg_age": None})
+            continue
+        leg_dir = "DOWN" if last_pivot[0] == "H" else "UP"
+        # quebra recente domina a direção da perna em curso (BOS_up => perna UP em curso)
+        if brokenH and not brokenL and struct == "UP": leg_dir = "UP"
+        if brokenL and not brokenH and struct == "DOWN": leg_dir = "DOWN"
+        if struct == "UP":
+            leg = "IMPULSO_UP" if leg_dir == "UP" else "PULLBACK_BEAR"
+        elif struct == "DOWN":
+            leg = "IMPULSO_DOWN" if leg_dir == "DOWN" else "PULLBACK_BULL"
+        else:
+            leg = "ACUMULACAO" if macro != "BEAR" else "DISTRIBUICAO"
+        age = max(0, i - (bisect.bisect_right(TS4, last_pivot[1])-1))
+        out.append({"t": t, "macro": macro, "leg": leg, "leg_dir": leg_dir, "leg_age": age})
+    return out
+
 def _fmt(t): return dt.datetime.utcfromtimestamp(t).strftime("%Y-%m-%d")
 
 def main():
