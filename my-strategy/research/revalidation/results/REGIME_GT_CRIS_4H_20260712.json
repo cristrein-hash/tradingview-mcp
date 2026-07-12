@@ -1,0 +1,223 @@
+{
+ "name": "REGIME_GT_CRIS_4H_20260712",
+ "status": "FROZEN_GROUND_TRUTH",
+ "frozen_at": "2026-07-12",
+ "source": "desenhos manuais do Cris no chart 4H XAUUSD, lidos via MCP (commit eda003b)",
+ "borders": "APPROXIMATE — tolerância ±3 dias por borda EXCLUÍDA do scoring (congelado)",
+ "border_tolerance_s": 259200,
+ "scoring": "concordância barra-a-barra SÓ dentro das janelas coloridas, excluindo ±tolerância nas bordas; CONFUSO excluído (flag); fora das janelas sem GT; métrica intrínseca — NUNCA P&L de trades",
+ "hindsight_caveat": "GT desenhado vendo histórico completo — árbitro de leitura, não de causalidade",
+ "n_windows": 20,
+ "windows": [
+  {
+   "id": "1ogx1o",
+   "regime": "BULL",
+   "t0": 1582254000,
+   "t1": 1583892000,
+   "d0": "2020-02-21",
+   "d1": "2020-03-11",
+   "px_lo": 1562.23,
+   "px_hi": 1703.34
+  },
+  {
+   "id": "iPKwz6",
+   "regime": "BEAR",
+   "t0": 1583892000,
+   "t1": 1585029600,
+   "d0": "2020-03-11",
+   "d1": "2020-03-24",
+   "px_lo": 1451.0,
+   "px_hi": 1672.89
+  },
+  {
+   "id": "L5P8J5",
+   "regime": "BULL",
+   "t0": 1585029600,
+   "t1": 1586728800,
+   "d0": "2020-03-24",
+   "d1": "2020-04-12",
+   "px_lo": 1558.75,
+   "px_hi": 1690.13
+  },
+  {
+   "id": "h67ASM",
+   "regime": "BEAR",
+   "t0": 1597154400,
+   "t1": 1617976800,
+   "d0": "2020-08-11",
+   "d1": "2021-04-09",
+   "px_lo": 1676.03,
+   "px_hi": 2018.74
+  },
+  {
+   "id": "rcxw6f",
+   "regime": "BULL",
+   "t0": 1617976800,
+   "t1": 1623636000,
+   "d0": "2021-04-09",
+   "d1": "2021-06-14",
+   "px_lo": 1722.98,
+   "px_hi": 1919.16
+  },
+  {
+   "id": "yFbNp6",
+   "regime": "CONFUSO",
+   "t0": 1618236000,
+   "t1": 1647597600,
+   "d0": "2021-04-12",
+   "d1": "2022-03-18",
+   "px_lo": 1675.7,
+   "px_hi": 2070.8
+  },
+  {
+   "id": "DFlQDx",
+   "regime": "BEAR",
+   "t0": 1623434400,
+   "t1": 1630447200,
+   "d0": "2021-06-11",
+   "d1": "2021-08-31",
+   "px_lo": 1677.79,
+   "px_hi": 1869.22
+  },
+  {
+   "id": "UdE2VQ",
+   "regime": "RANGE",
+   "t0": 1630447200,
+   "t1": 1645124400,
+   "d0": "2021-08-31",
+   "d1": "2022-02-17",
+   "px_lo": 1720.42,
+   "px_hi": 1877.55
+  },
+  {
+   "id": "i1jxhI",
+   "regime": "BULL",
+   "t0": 1645052400,
+   "t1": 1650852000,
+   "d0": "2022-02-16",
+   "d1": "2022-04-25",
+   "px_lo": 1866.84,
+   "px_hi": 2072.54
+  },
+  {
+   "id": "d7FMvF",
+   "regime": "BEAR",
+   "t0": 1651672800,
+   "t1": 1667862000,
+   "d0": "2022-05-04",
+   "d1": "2022-11-07",
+   "px_lo": 1615.96,
+   "px_hi": 1910.84
+  },
+  {
+   "id": "KElwUJ",
+   "regime": "BULL",
+   "t0": 1667833200,
+   "t1": 1681999200,
+   "d0": "2022-11-07",
+   "d1": "2023-04-20",
+   "px_lo": 1674.23,
+   "px_hi": 2049.95
+  },
+  {
+   "id": "IypkQX",
+   "regime": "BEAR",
+   "t0": 1685124000,
+   "t1": 1698156000,
+   "d0": "2023-05-26",
+   "d1": "2023-10-24",
+   "px_lo": 1808.58,
+   "px_hi": 1988.09
+  },
+  {
+   "id": "73DdMF",
+   "regime": "BULL",
+   "t0": 1698127200,
+   "t1": 1702249200,
+   "d0": "2023-10-24",
+   "d1": "2023-12-10",
+   "px_lo": 1931.05,
+   "px_hi": 2143.88
+  },
+  {
+   "id": "BL7xXl",
+   "regime": "RANGE",
+   "t0": 1702278000,
+   "t1": 1709694000,
+   "d0": "2023-12-11",
+   "d1": "2024-03-06",
+   "px_lo": 1971.48,
+   "px_hi": 2089.19
+  },
+  {
+   "id": "LMmUfF",
+   "regime": "BULL",
+   "t0": 1709607600,
+   "t1": 1714341600,
+   "d0": "2024-03-05",
+   "d1": "2024-04-28",
+   "px_lo": 2089.19,
+   "px_hi": 2432.81
+  },
+  {
+   "id": "IsGTYv",
+   "regime": "BULL",
+   "t0": 1720432800,
+   "t1": 1731092400,
+   "d0": "2024-07-08",
+   "d1": "2024-11-08",
+   "px_lo": 2348.39,
+   "px_hi": 2790.7
+  },
+  {
+   "id": "NXqXO1",
+   "regime": "BEAR",
+   "t0": 1731279600,
+   "t1": 1731898800,
+   "d0": "2024-11-10",
+   "d1": "2024-11-18",
+   "px_lo": 2537.48,
+   "px_hi": 2687.65
+  },
+  {
+   "id": "0lR2qY",
+   "regime": "RANGE",
+   "t0": 1731884400,
+   "t1": 1736809200,
+   "d0": "2024-11-17",
+   "d1": "2025-01-13",
+   "px_lo": 2580.1,
+   "px_hi": 2726.21
+  },
+  {
+   "id": "D3EK4S",
+   "regime": "RANGE",
+   "t0": 1761804000,
+   "t1": 1764572400,
+   "d0": "2025-10-30",
+   "d1": "2025-12-01",
+   "px_lo": 3928.33,
+   "px_hi": 4245.77
+  },
+  {
+   "id": "rDm2jq",
+   "regime": "BEAR",
+   "t0": 1769742000,
+   "t1": 1783893600,
+   "d0": "2026-01-30",
+   "d1": "2026-07-12",
+   "px_lo": 3937.54,
+   "px_hi": 5495.88
+  }
+ ],
+ "notes": [
+  {
+   "id": "BgYEWr",
+   "text": "ISSO TUDO É BEAR COM  LEGS DE PULLBACK BULL INTERNAS"
+  },
+  {
+   "id": "kU86KC",
+   "text": "ESTE PERIODO EM CINZA CLARO ESTÁ UM TANTO CONFUSO"
+  }
+ ]
+}
