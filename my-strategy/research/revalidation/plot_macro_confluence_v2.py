@@ -11,7 +11,7 @@ sys.path.insert(0, str(REPO/"alert-bridge"))
 sys.path.insert(0, str(HERE))
 from draw_xau_4h_trades import MCPClient
 import macro_confluence_v2 as M
-CFG = (200, 10, 5, 90, -6.0, 120, 16, 60, 5, 2.0)   # + bear-rollover + SMA-flat gate
+CFG = (200, 10, 5, 90, -6.0, 120, 16, 60, 5, 2.0, 50, 4.0)  # + bear-rollover + SMA-flat + bull-recovery
 PAUSE = Path("/tmp/claude_recheck.paused")
 COLOR = {"BULL": "#2e7d32", "BEAR": "#c62828", "RANGE": "#ef6c00"}
 T, H, L, N = M.T, M.H, M.L, M.N

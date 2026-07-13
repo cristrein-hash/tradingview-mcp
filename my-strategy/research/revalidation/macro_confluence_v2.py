@@ -23,7 +23,8 @@ def dxy_ret(t, w):
     j = bisect.bisect_right(DXY_K, t)-1
     return (DXY_C[j]/DXY_C[j-w]-1)*100 if j >= w else 0.0
 
-def build(sma_n, dd_thr, near_thr, dxy_w, crash_thr, W_ctx, band_pct, reclaim_n, brk_k=3, flat_slope=3.0):
+def build(sma_n, dd_thr, near_thr, dxy_w, crash_thr, W_ctx, band_pct, reclaim_n, brk_k=3, flat_slope=3.0,
+          sma_med=50, rally_thr=5.0):
     state = "RANGE"; out = []
     for i in range(N):
         if i < 360:
@@ -49,6 +50,14 @@ def build(sma_n, dd_thr, near_thr, dxy_w, crash_thr, W_ctx, band_pct, reclaim_n,
         # abaixo da SMA + drawdown moderado + dólar a subir + lower-highs (topo a perder força)
         lower_high = max(H[i-20:i+1]) < max(H[i-40:i-20])
         bear_rollover = (not in_range_ctx) and C[i] < s and dd >= 6 and rising and lower_high
+        # recuperação BULL (espelho do bear-rollover): a cauda de um BEAR que já virou para CIMA
+        # — fundo a subir (higher-low) + SMA média reconquistada + rally do fundo recente — deve
+        # virar BULL antes de reconquistar a SMA200 (senão a recuperação fica colada em BEAR).
+        smed = sma(i, sma_med); smed_rising = smed > sma(i-20, sma_med)
+        higher_low = min(L[i-20:i+1]) > min(L[i-40:i-20])
+        rally_off_low = (C[i]/min(L[i-40:i+1]) - 1)*100 >= rally_thr
+        bull_recovery = (state == "BEAR" and C[i] > smed and smed_rising and higher_low
+                         and rally_off_low and not in_range_ctx)
         # --- prioridade com correções contextuais ---
         if crash:
             state = "BEAR"
@@ -57,6 +66,8 @@ def build(sma_n, dd_thr, near_thr, dxy_w, crash_thr, W_ctx, band_pct, reclaim_n,
             if brk_dn: state = "BEAR"
             elif brk_up and new_high: state = "BULL"
             else: state = "RANGE"
+        elif bull_recovery:
+            state = "BULL"
         elif bear_conf or bear_rollover:
             state = "BEAR"
         elif bull_conf:
