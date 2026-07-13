@@ -63,6 +63,8 @@ def audit(labels):
     false_bear_in_range = false_in("RANGE", "BEAR")
     false_bull_in_bear = false_in("BEAR", "BULL")
     false_bull_in_range = false_in("RANGE", "BULL")
+    false_range_in_bull = false_in("BULL", "RANGE")
+    false_range_in_bear = false_in("BEAR", "RANGE")
     # per-classe recall agregado
     per = {s: {"n": 0, "ok": 0} for s in ("BULL", "BEAR", "RANGE")}
     for i, g in SCOPE_I:
@@ -75,7 +77,8 @@ def audit(labels):
             "per_window": perwin, "recall": rec, "bal": round(bal, 1),
             "coherence_2026_bear_pct": bear_2026, "false_bear_in_bull_pct": false_bear_in_bull,
             "false_bear_in_range_pct": false_bear_in_range, "false_bull_in_bear_pct": false_bull_in_bear,
-            "false_bull_in_range_pct": false_bull_in_range}
+            "false_bull_in_range_pct": false_bull_in_range,
+            "false_range_in_bull_pct": false_range_in_bull, "false_range_in_bear_pct": false_range_in_bear}
 
 def coherence_score(m):
     """score composto de COERÊNCIA MACRO (não só balanced). Penaliza fragmentação, lag alto,

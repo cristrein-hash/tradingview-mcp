@@ -23,18 +23,20 @@ def dxy_ret(t, w):
     j = bisect.bisect_right(DXY_K, t)-1
     return (DXY_C[j]/DXY_C[j-w]-1)*100 if j >= w else 0.0
 
-def build(sma_n, dd_thr, near_thr, dxy_w, crash_thr, W_ctx, band_pct, reclaim_n, brk_k=3):
+def build(sma_n, dd_thr, near_thr, dxy_w, crash_thr, W_ctx, band_pct, reclaim_n, brk_k=3, flat_slope=3.0):
     state = "RANGE"; out = []
     for i in range(N):
-        if i < 300:
+        if i < 360:
             out.append("RANGE"); continue
         s = sma(i, sma_n)
         hi252 = max(H[i-252:i+1]); dd = (hi252-C[i])/hi252*100
         rising = dxy_ret(T[i]+86400, dxy_w) > 0
         crash = (C[i]/C[i-2]-1)*100 <= crash_thr
-        # contexto de range: canal Donchian longo (barras fechadas <= i-1)
+        # contexto de range: canal Donchian longo (barras fechadas <= i-1) E SMA longa PLANA
+        # (consolidação dentro de bull/bear = SMA em tendência -> NÃO é range macro; mantém tendência)
         rh = max(H[i-W_ctx:i]); rl = min(L[i-W_ctx:i])
-        in_range_ctx = (rh-rl)/C[i-1] <= band_pct/100.0
+        sma_slope = (s - sma(i-60, sma_n))/s*100        # inclinação da SMA em 60 dias (% do preço)
+        in_range_ctx = (rh-rl)/C[i-1] <= band_pct/100.0 and abs(sma_slope) < flat_slope
         # reconquista (novo máximo de reclaim_n dias, causal): close de i é o maior dos reclaim_n
         new_high = C[i] >= max(H[i-reclaim_n:i])
         # rompimento SUSTENTADO do range: brk_k closes seguidos além da banda (causal, <= i)
@@ -43,6 +45,10 @@ def build(sma_n, dd_thr, near_thr, dxy_w, crash_thr, W_ctx, band_pct, reclaim_n,
         # leituras de confluência
         bear_conf = C[i] < s and dd >= dd_thr and rising
         bull_conf = C[i] > s and dd <= near_thr
+        # rollover de bear LENTO (assinatura da análise de onsets): fora do contexto-range,
+        # abaixo da SMA + drawdown moderado + dólar a subir + lower-highs (topo a perder força)
+        lower_high = max(H[i-20:i+1]) < max(H[i-40:i-20])
+        bear_rollover = (not in_range_ctx) and C[i] < s and dd >= 6 and rising and lower_high
         # --- prioridade com correções contextuais ---
         if crash:
             state = "BEAR"
@@ -51,7 +57,7 @@ def build(sma_n, dd_thr, near_thr, dxy_w, crash_thr, W_ctx, band_pct, reclaim_n,
             if brk_dn: state = "BEAR"
             elif brk_up and new_high: state = "BULL"
             else: state = "RANGE"
-        elif bear_conf:
+        elif bear_conf or bear_rollover:
             state = "BEAR"
         elif bull_conf:
             # P1: se vínhamos de BEAR, exige reconquista (novo máximo) para virar BULL
@@ -63,9 +69,10 @@ def build(sma_n, dd_thr, near_thr, dxy_w, crash_thr, W_ctx, band_pct, reclaim_n,
         out.append(state)
     return out
 
-GRID = [(sn, dd, nr, dw, cr, wc, bp, rc, bk)
+GRID = [(sn, dd, nr, dw, cr, wc, bp, rc, bk, fs)
         for sn in (200,) for dd in (10,) for nr in (5,) for dw in (90,)
-        for cr in (-6.0,) for wc in (120, 180) for bp in (16, 22) for rc in (60,) for bk in (3, 5)]
+        for cr in (-6.0,) for wc in (120,) for bp in (16, 20) for rc in (60,) for bk in (3, 5)
+        for fs in (2.0, 3.0, 4.0)]
 
 def main():
     rows = []
