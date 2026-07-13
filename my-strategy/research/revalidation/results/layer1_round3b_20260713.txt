@@ -1,0 +1,43 @@
+ROUND 3b · grelha 16 · BEAR triplo (rollover exog + CRASH 1-2d) · GT 16 janelas
+
+== ordenado por balanced (BEAR já alto; ver se RANGE recupera) ==
+  (5, -4.0, -5.0, 20, 90)      bal  51.0 B/Be/R 78/49/26 BEARmin 40 BEARmean 50.5
+  (5, -4.0, -5.0, 20, 180)     bal  51.0 B/Be/R 78/49/26 BEARmin 40 BEARmean 50.5
+  (5, -4.0, -5.0, 10, 90)      bal  50.3 B/Be/R 79/53/19 BEARmin 43 BEARmean 54.5
+  (5, -4.0, -5.0, 10, 180)     bal  50.3 B/Be/R 79/53/19 BEARmin 43 BEARmean 54.5
+  (4, -5.0, -6.0, 10, 90)      bal  49.0 B/Be/R 69/70/8 BEARmin 43 BEARmean 70.5
+  (4, -5.0, -6.0, 10, 180)     bal  49.0 B/Be/R 69/70/8 BEARmin 43 BEARmean 70.5
+  (4, -4.0, -5.0, 10, 90)      bal  49.0 B/Be/R 69/70/8 BEARmin 43 BEARmean 70.5
+  (4, -4.0, -5.0, 10, 180)     bal  49.0 B/Be/R 69/70/8 BEARmin 43 BEARmean 70.5
+  (5, -5.0, -6.0, 20, 90)      bal  48.3 B/Be/R 78/41/26 BEARmin 16 BEARmean 44.2
+  (5, -5.0, -6.0, 20, 180)     bal  48.3 B/Be/R 78/41/26 BEARmin 16 BEARmean 44.2
+  (5, -5.0, -6.0, 10, 180)     bal  48.0 B/Be/R 80/45/19 BEARmin 23 BEARmean 48.0
+  (4, -5.0, -6.0, 20, 90)      bal  47.7 B/Be/R 66/68/9 BEARmin 43 BEARmean 68.8
+  (4, -5.0, -6.0, 20, 180)     bal  47.7 B/Be/R 66/68/9 BEARmin 43 BEARmean 68.8
+  (4, -4.0, -5.0, 20, 90)      bal  47.7 B/Be/R 66/68/9 BEARmin 43 BEARmean 68.8
+  (4, -4.0, -5.0, 20, 180)     bal  47.7 B/Be/R 66/68/9 BEARmin 43 BEARmean 68.8
+  (5, -5.0, -6.0, 10, 90)      bal  47.7 B/Be/R 79/45/19 BEARmin 23 BEARmean 48.0
+
+== per-BEAR (best balanced (5, -4.0, -5.0, 20, 90), bal 51.0) ==
+  2020-09-21→2021-04-12 (203d) BEAR 40.0%
+  2022-04-27→2022-10-28 (184d) BEAR 50.0%
+  2023-05-17→2023-10-09 (145d) BEAR 43.0%
+  2024-11-11→2024-11-18 (7d) BEAR None%
+  2026-02-02→2026-07-10 (158d) BEAR 69.0%
+
+== per-JANELA (best balanced) ==
+  2019-06-18→2020-08-10 BULL          82.4%
+  2020-09-21→2021-04-12 BEAR          40.3%
+  2021-04-08→2022-02-10 RANGE         46.5%
+  2022-02-11→2022-04-28 BULL          89.4%
+  2022-04-27→2022-10-28 BEAR          49.6%
+  2022-10-27→2023-05-18 BULL          38.2%
+  2023-05-17→2023-10-09 BEAR          43.3%
+  2023-10-06→2024-11-06 BULL          82.8%
+  2023-12-19→2024-03-04 RANGE  [nest]   2.2%
+  2024-05-24→2024-07-05 RANGE  [nest]   0.0%
+  2024-11-20→2025-01-23 RANGE          2.6%
+  2025-01-21→2025-04-28 BULL         100.0%
+  2025-05-06→2025-08-28 RANGE          0.0%
+  2025-08-28→2026-02-03 BULL          87.6%
+  2026-02-02→2026-07-10 BEAR          69.3%
