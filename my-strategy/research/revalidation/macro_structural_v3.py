@@ -111,6 +111,94 @@ def build(m=4, k_atr=0.0, dd_bear=8.0, crash_thr=-6.0, dxy_w=90, atr_n=50,
         out.append(state)
     return out
 
+def _rsi14(n=14):
+    """RSI de Wilder causal (idêntico ao harness). out[i] usa só barras <= i."""
+    out = [50.0]*N; g = ll = 0.0
+    for i in range(1, N):
+        ch = C[i]-C[i-1]; up = max(ch, 0); dn = max(-ch, 0)
+        if i <= n: g += up; ll += dn; out[i] = 50.0
+        else:
+            g = (g*(n-1)+up)/n; ll = (ll*(n-1)+dn)/n
+            out[i] = 100.0 if ll == 0 else 100-100/(1+g/ll)
+    return out
+
+def build_layer1(m=5, m_sw=13, dd_bear=8.0, crash_thr=-6.0, dxy_w=90, ru_bull=12.0,
+                 RSI_LO=40.0, RSI_HI=60.0, EQ=0.008, EXIT_BUF=0.02, POS_HI_BULL=0.72,
+                 bull_rev_swing=True, min_bear_age=8):
+    """LAYER1 COMPLETO (integração 2026-07-13): motor de TURNOS CHoCH (escala imediata m) + ramo
+    RANGE estrutural SYNTH (validado pelo engine: recall 93%, PRESERVA turnos). RANGE = falha-de-
+    progressão da 2ª escala de swing (m_sw), confirmada no imediato, SEM CHoCH, AGREGADA a (i) close
+    no meio/fundo da banda de swing (corta consolidação-de-bull colada ao topo) e (ii) RSI de volta
+    à banda média. Reversão dos turnos tem PRIORIDADE sobre entrar em range (protege onsets). Causal
+    close-only, RAW-nativo. Reproduz byte-a-byte range_lab_harness.run(range_cand_SYNTH)."""
+    evi = fractal_pivots(m); evs = fractal_pivots(m_sw); pi = ps = 0
+    RSI = _rsi14(14)
+    prot_low = prot_high = prev_low = prev_high = None       # escala imediata (turnos)
+    sw_low = sw_high = sw_prev_low = sw_prev_high = None      # 2ª escala swing (range)
+    state = "RANGE"; rng_hi = rng_lo = None; out = []; bear_age = 0
+    for i in range(N):
+        while pi < len(evi) and evi[pi][0] <= i:
+            _, typ, pb, px = evi[pi]; pi += 1
+            if typ == "H": prev_high, prot_high = prot_high, px
+            else: prev_low, prot_low = prot_low, px
+        while ps < len(evs) and evs[ps][0] <= i:
+            _, typ, pb, px = evs[ps]; ps += 1
+            if typ == "H": sw_prev_high, sw_high = sw_high, px
+            else: sw_prev_low, sw_low = sw_low, px
+        if i < 360 or prot_low is None or prot_high is None:
+            out.append("RANGE"); continue
+        hi252 = max(H[i-252:i+1]); dd = (hi252-C[i])/hi252*100
+        lo252 = min(L[i-252:i+1]); ru = (C[i]-lo252)/lo252*100
+        dxr = dxy_ret(T[i]+86400, dxy_w); rising = dxr > 0; falling = dxr < 0
+        crash = (C[i]/C[i-2]-1)*100 <= crash_thr
+        bear_gate = crash or dd >= dd_bear or rising
+        bull_gate = falling or ru >= ru_bull
+        choch_dn = C[i] < prot_low; choch_up = C[i] > prot_high
+        # REVERSÃO BEAR->BULL: reconquistar o lower-high da 2ª ESCALA DE SWING (não o imediato).
+        # Bear flag (bounce logo após crash) rompe só mini-highs mas NÃO reconquista o swing-high
+        # (fica BEAR); fundo maduro já baixou os swing-highs e reconquista-os (vira BULL). Distingue
+        # bear-flag de reversão genuína por MATURIDADE ESTRUTURAL, causal. choch_dn (turnos->BEAR)
+        # fica no imediato (mantém onsets tight).
+        rev_ref = sw_high if (bull_rev_swing and sw_high is not None) else prot_high
+        choch_up_rev = C[i] > rev_ref
+        rsi = RSI[i]
+        swpos = ((C[i]-sw_low)/(sw_high-sw_low)
+                 if (sw_high is not None and sw_low is not None and sw_high > sw_low) else None)
+        stall_bull = (sw_high is not None and sw_prev_high is not None and sw_high <= sw_prev_high*(1+EQ)
+                      and prev_high is not None and prot_high <= prev_high and not choch_dn)
+        stall_bear = (sw_low is not None and sw_prev_low is not None and sw_low >= sw_prev_low*(1-EQ)
+                      and prev_low is not None and prot_low >= prev_low and not choch_up)
+        def enter_range():
+            if not (RSI_LO <= rsi <= RSI_HI): return False
+            if state == "BULL":
+                if not stall_bull: return False
+                if swpos is not None and swpos > POS_HI_BULL: return False
+                return True
+            if state == "BEAR": return stall_bear
+            return False
+        # FSM: TURNOS FIXOS (reversão prioridade) + ramo RANGE SYNTH
+        if crash:
+            state = "BEAR"; rng_hi = rng_lo = None
+        elif state == "BULL":
+            if choch_dn and bear_gate: state = "BEAR"
+            elif enter_range(): state = "RANGE"; rng_hi, rng_lo = sw_high, sw_low
+        elif state == "BEAR":
+            # gate de MATURIDADE: bear muito jovem (ex.: bounce logo após crash) não pode virar BULL
+            if choch_up_rev and bull_gate and bear_age >= min_bear_age: state = "BULL"
+            elif enter_range(): state = "RANGE"; rng_hi, rng_lo = sw_high, sw_low
+        else:  # RANGE — banda acumula extremos imediatos; sai por re-extensão OU rutura decisiva+gate
+            if rng_hi is None: rng_hi, rng_lo = sw_high, sw_low
+            rng_hi = max(rng_hi, prot_high); rng_lo = min(rng_lo, prot_low)
+            new_hh = sw_high is not None and sw_prev_high is not None and sw_high > sw_prev_high*(1+EQ)
+            new_ll = sw_low is not None and sw_prev_low is not None and sw_low < sw_prev_low*(1-EQ)
+            if C[i] > rng_hi and bull_gate and (new_hh or C[i] > rng_hi*(1+EXIT_BUF)):
+                state = "BULL"; rng_hi = rng_lo = None
+            elif C[i] < rng_lo and bear_gate and (new_ll or C[i] < rng_lo*(1-EXIT_BUF)):
+                state = "BEAR"; rng_hi = rng_lo = None
+        out.append(state)
+        bear_age = bear_age+1 if state == "BEAR" else 0
+    return out
+
 GRID = [(m, wr, br)
         for m in (5, 7) for wr in (90, 120, 150) for br in (8.0, 10.0, 13.0)]
 
