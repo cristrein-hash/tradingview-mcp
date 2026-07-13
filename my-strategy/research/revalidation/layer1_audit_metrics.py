@@ -50,14 +50,19 @@ def audit(labels):
     ta = int(dt.datetime(2026, 3, 18, tzinfo=dt.timezone.utc).timestamp())
     seg = [labels[i] for i in range(N) if KNOWN[i] >= ta]
     bear_2026 = round(100*sum(1 for x in seg if x == "BEAR")/len(seg), 0) if seg else None
-    # (5) false-bear em janelas BULL
-    fb = 0; nb = 0
-    for w in GT["windows"]:
-        if w["regime"] != "BULL": continue
-        for i, g in SCOPE_I:
-            if w["t0"]+TOL <= KNOWN[i] <= w["t1"]-TOL:
-                nb += 1; fb += (labels[i] == "BEAR")
-    false_bear_in_bull = round(100*fb/nb, 1) if nb else None
+    # (5) transições falsas por contexto (bear-em-bull, bear-em-range, bull-em-bear)
+    def false_in(gt_regime, wrong_label):
+        f = n = 0
+        for w in GT["windows"]:
+            if w["regime"] != gt_regime: continue
+            for i, g in SCOPE_I:
+                if w["t0"]+TOL <= KNOWN[i] <= w["t1"]-TOL:
+                    n += 1; f += (labels[i] == wrong_label)
+        return round(100*f/n, 1) if n else None
+    false_bear_in_bull = false_in("BULL", "BEAR")
+    false_bear_in_range = false_in("RANGE", "BEAR")
+    false_bull_in_bear = false_in("BEAR", "BULL")
+    false_bull_in_range = false_in("RANGE", "BULL")
     # per-classe recall agregado
     per = {s: {"n": 0, "ok": 0} for s in ("BULL", "BEAR", "RANGE")}
     for i, g in SCOPE_I:
@@ -68,7 +73,9 @@ def audit(labels):
             "onset_lag_by_bear": onsets, "onset_lag_med": round(statistics.median(lags), 0) if lags else None,
             "bears_detected": f"{len(lags)}/5",
             "per_window": perwin, "recall": rec, "bal": round(bal, 1),
-            "coherence_2026_bear_pct": bear_2026, "false_bear_in_bull_pct": false_bear_in_bull}
+            "coherence_2026_bear_pct": bear_2026, "false_bear_in_bull_pct": false_bear_in_bull,
+            "false_bear_in_range_pct": false_bear_in_range, "false_bull_in_bear_pct": false_bull_in_bear,
+            "false_bull_in_range_pct": false_bull_in_range}
 
 def coherence_score(m):
     """score composto de COERÊNCIA MACRO (não só balanced). Penaliza fragmentação, lag alto,
@@ -77,6 +84,8 @@ def coherence_score(m):
     s += m["bal"]                                              # base
     s += (m["coherence_2026_bear_pct"] or 0)*0.5              # 2026 tem de segurar bear
     s -= (m["false_bear_in_bull_pct"] or 0)*1.0              # penaliza bear-em-bull
+    s -= (m["false_bear_in_range_pct"] or 0)*1.0            # penaliza bear-em-range (P2)
+    s -= (m["false_bull_in_bear_pct"] or 0)*1.0            # penaliza bull-em-bear (P1)
     s -= max(0, m["n_runs"]-25)*1.0                          # penaliza fragmentação (>25 blocos)
     s += (0 if m["onset_lag_med"] is None else max(0, 30-m["onset_lag_med"]))*0.5   # onset rápido
     return round(s, 1)
