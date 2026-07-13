@@ -1,0 +1,19 @@
+-- ============================================================================
+-- SUPABASE MEMORY — DELTA SEED · seed:memory_delta_20260713_range_engine
+-- ============================================================================
+-- Sessao 2026-07-13 (2o bloco): engine multi-agente resolveu o ramo RANGE estrutural do Layer1.
+-- Aplicar via scripts/supabase/apply_memory_delta.py. Idempotente. Total: 1 row.
+-- ============================================================================
+begin;
+insert into memory_items (id, scope, visibility, category, title, body, tags, source_ref, status) values
+(
+  md5('seed:memory_delta_20260713_range_engine:memory_items:range-solved')::uuid,
+  'product', 'internal', 'project',
+  'Layer1 RANGE resolvido estruturalmente por engine multi-agente — SYNTH: recall 0->93pct SEM partir turnos',
+  'Cris autorizou engine multi-agente para o ramo RANGE do Layer1 (o sub-problema em aberto: contencao-Donchian brigava com os turnos = zero-soma). Trava relaxada por Cris: os ONSETS sao ruidosos => informativos, NAO gate; a trava fiavel = 5 bears DETETADOS + 2026 segura macro-BEAR. Construi um BANCO DE ENSAIO determinista (range_lab_harness.py) que fixa o motor de turnos v3 (reversao tem prioridade), torna o ramo RANGE PLUGAVEL, calcula features causais em 2 escalas de pivo (imediato m=5 + swing m=13) + indicadores derivados-do-RAW (ATR/RSI/DX/BBW/Donchian/DXY), passa so dados <=i (causalidade por construcao) e mede com o scorer auditado + PRESERVACAO-DOS-TURNOS explicita. Engine (Workflow, 17 agentes, 0 erros): 8 LENTES estruturais diversas (cada uma escreve range_cand_L<k>.py e mede-se, iterando) -> DA causal lookahead-only por candidato (todos causal_ok) -> SINTESE. RESULTADO: todas as 8 lentes preservam turnos (bears 5/5, 2026 100%); L5 (falha-de-progressao da 2a escala swing sem HH/LL = liquidez lateral + RSI mid-band) foi a melhor lente isolada (recall 93pct, false-bear-in-range 3.4). SYNTH = L5 + gate de POSICAO-NA-BANDA-SWING (so entra range se close no meio/fundo da banda swpos<=0.72; consolidacoes-de-bull ficam coladas ao topo swpos~0.96 e resolvem para cima antes de descer) DOMINA L5 ESTRITAMENTE: RANGE recall 93pct, false-bear-in-range 3.4, range-in-bull 25.6 (era 30.1), runs 46->38, PRESERVA=SIM (bears 5/5, 2026 100pct, 5 onsets ~igual). AS 5 JANELAS RANGE do GT detetadas (2021 94 / nested-23-12 100 / nested-24-05 48 / 24-11 100 / 2025 96). DE 0pct (v3 puro) A 93pct SEM DANO AOS TURNOS, causal/DA-clean, estrutura+confluencia (nao botao de banda). TECTO HONESTO (auditei a decomposicao): dos 25.6 range-in-bull, 56 barras sao nested-ranges CORRETAS que o scorer conta em dobro contra o BULL-pai; vazamento GENUINO ~20.7pct (165 barras) = consolidacoes-de-bull 2019-20/2023-24 causalmente quase identicas as nested-ranges que o Cris marcou RANGE => limite de EXIT/persistencia (sem lookahead nao se sabe que resolve para cima) + ambiguidade real do GT, precisa olho visual do Cris. PENDENTE: candidato de ramo RANGE ainda NAO integrado no macro_structural_v3 nem plotado; opcoes = plotar SYNTH / integrar como ramo RANGE (Layer1 completo) / afinar EXIT. Fonte auditada RAW-only PASS: raw_1d_ohlc.jsonl (chart-native 1D, byte-identico ao HD externo raw_external/XAUUSD sha 071ba291, manifest roundtrip PASS) + raw_dxy_1d.jsonl (TVC:DXY byte-identico HD sha 4761212d); indicadores derivados-do-RAW-com-linhagem, sem SLIM/resample.',
+  array['seed:memory_delta_20260713_range_engine','layer1','range','engine-multiagente','synth-93pct','turnos-preservados','causal-no-lookahead','raw-only-pass','tecto-exit-persistencia'],
+  'my-strategy/research/revalidation/{range_lab_harness.py,range_cand_L1..L8.py,range_cand_SYNTH.py} · workflow wf_6d7224df-c0d · memory project_layer1_macro_detector.md',
+  'active'
+)
+on conflict (id) do nothing;
+commit;
