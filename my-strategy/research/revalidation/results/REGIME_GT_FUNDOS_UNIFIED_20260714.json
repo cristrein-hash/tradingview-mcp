@@ -1,0 +1,562 @@
+{
+ "built": "2026-07-14",
+ "rule": "velas>circulos; circulo-only=menor-low-15M-±6h; -INVALIDO",
+ "raw15_source": "HD raw_replay/XAUUSD/15M",
+ "n": 61,
+ "classes": {
+  "A": 32,
+  "B": 15,
+  "C": 14
+ },
+ "fundos": [
+  {
+   "t": 1744164000,
+   "date": "2025-04-09 02:00",
+   "price": 2957.48,
+   "src": "vela",
+   "macro": "BULL",
+   "leg": "IMPULSO_UP",
+   "classe": "A"
+  },
+  {
+   "t": 1747324800,
+   "date": "2025-05-15 16:00",
+   "price": 3120.97,
+   "src": "vela",
+   "macro": "BEAR",
+   "leg": "ACUMULACAO",
+   "classe": "C"
+  },
+  {
+   "t": 1751248800,
+   "date": "2025-06-30 02:00",
+   "price": 3245.25,
+   "src": "vela",
+   "macro": "RANGE",
+   "leg": "ACUMULACAO",
+   "classe": "B"
+  },
+  {
+   "t": 1754013600,
+   "date": "2025-08-01 02:00",
+   "price": 3280.1,
+   "src": "vela",
+   "macro": "RANGE",
+   "leg": "ACUMULACAO",
+   "classe": "B"
+  },
+  {
+   "t": 1755651600,
+   "date": "2025-08-20 01:00",
+   "price": 3311.92,
+   "src": "vela",
+   "macro": "RANGE",
+   "leg": "ACUMULACAO",
+   "classe": "B"
+  },
+  {
+   "t": 1755867600,
+   "date": "2025-08-22 13:00",
+   "price": 3323.5,
+   "src": "circulo->low",
+   "macro": "RANGE",
+   "leg": "ACUMULACAO",
+   "classe": "B"
+  },
+  {
+   "t": 1756165500,
+   "date": "2025-08-25 23:45",
+   "price": 3353.89,
+   "src": "circulo->low",
+   "macro": "RANGE",
+   "leg": "ACUMULACAO",
+   "classe": "B"
+  },
+  {
+   "t": 1756267200,
+   "date": "2025-08-27 04:00",
+   "price": 3374.69,
+   "src": "vela",
+   "macro": "RANGE",
+   "leg": "ACUMULACAO",
+   "classe": "B"
+  },
+  {
+   "t": 1756346400,
+   "date": "2025-08-28 02:00",
+   "price": 3385.9,
+   "src": "circulo->low",
+   "macro": "RANGE",
+   "leg": "ACUMULACAO",
+   "classe": "B"
+  },
+  {
+   "t": 1756466100,
+   "date": "2025-08-29 11:15",
+   "price": 3405.05,
+   "src": "circulo->low",
+   "macro": "RANGE",
+   "leg": "ACUMULACAO",
+   "classe": "B"
+  },
+  {
+   "t": 1756690200,
+   "date": "2025-09-01 01:30",
+   "price": 3439.09,
+   "src": "circulo->low",
+   "macro": "RANGE",
+   "leg": "ACUMULACAO",
+   "classe": "B"
+  },
+  {
+   "t": 1756796400,
+   "date": "2025-09-02 07:00",
+   "price": 3468.83,
+   "src": "vela",
+   "macro": "RANGE",
+   "leg": "IMPULSO_UP",
+   "classe": "B"
+  },
+  {
+   "t": 1756954800,
+   "date": "2025-09-04 03:00",
+   "price": 3511.75,
+   "src": "vela",
+   "macro": "RANGE",
+   "leg": "IMPULSO_UP",
+   "classe": "B"
+  },
+  {
+   "t": 1757062800,
+   "date": "2025-09-05 09:00",
+   "price": 3545.98,
+   "src": "circulo->low",
+   "macro": "RANGE",
+   "leg": "ACUMULACAO",
+   "classe": "B"
+  },
+  {
+   "t": 1757588400,
+   "date": "2025-09-11 11:00",
+   "price": 3612.81,
+   "src": "vela",
+   "macro": "BULL",
+   "leg": "ACUMULACAO",
+   "classe": "A"
+  },
+  {
+   "t": 1757898900,
+   "date": "2025-09-15 01:15",
+   "price": 3628.75,
+   "src": "circulo->low",
+   "macro": "BULL",
+   "leg": "ACUMULACAO",
+   "classe": "A"
+  },
+  {
+   "t": 1758200400,
+   "date": "2025-09-18 13:00",
+   "price": 3628.04,
+   "src": "vela",
+   "macro": "BULL",
+   "leg": "ACUMULACAO",
+   "classe": "A"
+  },
+  {
+   "t": 1758265200,
+   "date": "2025-09-19 07:00",
+   "price": 3647.16,
+   "src": "circulo->low",
+   "macro": "BULL",
+   "leg": "ACUMULACAO",
+   "classe": "A"
+  },
+  {
+   "t": 1758744000,
+   "date": "2025-09-24 20:00",
+   "price": 3718.03,
+   "src": "vela",
+   "macro": "BULL",
+   "leg": "ACUMULACAO",
+   "classe": "A"
+  },
+  {
+   "t": 1758807900,
+   "date": "2025-09-25 13:45",
+   "price": 3726.26,
+   "src": "circulo->low",
+   "macro": "BULL",
+   "leg": "ACUMULACAO",
+   "classe": "A"
+  },
+  {
+   "t": 1759222800,
+   "date": "2025-09-30 09:00",
+   "price": 3792.78,
+   "src": "vela",
+   "macro": "BULL",
+   "leg": "IMPULSO_UP",
+   "classe": "A"
+  },
+  {
+   "t": 1759417200,
+   "date": "2025-10-02 15:00",
+   "price": 3820.47,
+   "src": "vela",
+   "macro": "BULL",
+   "leg": "ACUMULACAO",
+   "classe": "A"
+  },
+  {
+   "t": 1759824000,
+   "date": "2025-10-07 08:00",
+   "price": 3945.93,
+   "src": "circulo->low",
+   "macro": "BULL",
+   "leg": "IMPULSO_UP",
+   "classe": "A"
+  },
+  {
+   "t": 1760068800,
+   "date": "2025-10-10 04:00",
+   "price": 3947.84,
+   "src": "vela",
+   "macro": "BULL",
+   "leg": "ACUMULACAO",
+   "classe": "A"
+  },
+  {
+   "t": 1760421600,
+   "date": "2025-10-14 06:00",
+   "price": 4089.05,
+   "src": "vela",
+   "macro": "BULL",
+   "leg": "ACUMULACAO",
+   "classe": "A"
+  },
+  {
+   "t": 1760518800,
+   "date": "2025-10-15 09:00",
+   "price": 4162.42,
+   "src": "vela",
+   "macro": "BULL",
+   "leg": "IMPULSO_UP",
+   "classe": "A"
+  },
+  {
+   "t": 1760720400,
+   "date": "2025-10-17 17:00",
+   "price": 4185.96,
+   "src": "vela",
+   "macro": "BULL",
+   "leg": "ACUMULACAO",
+   "classe": "A"
+  },
+  {
+   "t": 1761642000,
+   "date": "2025-10-28 09:00",
+   "price": 3885.54,
+   "src": "vela",
+   "macro": "BULL",
+   "leg": "PULLBACK_BEAR",
+   "classe": "A"
+  },
+  {
+   "t": 1761793200,
+   "date": "2025-10-30 03:00",
+   "price": 3922.09,
+   "src": "circulo->low",
+   "macro": "BULL",
+   "leg": "PULLBACK_BEAR",
+   "classe": "A"
+  },
+  {
+   "t": 1762297200,
+   "date": "2025-11-04 23:00",
+   "price": 3931.22,
+   "src": "vela",
+   "macro": "BULL",
+   "leg": "PULLBACK_BEAR",
+   "classe": "A"
+  },
+  {
+   "t": 1763452800,
+   "date": "2025-11-18 08:00",
+   "price": 3997.68,
+   "src": "vela",
+   "macro": "BULL",
+   "leg": "IMPULSO_UP",
+   "classe": "A"
+  },
+  {
+   "t": 1763704800,
+   "date": "2025-11-21 06:00",
+   "price": 4023.98,
+   "src": "vela",
+   "macro": "BULL",
+   "leg": "IMPULSO_UP",
+   "classe": "A"
+  },
+  {
+   "t": 1763953200,
+   "date": "2025-11-24 03:00",
+   "price": 4043.85,
+   "src": "circulo->low",
+   "macro": "BULL",
+   "leg": "IMPULSO_UP",
+   "classe": "A"
+  },
+  {
+   "t": 1764692100,
+   "date": "2025-12-02 16:15",
+   "price": 4162.63,
+   "src": "vela",
+   "macro": "BULL",
+   "leg": "IMPULSO_UP",
+   "classe": "A"
+  },
+  {
+   "t": 1765395900,
+   "date": "2025-12-10 19:45",
+   "price": 4183.58,
+   "src": "vela",
+   "macro": "BULL",
+   "leg": "IMPULSO_UP",
+   "classe": "A"
+  },
+  {
+   "t": 1765432800,
+   "date": "2025-12-11 06:00",
+   "price": 4207.68,
+   "src": "circulo->low",
+   "macro": "BULL",
+   "leg": "IMPULSO_UP",
+   "classe": "A"
+  },
+  {
+   "t": 1765883700,
+   "date": "2025-12-16 11:15",
+   "price": 4275.83,
+   "src": "circulo->low",
+   "macro": "BULL",
+   "leg": "IMPULSO_UP",
+   "classe": "A"
+  },
+  {
+   "t": 1766108700,
+   "date": "2025-12-19 01:45",
+   "price": 4310.18,
+   "src": "vela",
+   "macro": "BULL",
+   "leg": "IMPULSO_UP",
+   "classe": "A"
+  },
+  {
+   "t": 1766146500,
+   "date": "2025-12-19 12:15",
+   "price": 4324.04,
+   "src": "circulo->low",
+   "macro": "BULL",
+   "leg": "IMPULSO_UP",
+   "classe": "A"
+  },
+  {
+   "t": 1767160800,
+   "date": "2025-12-31 06:00",
+   "price": 4274.56,
+   "src": "vela",
+   "macro": "BULL",
+   "leg": "IMPULSO_UP",
+   "classe": "A"
+  },
+  {
+   "t": 1767379500,
+   "date": "2026-01-02 18:45",
+   "price": 4312.53,
+   "src": "circulo->low",
+   "macro": "BULL",
+   "leg": "PULLBACK_BEAR",
+   "classe": "A"
+  },
+  {
+   "t": 1767873600,
+   "date": "2026-01-08 12:00",
+   "price": 4408.85,
+   "src": "vela",
+   "macro": "BULL",
+   "leg": "IMPULSO_UP",
+   "classe": "A"
+  },
+  {
+   "t": 1768578300,
+   "date": "2026-01-16 15:45",
+   "price": 4555.67,
+   "src": "circulo->low",
+   "macro": "BULL",
+   "leg": "IMPULSO_UP",
+   "classe": "A"
+  },
+  {
+   "t": 1769024700,
+   "date": "2026-01-21 19:45",
+   "price": 4765.92,
+   "src": "circulo->low",
+   "macro": "BULL",
+   "leg": "IMPULSO_UP",
+   "classe": "A"
+  },
+  {
+   "t": 1769463900,
+   "date": "2026-01-26 21:45",
+   "price": 5004.05,
+   "src": "circulo->low",
+   "macro": "BULL",
+   "leg": "IMPULSO_UP",
+   "classe": "A"
+  },
+  {
+   "t": 1770048000,
+   "date": "2026-02-02 16:00",
+   "price": 4597.13,
+   "src": "vela",
+   "macro": "BEAR",
+   "leg": "IMPULSO_UP",
+   "classe": "C"
+  },
+  {
+   "t": 1770336000,
+   "date": "2026-02-06 00:00",
+   "price": 4656.65,
+   "src": "vela",
+   "macro": "RANGE",
+   "leg": "PULLBACK_BEAR",
+   "classe": "B"
+  },
+  {
+   "t": 1771336800,
+   "date": "2026-02-17 14:00",
+   "price": 4842.17,
+   "src": "vela",
+   "macro": "RANGE",
+   "leg": "IMPULSO_UP",
+   "classe": "B"
+  },
+  {
+   "t": 1771459200,
+   "date": "2026-02-19 00:00",
+   "price": 4962.61,
+   "src": "vela",
+   "macro": "RANGE",
+   "leg": "IMPULSO_UP",
+   "classe": "B"
+  },
+  {
+   "t": 1774249200,
+   "date": "2026-03-23 07:00",
+   "price": 4101.51,
+   "src": "vela",
+   "macro": "BEAR",
+   "leg": "IMPULSO_DOWN",
+   "classe": "C"
+  },
+  {
+   "t": 1774328400,
+   "date": "2026-03-24 05:00",
+   "price": 4318.86,
+   "src": "vela",
+   "macro": "BEAR",
+   "leg": "ACUMULACAO",
+   "classe": "C"
+  },
+  {
+   "t": 1774357200,
+   "date": "2026-03-24 13:00",
+   "price": 4352.09,
+   "src": "vela",
+   "macro": "BEAR",
+   "leg": "IMPULSO_DOWN",
+   "classe": "C"
+  },
+  {
+   "t": 1774555200,
+   "date": "2026-03-26 20:00",
+   "price": 4353.47,
+   "src": "vela",
+   "macro": "BEAR",
+   "leg": "ACUMULACAO",
+   "classe": "C"
+  },
+  {
+   "t": 1774609200,
+   "date": "2026-03-27 11:00",
+   "price": 4404.69,
+   "src": "vela",
+   "macro": "BEAR",
+   "leg": "ACUMULACAO",
+   "classe": "C"
+  },
+  {
+   "t": 1774915200,
+   "date": "2026-03-31 00:00",
+   "price": 4483.6,
+   "src": "vela",
+   "macro": "BEAR",
+   "leg": "PULLBACK_BULL",
+   "classe": "C"
+  },
+  {
+   "t": 1774951200,
+   "date": "2026-03-31 10:00",
+   "price": 4533.44,
+   "src": "vela",
+   "macro": "BEAR",
+   "leg": "PULLBACK_BULL",
+   "classe": "C"
+  },
+  {
+   "t": 1775109600,
+   "date": "2026-04-02 06:00",
+   "price": 4552.82,
+   "src": "vela",
+   "macro": "BEAR",
+   "leg": "PULLBACK_BULL",
+   "classe": "C"
+  },
+  {
+   "t": 1777910400,
+   "date": "2026-05-04 16:00",
+   "price": 4501.94,
+   "src": "vela",
+   "macro": "BEAR",
+   "leg": "IMPULSO_DOWN",
+   "classe": "C"
+  },
+  {
+   "t": 1781132400,
+   "date": "2026-06-10 23:00",
+   "price": 4021.79,
+   "src": "vela",
+   "macro": "BEAR",
+   "leg": "ACUMULACAO",
+   "classe": "C"
+  },
+  {
+   "t": 1782324000,
+   "date": "2026-06-24 18:00",
+   "price": 3958.25,
+   "src": "vela",
+   "macro": "BEAR",
+   "leg": "ACUMULACAO",
+   "classe": "C"
+  },
+  {
+   "t": 1782781200,
+   "date": "2026-06-30 01:00",
+   "price": 3947.13,
+   "src": "vela",
+   "macro": "BEAR",
+   "leg": "ACUMULACAO",
+   "classe": "C"
+  }
+ ]
+}
