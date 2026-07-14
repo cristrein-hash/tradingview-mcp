@@ -4,12 +4,17 @@
 critério PASS/FAIL abaixo ficam **imutáveis** a partir desta data. Qualquer alteração pós-forward =
 **novo prereg + novo forward** (proibido mover a baliza depois de ver resultados).
 
-**🚨 EMENDA 2026-07-15 (LOOKAHEAD-FIX — permitido, NÃO move-baliza):** o DA (`a1a2_lookahead_da.py`)
-apanhou que a âncora do SL usava janela `[j−16, j+8]` = espreitava **8 barras à frente** da marca.
-Corrigido para **âncora = swing-low fractal CAUSAL confirmado** (`a1_causal_entry.causal_entry`, m=3,
-tudo ≤ barra de decisão). Remover lookahead endurece o teste (sempre permitido). **Números in-sample
-corrigidos** (ver §8): A1 MB3 14→**11/14**, A2 17→**14/18**, e **MB3 ≈ reclaim** (o "MB3 domina" era
-artefato do lookahead). O critério §6 é ajustado em conformidade. O forward usa a âncora causal.
+**🚨 EMENDA 2026-07-15 (2 fixes — permitido, NÃO move-baliza) — Cris aprovou esta versão:**
+**(1) LOOKAHEAD-FIX:** o DA (`a1a2_lookahead_da.py`) apanhou que a âncora do SL usava `[j−16, j+8]` =
+espreitava **8 barras à frente**. Corrigido → timing por **swing-low fractal confirmado** (m=3, ≤ barra
+de decisão). Removeu o lookahead: A1 14→11/14, A2 17→14/18.
+**(2) SL ESTRUTURAL (low-real):** diagnóstico (`a1a2_loser_diagnosis.py`) provou que **7/7 losers
+recuperavam ao 3R ignorando o SL** = SL apertado varrido, região certa. O fractal m=3 ancorava num
+swing-low **raso/prematuro**. Corrigido → **SL = LOW REAL do pullback** (menor low até à entrada) −0,1ATR
+(causal). Resultado: **A1 MB3 13/14 · A2 MB3 16/18** (ver §8). **Honesto:** melhoria líquida +2 cada, mas
+NÃO grátis — o SL mais fundo (R↑→alvo↑) **partiu o A2#6** (WIN→LOSS) ao trocar 3 losers arrumados.
+MB3 volta a ≥ reclaim (A1 13 vs 11; A2 16 vs 15). Implementação-mãe = `a1_causal_entry.causal_entry`.
+O forward usa esta versão. Ambos fixes = correção de defeito/estrutura, não move-baliza.
 
 Autoria: Claude (desenho) + Cris (aprovação). Status: **DESENHO in-sample selado; validação = FORWARD.**
 
@@ -46,10 +51,14 @@ e o fundo é um **pullback bottom A1** (leg 4H v3 corretivo). O FUNDO (a demanda
 identificado pela leitura do Cris / stack macro+leg — a **deteção do fundo é o input** (parte
 discricionária já documentada); o que este prereg testa é a **MECÂNICA DE ENTRADA dado o fundo.**
 
-**2.2 Âncora de low (SL) — CAUSAL (emenda 2026-07-15):** `low_ancora` = **swing-low fractal
-CONFIRMADO** (m=3: `L[p]` é o menor de `[p−3, p+3]`, confirmado em `p+3`), o mais baixo confirmado
-até à barra de entrada, procurado a partir de `[fundo_bar−16]`. **Sem espreitar à frente.**
-`SL = low_ancora − 0.1 · ATR14(low_ancora)`. (Substitui a janela `[j−16, j+8]` que tinha lookahead.)
+**2.2 Timing + Âncora de low (SL) — CAUSAL (emenda 2026-07-15, versão aprovada):**
+- **TIMING (quando o low é "válido"):** swing-low fractal **confirmado** (m=3: `L[p]` menor de
+  `[p−3, p+3]`, confirma em `p+3` ≤ barra de decisão). O MB3/reclaim só pode disparar **após** essa
+  confirmação. Sem espreitar à frente.
+- **SL (onde fica o stop):** `low_real` = **menor low em `[fundo_bar−16, barra_de_entrada]`** (o fundo
+  REAL do pullback, conhecido na entrada), `SL = low_real − 0.1 · ATR14(low_real)`. (Substitui tanto a
+  janela `[j−16, j+8]` com lookahead como o fractal raso, que era prematuro.)
+
 Implementação-mãe: `a1_causal_entry.causal_entry`.
 
 **2.3 Gatilho MB3 (primário):** entrar no **fecho da 1ª barra 15M `k` após o low-âncora** tal que
@@ -124,14 +133,17 @@ vive nos poucos sharp; o forward tem de o confirmar.
 ---
 
 ## 8. REFERÊNCIA IN-SAMPLE (o que foi desenhado — explicitamente NÃO validação)
-**Números CAUSAIS honestos (emenda 2026-07-15, `a1_causal_entry.py` — âncora fractal, SEM lookahead):**
-- **A1 MB3: 11/14 WIN (~79%)** · reclaim 11/14 = **EMPATE**. Losers = A1_01/10/13 (quase todos tight-R).
-- **A2 MB3: 14/18 WIN (~78%)** · reclaim 14/18 = **EMPATE**.
-- **5/14 (A1) e 5/18 (A2) são tight-R (R/ATR<1,65)** — a âncora fractal apanha um swing-low raso e o SL
-  é varrido por um low mais fundo que forma *depois* da entrada (a realidade causal que o +8 escondia).
-- Histórico (com o +8-lookahead, SUPERSEDED): dizia-se MB3 14/14 e "MB3 domina reclaim" — **inflado**.
-- Caveats mantidos: N pequeno = desenho; winners curados (0 losers verdadeiros no set); supply-overhead
-  não testado. O juiz é a §6 sobre dados forward.
+**Números CAUSAIS honestos (versão APROVADA 2026-07-15, `a1_causal_entry.py` — timing fractal + SL
+low-real, SEM lookahead):**
+- **A1 MB3: 13/14 WIN** (único loser #1, R1,17A) · reclaim 11/14 → **MB3 ≥ reclaim**.
+- **A2 MB3: 16/18 WIN** (losers #6, #13) · reclaim 15/18 → **MB3 ≥ reclaim**.
+- Evolução honesta: `+8-lookahead` dava 14/14 e 17/18 (**inflado**) → só-fractal 11/14 e 14/18 →
+  **+ SL low-real: 13/14 e 16/18** (o SL low-real arruma os tight-R varridos, mas **partiu o A2#6** ao
+  subir o alvo — melhoria líquida +2 cada, não grátis; ver §2.2 e a EMENDA no topo).
+- Diagnóstico `a1a2_loser_diagnosis.py`: **7/7 losers do fractal recuperavam ao 3R ignorando o SL** =
+  região certa, SL apertado (a base da correção estrutural).
+- Caveats mantidos: N pequeno = desenho; winners curados (0 losers verdadeiros no set); winner's-curse
+  leve no parâmetro SL (afinado sobre o set); supply-overhead não testado. O juiz é a §6 sobre forward.
 
 ---
 

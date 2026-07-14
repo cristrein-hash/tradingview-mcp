@@ -40,19 +40,23 @@ def _is_swinglow(L, p, m):
     return L[p] == min(L[p-m:p+m+1]) and L[p] < min(L[p-m:p])
 
 def causal_entry(S, j, kind="MB3"):
-    """CAUSAL: âncora = swing-low fractal confirmado (confirma em p+m, <= barra k). MB3/reclaim dispara
-    após confirmação. Devolve dict(ei, ent, sl, R, anchor_bar, o, bars) ou None. Sem lookahead."""
+    """CAUSAL: timing = swing-low fractal confirmado (confirma em p+m, <= barra k) → MB3/reclaim dispara
+    após confirmação. SL = LOW REAL do pullback (menor low em [j−LOWBACK, entrada]) − 0.1ATR — emenda
+    estrutural 2026-07-15 (o fractal raso era prematuro; o SL deve ficar abaixo do fundo real da perna).
+    Ambos causais (min-low-até-entrada conhecido na entrada). Devolve dict(...) ou None. Sem lookahead."""
     L, O, H, C, EMA, ATR, N = S["L"], S["O"], S["H"], S["C"], S["EMA"], S["ATR"], S["N"]
-    anchor_low = float("inf"); anchor_bar = None
+    fr_low = float("inf"); fr_bar = None                       # fractal = GATILHO de timing (não o SL)
     for p in range(max(M_FRAC, j-LOWBACK), j-M_FRAC+1):        # swing-lows já confirmados por j
-        if _is_swinglow(L, p, M_FRAC) and L[p] < anchor_low: anchor_low, anchor_bar = L[p], p
+        if _is_swinglow(L, p, M_FRAC) and L[p] < fr_low: fr_low, fr_bar = L[p], p
     for k in range(j, min(N, j+TRIG_WIN)):
         p = k-M_FRAC                                            # swing-low confirma em k (fractal <= k)
-        if p >= max(M_FRAC, j-LOWBACK) and _is_swinglow(L, p, M_FRAC) and L[p] < anchor_low:
-            anchor_low, anchor_bar = L[p], p
-        if anchor_bar is None or k <= anchor_bar: continue
+        if p >= max(M_FRAC, j-LOWBACK) and _is_swinglow(L, p, M_FRAC) and L[p] < fr_low:
+            fr_low, fr_bar = L[p], p
+        if fr_bar is None or k <= fr_bar: continue
         trig = (C[k] > O[k] and C[k] > H[k-1]) if kind == "MB3" else (EMA[k] is not None and C[k] > EMA[k] and C[k] > C[k-1])
         if not trig: continue
+        lo0 = max(0, j-LOWBACK)                                 # SL ancorado ao LOW REAL do pullback
+        anchor_bar = min(range(lo0, k+1), key=lambda z: L[z]); anchor_low = L[anchor_bar]
         atr = ATR[anchor_bar] or 5.0; sl = round(anchor_low-0.1*atr, 2); ent = C[k]; r = ent-sl
         if r <= 0.05*atr: continue
         tgt = ent+3*r; o, bb = "OPEN", None
