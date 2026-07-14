@@ -16,7 +16,10 @@
    "src": "vela",
    "macro": "BULL",
    "leg": "IMPULSO_UP",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 6.6,
+   "pull20": 6.6,
+   "subclasse": "A2_pullback_raso"
   },
   {
    "t": 1747324800,
@@ -25,7 +28,10 @@
    "src": "vela",
    "macro": "BEAR",
    "leg": "ACUMULACAO",
-   "classe": "C"
+   "classe": "C",
+   "dd252": 10.8,
+   "pull20": 10.8,
+   "subclasse": "C_shallow_bounce"
   },
   {
    "t": 1751248800,
@@ -34,7 +40,10 @@
    "src": "vela",
    "macro": "RANGE",
    "leg": "ACUMULACAO",
-   "classe": "B"
+   "classe": "B",
+   "dd252": 7.3,
+   "pull20": 6.0,
+   "subclasse": "B_range"
   },
   {
    "t": 1754013600,
@@ -43,7 +52,10 @@
    "src": "vela",
    "macro": "RANGE",
    "leg": "ACUMULACAO",
-   "classe": "B"
+   "classe": "B",
+   "dd252": 6.3,
+   "pull20": 4.6,
+   "subclasse": "B_range"
   },
   {
    "t": 1755651600,
@@ -52,7 +64,10 @@
    "src": "vela",
    "macro": "RANGE",
    "leg": "ACUMULACAO",
-   "classe": "B"
+   "classe": "B",
+   "dd252": 5.4,
+   "pull20": 3.7,
+   "subclasse": "B_range"
   },
   {
    "t": 1755867600,
@@ -61,7 +76,10 @@
    "src": "circulo->low",
    "macro": "RANGE",
    "leg": "ACUMULACAO",
-   "classe": "B"
+   "classe": "B",
+   "dd252": 5.0,
+   "pull20": 2.5,
+   "subclasse": "B_range"
   },
   {
    "t": 1756165500,
@@ -70,7 +88,10 @@
    "src": "circulo->low",
    "macro": "RANGE",
    "leg": "ACUMULACAO",
-   "classe": "B"
+   "classe": "B",
+   "dd252": 4.2,
+   "pull20": 1.6,
+   "subclasse": "B_range"
   },
   {
    "t": 1756267200,
@@ -79,7 +100,10 @@
    "src": "vela",
    "macro": "RANGE",
    "leg": "ACUMULACAO",
-   "classe": "B"
+   "classe": "B",
+   "dd252": 3.6,
+   "pull20": 1.0,
+   "subclasse": "B_range"
   },
   {
    "t": 1756346400,
@@ -88,7 +112,10 @@
    "src": "circulo->low",
    "macro": "RANGE",
    "leg": "ACUMULACAO",
-   "classe": "B"
+   "classe": "B",
+   "dd252": 3.3,
+   "pull20": 0.6,
+   "subclasse": "B_range"
   },
   {
    "t": 1756466100,
@@ -97,7 +124,10 @@
    "src": "circulo->low",
    "macro": "RANGE",
    "leg": "ACUMULACAO",
-   "classe": "B"
+   "classe": "B",
+   "dd252": 2.7,
+   "pull20": 0.5,
+   "subclasse": "B_range"
   },
   {
    "t": 1756690200,
@@ -106,7 +136,10 @@
    "src": "circulo->low",
    "macro": "RANGE",
    "leg": "ACUMULACAO",
-   "classe": "B"
+   "classe": "B",
+   "dd252": 1.7,
+   "pull20": 0.4,
+   "subclasse": "B_range"
   },
   {
    "t": 1756796400,
@@ -115,7 +148,10 @@
    "src": "vela",
    "macro": "RANGE",
    "leg": "IMPULSO_UP",
-   "classe": "B"
+   "classe": "B",
+   "dd252": 0.9,
+   "pull20": 0.6,
+   "subclasse": "B_range"
   },
   {
    "t": 1756954800,
@@ -124,7 +160,10 @@
    "src": "vela",
    "macro": "RANGE",
    "leg": "IMPULSO_UP",
-   "classe": "B"
+   "classe": "B",
+   "dd252": 1.9,
+   "pull20": 1.9,
+   "subclasse": "B_range"
   },
   {
    "t": 1757062800,
@@ -133,7 +172,10 @@
    "src": "circulo->low",
    "macro": "RANGE",
    "leg": "ACUMULACAO",
-   "classe": "B"
+   "classe": "B",
+   "dd252": 0.9,
+   "pull20": 0.9,
+   "subclasse": "B_range"
   },
   {
    "t": 1757588400,
@@ -142,7 +184,10 @@
    "src": "vela",
    "macro": "BULL",
    "leg": "ACUMULACAO",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 1.7,
+   "pull20": 1.7,
+   "subclasse": "A1_pullback_fundo"
   },
   {
    "t": 1757898900,
@@ -151,7 +196,10 @@
    "src": "circulo->low",
    "macro": "BULL",
    "leg": "ACUMULACAO",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 1.2,
+   "pull20": 1.2,
+   "subclasse": "A1_pullback_fundo"
   },
   {
    "t": 1758200400,
@@ -160,7 +208,10 @@
    "src": "vela",
    "macro": "BULL",
    "leg": "ACUMULACAO",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 2.1,
+   "pull20": 2.1,
+   "subclasse": "A1_pullback_fundo"
   },
   {
    "t": 1758265200,
@@ -169,7 +220,10 @@
    "src": "circulo->low",
    "macro": "BULL",
    "leg": "ACUMULACAO",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 1.6,
+   "pull20": 1.6,
+   "subclasse": "A1_pullback_fundo"
   },
   {
    "t": 1758744000,
@@ -178,7 +232,10 @@
    "src": "vela",
    "macro": "BULL",
    "leg": "ACUMULACAO",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 1.9,
+   "pull20": 1.9,
+   "subclasse": "A1_pullback_fundo"
   },
   {
    "t": 1758807900,
@@ -187,7 +244,10 @@
    "src": "circulo->low",
    "macro": "BULL",
    "leg": "ACUMULACAO",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 1.7,
+   "pull20": 1.7,
+   "subclasse": "A1_pullback_fundo"
   },
   {
    "t": 1759222800,
@@ -196,7 +256,10 @@
    "src": "vela",
    "macro": "BULL",
    "leg": "IMPULSO_UP",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 1.1,
+   "pull20": 1.1,
+   "subclasse": "A2_pullback_raso"
   },
   {
    "t": 1759417200,
@@ -205,7 +268,10 @@
    "src": "vela",
    "macro": "BULL",
    "leg": "ACUMULACAO",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 1.9,
+   "pull20": 1.9,
+   "subclasse": "A1_pullback_fundo"
   },
   {
    "t": 1759824000,
@@ -214,7 +280,10 @@
    "src": "circulo->low",
    "macro": "BULL",
    "leg": "IMPULSO_UP",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 0.6,
+   "pull20": 0.6,
+   "subclasse": "A2_pullback_raso"
   },
   {
    "t": 1760068800,
@@ -223,7 +292,10 @@
    "src": "vela",
    "macro": "BULL",
    "leg": "ACUMULACAO",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 2.7,
+   "pull20": 2.7,
+   "subclasse": "A1_pullback_fundo"
   },
   {
    "t": 1760421600,
@@ -232,7 +304,10 @@
    "src": "vela",
    "macro": "BULL",
    "leg": "ACUMULACAO",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 0.7,
+   "pull20": 0.7,
+   "subclasse": "A1_pullback_fundo"
   },
   {
    "t": 1760518800,
@@ -241,7 +316,10 @@
    "src": "vela",
    "macro": "BULL",
    "leg": "IMPULSO_UP",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 0.4,
+   "pull20": 0.4,
+   "subclasse": "A2_pullback_raso"
   },
   {
    "t": 1760720400,
@@ -250,7 +328,10 @@
    "src": "vela",
    "macro": "BULL",
    "leg": "ACUMULACAO",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 3.3,
+   "pull20": 3.3,
+   "subclasse": "A1_pullback_fundo"
   },
   {
    "t": 1761642000,
@@ -259,7 +340,10 @@
    "src": "vela",
    "macro": "BULL",
    "leg": "PULLBACK_BEAR",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 11.3,
+   "pull20": 11.3,
+   "subclasse": "A1_pullback_fundo"
   },
   {
    "t": 1761793200,
@@ -268,7 +352,10 @@
    "src": "circulo->low",
    "macro": "BULL",
    "leg": "PULLBACK_BEAR",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 10.5,
+   "pull20": 10.5,
+   "subclasse": "A1_pullback_fundo"
   },
   {
    "t": 1762297200,
@@ -277,7 +364,10 @@
    "src": "vela",
    "macro": "BULL",
    "leg": "PULLBACK_BEAR",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 10.3,
+   "pull20": 10.3,
+   "subclasse": "A1_pullback_fundo"
   },
   {
    "t": 1763452800,
@@ -286,7 +376,10 @@
    "src": "vela",
    "macro": "BULL",
    "leg": "IMPULSO_UP",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 8.8,
+   "pull20": 8.8,
+   "subclasse": "A2_pullback_raso"
   },
   {
    "t": 1763704800,
@@ -295,7 +388,10 @@
    "src": "vela",
    "macro": "BULL",
    "leg": "IMPULSO_UP",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 8.2,
+   "pull20": 5.2,
+   "subclasse": "A2_pullback_raso"
   },
   {
    "t": 1763953200,
@@ -304,7 +400,10 @@
    "src": "circulo->low",
    "macro": "BULL",
    "leg": "IMPULSO_UP",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 7.7,
+   "pull20": 4.7,
+   "subclasse": "A2_pullback_raso"
   },
   {
    "t": 1764692100,
@@ -313,7 +412,10 @@
    "src": "vela",
    "macro": "BULL",
    "leg": "IMPULSO_UP",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 5.0,
+   "pull20": 1.9,
+   "subclasse": "A2_pullback_raso"
   },
   {
    "t": 1765395900,
@@ -322,7 +424,10 @@
    "src": "vela",
    "macro": "BULL",
    "leg": "IMPULSO_UP",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 4.5,
+   "pull20": 1.4,
+   "subclasse": "A2_pullback_raso"
   },
   {
    "t": 1765432800,
@@ -331,7 +436,10 @@
    "src": "circulo->low",
    "macro": "BULL",
    "leg": "IMPULSO_UP",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 4.0,
+   "pull20": 0.9,
+   "subclasse": "A2_pullback_raso"
   },
   {
    "t": 1765883700,
@@ -340,7 +448,10 @@
    "src": "circulo->low",
    "macro": "BULL",
    "leg": "IMPULSO_UP",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 2.4,
+   "pull20": -0.7,
+   "subclasse": "A2_pullback_raso"
   },
   {
    "t": 1766108700,
@@ -349,7 +460,10 @@
    "src": "vela",
    "macro": "BULL",
    "leg": "IMPULSO_UP",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 1.6,
+   "pull20": -1.5,
+   "subclasse": "A2_pullback_raso"
   },
   {
    "t": 1766146500,
@@ -358,7 +472,10 @@
    "src": "circulo->low",
    "macro": "BULL",
    "leg": "IMPULSO_UP",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 1.3,
+   "pull20": -1.9,
+   "subclasse": "A2_pullback_raso"
   },
   {
    "t": 1767160800,
@@ -367,7 +484,10 @@
    "src": "vela",
    "macro": "BULL",
    "leg": "IMPULSO_UP",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 6.1,
+   "pull20": 6.1,
+   "subclasse": "A2_pullback_raso"
   },
   {
    "t": 1767379500,
@@ -376,7 +496,10 @@
    "src": "circulo->low",
    "macro": "BULL",
    "leg": "PULLBACK_BEAR",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 5.2,
+   "pull20": 5.2,
+   "subclasse": "A1_pullback_fundo"
   },
   {
    "t": 1767873600,
@@ -385,7 +508,10 @@
    "src": "vela",
    "macro": "BULL",
    "leg": "IMPULSO_UP",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 3.1,
+   "pull20": 3.1,
+   "subclasse": "A2_pullback_raso"
   },
   {
    "t": 1768578300,
@@ -394,7 +520,10 @@
    "src": "circulo->low",
    "macro": "BULL",
    "leg": "IMPULSO_UP",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 1.9,
+   "pull20": 1.9,
+   "subclasse": "A2_pullback_raso"
   },
   {
    "t": 1769024700,
@@ -403,7 +532,10 @@
    "src": "circulo->low",
    "macro": "BULL",
    "leg": "IMPULSO_UP",
-   "classe": "A"
+   "classe": "A",
+   "dd252": 0.0,
+   "pull20": 0.0,
+   "subclasse": "A2_pullback_raso"
   },
   {
    "t": 1769463900,
@@ -412,7 +544,10 @@
    "src": "circulo->low",
    "macro": "BULL",
    "leg": "IMPULSO_UP",
-   "classe": "A"
+   "classe": "A",
+   "dd252": -0.3,
+   "pull20": -0.3,
+   "subclasse": "A2_pullback_raso"
   },
   {
    "t": 1770048000,
@@ -421,7 +556,10 @@
    "src": "vela",
    "macro": "BEAR",
    "leg": "IMPULSO_UP",
-   "classe": "C"
+   "classe": "C",
+   "dd252": 17.9,
+   "pull20": 17.9,
+   "subclasse": "C_shallow_bounce"
   },
   {
    "t": 1770336000,
@@ -430,7 +568,10 @@
    "src": "vela",
    "macro": "RANGE",
    "leg": "PULLBACK_BEAR",
-   "classe": "B"
+   "classe": "B",
+   "dd252": 16.8,
+   "pull20": 16.8,
+   "subclasse": "B_range"
   },
   {
    "t": 1771336800,
@@ -439,7 +580,10 @@
    "src": "vela",
    "macro": "RANGE",
    "leg": "IMPULSO_UP",
-   "classe": "B"
+   "classe": "B",
+   "dd252": 13.5,
+   "pull20": 13.5,
+   "subclasse": "B_range"
   },
   {
    "t": 1771459200,
@@ -448,7 +592,10 @@
    "src": "vela",
    "macro": "RANGE",
    "leg": "IMPULSO_UP",
-   "classe": "B"
+   "classe": "B",
+   "dd252": 11.3,
+   "pull20": 11.3,
+   "subclasse": "B_range"
   },
   {
    "t": 1774249200,
@@ -457,7 +604,10 @@
    "src": "vela",
    "macro": "BEAR",
    "leg": "IMPULSO_DOWN",
-   "classe": "C"
+   "classe": "C",
+   "dd252": 26.7,
+   "pull20": 24.3,
+   "subclasse": "C_PANIC_aguda"
   },
   {
    "t": 1774328400,
@@ -466,7 +616,10 @@
    "src": "vela",
    "macro": "BEAR",
    "leg": "ACUMULACAO",
-   "classe": "C"
+   "classe": "C",
+   "dd252": 22.8,
+   "pull20": 20.3,
+   "subclasse": "C_PANIC_aguda"
   },
   {
    "t": 1774357200,
@@ -475,7 +628,10 @@
    "src": "vela",
    "macro": "BEAR",
    "leg": "IMPULSO_DOWN",
-   "classe": "C"
+   "classe": "C",
+   "dd252": 22.3,
+   "pull20": 19.7,
+   "subclasse": "C_PANIC_aguda"
   },
   {
    "t": 1774555200,
@@ -484,7 +640,10 @@
    "src": "vela",
    "macro": "BEAR",
    "leg": "ACUMULACAO",
-   "classe": "C"
+   "classe": "C",
+   "dd252": 22.2,
+   "pull20": 19.7,
+   "subclasse": "C_PANIC_aguda"
   },
   {
    "t": 1774609200,
@@ -493,7 +652,10 @@
    "src": "vela",
    "macro": "BEAR",
    "leg": "ACUMULACAO",
-   "classe": "C"
+   "classe": "C",
+   "dd252": 21.3,
+   "pull20": 18.7,
+   "subclasse": "C_PANIC_aguda"
   },
   {
    "t": 1774915200,
@@ -502,7 +664,10 @@
    "src": "vela",
    "macro": "BEAR",
    "leg": "PULLBACK_BULL",
-   "classe": "C"
+   "classe": "C",
+   "dd252": 19.9,
+   "pull20": 17.3,
+   "subclasse": "C_shallow_bounce"
   },
   {
    "t": 1774951200,
@@ -511,7 +676,10 @@
    "src": "vela",
    "macro": "BEAR",
    "leg": "PULLBACK_BULL",
-   "classe": "C"
+   "classe": "C",
+   "dd252": 19.0,
+   "pull20": 16.3,
+   "subclasse": "C_shallow_bounce"
   },
   {
    "t": 1775109600,
@@ -520,7 +688,10 @@
    "src": "vela",
    "macro": "BEAR",
    "leg": "PULLBACK_BULL",
-   "classe": "C"
+   "classe": "C",
+   "dd252": 18.7,
+   "pull20": 13.1,
+   "subclasse": "C_shallow_bounce"
   },
   {
    "t": 1777910400,
@@ -529,7 +700,10 @@
    "src": "vela",
    "macro": "BEAR",
    "leg": "IMPULSO_DOWN",
-   "classe": "C"
+   "classe": "C",
+   "dd252": 19.6,
+   "pull20": 7.9,
+   "subclasse": "C_shallow_bounce"
   },
   {
    "t": 1781132400,
@@ -538,7 +712,10 @@
    "src": "vela",
    "macro": "BEAR",
    "leg": "ACUMULACAO",
-   "classe": "C"
+   "classe": "C",
+   "dd252": 28.2,
+   "pull20": 14.9,
+   "subclasse": "C_GRIND_profundo"
   },
   {
    "t": 1782324000,
@@ -547,7 +724,10 @@
    "src": "vela",
    "macro": "BEAR",
    "leg": "ACUMULACAO",
-   "classe": "C"
+   "classe": "C",
+   "dd252": 29.3,
+   "pull20": 13.9,
+   "subclasse": "C_GRIND_profundo"
   },
   {
    "t": 1782781200,
@@ -556,7 +736,12 @@
    "src": "vela",
    "macro": "BEAR",
    "leg": "ACUMULACAO",
-   "classe": "C"
+   "classe": "C",
+   "dd252": 29.5,
+   "pull20": 13.2,
+   "subclasse": "C_GRIND_profundo"
   }
- ]
+ ],
+ "subdiscriminated": "2026-07-14",
+ "C_deep_thr_dd252": 22.2
 }
