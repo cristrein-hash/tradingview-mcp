@@ -4,6 +4,13 @@
 critério PASS/FAIL abaixo ficam **imutáveis** a partir desta data. Qualquer alteração pós-forward =
 **novo prereg + novo forward** (proibido mover a baliza depois de ver resultados).
 
+**🚨 EMENDA 2026-07-15 (LOOKAHEAD-FIX — permitido, NÃO move-baliza):** o DA (`a1a2_lookahead_da.py`)
+apanhou que a âncora do SL usava janela `[j−16, j+8]` = espreitava **8 barras à frente** da marca.
+Corrigido para **âncora = swing-low fractal CAUSAL confirmado** (`a1_causal_entry.causal_entry`, m=3,
+tudo ≤ barra de decisão). Remover lookahead endurece o teste (sempre permitido). **Números in-sample
+corrigidos** (ver §8): A1 MB3 14→**11/14**, A2 17→**14/18**, e **MB3 ≈ reclaim** (o "MB3 domina" era
+artefato do lookahead). O critério §6 é ajustado em conformidade. O forward usa a âncora causal.
+
 Autoria: Claude (desenho) + Cris (aprovação). Status: **DESENHO in-sample selado; validação = FORWARD.**
 
 ---
@@ -39,8 +46,11 @@ e o fundo é um **pullback bottom A1** (leg 4H v3 corretivo). O FUNDO (a demanda
 identificado pela leitura do Cris / stack macro+leg — a **deteção do fundo é o input** (parte
 discricionária já documentada); o que este prereg testa é a **MECÂNICA DE ENTRADA dado o fundo.**
 
-**2.2 Âncora de low (SL):** `low_ancora` = **menor low** na janela 15M `[fundo_bar−16, fundo_bar+8]`
-(barras completas). `SL = low_ancora − 0.1 · ATR14(low_ancora)`.
+**2.2 Âncora de low (SL) — CAUSAL (emenda 2026-07-15):** `low_ancora` = **swing-low fractal
+CONFIRMADO** (m=3: `L[p]` é o menor de `[p−3, p+3]`, confirmado em `p+3`), o mais baixo confirmado
+até à barra de entrada, procurado a partir de `[fundo_bar−16]`. **Sem espreitar à frente.**
+`SL = low_ancora − 0.1 · ATR14(low_ancora)`. (Substitui a janela `[j−16, j+8]` que tinha lookahead.)
+Implementação-mãe: `a1_causal_entry.causal_entry`.
 
 **2.3 Gatilho MB3 (primário):** entrar no **fecho da 1ª barra 15M `k` após o low-âncora** tal que
 `close[k] > open[k]` (verde) **E** `close[k] > high[k−1]` (fecha acima do high da barra imediatamente
@@ -92,8 +102,9 @@ vive nos poucos sharp; o forward tem de o confirmar.
 1. MB3 **hit-3R ≥ 50%** (excluindo/deflacionando os tight-R conforme fills reais).
 2. MB3 **streak ≤ 5** (restrição FundedNext).
 3. MB3 **bate o null q95** no agregado.
-4. MB3 **≥ reclaim** no eixo primário (hit-3R **OU** tempo-no-mercado/convexidade), **e** MB3 domina o
-   reclaim no subconjunto **ATR-alto** (a tese central).
+4. MB3 **≥ reclaim** no eixo primário (hit-3R **OU** tempo-no-mercado/convexidade). *(Emenda: em causal
+   in-sample MB3 e reclaim EMPATAM; o "MB3 domina" era artefato de lookahead. Se o forward mostrar MB3
+   claramente ≥ reclaim, tanto melhor; empate NÃO é FAIL.)*
 5. **Expectância líquida positiva** com o custo real do Cris.
 
 **FAIL** se qualquer: hit-3R < ~breakeven+margem (≈ ≤ 33%), **ou** streak > 5, **ou** não bate o null,
@@ -113,12 +124,14 @@ vive nos poucos sharp; o forward tem de o confirmar.
 ---
 
 ## 8. REFERÊNCIA IN-SAMPLE (o que foi desenhado — explicitamente NÃO validação)
-14 fundos A1 curados, SL-first, lows corretos (`a1_microbos_pin.py`):
-- **MB3: 14 WIN / 0 LOSS**, med 2 barras até 3R (o mais cedo/convexo; resolve A1_01 e A1_03).
-- MB1 13W/1OPEN (falha 01); MB2 13W/1no-trig (falha 03); reclaim 12W/1LOSS(A1_10 R60)/1OPEN(A1_11 R41).
-- Caveats in-sample: null 76% agregado (edge concentrado nos ATR-altos); **5/14 tight-R otimista**;
-  supply-overhead não testado; N14 = desenho.
-Estes números são o **ponto de partida**, não prova. O juiz é a §6 sobre dados forward.
+**Números CAUSAIS honestos (emenda 2026-07-15, `a1_causal_entry.py` — âncora fractal, SEM lookahead):**
+- **A1 MB3: 11/14 WIN (~79%)** · reclaim 11/14 = **EMPATE**. Losers = A1_01/10/13 (quase todos tight-R).
+- **A2 MB3: 14/18 WIN (~78%)** · reclaim 14/18 = **EMPATE**.
+- **5/14 (A1) e 5/18 (A2) são tight-R (R/ATR<1,65)** — a âncora fractal apanha um swing-low raso e o SL
+  é varrido por um low mais fundo que forma *depois* da entrada (a realidade causal que o +8 escondia).
+- Histórico (com o +8-lookahead, SUPERSEDED): dizia-se MB3 14/14 e "MB3 domina reclaim" — **inflado**.
+- Caveats mantidos: N pequeno = desenho; winners curados (0 losers verdadeiros no set); supply-overhead
+  não testado. O juiz é a §6 sobre dados forward.
 
 ---
 
