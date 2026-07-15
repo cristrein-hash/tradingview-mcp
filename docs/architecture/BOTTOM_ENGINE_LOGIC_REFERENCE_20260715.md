@@ -31,7 +31,14 @@ Para CADA pivô-low candidato (zigzag causal r=3, confirmado no travel `r·ATR`,
 Config vencedora (FN-compatível): **`cascade≥3-4` + `reclaim` + `higher-low` (+ `oversold` RSI)**.
 - E5 cascade4&reclaim: N19 · 53% · streak−2 · P(>5)=0,08 · +19,6 · anos+.
 - E6 cascade3&hl&reclaim: N29 · 48% · streak−2 · P(>5)=0,14 · +27,3 · anos+.
-- ⚠️ **Causalidade NÃO auditada ainda** (verificar antes de portar).
+- ✅ **Causalidade auditada (DA 2026-07-15): PORTÁVEL.** reclaim/hl/oversold = totalmente causais
+  (closed-bar); SL≤entrada; 3R first-touch conservador; os 50 eventos = marcas MANUAIS do Cris (NÃO
+  outcome-defined = **não circular**); null-dentro-do-evento isola o timing. Os 48-53% NÃO são lookahead.
+- ⚠️ **2 ressalvas:** (1) `cascade` usa SMC (BOS/CHoCH) sem `known_at` → se o label carimba no pivô
+  (repaint), infla a cascade → **computar cascade CLOSE-ONLY da estrutura de preço** (não do label).
+  (2) O edge é CONDICIONAL a estar DENTRO de um fundo real → **deploy live exige um DETECTOR DE FUNDO
+  CAUSAL** (substituir as marcas manuais; o `bottom_detector_structural` é causal mas a classe estreita
+  recall só 13/42 = o nó da região a resolver).
 
 ## 3. CAMADA INDICADORES (DEPOIS do mapeamento estrutural — `lab_g` + location reader)
 Feature-set rico, por regime: `box96/box480` (pos), `atr_spike`, `sweep_depth`, `rsi_min8`/`rsi_div`,
