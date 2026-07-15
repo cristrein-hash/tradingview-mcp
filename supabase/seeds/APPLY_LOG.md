@@ -25,3 +25,8 @@
 - 2026-07-10 16:19 UTC · `memory_delta_20260710_session_close.sql` · memory_items 286→292 · tag-rows 6/6 · OK
 - 2026-07-12 15:27 UTC · `memory_delta_20260712_regime_detector_session.sql` · memory_items 292→296 · tag-rows 4/4 · OK
 - 2026-07-12 18:10 UTC · `memory_delta_20260712_leg_field_exog.sql` · memory_items 296→299 · tag-rows 3/3 · OK
+- 2026-07-13 11:38 UTC · `memory_delta_20260713_layer1_macro_structural.sql` · memory_items 299→301 · tag-rows 2/2 · OK
+- 2026-07-13 19:25 UTC · `memory_delta_20260713_range_engine.sql` · memory_items 301→302 · tag-rows 1/1 · OK
+- 2026-07-13 22:38 UTC · `memory_delta_20260713_layer1_approved.sql` · memory_items 302→303 · tag-rows 1/1 · OK
+- 2026-07-13 23:29 UTC · `memory_delta_20260713_leg_v3_approved.sql` · memory_items 303→305 · tag-rows 2/2 · OK
+- 2026-07-14 16:12 UTC · `memory_delta_20260714_gt_fundos_15m.sql` · memory_items 305→306 · tag-rows 1/1 · OK

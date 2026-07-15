@@ -1,0 +1,364 @@
+{
+ "fundos": [
+  {
+   "n": 1,
+   "date": "2025-06-30 02:00",
+   "price": 3245.25,
+   "range": {
+    "RH": 3394.7,
+    "RL": 3246.3,
+    "band_atr": 27.6,
+    "pos_pct": 23
+   },
+   "spring": {
+    "support": 3246.3,
+    "swept_depth_atr": 0.0,
+    "reclaim_atr": 6.24,
+    "is_spring": false
+   },
+   "maturity_tests": 1,
+   "absorption": {
+    "lower_wick": 0.16,
+    "close_pos": 0.16
+   },
+   "structure": "HL",
+   "room_to_ceiling_R": 3.4,
+   "mb3": {
+    "o": "OPEN",
+    "R": 34.05,
+    "RATR": 6.1,
+    "lag": 15
+   }
+  },
+  {
+   "n": 2,
+   "date": "2025-08-01 02:00",
+   "price": 3280.1,
+   "range": {
+    "RH": 3373.6,
+    "RL": 3267.9,
+    "band_atr": 24.0,
+    "pos_pct": 22
+   },
+   "spring": {
+    "support": 3286.4,
+    "swept_depth_atr": 4.18,
+    "reclaim_atr": 5.25,
+    "is_spring": true
+   },
+   "maturity_tests": 3,
+   "absorption": {
+    "lower_wick": 0.63,
+    "close_pos": 0.63
+   },
+   "structure": "LL/sweep",
+   "room_to_ceiling_R": 3.5,
+   "mb3": {
+    "o": "WIN",
+    "R": 10.03,
+    "RATR": 2.56,
+    "lag": 1
+   }
+  },
+  {
+   "n": 3,
+   "date": "2025-08-20 01:00",
+   "price": 3311.92,
+   "range": {
+    "RH": 3374.8,
+    "RL": 3311.9,
+    "band_atr": 28.8,
+    "pos_pct": 3
+   },
+   "spring": {
+    "support": 3314.8,
+    "swept_depth_atr": 1.33,
+    "reclaim_atr": 0.75,
+    "is_spring": false
+   },
+   "maturity_tests": 2,
+   "absorption": {
+    "lower_wick": 0.33,
+    "close_pos": 0.33
+   },
+   "structure": "LL/sweep",
+   "room_to_ceiling_R": 33.0,
+   "mb3": {
+    "o": "WIN",
+    "R": 5.92,
+    "RATR": 2.46,
+    "lag": 1
+   }
+  },
+  {
+   "n": 4,
+   "date": "2025-08-22 13:00",
+   "price": 3323.5,
+   "range": {
+    "RH": 3358.4,
+    "RL": 3311.4,
+    "band_atr": 16.7,
+    "pos_pct": 29
+   },
+   "spring": {
+    "support": 3325.1,
+    "swept_depth_atr": 4.87,
+    "reclaim_atr": 4.78,
+    "is_spring": false
+   },
+   "maturity_tests": 7,
+   "absorption": {
+    "lower_wick": 0.17,
+    "close_pos": 0.17
+   },
+   "structure": "LL/sweep",
+   "room_to_ceiling_R": 2.4,
+   "mb3": {
+    "o": "WIN",
+    "R": 7.63,
+    "RATR": 2.73,
+    "lag": 3
+   }
+  },
+  {
+   "n": 5,
+   "date": "2025-08-25 23:45",
+   "price": 3353.89,
+   "range": {
+    "RH": 3378.8,
+    "RL": 3311.4,
+    "band_atr": 27.6,
+    "pos_pct": 64
+   },
+   "spring": {
+    "support": 3371.8,
+    "swept_depth_atr": 24.7,
+    "reclaim_atr": 17.79,
+    "is_spring": false
+   },
+   "maturity_tests": 2,
+   "absorption": {
+    "lower_wick": 0.17,
+    "close_pos": 0.17
+   },
+   "structure": "EQL",
+   "room_to_ceiling_R": 0.5,
+   "mb3": {
+    "o": "WIN",
+    "R": 32.14,
+    "RATR": 8.73,
+    "lag": 3
+   }
+  },
+  {
+   "n": 6,
+   "date": "2025-08-27 04:00",
+   "price": 3374.69,
+   "range": {
+    "RH": 3394.1,
+    "RL": 3311.4,
+    "band_atr": 32.7,
+    "pos_pct": 83
+   },
+   "spring": {
+    "support": 3388.8,
+    "swept_depth_atr": 30.64,
+    "reclaim_atr": 27.03,
+    "is_spring": false
+   },
+   "maturity_tests": 1,
+   "absorption": {
+    "lower_wick": 0.17,
+    "close_pos": 0.17
+   },
+   "structure": "LL/sweep",
+   "room_to_ceiling_R": 0.2,
+   "mb3": {
+    "o": "LOSS",
+    "R": 3.97,
+    "RATR": 1.62,
+    "lag": 3
+   }
+  },
+  {
+   "n": 7,
+   "date": "2025-08-28 02:00",
+   "price": 3385.9,
+   "range": {
+    "RH": 3399.2,
+    "RL": 3321.3,
+    "band_atr": 25.8,
+    "pos_pct": 83
+   },
+   "spring": {
+    "support": 3392.2,
+    "swept_depth_atr": 23.48,
+    "reclaim_atr": 21.53,
+    "is_spring": false
+   },
+   "maturity_tests": 1,
+   "absorption": {
+    "lower_wick": 0.53,
+    "close_pos": 0.53
+   },
+   "structure": "HL",
+   "room_to_ceiling_R": 0.2,
+   "mb3": {
+    "o": "WIN",
+    "R": 4.12,
+    "RATR": 1.34,
+    "lag": 0
+   }
+  },
+  {
+   "n": 8,
+   "date": "2025-08-29 11:15",
+   "price": 3405.05,
+   "range": {
+    "RH": 3423.2,
+    "RL": 3321.3,
+    "band_atr": 42.6,
+    "pos_pct": 84
+   },
+   "spring": {
+    "support": 3406.6,
+    "swept_depth_atr": 35.64,
+    "reclaim_atr": 35.94,
+    "is_spring": true
+   },
+   "maturity_tests": 4,
+   "absorption": {
+    "lower_wick": 0.53,
+    "close_pos": 0.53
+   },
+   "structure": "LL/sweep",
+   "room_to_ceiling_R": 0.2,
+   "mb3": {
+    "o": "WIN",
+    "R": 3.39,
+    "RATR": 1.41,
+    "lag": 1
+   }
+  },
+  {
+   "n": 9,
+   "date": "2025-09-01 01:30",
+   "price": 3439.09,
+   "range": {
+    "RH": 3454.0,
+    "RL": 3351.4,
+    "band_atr": 27.2,
+    "pos_pct": 93
+   },
+   "spring": {
+    "support": 3442.6,
+    "swept_depth_atr": 24.17,
+    "reclaim_atr": 25.34,
+    "is_spring": true
+   },
+   "maturity_tests": 4,
+   "absorption": {
+    "lower_wick": 0.19,
+    "close_pos": 0.9
+   },
+   "structure": "LL/sweep",
+   "room_to_ceiling_R": 0.1,
+   "mb3": {
+    "o": "WIN",
+    "R": 10.29,
+    "RATR": 2.9,
+    "lag": 1
+   }
+  },
+  {
+   "n": 10,
+   "date": "2025-09-02 07:00",
+   "price": 3468.83,
+   "range": {
+    "RH": 3508.5,
+    "RL": 3351.4,
+    "band_atr": 36.9,
+    "pos_pct": 84
+   },
+   "spring": {
+    "support": 3476.7,
+    "swept_depth_atr": 29.44,
+    "reclaim_atr": 31.15,
+    "is_spring": true
+   },
+   "maturity_tests": 2,
+   "absorption": {
+    "lower_wick": 0.19,
+    "close_pos": 0.9
+   },
+   "structure": "HL",
+   "room_to_ceiling_R": 0.2,
+   "mb3": {
+    "o": "WIN",
+    "R": 10.36,
+    "RATR": 1.87,
+    "lag": 2
+   }
+  },
+  {
+   "n": 11,
+   "date": "2025-09-04 03:00",
+   "price": 3511.75,
+   "range": {
+    "RH": 3578.5,
+    "RL": 3384.4,
+    "band_atr": 23.7,
+    "pos_pct": 67
+   },
+   "spring": {
+    "support": 3551.9,
+    "swept_depth_atr": 20.49,
+    "reclaim_atr": 15.96,
+    "is_spring": false
+   },
+   "maturity_tests": 2,
+   "absorption": {
+    "lower_wick": 0.63,
+    "close_pos": 0.95
+   },
+   "structure": "LL/sweep",
+   "room_to_ceiling_R": 0.5,
+   "mb3": {
+    "o": "WIN",
+    "R": 20.79,
+    "RATR": 2.54,
+    "lag": 4
+   }
+  },
+  {
+   "n": 12,
+   "date": "2025-09-05 09:00",
+   "price": 3545.98,
+   "range": {
+    "RH": 3578.5,
+    "RL": 3404.2,
+    "band_atr": 45.4,
+    "pos_pct": 83
+   },
+   "spring": {
+    "support": 3548.2,
+    "swept_depth_atr": 37.49,
+    "reclaim_atr": 37.7,
+    "is_spring": true
+   },
+   "maturity_tests": 2,
+   "absorption": {
+    "lower_wick": 0.49,
+    "close_pos": 0.49
+   },
+   "structure": "LL/sweep",
+   "room_to_ceiling_R": 0.2,
+   "mb3": {
+    "o": "WIN",
+    "R": 7.22,
+    "RATR": 1.96,
+    "lag": 5
+   }
+  }
+ ]
+}

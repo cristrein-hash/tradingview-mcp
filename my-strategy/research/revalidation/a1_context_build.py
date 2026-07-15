@@ -120,7 +120,11 @@ for n, f in enumerate(A1, 1):
     j = bisect.bisect_right(STS, t0)-1
     if j < 0: continue
     a_at = series[j]["atr"] or 5.0
-    sl = round(price - 0.1*a_at, 2)
+    # LOW REAL do candle (resolve ambiguidade GT-price vs low real; ±4 barras) — âncora correta do SL
+    lo0r, hi0r = max(0, j-4), min(len(series), j+5)
+    kmin = min(range(lo0r, hi0r), key=lambda k: series[k]["l"])
+    low_real = series[kmin]["l"]
+    sl = round(low_real - 0.1*a_at, 2)
     lo, hi = max(0, j-LOOKBACK), min(len(series), j+FORWARD)
     win = [{"t": s["t"], "dt": ds(s["t"]), "o": s["o"], "h": s["h"], "l": s["l"], "c": s["c"],
             "rsi": round(s["rsi"], 1) if s["rsi"] else None, "ema21": s["ema21"],
@@ -151,8 +155,9 @@ for n, f in enumerate(A1, 1):
     htf4 = [{"dt": ds(H4[k]["t"]), "o": H4[k]["o"], "h": H4[k]["h"], "l": H4[k]["l"], "c": H4[k]["c"]} for k in range(max(0, i4-15), i4+1)]
     iD = bisect.bisect_right(TD, t0)-1
     htf1d = [{"dt": ds(D1[k]["t"]), "c": D1[k]["c"], "h": D1[k]["h"], "l": D1[k]["l"]} for k in range(max(0, iD-8), iD+1)]
-    doss = {"id": f"A1_{n:02d}", "fundo": {"t": t0, "dt": ds(t0), "low": price, "leg_15m_gt": f["leg"],
-             "src": f.get("src"), "atr_15m": round(a_at, 2), "SL": sl, "risk_unit": round(price-sl, 2)},
+    doss = {"id": f"A1_{n:02d}", "fundo": {"t": t0, "dt": ds(t0), "low": low_real, "low_dt": ds(series[kmin]["t"]),
+             "gt_price": price, "leg_15m_gt": f["leg"], "src": f.get("src"), "atr_15m": round(a_at, 2), "SL": sl,
+             "note_low": "low = low REAL do candle 15M (âncora do SL); gt_price = marca do Cris (pode diferir até ~16pt)"},
             "macro_1d": m1d, "leg_4h_v3": lg, "leg_4h_dir": lgd,
             "window_note": f"15M {ds(wt0)}→{ds(wt1)} (−{LOOKBACK}/+{FORWARD} bars em torno do fundo)",
             "forward_mfe_from_low": mfe,
