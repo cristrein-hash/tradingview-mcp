@@ -21,6 +21,10 @@ import macro_structural_v3 as M
 
 CRASH_THR = -6.0        # idêntico ao crash_thr do engine (NÃO afinar)
 CRASH_WIN = 15          # janela de pré-formação (dias 1D) onde procuramos o crash que gerou o range
+# SKIP do crash-born DESATIVADO 2026-07-15 (ordem Cris): o crash é CONTEXT-DEPENDENT — crash-no-topo =
+# distribuição (skip), mas crash-no-fundo = CAPITULAÇÃO que reverte (LONG, camada Cp). A regra "crash=skip"
+# foi generalizada de n=1 (2026). Fica o subtipo (informativo); o skip revisita-se no estudo das camadas C.
+SKIP_CRASH_BORN = False
 _GATE = None
 
 def build_b_gate():
@@ -35,7 +39,8 @@ def build_b_gate():
             if i == 0 or reg[i-1] != "RANGE":                 # onset de novo range
                 onset = i
                 subtype = "POST_CRASH" if any(crash_at[j] for j in range(max(2, onset-CRASH_WIN), onset+1)) else "ORDERLY"
-            out.append({"regime": "RANGE", "range_subtype": subtype, "b_long_allowed": subtype == "ORDERLY"})
+            allowed = (subtype == "ORDERLY") if SKIP_CRASH_BORN else True   # skip desativado: qualquer RANGE
+            out.append({"regime": "RANGE", "range_subtype": subtype, "b_long_allowed": allowed})
         else:
             subtype = None
             out.append({"regime": reg[i], "range_subtype": None, "b_long_allowed": False})
