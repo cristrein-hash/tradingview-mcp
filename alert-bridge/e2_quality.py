@@ -270,9 +270,9 @@ def cli_selftest():
     # stale
     ds = json.loads(json.dumps(base_d)); ds["source_health"]["mtf"]["status"] = "stale"
     r.append(("stale fire", veto_stale(cand, ds, 0)["fired"] is True))
-    # counter-regime: LONG vs DOWN sem exaustão -> fire; com sweep -> no-fire
-    r.append(("counter fire(sem exaustão)", veto_counter_regime(cand, base_d)["fired"] is True))
-    r.append(("counter no-fire(sweep)", veto_counter_regime({**cand, "rule": "sweep_reclaim"}, base_d)["fired"] is False))
+    # counter-regime: LONG vs DOWN; EXHAUSTION_MIN=1 (permissivo=lição Cp) -> 0 sig FIRE; sweep (1 sig) isenta
+    r.append(("counter fire(0 sig)", veto_counter_regime(cand, base_d)["fired"] is True))
+    r.append(("counter no-fire(sweep=1sig)", veto_counter_regime({**cand, "rule": "sweep_reclaim"}, base_d)["fired"] is False))
     allok = all(ok for _, ok in r)
     for name, ok in r: print(f"  {'OK' if ok else 'FALHA'} {name}")
     print("SELFTEST:", "PASS" if allok else "FALHA")

@@ -18,9 +18,13 @@ PIDFILE = LOGS / "e1_detector.pid"
 PAUSE_LOCAL = LOGS / "monitor.pause"
 PAUSE_GLOBAL = Path("/tmp/claude_recheck.paused")
 FLOOR_S = 30
-# limiares (calibráveis no shadow-run)
-MIN_RR = 1.5; MIN_SL_ATR = 0.3; MAX_SL_ATR = 3.0; MIN_CONFLUENCE = 2
-COOLDOWN_BARS = 4; DEDUP_BARS = 12; BAR_S = 900
+# limiares. PRINCÍPIO (dos engines/definição) vs FIT (a calibrar no shadow, NÃO fixar a olhar 1 dia).
+MIN_RR = 1.5                 # a calibrar (shadow) — não fixar a hoje
+MIN_SL_ATR = 0.3; MAX_SL_ATR = 3.0
+MIN_CONFLUENCE = 2           # REVERTIDO 3->2 (era FIT a hoje). E1 permissivo=recall; shadow calibra.
+MAX_R_ATR15 = 2.0            # PRINCÍPIO: SL local ~1-2×ATR (escala A1/Cp); cap de SL largo
+MAX_TARGET_R = 5.0           # PRINCÍPIO: alvo canónico 3R; cap generoso anti-fantasia
+COOLDOWN_BARS = 4; DEDUP_BARS = 12; BAR_S = 900   # anti-spam ops — a calibrar no shadow (não a hoje)
 STRUCT_TFS = ("240", "60", "15")
 
 
@@ -76,18 +80,27 @@ def confluence_score(d, direction, tf):
 
 
 # ---------- níveis ----------
-def levels(direction, close, sl_ref, atr, tf_zones):
+def levels(direction, close, sl_ref, atr, tf_zones, pos=None):
+    # fix#1: sl_ref = swing LOCAL do 15M (passado por detect), atr = ATR15 — SL tight executável, nunca o
+    # swing do TF do gatilho (que dava 50pts). fix#4: alvo cap a MAX_TARGET_R.
+    # fix#5 (anti-atraso): só entra em posição FRESCA da perna — SHORT no topo (pos>=0.5), LONG no fundo.
+    if pos is not None:
+        if direction == "SHORT" and pos < 0.5: return None
+        if direction == "LONG" and pos > 0.5: return None
     if atr is None or sl_ref is None: return None
     sl = sl_ref - 0.1 * atr if direction == "LONG" else sl_ref + 0.1 * atr
     r = abs(close - sl)
-    if r <= 0: return None
+    if r <= 0 or r > MAX_R_ATR15 * atr: return None            # SL demasiado largo p/ 15M-local = setup fraco
     if direction == "LONG":
         z = (tf_zones or {}).get("above") or {}
-        tgt = z.get("low") if z.get("low") and z["low"] > close else close + 3 * r
+        raw = z.get("low") if z.get("low") and z["low"] > close else close + 3 * r
+        tgt = min(raw, close + MAX_TARGET_R * r)
     else:
         z = (tf_zones or {}).get("below") or {}
-        tgt = z.get("high") if z.get("high") and z["high"] < close else close - 3 * r
+        raw = z.get("high") if z.get("high") and z["high"] < close else close - 3 * r
+        tgt = max(raw, close - MAX_TARGET_R * r)
     rr = abs(tgt - close) / r
+    if rr < 1.0: return None                                    # alvo mais perto que o SL = descarta
     return {"entry": round(close, 2), "sl": round(sl, 2), "target": round(tgt, 2), "rr": round(rr, 2), "r": round(r, 3)}
 
 
@@ -104,60 +117,64 @@ def detect(d, p):
     pmicro = (p or {}).get("axes", {}).get("micro_15m", {}) if p else {}
     if close is None: return out
 
+    # fix#1: SL SEMPRE ancorado ao swing LOCAL do 15M (+ATR15), qualquer que seja o TF do gatilho.
+    m15 = mtf.get("15", {}); leg15 = m15.get("leg") or {}; atr15 = atr_of(leg15)
+    sl15_low = _sw(mtf, "15", "last_low").get("price")
+    sl15_high = _sw(mtf, "15", "last_high").get("price")
+    pclose = fnum((pmicro or {}).get("close")) if pmicro else None
+
     for tf in STRUCT_TFS:
-        m = mtf.get(tf, {}); leg = m.get("leg") or {}; atr = atr_of(leg); zones = m.get("zones")
+        m = mtf.get(tf, {}); zones = m.get("zones")
+        pos_tf = (m.get("leg") or {}).get("pos_in_leg")   # pos-freshness do TF do gatilho (princípio A1/Cp)
         pm = pmtf.get(tf, {})
         ll, lh = _sw(mtf, tf, "last_low"), _sw(mtf, tf, "last_high")
         pl, ph = _sw(mtf, tf, "prev_low"), _sw(mtf, tf, "prev_high")
 
-        # R3 CHoCH (transição false->true)
+        # R3 CHoCH (transição false->true) — SL 15M-local, entrada fresca (pos)
         if m.get("choch", {}).get("dn") and not (pm.get("choch", {}) or {}).get("dn"):
-            lv = levels("SHORT", close, lh.get("price"), atr, zones)
-            if lv: out.append(dict(rule="choch", tf=tf, direction="SHORT", src="mtf.choch.dn/last_high", **lv))
+            lv = levels("SHORT", close, sl15_high, atr15, zones, pos_tf)
+            if lv: out.append(dict(rule="choch", tf=tf, direction="SHORT", src="mtf.choch.dn/SL15m", **lv))
         if m.get("choch", {}).get("up") and not (pm.get("choch", {}) or {}).get("up"):
-            lv = levels("LONG", close, ll.get("price"), atr, zones)
-            if lv: out.append(dict(rule="choch", tf=tf, direction="LONG", src="mtf.choch.up/last_low", **lv))
+            lv = levels("LONG", close, sl15_low, atr15, zones, pos_tf)
+            if lv: out.append(dict(rule="choch", tf=tf, direction="LONG", src="mtf.choch.up/SL15m", **lv))
 
-        # R1 sweep+reclaim (novo last_low varre prev_low e close reclama)
+        # R1 sweep+reclaim (gatilho no TF; SL 15M-local; entrada fresca)
         if ll.get("price") and pl.get("price") and ll["price"] < pl["price"] and close > pl["price"]:
-            lv = levels("LONG", close, ll.get("price"), atr, zones)
-            if lv: out.append(dict(rule="sweep_reclaim", tf=tf, direction="LONG", src="swept prev_low+reclaim", **lv))
+            lv = levels("LONG", close, sl15_low, atr15, zones, pos_tf)
+            if lv: out.append(dict(rule="sweep_reclaim", tf=tf, direction="LONG", src="swept prev_low+reclaim/SL15m", **lv))
         if lh.get("price") and ph.get("price") and lh["price"] > ph["price"] and close < ph["price"]:
-            lv = levels("SHORT", close, lh.get("price"), atr, zones)
-            if lv: out.append(dict(rule="sweep_reclaim", tf=tf, direction="SHORT", src="swept prev_high+reclaim", **lv))
+            lv = levels("SHORT", close, sl15_high, atr15, zones, pos_tf)
+            if lv: out.append(dict(rule="sweep_reclaim", tf=tf, direction="SHORT", src="swept prev_high+reclaim/SL15m", **lv))
 
-        # R4 zone reject (prev close dentro/tocando zona, agora fecha de volta)
+        # R4 zone reject — SL 15M-local, entrada fresca
         za, zb = (zones or {}).get("above") or {}, (zones or {}).get("below") or {}
-        pclose = fnum(pmicro.get("close")) if pmicro else None
         if pclose and za.get("low") and pclose >= za["low"] and close < za["low"]:
-            lv = levels("SHORT", close, za.get("high"), atr, zones)
-            if lv: out.append(dict(rule="zone_reject", tf=tf, direction="SHORT", src="reject supply zone", **lv))
+            lv = levels("SHORT", close, sl15_high, atr15, zones, pos_tf)
+            if lv: out.append(dict(rule="zone_reject", tf=tf, direction="SHORT", src="reject supply/SL15m", **lv))
         if pclose and zb.get("high") and pclose <= zb["high"] and close > zb["high"]:
-            lv = levels("LONG", close, zb.get("low"), atr, zones)
-            if lv: out.append(dict(rule="zone_reject", tf=tf, direction="LONG", src="reject demand zone", **lv))
+            lv = levels("LONG", close, sl15_low, atr15, zones, pos_tf)
+            if lv: out.append(dict(rule="zone_reject", tf=tf, direction="LONG", src="reject demand/SL15m", **lv))
 
-    # R5 ema reclaim (15M): fundo/topo de perna + cruza EMA21
-    m15 = mtf.get("15", {}); leg15 = m15.get("leg") or {}; atr15 = atr_of(leg15)
+    # R5 ema reclaim (15M): fundo/topo de perna + cruza EMA21 — SL 15M-local
     ema21 = fnum(micro.get("ema", {}).get("ema21")); pema21 = fnum((pmicro or {}).get("ema", {}).get("ema21"))
-    pclose = fnum((pmicro or {}).get("close")) if pmicro else None
     pos = leg15.get("pos_in_leg")
     if ema21 and pema21 and pclose is not None and pos is not None:
         if pos <= 0.25 and pclose <= pema21 and close > ema21:
-            lv = levels("LONG", close, leg15.get("low"), atr15, m15.get("zones"))
-            if lv: out.append(dict(rule="ema_reclaim", tf="15", direction="LONG", src="leg-bottom+ema21 reclaim", **lv))
+            lv = levels("LONG", close, sl15_low, atr15, m15.get("zones"))
+            if lv: out.append(dict(rule="ema_reclaim", tf="15", direction="LONG", src="leg-bottom+ema21/SL15m", **lv))
         if pos >= 0.75 and pclose >= pema21 and close < ema21:
-            lv = levels("SHORT", close, leg15.get("high"), atr15, m15.get("zones"))
-            if lv: out.append(dict(rule="ema_reclaim", tf="15", direction="SHORT", src="leg-top+ema21 loss", **lv))
+            lv = levels("SHORT", close, sl15_high, atr15, m15.get("zones"))
+            if lv: out.append(dict(rule="ema_reclaim", tf="15", direction="SHORT", src="leg-top+ema21/SL15m", **lv))
 
-    # R6 macro event (high_impact + reação preço > 1 ATR)
+    # R6 macro event (high_impact + reação preço > 1 ATR) — SL 15M-local
     ng = (d["axes"].get("macro", {}) or {}).get("news_gate", {}) or {}
     if ng.get("high_impact_now") and pclose is not None and atr15:
         move = close - pclose
         if abs(move) >= 1.0 * atr15:
             dirn = "LONG" if move > 0 else "SHORT"
-            ref = leg15.get("low") if dirn == "LONG" else leg15.get("high")
+            ref = sl15_low if dirn == "LONG" else sl15_high
             lv = levels(dirn, close, ref, atr15, m15.get("zones"))
-            if lv: out.append(dict(rule="macro_event", tf="15", direction=dirn, src="news high_impact+reacao", **lv))
+            if lv: out.append(dict(rule="macro_event", tf="15", direction=dirn, src="news high_impact/SL15m", **lv))
     return out
 
 
@@ -281,7 +298,8 @@ if __name__ == "__main__":
                                            "prev_high": {"price": 108, "bar": 1}, "prev_low": {"price": 92, "bar": 0}},
                                 "zones": {"above": {"high": 112, "low": 111}, "below": {"high": 90, "low": 88}}, "svp": {"pressure": "sell"}},
                         "60": {"trend": "DOWN", "svp": {"pressure": "sell"}}, "1D": {"trend": "DOWN"},
-                        "15": {"trend": "DOWN", "leg": {"low": 90, "high": 110, "mag_atr": 2.0, "pos_in_leg": 0.9}, "zones": {}}},
+                        "15": {"trend": "DOWN", "leg": {"low": 90, "high": 110, "mag_atr": 2.0, "pos_in_leg": 0.9},
+                               "swings": {"last_high": {"price": 110, "bar": 5}, "last_low": {"price": 100, "bar": 2}}, "zones": {}}},
                         "micro_15m": {"close": close, "bar_time": 1000, "ema": {"ema21": 111}, "rsi": "40", "rsi_ma": "45",
                                       "dmi": {"plus_di": "10", "minus_di": "25"}},
                         "macro": {"risk_level": "normal", "news_gate": {"session": "ny", "high_impact_now": False}},
