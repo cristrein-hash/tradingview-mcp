@@ -174,8 +174,11 @@ def save_state(s):
     atomic_write(STATE_F, s)
 
 
+MIN_HEALTH_TG_S = 180   # backstop anti-flap: no máx 1 Telegram de saúde por 3 min
+
+
 def transition(state, new_health, reason, token_ok=True):
-    """Atualiza estado; Telegram só na TRANSIÇÃO."""
+    """Atualiza estado; Telegram só na TRANSIÇÃO, com cooldown anti-flap."""
     old = state.get("health")
     if old == new_health:
         return
@@ -184,16 +187,24 @@ def transition(state, new_health, reason, token_ok=True):
     audit({"event": "state", "from": old, "to": new_health, "reason": reason})
     if not token_ok:
         return
+    msg = None
     if new_health == "BLIND":
-        for _ in range(3):
-            send_telegram("🔴🔴 <b>MONITOR CEGO</b> — o daemon perdeu o CDP/preço. Níveis NÃO vigiados. Verifica TradingView/Mac.")
-            time.sleep(1.2)
+        msg = "🔴🔴 <b>MONITOR CEGO</b> — perdeu o CDP/preço. Níveis NÃO vigiados. Verifica TradingView/Mac."
     elif new_health == "DEGRADED":
-        send_telegram(f"⚠️ <b>Monitor degradado</b>: {reason}. Não dispara até normalizar.")
-    elif new_health == "OK" and old in ("BLIND", "DEGRADED", "CHART_HIJACKED"):
-        send_telegram("🟢 <b>Monitor recuperado</b> — a vigiar níveis normalmente.")
+        msg = f"⚠️ <b>Monitor degradado</b>: {reason}."
     elif new_health == "CHART_HIJACKED":
-        send_telegram(f"⚠️ <b>Gráfico fora de XAUUSD/replay</b> — monitor em pausa defensiva ({reason}).")
+        msg = f"⚠️ <b>Gráfico fora de XAUUSD/replay</b> — pausa defensiva ({reason})."
+    elif new_health == "OK" and old in ("BLIND", "DEGRADED", "CHART_HIJACKED"):
+        msg = "🟢 <b>Monitor recuperado</b>."
+    if not msg:
+        return
+    # backstop: nunca mais de 1 Telegram de saúde por MIN_HEALTH_TG_S (anti-spam)
+    if time.time() - state.get("last_health_tg", 0) < MIN_HEALTH_TG_S:
+        return
+    state["last_health_tg"] = time.time()
+    for _ in range(3 if new_health == "BLIND" else 1):
+        send_telegram(msg)
+        time.sleep(1.2)
 
 
 def paused():
@@ -267,14 +278,9 @@ def main_loop():
                 time.sleep(FLOOR_S); continue
             last = float(last)
 
-            # staleness (barra parada + cdp ok) — reforço, não primário
-            pt = (q or {}).get("time")
-            if pt == state.get("last_price_time"):
-                if time.time() - state.get("last_price_wall", 0) > STALE_S:
-                    transition(state, "DEGRADED", "preço stale > STALE_S"); save_state(state)
-            else:
-                state["last_price_time"] = pt; state["last_price_wall"] = time.time()
-
+            # saúde: cdp ok + símbolo ok + preço válido = OK.
+            # (REMOVIDA a staleness por bar-time: quote_get.time = open da barra 15M, estável ~15min ->
+            #  gerava DEGRADED falso a cada ciclo = flap/spam. cdp_connected + quote válido bastam.)
             if state.get("health") not in ("OK",):
                 transition(state, "OK", "normalizado"); save_state(state)
 
