@@ -74,7 +74,16 @@ def read_mtf(count=OHLCV_COUNT, with_zones=True):
                 H, L, C, n = _bars_hlc(oh)
                 struct = cs.structure(H, L, C) if (n and n > 40) else None
                 zones = _nearest_zones(c, C[-1] if C else None) if with_zones else None
-                out[res] = {"target": tid[:8], "bars": n, "structure": struct, "zones": zones}
+                sv = c.call_tool("data_get_study_values") or {}
+                svp_v = next((s.get("values", {}) for s in sv.get("studies", []) if "Volume Profile" in (s.get("name") or "")), {})
+
+                def _n(x):
+                    try: return float(str(x).replace("K", "e3").replace(" ", ""))
+                    except Exception: return None
+                up, dn = _n(svp_v.get("Up")), _n(svp_v.get("Down"))
+                svp = {"up": up, "dn": dn, "total": _n(svp_v.get("Total")),
+                       "pressure": ("sell" if (up is not None and dn is not None and dn > up) else "buy") if (up is not None and dn is not None) else None}
+                out[res] = {"target": tid[:8], "bars": n, "structure": struct, "zones": zones, "svp": svp}
             except Exception as e:
                 out[res if 'res' in dir() else tid[:8]] = {"error": f"{type(e).__name__}:{str(e)[:60]}"}
             finally:

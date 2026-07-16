@@ -16,6 +16,7 @@ sys.path.insert(0, str(BASE))
 from context_mtf import read_mtf
 from context_micro import read_micro
 from context_macro import read_macro
+from context_confluence import read_confluence
 
 OUT = REPO / "external_factors_v2" / "snapshots" / "market_context.json"
 PIDFILE = LOGS / "context_engine.pid"
@@ -50,7 +51,7 @@ def _health(axis, age_s, stale_after):
     return {"status": "fresh" if (age_s is None or age_s <= stale_after) else "stale", "age_s": age_s}
 
 
-def build_context(mtf, mtf_age, micro, macro):
+def build_context(mtf, mtf_age, micro, macro, confluence=None):
     t = int(time.time())
     return {
         "_meta": {"cycle_ts": t, "cycle_iso": now_utc().isoformat(), "schema_version": SCHEMA_VERSION,
@@ -59,16 +60,18 @@ def build_context(mtf, mtf_age, micro, macro):
             "mtf": _health(mtf, mtf_age, 1800),
             "micro_15m": _health(micro, 0, 120),
             "macro": _health(macro, 0, 3600),
+            "confluence": _health((confluence or {}).get("15"), mtf_age, 1800),
         },
         "axes": {
             "mtf": {tf: {"trend": (d.get("structure") or {}).get("trend"),
                          "leg": (d.get("structure") or {}).get("leg"),
                          "choch": (d.get("structure") or {}).get("choch"),
                          "swings": (d.get("structure") or {}).get("swings"),
-                         "zones": d.get("zones"), "bars": d.get("bars")}
+                         "zones": d.get("zones"), "svp": d.get("svp"), "bars": d.get("bars")}
                     for tf, d in (mtf or {}).items() if isinstance(d, dict)},
             "micro_15m": micro,
             "macro": macro,
+            "confluence": confluence,      # {"15": {act_dens, buy_dens, sell_dens, leg_sell, nas_n, ...}}
         },
     }
 
@@ -91,11 +94,12 @@ def once(state):
     if need_mtf:
         log(f"[mtf] recompute (bar_close={bar_t!=state.get('last_bar_t')} first={state.get('mtf') is None})")
         state["mtf"] = read_mtf()
+        state["confluence"] = {"15": read_confluence("15")}     # act_dens na perna 15M (Cp), mesma cadência
         state["last_bar_t"] = bar_t
         state["last_mtf_close"] = close
         state["mtf_ts"] = time.time()
     mtf_age = int(time.time() - state["mtf_ts"]) if state.get("mtf_ts") else None
-    ctx = build_context(state["mtf"], mtf_age, micro, macro)
+    ctx = build_context(state["mtf"], mtf_age, micro, macro, state.get("confluence"))
     atomic_write(OUT, ctx)
     return ctx
 
