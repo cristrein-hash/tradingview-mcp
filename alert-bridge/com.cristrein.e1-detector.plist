@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- E1 Candidate Detector (Camada2 P4) SHADOW: le market_context.json, loga candidatos em e1_candidates.jsonl.
+     0 tokens, 0 Telegram. Sign-off p/ carregar: cp -> ~/Library/LaunchAgents/ ; launchctl load -w ...
+     Kill: touch alert-bridge/logs/monitor.pause OU launchctl unload -w ... -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.cristrein.e1-detector</string>
+  <key>ProgramArguments</key>
+  <array><string>/bin/zsh</string><string>/Users/cristrein/tradingview-mcp/alert-bridge/start_e1_detector.sh</string></array>
+  <key>KeepAlive</key><true/>
+  <key>RunAtLoad</key><true/>
+  <key>WorkingDirectory</key><string>/Users/cristrein/tradingview-mcp</string>
+  <key>StandardOutPath</key><string>/Users/cristrein/tradingview-mcp/alert-bridge/logs/launchd_e1_detector_stdout.log</string>
+  <key>StandardErrorPath</key><string>/Users/cristrein/tradingview-mcp/alert-bridge/logs/launchd_e1_detector_stderr.log</string>
+</dict>
+</plist>
