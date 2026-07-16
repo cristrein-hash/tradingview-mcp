@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Daemon monitoração realtime XAU (P1, Camada 1-A níveis). Contínuo -> KeepAlive. Carregar com sign-off:
+     cp este plist -> ~/Library/LaunchAgents/ ; launchctl load -w ~/Library/LaunchAgents/com.cristrein.realtime-monitor.plist
+     Kill: touch alert-bridge/logs/monitor.pause (log-only) OU launchctl unload -w ... (paragem total).
+     Lê preço via MCP (0 tokens); alerta-only, ZERO auto-trade. caffeinate no wrapper mantém o Mac acordado. -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.cristrein.realtime-monitor</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>/Users/cristrein/tradingview-mcp/alert-bridge/start_realtime_monitor.sh</string>
+  </array>
+  <key>KeepAlive</key><true/>
+  <key>RunAtLoad</key><true/>
+  <key>WorkingDirectory</key><string>/Users/cristrein/tradingview-mcp</string>
+  <key>StandardOutPath</key><string>/Users/cristrein/tradingview-mcp/alert-bridge/logs/launchd_realtime_monitor_stdout.log</string>
+  <key>StandardErrorPath</key><string>/Users/cristrein/tradingview-mcp/alert-bridge/logs/launchd_realtime_monitor_stderr.log</string>
+</dict>
+</plist>
