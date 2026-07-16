@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- E2 Quality Reader (Camada2 P5) Sub-fase A: vetos deterministicos, 0 tokens, 0 Telegram. Le e1_candidates.jsonl
+     -> e2_verdicts.jsonl. Sign-off p/ carregar. Ensemble (Sub-fase B) = flag separada, sign-off proprio. -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.cristrein.e2-quality</string>
+  <key>ProgramArguments</key>
+  <array><string>/bin/zsh</string><string>/Users/cristrein/tradingview-mcp/alert-bridge/start_e2_quality.sh</string></array>
+  <key>KeepAlive</key><true/>
+  <key>RunAtLoad</key><true/>
+  <key>WorkingDirectory</key><string>/Users/cristrein/tradingview-mcp</string>
+  <key>StandardOutPath</key><string>/Users/cristrein/tradingview-mcp/alert-bridge/logs/launchd_e2_quality_stdout.log</string>
+  <key>StandardErrorPath</key><string>/Users/cristrein/tradingview-mcp/alert-bridge/logs/launchd_e2_quality_stderr.log</string>
+</dict>
+</plist>
