@@ -131,6 +131,13 @@ async function findChartTarget() {
     signal: AbortSignal.timeout(FETCH_TIMEOUT),
   });
   const targets = await resp.json();
+  // Optional pin: TVMCP_TARGET_CHART_ID lets a client attach to a SPECIFIC tab
+  // (by CDP target id or a substring of its URL). Enables multi-tab readers (E0 Context
+  // Engine). Default (unset) = original behaviour, so P1/existing clients are untouched.
+  const pin = process.env.TVMCP_TARGET_CHART_ID;
+  if (pin) {
+    return targets.find(t => t.type === 'page' && (t.id === pin || (t.url || '').includes(pin))) || null;
+  }
   // Prefer targets with tradingview.com/chart in the URL
   return targets.find(t => t.type === 'page' && /tradingview\.com\/chart/i.test(t.url))
     || targets.find(t => t.type === 'page' && /tradingview/i.test(t.url))
