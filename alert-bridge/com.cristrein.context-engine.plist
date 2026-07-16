@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- E0 Context Engine (Camada 2 P3): dossie market_context.json. Contínuo -> KeepAlive. Sign-off p/ carregar:
+     cp -> ~/Library/LaunchAgents/ ; launchctl load -w ~/Library/LaunchAgents/com.cristrein.context-engine.plist
+     Kill: touch alert-bridge/logs/monitor.pause  OU  launchctl unload -w ...  0 tokens, NAO emite sinais. -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.cristrein.context-engine</string>
+  <key>ProgramArguments</key>
+  <array><string>/bin/zsh</string><string>/Users/cristrein/tradingview-mcp/alert-bridge/start_context_engine.sh</string></array>
+  <key>KeepAlive</key><true/>
+  <key>RunAtLoad</key><true/>
+  <key>WorkingDirectory</key><string>/Users/cristrein/tradingview-mcp</string>
+  <key>StandardOutPath</key><string>/Users/cristrein/tradingview-mcp/alert-bridge/logs/launchd_context_engine_stdout.log</string>
+  <key>StandardErrorPath</key><string>/Users/cristrein/tradingview-mcp/alert-bridge/logs/launchd_context_engine_stderr.log</string>
+</dict>
+</plist>
