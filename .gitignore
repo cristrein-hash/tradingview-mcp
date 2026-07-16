@@ -14,6 +14,8 @@ discovery-log.json
 alert-bridge/logs/*.jsonl
 alert-bridge/logs/*.log
 alert-bridge/logs/*.out
+alert-bridge/logs/*.pid
+alert-bridge/logs/.bridge_off
 alert-bridge/logs/d2r_daily/
 alert-bridge/logs/backtests/
 

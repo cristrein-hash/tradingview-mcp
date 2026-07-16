@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Ponte Telegram<->Claude (workflow remoto Cris). Daemon contínuo -> KeepAlive. Carregar com sign-off:
+     cp este plist -> ~/Library/LaunchAgents/ ; launchctl load -w ~/Library/LaunchAgents/com.cristrein.telegram-assistant-bridge.plist
+     Kill: launchctl unload -w ...  OU  /stop no chat  OU  touch alert-bridge/logs/.bridge_off -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.cristrein.telegram-assistant-bridge</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>/Users/cristrein/tradingview-mcp/alert-bridge/start_assistant_bridge.sh</string>
+    <string>--foreground</string>
+  </array>
+  <key>KeepAlive</key><true/>
+  <key>RunAtLoad</key><true/>
+  <key>WorkingDirectory</key><string>/Users/cristrein/tradingview-mcp</string>
+  <key>StandardOutPath</key><string>/Users/cristrein/tradingview-mcp/alert-bridge/logs/launchd_assistant_bridge_stdout.log</string>
+  <key>StandardErrorPath</key><string>/Users/cristrein/tradingview-mcp/alert-bridge/logs/launchd_assistant_bridge_stderr.log</string>
+</dict>
+</plist>
