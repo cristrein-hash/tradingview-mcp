@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- News lane RÁPIDA (InvestingLive RSS keyless) — separada do ciclo macro (30min) para latência baixa.
+     Carregar com sign-off:
+     cp este plist -> ~/Library/LaunchAgents/ ; launchctl load -w ~/Library/LaunchAgents/com.cristrein.external-factors-news.plist
+     Intervalo 240s (4min). NEWS_ALERTS_AUTHORIZED=1 = escalada Telegram ATIVA (aprovado Cris 2026-07-16).
+     Escreve só snapshots/investinglive_news.json (single-writer); NÃO toca latest.json nem o macro. -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.cristrein.external-factors-news</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>/Users/cristrein/tradingview-mcp/external_factors_v2/runtime/run_news_cycle.sh</string>
+  </array>
+  <key>StartInterval</key><integer>240</integer>
+  <key>RunAtLoad</key><true/>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>NEWS_ALERTS_AUTHORIZED</key><string>1</string>
+  </dict>
+  <key>StandardOutPath</key><string>/Users/cristrein/tradingview-mcp/external_factors_v2/snapshots/news_launchd.out.log</string>
+  <key>StandardErrorPath</key><string>/Users/cristrein/tradingview-mcp/external_factors_v2/snapshots/news_launchd.err.log</string>
+  <key>WorkingDirectory</key><string>/Users/cristrein/tradingview-mcp/external_factors_v2</string>
+</dict>
+</plist>

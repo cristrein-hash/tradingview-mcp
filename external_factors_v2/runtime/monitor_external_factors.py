@@ -58,6 +58,13 @@ mn=H/"snapshots/market_news.json"; market_news=[]
 if mn.exists():
     try: market_news=json.loads(mn.read_text()).get("recent_le72h",[])
     except Exception: pass
+# ---- News lane rápida (InvestingLive RSS keyless, coletor próprio ~4min) snapshots/investinglive_news.json — advisory ----
+il=H/"snapshots/investinglive_news.json"; news_live={}
+if il.exists():
+    try: news_live=json.loads(il.read_text())
+    except Exception: pass
+_nl_gate=news_live.get("gate",{}); _nl_items=news_live.get("items",[])
+news_headline_reason=[f"HEADLINE HI: {_nl_items[0]['title'][:70]}"] if _nl_gate.get("high_impact_headline") and _nl_items else []
 # ---- Ouro: fontes canônicas (CME/COMEX preço+COT, keyless+FMP) snapshots/gold_data.json ----
 gf=H/"snapshots/gold_data.json"; gold={}
 if gf.exists():
@@ -130,6 +137,7 @@ state={
  "layer_B_slow_macro":layerB,
  "layer_text_news_recent":news_recent[:10],
  "layer_market_news_recent":market_news[:12],
+ "news_live":{k:news_live.get(k) for k in ("fetch_ts","fetch_age_s","high_impact_now","urgency","gate","n_relevant")} if news_live else None,
  "layer_gold_canonical":{"price_comex":gold.get("price_comex"),"cot_comex":gold.get("cot_comex"),"wgc":gold.get("wgc")},
  "layer_fed_path":{k:fed_path.get(k) for k in ("target_midpoint","sofr_overnight","short_curve","slope_6m_1m_bp","rate_path_bias","gold_read","next_fomc","_meta")},
  "layer_theory_core":{"recent":theory_recent[:12],"ledger_total":theory.get("ledger_total"),"new_this_cycle":theory.get("new_this_cycle"),
@@ -141,7 +149,7 @@ state={
  "external_factors":{"external_bias":"unknown","external_risk_level":"event_window" if imminent else "normal",
    "external_trade_validation":"neutral","external_confidence":0,"external_fetch_ok":True,"external_stale":bool(stale),
    "external_event_direction_bias":nfp_bias,
-   "external_main_reasons":[f"{e['event']} em {e['hours_until']}h"+(f" (consenso {e.get('consensus')} vs ant {e.get('previous')} -> {e.get('direction',{}).get('bias')})" if e.get('consensus_k') is not None else "") for e in imminent],
+   "external_main_reasons":news_headline_reason+[f"{e['event']} em {e['hours_until']}h"+(f" (consenso {e.get('consensus')} vs ant {e.get('previous')} -> {e.get('direction',{}).get('bias')})" if e.get('consensus_k') is not None else "") for e in imminent],
    "external_us10y_real":tier1.get("us10y_real",{}).get("value"),"external_usd_broad":tier1.get("usd_broad",{}).get("value"),
    "external_vix":tier1.get("vix",{}).get("value")}
 }
