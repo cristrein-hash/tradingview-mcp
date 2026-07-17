@@ -83,8 +83,13 @@ def main():
         st_ = c.call_tool("chart_get_state") or {}
         print("tab 15M:", st_.get("symbol"), st_.get("resolution"))
         tmin = min(t["etime"] for t in trades); tmax = max(t["etime"] for t in trades)
-        # visible-range cobrindo a janela (margem 2 dias)
-        c.call_tool("chart_set_visible_range", {"from": tmin - 2 * 86400, "to": tmax + 3 * 86400})
+        print("etimes:", [dt.datetime.utcfromtimestamp(t["etime"]).strftime("%Y-%m-%d %H:%M") for t in trades])
+        import time as _t
+        # 1) LIMPAR desenhos antigos (autorizado Cris)
+        rc = c.call_tool("draw_clear"); print("draw_clear:", rc.get("success") if isinstance(rc, dict) else rc)
+        # 2) NAVEGAR o viewport para Nov/2025 (scroll_to_date move a janela visível; sem set_visible_range)
+        sr = c.call_tool("chart_scroll_to_date", {"date": dt.datetime.utcfromtimestamp(tmin).strftime("%Y-%m-%d")})
+        print("scroll_to_date:", sr.get("success") if isinstance(sr, dict) else sr); _t.sleep(4)
         drawn = 0
         for k, s in enumerate(trades, 1):
             r = c.call_tool("draw_shape", {
@@ -104,12 +109,9 @@ def main():
         dl = c.call_tool("draw_list") or {}
         n_draw = len(dl.get("drawings", dl.get("shapes", [])))
         print(f"draw_list: {n_draw} desenhos no chart")
-        # RESTAURAR realtime (a tab alimenta o E0/E1/E2)
-        import time as _t
-        now = int(_t.time())
-        c.call_tool("chart_set_visible_range", {"from": now - 200 * BAR_S, "to": now + 20 * BAR_S})
-        st2 = c.call_tool("chart_get_state") or {}
-        print("chart restaurado (visible-range -> realtime):", str(st2.get("resolution")))
+        # DEIXAR o chart na janela dos trades (Nov/2025) p/ revisão — NÃO restaurar realtime aqui.
+        # E0/E1/E2 ficam pausados pelo wrapper enquanto o Cris revê; restauro sob ordem dele.
+        print("chart deixado na janela dos trades (Nov/2025) para revisão")
     finally:
         c.stop()
 
