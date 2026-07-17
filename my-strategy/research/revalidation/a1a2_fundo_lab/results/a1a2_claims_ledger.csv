@@ -7,3 +7,8 @@ H2_contract_auc,"0.671 (fix48) p=0.001",s2b_seq_features.py,results/a1a2_discrim
 feature_search,"22 looks min-p 0.0002 Bonferroni 0.004; 7 sobrevivem p*K<0.05",s2b_seq_features.py,stdout,E[min-p null]~0.043
 bubble_map,"14139 chart-bars com bubbles 2024-05..2026-07 buy-ratio 0.65",s2a_bubble_map.py,results/bubble_map.json,uniao de todas as linhas (janela rolante ~19/snapshot)
 structural_bucket,"4820 fractais; 32/32 GT casados; 0/32 contradicao macro; BULL_impulse17/pullback15",s1_structural_bucket.py,results/a1a2_bucket_table.csv,STRUCTURAL_FIRST_PASS
+DA_leg4h_lookahead_FIXED,"pivot 4H confirm open-based -> +14400 (fecho); ~3h15m leak eliminado",s3_region_discrimination.py,DA_S3_REGION_20260717,BOTTOM lift 3.6->3.5x (leak era bounded/menor)
+leg4h_region_BOTTOM,"precisao 5.0% lift 3.5x recall 22% (causal)",s3_region_discrimination.py,results/a1a2_region_table.csv,TOP mata 0.3x; regiao separa GT
+depth_controlled_reclaim,"AUC reclaim 0.63-0.76 dentro de quartis de depth = NAO circular",s3_region_discrimination.py,stdout,edge alem da profundidade definitoria
+convergencia_regiao_reclaim_depth,"precisao 13.5% lift 9.4x recall 16% (in-sample)",s3_region_discrimination.py,stdout,thresholds mediana-GT in-sample (otimista)
+jackknife_out_of_fold,"2025H2 33%/9.4x recall8%; 2026H1 25%/9.2x recall20%; 2025H1 sem-poder(n1)",s3_region_discrimination.py,stdout,precisao ~9x aguenta OOF mas recall baixo 8-20%
