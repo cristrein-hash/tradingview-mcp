@@ -3,8 +3,9 @@
 (logs/e1_candidates.jsonl, por byte-offset).
 
 PARADIGMA (redesign 2026-07-17): as camadas NÃO criam confluências mecânicas — CONVERGEM numa visão ampla.
-  1) GATE determinístico (binário-causal DURO, 0 tokens): 4 vetos — bad_rr, chase, session_vacuum, stale.
-     Estes são factos causais independentes de pesar leituras (RR, distância, relógio, frescura).
+  1) GATE determinístico (binário-causal DURO, 0 tokens): 3 vetos — bad_rr, chase, stale. session_vacuum
+     é OBSERVACIONAL desde 2026-07-17 (regista, não descarta) até o mapa forward sessão×hora (e2_outcome_
+     backfill) dar base real para vetos horários (ordem Cris).
   2) READ contextual único (Opus, 1 chamada/candidato-sobrevivente): recebe a IMAGEM COMPOSTA COMPLETA
      (dossiê E0 inteiro renderizado como briefing) e julga se as leituras CONVERGEM numa tese de alta
      probabilidade — com raciocínio. NÃO é refutador, NÃO conta kills, NÃO pontua. Tese guardada VERBATIM.
@@ -70,11 +71,15 @@ def atr_of(leg):
 
 # ---------- GATE: 4 vetos duros (binário-causal, puros) ----------
 def veto_session_vacuum(cand, dsr):
+    """OBSERVACIONAL desde 2026-07-17 (ordem Cris): o mapa de sessões era grosseiro (dead_zone 01-11 UTC
+    matava toda a manhã europeia — caso do short válido 07:14 Lisboa). NÃO veta nada até o mapa FORWARD
+    (e2_outcome_backfill, sessão×hora×outcome) dar base real para validar vetos a horários específicos.
+    Continua registado (fired/value) em vetos_all para alimentar exatamente esse mapa."""
     ng = (dsr["axes"].get("macro") or {}).get("news_gate", {}) or {}
     sess = ng.get("session"); cat = catalyst(dsr)
     fired = (sess in CFG["DEAD_SESSIONS"]) and not cat
-    return {"name": "session_vacuum", "hard": True, "fired": fired, "value": sess,
-            "reason": f"vácuo: sessão {sess} sem catalisador" if fired else ""}
+    return {"name": "session_vacuum", "hard": False, "fired": fired, "value": sess,
+            "reason": f"vácuo: sessão {sess} sem catalisador (observacional)" if fired else ""}
 
 
 def veto_bad_rr(cand, dsr):
@@ -401,9 +406,10 @@ def cli_anchors():
                    "micro_15m": {"close": 4035.3, "rsi": "45"},
                    "macro": {"risk_level": "normal", "imminent_events": [], "news_gate": {"session": "dead_zone", "high_impact_now": False, "ff_event_le_min": None}}}}
     grade, vs, hard, soft = evaluate_vetos(b, bd, 0)
-    names = [v["name"] for v in hard]
-    b_pass = grade == "discard" and "session_vacuum" in names
-    print(f"ANCHOR B (SL-Ásia-morta vetado por vácuo): {'PASS' if b_pass else 'FALHA'} (grade {grade}, hard {names})")
+    fired = [v["name"] for v in vs if v["fired"]]
+    # 2026-07-17: vacuum OBSERVACIONAL — âncora B passa a: sobrevive o gate MAS vacuum fica REGISTADO
+    b_pass = grade == "survivor" and "session_vacuum" in fired
+    print(f"ANCHOR B (SL-Ásia-morta: sobrevive c/ vacuum registado): {'PASS' if b_pass else 'FALHA'} (grade {grade}, fired {fired})")
     ok = a_pass and b_pass
     print("ÂNCORAS:", "PASS" if ok else "FALHA")
     return 0 if ok else 1
@@ -425,7 +431,8 @@ def cli_selftest():
     ds = json.loads(json.dumps(base_d)); ds["source_health"]["mtf"]["status"] = "stale"
     r.append(("stale fire", veto_stale(cand, ds, 0)["fired"] is True))
     r.append(("GATE 4-vetos survivor(limpo)", evaluate_vetos(cand, base_d, 0)[0] == "survivor"))
-    r.append(("GATE discard(dead_zone)", evaluate_vetos(cand, dv, 0)[0] == "discard"))
+    # session_vacuum é OBSERVACIONAL (2026-07-17): dead_zone regista mas NÃO descarta (mapa forward decide)
+    r.append(("GATE survivor(dead_zone, vacuum observacional)", evaluate_vetos(cand, dv, 0)[0] == "survivor"))
     # renderer não rebenta com dossiê real nem mínimo
     try:
         _ = render_composite(base_d, cand); _ = render_composite(load_dossier() or base_d, cand)
@@ -452,10 +459,29 @@ def main_loop():
     try: offset = json.loads(OFFSET_F.read_text()).get("offset", 0)
     except Exception: offset = 0
     print(f"[e2_quality] ativo | GATE 4-vetos (0 tokens) + READ {READ_MODEL if READ_ENABLED else 'OFF'} | shadow", flush=True)
+    retry_q = []   # [(cand, tentativas)] — leituras 'claude is_error' re-tentadas enquanto frescas (Cris 2026-07-17)
     try:
         while True:
             if paused(): time.sleep(FLOOR_S); continue
             try:
+                # RETRY de leituras falhadas: gates re-avaliados com dossiê fresco (stale corta os velhos)
+                if retry_q and READ_ENABLED:
+                    dsr_r = load_dossier()
+                    if dsr_r:
+                        pend, retry_q = retry_q, []
+                        for c, att in pend:
+                            dc = drift_cycles(c, dsr_r)
+                            v = make_verdict(c, dsr_r, dc)
+                            if v["grade"] == "survivor":
+                                image = render_composite(dsr_r, c)
+                                th = run_read(c, dsr_r)
+                                if th.get("error") and att < 2:
+                                    retry_q.append((c, att + 1)); continue
+                                v["read"] = th; v["surfaced"] = surfaced(th, c)
+                                archive_read(c, dsr_r, image, th, dc, f"live-retry{att}")
+                                print(f"{now_iso()} [retry{att}|{'ERR' if th.get('error') else 'ok'}|surf {v['surfaced']}] "
+                                      f"{v['direction']}/{v['rule']}/{v['tf']}", flush=True)
+                            append(VERD_F, v)
                 if CAND_F.exists():
                     sz = CAND_F.stat().st_size
                     if sz < offset: offset = 0
@@ -474,6 +500,8 @@ def main_loop():
                                 th = run_read(c, dsr)
                                 v["read"] = th; v["surfaced"] = surfaced(th, c)
                                 archive_read(c, dsr, image, th, dc, "live")
+                                if th.get("error"):
+                                    retry_q.append((c, 1))   # re-tenta no próximo ciclo enquanto fresco
                                 tag = th.get("convergence", "err") if not th.get("error") else "ERR"
                                 print(f"{now_iso()} [survivor|{tag}|convic {th.get('conviction','?')}|surf {v['surfaced']}] "
                                       f"{v['direction']}/{v['rule']}/{v['tf']}", flush=True)

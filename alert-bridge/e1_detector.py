@@ -194,13 +194,35 @@ def cand_hash(c):
     return hashlib.md5(f"{c['rule']}{c['tf']}{c['direction']}{round(c['entry'])}{round(c['sl'])}".encode()).hexdigest()[:12]
 
 
-def anti_spam(cand, state, bar_time):
+DEAD_SESSIONS_E2 = {"dead_zone", "asia", "other"}   # manter em sincronia com e2_quality.CFG["DEAD_SESSIONS"]
+
+
+def _verdict_veto_of(cand_id):
+    """Veto do gate E2 para um candidato emitido (lê a cauda de e2_verdicts). None se não encontrado."""
+    try:
+        lines = (LOGS / "e2_verdicts.jsonl").read_text().splitlines()[-300:]
+        for l in reversed(lines):
+            r = json.loads(l)
+            if r.get("candidate_id") == cand_id:
+                return r.get("veto")
+    except Exception:
+        pass
+    return None
+
+
+def anti_spam(cand, state, bar_time, sess=None):
     h = cand_hash(cand); key = f"{cand['rule']}:{cand['tf']}:{cand['direction']}"
     last_cd = state.get("cooldown", {}).get(key)
     if last_cd and bar_time and (bar_time - last_cd) < COOLDOWN_BARS * BAR_S:
         return "cooldown"
     last_dd = state.get("dedup", {}).get(h)
-    if last_dd and bar_time and (bar_time - last_dd) < DEDUP_BARS * BAR_S:
+    dd_t = last_dd.get("t") if isinstance(last_dd, dict) else last_dd   # compat estado antigo (int)
+    if dd_t and bar_time and (bar_time - dd_t) < DEDUP_BARS * BAR_S:
+        # dedup CONSCIENTE DO DESTINO (Cris 2026-07-17): se o original foi gate-vetoado por
+        # session_vacuum e a sessão ATUAL já não é morta, o re-trigger merece re-avaliação.
+        if (isinstance(last_dd, dict) and sess and sess not in DEAD_SESSIONS_E2
+                and _verdict_veto_of(last_dd.get("id")) == "session_vacuum"):
+            return None
         return "dedup"
     return None
 
@@ -229,7 +251,8 @@ def run_once(state):
     for c in raw:
         atr = atr_of((d["axes"]["mtf"].get(c["tf"], {}) or {}).get("leg") or {})
         c["materiality"] = materiality(c, d, atr)
-        sup = anti_spam(c, state, bar_t)
+        sess_now = (d["axes"]["macro"].get("news_gate") or {}).get("session")
+        sup = anti_spam(c, state, bar_t, sess_now)
         c["suppressed"] = sup
         c["id"] = f"e1_{d['_meta']['cycle_ts']}_{c['rule']}_{c['tf']}_{c['direction']}"
         c["ts"] = now_iso(); c["bar_time"] = bar_t
@@ -242,7 +265,7 @@ def run_once(state):
             f.write(json.dumps(c, ensure_ascii=False) + "\n")
         if sup is None and c["materiality"]["pass"]:
             state.setdefault("cooldown", {})[f"{c['rule']}:{c['tf']}:{c['direction']}"] = bar_t
-            state.setdefault("dedup", {})[cand_hash(c)] = bar_t
+            state.setdefault("dedup", {})[cand_hash(c)] = {"t": bar_t, "id": c["id"]}   # id p/ dedup destino-consciente
             emitted.append(c)
     state["prev_dossier"] = d
     state["last_bar_t"] = bar_t
