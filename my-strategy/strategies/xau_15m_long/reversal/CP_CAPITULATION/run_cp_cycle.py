@@ -26,7 +26,9 @@ LOG = STATE / "cp_cycle.log"
 BAR_S = 900
 RETAIN_S = 10 * 86400          # retenção buffer: 10 dias (> LEGWIN 480 barras = 5 dias)
 FRESH_BARS = 2                 # só alerta entradas com <= 2 barras de idade (sinal operável)
-iso = lambda t: dt.datetime.utcfromtimestamp(int(t)).strftime("%Y-%m-%d %H:%M")
+from zoneinfo import ZoneInfo
+LX = ZoneInfo("Europe/Lisbon")   # convenção Cris 2026-07-17: TODA hora humana em Lisboa (interno fica epoch)
+iso = lambda t: dt.datetime.fromtimestamp(int(t), LX).strftime("%Y-%m-%d %H:%M")
 
 
 def _log(o):
@@ -136,7 +138,7 @@ def detect_and_alert(rows, bub, send):
             continue
         msg = (f"🔻 Cp CAPITULATION LONG (15M) — ENTRY\n"
                f"entry {s['ent']:.2f} · SL {s['sl']:.2f} · TGT 3R {s['tgt']:.2f}\n"
-               f"fundo {iso(s['fundo_t'])} · barra entrada {iso(s['etime'])} UTC\n"
+               f"fundo {iso(s['fundo_t'])} · barra entrada {iso(s['etime'])} Lisboa\n"
                f"alert-only · baseline congelado · forward ledger")
         ok = None
         if send:

@@ -24,7 +24,9 @@ CUR_F = STATE / "current_regime.json"
 TRANS_F = STATE / "regime_transitions.jsonl"
 LOG = STATE / "regime_cycle.log"
 dur = {"240": 14400, "60": 3600}
-iso = lambda t: dt.datetime.utcfromtimestamp(int(t)).strftime("%Y-%m-%d %H:%M")
+from zoneinfo import ZoneInfo
+LX = ZoneInfo("Europe/Lisbon")   # convenção Cris 2026-07-17: TODA hora humana em Lisboa (interno fica epoch)
+iso = lambda t: dt.datetime.fromtimestamp(int(t), LX).strftime("%Y-%m-%d %H:%M")
 
 
 def _load_last_t(f):
@@ -113,7 +115,7 @@ def main():
         with open(TRANS_F, "a") as fh:
             fh.write(json.dumps({"ts": ts, "from": prev, "to": r["regime"], "as_of": r["as_of_bar"]}) + "\n")
         if os.environ.get("REGIME_TELEGRAM") == "1":
-            _notify(f"🔄 REGIME XAU: {prev} → {r['regime']} (as-of {r['as_of_bar']} UTC)")
+            _notify(f"🔄 REGIME XAU: {prev} → {r['regime']} (as-of {r['as_of_bar']} Lisboa)")
     tmp = CUR_F.with_suffix(".json.tmp"); tmp.write_text(json.dumps({**r, "ts": ts})); os.replace(tmp, CUR_F)
     out["status"] = "OK"
     _log(out); print(json.dumps(out, ensure_ascii=False, indent=1))
