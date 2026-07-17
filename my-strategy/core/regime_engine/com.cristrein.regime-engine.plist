@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  REGIME ENGINE — serviço de regime XAU live PERMANENTE (Cris 2026-07-17).
+  Corre a cada hora (:06, após o fecho da barra 1H) 1 ciclo: append live 4H/1H via MCP aos RAW canónicos,
+  detetor canónico engine_4h_regime_gate_RAW -> regime atual + transições. Alerta Telegram na virada.
+  Tab-pinned (não troca chart, não pausa). Logs em .regime_state/. RunAtLoad=true (regime imediato ao carregar).
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.cristrein.regime-engine</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>/Users/cristrein/tradingview-mcp/my-strategy/core/regime_engine/start_regime_engine.sh</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>/Users/cristrein/tradingview-mcp/my-strategy/core/regime_engine</string>
+  <key>RunAtLoad</key><true/>
+  <key>StartCalendarInterval</key>
+  <array>
+    <dict><key>Minute</key><integer>6</integer></dict>
+  </array>
+  <key>StandardOutPath</key>
+  <string>/Users/cristrein/tradingview-mcp/my-strategy/core/regime_engine/.regime_state/launchd_stdout.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/cristrein/tradingview-mcp/my-strategy/core/regime_engine/.regime_state/launchd_stderr.log</string>
+</dict>
+</plist>
