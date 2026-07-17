@@ -87,3 +87,4 @@ my-strategy/core/.tab_map.json
 my-strategy/research/revalidation/a1a2_fundo_lab/results/
 my-strategy/core/regime_engine/.regime_state/
 *.frozen_bak_*
+my-strategy/strategies/xau_15m_long/reversal/CP_CAPITULATION/.cp_state/

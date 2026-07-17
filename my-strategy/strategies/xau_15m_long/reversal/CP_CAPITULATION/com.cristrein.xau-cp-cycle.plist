@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.cristrein.xau-cp-cycle</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/zsh</string>
+        <string>/Users/cristrein/tradingview-mcp/my-strategy/strategies/xau_15m_long/reversal/CP_CAPITULATION/start_cp_cycle.sh</string>
+    </array>
+    <key>StartInterval</key>
+    <integer>900</integer>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/Users/cristrein/tradingview-mcp/my-strategy/strategies/xau_15m_long/reversal/CP_CAPITULATION/.cp_state/launchd_out.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/cristrein/tradingview-mcp/my-strategy/strategies/xau_15m_long/reversal/CP_CAPITULATION/.cp_state/launchd_err.log</string>
+</dict>
+</plist>
