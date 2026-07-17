@@ -1,10 +1,19 @@
 #!/usr/bin/env python3
 """E2 — QUALITY READER (Camada 2, P5). SHADOW: 0 Telegram. Consome candidatos MATERIAIS do E1
-(logs/e1_candidates.jsonl, por byte-offset), aplica VETOS DETERMINÍSTICOS (Sub-fase A, 0 tokens) sobre o
-dossiê VIVO (opção A: lê market_context.json no instante + guarda de deriva), e produz veredito graduado
-(strong/watch/discard) em logs/e2_verdicts.jsonl. Ensemble adversarial (Sub-fase B) = atrás de flag
-E2_ENSEMBLE (default OFF, gasta Claude). Vetos = funções PURAS f(cand, dossier). py3.9.
-CLI: --once · --survey [--replay] · --anchors · --selftest · (default) daemon.
+(logs/e1_candidates.jsonl, por byte-offset).
+
+PARADIGMA (redesign 2026-07-17): as camadas NÃO criam confluências mecânicas — CONVERGEM numa visão ampla.
+  1) GATE determinístico (binário-causal DURO, 0 tokens): 4 vetos — bad_rr, chase, session_vacuum, stale.
+     Estes são factos causais independentes de pesar leituras (RR, distância, relógio, frescura).
+  2) READ contextual único (Opus, 1 chamada/candidato-sobrevivente): recebe a IMAGEM COMPOSTA COMPLETA
+     (dossiê E0 inteiro renderizado como briefing) e julga se as leituras CONVERGEM numa tese de alta
+     probabilidade — com raciocínio. NÃO é refutador, NÃO conta kills, NÃO pontua. Tese guardada VERBATIM.
+O juízo de QUALIDADE é convergência de contexto, não aritmética. Ver memory:feedback_contextual_convergence_not_determinism.
+
+Arquivamento: cada read grava em logs/e2_shadow.jsonl (candidato + imagem + tese + model-id + read_version +
+outcome preenchido dias depois por e2_outcome_backfill.py). Árbitro = shadow multi-dia NÃO-VISTO (nunca afinar
+ao dia visível). Read atrás de E2_READ_ENABLED (default 1). py3.9.
+CLI: --once · --survey [--replay] · --anchors · --selftest · --read-smoke [--n K] · (default) daemon.
 """
 import os, sys, json, time, datetime as dt
 from pathlib import Path
@@ -15,23 +24,25 @@ sys.path.insert(0, str(BASE))
 DOSSIER = REPO / "external_factors_v2" / "snapshots" / "market_context.json"
 CAND_F = LOGS / "e1_candidates.jsonl"
 VERD_F = LOGS / "e2_verdicts.jsonl"
+SHADOW_F = LOGS / "e2_shadow.jsonl"
 OFFSET_F = LOGS / "e2_offset.json"
-STATE_F = LOGS / "e2_state.json"
 PIDFILE = LOGS / "e2_quality.pid"
 PAUSE_LOCAL = LOGS / "monitor.pause"
 PAUSE_GLOBAL = Path("/tmp/claude_recheck.paused")
 FLOOR_S = 20
 
+# GATE determinístico (só binário-causal duro). MIN_RR/MAX_CHASE = PRINCÍPIO (definição), não fit ao dia.
 CFG = {"MIN_RR_E2": 2.0, "MAX_CHASE_ATR": 1.5, "DEAD_SESSIONS": {"dead_zone", "asia", "other"},
-       "POS_EXTREME": 0.15, "BUY_DENS_MIN": 0.25, "ACT_DENS_CLIMAX": 0.82, "LEG_SELL_MIN": 180,
-       "RSI_LOW": 35.0, "RSI_HIGH": 65.0, "EXHAUSTION_MIN": 1, "DRIFT_MAX_CYCLES": 2, "MIN_CONF_SYNTH": 4,
-       "MIN_CONFLUENCE": 2, "CYCLE_S": 60}
+       "DRIFT_MAX_CYCLES": 2, "CYCLE_S": 60}
 
 
 def now_iso(): return dt.datetime.now(dt.timezone.utc).isoformat()
 def fnum(x):
     try: return float(str(x).replace("−", "-").replace("K", "e3").replace(" ", ""))
     except Exception: return None
+def fmt(x, nd=2):
+    v = fnum(x)
+    return f"{v:.{nd}f}" if v is not None else "—"
 
 
 # ---------- helpers de dossiê ----------
@@ -57,7 +68,7 @@ def atr_of(leg):
     except Exception: return None
 
 
-# ---------- 6 vetos (puros) ----------
+# ---------- GATE: 4 vetos duros (binário-causal, puros) ----------
 def veto_session_vacuum(cand, dsr):
     ng = (dsr["axes"].get("macro") or {}).get("news_gate", {}) or {}
     sess = ng.get("session"); cat = catalyst(dsr)
@@ -66,17 +77,8 @@ def veto_session_vacuum(cand, dsr):
             "reason": f"vácuo: sessão {sess} sem catalisador" if fired else ""}
 
 
-def veto_no_catalyst(cand, dsr):
-    cat = catalyst(dsr); br = cand.get("materiality", {}).get("confluence_breakdown", {})
-    fired = (not cat) and ((cand.get("rule") == "macro_event") or
-                           (cand.get("materiality", {}).get("confluence") == CFG["MIN_CONFLUENCE"] and br.get("macro", 1) == 0))
-    return {"name": "no_catalyst", "hard": False, "fired": fired, "value": cat,
-            "reason": "sinal sem catalisador/gasolina" if fired else ""}
-
-
 def veto_bad_rr(cand, dsr):
-    # RR-only: o E1 já põe target = próxima zona OU 3R; um target 3R = runway limpo (sem zona oposta
-    # em 3R) = POSITIVO. Só veta RR realmente pequeno (alvo perto demais).
+    # RR-only: target 3R = runway limpo = POSITIVO. Só veta RR realmente pequeno (alvo perto demais).
     rr = fnum(cand.get("rr"))
     fired = rr is None or rr < CFG["MIN_RR_E2"]
     return {"name": "bad_rr", "hard": True, "fired": fired, "value": rr,
@@ -91,68 +93,180 @@ def veto_chase(cand, dsr):
             "reason": f"entry a {round(chase,2)}×ATR do nível (perseguição)" if fired else ""}
 
 
-def veto_stale(cand, dsr, drift_cycles):
+def veto_stale(cand, dsr, drift_c):
     sh = dsr.get("source_health", {})
     bad = []
     if sh.get("mtf", {}).get("status") != "fresh": bad.append("mtf")
     if sh.get("micro_15m", {}).get("status") != "fresh": bad.append("micro")
     if cand.get("rule") == "macro_event" and sh.get("macro", {}).get("status") != "fresh": bad.append("macro")
-    if drift_cycles is not None and drift_cycles > CFG["DRIFT_MAX_CYCLES"]: bad.append(f"drift{drift_cycles}")
+    if drift_c is not None and drift_c > CFG["DRIFT_MAX_CYCLES"]: bad.append(f"drift{drift_c}")
     fired = bool(bad)
     return {"name": "stale_dossier", "hard": True, "fired": fired, "value": bad,
             "reason": f"dossiê stale: {bad}" if fired else ""}
 
 
-def veto_counter_regime(cand, dsr):
-    direction = cand.get("direction"); reg = regime(dsr); tf = cand.get("tf")
-    counter = (direction == "LONG" and reg == "DOWN") or (direction == "SHORT" and reg == "UP")
-    if not counter:
-        return {"name": "counter_regime_no_exhaustion", "hard": True, "fired": False, "value": {"counter": False},
-                "reason": ""}
-    m = dsr["axes"].get("mtf", {}); micro = dsr["axes"].get("micro_15m", {}) or {}
-    conf = (dsr["axes"].get("confluence") or {}).get("15", {}) or {}
-    leg = (m.get(tf, {}) or {}).get("leg") or (m.get("15", {}) or {}).get("leg") or {}
-    choch = (m.get(tf, {}) or {}).get("choch", {})
-    pos = leg.get("pos_in_leg"); rsi = fnum(micro.get("rsi"))
-    sig = []
-    if cand.get("rule") == "sweep_reclaim" or (choch.get("up") if direction == "LONG" else choch.get("dn")):
-        sig.append("structure_reversal")
-    if pos is not None and ((direction == "LONG" and pos <= CFG["POS_EXTREME"]) or (direction == "SHORT" and pos >= 1 - CFG["POS_EXTREME"])):
-        sig.append("pos_extreme")
-    if direction == "LONG" and fnum(conf.get("buy_dens")) and fnum(conf.get("buy_dens")) >= CFG["BUY_DENS_MIN"] and fnum(conf.get("act_dens")) and fnum(conf.get("act_dens")) >= CFG["ACT_DENS_CLIMAX"]:
-        sig.append("auction_capitulation")
-    if direction == "SHORT" and ((fnum((conf.get("sell") or {}).get("dens")) or 0) >= CFG["BUY_DENS_MIN"] or (fnum(conf.get("leg_sell")) or 0) >= CFG["LEG_SELL_MIN"]):
-        sig.append("auction_capitulation")
-    nas = micro.get("nas", {}) or {}
-    if (fnum(nas.get("bottom")) if direction == "LONG" else fnum(nas.get("top"))):
-        sig.append("nas")
-    if cand.get("materiality", {}).get("confluence_breakdown", {}).get("momentum", 0) >= 1 and rsi is not None and ((direction == "LONG" and rsi <= CFG["RSI_LOW"]) or (direction == "SHORT" and rsi >= CFG["RSI_HIGH"])):
-        sig.append("momentum_turn")
-    fired = len(sig) < CFG["EXHAUSTION_MIN"]
-    return {"name": "counter_regime_no_exhaustion", "hard": True, "fired": fired,
-            "value": {"counter": True, "signatures": sig},
-            "reason": f"contra-regime {reg} sem exaustão (sig={sig})" if fired else ""}
-
-
-def evaluate_vetos(cand, dsr, drift_cycles):
-    vs = [veto_session_vacuum(cand, dsr), veto_no_catalyst(cand, dsr), veto_bad_rr(cand, dsr),
-          veto_chase(cand, dsr), veto_stale(cand, dsr, drift_cycles), veto_counter_regime(cand, dsr)]
+def evaluate_vetos(cand, dsr, drift_c):
+    """GATE binário-causal duro. no_catalyst e counter_regime_no_exhaustion SAÍRAM do gate (2026-07-17):
+    eram juízo contextual (pesavam leituras) — agora vivem no READ, não em aritmética de vetos."""
+    vs = [veto_session_vacuum(cand, dsr), veto_bad_rr(cand, dsr), veto_chase(cand, dsr),
+          veto_stale(cand, dsr, drift_c)]
     hard = [v for v in vs if v["fired"] and v["hard"]]
-    soft = [v for v in vs if v["fired"] and not v["hard"]]
-    grade = "discard" if hard else ("watch" if soft else "survivor")
-    return grade, vs, hard, soft
+    grade = "discard" if hard else "survivor"
+    return grade, vs, hard, []
+
+
+# ---------- READ CONTEXTUAL ÚNICO (Opus, convergência) ----------
+CLAUDE_EXE = os.environ.get("CLAUDE_EXE", "/Users/cristrein/.local/bin/claude")
+READ_MODEL = os.environ.get("E2_READ_MODEL", "claude-opus-4-8")
+READ_VERSION = "r1-convergence-opus"
+READ_ENABLED = os.environ.get("E2_READ_ENABLED", "1") == "1"
+READ_TIMEOUT = int(os.environ.get("E2_READ_TIMEOUT", "300"))
+
+READ_SYS = (
+    "És um trader XAUUSD discricionário EXPERIENTE a ler a fita COMPLETA de um candidato de trade já "
+    "pré-filtrado por gates causais duros (R:R, perseguição, sessão morta, frescura do dossiê). NÃO és um "
+    "refutador nem um comité — és UM olhar a ler o TODO.\n"
+    "A tua tarefa: julgar se as leituras (estrutura MTF 1D→15M, micro, auction/bubbles, macro, zonas HTF) "
+    "CONVERGEM numa história coerente de ALTA PROBABILIDADE — ou não. Convergência NÃO é 'nenhuma leitura "
+    "objeta'; convergência = as leituras APONTAM PARA O MESMO LADO e encadeiam uma causa (ex.: fundo de perna "
+    "fresco + regime HTF a favor + climax de absorção + RSI reset + reclaim + demanda HTF logo abaixo). "
+    "Contradição entre leituras = baixa probabilidade.\n"
+    "Método OBRIGATÓRIO: pensa em voz alta ANTES de concluir — percorre a fita secção a secção (raciocínio "
+    "primeiro, veredito depois). Nomeia explicitamente as leituras que se ALINHAM e as que estão em CONFLITO. "
+    "Declara para que lado o CONTEXTO pende (independente do candidato) e só depois se o candidato se alinha.\n"
+    "Três desfechos são TODOS legítimos e verdadeiros consoante a fita: alta convicção (converge), "
+    "sem-edge/incoerente, ou genuinamente misto. NÃO és pago para aprovar nem para reprovar — és pago para "
+    "DESCREVER A REALIDADE da imagem. A convicção é TUA, com o porquê; não há tabela de pontos a somar. "
+    "Usa só o dossiê dado; não inventes números. Advisory para um humano, NUNCA uma ordem. "
+    "Devolve SÓ um objeto JSON, nada de texto à volta."
+)
+SCHEMA_HINT = (
+    "\n\nDevolve SÓ este JSON (raciocínio primeiro):\n"
+    '{"reasoning":"<percorre a fita: estrutura MTF, micro, auction, macro, zonas — o que cada uma diz e como '
+    'encadeiam>","context_direction":"LONG|SHORT|NONE","converges":true,'
+    '"convergence":"high|moderate|low|incoherent","conviction":0,'
+    '"aligned_readings":["..."],"conflicting_readings":["..."],'
+    '"candidate_fit":"aligned|against|orthogonal","thesis":"<uma frase: a história de alta-prob, ou \'sem edge '
+    'coerente\'>","invalidation":"<o que na fita quebra a tese>"}'
+)
+
+
+def _extract_json(text):
+    import re
+    m = re.search(r"\{.*\}", text or "", re.S)
+    if not m: return None
+    try: return json.loads(m.group(0))
+    except Exception: return None
+
+
+def _z(z):
+    if not z: return "—"
+    return f"{fmt(z.get('low'))}–{fmt(z.get('high'))} ({z.get('src','?')})"
+
+
+def _sw(s):
+    if not s: return "—"
+    return f"{fmt(s.get('price'))}@bar{s.get('bar')}(conf{s.get('confirm_bar')})"
+
+
+def render_composite(dsr, cand):
+    """Serializa o dossiê E0 INTEIRO como briefing rotulado top-down (NÃO json cru, NÃO migalha).
+    O read lê isto como um trader lê a fita, secção a secção."""
+    ax = dsr.get("axes", {}); mtf = ax.get("mtf", {}) or {}
+    micro = ax.get("micro_15m", {}) or {}; macro = ax.get("macro", {}) or {}
+    conf = (ax.get("confluence") or {}).get("15", {}) or {}
+    L = []
+    d = cand.get("direction"); m = cand.get("materiality", {}) or {}
+    L.append(f"# CANDIDATO: {d} {cand.get('rule')} @TF{cand.get('tf')}")
+    L.append(f"  entry {fmt(cand.get('entry'))} | SL {fmt(cand.get('sl'))} | alvo {fmt(cand.get('target'))} "
+             f"| R:R {fmt(cand.get('rr'),1)} | SL {fmt(m.get('sl_atr'),1)}×ATR | regime HTF {regime(dsr)}")
+    L.append(f"  (o E1 disparou por: confluência {m.get('confluence')} {m.get('confluence_breakdown', {})})")
+    L.append("\n# ESTRUTURA MTF (top-down; pivots CONFIRMADOS confirm_bar≤i, close-only, NÃO repinta)")
+    for tf, lbl in (("1D", "1D"), ("240", "4H"), ("60", "1H"), ("15", "15M")):
+        t = mtf.get(tf, {}) or {}
+        leg = t.get("leg", {}) or {}; ch = t.get("choch", {}) or {}
+        sw = t.get("swings", {}) or {}; zo = t.get("zones", {}) or {}; svp = t.get("svp", {}) or {}
+        L.append(f"  [{lbl}] trend {t.get('trend')} | perna {leg.get('dir')} {fmt(leg.get('low'))}→{fmt(leg.get('high'))} "
+                 f"pos_na_perna {fmt(leg.get('pos_in_leg'),2)} ({fmt(leg.get('mag_atr'),1)}×ATR) | "
+                 f"CHoCH up={ch.get('up')} dn={ch.get('dn')}")
+        L.append(f"       swings: LH {_sw(sw.get('last_high'))} LL {_sw(sw.get('last_low'))} "
+                 f"| zona acima {_z(zo.get('above'))} | zona abaixo {_z(zo.get('below'))}"
+                 + (f" | svp {svp.get('pressure')}" if svp.get('pressure') else ""))
+    L.append("\n# MICRO 15M")
+    ema = micro.get("ema", {}) or {}; dmi = micro.get("dmi", {}) or {}; nas = micro.get("nas", {}) or {}
+    L.append(f"  close {fmt(micro.get('close'))} | EMA9 {fmt(ema.get('ema9'))} EMA21 {fmt(ema.get('ema21'))} "
+             f"EMA50 {fmt(ema.get('ema50'))} (preço {ema.get('pos')})")
+    L.append(f"  RSI {fmt(micro.get('rsi'),1)} (MA {fmt(micro.get('rsi_ma'),1)}) | ADX {fmt(dmi.get('adx'),1)} "
+             f"+DI {fmt(dmi.get('plus_di'),1)} -DI {fmt(dmi.get('minus_di'),1)} | CHOP {fmt(micro.get('chop'),1)}")
+    L.append(f"  NAS bottom {nas.get('bottom')} top {nas.get('top')} dist_EMA {fmt(nas.get('dist_ema_atr'),2)}×ATR")
+    L.append("\n# AUCTION / CONFLUÊNCIA 15M (ativação de bubbles ao longo da perna)")
+    L.append(f"  perna {conf.get('leg_dur_bars','—')} barras | buy_dens {fmt(conf.get('buy_dens'),2)} "
+             f"sell_dens {fmt((conf.get('sell') or {}).get('dens'),2)} | act_dens {fmt(conf.get('act_dens'),2)} "
+             f"| leg_sell {conf.get('leg_sell','—')} | nas_n {conf.get('nas_n','—')}")
+    L.append("\n# MACRO")
+    ng = macro.get("news_gate", {}) or {}
+    L.append(f"  sessão {ng.get('session')} | risco {macro.get('risk_level')} | real_yield10y "
+             f"{fmt(macro.get('real_yield_10y'))} | USD {fmt(macro.get('usd_broad'))} | VIX {fmt(macro.get('vix'))}")
+    L.append(f"  news_gate: HI_now={ng.get('high_impact_now')} ff_event_le_min={ng.get('ff_event_le_min')} "
+             f"| {ng.get('advisory','')}")
+    imm = macro.get("imminent_events", []) or []
+    if imm: L.append(f"  eventos iminentes: {imm}")
+    sh = dsr.get("source_health", {})
+    L.append(f"\n# SAÚDE: " + " ".join(f"{k}={sh.get(k,{}).get('status')}(age{sh.get(k,{}).get('age_s','?')}s)"
+             for k in ("mtf", "micro_15m", "macro", "confluence")))
+    return "\n".join(L)
+
+
+def run_read(cand, dsr, timeout=None, model=None):
+    """UMA leitura contextual (Opus). Devolve a tese verbatim ou {"error":...}. Não agrega, não pontua."""
+    import subprocess
+    image = render_composite(dsr, cand)
+    prompt = image + SCHEMA_HINT
+    env = dict(os.environ); env.pop("ANTHROPIC_API_KEY", None)
+    try:
+        r = subprocess.run([CLAUDE_EXE, "-p", prompt, "--append-system-prompt", READ_SYS,
+                            "--output-format", "json", "--model", model or READ_MODEL],
+                           capture_output=True, text=True, timeout=timeout or READ_TIMEOUT, env=env)
+        env_out = json.loads(r.stdout or "{}")
+        if env_out.get("is_error"): return {"error": "claude is_error", "raw": (r.stderr or "")[:200]}
+        v = _extract_json(env_out.get("result", ""))
+        if not v or "convergence" not in v:
+            return {"error": "sem tese", "raw": (env_out.get("result") or "")[:300]}
+        return v
+    except Exception as e:
+        return {"error": f"{type(e).__name__}:{str(e)[:100]}"}
+
+
+def surfaced(thesis, cand):
+    """Rótulo binário a jusante = PASSTHROUGH PRINCÍPIO (definido 1×, nunca afinado a dado visível):
+    o contexto converge E aponta para o mesmo lado do candidato. Advisory/shadow — 0 Telegram por agora."""
+    if not isinstance(thesis, dict) or thesis.get("error"): return None
+    return bool(thesis.get("converges")) and thesis.get("context_direction") == cand.get("direction")
 
 
 # ---------- veredito ----------
-def make_verdict(cand, dsr, drift_cycles):
-    grade, vs, hard, soft = evaluate_vetos(cand, dsr, drift_cycles)
+def make_verdict(cand, dsr, drift_c):
+    grade, vs, hard, soft = evaluate_vetos(cand, dsr, drift_c)
     sh = dsr.get("source_health", {})
     return {"candidate_id": cand.get("id"), "ts": now_iso(), "cycle_ts": cand.get("cycle_ts"),
             "bar_time": cand.get("bar_time"), "direction": cand.get("direction"), "rule": cand.get("rule"),
             "tf": cand.get("tf"), "grade": grade, "veto": (hard[0]["name"] if hard else None),
-            "vetos_all": vs, "ensemble": None, "dossier_drift_cycles": drift_cycles,
+            "vetos_all": vs, "read": None, "surfaced": None, "dossier_drift_cycles": drift_c,
             "source_health": {k: sh.get(k, {}).get("status") for k in ("mtf", "micro_15m", "macro")},
             "levels": {"entry": cand.get("entry"), "sl": cand.get("sl"), "target": cand.get("target"), "rr": cand.get("rr")}}
+
+
+def archive_read(cand, dsr, image, thesis, drift_c, source):
+    """Arquivamento append-only atómico: imagem + tese verbatim + model-id datado + read_version.
+    outcome preenchido dias depois por e2_outcome_backfill.py. Substrato do painel de calibração."""
+    rec = {"ts": now_iso(), "read_version": READ_VERSION, "model": READ_MODEL, "source": source,
+           "candidate": {k: cand.get(k) for k in ("id", "rule", "tf", "direction", "entry", "sl", "target",
+                                                  "rr", "bar_time", "cycle_ts", "materiality")},
+           "dossier": dsr, "image": image, "drift_cycles": drift_c,
+           "thesis": thesis, "surfaced": surfaced(thesis, cand), "outcome": None}
+    with open(SHADOW_F, "a") as f:
+        f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    return rec
 
 
 def is_material(c):
@@ -191,7 +305,7 @@ def cli_once():
 
 def cli_survey(use_replay):
     if not use_replay:
-        print("--survey sem --replay: usa o dossiê vivo (deriva alta p/ candidatos históricos). Preferir --replay."); return
+        print("--survey sem --replay: usa o dossiê vivo (deriva alta). Preferir --replay."); return
     import e1_replay, e1_detector as e1
     data = e1_replay.capture()
     d15 = data["15"]; N = len(d15["C"]); start = max(45, N - 120)
@@ -201,23 +315,72 @@ def cli_survey(use_replay):
         dsr = e1_replay.synth(data, i)
         for c in e1.detect(dsr, prev):
             atr = e1.atr_of((dsr["axes"]["mtf"].get(c["tf"], {}) or {}).get("leg") or {})
-            c["materiality"] = e1.materiality(c, dsr, atr)
-            c["cycle_ts"] = dsr["_meta"]["cycle_ts"]
+            c["materiality"] = e1.materiality(c, dsr, atr); c["cycle_ts"] = dsr["_meta"]["cycle_ts"]
             if not is_material(c): continue
             total += 1
             grade, vs, hard, soft = evaluate_vetos(c, dsr, 0)
             if grade == "survivor": surv[f"{c['direction']}/{c['rule']}"] += 1
             elif hard: killed[hard[0]["name"]] += 1
         prev = dsr
-    print(f"=== SURVEY (replay de hoje) ===\n materiais: {total} | sobreviventes: {sum(surv.values())} | descartados: {sum(killed.values())}")
-    print(" sobreviventes por regra:", dict(surv))
-    print(" mortos por veto:", dict(killed))
-    print(f" -> ~{sum(surv.values())} chamadas Claude/dia neste dia (tendência forte); dias normais menos.")
+    print(f"=== SURVEY (replay de hoje, GATE 4 vetos) ===\n materiais: {total} | sobreviventes: {sum(surv.values())} | mortos: {sum(killed.values())}")
+    print(" sobreviventes:", dict(surv), "\n mortos por veto:", dict(killed))
+    print(f" -> ~{sum(surv.values())} reads Opus/dia neste dia (tendência forte).")
+
+
+def cli_read_smoke(n_max):
+    """SMOKE do read novo sobre sobreviventes do replay de HOJE. NÃO é validação (dia visível, imagem
+    DEGRADADA pelo synth). Só confirma: (1) Opus devolve tese válida, (2) não colapsa em reject-all/pass-all.
+    Arquiva em logs/e2_shadow.jsonl com source='replay-degraded' (separável do live no painel)."""
+    import e1_replay, e1_detector as e1, bisect
+    data = e1_replay.capture()
+    d15 = data["15"]; T, H, L, C = d15["T"], d15["H"], d15["L"], d15["C"]; N = len(C); start = max(45, N - 120)
+    state = {"cooldown": {}, "dedup": {}}; prev = None; surv = []
+    for i in range(start, N):
+        dsr = e1_replay.synth(data, i); t = dsr["_meta"]["cycle_ts"]
+        for c in e1.detect(dsr, prev):
+            atr = e1.atr_of((dsr["axes"]["mtf"].get(c["tf"], {}) or {}).get("leg") or {})
+            c["materiality"] = e1.materiality(c, dsr, atr); c["cycle_ts"] = t; c["bar_time"] = t
+            if not is_material(c): continue
+            if e1.anti_spam(c, state, t): continue
+            g, vs, hard, soft = evaluate_vetos(c, dsr, 0)
+            if g != "survivor": continue
+            state["cooldown"][f"{c['rule']}:{c['tf']}:{c['direction']}"] = t
+            state["dedup"][e1.cand_hash(c)] = t
+            surv.append((c, dsr))
+        prev = dsr
+    if n_max: surv = surv[:n_max]
+    print(f"SMOKE: {len(surv)} sobreviventes (imagem DEGRADADA-replay) — a correr read Opus...\n")
+
+    def outcome(dir_, entry, sl, tgt, t0, horizon=192):
+        i0 = bisect.bisect_right(T, t0) - 1
+        for k in range(i0 + 1, min(len(T), i0 + 1 + horizon)):
+            if dir_ == "LONG":
+                if L[k] <= sl: return "LOSS"
+                if H[k] >= tgt: return "WIN"
+            else:
+                if H[k] >= sl: return "LOSS"
+                if L[k] <= tgt: return "WIN"
+        return "OPEN"
+    from collections import Counter
+    dist = Counter()
+    for c, dsr in surv:
+        o = outcome(c["direction"], c["entry"], c["sl"], c["target"], c["bar_time"])
+        th = run_read(c, dsr)
+        if th.get("error"):
+            print(f"  ERR {c['direction']} {c['rule']}/{c['tf']}: {th['error']}"); continue
+        archive_read(c, dsr, render_composite(dsr, c), th, 0, "replay-degraded")
+        cv = th.get("convergence"); cn = th.get("conviction"); sf = surfaced(th, c)
+        dist[(cv, o)] += 1
+        print(f"  {c['direction']:5} {c['rule']:13}/{c['tf']:3} out={o:4} -> conv={cv:10} "
+              f"convic={cn} dir={th.get('context_direction')} surf={sf}")
+        print(f"        tese: {th.get('thesis','')[:150]}")
+    print("\n=== distribuição convergence × outcome (SMOKE, NÃO valida — dia visível) ===")
+    for k, n in sorted(dist.items()): print(f"  {k}: {n}")
+    print("Sanidade: NÃO deve ser tudo 'high' (pass-all) nem tudo 'incoherent' (reject-all). Árbitro real = shadow-live multi-dia.")
 
 
 def cli_anchors():
     import e1_replay, e1_detector as e1
-    # ANCORA A: short de hoje passa a Sub-fase A
     data = e1_replay.capture(); d15 = data["15"]; N = len(d15["C"]); start = max(45, N - 120)
     peak_i = max(range(start, N), key=lambda k: d15["C"][k]); prev = None; a_pass = False
     for i in range(start, N):
@@ -229,57 +392,53 @@ def cli_anchors():
                 grade, vs, hard, soft = evaluate_vetos(c, dsr, 0)
                 if grade == "survivor": a_pass = True
         prev = dsr
-    print(f"ANCHOR A (short-de-hoje sobrevive Sub-fase A): {'PASS' if a_pass else 'FALHA'}")
-    # ANCORA B: SL de hoje (LONG Ásia-morta contra bear, sem exaustão) -> vetado
+    print(f"ANCHOR A (short-de-hoje sobrevive o GATE): {'PASS' if a_pass else 'FALHA'}")
+    # ANCORA B: SL de hoje (LONG Ásia-morta) -> vetado por session_vacuum (contra-regime agora vive no READ)
     b = {"direction": "LONG", "rule": "ema_reclaim", "tf": "15", "entry": 4035.3, "sl": 4027.0,
-         "target": 4051.9, "rr": 2.0, "materiality": {"sl_atr": 1.0, "confluence": 3,
-         "confluence_breakdown": {"macro": 0, "momentum": 0}}}
+         "target": 4051.9, "rr": 2.0, "materiality": {"sl_atr": 1.0, "confluence": 3}}
     bd = {"_meta": {"cycle_ts": 1}, "source_health": {"mtf": {"status": "fresh"}, "micro_15m": {"status": "fresh"}, "macro": {"status": "fresh"}},
-          "axes": {"mtf": {"1D": {"trend": "DOWN"}, "240": {"trend": "DOWN"}, "15": {"leg": {"low": 4024, "high": 4064, "mag_atr": 4.0, "pos_in_leg": 0.4}, "choch": {"up": False, "dn": False}, "zones": {"below": None, "above": {"high": 4051, "low": 4049}}}},
-                   "micro_15m": {"close": 4035.3, "rsi": "45", "rsi_ma": "48", "nas": {"bottom": "0"}},
-                   "macro": {"risk_level": "normal", "imminent_events": [], "news_gate": {"session": "dead_zone", "high_impact_now": False, "ff_event_le_min": None}},
-                   "confluence": {"15": {"buy_dens": 0.0, "act_dens": 0.1, "leg_sell": 5}}}}
+          "axes": {"mtf": {"1D": {"trend": "DOWN"}, "240": {"trend": "DOWN"}},
+                   "micro_15m": {"close": 4035.3, "rsi": "45"},
+                   "macro": {"risk_level": "normal", "imminent_events": [], "news_gate": {"session": "dead_zone", "high_impact_now": False, "ff_event_le_min": None}}}}
     grade, vs, hard, soft = evaluate_vetos(b, bd, 0)
     names = [v["name"] for v in hard]
-    b_pass = grade == "discard" and "session_vacuum" in names and "counter_regime_no_exhaustion" in names
-    print(f"ANCHOR B (SL-Ásia-morta vetado por vácuo+contra-regime): {'PASS' if b_pass else 'FALHA'} (grade {grade}, hard {names})")
+    b_pass = grade == "discard" and "session_vacuum" in names
+    print(f"ANCHOR B (SL-Ásia-morta vetado por vácuo): {'PASS' if b_pass else 'FALHA'} (grade {grade}, hard {names})")
     ok = a_pass and b_pass
     print("ÂNCORAS:", "PASS" if ok else "FALHA")
     return 0 if ok else 1
 
 
 def cli_selftest():
-    # cada veto isolado
     base_d = {"_meta": {"cycle_ts": 1}, "source_health": {"mtf": {"status": "fresh"}, "micro_15m": {"status": "fresh"}, "macro": {"status": "fresh"}},
-              "axes": {"mtf": {"1D": {"trend": "DOWN"}, "240": {"trend": "DOWN"}, "15": {"leg": {"low": 90, "high": 110, "mag_atr": 2.0, "pos_in_leg": 0.5}, "choch": {"up": False, "dn": False}, "zones": {"below": {"high": 88, "low": 86}, "above": {"high": 112, "low": 111}}}},
-                       "micro_15m": {"close": 100, "rsi": "45", "rsi_ma": "48", "nas": {"bottom": "0", "top": "0"}},
-                       "macro": {"risk_level": "normal", "imminent_events": [], "news_gate": {"session": "ny", "high_impact_now": False, "ff_event_le_min": None}},
-                       "confluence": {"15": {"buy_dens": 0.0, "act_dens": 0.1, "leg_sell": 5}}}}
-    cand = {"direction": "LONG", "rule": "ema_reclaim", "tf": "15", "rr": 3.0,
-            "materiality": {"sl_atr": 1.0, "confluence": 4, "confluence_breakdown": {"macro": 1, "momentum": 1}}}
+              "axes": {"mtf": {"1D": {"trend": "DOWN"}, "240": {"trend": "DOWN"}, "15": {"leg": {"low": 90, "high": 110, "mag_atr": 2.0, "pos_in_leg": 0.5}}},
+                       "micro_15m": {"close": 100, "rsi": "45"},
+                       "macro": {"risk_level": "normal", "imminent_events": [], "news_gate": {"session": "ny", "high_impact_now": False, "ff_event_le_min": None}}}}
+    cand = {"direction": "LONG", "rule": "ema_reclaim", "tf": "15", "rr": 3.0, "materiality": {"sl_atr": 1.0, "confluence": 4}}
     r = []
-    # vacuum: dead_zone + no catalyst
     dv = json.loads(json.dumps(base_d)); dv["axes"]["macro"]["news_gate"]["session"] = "dead_zone"
     r.append(("session_vacuum fire", veto_session_vacuum(cand, dv)["fired"] is True))
     r.append(("session_vacuum no-fire(ny)", veto_session_vacuum(cand, base_d)["fired"] is False))
-    # bad_rr
     r.append(("bad_rr fire(rr1)", veto_bad_rr({**cand, "rr": 1.0}, base_d)["fired"] is True))
     r.append(("bad_rr no-fire(rr3)", veto_bad_rr(cand, base_d)["fired"] is False))
-    # chase
     r.append(("chase fire", veto_chase({**cand, "materiality": {"sl_atr": 2.0}}, base_d)["fired"] is True))
-    # stale
     ds = json.loads(json.dumps(base_d)); ds["source_health"]["mtf"]["status"] = "stale"
     r.append(("stale fire", veto_stale(cand, ds, 0)["fired"] is True))
-    # counter-regime: LONG vs DOWN; EXHAUSTION_MIN=1 (permissivo=lição Cp) -> 0 sig FIRE; sweep (1 sig) isenta
-    r.append(("counter fire(0 sig)", veto_counter_regime(cand, base_d)["fired"] is True))
-    r.append(("counter no-fire(sweep=1sig)", veto_counter_regime({**cand, "rule": "sweep_reclaim"}, base_d)["fired"] is False))
+    r.append(("GATE 4-vetos survivor(limpo)", evaluate_vetos(cand, base_d, 0)[0] == "survivor"))
+    r.append(("GATE discard(dead_zone)", evaluate_vetos(cand, dv, 0)[0] == "discard"))
+    # renderer não rebenta com dossiê real nem mínimo
+    try:
+        _ = render_composite(base_d, cand); _ = render_composite(load_dossier() or base_d, cand)
+        r.append(("render_composite ok", True))
+    except Exception as e:
+        r.append((f"render_composite ok ({e})", False))
     allok = all(ok for _, ok in r)
     for name, ok in r: print(f"  {'OK' if ok else 'FALHA'} {name}")
     print("SELFTEST:", "PASS" if allok else "FALHA")
     return 0 if allok else 1
 
 
-# ---------- daemon (Sub-fase A, 0 tokens) ----------
+# ---------- daemon (GATE 0-tokens + READ Opus nos sobreviventes; SHADOW 0 Telegram) ----------
 def paused(): return PAUSE_LOCAL.exists() or PAUSE_GLOBAL.exists()
 
 
@@ -292,7 +451,7 @@ def main_loop():
     PIDFILE.write_text(str(os.getpid()))
     try: offset = json.loads(OFFSET_F.read_text()).get("offset", 0)
     except Exception: offset = 0
-    print(f"[e2_quality] ativo | Sub-fase A (vetos determinísticos, 0 tokens) | shadow", flush=True)
+    print(f"[e2_quality] ativo | GATE 4-vetos (0 tokens) + READ {READ_MODEL if READ_ENABLED else 'OFF'} | shadow", flush=True)
     try:
         while True:
             if paused(): time.sleep(FLOOR_S); continue
@@ -308,9 +467,19 @@ def main_loop():
                             try: c = json.loads(line)
                             except Exception: continue
                             if not is_material(c) or not dsr: continue
-                            v = make_verdict(c, dsr, drift_cycles(c, dsr)); append(VERD_F, v)
-                            if v["grade"] != "discard":
-                                print(f"{now_iso()} [{v['grade']}] {v['direction']}/{v['rule']}/{v['tf']}", flush=True)
+                            dc = drift_cycles(c, dsr)
+                            v = make_verdict(c, dsr, dc)
+                            if v["grade"] == "survivor" and READ_ENABLED:
+                                image = render_composite(dsr, c)
+                                th = run_read(c, dsr)
+                                v["read"] = th; v["surfaced"] = surfaced(th, c)
+                                archive_read(c, dsr, image, th, dc, "live")
+                                tag = th.get("convergence", "err") if not th.get("error") else "ERR"
+                                print(f"{now_iso()} [survivor|{tag}|convic {th.get('conviction','?')}|surf {v['surfaced']}] "
+                                      f"{v['direction']}/{v['rule']}/{v['tf']}", flush=True)
+                            elif v["grade"] != "discard":
+                                print(f"{now_iso()} [survivor|read-off] {v['direction']}/{v['rule']}/{v['tf']}", flush=True)
+                            append(VERD_F, v)
                         tmp = OFFSET_F.with_suffix(".json.tmp"); tmp.write_text(json.dumps({"offset": offset})); os.replace(tmp, OFFSET_F)
             except Exception as e:
                 print(f"{now_iso()} [erro] {type(e).__name__}:{str(e)[:80]}", flush=True)
@@ -324,4 +493,10 @@ if __name__ == "__main__":
     elif "--anchors" in sys.argv: sys.exit(cli_anchors())
     elif "--survey" in sys.argv: cli_survey("--replay" in sys.argv)
     elif "--once" in sys.argv: cli_once()
+    elif "--read-smoke" in sys.argv:
+        k = 0
+        if "--n" in sys.argv:
+            try: k = int(sys.argv[sys.argv.index("--n") + 1])
+            except Exception: k = 0
+        cli_read_smoke(k)
     else: main_loop()
