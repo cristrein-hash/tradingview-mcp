@@ -1,0 +1,8 @@
+insert into memory_items (id, scope, visibility, category, title, body, tags, source_ref, status)
+values
+ (md5('l2_bpt_trend_exit_golive_producao_20260717')::uuid, 'private', 'private', 'project',
+  'L2/BPT XAU 4H trend-exit = LIVE EM PRODUCAO (go-live Cris 2026-07-17, alert-only, Telegram ativo)',
+  'Go-live executado 2026-07-17 ~12:19 UTC apos gates completos. Runtime novo my-strategy/strategies/xau_4h_long/reversal/L2_BPT_ZONE_TREND_EXIT/ (l2_engine port verbatim do research + scanner_l2 + runtime_l2 + position_state multi-posicao stop-first/regime-flip/cap500 + l2_tv_read tab-pinned 4H + telegram_notify_l2). Gates: paridades byte-exatas V1 (FSM regime + prefix-stability 300 truncagens), V2 (17 trades reproduzidos), V3 (painel +105.3R DD -4.1 streak 3, FULL +399.2R), V4 (regua 245 re-derivada do zero incl. entry/sl); DA causalidade da camada runtime = PASS (unico caveat: boxes as-of-cycle, mesmo padrao aceite do L1); dry-run launchd limpo; teste Telegram marcado TEST recebido e confirmado por Cris. Destravas: L2_PRODUCTION_AUTHORIZED=1 + flag send-telegram no wrapper + registo L2_BPT_ZONE_TREND_EXIT no core/group_model_xau.py (XAU_240) + LaunchAgent com.cristrein.xau-l2-cycle carregado (6x/dia, :12 Lisboa, offset +7min vs L1). Estado no go-live: regime BEAR, zona bear_deep 4023.76-4488.89, preco 3997.93 abaixo da zona (furou), 0 posicoes. Ledger 10114 barras 4H desde 2020. Alert-only, zero auto-trade. Censo: 1/17 depende do gate de bolhas, chart 4H tem Bubbles+OB boxes+RSI visiveis (requisito: manter tabs e estudos).',
+  array['seed:memory_delta_l2_golive_20260717','l2','bpt','producao','go-live','telegram'],
+  'docs/architecture/L2_BPT_TREND_EXIT_OFFICIAL_APPROVAL_20260708.md · PARITY_RESULTS.md', 'active')
+on conflict (id) do nothing;

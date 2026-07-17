@@ -11,8 +11,10 @@ GROUPS = {
     "XAU_240": {
         "symbol": SYMBOL, "timeframe": "240", "layout": "XAU_LAYOUT",
         "active": True,
-        "consumers": ["L1_EMA21_CONTINUATION"],          # única estratégia ativa
-        "telegram_allowed_consumers": ["L1_EMA21_CONTINUATION"],
+        # L1 live 2026-07-17; L2/BPT trend-exit live 2026-07-17 (go-live autorizado Cris,
+        # DA causalidade PASS + paridades V-1..V-4 byte-exatas)
+        "consumers": ["L1_EMA21_CONTINUATION", "L2_BPT_ZONE_TREND_EXIT"],
+        "telegram_allowed_consumers": ["L1_EMA21_CONTINUATION", "L2_BPT_ZONE_TREND_EXIT"],
     },
     # RESERVADOS — preparação multi-timeframe XAU. NÃO ativos, NÃO podem enviar Telegram.
     "XAU_60": {

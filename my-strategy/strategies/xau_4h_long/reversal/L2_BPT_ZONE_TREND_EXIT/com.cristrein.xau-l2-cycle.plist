@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  LaunchAgent XAU L2 cycle — CÓPIA DE REPO, NÃO INSTALADA (FASE 2, 2026-07-17).
+  NÃO carregar (launchctl load) sem autorização explícita de go-live do Cris.
+
+  Grade LOCAL Europe/Lisbon (DST-robusta, mesma lógica do L1): fechamentos 4H do XAU em hora
+  local de Lisboa são FIXOS o ano todo -> 03/07/11/15/19/23. Minuto :12 = offset +7min vs L1
+  (:05) para os dois ciclos não competirem pelo mesmo spawn de server.js/CDP.
+  RunAtLoad=false (só nos horários). Logs próprios em .runtime_state/ (não-legacy).
+  O wrapper start_l2_cycle.sh nasce SEM L2_PRODUCTION_AUTHORIZED e SEM --send-telegram
+  (dry-run forçado pelo hard-lock).
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.cristrein.xau-l2-cycle</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>/Users/cristrein/tradingview-mcp/my-strategy/strategies/xau_4h_long/reversal/L2_BPT_ZONE_TREND_EXIT/start_l2_cycle.sh</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>/Users/cristrein/tradingview-mcp/my-strategy/strategies/xau_4h_long/reversal/L2_BPT_ZONE_TREND_EXIT</string>
+  <key>RunAtLoad</key><false/>
+  <key>StartCalendarInterval</key>
+  <array>
+    <dict><key>Hour</key><integer>3</integer><key>Minute</key><integer>12</integer></dict>
+    <dict><key>Hour</key><integer>7</integer><key>Minute</key><integer>12</integer></dict>
+    <dict><key>Hour</key><integer>11</integer><key>Minute</key><integer>12</integer></dict>
+    <dict><key>Hour</key><integer>15</integer><key>Minute</key><integer>12</integer></dict>
+    <dict><key>Hour</key><integer>19</integer><key>Minute</key><integer>12</integer></dict>
+    <dict><key>Hour</key><integer>23</integer><key>Minute</key><integer>12</integer></dict>
+  </array>
+  <key>StandardOutPath</key>
+  <string>/Users/cristrein/tradingview-mcp/my-strategy/strategies/xau_4h_long/reversal/L2_BPT_ZONE_TREND_EXIT/.runtime_state/launchd_stdout.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/cristrein/tradingview-mcp/my-strategy/strategies/xau_4h_long/reversal/L2_BPT_ZONE_TREND_EXIT/.runtime_state/launchd_stderr.log</string>
+</dict>
+</plist>
