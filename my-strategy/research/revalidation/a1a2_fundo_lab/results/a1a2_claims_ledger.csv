@@ -15,3 +15,5 @@ jackknife_out_of_fold,"2025H2 33%/9.4x recall8%; 2026H1 25%/9.2x recall20%; 2025
 leg_APROVADA_zigzag6_region,"REFUTA a regiao: GT TOP/ABOVE 85%, BOTTOM vazio; nenhuma regiao >1.7x",s3b_zigzag_region.py,results/a1a2_zzregion_table.csv,DA PASS causal; o BOTTOM 3.5x do s3 era artefato do leg ad-hoc m=3
 leg_ad_hoc_ERRO,"m=3 fractais != leg aprovada; corrigido p/ zigzag(6) selado",s3b_zigzag_region.py,DA_S3B_20260717,reparo Cris: usar detetor aprovado, nao inventar leg
 reclaim_ROBUSTO,"AUC 0.63-0.76 depth-controlled, imune a leg, causal = unico sinal H2 que fica",s3b_zigzag_region.py,stdout,micro-forma do turno; depth legitimo mas precisao/recall modestos
+DA_entry_timing_leak_FIXED,"entry abria em k=p mas fundo so conhecivel em p+3 (fractal+reclaim) -> entry a partir de p+3",s4_trades.py,DA_S4_20260717,DA apanhou; corrigido causal_entry(S,p+M_FRAC)
+detector_trades_set2025_jul2026,"N6 WR33% sumR+2.0 avgR+0.33 DD-3 streak3 +1 OPEN (GT teu)",s4_trades.py,results/a4_trades_region.csv,detetor regiao+reclaim+depth; thresholds in-sample intra-janela (otimista); 1/7 coincide GT
