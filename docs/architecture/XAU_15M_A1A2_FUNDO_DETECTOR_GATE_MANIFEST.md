@@ -68,6 +68,22 @@
   Desfecho "resíduo discricionário confirmado" é resultado válido.
 - **Árbitro final:** forward (prereg A1_MB3 já congelado; ≥20 resolvidos).
 
+## EMENDA Stage 4 GRID (2026-07-17, declarada ANTES de medir — Cris: parâmetros não se decidem às cegas)
+Não se fixa 1 janela/buffer a priori (seria palpite) nem se escolhe pós-hoc (seria mining). Congela-se uma
+**grelha pequena e contável**; a data decide; o null preça a multiplicidade.
+- **Janela do pullback (2 variantes):** `W_swinghigh` (último swing-high fractal confirmado antes de p, cap 60b)
+  · `W_fix48` (lookback fixo 48b).
+- **Buffer de bubbles:** 3b = PRIMÁRIO/canónico (Cp). 2b e 5b = SÓ robustez causal (reportados, não contam
+  como looks de discriminação).
+- **Features:** família H1 (5) + H2 (6) COMPLETA extraída — sem pré-poda.
+- **Looks declarados p/ feature-search null = 2 janelas × 11 features = 22** (o discount aplica-se a isto;
+  os 3 buffers NÃO entram como looks — são robustez do MESMO sinal).
+- **Nulls:** permutação intra-bucket (~2188 fractais macro-BULL não-GT) por feature + feature-search null sobre
+  os 22 + jackknife (largar 1 semestre de cada vez) + convergência de 2-3 sub-estados (não eixo-único).
+- **Critério de sucesso (fixado agora, no ledger, antes de ver):** uma assinatura (1 feature OU convergência)
+  que separe os 32 GT do null intra-bucket com p<0,01 sob feature-search E sobreviva jackknife E dê recall
+  material (≥ ~1/3 dos 32) a precisão >> base 1,4%. Abaixo disto = "resíduo discricionário" (resultado válido).
+
 ## EMENDA Stage 3 (2026-07-17, declarada) — universo estrutural real
 `s1_structural_bucket.py` (32/32 GT em cobertura, 32/32 casados a fractal ±6h, cross-check macro **0/32
 contradições** = reconstrução idêntica ao GT). Achado: os 32 A1/A2 dividem-se em **BULL_impulse=17 /

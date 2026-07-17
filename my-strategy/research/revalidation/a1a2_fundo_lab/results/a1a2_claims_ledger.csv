@@ -1,0 +1,9 @@
+claim,value,script,output,notes
+H1_bubble_accumulation_refuted,"buydens/accum/buyrecent/large AUC 0.42-0.49 ns; medianas 0",s2b_seq_features.py,results/a1a2_discrimination.csv,maioria dos A1/A2 sem bubbles na janela; absorp inverte (GT sell-side)
+H2_depth_auc,"0.777 (swinghigh) / 0.793 (fix48) p=0.0002",s2b_seq_features.py,results/a1a2_discrimination.csv,CAVEAT circularidade: depth esta na definicao A1(fundo)/A2(raso) do GT
+H2_reclaim_auc,"0.691/0.680 p=0.002/0.0004",s2b_seq_features.py,results/a1a2_discrimination.csv,reclaim rapido em 3 barras de confirmacao (causal)
+H2_decel_auc,"0.308/0.245 p=0.001/0.0002 (invertido)",s2b_seq_features.py,results/a1a2_discrimination.csv,descida acelera/flush no fundo (nao desacelera)
+H2_contract_auc,"0.671 (fix48) p=0.001",s2b_seq_features.py,results/a1a2_discrimination.csv,expansao de range no fundo (spike)
+feature_search,"22 looks min-p 0.0002 Bonferroni 0.004; 7 sobrevivem p*K<0.05",s2b_seq_features.py,stdout,E[min-p null]~0.043
+bubble_map,"14139 chart-bars com bubbles 2024-05..2026-07 buy-ratio 0.65",s2a_bubble_map.py,results/bubble_map.json,uniao de todas as linhas (janela rolante ~19/snapshot)
+structural_bucket,"4820 fractais; 32/32 GT casados; 0/32 contradicao macro; BULL_impulse17/pullback15",s1_structural_bucket.py,results/a1a2_bucket_table.csv,STRUCTURAL_FIRST_PASS
