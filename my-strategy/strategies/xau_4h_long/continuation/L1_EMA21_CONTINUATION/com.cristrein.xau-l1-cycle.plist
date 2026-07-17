@@ -7,21 +7,20 @@
   usa o TZ local -> horários 03:05/07:05/11:05/15:05/19:05/23:05 (5 min de atraso pós-fechamento).
   RunAtLoad=false (só roda nos horários). Logs próprios (não-legacy). Único p/ esta L1 (XAU_240).
 
-  ⛔ 2026-07-09 PRE-PRODUCTION HARD-LOCK: `--send-telegram` REMOVIDO deste plist.
-  Telegram disabled until Cris explicitly authorizes production.
-  Mesmo se este plist for carregado (não deve ser), roda em dry-run e NÃO envia Telegram.
-  Defesa em profundidade: além desta remoção, runtime_xau.notify() exige env
-  L1_PRODUCTION_AUTHORIZED=1 p/ envio real. NÃO carregar este plist sem autorização explícita.
+  ✅ 2026-07-17 GO-LIVE AUTORIZADO POR CRIS (mensagem: "AUTORIZO COLOCAR LIVE AGORA L1 E L2 JÁ
+  APROVADAS ... COM TELEGRAM ATIVO"). As 3 destravas do pre-production hard-lock 2026-07-09
+  executadas: (1) plist carregado; (2) --send-telegram re-adicionado (via start_l1_cycle.sh);
+  (3) L1_PRODUCTION_AUTHORIZED=1 (setado no wrapper). O wrapper também pausa os daemons do
+  alert-bridge durante o chart-op (troca 15M->240 e restaura). Backup pré-go-live:
+  com.cristrein.xau-l1-cycle.plist.pre_golive_bak_20260717.
 -->
 <plist version="1.0">
 <dict>
   <key>Label</key><string>com.cristrein.xau-l1-cycle</string>
   <key>ProgramArguments</key>
   <array>
-    <string>/usr/bin/python3</string>
-    <string>run_l1_cycle.py</string>
-    <string>--manage-chart</string>
-    <!-- --send-telegram REMOVIDO (pre-production hard-lock 2026-07-09) -->
+    <string>/bin/zsh</string>
+    <string>/Users/cristrein/tradingview-mcp/my-strategy/strategies/xau_4h_long/continuation/L1_EMA21_CONTINUATION/start_l1_cycle.sh</string>
   </array>
   <key>WorkingDirectory</key>
   <string>/Users/cristrein/tradingview-mcp/my-strategy/strategies/xau_4h_long/continuation/L1_EMA21_CONTINUATION</string>

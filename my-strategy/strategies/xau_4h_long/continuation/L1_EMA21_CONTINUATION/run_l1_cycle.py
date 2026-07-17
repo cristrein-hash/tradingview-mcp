@@ -55,8 +55,23 @@ def _rotate_log():
         pass  # rotação é best-effort; nunca derruba o ciclo
 
 
-def _run(argv):
-    return subprocess.run([sys.executable] + argv, capture_output=True, text=True)
+def _run(argv, env=None):
+    return subprocess.run([sys.executable] + argv, capture_output=True, text=True, env=env)
+
+
+# ---- tab-pinning (recurso geral, Cris 2026-07-17): ler a tab dedicada do TF via TVMCP_TARGET_CHART_ID ----
+# 5 tabs XAUUSD abertas (5M/15M/1H/4H/1D). refresh lê a tab 1D pinada; runtime lê a tab 4H pinada.
+# ZERO troca de symbol/TF, zero restore, zero pausa dos daemons E0/E1/E2 (coexistência total).
+# Fallback fail-safe: se as tabs não existirem, cai no modo --manage-chart antigo (com pausa).
+
+def _discover_tabs():
+    """(tid_1D, tid_240) via helper partilhado my-strategy/core/tab_pin.py; (None, None) em falha."""
+    try:
+        sys.path.insert(0, str(REPO / "my-strategy/core"))
+        import tab_pin
+        return tab_pin.discover_tab("1D"), tab_pin.discover_tab("240")
+    except Exception:
+        return None, None
 
 
 # ---- chart management (read/set symbol+timeframe via MCP; NUNCA trade/draw/broker) ----
@@ -132,9 +147,10 @@ def restore_chart(c, before, changed, leave_240=False):
     return res
 
 
-def _run_refresh_and_runtime(send_telegram, ts):
-    """Passos 1+2 (refresh + runtime). Mesma lógica fail-closed de sempre."""
-    r = _run([str(REFRESH), "--write"])
+def _run_refresh_and_runtime(send_telegram, ts, env_refresh=None, env_runtime=None):
+    """Passos 1+2 (refresh + runtime). Mesma lógica fail-closed de sempre.
+    env_refresh/env_runtime: ambientes com TVMCP_TARGET_CHART_ID pinado (modo tab-pinned)."""
+    r = _run([str(REFRESH), "--write"], env=env_refresh)
     try:
         rj = json.loads(r.stdout)
     except Exception:
@@ -145,7 +161,7 @@ def _run_refresh_and_runtime(send_telegram, ts):
     rt_argv = [str(RUNTIME), "--once", "--dedup-path", str(DEDUP)]
     if send_telegram:
         rt_argv.append("--send-telegram")
-    rt = _run(rt_argv)
+    rt = _run(rt_argv, env=env_runtime)
     try:
         rtj = json.loads(rt.stdout)
     except Exception:
@@ -165,36 +181,70 @@ def _run_refresh_and_runtime(send_telegram, ts):
             "notify_skip": notify.get("skip"), "signal_hash": cand.get("signal_hash")}
 
 
-def cycle(send_telegram=False, manage_chart=False, leave_240=False):
+PAUSE_FLAG = Path("/Users/cristrein/tradingview-mcp/alert-bridge/logs/monitor.pause")
+
+
+def cycle(send_telegram=False, manage_chart=False, leave_240=False, pin_tabs=False):
     STATE_DIR.mkdir(exist_ok=True)
     ts = datetime.now(timezone.utc).isoformat()
-    chart_info = {}
-    client = None
-    if manage_chart:
-        # 0) preparar chart; falha aqui = HARD_STOP sem Telegram
+
+    # MODO TAB-PINNED (preferido, Cris 2026-07-17): refresh na tab 1D, runtime na tab 4H —
+    # sem trocar chart, sem lock, sem pausar daemons. Fallback: modo manage-chart antigo.
+    fell_back = False
+    if pin_tabs:
+        tid_d, tid_4h = _discover_tabs()
+        if tid_d and tid_4h:
+            env_d = dict(os.environ); env_d["TVMCP_TARGET_CHART_ID"] = tid_d
+            env_4h = dict(os.environ); env_4h["TVMCP_TARGET_CHART_ID"] = tid_4h
+            out = _run_refresh_and_runtime(send_telegram, ts, env_refresh=env_d, env_runtime=env_4h)
+            out = {**out, "chart_mode": "pinned", "tab_1d": tid_d[:8], "tab_240": tid_4h[:8]}
+            _log(ts, out)
+            return {"ts": ts, **out}
+        manage_chart = True; fell_back = True   # tabs ausentes -> modo antigo (com pausa própria)
+
+    # MODO MANAGE-CHART (antigo / fallback): troca a tab default p/ 240 e restaura.
+    # Pausa os daemons do alert-bridge durante o chart-op (respeita pausa pré-existente do operador).
+    pause_created = False
+    if manage_chart and not PAUSE_FLAG.exists():
         try:
-            before, used, changed, client = prepare_chart()
-            chart_info = {"chart_before": before, "chart_used": used, "chart_changed": changed}
-        except Exception as e:
+            PAUSE_FLAG.write_text(ts); pause_created = True
+            time.sleep(5)   # daemons (floor 20-60s) veem a pausa antes do chart-op
+        except Exception:
+            pass
+    try:
+        chart_info = {"chart_mode": "manage_chart_fallback" if fell_back else "manage_chart"}
+        client = None
+        if manage_chart:
+            # 0) preparar chart; falha aqui = HARD_STOP sem Telegram
             try:
-                if client: client.stop()
+                before, used, changed, client = prepare_chart()
+                chart_info.update({"chart_before": before, "chart_used": used, "chart_changed": changed})
+            except Exception as e:
+                try:
+                    if client: client.stop()
+                except Exception: pass
+                try: CHART_LOCK.unlink()
+                except Exception: pass
+                out = {"status": "HARD_STOP", "stage": "chart_prepare", "reason": str(e), "notify_sent": False,
+                       **chart_info}
+                _log(ts, out); return {"ts": ts, **out}
+
+        out = _run_refresh_and_runtime(send_telegram, ts)
+
+        if manage_chart and client is not None:
+            try:
+                chart_info["chart_restore"] = restore_chart(client, before, changed, leave_240)
+            except Exception as e:
+                chart_info["chart_restore"] = {"restored": False, "error": str(e)}
+        if manage_chart:
+            out = {**out, **chart_info}
+
+        _log(ts, out)
+        return {"ts": ts, **out}
+    finally:
+        if pause_created:
+            try: PAUSE_FLAG.unlink()
             except Exception: pass
-            try: CHART_LOCK.unlink()
-            except Exception: pass
-            out = {"status": "HARD_STOP", "stage": "chart_prepare", "reason": str(e), "notify_sent": False}
-            _log(ts, out); return {"ts": ts, **out}
-
-    out = _run_refresh_and_runtime(send_telegram, ts)
-
-    if manage_chart and client is not None:
-        try:
-            chart_info["chart_restore"] = restore_chart(client, before, changed, leave_240)
-        except Exception as e:
-            chart_info["chart_restore"] = {"restored": False, "error": str(e)}
-        out = {**out, **chart_info}
-
-    _log(ts, out)
-    return {"ts": ts, **out}
 
 
 def _log(ts, out):
@@ -211,9 +261,12 @@ def main():
                     help="prepara o chart em PEPPERSTONE:XAUUSD/240 via MCP e restaura depois")
     ap.add_argument("--leave-chart-240", action="store_true",
                     help="com --manage-chart: deixa o chart em 240 (não restaura)")
+    ap.add_argument("--pin-tabs", action="store_true",
+                    help="lê as tabs dedicadas 1D/4H via TVMCP_TARGET_CHART_ID (sem trocar chart); "
+                         "fallback automático p/ --manage-chart se as tabs não existirem")
     args = ap.parse_args()
     res = cycle(send_telegram=args.send_telegram, manage_chart=args.manage_chart,
-                leave_240=args.leave_chart_240)
+                leave_240=args.leave_chart_240, pin_tabs=args.pin_tabs)
     print(json.dumps(res, ensure_ascii=False, indent=2))
     return 2 if res.get("status") in ("HARD_STOP", "STALE") else 0
 
