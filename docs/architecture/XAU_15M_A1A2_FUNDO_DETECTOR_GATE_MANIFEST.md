@@ -32,7 +32,7 @@
   "allow_resample": false,
   "htf_stale_declared": "toda a janela RAW termina 2026-05-25 (15M/4H/1D); nenhum dado live/pós-2026-05-25 entra no lab; HTF = RAW NATIVO 4H/1D do HD",
   "fields": ["ohlcv 15M", "bubbles BUY/SELL size1-3 (plots 0/2/4 e 6/8/10, com bars_ago; buffer causal 3b como no Cp)", "NAS top/bottom", "OB/demand-supply boxes (Custom OB baseline)", "RSI", "volume", "ATR", "macro_structural_v3(1D)", "leg 4H v3"],
-  "structural_buckets": ["BULL_pullback"],
+  "structural_buckets": ["BULL_pullback", "BULL_impulse"],
   "hypotheses": [
     "H1 (acumulação sequencial): a acumulação/absorção de bubbles ao longo do PULLBACK (janelas multi-barra estilo RWS buy_recent/Cp act_dens cumulativo, causal) separa fundos GT A1/A2 dos swing-lows não-GT do MESMO bucket",
     "H2 (micro-forma do turno): a sequência barra-a-barra da viragem (velocidade da queda, contração de range, sequência de rejeições/wicks, velocidade do reclaim) separa GT de não-GT",
@@ -67,3 +67,11 @@
   precisão que bata os nulls dentro do bucket — números exatos a fixar ANTES do s3 no claims ledger, não depois.
   Desfecho "resíduo discricionário confirmado" é resultado válido.
 - **Árbitro final:** forward (prereg A1_MB3 já congelado; ≥20 resolvidos).
+
+## EMENDA Stage 3 (2026-07-17, declarada) — universo estrutural real
+`s1_structural_bucket.py` (32/32 GT em cobertura, 32/32 casados a fractal ±6h, cross-check macro **0/32
+contradições** = reconstrução idêntica ao GT). Achado: os 32 A1/A2 dividem-se em **BULL_impulse=17 /
+BULL_pullback=15** (macro/leg: IMPULSO_UP 17, ACUMULACAO 11, PULLBACK_BEAR 4) — A2 raso ocorre dentro de
+pernas de impulso. **Universo do lab corrigido de `[BULL_pullback]` → `[BULL_pullback, BULL_impulse]`**
+(ambos macro==BULL). Base rate = 32 positivos em ~2220 fractais macro-BULL (BULL_pullback 1327 + BULL_impulse
+893) ≈ **1,4%** — o alvo de discriminação da assinatura sequencial. Nenhuma stop condition disparada.
