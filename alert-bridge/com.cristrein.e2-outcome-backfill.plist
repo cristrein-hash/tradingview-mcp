@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.cristrein.e2-outcome-backfill</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>/Users/cristrein/tradingview-mcp/alert-bridge/e2_outcome_backfill.py</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>/Users/cristrein/tradingview-mcp/alert-bridge</string>
+    <key>StartInterval</key>
+    <integer>3600</integer>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/Users/cristrein/tradingview-mcp/alert-bridge/logs/e2_outcome_backfill.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/cristrein/tradingview-mcp/alert-bridge/logs/e2_outcome_backfill.err</string>
+</dict>
+</plist>
