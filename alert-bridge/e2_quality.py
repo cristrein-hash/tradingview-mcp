@@ -223,6 +223,20 @@ def render_composite(dsr, cand):
         wb = win.get("buy", {}) or {}; ws = win.get("sell", {}) or {}
         L.append(f"  janela(últ{win.get('bars')} barras, iniciativa recente): buy {wb.get('n')}/{wb.get('weight')} · "
                  f"sell {ws.get('n')}/{ws.get('weight')} → lado {win.get('net_side')}")
+    # ---- F-A2: mapa de ímanes (voz descritiva; NÃO sinal) ----
+    mag = (dsr["axes"].get("magnets") or {})
+    if mag:
+        pb = mag.get("pullback") or {}
+        def _mstr(items):
+            return " · ".join(f"{m.get('type')} {fmt(m.get('dist_atr'),1)}ATR"
+                              + (f"({m.get('touches')}t)" if m.get('touches') else "")
+                              + (f"[{m.get('size_atr')}ATR]" if m.get('size_atr') else "")
+                              for m in (items or [])) or "—"
+        L.append("\n# ÍMANES (mapa acima/abaixo — vazios FVG não-mitigados + clusters liquidez + OB; distância em ATR)")
+        L.append(f"  ACIMA: {_mstr(mag.get('above'))}")
+        L.append(f"  ABAIXO: {_mstr(mag.get('below'))}")
+        if pb:
+            L.append(f"  perna: {pb.get('leg_dir')} · pullback #{pb.get('ordinal')} ({pb.get('maturity')})")
     L.append("\n# MACRO")
     ng = macro.get("news_gate", {}) or {}
     L.append(f"  sessão {ng.get('session')} | risco {macro.get('risk_level')} | real_yield10y "
@@ -493,6 +507,16 @@ def cli_selftest():
         r.append(("render F-A1 fields ok", "velas(" in img and "vitalidade:" in img and "janela(" in img))
     except Exception as e:
         r.append((f"render F-A1 fields ({e})", False))
+    # F-A2: renderer expõe o mapa de ímanes + pullback quando presente
+    try:
+        dm = json.loads(json.dumps(base_d))
+        dm["axes"]["magnets"] = {"above": [{"type": "fvg", "dist_atr": 0.8, "size_atr": 0.4, "age": 5}],
+                                 "below": [{"type": "liq_cluster", "dist_atr": 1.2, "touches": 3}],
+                                 "pullback": {"leg_dir": "up", "ordinal": 1, "maturity": "continuação_provável"}}
+        img2 = render_composite(dm, cand)
+        r.append(("render F-A2 magnets ok", "ÍMANES" in img2 and "ACIMA:" in img2 and "pullback #" in img2))
+    except Exception as e:
+        r.append((f"render F-A2 magnets ({e})", False))
     allok = all(ok for _, ok in r)
     for name, ok in r: print(f"  {'OK' if ok else 'FALHA'} {name}")
     print("SELFTEST:", "PASS" if allok else "FALHA")

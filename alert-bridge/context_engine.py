@@ -17,6 +17,7 @@ from context_mtf import read_mtf
 from context_micro import read_micro
 from context_macro import read_macro
 from context_confluence import read_confluence
+from context_magnets import read_magnets       # F-A2: mapa de ímanes (voz descritiva)
 
 OUT = REPO / "external_factors_v2" / "snapshots" / "market_context.json"
 PIDFILE = LOGS / "context_engine.pid"
@@ -51,7 +52,7 @@ def _health(axis, age_s, stale_after):
     return {"status": "fresh" if (age_s is None or age_s <= stale_after) else "stale", "age_s": age_s}
 
 
-def build_context(mtf, mtf_age, micro, macro, confluence=None):
+def build_context(mtf, mtf_age, micro, macro, confluence=None, magnets=None):
     t = int(time.time())
     return {
         "_meta": {"cycle_ts": t, "cycle_iso": now_utc().isoformat(), "schema_version": SCHEMA_VERSION,
@@ -72,6 +73,7 @@ def build_context(mtf, mtf_age, micro, macro, confluence=None):
             "micro_15m": micro,
             "macro": macro,
             "confluence": confluence,      # {"15": {act_dens, buy_dens, sell_dens, leg_sell, nas_n, ...}}
+            "magnets": magnets,            # F-A2: {above:[...], below:[...], pullback:{...}} — voz, não sinal
         },
     }
 
@@ -95,11 +97,13 @@ def once(state):
         log(f"[mtf] recompute (bar_close={bar_t!=state.get('last_bar_t')} first={state.get('mtf') is None})")
         state["mtf"] = read_mtf()
         state["confluence"] = {"15": read_confluence("15")}     # act_dens na perna 15M (Cp), mesma cadência
+        try: state["magnets"] = read_magnets()                   # F-A2: mapa de ímanes (mesma cadência bar-close)
+        except Exception as e: log(f"[magnets] falhou: {type(e).__name__}"); state["magnets"] = None
         state["last_bar_t"] = bar_t
         state["last_mtf_close"] = close
         state["mtf_ts"] = time.time()
     mtf_age = int(time.time() - state["mtf_ts"]) if state.get("mtf_ts") else None
-    ctx = build_context(state["mtf"], mtf_age, micro, macro, state.get("confluence"))
+    ctx = build_context(state["mtf"], mtf_age, micro, macro, state.get("confluence"), state.get("magnets"))
     atomic_write(OUT, ctx)
     return ctx
 
