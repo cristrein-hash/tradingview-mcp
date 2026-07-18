@@ -16,6 +16,10 @@
   <key>WorkingDirectory</key>
   <string>/Users/cristrein/tradingview-mcp/my-strategy/core/regime_engine</string>
   <key>RunAtLoad</key><true/>
+  <key>WatchPaths</key>
+  <array>
+    <string>/Users/cristrein/tradingview-mcp/my-strategy/research/revalidation/raw_4h_ohlc.jsonl</string>
+  </array>
   <key>StartCalendarInterval</key>
   <array>
     <dict><key>Minute</key><integer>6</integer></dict>
