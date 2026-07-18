@@ -114,6 +114,7 @@ def components():
         "EF v2":       chk_mtime(REPO / "external_factors_v2/snapshots/latest.json", 70*60),
         "Backfill":    chk_mtime(AB / "logs/e2_outcome_backfill.log", 130*60),
         "Bar-store":   chk_log_status(REPO / "my-strategy/core/bar_store/store/store_cycle.log", 10*60, bad_prefixes=("HARD_STOP",)),
+        "PriceShock":  chk_log_status(REPO / "my-strategy/core/price_shock/.shock_state/shock_cycle.log", 5*60, bad_prefixes=("HARD_STOP",)),
         "Receiver":    chk_http_health("http://127.0.0.1:8787/health"),      # webhook ENTRADA (A auditoria)
         "Cloudflared": chk_process("cloudflared tunnel run"),               # túnel público ENTRADA
     }

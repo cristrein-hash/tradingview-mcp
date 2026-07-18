@@ -1,0 +1,112 @@
+#!/usr/bin/env python3
+"""DETETOR DE CHOQUE DE PREÇO (Cris 2026-07-18) — o gatilho realtime MAIS RÁPIDO, independente de qualquer
+news feed: o mercado precifica a notícia ANTES dos feeds a reportarem. Loop dedicado 30s: lê o preço live
+do 15M (forming bar, tab-pinned, leve) e mede velocidade vs ATR15. Choque = |Δpreço em ≤5min| ≥ 1.2·ATR15
+(major ≥ 2.5). Na hora: escreve snapshot (lido pelo news_gate → E0/E2) + escalada Telegram imediata
+(dedup+cooldown). Fail-closed, horas Lisboa, py3.9. Grelha CONGELADA. CLI: --once (default 1 ciclo)."""
+import os, sys, json, time, datetime as dt
+from pathlib import Path
+from zoneinfo import ZoneInfo
+HERE = Path(__file__).resolve().parent
+CORE = HERE.parent
+sys.path.insert(0, str(CORE)); sys.path.insert(0, "/Users/cristrein/tradingview-mcp/alert-bridge")
+import tab_pin
+from draw_xau_4h_trades import MCPClient
+import context_structure as cs
+LX = ZoneInfo("Europe/Lisbon")
+STATE = HERE / ".shock_state"; STATE.mkdir(exist_ok=True)
+SAMPLES = STATE / "samples.jsonl"
+SHOCK_F = STATE / "shock.json"          # lido pelo news_gate (price_shock_now)
+ALERT_F = STATE / "alert_state.json"
+LOG = STATE / "shock_cycle.log"
+# GRELHA CONGELADA
+SHOCK_ATR = 1.2         # choque = movimento ≥ 1.2·ATR15 na janela
+MAJOR_ATR = 2.5         # choque MAJOR
+WINDOW_S = 300          # janela de velocidade = 5 min
+RETAIN_S = 900          # mantém 15 min de amostras
+COOLDOWN_S = 600        # ≥10 min entre alertas Telegram
+iso = lambda t: dt.datetime.fromtimestamp(int(t), LX).strftime("%H:%M:%S")
+
+
+def _log(o):
+    with open(LOG, "a") as fh: fh.write(json.dumps(o, ensure_ascii=False) + "\n")
+
+
+def _samples():
+    try: return [json.loads(x) for x in SAMPLES.read_text().splitlines() if x.strip()]
+    except Exception: return []
+
+
+def read_live():
+    """Preço live do 15M (forming bar) + ATR15, tab-pinned, leve (count 30). None em falha."""
+    tid = tab_pin.discover_tab("15")
+    if not tid: return None, None
+    os.environ["TVMCP_TARGET_CHART_ID"] = tid
+    c = MCPClient(); c.start()
+    try:
+        oh = c.call_tool("data_get_ohlcv", {"count": 30}) or {}
+        bars = oh.get("bars") or oh.get("ohlcv") or []
+    finally:
+        c.stop()
+    if len(bars) < 16: return None, None
+    H = [b.get("high") for b in bars]; L = [b.get("low") for b in bars]; C = [b.get("close") for b in bars]
+    if any(x is None for x in H + L + C): return None, None
+    atr = cs.atr(H, L, C, len(C) - 1, 14)
+    return C[-1], (atr or 5.0)                          # C[-1] = forming bar close = preço agora
+
+
+def _notify(text):
+    try:
+        sys.path.insert(0, str(CORE.parent / "strategies/xau_4h_long/continuation/L1_EMA21_CONTINUATION"))
+        import telegram_notify as TN
+        return TN.send_telegram(text)
+    except Exception as e:
+        return f"ERR {str(e)[:60]}"
+
+
+def main():
+    now = int(time.time())
+    price, atr = read_live()
+    out = {"ts": dt.datetime.now(dt.timezone.utc).isoformat()}
+    if price is None:
+        out["status"] = "NO_PRICE (no-op)"; _log(out); print(json.dumps(out)); return
+    # amostras (retenção 15min)
+    sm = [s for s in _samples() if s["t"] >= now - RETAIN_S]
+    sm.append({"t": now, "p": price})
+    SAMPLES.write_text("\n".join(json.dumps(s) for s in sm) + "\n")
+    # velocidade: preço agora vs amostra mais antiga dentro da janela
+    win = [s for s in sm if s["t"] >= now - WINDOW_S]
+    ref = min(win, key=lambda s: s["t"]) if len(win) >= 2 else None
+    out.update({"price": price, "atr15": round(atr, 2), "n_samples": len(sm)})
+    if ref is None:
+        out["status"] = "SEED (a acumular janela)"; _log(out); print(json.dumps(out)); return
+    move = price - ref["p"]; move_atr = round(abs(move) / atr, 2); dtmin = round((now - ref["t"]) / 60, 1)
+    out.update({"move": round(move, 2), "move_atr": move_atr, "window_min": dtmin,
+                "shock": move_atr >= SHOCK_ATR, "major": move_atr >= MAJOR_ATR})
+    if move_atr >= SHOCK_ATR:
+        direction = "ALTA" if move > 0 else "BAIXA"
+        tier = "MAJOR" if move_atr >= MAJOR_ATR else "choque"
+        SHOCK_F.write_text(json.dumps({"ts": now, "price": price, "move_atr": move_atr, "dir": direction,
+                                       "window_min": dtmin, "major": move_atr >= MAJOR_ATR}))
+        # escalada Telegram (dedup por direção+preço arredondado, cooldown)
+        try: al = json.loads(ALERT_F.read_text())
+        except Exception: al = {"last_ts": 0, "last_key": None}
+        key = f"{direction}:{round(price)}"
+        send = os.environ.get("L1_PRODUCTION_AUTHORIZED") == "1"   # só o wrapper autoriza; runs de teste = DRY
+        if now - al.get("last_ts", 0) >= COOLDOWN_S and key != al.get("last_key"):
+            msg = (f"⚡ <b>CHOQUE DE PREÇO XAU — {tier} {direction}</b>\n"
+                   f"{move:+.2f} ({move_atr:.1f}×ATR15) em {dtmin}min · preço {price:.2f}\n"
+                   f"{iso(now)} Lisboa · verifica news (guerra/Fed/petróleo) — contexto, não ordem")
+            r = _notify(msg) if send else "DRY (sem L1_PRODUCTION_AUTHORIZED)"
+            ALERT_F.write_text(json.dumps({"last_ts": now, "last_key": key, "tg": str(r)}))
+            out["telegram"] = str(r)
+        out["status"] = f"SHOCK {tier} {direction} {move_atr}xATR"
+    else:
+        if SHOCK_F.exists() and now - json.loads(SHOCK_F.read_text()).get("ts", 0) > WINDOW_S:
+            SHOCK_F.unlink(missing_ok=True)          # limpa flag antiga
+        out["status"] = "OK (sem choque)"
+    _log(out); print(json.dumps(out, ensure_ascii=False))
+
+
+if __name__ == "__main__":
+    main()
