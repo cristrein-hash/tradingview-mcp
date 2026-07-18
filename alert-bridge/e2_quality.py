@@ -205,10 +205,24 @@ def render_composite(dsr, cand):
     L.append(f"  RSI {fmt(micro.get('rsi'),1)} (MA {fmt(micro.get('rsi_ma'),1)}) | ADX {fmt(dmi.get('adx'),1)} "
              f"+DI {fmt(dmi.get('plus_di'),1)} -DI {fmt(dmi.get('minus_di'),1)} | CHOP {fmt(micro.get('chop'),1)}")
     L.append(f"  NAS bottom {nas.get('bottom')} top {nas.get('top')} dist_EMA {fmt(nas.get('dist_ema_atr'),2)}×ATR")
+    cnd = micro.get("candles") or {}; vit = micro.get("vitality") or {}; vsn = micro.get("volume_session") or {}
+    if cnd:
+        seq = " ".join(f"{(b.get('dir') or '?')[:2]}{fmt(b.get('body_atr'),2)}" for b in (cnd.get("bars") or []))
+        L.append(f"  velas(últ{cnd.get('window_bars')}): iniciativa {cnd.get('dominant')} | "
+                 f"força ↑{fmt(cnd.get('up_force_atr'),2)} ↓{fmt(cnd.get('dn_force_atr'),2)} | {seq}")
+    if vit:
+        L.append(f"  vitalidade: ratio {fmt(vit.get('ratio'),2)} ({vit.get('label')}) — range recente vs ATR")
+    if vsn:
+        L.append(f"  vol sessão: up {fmt(vsn.get('up'),0)} / dn {fmt(vsn.get('dn'),0)} (ratio {fmt(vsn.get('ratio'),2)})")
     L.append("\n# AUCTION / CONFLUÊNCIA 15M (ativação de bubbles ao longo da perna)")
     L.append(f"  perna {conf.get('leg_dur_bars','—')} barras | buy_dens {fmt(conf.get('buy_dens'),2)} "
              f"sell_dens {fmt((conf.get('sell') or {}).get('dens'),2)} | act_dens {fmt(conf.get('act_dens'),2)} "
              f"| leg_sell {conf.get('leg_sell','—')} | nas_n {conf.get('nas_n','—')}")
+    win = conf.get("window") or {}
+    if win:
+        wb = win.get("buy", {}) or {}; ws = win.get("sell", {}) or {}
+        L.append(f"  janela(últ{win.get('bars')} barras, iniciativa recente): buy {wb.get('n')}/{wb.get('weight')} · "
+                 f"sell {ws.get('n')}/{ws.get('weight')} → lado {win.get('net_side')}")
     L.append("\n# MACRO")
     ng = macro.get("news_gate", {}) or {}
     L.append(f"  sessão {ng.get('session')} | risco {macro.get('risk_level')} | real_yield10y "
@@ -466,6 +480,19 @@ def cli_selftest():
         r.append(("render_composite ok", True))
     except Exception as e:
         r.append((f"render_composite ok ({e})", False))
+    # F-A1: renderer expõe candles/vitality/volume_session/window quando presentes
+    try:
+        de = json.loads(json.dumps(base_d))
+        de["axes"]["micro_15m"]["candles"] = {"window_bars": 4, "up_force_atr": 0.2, "dn_force_atr": 1.1,
+                                              "dominant": "sell", "bars": [{"dir": "down", "body_atr": 0.5, "range_atr": 0.8}]}
+        de["axes"]["micro_15m"]["vitality"] = {"ratio": 0.5, "label": "low", "k": 4}
+        de["axes"]["micro_15m"]["volume_session"] = {"up": 3.0, "dn": 6.0, "ratio": 0.5}
+        de["axes"]["confluence"] = {"15": {"window": {"bars": 4, "buy": {"n": 0, "weight": 0},
+                                                      "sell": {"n": 2, "weight": 3}, "net_side": "sell"}}}
+        img = render_composite(de, cand)
+        r.append(("render F-A1 fields ok", "velas(" in img and "vitalidade:" in img and "janela(" in img))
+    except Exception as e:
+        r.append((f"render F-A1 fields ({e})", False))
     allok = all(ok for _, ok in r)
     for name, ok in r: print(f"  {'OK' if ok else 'FALHA'} {name}")
     print("SELFTEST:", "PASS" if allok else "FALHA")

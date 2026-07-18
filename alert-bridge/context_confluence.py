@@ -17,6 +17,24 @@ import context_structure as cs
 
 BUY = {"plot_0": 1, "plot_2": 2, "plot_4": 3}      # verde (mapeamento validado Cp)
 SELL = {"plot_6": 1, "plot_8": 2, "plot_10": 3}    # vermelho
+WIN_BARS = 4                                        # janela do sinal (~1h em 15M) — F-A1.3
+
+
+def _split_sides(pairs):
+    """Soma bubbles por lado a partir de pares (t, plot). Puro/testável (F-A1.3)."""
+    bw = sw = bn = sn = 0
+    for (_t, plot) in pairs:
+        if plot in BUY: bw += BUY[plot]; bn += 1
+        elif plot in SELL: sw += SELL[plot]; sn += 1
+    return bn, bw, sn, sw
+
+
+def _window_block(pairs, W):
+    """Bubbles por lado na JANELA recente do sinal (F-A1.3): resolve o defeito de sexta (o leg-aggregate
+    diluía a ausência de iniciativa recente). Descritivo — o read pondera como voz."""
+    bn, bw, sn, sw = _split_sides(pairs)
+    net = "buy" if bw > sw else ("sell" if sw > bw else "none")
+    return {"bars": W, "buy": {"n": bn, "weight": bw}, "sell": {"n": sn, "weight": sw}, "net_side": net}
 
 
 def _acts(pb):
@@ -51,6 +69,8 @@ def read_confluence_store(tf="15", count=320):
         elif plot in SELL: sell_w += SELL[plot]; sell_n += 1
     nas_n = len(SR.shape_pairs("nas", t0, t1))
     act_dens = round((buy_w + sell_w) / dur_bars, 3)
+    t_win = T[-WIN_BARS] if len(T) >= WIN_BARS else t0
+    window = _window_block(SR.shape_pairs("bubbles", t_win, t1), WIN_BARS)   # F-A1.3
     return {
         "tf": tf, "leg_start_bar": leg_start, "leg_dur_bars": dur_bars,
         "leg": stru.get("leg"), "trend": stru.get("trend"),
@@ -58,6 +78,7 @@ def read_confluence_store(tf="15", count=320):
         "sell": {"n": sell_n, "weight": sell_w, "dens": round(sell_w / dur_bars, 3)},
         "nas_n": nas_n, "act_dens": act_dens,
         "leg_sell": sell_w, "buy_dens": round(buy_w / dur_bars, 3),
+        "window": window,
     }
 
 
@@ -104,6 +125,9 @@ def read_confluence(tf="15", count=320, max_bars=500):
                     elif plot in SELL: sell_w += SELL[plot]; sell_n += 1
                 nas_n = sum(1 for (t, _p) in _acts(nb) if t is not None and t0 <= t <= t1)
                 act_dens = round((buy_w + sell_w) / dur_bars, 3)
+                t_win = T[-WIN_BARS] if len(T) >= WIN_BARS else t0
+                wpairs = [(t, plot) for (t, plot) in _acts(pb) if t is not None and t_win <= t <= t1]
+                window = _window_block(wpairs, WIN_BARS)                    # F-A1.3
                 return {
                     "tf": tf, "leg_start_bar": leg_start, "leg_dur_bars": dur_bars,
                     "leg": stru.get("leg"), "trend": stru.get("trend"),
@@ -113,6 +137,7 @@ def read_confluence(tf="15", count=320, max_bars=500):
                     "act_dens": act_dens,                                    # Cp: GT ~0.82 vs losers ~0.48
                     "leg_sell": sell_w,                                      # Cp gate: leg_sell>=180 (janela grande)
                     "buy_dens": round(buy_w / dur_bars, 3),                  # Cp gate: buy_dens>=0.25
+                    "window": window,
                 }
             except Exception as e:
                 return {"error": f"{type(e).__name__}:{str(e)[:60]}"}
@@ -127,6 +152,19 @@ def read_confluence(tf="15", count=320, max_bars=500):
     return {"error": f"tab {tf} nao encontrada"}
 
 
+def _selftest():
+    pairs = [(1, "plot_6"), (2, "plot_8"), (3, "plot_0")]   # sell 1+2=3 (n2) · buy 1 (n1)
+    bn, bw, sn, sw = _split_sides(pairs); w = _window_block(pairs, WIN_BARS)
+    r = [("split buy", (bn, bw) == (1, 1)), ("split sell", (sn, sw) == (2, 3)),
+         ("net sell", w["net_side"] == "sell"), ("vazio -> none", _window_block([], WIN_BARS)["net_side"] == "none")]
+    allok = all(ok for _, ok in r)
+    for name, ok in r: print(f"  {'OK' if ok else 'FALHA'} {name}")
+    print("SELFTEST context_confluence:", "PASS" if allok else "FALHA")
+    return 0 if allok else 1
+
+
 if __name__ == "__main__":
     import json
+    if "--selftest" in sys.argv:
+        sys.exit(_selftest())
     print(json.dumps(read_confluence("15"), indent=1, ensure_ascii=False))
