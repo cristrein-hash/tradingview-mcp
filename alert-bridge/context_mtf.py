@@ -56,8 +56,58 @@ def _nearest_zones(c, last):
     return {"n": len(zs), "above": above, "below": below}
 
 
+def _zones_from_payload(pb, last):
+    zs = []
+    for study in (pb or {}).get("studies", []):
+        for z in study.get("zones", []):
+            hi = z.get("high"); lo = z.get("low")
+            if hi is None or lo is None:
+                continue
+            zs.append({"high": round(float(hi), 2), "low": round(float(lo), 2), "src": (study.get("name") or "")[:14]})
+    if not zs or last is None:
+        return {"n": len(zs), "above": None, "below": None}
+    above = min((z for z in zs if z["low"] > last), key=lambda z: z["low"], default=None)
+    below = max((z for z in zs if z["high"] < last), key=lambda z: z["high"], default=None)
+    return {"n": len(zs), "above": above, "below": below}
+
+
+def _svp_from_payload(sv):
+    svp_v = next((s.get("values", {}) for s in (sv or {}).get("studies", []) if "Volume Profile" in (s.get("name") or "")), {})
+    def _n(x):
+        try: return float(str(x).replace("K", "e3").replace(" ", ""))
+        except Exception: return None
+    up, dn = _n(svp_v.get("Up")), _n(svp_v.get("Down"))
+    return {"up": up, "dn": dn, "total": _n(svp_v.get("Total")),
+            "pressure": ("sell" if (up is not None and dn is not None and dn > up) else "buy") if (up is not None and dn is not None) else None}
+
+
+def read_mtf_store(count=OHLCV_COUNT):
+    """STORE-FIRST (Fase 1, 2026-07-18): lê o bar-store (zero CDP). Devolve None se store não-fresco."""
+    import store_reader as SR
+    out = {}
+    for tf in TFS_WANTED:
+        if not SR.fresh(tf):
+            return None                                   # store doente -> fallback MCP completo
+        rs = SR.bars(tf, count)
+        H = [r["h"] for r in rs]; L = [r["l"] for r in rs]; C = [r["c"] for r in rs]
+        n = len(rs)
+        struct = cs.structure(H, L, C) if n > 40 else None
+        pb, _ = SR.pine_boxes(tf)
+        sv, _ = SR.study_values(tf)
+        out[tf] = {"target": "store", "bars": n, "structure": struct,
+                   "zones": _zones_from_payload(pb, C[-1] if C else None),
+                   "svp": _svp_from_payload(sv)}
+    return out
+
+
 def read_mtf(count=OHLCV_COUNT, with_zones=True):
-    """Devolve {tf: {target, bars, structure, zones}} para cada TF encontrado. Pin serial por tab."""
+    """Devolve {tf: {target, bars, structure, zones}} por TF. STORE-FIRST; fallback = pin serial por tab (MCP)."""
+    try:
+        st = read_mtf_store(count)
+        if st is not None:
+            return st
+    except Exception:
+        pass                                              # qualquer falha do store -> caminho MCP antigo
     out = {}
     saved = os.environ.get("TVMCP_TARGET_CHART_ID")
     try:

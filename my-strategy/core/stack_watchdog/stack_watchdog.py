@@ -93,6 +93,7 @@ def components():
         "EF news":     chk_ef_news(REPO / "external_factors_v2/snapshots/investinglive_news.json", 15*60),
         "EF v2":       chk_mtime(REPO / "external_factors_v2/snapshots/latest.json", 70*60),
         "Backfill":    chk_mtime(AB / "logs/e2_outcome_backfill.log", 130*60),
+        "Bar-store":   chk_log_status(REPO / "my-strategy/core/bar_store/store/store_cycle.log", 10*60, bad_prefixes=("HARD_STOP",)),
     }
     if paused:   # pipeline E0/E1/E2 honra pausa: não é cegueira
         for k in ("E0 dossiê", "E1 detector", "E2 quality"):

@@ -154,29 +154,50 @@ def detect_and_alert(rows, bub, send):
     return trades, fired
 
 
+def _from_store():
+    """STORE-FIRST (Fase 1, 2026-07-18): barras+bubbles do bar-store (zero CDP). None se não-fresco."""
+    try:
+        import store_reader as SR
+        if not SR.fresh("15", mult=5):
+            return None
+        rows = SR.bars("15")
+        bub = [{"t": t, "plot": p} for t, p in SR.shape_pairs("bubbles")]
+        return rows, bub
+    except Exception:
+        return None
+
+
 def main():
     ts = dt.datetime.now(dt.timezone.utc).isoformat()
     send = os.environ.get("CP_PRODUCTION_AUTHORIZED") == "1"
     out = {"ts": ts, "mode": "LIVE" if send else "DRY"}
-    tid = None
-    try:
-        tid = find_tab_15m()
-    except Exception as e:
-        out["status"] = f"HARD_STOP CDP: {str(e)[:60]}"; _log(out); print(json.dumps(out)); return
-    if not tid:
-        out["status"] = "NO_TAB_15M (no-op)"; _log(out); print(json.dumps(out)); return
-    try:
-        bars, pairs = read_tab(tid)
-    except Exception as e:
-        out["status"] = f"HARD_STOP read: {str(e)[:60]}"; _log(out); print(json.dumps(out)); return
-    if not bars:
+    st = _from_store()
+    if st is not None:
+        rows, bub = st
+        out["source"] = "store"
+    else:
+        # fallback legado: leitura MCP própria + buffers locais (store doente)
+        out["source"] = "mcp-fallback"
+        tid = None
+        try:
+            tid = find_tab_15m()
+        except Exception as e:
+            out["status"] = f"HARD_STOP CDP: {str(e)[:60]}"; _log(out); print(json.dumps(out)); return
+        if not tid:
+            out["status"] = "NO_TAB_15M (no-op)"; _log(out); print(json.dumps(out)); return
+        try:
+            bars, pairs = read_tab(tid)
+        except Exception as e:
+            out["status"] = f"HARD_STOP read: {str(e)[:60]}"; _log(out); print(json.dumps(out)); return
+        if not bars:
+            out["status"] = "SEM_BARRAS (no-op)"; _log(out); print(json.dumps(out)); return
+        res, counts, err = update_buffers(bars, pairs)
+        if err:
+            out["status"] = f"HARD_STOP buffer: {err}"; _log(out); print(json.dumps(out)); return
+        rows, bub = res
+    if not rows:
         out["status"] = "SEM_BARRAS (no-op)"; _log(out); print(json.dumps(out)); return
-    res, counts, err = update_buffers(bars, pairs)
-    if err:
-        out["status"] = f"HARD_STOP buffer: {err}"; _log(out); print(json.dumps(out)); return
-    rows, bub = res
-    out.update({"buf_bars": len(rows), "buf_bub": len(bub), "new_bars": counts[0], "new_bub": counts[1],
-                "last_bar": iso(rows[-1]["t"]) if rows else None})
+    out.update({"buf_bars": len(rows), "buf_bub": len(bub), "last_bar": iso(rows[-1]["t"])})
     trades, fired = detect_and_alert(rows, bub, send)
     out.update({"trades_in_buffer": len(trades), "alerts_fired": len(fired), "status": "OK"})
     _log(out); print(json.dumps(out, ensure_ascii=False, indent=1))

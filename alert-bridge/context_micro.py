@@ -21,7 +21,56 @@ def _ema(vals, period):
     return round(e, 3)
 
 
+def _micro_from(g, closes, bar_time):
+    """Constrói o bloco micro a partir de study_values agrupados (g) + closes (mesma lógica de sempre)."""
+    last = closes[-1] if closes else None
+    ema9, ema21, ema50 = _ema(closes, 9), _ema(closes, 21), _ema(closes, 50)
+    rsi = g.get("Relative Strength Index", {})
+    dmi = g.get("Directional Movement Index", {})
+    svp = g.get("Session Volume Profile", {})
+    chop = g.get("Choppiness Index", {})
+    nas = g.get("NAS TOP BOTTOM DETECTOR", {})
+    up, dn = svp.get("Up"), svp.get("Down")
+
+    def num(x):
+        try: return float(str(x).replace("K", "e3").replace(" ", ""))
+        except Exception: return None
+    return {
+        "close": last, "bar_time": bar_time,
+        "ema": {"ema9": ema9, "ema21": ema21, "ema50": ema50,
+                "pos": ("above" if (last and ema21 and last > ema21) else "below") if last and ema21 else None},
+        "rsi": rsi.get("RSI"), "rsi_ma": rsi.get("RSI-based MA"),
+        "dmi": {"adx": dmi.get("ADX"), "plus_di": dmi.get("+DI"), "minus_di": dmi.get("-DI")},
+        "chop": chop.get("Choppiness Index") or (list(chop.values())[0] if chop else None),
+        "volume_session": {"up": num(up), "dn": num(dn),
+                           "ratio": round(num(up) / num(dn), 2) if num(up) and num(dn) else None},
+        "nas": {"bottom": nas.get("NAS_BOTTOM_SIGNAL"), "top": nas.get("NAS_TOP_SIGNAL"),
+                "dist_ema_atr": nas.get("NAS_DISTANCE_FROM_EMA_ATR")},
+    }
+
+
+def read_micro_store(count=120):
+    """STORE-FIRST (Fase 1, 2026-07-18): micro 15M do bar-store, zero CDP. None se store não-fresco."""
+    import store_reader as SR
+    if not SR.fresh("15"):
+        return None
+    sv, _age = SR.study_values("15")
+    if sv is None:
+        return None
+    g = {s.get("name"): s.get("values", {}) for s in (sv or {}).get("studies", [])}
+    rs = SR.bars("15", count)
+    closes = [r["c"] for r in rs]
+    bar_time = rs[-1]["t"] if rs else None
+    return _micro_from(g, closes, bar_time)
+
+
 def read_micro(count=120):
+    try:
+        st = read_micro_store(count)
+        if st is not None:
+            return st
+    except Exception:
+        pass                                              # store doente -> caminho MCP antigo
     saved = os.environ.get("TVMCP_TARGET_CHART_ID")
     try:
         for tid in list_chart_targets():

@@ -93,15 +93,27 @@ def compute_regime():
 def main():
     once = "--once" in sys.argv
     ts = dt.datetime.now(dt.timezone.utc).isoformat()
-    tid4 = tab_pin.discover_tab("240"); tid1 = tab_pin.discover_tab("60")
     out = {"ts": ts}
-    if not tid4:
-        out["status"] = "HARD_STOP: sem tab 240"; _log(out); print(json.dumps(out)); return
-    n4, e4 = append_bars("240", tid4, RAW4)
-    n1, e1 = (append_bars("60", tid1, RAW1) if tid1 else (0, "sem tab 60"))
-    out.update({"appended_4h": n4, "appended_1h": n1, "err_4h": e4, "err_1h": e1})
-    if e4:
-        out["status"] = f"HARD_STOP append 4H: {e4}"; _log(out); print(json.dumps(out)); return
+    # STORE-FIRST (Fase 1, 2026-07-18): o bar-store é o dono dos appends aos RAW 4H/1H.
+    # Se o store estiver fresco, zero MCP aqui; senão, fallback legado (append próprio).
+    store_ok = False
+    try:
+        import store_reader as SR
+        store_ok = SR.fresh("240", mult=3)
+    except Exception:
+        store_ok = False
+    if store_ok:
+        out["source"] = "store"
+    else:
+        out["source"] = "mcp-fallback"
+        tid4 = tab_pin.discover_tab("240"); tid1 = tab_pin.discover_tab("60")
+        if not tid4:
+            out["status"] = "HARD_STOP: sem tab 240 (e store não-fresco)"; _log(out); print(json.dumps(out)); return
+        n4, e4 = append_bars("240", tid4, RAW4)
+        n1, e1 = (append_bars("60", tid1, RAW1) if tid1 else (0, "sem tab 60"))
+        out.update({"appended_4h": n4, "appended_1h": n1, "err_4h": e4, "err_1h": e1})
+        if e4:
+            out["status"] = f"HARD_STOP append 4H: {e4}"; _log(out); print(json.dumps(out)); return
     r = compute_regime()
     out.update(r)
     # transição?

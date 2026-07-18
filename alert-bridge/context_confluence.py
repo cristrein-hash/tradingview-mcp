@@ -29,8 +29,46 @@ def _acts(pb):
     return out
 
 
+def read_confluence_store(tf="15", count=320):
+    """STORE-FIRST (Fase 1, 2026-07-18): confluência da perna via bar-store, zero CDP. None se não-fresco."""
+    import store_reader as SR
+    if tf != "15" or not SR.fresh("15"):
+        return None
+    rs = SR.bars("15", count)
+    if len(rs) < 50:
+        return None
+    H = [r["h"] for r in rs]; L = [r["l"] for r in rs]; Cc = [r["c"] for r in rs]; T = [r["t"] for r in rs]
+    stru = cs.structure(H, L, Cc)
+    sw = stru.get("swings", {})
+    bars_idx = [sw.get(k, {}).get("bar") for k in ("last_low", "last_high") if sw.get(k)]
+    leg_start = min(bars_idx) if bars_idx else max(0, len(T) - 30)
+    t0 = T[leg_start] if 0 <= leg_start < len(T) else T[0]
+    t1 = T[-1]
+    dur_bars = max(1, len(T) - leg_start)
+    buy_w = sell_w = buy_n = sell_n = 0
+    for (t, plot) in SR.shape_pairs("bubbles", t0, t1):
+        if plot in BUY: buy_w += BUY[plot]; buy_n += 1
+        elif plot in SELL: sell_w += SELL[plot]; sell_n += 1
+    nas_n = len(SR.shape_pairs("nas", t0, t1))
+    act_dens = round((buy_w + sell_w) / dur_bars, 3)
+    return {
+        "tf": tf, "leg_start_bar": leg_start, "leg_dur_bars": dur_bars,
+        "leg": stru.get("leg"), "trend": stru.get("trend"),
+        "buy": {"n": buy_n, "weight": buy_w, "dens": round(buy_w / dur_bars, 3)},
+        "sell": {"n": sell_n, "weight": sell_w, "dens": round(sell_w / dur_bars, 3)},
+        "nas_n": nas_n, "act_dens": act_dens,
+        "leg_sell": sell_w, "buy_dens": round(buy_w / dur_bars, 3),
+    }
+
+
 def read_confluence(tf="15", count=320, max_bars=500):
-    """Confluência de order-flow na perna corrente do TF dado (default 15M)."""
+    """Confluência de order-flow na perna corrente do TF dado (default 15M). STORE-FIRST; fallback MCP."""
+    try:
+        st = read_confluence_store(tf, count)
+        if st is not None:
+            return st
+    except Exception:
+        pass
     saved = os.environ.get("TVMCP_TARGET_CHART_ID")
     try:
         for tid in list_chart_targets():
