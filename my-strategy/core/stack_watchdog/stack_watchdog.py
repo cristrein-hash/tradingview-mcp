@@ -1,0 +1,158 @@
+#!/usr/bin/env python3
+"""STACK WATCHDOG — anti-cegueira-silenciosa (ordem Cris 2026-07-18). Verifica o heartbeat de CADA
+componente live pelos SEUS ficheiros de evidência (logs jsonl/snapshots/pids — zero MCP, zero CDP) e
+alerta Telegram na TRANSIÇÃO ok→blind e na recuperação blind→ok. Re-alerta se continuar cego (6h).
+Pausas (monitor.pause/claude_recheck.paused) = "paused", não blind; alerta só se pausa >2h (esquecida).
+Sem spam: 1 mensagem consolidada por corrida, só quando há mudanças. Horas humanas = Lisboa. py3.9.
+CLI: (default) 1 corrida · --test envia 1 msg de ativação · --status imprime painel sem alertar."""
+import os, sys, json, time, datetime as dt
+from pathlib import Path
+from zoneinfo import ZoneInfo
+LX = ZoneInfo("Europe/Lisbon")
+REPO = Path("/Users/cristrein/tradingview-mcp")
+AB = REPO / "alert-bridge"
+STRAT = REPO / "my-strategy/strategies"
+STATE_DIR = Path(__file__).resolve().parent / ".watchdog_state"; STATE_DIR.mkdir(exist_ok=True)
+STATE_F = STATE_DIR / "state.json"
+LOG = STATE_DIR / "watchdog.log"
+REALERT_S = 6 * 3600
+PAUSE_ALERT_S = 2 * 3600
+PAUSES = [AB / "logs/monitor.pause", Path("/tmp/claude_recheck.paused")]
+now = lambda: int(time.time())
+lx = lambda t: dt.datetime.fromtimestamp(int(t), LX).strftime("%H:%M")
+
+
+def _last_jsonl(f):
+    try:
+        lines = f.read_text().splitlines()
+        return json.loads(lines[-1]) if lines else None
+    except Exception:
+        return None
+
+
+def _mtime(f):
+    try: return f.stat().st_mtime
+    except Exception: return None
+
+
+def _pid_alive(pidfile):
+    try:
+        os.kill(int(pidfile.read_text().strip()), 0); return True
+    except Exception:
+        return False
+
+
+def _iso_age(ts_iso):
+    try:
+        return now() - dt.datetime.fromisoformat(ts_iso).timestamp()
+    except Exception:
+        return None
+
+
+# ---------- checks (devolvem (status, detalhe)) ----------
+def chk_log_status(f, max_age_s, bad_prefixes=("HARD_STOP", "NO_TAB", "SEM_BARRAS")):
+    r = _last_jsonl(f)
+    if not r: return "blind", "sem log"
+    age = _iso_age(r.get("ts") or "")
+    if age is None or age > max_age_s: return "blind", f"log parado há {int((age or 0)/60)}min"
+    st = str(r.get("status") or "")
+    if any(st.startswith(b) for b in bad_prefixes): return "blind", st[:60]
+    return "ok", st[:40]
+
+
+def chk_mtime(f, max_age_s):
+    m = _mtime(f)
+    if m is None: return "blind", "ficheiro ausente"
+    age = now() - m
+    return ("ok", f"há {int(age/60)}min") if age <= max_age_s else ("blind", f"parado há {int(age/60)}min")
+
+
+def chk_pid(pidfile):
+    return ("ok", "pid vivo") if _pid_alive(pidfile) else ("blind", "processo morto")
+
+
+def chk_ef_news(f, max_age_s):
+    try: d = json.loads(f.read_text())
+    except Exception: return "blind", "snapshot ilegível"
+    age = now() - (d.get("fetch_ts") or 0)
+    if age > max_age_s: return "blind", f"fetch parado há {int(age/60)}min"
+    if not d.get("fetch_ok"): return "blind", f"fetch_ok=false ({str(d.get('error'))[:40]})"
+    return "ok", f"há {int(age/60)}min"
+
+
+def components():
+    paused = any(p.exists() for p in PAUSES)
+    c = {
+        "Cp 15M":      chk_log_status(STRAT / "xau_15m_long/reversal/CP_CAPITULATION/.cp_state/cp_cycle.log", 35*60),
+        "Regime":      chk_log_status(REPO / "my-strategy/core/regime_engine/.regime_state/regime_cycle.log", 130*60),
+        "L1 4H":       chk_log_status(STRAT / "xau_4h_long/continuation/L1_EMA21_CONTINUATION/.runtime_state/l1_cycle.log", 6*3600),
+        "L2 4H":       chk_log_status(STRAT / "xau_4h_long/reversal/L2_BPT_ZONE_TREND_EXIT/.runtime_state/l2_cycle.log", 270*60),  # cadência real: 4/4h (:12 pós-fecho 4H)
+        "E0 dossiê":   chk_mtime(REPO / "external_factors_v2/snapshots/market_context.json", 15*60),
+        "E1 detector": chk_pid(AB / "logs/e1_detector.pid"),
+        "E2 quality":  chk_pid(AB / "logs/e2_quality.pid"),
+        "EF news":     chk_ef_news(REPO / "external_factors_v2/snapshots/investinglive_news.json", 15*60),
+        "EF v2":       chk_mtime(REPO / "external_factors_v2/snapshots/latest.json", 70*60),
+        "Backfill":    chk_mtime(AB / "logs/e2_outcome_backfill.log", 130*60),
+    }
+    if paused:   # pipeline E0/E1/E2 honra pausa: não é cegueira
+        for k in ("E0 dossiê", "E1 detector", "E2 quality"):
+            if c[k][0] == "blind": c[k] = ("paused", "pausado (monitor.pause)")
+    return c
+
+
+def _notify(text):
+    try:
+        sys.path.insert(0, str(STRAT / "xau_4h_long/continuation/L1_EMA21_CONTINUATION"))
+        import telegram_notify as TN
+        return TN.send_telegram(text)
+    except Exception as e:
+        return f"ERR {str(e)[:60]}"
+
+
+def main():
+    if "--status" in sys.argv:
+        for k, (st, d) in components().items():
+            print(f"  {k:<12} {st:<7} {d}")
+        return 0
+    if "--test" in sys.argv:
+        r = _notify("🩺 Stack watchdog ATIVO — vigio Cp/Regime/L1/L2/E0/E1/E2/EF/backfill a cada 5min; alerto na cegueira e na recuperação.")
+        print("teste telegram:", r); return 0
+    try: st_prev = json.loads(STATE_F.read_text())
+    except Exception: st_prev = {}
+    cur = components()
+    changes, still_blind = [], []
+    for k, (st, det) in cur.items():
+        p = st_prev.get(k) or {}
+        if st != p.get("status"):
+            st_prev[k] = {"status": st, "since": now(), "last_alert": 0}
+            if st == "blind":
+                changes.append(f"🔴 {k}: CEGO — {det}")
+            elif st == "ok" and p.get("status") in ("blind", "paused"):
+                changes.append(f"🟢 {k}: recuperado ({det})")
+        else:
+            since = p.get("since") or now(); last_a = p.get("last_alert") or 0
+            if st == "blind" and now() - last_a > REALERT_S:
+                still_blind.append(f"🔴 {k}: ainda cego desde {lx(since)} — {det}")
+                st_prev[k]["last_alert"] = now()
+            if st == "paused" and now() - since > PAUSE_ALERT_S and now() - last_a > REALERT_S:
+                still_blind.append(f"⏸️ {k}: pausado há {int((now()-since)/3600)}h (esquecido?)")
+                st_prev[k]["last_alert"] = now()
+    msgs = changes + still_blind
+    out = {"ts": dt.datetime.now(dt.timezone.utc).isoformat(),
+           "panel": {k: v[0] for k, v in cur.items()}, "alerts": len(msgs)}
+    if msgs:
+        for m in changes:
+            if m.startswith("🔴"):
+                k = m.split(":")[0][2:].strip()
+                st_prev[k]["last_alert"] = now()
+        r = _notify("🩺 STACK WATCHDOG\n" + "\n".join(msgs))
+        out["telegram"] = str(r)
+    tmp = STATE_F.with_suffix(".json.tmp"); tmp.write_text(json.dumps(st_prev)); os.replace(tmp, STATE_F)
+    with open(LOG, "a") as fh:
+        fh.write(json.dumps(out, ensure_ascii=False) + "\n")
+    print(json.dumps(out, ensure_ascii=False))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
