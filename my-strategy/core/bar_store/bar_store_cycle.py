@@ -97,9 +97,11 @@ def append_tf(tf, tid, bars):
     cfg = TFS[tf]; D = cfg["dur"]; f = cfg["file"]
     now = int(time.time())
     rows = _jl(f)
+    n0 = len(rows)
     if cfg["retain"]:
         cut = now - cfg["retain"]
         rows = [r for r in rows if r["t"] >= cut]
+    trimmed = n0 - len(rows)
     have = {r["t"] for r in rows}
     last = max(have) if have else 0
     phase = cfg["phase"]                            # None (1D) = SEM validação de grelha: a fase diária
@@ -120,7 +122,7 @@ def append_tf(tf, tid, bars):
         if t <= last and t in have:
             continue
         new.append({"t": t, "o": o, "h": h, "l": l, "c": cc}); have.add(t)
-    if new or cfg["retain"]:
+    if new or trimmed:                              # só reescreve com mudança REAL (WatchPaths = evento limpo)
         rows = sorted(rows + new, key=lambda r: r["t"])
         tmp = f.with_suffix(".jsonl.tmp")
         tmp.write_text("\n".join(json.dumps(r) for r in rows) + ("\n" if rows else ""))

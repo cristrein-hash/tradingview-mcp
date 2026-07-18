@@ -9,8 +9,12 @@
         <string>/bin/zsh</string>
         <string>/Users/cristrein/tradingview-mcp/my-strategy/strategies/xau_15m_long/reversal/CP_CAPITULATION/start_cp_cycle.sh</string>
     </array>
+    <key>WatchPaths</key>
+    <array>
+        <string>/Users/cristrein/tradingview-mcp/my-strategy/core/bar_store/store/bars_15m.jsonl</string>
+    </array>
     <key>StartInterval</key>
-    <integer>900</integer>
+    <integer>1800</integer>
     <key>RunAtLoad</key>
     <true/>
     <key>StandardOutPath</key>
