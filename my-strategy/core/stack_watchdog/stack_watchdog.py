@@ -132,6 +132,7 @@ def components():
         "Bar-store":   chk_log_status(REPO / "my-strategy/core/bar_store/store/store_cycle.log", 10*60, bad_prefixes=("HARD_STOP",)),
         "PriceShock":  chk_log_status(REPO / "my-strategy/core/price_shock/.shock_state/shock_cycle.log", 5*60, bad_prefixes=("HARD_STOP",)),
         "GLD-ws":      chk_gld_ws(REPO / "my-strategy/core/price_shock/.shock_state/gld_ws_heartbeat.json"),
+        "FJ-ws":       chk_gld_ws(REPO / "external_factors_v2/snapshots/fj_ws_heartbeat.json", 300),
         "Receiver":    chk_http_health("http://127.0.0.1:8787/health"),      # webhook ENTRADA (A auditoria)
         "Cloudflared": chk_process("cloudflared tunnel run"),               # túnel público ENTRADA
     }

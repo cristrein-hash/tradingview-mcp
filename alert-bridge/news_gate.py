@@ -16,6 +16,7 @@ SNAP = REPO / "external_factors_v2" / "snapshots"
 IL = SNAP / "investinglive_news.json"
 GEO = SNAP / "geopolitical_news.json"
 FH = SNAP / "finnhub_news.json"
+FJ = SNAP / "fj_news.json"          # FinancialJuice (10min atraso) = contexto/curadoria, NÃO breaking
 OIL = SNAP / "oil_data.json"
 FFCAL = SNAP / "ff_calendar.json"
 SHOCK = REPO / "my-strategy/core/price_shock/.shock_state/shock.json"
@@ -81,6 +82,11 @@ def read_gate(path=IL):
     src["geopolitical"] = {"high": hi_geo, "age_s": age_geo, "headline": (top_geo or {}).get("title") if top_geo else None}
     hi_fh, top_fh, age_fh, esc_fh = _news_source(_load(FH))
     src["finnhub"] = {"high": hi_fh, "age_s": age_fh, "headline": (top_fh or {}).get("title") if top_fh else None}
+    # FinancialJuice = contexto/curadoria ATRASADO 10min — NÃO entra no high_impact/breaking, só enriquece
+    fj = _load(FJ) or {}
+    fj_items = fj.get("items", []) or []
+    src["fj"] = {"delayed_10min": True, "n": len(fj_items),
+                 "headline": (fj_items[0].get("title") if fj_items else None)}
     oil = _load(OIL) or {}
     oil_shock = bool(oil.get("shock"))
     src["oil"] = {"shock": oil_shock, "read": oil.get("read")}
@@ -125,6 +131,8 @@ def read_gate(path=IL):
             parts.append(f"⚠️ {name}: \"{(top.get('title','') or '')[:70]}\" (-{top.get('age_min')}m)")
     if oil_shock:
         parts.append(f"🛢️ {(oil.get('read') or '')[:80]}")
+    if fj_items:
+        parts.append(f"📰 FJ (10min): \"{(fj_items[0].get('title') or '')[:60]}\"")
     if sess == "dead_zone":
         parts.append("🕐 zona morta")
     elif sess in ("london_strong", "ny_open", "ny"):
