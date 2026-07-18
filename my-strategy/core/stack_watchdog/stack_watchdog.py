@@ -71,6 +71,26 @@ def chk_pid(pidfile):
     return ("ok", "pid vivo") if _pid_alive(pidfile) else ("blind", "processo morto")
 
 
+def chk_http_health(url, timeout=6):
+    """GET a um /health local — caminho de ENTRADA (webhook). (A da auditoria 2026-07-18)"""
+    import urllib.request
+    try:
+        with urllib.request.urlopen(url, timeout=timeout) as r:
+            return ("ok", f"HTTP {r.status}") if r.status == 200 else ("blind", f"HTTP {r.status}")
+    except Exception as e:
+        return "blind", f"sem resposta ({type(e).__name__})"
+
+
+def chk_process(pattern):
+    """Processo vivo por assinatura (pgrep). Para daemons fora do launchd-cristrein (ex. cloudflared)."""
+    import subprocess
+    try:
+        r = subprocess.run(["pgrep", "-f", pattern], capture_output=True, text=True, timeout=5)
+        return ("ok", f"pid {r.stdout.split()[0]}") if r.stdout.strip() else ("blind", "processo ausente")
+    except Exception as e:
+        return "blind", f"pgrep falhou ({type(e).__name__})"
+
+
 def chk_ef_news(f, max_age_s):
     try: d = json.loads(f.read_text())
     except Exception: return "blind", "snapshot ilegível"
@@ -94,6 +114,8 @@ def components():
         "EF v2":       chk_mtime(REPO / "external_factors_v2/snapshots/latest.json", 70*60),
         "Backfill":    chk_mtime(AB / "logs/e2_outcome_backfill.log", 130*60),
         "Bar-store":   chk_log_status(REPO / "my-strategy/core/bar_store/store/store_cycle.log", 10*60, bad_prefixes=("HARD_STOP",)),
+        "Receiver":    chk_http_health("http://127.0.0.1:8787/health"),      # webhook ENTRADA (A auditoria)
+        "Cloudflared": chk_process("cloudflared tunnel run"),               # túnel público ENTRADA
     }
     if paused:   # pipeline E0/E1/E2 honra pausa: não é cegueira
         for k in ("E0 dossiê", "E1 detector", "E2 quality"):

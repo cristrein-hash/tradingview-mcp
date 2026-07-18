@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.cristrein.log-rotate</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>/Users/cristrein/tradingview-mcp/my-strategy/core/stack_watchdog/rotate_heartbeat_logs.py</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict><key>Hour</key><integer>4</integer><key>Minute</key><integer>30</integer></dict>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/Users/cristrein/tradingview-mcp/my-strategy/core/stack_watchdog/.watchdog_state/log_rotate.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/cristrein/tradingview-mcp/my-strategy/core/stack_watchdog/.watchdog_state/log_rotate.err</string>
+</dict>
+</plist>

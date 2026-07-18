@@ -218,13 +218,15 @@ def main():
     due = [tf for tf, cfg in TFS.items() if now - (poll.get(tf) or 0) >= cfg["poll"] - 5]
     if not due:
         out["status"] = "NOOP (nada devido)"; _log(out); print(json.dumps(out)); return 0
-    try:
-        tabs = discover_tabs()
-    except Exception as e:
-        out["status"] = f"HARD_STOP CDP: {str(e)[:60]}"; _log(out); print(json.dumps(out)); return 1
+    # tab->id via tab_pin (cache-first: verifica só a tab necessária, re-enumera em miss) — B da auditoria
+    # 2026-07-18: ciclos só-15M passam de 5 sessões MCP (discover_tabs full) para 1 (verify do cache).
+    import tab_pin
     errs = []
     for tf in due:
-        tid = tabs.get(tf if tf != "1D" else "1D") or tabs.get({"1D": "D"}.get(tf, tf))
+        try:
+            tid = tab_pin.discover_tab(tf)
+        except Exception as e:
+            errs.append(f"{tf}: discover {str(e)[:40]}"); continue
         if not tid:
             errs.append(f"{tf}: sem tab"); continue
         try:
