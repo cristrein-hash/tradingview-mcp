@@ -1,62 +1,134 @@
 #!/usr/bin/env python3
-"""GATE DE NEWS (advisory) — helper PARTILHADO lido pelo workflow de monitorização live (proxy trades)
-e, no futuro, pelos engines quando forem live-runtime. AVISO CONTEXTUAL: informa, NUNCA bloqueia.
-Lê o snapshot fresco da news lane (external_factors_v2/snapshots/investinglive_news.json, ≤4min) e
-devolve contexto advisory: sessão, headline de alto impacto, evento FF iminente, staleness. Determinístico.
-NÃO é para backtest (news live não existe no passado). py3.9. Uso:
-  from news_gate import read_gate; g = read_gate(); print(g['advisory'])"""
+"""GATE DE NEWS UNIFICADO (advisory) — helper PARTILHADO lido pelo E0 (context_macro) e monitor live.
+AVISO CONTEXTUAL: informa, NUNCA bloqueia. Funde TODAS as fontes rápidas/contexto numa só leitura
+(des-buraco geopolítico, Cris 2026-07-18):
+  GATILHO (rápido)  : price_shock (tape, sub-minuto — o mais rápido, precede news)
+  CONTEXTO (fresco) : finnhub_news (Reuters-tier) · geopolitical (GDELT) · investinglive (RSS) · oil (Brent shock)
+  AGENDADO          : ff_calendar (evento US alto-impacto iminente/just-released)
+high_impact_now = OR de todas. Determinístico, py3.9, NUNCA lança. Não é backtest (news live não existe no
+passado). Horas humanas em Lisboa. Uso: from news_gate import read_gate; g = read_gate()"""
 import json, datetime as dt
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 REPO = Path(__file__).resolve().parent.parent
-SNAP = REPO / "external_factors_v2" / "snapshots" / "investinglive_news.json"
-STALE_S = 900  # >15min (1 barra 15M) sem fetch OK = news lane atrasada -> sinalizar
+SNAP = REPO / "external_factors_v2" / "snapshots"
+IL = SNAP / "investinglive_news.json"
+GEO = SNAP / "geopolitical_news.json"
+FH = SNAP / "finnhub_news.json"
+OIL = SNAP / "oil_data.json"
+FFCAL = SNAP / "ff_calendar.json"
+SHOCK = REPO / "my-strategy/core/price_shock/.shock_state/shock.json"
+LX = ZoneInfo("Europe/Lisbon")
+STALE_S = 900
 
 
-def read_gate(path=SNAP):
-    """Devolve dict advisory. NUNCA lança; se não houver snapshot, devolve estado 'unknown' seguro."""
-    now = int(dt.datetime.now(dt.timezone.utc).timestamp())
-    base = {"ok": False, "stale": True, "fetch_age_s": None, "session": None,
-            "high_impact_now": False, "escalate": False, "ff_event_le_min": None,
-            "headline": None, "reason": "sem snapshot de news", "advisory": "ℹ️ news lane indisponível (sem snapshot)"}
-    try:
-        d = json.loads(Path(path).read_text())
-    except Exception as e:
-        base["reason"] = f"snapshot ilegível: {type(e).__name__}"
-        return base
+def _load(p):
+    try: return json.loads(Path(p).read_text())
+    except Exception: return None
 
-    fetch_ts = d.get("fetch_ts") or d.get("_meta", {}).get("built_ts")
-    age = (now - fetch_ts) if fetch_ts else None
-    stale = (age is None) or (age > STALE_S) or (not d.get("fetch_ok", False))
-    g = d.get("gate", {})
-    items = d.get("items", [])
+
+def _now(): return int(dt.datetime.now(dt.timezone.utc).timestamp())
+
+
+def _news_source(d):
+    """Extrai (high_impact, top_headline, age_s, escalate) de um snapshot no shape padrão."""
+    if not isinstance(d, dict): return (False, None, None, False)
+    g = d.get("gate", {}) or {}
+    items = d.get("items", []) or []
     top = items[0] if items else None
-    hi = bool(g.get("high_impact_headline"))
-    sess = g.get("session")
-    ff = g.get("ff_event_le_min")
+    age = (_now() - (d.get("fetch_ts") or d.get("_meta", {}).get("built_ts") or 0))
+    return (bool(d.get("high_impact_now") or g.get("high_impact_headline")), top, age, bool(g.get("escalate")))
 
-    # advisory humano (contextual, não-bloqueante)
+
+def _imminent_ffevent():
+    """Evento US alto-impacto mais próximo do ff_calendar: (mins_until, event, actual, just_released)."""
+    d = _load(FFCAL)
+    ev = (d or {}).get("events") or (d if isinstance(d, list) else [])
+    now = _now(); best = None
+    for e in ev:
+        if str(e.get("impact", "")).upper() != "HIGH": continue
+        ts = e.get("release_ts")
+        if not ts: continue
+        mins = round((ts - now) / 60)
+        if mins < -15: continue                    # já passou há muito
+        if best is None or abs(mins) < abs(best[0]):
+            best = (mins, e.get("event"), e.get("actual"), (-15 <= mins < 5 and e.get("actual") not in (None, "")))
+    return best
+
+
+def read_gate(path=IL):
+    now = _now()
+    base = {"ok": False, "stale": True, "fetch_age_s": None, "session": None,
+            "high_impact_now": False, "escalate": False, "ff_event_le_min": None, "headline": None,
+            "price_shock": None, "sources": {}, "reason": "sem snapshots", "advisory": "ℹ️ news lane indisponível"}
+    il = _load(path)
+    if il is None:
+        # sem investinglive; ainda assim funde as outras fontes (podem estar frescas)
+        il = {"gate": {}, "fetch_ts": 0, "fetch_ok": False}
+    base["ok"] = True
+    g_il = il.get("gate", {}) or {}
+    sess = g_il.get("session")
+    il_age = now - (il.get("fetch_ts") or 0)
+    stale_il = (il_age > STALE_S) or (not il.get("fetch_ok", False))
+
+    # --- funde fontes ---
+    src = {}
+    hi_il, top_il, age_il, esc_il = _news_source(il)
+    src["investinglive"] = {"high": hi_il, "age_s": age_il}
+    hi_geo, top_geo, age_geo, esc_geo = _news_source(_load(GEO))
+    src["geopolitical"] = {"high": hi_geo, "age_s": age_geo, "headline": (top_geo or {}).get("title") if top_geo else None}
+    hi_fh, top_fh, age_fh, esc_fh = _news_source(_load(FH))
+    src["finnhub"] = {"high": hi_fh, "age_s": age_fh, "headline": (top_fh or {}).get("title") if top_fh else None}
+    oil = _load(OIL) or {}
+    oil_shock = bool(oil.get("shock"))
+    src["oil"] = {"shock": oil_shock, "read": oil.get("read")}
+    # price shock (gatilho rápido) — só válido se recente (< 5min)
+    sh = _load(SHOCK)
+    ps = None
+    if isinstance(sh, dict) and (now - sh.get("ts", 0) <= 300):
+        ps = {"move_atr": sh.get("move_atr"), "dir": sh.get("dir"), "major": sh.get("major"),
+              "window_min": sh.get("window_min"), "age_s": now - sh.get("ts", 0)}
+    src["price_shock"] = ps
+    # evento agendado
+    imm = _imminent_ffevent()
+    ff_mins = imm[0] if imm else None
+    src["ff_event"] = {"mins_until": ff_mins, "event": imm[1] if imm else None,
+                       "just_released": imm[3] if imm else False}
+
+    # high_impact = BREAKING (news fresca / choque de preço / release agendado). oil_shock é regime
+    # persistente (dura dias) → fica no advisory/sources como contexto, NÃO liga o flag breaking 24/7.
+    high_impact = bool(hi_il or hi_geo or hi_fh or ps or (imm and imm[3]))
+    escalate = bool(esc_il or esc_geo or esc_fh or (ps and ps.get("major")) or (imm and imm[3]))
+
+    # advisory humano (o mais forte primeiro)
     parts = []
-    if hi and top:
-        parts.append(f"⚠️ HEADLINE HI: \"{top.get('title','')[:70]}\" ({top.get('keywords')}, -{top.get('age_min')}m)")
-    if ff is not None:
-        parts.append(f"⚠️ evento FF alto-impacto em ~{ff}min")
+    if ps:
+        parts.append(f"⚡ CHOQUE PREÇO {ps['dir']} {ps['move_atr']}×ATR em {ps['window_min']}min")
+    if imm and 0 <= (imm[0] or 99) <= 60:
+        parts.append(f"⏰ {imm[1]} em {imm[0]}min (alto-impacto agendado)")
+    if imm and imm[3]:
+        parts.append(f"📊 {imm[1]} SAIU: actual {imm[2]}")
+    for name, hi, top in (("Finnhub", hi_fh, top_fh), ("geopolítico", hi_geo, top_geo), ("InvestingLive", hi_il, top_il)):
+        if hi and top:
+            parts.append(f"⚠️ {name}: \"{(top.get('title','') or '')[:70]}\" (-{top.get('age_min')}m)")
+    if oil_shock:
+        parts.append(f"🛢️ {(oil.get('read') or '')[:80]}")
     if sess == "dead_zone":
-        parts.append("🕐 zona morta (baixa liquidez — sem catalisador, cautela p/ mean-reversion)")
+        parts.append("🕐 zona morta")
     elif sess in ("london_strong", "ny_open", "ny"):
-        parts.append(f"✅ sessão {sess} (liquidez forte)")
-    elif sess:
-        parts.append(f"🕐 sessão {sess}")
-    if stale:
-        parts.append(f"⚠️ news lane STALE (fetch_age={age}s)")
+        parts.append(f"✅ sessão {sess}")
+    if stale_il and not (hi_geo or hi_fh or ps):
+        parts.append(f"⚠️ RSS lane stale ({il_age}s)")
     advisory = " · ".join(parts) if parts else "ℹ️ sem contexto de news relevante"
 
-    return {"ok": True, "stale": stale, "fetch_age_s": age, "session": sess,
-            "high_impact_now": hi, "escalate": bool(g.get("escalate")),
-            "ff_event_le_min": ff, "headline": top, "reason": g.get("reason"),
-            "advisory": advisory}
+    base.update({"stale": stale_il, "fetch_age_s": il_age, "session": sess,
+                 "high_impact_now": high_impact, "escalate": escalate,
+                 "ff_event_le_min": (ff_mins if (ff_mins is not None and 0 <= ff_mins <= 120) else None),
+                 "headline": top_fh or top_geo or top_il, "price_shock": ps, "sources": src,
+                 "reason": g_il.get("reason"), "advisory": advisory})
+    return base
 
 
 if __name__ == "__main__":
-    import json as _j
-    print(_j.dumps(read_gate(), indent=1, ensure_ascii=False))
+    print(json.dumps(read_gate(), indent=1, ensure_ascii=False))

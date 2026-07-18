@@ -69,9 +69,10 @@ def main():
         if it["id"] in seen: continue
         seen.add(it["id"]); uniq.append(it)
     n_high = sum(1 for it in uniq if it["urgency"] == "high")
-    # ALTO-IMPACTO: ≥2 headlines TOP-tier frescas (< janela) OU ≥1 muito fresca (<45min)
+    # ALTO-IMPACTO = BREAKING: ≥1 headline TOP-tier FRESCA (≤45min). Guerra em curso tem sempre TOP na
+    # janela (contexto persistente) — só uma headline NOVA liga o flag; o resto fica em items/advisory.
     fresh_top = [it for it in uniq if it["urgency"] == "high" and (it["age_min"] is None or it["age_min"] <= 45)]
-    high_impact = n_high >= 2 or len(fresh_top) >= 1
+    high_impact = len(fresh_top) >= 1
     top = uniq[0] if uniq else None
     gate = {"high_impact_headline": bool(high_impact),
             "escalate": bool(high_impact and top and (top.get("age_min") is None or top["age_min"] <= 60)),

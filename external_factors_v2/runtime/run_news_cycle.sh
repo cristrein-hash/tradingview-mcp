@@ -8,7 +8,10 @@ LOG="$DIR/snapshots/news_daemon.log"
 cd "$DIR" || exit 1
 
 echo "=== $(date -u +%FT%TZ) news cycle ===" >> "$LOG"
-python3 collectors/investinglive_news_collect.py >> "$LOG" 2>&1 || echo "[warn] collector falhou" >> "$LOG"
+python3 collectors/investinglive_news_collect.py >> "$LOG" 2>&1 || echo "[warn] investinglive falhou" >> "$LOG"
+python3 collectors/finnhub_news_collect.py >> "$LOG" 2>&1 || echo "[warn] finnhub_news falhou" >> "$LOG"
+python3 collectors/geopolitical_news_collect.py >> "$LOG" 2>&1 || echo "[warn] geopolitical falhou" >> "$LOG"
+python3 collectors/oil_collect.py >> "$LOG" 2>&1 || echo "[warn] oil falhou" >> "$LOG"
 python3 runtime/news_escalate.py >> "$LOG" 2>&1 || echo "[warn] escalate falhou" >> "$LOG"
 
 # poda o log (mantém ~400 linhas)
