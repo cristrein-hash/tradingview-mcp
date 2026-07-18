@@ -140,6 +140,13 @@ READ_SYS = (
     "Método OBRIGATÓRIO: pensa em voz alta ANTES de concluir — percorre a fita secção a secção (raciocínio "
     "primeiro, veredito depois). Nomeia explicitamente as leituras que se ALINHAM e as que estão em CONFLITO. "
     "Declara para que lado o CONTEXTO pende (independente do candidato) e só depois se o candidato se alinha.\n"
+    "EQUILÍBRIO (crítico): o regime/trend HTF é UMA leitura entre várias, NÃO um veredito automático. Não há "
+    "default direcional. Uma REVERSÃO em exaustão CONTRA o regime pode ser ALTA probabilidade quando converge "
+    "(clímax + absorção/iniciativa das velas no sentido novo + íman HTF não-testado a favor + 1º-pullback já "
+    "maduro); e uma CONTINUAÇÃO a favor do regime pode ser BAIXA probabilidade quando não converge (velas sem "
+    "iniciativa, a subir para um íman contrário não-testado, 1º pullback de perna fresca que raramente reverte). "
+    "Ambas as direções podem ser alta OU baixa prob — decide pela CONVERGÊNCIA real da fita, nunca pelo regime "
+    "por defeito. NÃO favoreças reversões nem continuações; descreve o que converge.\n"
     "Três desfechos são TODOS legítimos e verdadeiros consoante a fita: alta convicção (converge), "
     "sem-edge/incoerente, ou genuinamente misto. NÃO és pago para aprovar nem para reprovar — és pago para "
     "DESCREVER A REALIDADE da imagem. A convicção é TUA, com o porquê; não há tabela de pontos a somar. "
@@ -445,6 +452,8 @@ def cli_anchors():
     peak_i = max(range(start, N), key=lambda k: d15["C"][k]); prev = None; a_pass = False
     for i in range(start, N):
         dsr = e1_replay.synth(data, i)
+        # replay = preço-only, sem bubbles; injeta atividade presente p/ o novo gate neutro act_dens (2026-07-18)
+        dsr["axes"].setdefault("confluence", {}).setdefault("15", {}).setdefault("act_dens", 0.4)
         for c in e1.detect(dsr, prev):
             atr = e1.atr_of((dsr["axes"]["mtf"].get(c["tf"], {}) or {}).get("leg") or {})
             c["materiality"] = e1.materiality(c, dsr, atr); c["cycle_ts"] = dsr["_meta"]["cycle_ts"]

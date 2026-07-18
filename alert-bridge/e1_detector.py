@@ -21,7 +21,9 @@ FLOOR_S = 30
 # limiares. PRINCÍPIO (dos engines/definição) vs FIT (a calibrar no shadow, NÃO fixar a olhar 1 dia).
 MIN_RR = 1.5                 # a calibrar (shadow) — não fixar a hoje
 MIN_SL_ATR = 0.3; MAX_SL_ATR = 3.0
-MIN_CONFLUENCE = 2           # REVERTIDO 3->2 (era FIT a hoje). E1 permissivo=recall; shadow calibra.
+MIN_CONFLUENCE = 2           # LEGADO — já NÃO gate desde 2026-07-18 (confluence virou descritiva). Ver materiality.
+ACT_DENS_FLOOR = 0.3         # GATE NEUTRO agnóstico: atividade order-flow na perna (mediana obs 0.27). Prereg E1_E2_DEBIAS.
+COLLAPSE_S = 3600            # colapso re-disparos: 1 admissão por (hora, direção, nível~)
 MAX_R_ATR15 = 2.0            # PRINCÍPIO: SL local ~1-2×ATR (escala A1/Cp); cap de SL largo
 MAX_TARGET_R = 5.0           # PRINCÍPIO: alvo canónico 3R; cap generoso anti-fantasia
 COOLDOWN_BARS = 4; DEDUP_BARS = 12; BAR_S = 900   # anti-spam ops — a calibrar no shadow (não a hoje)
@@ -184,9 +186,15 @@ def materiality(cand, d, atr):
          "sl_atr": round(cand["r"] / atr, 2) if atr else None,
          "zone_touch": "zone" in cand.get("src", "") or "reject" in cand.get("src", "")}
     sl_ok = atr and MIN_SL_ATR <= (cand["r"] / atr) <= MAX_SL_ATR
+    # confluence CONTINUA calculada mas é DESCRITIVA (voz p/ E2), NÃO gate (des-enviesamento 2026-07-18:
+    # mtf_align+svp_htf eram agreement de regime a decapitar reversões). Prereg E1_E2_DEBIAS_20260718.
     score, brk = confluence_score(d, cand["direction"], cand["tf"])
     m["confluence"] = score; m["confluence_breakdown"] = brk
-    m["pass"] = bool(m["min_rr_ok"] and sl_ok and score >= MIN_CONFLUENCE)
+    # GATE NEUTRO agnóstico à direção: atividade de order-flow na perna (mede atividade, não lado).
+    act = fnum((d["axes"].get("confluence") or {}).get("15", {}).get("act_dens"))
+    m["act_dens"] = act
+    m["act_ok"] = act is not None and act >= ACT_DENS_FLOOR
+    m["pass"] = bool(m["min_rr_ok"] and sl_ok and m["act_ok"])
     return m
 
 
@@ -224,6 +232,12 @@ def anti_spam(cand, state, bar_time, sess=None):
                 and _verdict_veto_of(last_dd.get("id")) == "session_vacuum"):
             return None
         return "dedup"
+    # COLAPSO NEUTRO (2026-07-18): 1 admissão por (hora, direção, nível~) — agnóstico à regra, colapsa
+    # zone_reject+sweep_reclaim no mesmo nível/direção que cooldown/dedup (por-regra) deixam passar.
+    ck = f"{(bar_time or 0)//COLLAPSE_S}:{cand['direction']}:{round(cand.get('entry') or 0)}"
+    last_col = state.get("collapse", {}).get(ck)
+    if last_col and bar_time and (bar_time - last_col) < COLLAPSE_S:
+        return "collapse"
     return None
 
 
@@ -266,6 +280,8 @@ def run_once(state):
         if sup is None and c["materiality"]["pass"]:
             state.setdefault("cooldown", {})[f"{c['rule']}:{c['tf']}:{c['direction']}"] = bar_t
             state.setdefault("dedup", {})[cand_hash(c)] = {"t": bar_t, "id": c["id"]}   # id p/ dedup destino-consciente
+            ck = f"{(bar_t or 0)//COLLAPSE_S}:{c['direction']}:{round(c.get('entry') or 0)}"
+            state.setdefault("collapse", {})[ck] = bar_t                                # colapso neutro por nível
             emitted.append(c)
     state["prev_dossier"] = d
     state["last_bar_t"] = bar_t
