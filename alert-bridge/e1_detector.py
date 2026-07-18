@@ -194,7 +194,7 @@ def cand_hash(c):
     return hashlib.md5(f"{c['rule']}{c['tf']}{c['direction']}{round(c['entry'])}{round(c['sl'])}".encode()).hexdigest()[:12]
 
 
-DEAD_SESSIONS_E2 = {"dead_zone", "asia", "other"}   # manter em sincronia com e2_quality.CFG["DEAD_SESSIONS"]
+from config_stack import DEAD_SESSIONS as DEAD_SESSIONS_E2   # fonte única (config_stack, Fase 4)
 
 
 def _verdict_veto_of(cand_id):

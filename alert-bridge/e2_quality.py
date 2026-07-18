@@ -33,7 +33,8 @@ PAUSE_GLOBAL = Path("/tmp/claude_recheck.paused")
 FLOOR_S = 20
 
 # GATE determinístico (só binário-causal duro). MIN_RR/MAX_CHASE = PRINCÍPIO (definição), não fit ao dia.
-CFG = {"MIN_RR_E2": 2.0, "MAX_CHASE_ATR": 1.5, "DEAD_SESSIONS": {"dead_zone", "asia", "other"},
+from config_stack import DEAD_SESSIONS as _DEAD
+CFG = {"MIN_RR_E2": 2.0, "MAX_CHASE_ATR": 1.5, "DEAD_SESSIONS": _DEAD,
        "DRIFT_MAX_CYCLES": 2, "CYCLE_S": 60}
 
 
@@ -222,11 +223,37 @@ def render_composite(dsr, cand):
     return "\n".join(L)
 
 
+def _read_sdk(prompt, model=None):
+    """FASE 3 (2026-07-18): leitura via Anthropic SDK direto (sem claude -p). SÓ ativa com
+    E2_READ_VIA=sdk E ANTHROPIC_API_KEY presente — API paga à parte da sessão Max; decisão Cris.
+    Retries/timeout nativos do SDK; adaptive thinking; mesma tese JSON."""
+    import anthropic
+    client = anthropic.Anthropic()          # exige ANTHROPIC_API_KEY no env do daemon
+    msg = client.messages.create(
+        model=model or READ_MODEL,
+        max_tokens=2000,
+        thinking={"type": "adaptive"},
+        system=READ_SYS,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    txt = "".join(b.text for b in msg.content if getattr(b, "type", "") == "text")
+    v = _extract_json(txt)
+    if not v or "convergence" not in v:
+        return {"error": "sem tese", "raw": txt[:300]}
+    return v
+
+
 def run_read(cand, dsr, timeout=None, model=None):
-    """UMA leitura contextual (Opus). Devolve a tese verbatim ou {"error":...}. Não agrega, não pontua."""
+    """UMA leitura contextual (Opus). Devolve a tese verbatim ou {"error":...}. Não agrega, não pontua.
+    Via: E2_READ_VIA=sdk (Anthropic SDK, requer API key) | default cli (claude -p, sessão Max)."""
     import subprocess
     image = render_composite(dsr, cand)
     prompt = image + SCHEMA_HINT
+    if os.environ.get("E2_READ_VIA") == "sdk" and os.environ.get("ANTHROPIC_API_KEY"):
+        try:
+            return _read_sdk(prompt, model)
+        except Exception as e:
+            return {"error": f"sdk {type(e).__name__}:{str(e)[:100]}"}
     env = dict(os.environ); env.pop("ANTHROPIC_API_KEY", None)
     try:
         r = subprocess.run([CLAUDE_EXE, "-p", prompt, "--append-system-prompt", READ_SYS,
