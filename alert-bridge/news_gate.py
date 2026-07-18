@@ -19,6 +19,7 @@ FH = SNAP / "finnhub_news.json"
 OIL = SNAP / "oil_data.json"
 FFCAL = SNAP / "ff_calendar.json"
 SHOCK = REPO / "my-strategy/core/price_shock/.shock_state/shock.json"
+GLD_SHOCK = REPO / "my-strategy/core/price_shock/.shock_state/gld_shock.json"
 LX = ZoneInfo("Europe/Lisbon")
 STALE_S = 900
 
@@ -83,12 +84,21 @@ def read_gate(path=IL):
     oil = _load(OIL) or {}
     oil_shock = bool(oil.get("shock"))
     src["oil"] = {"shock": oil_shock, "read": oil.get("read")}
-    # price shock (gatilho rápido) — só válido se recente (< 5min)
-    sh = _load(SHOCK)
+    # price shock (gatilho rápido) — funde TV-tape (24h/30s) + GLD-tick (sub-segundo, horas US); <5min
     ps = None
+    cands = []
+    sh = _load(SHOCK)
     if isinstance(sh, dict) and (now - sh.get("ts", 0) <= 300):
-        ps = {"move_atr": sh.get("move_atr"), "dir": sh.get("dir"), "major": sh.get("major"),
-              "window_min": sh.get("window_min"), "age_s": now - sh.get("ts", 0)}
+        cands.append({"src": "tv_tape", "unit": "ATR", "mag": sh.get("move_atr"), "dir": sh.get("dir"),
+                      "major": sh.get("major"), "window_min": sh.get("window_min"), "ts": sh.get("ts", 0)})
+    gld = _load(GLD_SHOCK)
+    if isinstance(gld, dict) and (now - gld.get("ts", 0) <= 300):
+        cands.append({"src": "gld_tick", "unit": "%", "mag": gld.get("pct"), "dir": gld.get("dir"),
+                      "major": gld.get("major"), "window_min": gld.get("window_min"), "ts": gld.get("ts", 0)})
+    if cands:
+        c = max(cands, key=lambda x: x["ts"])                # o mais recente (GLD-tick vence em horas US)
+        ps = {"source": c["src"], "unit": c["unit"], "mag": c["mag"], "dir": c["dir"], "major": c["major"],
+              "window_min": c["window_min"], "age_s": now - c["ts"]}
     src["price_shock"] = ps
     # evento agendado
     imm = _imminent_ffevent()
@@ -104,7 +114,8 @@ def read_gate(path=IL):
     # advisory humano (o mais forte primeiro)
     parts = []
     if ps:
-        parts.append(f"⚡ CHOQUE PREÇO {ps['dir']} {ps['move_atr']}×ATR em {ps['window_min']}min")
+        u = "×ATR" if ps["unit"] == "ATR" else "%"
+        parts.append(f"⚡ CHOQUE PREÇO {ps['dir']} {ps['mag']}{u} ({ps['source']}) em {ps['window_min']}min")
     if imm and 0 <= (imm[0] or 99) <= 60:
         parts.append(f"⏰ {imm[1]} em {imm[0]}min (alto-impacto agendado)")
     if imm and imm[3]:

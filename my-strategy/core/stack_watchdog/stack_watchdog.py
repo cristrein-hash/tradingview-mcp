@@ -91,6 +91,22 @@ def chk_process(pattern):
         return "blind", f"pgrep falhou ({type(e).__name__})"
 
 
+def chk_gld_ws(f, max_age_s=180):
+    """WebSocket GLD (persistente): heartbeat ≤3min E status conectado/idle/live (não reconnecting/NO_KEY)."""
+    r = _last_jsonl_or_json(f)
+    if not r: return "blind", "sem heartbeat"
+    age = now() - (r.get("ts") or 0)
+    if age > max_age_s: return "blind", f"heartbeat parado há {int(age/60)}min"
+    st = str(r.get("status") or "")
+    if st in ("NO_KEY", "reconnecting"): return "blind", st
+    return "ok", st                                   # connected / idle / live
+
+
+def _last_jsonl_or_json(f):
+    try: return json.loads(Path(f).read_text())      # gld heartbeat = json único
+    except Exception: return None
+
+
 def chk_ef_news(f, max_age_s):
     try: d = json.loads(f.read_text())
     except Exception: return "blind", "snapshot ilegível"
@@ -115,6 +131,7 @@ def components():
         "Backfill":    chk_mtime(AB / "logs/e2_outcome_backfill.log", 130*60),
         "Bar-store":   chk_log_status(REPO / "my-strategy/core/bar_store/store/store_cycle.log", 10*60, bad_prefixes=("HARD_STOP",)),
         "PriceShock":  chk_log_status(REPO / "my-strategy/core/price_shock/.shock_state/shock_cycle.log", 5*60, bad_prefixes=("HARD_STOP",)),
+        "GLD-ws":      chk_gld_ws(REPO / "my-strategy/core/price_shock/.shock_state/gld_ws_heartbeat.json"),
         "Receiver":    chk_http_health("http://127.0.0.1:8787/health"),      # webhook ENTRADA (A auditoria)
         "Cloudflared": chk_process("cloudflared tunnel run"),               # túnel público ENTRADA
     }

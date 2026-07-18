@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.cristrein.gld-ws</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/zsh</string>
+        <string>/Users/cristrein/tradingview-mcp/my-strategy/core/price_shock/start_gld_ws.sh</string>
+    </array>
+    <key>KeepAlive</key>
+    <true/>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>ThrottleInterval</key>
+    <integer>15</integer>
+    <key>StandardOutPath</key>
+    <string>/Users/cristrein/tradingview-mcp/my-strategy/core/price_shock/.shock_state/gld_ws_out.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/cristrein/tradingview-mcp/my-strategy/core/price_shock/.shock_state/gld_ws_err.log</string>
+</dict>
+</plist>
