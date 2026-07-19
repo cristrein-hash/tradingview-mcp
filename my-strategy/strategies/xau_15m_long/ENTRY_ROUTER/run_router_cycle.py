@@ -2,14 +2,16 @@
 """ENTRY ROUTER 15M — ciclo LIVE em modo DRY (Cris 2026-07-19). Roteia, por REGIME MACRO (autoridade
 única = Layer1 1D, current_layer1.json escrito pelo regime-engine), qual camada de entry é ELEGÍVEL:
   BEAR  -> território do Cp (já live, alert-only) — o router NÃO duplica, só regista.
-  RANGE -> engine de B v1.1 (b_signal) — camada RANGE aprovada in-sample; DRY: deteta+loga, 0 Telegram.
+  RANGE -> engine de B v1.1 via b_forward_score (deep loader gz+store) — DRY: pontua+loga+resolve, 0 Telegram.
   BULL  -> A1/A2 (pullback) — SEM detetor de fundo automático ainda (task #35) -> só regista pendência.
 Roteamento (elegibilidade por contexto), NÃO hard-gate/veto. Store-first (bar-store, zero CDP próprio).
-Fail-closed. py3.9 stdlib. SEM Telegram nesta versão (dry puro; forward-ledger). Go-live do B por camada
-exige depois: montagem de 15M PROFUNDO (banda desde o onset do range) + paridade vs in-sample + prereg.
+Fail-closed. py3.9 stdlib. SEM Telegram nesta versão (dry puro).
 
-CAVEAT DECLARADO: a banda causal do B precisa do 15M desde o onset do range; o store retém 30 dias. Se o
-range for mais antigo, a banda fica truncada -> flag 'band_truncated' no ledger. Dormente enquanto BEAR."""
+CONSOLIDAÇÃO (feedback 2026-07-19): o ramo B DELEGA ao coletor forward existente b_forward_score (fonte
+única do ledger, prereg §6, resolve SL-first) — não duplica. Injeta a autoridade fresca no macro antes de
+o importar (Conexão 3). O deep loader load_series_live (gz desde o onset + cauda do store) RESOLVE o antigo
+'band_truncated' — PARIDADE PROVADA 15/15 byte-a-byte vs in-sample (parity_b_live.py). Go-live do B ainda
+exige: prereg N>=20 forward (b_forward_score --status §6) + só então B_PRODUCTION_AUTHORIZED. Dormente BEAR."""
 import os, sys, json, time, datetime as dt
 from pathlib import Path
 HERE = Path(__file__).resolve().parent
@@ -20,8 +22,9 @@ sys.path.insert(0, str(REV))                      # macro_structural_v3 + b_engi
 sys.path.insert(0, "/Users/cristrein/tradingview-mcp/alert-bridge")
 LAYER1 = CORE / "layer1_service/.layer1_state/current_layer1.json"
 STATE = HERE / ".router_state"; STATE.mkdir(exist_ok=True)
-LEDGER = STATE / "router_ledger.jsonl"
 LOG = STATE / "router_cycle.log"
+# NOTA: o ledger forward do B vive em b_forward_score (my-strategy/research/revalidation/b_forward/) —
+# fonte única, reusada (feedback consolidar-nao-proliferar 2026-07-19). O router só o alimenta/resolve.
 BAR_S = 900
 FRESH_BARS = 2
 from zoneinfo import ZoneInfo
@@ -33,11 +36,6 @@ def _log(o):
     with open(LOG, "a") as fh: fh.write(json.dumps(o, ensure_ascii=False) + "\n")
 
 
-def _jl(f):
-    try: return [json.loads(x) for x in Path(f).read_text().splitlines() if x.strip()]
-    except Exception: return []
-
-
 def read_regime():
     try:
         d = json.loads(LAYER1.read_text())
@@ -46,22 +44,10 @@ def read_regime():
         return None, None
 
 
-def build_S(rows):
-    """Constrói o substrato S={T,O,H,L,C,EMA,ATR,N} do store 15M — MESMA matemática do load_series
-    (EMA k=2/22, ATR14 causais), para o b_signal ler byte-consistente com o in-sample."""
-    T = [r["t"] for r in rows]; O = [r["o"] for r in rows]; H = [r["h"] for r in rows]
-    L = [r["l"] for r in rows]; C = [r["c"] for r in rows]; N = len(T)
-    EMA = [None]*N; ATR = [None]*N; ema = None; kE = 2/22; trs = []
-    for i in range(N):
-        ema = C[i] if ema is None else C[i]*kE+ema*(1-kE); EMA[i] = ema
-        if i > 0: trs.append(max(H[i]-L[i], abs(H[i]-C[i-1]), abs(L[i]-C[i-1])))
-        ATR[i] = sum(trs[-14:])/14 if len(trs) >= 14 else None
-    return dict(T=T, O=O, H=H, L=L, C=C, EMA=EMA, ATR=ATR, N=N)
-
-
 def _inject_fresh_macro():
-    """Injeta 1D/DXY frescos nos globais de macro_structural_v3 ANTES de importar o b_engine (que computa
-    _reg no import) — assim o gate/banda do B leem a AUTORIDADE fresca (Conexão 3). Matemática intocada."""
+    """Injeta 1D/DXY frescos nos globais de macro_structural_v3 ANTES de importar o b_forward_score/b_engine
+    (que computa _reg no import) — assim o gate/banda do B leem a AUTORIDADE fresca (Conexão 3). Matemática
+    intocada. Tem de correr antes do 1º import de b_engine_v1 no processo."""
     import macro_structural_v3 as M
     import layer1_cycle as L1
     xau = L1._merge_xau_1d()
@@ -74,28 +60,26 @@ def _inject_fresh_macro():
     return True
 
 
-def run_B(S, out):
-    """Ramo RANGE: engine de B v1.1 sobre o último 15M fechado. DRY: regista candidato ON no ledger."""
+def run_B(rows, out):
+    """Ramo RANGE: DELEGA ao coletor forward existente b_forward_score (não duplica ledger — feedback
+    consolidar 2026-07-19). Injeta a autoridade fresca -> pontua o último 15M fechado via BF.score (deep
+    loader gz+store) -> upsert no forward log SE engine ON -> resolve PENDING. DRY (0 Telegram)."""
     if not _inject_fresh_macro():
         out["b"] = "SKIP: macro fresco insuficiente"; return
-    import b_engine_v1 as BE                                  # importa DEPOIS da injeção (computa _reg fresco)
-    last_t = S["T"][-1]
-    r = BE.b_signal(last_t, S)
-    if not r.get("engine"):
-        out["b"] = f"off: {r.get('reason')}"; return
-    e = r["entry"]; etime = S["T"][e["ei"]]
-    onset = BE._onset(last_t)
-    truncated = bool(onset is not None and onset < S["T"][0])   # banda precisa 15M desde o onset
-    fresh = (last_t - etime) <= FRESH_BARS * BAR_S
-    key = f"B:{etime}"
-    if key in {r0.get("key") for r0 in _jl(LEDGER)}:
-        out["b"] = f"ON (já no ledger) {iso(etime)}"; return
-    rec = {"key": key, "layer": "B_range", "regime": "RANGE", "fresh": fresh, "band_truncated": truncated,
-           "entry": e["ent"], "sl": e["sl"], "tgt": e["tgt"], "R": e["R"], "pos_pct": r.get("pos"),
-           "band": r.get("band"), "spring": r.get("spring"), "entry_bar": iso(etime),
-           "detected_ts": iso(int(time.time())), "outcome": "OPEN", "mode": "DRY"}
-    with open(LEDGER, "a") as fh: fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
-    out["b"] = f"ON->ledger {iso(etime)} entry {e['ent']} SL {e['sl']} 3R {e['tgt']}" + (" [band_truncated]" if truncated else "")
+    import b_forward_score as BF                              # importa DEPOIS da injeção (b_engine _reg fresco)
+    t0 = rows[-1]["t"]; fundo_dt = BF.ds(t0)                  # UTC (casa com BF.ep)
+    logged = {r.get("fundo_dt") for r in BF.load_log()}
+    if fundo_dt in logged:
+        out["b"] = f"já pontuado {fundo_dt}"
+    else:
+        rec = BF.score(fundo_dt)                              # deep gz+store + b_signal + null
+        if rec.get("engine"):
+            BF.upsert(rec)
+            e = rec.get("entry", {})
+            out["b"] = f"B ON -> forward log {fundo_dt} entry {e.get('ent')} SL {e.get('sl')} [{rec.get('status')}]"
+        else:
+            out["b"] = f"off: {rec.get('reason') or rec.get('status')}"
+    out["resolved"] = BF.resolve_pending()                   # árbitro forward: resolve OPEN->WIN/LOSS SL-first
 
 
 def main():
@@ -111,11 +95,10 @@ def main():
         out["status"] = f"SKIP: store indisponível ({type(e).__name__})"; _log(out); print(json.dumps(out)); return
     if not rows or len(rows) < 60:
         out["status"] = f"SKIP: 15M insuficiente (n={len(rows) if rows else 0})"; _log(out); print(json.dumps(out)); return
-    S = build_S(rows)
     regime, as_of = read_regime()
-    out.update({"regime": regime, "as_of": as_of, "buf_bars": S["N"], "last_bar": iso(S["T"][-1])})
+    out.update({"regime": regime, "as_of": as_of, "buf_bars": len(rows), "last_bar": iso(rows[-1]["t"])})
     if regime == "RANGE":
-        run_B(S, out)
+        run_B(rows, out)
     elif regime == "BEAR":
         out["route"] = "BEAR -> território do Cp (router dormante; sem duplicar)"
     elif regime == "BULL":

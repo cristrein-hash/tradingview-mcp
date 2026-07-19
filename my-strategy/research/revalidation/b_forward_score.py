@@ -11,6 +11,7 @@ USO:
 import json, bisect, sys, datetime as dt
 from pathlib import Path
 HERE = Path(__file__).resolve().parent; sys.path.insert(0, str(HERE))
+REPO = HERE.parents[2]
 import b_engine_v1 as BE
 from a1_causal_entry import load_series, HORIZON
 RAW = Path("/Volumes/GUTS_ LACIE/TradingData/raw_replay/XAUUSD/15M")
@@ -29,9 +30,32 @@ def blocks_covering(t0):
         if tb >= t0-200*86400 and ta <= t0+6*86400: out.append(str(p))   # range-so-far precisa histórico longo
     return out
 
+def load_series_live(t0):
+    """Deep 15M = blocos gz (histórico desde o onset) + cauda FRESCA do store (bar-store). Store OVERRIDE
+    em conflito (valor final fechado) e ESTENDE além do fim dos gz (2026-07-04). Recomputa EMA/ATR sobre a
+    série fundida (MESMA matemática do load_series). Preserva paridade: barras históricas ficam intocadas
+    (EMA/ATR são causais forward; store só toca a cauda >= ~30d)."""
+    S = load_series(blocks_covering(t0))
+    bars = {S["T"][i]: [S["O"][i], S["H"][i], S["L"][i], S["C"][i]] for i in range(S["N"])}
+    try:
+        sys.path.insert(0, str(REPO / "alert-bridge"))
+        import store_reader as SR
+        for r in SR.bars("15"):
+            bars[r["t"]] = [r["o"], r["h"], r["l"], r["c"]]      # store corrige/estende a cauda
+    except Exception:
+        pass
+    T = sorted(bars); O = [bars[t][0] for t in T]; H = [bars[t][1] for t in T]
+    L = [bars[t][2] for t in T]; C = [bars[t][3] for t in T]; N = len(T)
+    EMA = [None]*N; ATR = [None]*N; ema = None; kE = 2/22; trs = []
+    for i in range(N):
+        ema = C[i] if ema is None else C[i]*kE+ema*(1-kE); EMA[i] = ema
+        if i > 0: trs.append(max(H[i]-L[i], abs(H[i]-C[i-1]), abs(L[i]-C[i-1])))
+        ATR[i] = sum(trs[-14:])/14 if len(trs) >= 14 else None
+    return dict(T=T, O=O, H=H, L=L, C=C, EMA=EMA, ATR=ATR, N=N)
+
+
 def score(fundo_dt):
-    t0 = ep(fundo_dt); blks = blocks_covering(t0)
-    S = load_series(blks); T = S["T"]
+    t0 = ep(fundo_dt); S = load_series_live(t0); T = S["T"]
     if not T or T[-1] < t0: return {"fundo_dt": fundo_dt, "status": "SEM-DADOS-RAW"}
     r = BE.b_signal(t0, S)
     if not r["engine"]:
@@ -51,6 +75,15 @@ def save_log(rows): LOG.write_text("\n".join(json.dumps(r, ensure_ascii=False) f
 def upsert(rec):
     rows = [r for r in load_log() if r.get("fundo_dt") != rec["fundo_dt"]]; rows.append(rec)
     rows.sort(key=lambda r: r["fundo_dt"]); save_log(rows); return rows
+
+def resolve_pending():
+    """Re-pontua as entradas PENDING (resolve WIN/LOSS/PENDING SL-first à medida que chegam barras).
+    Chamável pelo router live (o veículo do forward) e pelo CLI --resolve. Devolve nº re-pontuadas."""
+    pend = [x for x in load_log() if x.get("status") == "PENDING"]
+    for r in pend:
+        upsert(score(r["fundo_dt"]))
+    return len(pend)
+
 
 def show_status():
     rows = load_log(); onr = [r for r in rows if r.get("engine")]
@@ -72,7 +105,6 @@ if __name__ == "__main__":
     a = sys.argv[1] if len(sys.argv) > 1 else "--status"
     if a == "--status": show_status()
     elif a == "--resolve":
-        for r in [x for x in load_log() if x.get("status") == "PENDING"]: upsert(score(r["fundo_dt"]))
-        show_status()
+        resolve_pending(); show_status()
     else:
         rec = score(a); upsert(rec); print(json.dumps(rec, ensure_ascii=False, indent=1))
