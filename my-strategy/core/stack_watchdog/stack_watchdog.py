@@ -121,6 +121,7 @@ def components():
     c = {
         "Cp 15M":      chk_log_status(STRAT / "xau_15m_long/reversal/CP_CAPITULATION/.cp_state/cp_cycle.log", 35*60),
         "Regime":      chk_log_status(REPO / "my-strategy/core/regime_engine/.regime_state/regime_cycle.log", 130*60),
+        "Layer1 1D":   chk_log_status(REPO / "my-strategy/core/layer1_service/.layer1_state/layer1_cycle.log", 35*60, bad_prefixes=("HARD_STOP",)),
         "L1 4H":       chk_log_status(STRAT / "xau_4h_long/continuation/L1_EMA21_CONTINUATION/.runtime_state/l1_cycle.log", 6*3600),
         "L2 4H":       chk_log_status(STRAT / "xau_4h_long/reversal/L2_BPT_ZONE_TREND_EXIT/.runtime_state/l2_cycle.log", 270*60),  # cadência real: 4/4h (:12 pós-fecho 4H)
         "E0 dossiê":   chk_mtime(REPO / "external_factors_v2/snapshots/market_context.json", 15*60),
