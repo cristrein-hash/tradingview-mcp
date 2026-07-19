@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """ESCALADA DE NEWS UNIFICADA (Telegram) — passo da news lane. Escala UMA vez a headline breaking mais
-fresca de QUALQUER fonte de news (Finnhub/GDELT/InvestingLive) + release de calendário just-out. Dedup por
-id, cooldown ≥10min. EXCLUI price_shock/GLD (auto-alertam pelos seus daemons — senão duplicava). Só envia
-se NEWS_ALERTS_AUTHORIZED=1 (senão DRY-RUN). Reusa o merge do news_gate p/ o advisory de contexto. py3.9."""
+fresca de fontes de news BREAKING de BAIXO VOLUME (Finnhub Reuters-tier / InvestingLive) + release de
+calendário just-out. Dedup por id, cooldown ≥10min. EXCLUI price_shock/GLD (auto-alertam pelos seus daemons).
+🚫 GEOPOLÍTICO (GDELT) FORA do Telegram desde 2026-07-19 (ordem Cris): guerra em curso (Irão/Israel) produz
+SEMPRE headlines TOP-tier frescas → inundava (10/10 dos pings eram geopolíticos). Coerente com a doutrina do
+news_gate: guerra-em-curso/oil-shock = CONTEXTO persistente, NÃO breaking. O GDELT continua a alimentar o
+news_gate/E2 como contexto; um choque geopolítico REAL move o preço → o price-shock daemon dispara (price-first).
+Só envia se NEWS_ALERTS_AUTHORIZED=1 (senão DRY-RUN). Reusa o merge do news_gate p/ o advisory. py3.9."""
 import json, os, sys, datetime as dt
 from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent.parent
@@ -10,9 +14,8 @@ SNAP = REPO / "external_factors_v2" / "snapshots"
 STATE = SNAP / "news_alert_state.json"
 COOLDOWN_S = 600
 NOWT = int(dt.datetime.now(dt.timezone.utc).timestamp())
-# fontes de NEWS que escalam (NÃO price_shock — esse auto-alerta)
+# fontes BREAKING de baixo volume que escalam ao Telegram (NÃO price_shock=auto-alerta · NÃO geopolítico=contexto)
 NEWS_SNAPS = [("Finnhub", SNAP / "finnhub_news.json"),
-              ("Geopolítico", SNAP / "geopolitical_news.json"),
               ("InvestingLive", SNAP / "investinglive_news.json")]
 
 
