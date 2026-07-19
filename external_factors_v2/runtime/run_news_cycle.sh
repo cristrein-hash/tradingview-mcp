@@ -6,6 +6,7 @@ set -u
 DIR="/Users/cristrein/tradingview-mcp/external_factors_v2"
 LOG="$DIR/snapshots/news_daemon.log"
 cd "$DIR" || exit 1
+set -a; source /Users/cristrein/tradingview-mcp/.env 2>/dev/null || true; set +a   # keys (FINNHUB/FMP) duráveis a restart
 
 echo "=== $(date -u +%FT%TZ) news cycle ===" >> "$LOG"
 python3 collectors/investinglive_news_collect.py >> "$LOG" 2>&1 || echo "[warn] investinglive falhou" >> "$LOG"

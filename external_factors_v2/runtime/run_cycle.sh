@@ -4,6 +4,7 @@
 set -e
 DIR="/Users/cristrein/tradingview-mcp/external_factors_v2"
 cd "$DIR"
+set -a; source /Users/cristrein/tradingview-mcp/.env 2>/dev/null || true; set +a   # keys (FMP/AlphaVantage) duráveis a restart
 LOG="$DIR/snapshots/daemon.log"
 echo "=== $(date -u +%FT%TZ) ===" >> "$LOG"
 # 1) refresh Tier-1 (keyless) — só se coletor existir; tolera falha de rede
