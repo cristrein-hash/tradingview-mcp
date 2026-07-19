@@ -80,22 +80,27 @@ def _save_cache(m):
 
 
 def discover_tab(want_res, symbol_suffix="XAUUSD"):
-    """Target-id da tab cujo chart está em want_res (e símbolo bate). None se não existir (fail-closed)."""
+    """Target-id da tab cujo chart está em want_res (e símbolo bate). None se não existir (fail-closed).
+    Cache indexado por (symbol_suffix, resolução) — múltiplos símbolos na mesma resolução (ex. XAU 1D +
+    DXY 1D) coexistem sem thrash. Cada símbolo mantém o seu sub-mapa; rediscovery só reescreve o seu."""
     want_res = str(want_res)
+    cache = _load_cache()
+    sub = cache.get(symbol_suffix) if isinstance(cache.get(symbol_suffix), dict) else {}
     # 1) cache: verifica só a tab necessária (2-3s) antes de re-enumerar tudo
-    cached = _load_cache().get(want_res)
+    cached = sub.get(want_res)
     if cached:
         sym, res = _state_of(cached)
         if res == want_res and sym and str(sym).endswith(symbol_suffix):
             return cached
-    # 2) rediscovery completa
+    # 2) rediscovery completa (só tabs deste símbolo)
     m = {}
     for tid in _chart_targets():
         sym, res = _state_of(tid)
         if res and sym and str(sym).endswith(symbol_suffix) and res not in m:
             m[res] = tid
     if m:
-        _save_cache(m)
+        cache[symbol_suffix] = m          # preserva sub-mapas de outros símbolos
+        _save_cache(cache)
     return m.get(want_res)
 
 

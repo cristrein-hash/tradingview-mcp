@@ -27,11 +27,14 @@ LX = ZoneInfo("Europe/Lisbon")
 iso = lambda t: dt.datetime.fromtimestamp(int(t), LX).strftime("%Y-%m-%d %H:%M")
 
 # TF -> (dur_s, fase_da_grelha, ficheiro, count_leitura, periodo_poll_s, retenção_s|None=infinita)
+# res/symbol default = a chave/XAUUSD; DXY1D lê a tab TVC:DXY 1D e estende o canónico raw_dxy_1d (Layer1).
 TFS = {
     "15":  {"dur": 900,   "phase": 0,    "file": STORE / "bars_15m.jsonl", "count": 40,  "poll": 60,  "retain": 30*86400},
     "60":  {"dur": 3600,  "phase": 0,    "file": REV / "raw_1h_ohlc.jsonl", "count": 12, "poll": 300, "retain": None},
     "240": {"dur": 14400, "phase": 7200, "file": REV / "raw_4h_ohlc.jsonl", "count": 8,  "poll": 900, "retain": None},
     "1D":  {"dur": 86400, "phase": None, "file": STORE / "bars_1d.jsonl",  "count": 400, "poll": 900, "retain": None},
+    "DXY1D": {"dur": 86400, "phase": None, "file": REV / "raw_dxy_1d.jsonl", "count": 400, "poll": 900, "retain": None,
+              "res": "1D", "symbol": "DXY"},
 }
 BUB_F = STORE / "bubbles_15m.jsonl"
 BUB_RETAIN = 30 * 86400
@@ -223,22 +226,25 @@ def main():
     import tab_pin
     errs = []
     for tf in due:
+        cfg = TFS[tf]
+        res = cfg.get("res", tf); symbol = cfg.get("symbol", "XAUUSD")
         try:
-            tid = tab_pin.discover_tab(tf)
+            tid = tab_pin.discover_tab(res, symbol_suffix=symbol)
         except Exception as e:
             errs.append(f"{tf}: discover {str(e)[:40]}"); continue
         if not tid:
             errs.append(f"{tf}: sem tab"); continue
         try:
-            bars, pairs, nas, boxes, sv = read_tab(tid, tf, TFS[tf]["count"])
+            bars, pairs, nas, boxes, sv = read_tab(tid, tf, cfg["count"])
         except Exception as e:
             errs.append(f"{tf}: read {str(e)[:40]}"); continue
         n, err = append_tf(tf, tid, bars)
         if err:
             errs.append(err); continue
         out[f"new_{tf}"] = n
-        _snap("pine_boxes", tf, boxes)             # zonas/OB p/ E0 mtf
-        _snap("study_values", tf, sv)              # indicadores p/ E0 mtf/micro
+        if symbol == "XAUUSD":                      # snaps só XAU (DXY não alimenta o E0 mtf)
+            _snap("pine_boxes", tf, boxes)          # zonas/OB p/ E0 mtf
+            _snap("study_values", tf, sv)           # indicadores p/ E0 mtf/micro
         if tf == "15":
             out["new_bub"] = append_bubbles(pairs)
             out["new_nas"] = append_nas(nas)
