@@ -17,6 +17,7 @@ IL = SNAP / "investinglive_news.json"
 GEO = SNAP / "geopolitical_news.json"
 FH = SNAP / "finnhub_news.json"
 FJ = SNAP / "fj_news.json"          # FinancialJuice (10min atraso) = contexto/curadoria, NÃO breaking
+PM = SNAP / "polymarket.json"       # Polymarket odds (drivers do ouro) = contexto lento; SHIFT = sinal
 OIL = SNAP / "oil_data.json"
 FFCAL = SNAP / "ff_calendar.json"
 SHOCK = REPO / "my-strategy/core/price_shock/.shock_state/shock.json"
@@ -90,6 +91,12 @@ def read_gate(path=IL):
     oil = _load(OIL) or {}
     oil_shock = bool(oil.get("shock"))
     src["oil"] = {"shock": oil_shock, "read": oil.get("read")}
+    # Polymarket = odds forward-looking dos drivers (Fed/guerra/Ormuz). Contexto LENTO, NÃO breaking.
+    # Um SHIFT ≥5pp = a multidão a re-precificar um evento antes do preço → enriquece a leitura E2.
+    pm = _load(PM) or {}
+    pm_shifts = pm.get("shifts", []) or []
+    src["polymarket"] = {"key_probs": pm.get("key_probs"), "read": pm.get("read"),
+                         "shift": (pm_shifts[0] if pm_shifts else None), "n_shifts": len(pm_shifts)}
     # price shock (gatilho rápido) — funde TV-tape (24h/30s) + GLD-tick (sub-segundo, horas US); <5min
     ps = None
     cands = []
@@ -131,6 +138,9 @@ def read_gate(path=IL):
             parts.append(f"⚠️ {name}: \"{(top.get('title','') or '')[:70]}\" (-{top.get('age_min')}m)")
     if oil_shock:
         parts.append(f"🛢️ {(oil.get('read') or '')[:80]}")
+    if pm_shifts:                                          # movimento de probabilidade = evento a ser precificado
+        s = pm_shifts[0]
+        parts.append(f"🎲 Polymarket: \"{s['q'][:48]}\" {s['delta']:+.0f}pp→{s['to']}% ({s['driver']})")
     if fj_items:
         parts.append(f"📰 FJ (10min): \"{(fj_items[0].get('title') or '')[:60]}\"")
     if sess == "dead_zone":

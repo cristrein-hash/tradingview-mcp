@@ -127,6 +127,7 @@ def components():
         "E1 detector": chk_pid(AB / "logs/e1_detector.pid"),
         "E2 quality":  chk_pid(AB / "logs/e2_quality.pid"),
         "EF news":     chk_ef_news(REPO / "external_factors_v2/snapshots/investinglive_news.json", 15*60),
+        "Polymarket":  chk_ef_news(REPO / "external_factors_v2/snapshots/polymarket.json", 20*60),
         "EF v2":       chk_mtime(REPO / "external_factors_v2/snapshots/latest.json", 70*60),
         "Backfill":    chk_mtime(AB / "logs/e2_outcome_backfill.log", 130*60),
         "Bar-store":   chk_log_status(REPO / "my-strategy/core/bar_store/store/store_cycle.log", 10*60, bad_prefixes=("HARD_STOP",)),

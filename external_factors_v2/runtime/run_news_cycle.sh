@@ -12,6 +12,7 @@ python3 collectors/investinglive_news_collect.py >> "$LOG" 2>&1 || echo "[warn] 
 python3 collectors/finnhub_news_collect.py >> "$LOG" 2>&1 || echo "[warn] finnhub_news falhou" >> "$LOG"
 python3 collectors/geopolitical_news_collect.py >> "$LOG" 2>&1 || echo "[warn] geopolitical falhou" >> "$LOG"
 python3 collectors/oil_collect.py >> "$LOG" 2>&1 || echo "[warn] oil falhou" >> "$LOG"
+python3 collectors/polymarket_collect.py >> "$LOG" 2>&1 || echo "[warn] polymarket falhou" >> "$LOG"
 python3 runtime/news_escalate.py >> "$LOG" 2>&1 || echo "[warn] escalate falhou" >> "$LOG"
 
 # poda o log (mantém ~400 linhas)
