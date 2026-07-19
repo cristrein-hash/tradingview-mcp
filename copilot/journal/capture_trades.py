@@ -36,7 +36,6 @@ def run_cycle(dry=False):
     r = chart_read.read_trades()
     if not r.get("ok"):
         out["status"] = f"SKIP: {r.get('reason')}"; _log(out); return out
-    stable = r.get("raw_n", 0) > 0                            # read não-vazio (senão = edição/chart vazio)
     reads = [t for t in r.get("trades", []) if t.get("status") == "READ"]
     on_chart = {ledger._key(t) for t in reads}
     led = {x["dedup_key"]: x for x in ledger.load()}
@@ -54,8 +53,10 @@ def run_cycle(dry=False):
                     {"ts": _now(), "entry": t.get("entry"), "sl": t.get("sl"), "tp": t.get("tp"), "rr": t.get("rr")})
                 if not dry: ledger.upsert(ex)               # entry/SL/TP ORIGINAIS ficam; só regista revisão
                 out["revised"].append(t["trade_id"])
-    # 2) CANCELLED (só read estável; requer 2 ausências consecutivas)
-    if stable and not dry:
+    # 2) CANCELLED — a trade PENDING sumiu do chart. O read já é fiável (r.ok True + debounce); o vazio
+    # GENUÍNO (Cris removeu tudo) também conta. A robustez vem das 2 AUSÊNCIAS CONSECUTIVAS (um edit não
+    # mantém o desenho fora 2 ciclos ~4min). O antigo guard raw_n>0 nunca cancelava com o chart vazio (bug).
+    if not dry:
         for k, ex in list(led.items()):
             if ex.get("status") != "PENDING":
                 continue
