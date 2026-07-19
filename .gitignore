@@ -97,3 +97,6 @@ copilot/journal/entries.jsonl
 copilot/journal/lessons.jsonl
 copilot/journal/weekly/
 copilot/journal/.state/
+
+# AMD live — estado vivo (ledger, logs)
+my-strategy/strategies/xau_amd/amd_live/.amd_state/

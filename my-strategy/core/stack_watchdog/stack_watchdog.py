@@ -121,6 +121,7 @@ def components():
     c = {
         "Cp 15M":      chk_log_status(STRAT / "xau_15m_long/reversal/CP_CAPITULATION/.cp_state/cp_cycle.log", 35*60),
         "Router 15M":  chk_log_status(STRAT / "xau_15m_long/ENTRY_ROUTER/.router_state/router_cycle.log", 35*60),
+        "AMD live":    chk_log_status(STRAT / "xau_amd/amd_live/.amd_state/amd_cycle.log", 35*60),
         "Journal cap": chk_log_status(REPO / "copilot/journal/.state/capture.log", 12*60),
         "Journal day": chk_mtime(REPO / "copilot/journal/.state/daily_out.log", 26*3600),   # cron 22:00 Lisboa (1×/dia)
         "Regime":      chk_log_status(REPO / "my-strategy/core/regime_engine/.regime_state/regime_cycle.log", 130*60),
