@@ -119,10 +119,13 @@ def read_gate(path=IL):
     src["ff_event"] = {"mins_until": ff_mins, "event": imm[1] if imm else None,
                        "just_released": imm[3] if imm else False}
 
-    # high_impact = BREAKING (news fresca / choque de preço / release agendado). oil_shock é regime
-    # persistente (dura dias) → fica no advisory/sources como contexto, NÃO liga o flag breaking 24/7.
-    high_impact = bool(hi_il or hi_geo or hi_fh or ps or (imm and imm[3]))
-    escalate = bool(esc_il or esc_geo or esc_fh or (ps and ps.get("major")) or (imm and imm[3]))
+    # high_impact = BREAKING (news fresca / choque de preço / release agendado). CONTEXTO PERSISTENTE
+    # (NÃO liga breaking): oil_shock (dura dias) E geopolítico/GDELT (guerra Irão/Israel em curso tem SEMPRE
+    # headline TOP-tier fresca → seria breaking 24/7). Ambos ficam nos sources/advisory como contexto para a
+    # leitura E2, mas não marcam breaking. Choque geopolítico REAL move o preço → ps apanha-o (price-first).
+    # (Coerência com news_escalate, ordem Cris 2026-07-19: geopolítico = contexto, não breaking.)
+    high_impact = bool(hi_il or hi_fh or ps or (imm and imm[3]))
+    escalate = bool(esc_il or esc_fh or (ps and ps.get("major")) or (imm and imm[3]))
 
     # advisory humano (o mais forte primeiro)
     parts = []
