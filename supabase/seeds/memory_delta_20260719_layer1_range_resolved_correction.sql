@@ -1,0 +1,12 @@
+-- memory_delta_20260719_layer1_range_resolved_correction
+-- Correcao de estado (INSERT novo; NAO toca a row antiga cujo titulo diz "RANGE em aberto").
+-- Autorizado por Cris 2026-07-19. Sem secrets/RAW/params de edge. ASCII.
+-- ROLLBACK: delete from memory_items where tags @> array['seed:memory_delta_20260719_layer1_range_resolved_correction'];
+insert into memory_items (id, scope, visibility, category, title, body, tags, source_ref, status)
+values
+ (md5('layer1_macro_detector_1d_range_resolved_correction_20260719')::uuid, 'private', 'private', 'project',
+  'CORRECAO Layer1 macro detector 1D: TURNOS + RANGE ambos RESOLVIDOS, Layer1 COMPLETO = USER_APPROVED (research nao-producao) — supersede label antigo "RANGE em aberto"',
+  'Correcao de label (Cris autorizou 2026-07-19). A row anterior ("Layer1 MACRO detector 1D ... TURNOS RESOLVIDOS; RANGE em aberto") ficou DESATUALIZADA. Estado real: o RANGE foi resolvido em 2026-07-13 por engine multi-agente (range_cand_SYNTH: falha-de-progressao-swing + RSI mid-band + gate posicao-na-banda, recall 0->93pct SEM partir os turnos) e integrado em macro_structural_v3.build_layer1(). Cris aprovou o Layer1 COMPLETO ("melhor leitura estrutural ate agora, APROVADISSIMO", commit b4d6b88). Turnos BULL<->BEAR: resolvidos (bears 5/5, onsets no lugar sem lag, 2026 held 100pct). RANGE: resolvido (recall 93pct, 5/5 janelas do GT); teto honesto rib genuino ~20,7pct = limite EXIT/persistencia (consolidacoes-de-bull ~ nested-ranges, precisa olho visual), NAO bloqueio. IMPORTANTE distinguir 3 motores de regime (facil confundir): (1) Regime Engine LIVE = com.cristrein.regime-engine, PRODUCAO, detetor canonico engine_4h_regime_gate_RAW v5 baseado em 4H/1H, abastece L1/L2/Cp; (2) Layer1 macro detector 1D = macro_structural_v3.py, RESEARCH/USER_APPROVED NAO producao, detetor estrutural 1D, topo da pilha de compreensao de entries 15M (Layer1 1D -> Layer2 leg v3 4H -> GT fundos 15M -> camadas A1/A2/B/Cp/Cg), NAO wired ao live; (3) RTSE = modulo transversal, fases 0-10b feitas, integracao PAUSADA por Cris. Achado canonico: regime como hard-gate bolt-on NAO agrega (L1 redundante/circular, gate-a-BULL piora lucro; L2 regime = proxy de calendario nao seletor) -> uso sancionado = contexto/roteamento graduado, nunca filtro duro.',
+  array['seed:memory_delta_20260719_layer1_range_resolved_correction','layer1','regime','range','correcao','research'],
+  'memory/project_layer1_macro_detector.md · commit b4d6b88 (macro_structural_v3.build_layer1)', 'active')
+on conflict (id) do nothing;
