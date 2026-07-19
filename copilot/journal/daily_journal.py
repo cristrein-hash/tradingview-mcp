@@ -28,11 +28,11 @@ def _extract_json(body):
         return None
 
 
-def run_claude(grounding):
+def run_claude(grounding, instr_file="daily_instruction.md"):
     if not Path(CLAUDE).exists():
         return None, "claude CLI ausente"
     charter = (PROMPTS / "system_charter.md").read_text()
-    instr = (PROMPTS / "daily_instruction.md").read_text()
+    instr = (PROMPTS / instr_file).read_text()
     prompt = f"GROUNDING (JSON determinístico — ecoa os números, não inventes):\n{json.dumps(grounding, ensure_ascii=False)}\n\n{instr}"
     env = dict(os.environ); env.pop("ANTHROPIC_API_KEY", None)     # força auth da assinatura Max (custo zero)
     try:
