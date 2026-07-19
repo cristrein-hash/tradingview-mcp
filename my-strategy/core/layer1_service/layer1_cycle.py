@@ -52,54 +52,49 @@ def _merge_xau_1d():
     return rows
 
 
-def main():
-    if "--status" in sys.argv:
-        try:
-            d = json.loads(CUR.read_text())
-            print(f"  regime={d.get('regime')} as_of={d.get('as_of')} n={d.get('n_bars')} parity={d.get('parity_ok')} built={lx(d.get('built_ts',0))}")
-        except Exception:
-            print("  (sem current_layer1.json ainda)")
-        return 0
-
+def compute_and_write():
+    """Computa o regime Layer1 1D (fonte fresca + gate de paridade) e escreve current_layer1.json.
+    Chamado pelo REGIME-ENGINE (autoridade única de regime desde 2026-07-19 — consolidação Cris).
+    Devolve dict de estado; NUNCA lança (fail-closed -> HARD_STOP não escreve)."""
     sys.path.insert(0, str(REV))
     try:
         import macro_structural_v3 as M
     except Exception as e:
-        _log({"status": "HARD_STOP", "err": f"import macro_structural_v3: {str(e)[:80]}"}); return 1
+        r = {"status": "HARD_STOP", "err": f"import macro_structural_v3: {str(e)[:80]}"}; _log(r); return r
 
     # 1) labels BASE (o que o módulo daria sozinho, dados como importados) — para o gate de paridade.
     base_T = list(M.T)
     try:
         base_lab = M.build_layer1()
     except Exception as e:
-        _log({"status": "HARD_STOP", "err": f"build_layer1 base: {str(e)[:80]}"}); return 1
+        r = {"status": "HARD_STOP", "err": f"build_layer1 base: {str(e)[:80]}"}; _log(r); return r
     base_by_t = dict(zip(base_T, base_lab))
     base_last = base_T[-1] if base_T else None            # última barra BASE (pode ser provisória) = excluída da paridade
 
     # 2) injeta FONTE fresca nos globais (matemática intocada).
     xau = _merge_xau_1d()
     if len(xau) < 400:
-        _log({"status": "HARD_STOP", "err": f"XAU 1D fresco insuficiente (n={len(xau)})"}); return 1
+        r = {"status": "HARD_STOP", "err": f"XAU 1D fresco insuficiente (n={len(xau)})"}; _log(r); return r
     M.T = [b["t"] for b in xau]; M.O = [b["o"] for b in xau]; M.H = [b["h"] for b in xau]
     M.L = [b["l"] for b in xau]; M.C = [b["c"] for b in xau]; M.N = len(xau)
     dxy = _jl(REV / "raw_dxy_1d.jsonl")
     if len(dxy) < 400:
-        _log({"status": "HARD_STOP", "err": f"DXY 1D insuficiente (n={len(dxy)})"}); return 1
-    M.DXY_K = [r["t"] + 86400 for r in dxy]; M.DXY_C = [r["c"] for r in dxy]
+        r = {"status": "HARD_STOP", "err": f"DXY 1D insuficiente (n={len(dxy)})"}; _log(r); return r
+    M.DXY_K = [b["t"] + 86400 for b in dxy]; M.DXY_C = [b["c"] for b in dxy]
 
     # 3) labels FRESCOS.
     try:
         fresh_lab = M.build_layer1()
     except Exception as e:
-        _log({"status": "HARD_STOP", "err": f"build_layer1 fresh: {str(e)[:80]}"}); return 1
+        r = {"status": "HARD_STOP", "err": f"build_layer1 fresh: {str(e)[:80]}"}; _log(r); return r
     fresh_by_t = dict(zip(M.T, fresh_lab))
 
     # 4) GATE DE PARIDADE: nos dias de dados IDÊNTICOS (todos os base exceto a última barra provisória),
     #    o label fresco tem de bater o base. Divergência = a fonte mudou a matemática -> HARD_STOP.
     mism = [t for t in base_T if t != base_last and t in fresh_by_t and base_by_t[t] != fresh_by_t[t]]
     if mism:
-        _log({"status": "HARD_STOP", "parity_ok": False, "n_mismatch": len(mism),
-              "primeiros": [lx(t) for t in mism[:5]]}); return 1
+        r = {"status": "HARD_STOP", "parity_ok": False, "n_mismatch": len(mism),
+             "primeiros": [lx(t) for t in mism[:5]]}; _log(r); return r
 
     # 5) regime atual = label do último 1D FECHADO.
     regime = fresh_lab[-1]; as_of_t = M.T[-1]
@@ -115,9 +110,21 @@ def main():
         with open(TRANS, "a") as fh:
             fh.write(json.dumps({"ts": dt.datetime.now(dt.timezone.utc).isoformat(),
                                  "from": prev, "to": regime, "as_of_bar_t": as_of_t, "as_of": lx(as_of_t)}) + "\n")
-    _log({"status": "OK", "regime": regime, "as_of": lx(as_of_t), "n": M.N,
-          "parity_checked": out["n_parity_checked"], "transition": (f"{prev}->{regime}" if prev != regime else None)})
-    return 0
+    r = {"status": "OK", "regime": regime, "as_of": lx(as_of_t), "n": M.N,
+         "parity_checked": out["n_parity_checked"], "transition": (f"{prev}->{regime}" if prev != regime else None)}
+    _log(r); return r
+
+
+def main():
+    if "--status" in sys.argv:
+        try:
+            d = json.loads(CUR.read_text())
+            print(f"  regime={d.get('regime')} as_of={d.get('as_of')} n={d.get('n_bars')} parity={d.get('parity_ok')} built={lx(d.get('built_ts',0))}")
+        except Exception:
+            print("  (sem current_layer1.json ainda)")
+        return 0
+    r = compute_and_write()
+    return 0 if r.get("status") == "OK" else 1
 
 
 if __name__ == "__main__":

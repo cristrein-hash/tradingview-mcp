@@ -129,6 +129,16 @@ def main():
         if os.environ.get("REGIME_TELEGRAM") == "1":
             _notify(f"🔄 REGIME XAU: {prev} → {r['regime']} (as-of {r['as_of_bar']} Lisboa)")
     tmp = CUR_F.with_suffix(".json.tmp"); tmp.write_text(json.dumps({**r, "ts": ts})); os.replace(tmp, CUR_F)
+    # LAYER1 1D = autoridade macro (consolidação Cris 2026-07-19): este serviço é o ÚNICO daemon de
+    # regime; corre também o Layer1 1D (pura computação, matemática congelada + gate de paridade) e
+    # escreve current_layer1.json. v5-4H (acima) fica como leitura AUXILIAR. Fail-soft: erro no Layer1
+    # não derruba o ciclo de regime.
+    try:
+        sys.path.insert(0, str(CORE / "layer1_service"))
+        import layer1_cycle as L1
+        out["layer1"] = L1.compute_and_write()
+    except Exception as e:
+        out["layer1"] = {"status": "ERR", "err": f"{type(e).__name__}:{str(e)[:60]}"}
     out["status"] = "OK"
     _log(out); print(json.dumps(out, ensure_ascii=False, indent=1))
 
