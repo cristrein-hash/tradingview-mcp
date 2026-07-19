@@ -250,6 +250,12 @@ def render_composite(dsr, cand):
     L.append(f"  regime (vozes convergentes — NÃO é veto, compõem UMA imagem): v5-4H={v5.get('regime')} "
              f"(as_of {v5.get('as_of')}) · Layer1-1D estrutural={l1.get('regime')} (as_of {l1.get('as_of')}) "
              f"· proxy-MTF={regime(dsr)}")
+    amd = (dsr["axes"].get("amd_setup") or {})
+    if amd.get("active"):
+        cs = amd.get("candidates") or []
+        L.append(f"  🎯 AMD SETUP ATIVO (H4 sweep, voz advisory NÃO-veto): {amd.get('dir','').upper()} · varreu "
+                 f"{amd.get('level_kind')} {amd.get('level')} · bias {amd.get('bias')} · killzone {amd.get('killzone')} "
+                 f"· {len(cs)} candidatos FVG/OB 1H" + (f" (melhor R {min((c.get('R') or 99) for c in cs)})" if cs else ""))
     ng = macro.get("news_gate", {}) or {}
     L.append(f"  sessão {ng.get('session')} | risco {macro.get('risk_level')} | real_yield10y "
              f"{fmt(macro.get('real_yield_10y'))} | USD {fmt(macro.get('usd_broad'))} | VIX {fmt(macro.get('vix'))}")

@@ -111,6 +111,7 @@ def main():
         if now >= rec.get("window_expires_epoch", 0):
             rec["state"] = "EXPIRED"; continue
         cands = V.list_candidates({"t": rec["h4_bar_t"], "dir": rec["dir"], "setup_id": rec["setup_id"]}, h1)
+        rec["candidates_latest"] = cands                     # lista completa p/ o E0 ler (F3)
         pinged = set(rec.get("candidates_pinged", []))
         new = [c for c in cands if c["candidate_id"] + ":" + c["status"] not in pinged]
         if new:

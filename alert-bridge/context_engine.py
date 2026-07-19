@@ -30,6 +30,26 @@ SCHEMA_VERSION = 1
 # (macro estrutural aprovado, live desde 2026-07-19). Lidas de ficheiros de estado; zero MCP.
 REGIME_V5 = REPO / "my-strategy/core/regime_engine/.regime_state/current_regime.json"
 LAYER1_1D = REPO / "my-strategy/core/layer1_service/.layer1_state/current_layer1.json"
+AMD_LEDGER = REPO / "my-strategy/strategies/xau_amd/amd_live/.amd_state/amd_setups.jsonl"   # F3: setup AMD ativo (voz, nunca veto)
+
+
+def read_amd_setup():
+    """Setup AMD ARMADO ativo (dentro da janela) + candidatos FVG/OB 1H. CONTEXTO advisory p/ o E2 — NUNCA
+    gate/veto. None-ativo quando não há setup. Lê o ledger do daemon AMD (zero MCP)."""
+    now = int(time.time())
+    try:
+        rows = [json.loads(l) for l in AMD_LEDGER.read_text().splitlines() if l.strip()]
+    except Exception:
+        return {"active": False}
+    act = [r for r in rows if r.get("state") == "ARMED" and now < (r.get("window_expires_epoch") or 0)]
+    if not act:
+        return {"active": False}
+    r = max(act, key=lambda x: x.get("h4_bar_t", 0))
+    return {"active": True, "setup_id": r["setup_id"], "dir": r["dir"], "level": r["level"],
+            "level_kind": "PDL/PWL" if r["dir"] == "long" else "PDH/PWH", "bias": r.get("bias"),
+            "bias_layer1": r.get("bias_layer1"), "killzone": r.get("killzone"), "h4_close": r.get("h4_close"),
+            "sweep_wick": r.get("sweep_wick"), "armed_ts": r.get("armed_ts"),
+            "candidates": r.get("candidates_latest", [])}
 
 
 def read_regime():
@@ -69,7 +89,7 @@ def _health(axis, age_s, stale_after):
     return {"status": "fresh" if (age_s is None or age_s <= stale_after) else "stale", "age_s": age_s}
 
 
-def build_context(mtf, mtf_age, micro, macro, confluence=None, magnets=None, regime=None):
+def build_context(mtf, mtf_age, micro, macro, confluence=None, magnets=None, regime=None, amd=None):
     t = int(time.time())
     reg = regime or {}
     return {
@@ -82,6 +102,7 @@ def build_context(mtf, mtf_age, micro, macro, confluence=None, magnets=None, reg
             "confluence": _health((confluence or {}).get("15"), mtf_age, 1800),
             "regime": {"v5_4h": (reg.get("v5_4h") or {}).get("status", "absent"),
                        "structural_1d": (reg.get("structural_1d") or {}).get("status", "absent")},
+            "amd_setup": "active" if (amd or {}).get("active") else "none",
         },
         "axes": {
             "mtf": {tf: {"trend": (d.get("structure") or {}).get("trend"),
@@ -95,6 +116,7 @@ def build_context(mtf, mtf_age, micro, macro, confluence=None, magnets=None, reg
             "confluence": confluence,      # {"15": {act_dens, buy_dens, sell_dens, leg_sell, nas_n, ...}}
             "magnets": magnets,            # F-A2: {above:[...], below:[...], pullback:{...}} — voz, não sinal
             "regime": regime,              # vozes convergentes v5-4H + Layer1-1D (NÃO veto) — E2 lê como contexto
+            "amd_setup": amd,              # F3: setup AMD H4 ativo + candidatos FVG/OB 1H (voz advisory, NUNCA veto)
         },
     }
 
@@ -124,7 +146,7 @@ def once(state):
         state["last_mtf_close"] = close
         state["mtf_ts"] = time.time()
     mtf_age = int(time.time() - state["mtf_ts"]) if state.get("mtf_ts") else None
-    ctx = build_context(state["mtf"], mtf_age, micro, macro, state.get("confluence"), state.get("magnets"), read_regime())
+    ctx = build_context(state["mtf"], mtf_age, micro, macro, state.get("confluence"), state.get("magnets"), read_regime(), read_amd_setup())
     atomic_write(OUT, ctx)
     return ctx
 
