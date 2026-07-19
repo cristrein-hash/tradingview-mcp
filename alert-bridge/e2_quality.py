@@ -245,6 +245,11 @@ def render_composite(dsr, cand):
         if pb:
             L.append(f"  perna: {pb.get('leg_dir')} · pullback #{pb.get('ordinal')} ({pb.get('maturity')})")
     L.append("\n# MACRO")
+    reg = (dsr["axes"].get("regime") or {})
+    v5 = reg.get("v5_4h") or {}; l1 = reg.get("structural_1d") or {}
+    L.append(f"  regime (vozes convergentes — NÃO é veto, compõem UMA imagem): v5-4H={v5.get('regime')} "
+             f"(as_of {v5.get('as_of')}) · Layer1-1D estrutural={l1.get('regime')} (as_of {l1.get('as_of')}) "
+             f"· proxy-MTF={regime(dsr)}")
     ng = macro.get("news_gate", {}) or {}
     L.append(f"  sessão {ng.get('session')} | risco {macro.get('risk_level')} | real_yield10y "
              f"{fmt(macro.get('real_yield_10y'))} | USD {fmt(macro.get('usd_broad'))} | VIX {fmt(macro.get('vix'))}")

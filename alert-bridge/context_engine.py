@@ -26,6 +26,23 @@ PAUSE_GLOBAL = Path("/tmp/claude_recheck.paused")
 FLOOR_S = 60
 MTF_MOVE_ATR = 0.6            # recomputa MTF se preço mover > 0.6*ATR desde o último recompute
 SCHEMA_VERSION = 1
+# regime macro = DUAS vozes CONVERGENTES (nunca AND/veto): v5-4H (Regime Engine live) + Layer1-1D
+# (macro estrutural aprovado, live desde 2026-07-19). Lidas de ficheiros de estado; zero MCP.
+REGIME_V5 = REPO / "my-strategy/core/regime_engine/.regime_state/current_regime.json"
+LAYER1_1D = REPO / "my-strategy/core/layer1_service/.layer1_state/current_layer1.json"
+
+
+def read_regime():
+    now = int(time.time())
+    def _one(p, stale):
+        try:
+            d = json.loads(Path(p).read_text())
+            age = now - int(Path(p).stat().st_mtime)
+            return {"regime": d.get("regime"), "as_of": d.get("as_of") or d.get("as_of_bar"),
+                    "age_s": age, "status": "fresh" if age <= stale else "stale"}
+        except Exception:
+            return {"regime": None, "status": "absent"}
+    return {"v5_4h": _one(REGIME_V5, 7200), "structural_1d": _one(LAYER1_1D, 1800)}
 
 
 def now_utc():
@@ -52,8 +69,9 @@ def _health(axis, age_s, stale_after):
     return {"status": "fresh" if (age_s is None or age_s <= stale_after) else "stale", "age_s": age_s}
 
 
-def build_context(mtf, mtf_age, micro, macro, confluence=None, magnets=None):
+def build_context(mtf, mtf_age, micro, macro, confluence=None, magnets=None, regime=None):
     t = int(time.time())
+    reg = regime or {}
     return {
         "_meta": {"cycle_ts": t, "cycle_iso": now_utc().isoformat(), "schema_version": SCHEMA_VERSION,
                   "price_ref": (micro or {}).get("close")},
@@ -62,6 +80,8 @@ def build_context(mtf, mtf_age, micro, macro, confluence=None, magnets=None):
             "micro_15m": _health(micro, 0, 120),
             "macro": _health(macro, 0, 3600),
             "confluence": _health((confluence or {}).get("15"), mtf_age, 1800),
+            "regime": {"v5_4h": (reg.get("v5_4h") or {}).get("status", "absent"),
+                       "structural_1d": (reg.get("structural_1d") or {}).get("status", "absent")},
         },
         "axes": {
             "mtf": {tf: {"trend": (d.get("structure") or {}).get("trend"),
@@ -74,6 +94,7 @@ def build_context(mtf, mtf_age, micro, macro, confluence=None, magnets=None):
             "macro": macro,
             "confluence": confluence,      # {"15": {act_dens, buy_dens, sell_dens, leg_sell, nas_n, ...}}
             "magnets": magnets,            # F-A2: {above:[...], below:[...], pullback:{...}} — voz, não sinal
+            "regime": regime,              # vozes convergentes v5-4H + Layer1-1D (NÃO veto) — E2 lê como contexto
         },
     }
 
@@ -103,7 +124,7 @@ def once(state):
         state["last_mtf_close"] = close
         state["mtf_ts"] = time.time()
     mtf_age = int(time.time() - state["mtf_ts"]) if state.get("mtf_ts") else None
-    ctx = build_context(state["mtf"], mtf_age, micro, macro, state.get("confluence"), state.get("magnets"))
+    ctx = build_context(state["mtf"], mtf_age, micro, macro, state.get("confluence"), state.get("magnets"), read_regime())
     atomic_write(OUT, ctx)
     return ctx
 
