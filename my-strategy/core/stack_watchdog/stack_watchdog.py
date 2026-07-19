@@ -121,6 +121,7 @@ def components():
     c = {
         "Cp 15M":      chk_log_status(STRAT / "xau_15m_long/reversal/CP_CAPITULATION/.cp_state/cp_cycle.log", 35*60),
         "Router 15M":  chk_log_status(STRAT / "xau_15m_long/ENTRY_ROUTER/.router_state/router_cycle.log", 35*60),
+        "Journal cap": chk_log_status(REPO / "copilot/journal/.state/capture.log", 12*60),
         "Regime":      chk_log_status(REPO / "my-strategy/core/regime_engine/.regime_state/regime_cycle.log", 130*60),
         "Layer1 1D":   chk_mtime(REPO / "my-strategy/core/layer1_service/.layer1_state/current_layer1.json", 130*60),  # escrito pelo regime-engine (autoridade única, horário)
         "L1 4H":       chk_log_status(STRAT / "xau_4h_long/continuation/L1_EMA21_CONTINUATION/.runtime_state/l1_cycle.log", 6*3600),

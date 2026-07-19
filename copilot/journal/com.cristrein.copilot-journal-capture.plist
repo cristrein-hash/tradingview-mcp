@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.cristrein.copilot-journal-capture</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/zsh</string>
+        <string>/Users/cristrein/tradingview-mcp/copilot/journal/start_capture.sh</string>
+    </array>
+    <key>StartInterval</key>
+    <integer>120</integer>
+    <key>WatchPaths</key>
+    <array>
+        <string>/Users/cristrein/tradingview-mcp/my-strategy/core/bar_store/store/bars_15m.jsonl</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/Users/cristrein/tradingview-mcp/copilot/journal/.state/launchd_out.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/cristrein/tradingview-mcp/copilot/journal/.state/launchd_err.log</string>
+</dict>
+</plist>

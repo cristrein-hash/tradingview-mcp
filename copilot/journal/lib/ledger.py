@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """COPILOT/JOURNAL — ledger das trades (P0): trades.jsonl (linha enxuta, grep-able) + sidecar do snapshot
 pesado em snapshots/<N>_<epoch>.json. Dedup por (trade_id, entry). Horas humanas = Lisboa."""
-import json, time, datetime as dt
+import json, os, time, datetime as dt
 from pathlib import Path
 from zoneinfo import ZoneInfo
 J = Path(__file__).resolve().parents[1]                 # copilot/journal
@@ -23,6 +23,21 @@ def _key(t):
 
 def keys():
     return {_key(t) for t in load()}
+
+
+def save(rows):
+    tmp = TRADES.with_suffix(".jsonl.tmp")
+    tmp.write_text("\n".join(json.dumps(r, ensure_ascii=False) for r in rows) + ("\n" if rows else ""))
+    os.replace(tmp, TRADES)
+
+
+def upsert(rec):
+    """Substitui a linha com o mesmo dedup_key (ou acrescenta), mantém ordenado por deteção."""
+    rows = [r for r in load() if r.get("dedup_key") != rec.get("dedup_key")]
+    rows.append(rec)
+    rows.sort(key=lambda r: r.get("detected_epoch") or 0)
+    save(rows)
+    return rec
 
 
 def append(trade, snapshot):

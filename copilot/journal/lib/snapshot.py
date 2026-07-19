@@ -7,6 +7,7 @@ from pathlib import Path
 REPO = Path("/Users/cristrein/tradingview-mcp")
 sys.path.insert(0, str(REPO / "alert-bridge"))
 MKT = REPO / "external_factors_v2/snapshots/market_context.json"
+EXT = REPO / "external_factors_v2/snapshots/latest.json"     # dossiê externo (fed path, eventos, ouro, news, teorias)
 
 
 def _unpack(v):
@@ -38,6 +39,13 @@ def build_snapshot():
         snap["store_fresh"] = {tf: bool(SR.fresh(tf)) for tf in ("15", "60", "240", "1D")}
     except Exception as e:
         snap["price_error"] = str(e)[:60]
+    # contexto EXTERNO completo (Cris: quanto mais informação para contextualizar, melhor)
+    try:
+        ext = json.loads(EXT.read_text())
+        snap["external"] = ext
+        snap["external_age_s"] = int(time.time()) - (ext.get("_meta", {}).get("cycle_ts") or ext.get("_meta", {}).get("ts_epoch") or 0)
+    except Exception as e:
+        snap["external_error"] = str(e)[:80]
     return snap
 
 
