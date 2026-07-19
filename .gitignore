@@ -88,3 +88,12 @@ my-strategy/research/revalidation/a1a2_fundo_lab/results/
 my-strategy/core/regime_engine/.regime_state/
 *.frozen_bak_*
 my-strategy/strategies/xau_15m_long/reversal/CP_CAPITULATION/.cp_state/
+
+# COPILOT/JOURNAL — estado vivo (dados, não código)
+copilot/journal/trades.jsonl
+copilot/journal/snapshots/
+copilot/journal/entries/
+copilot/journal/entries.jsonl
+copilot/journal/lessons.jsonl
+copilot/journal/weekly/
+copilot/journal/.state/
