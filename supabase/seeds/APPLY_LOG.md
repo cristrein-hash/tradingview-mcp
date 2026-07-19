@@ -36,3 +36,4 @@
 - 2026-07-17 12:22 UTC · `memory_delta_l2_golive_20260717.sql` · memory_items 316→317 · tag-rows 1/1 · OK
 - 2026-07-19 · `memory_delta_20260719_realtime_news_polymarket.sql` · memory_items 317→320 · tag-rows 3/3 · OK
 - 2026-07-19 00:07 UTC · `memory_delta_20260719_realtime_news_polymarket.sql` · memory_items 317→320 · tag-rows 3/3 · OK
+- 2026-07-19 00:20 UTC · `memory_delta_20260719_layer1_range_resolved_correction.sql` · memory_items 320→321 · tag-rows 1/1 · OK
