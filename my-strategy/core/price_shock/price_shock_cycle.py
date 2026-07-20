@@ -128,6 +128,41 @@ def _short_context(mag, exc_dir):
     return ck, q
 
 
+def _long_context(mag, exc_dir):
+    """Monitor de contexto LONG (Cris 2026-07-21) — COMPLEMENTA o Cp (não substitui). Lê o E0, checklist
+    LONG-adaptado + qualidade. RECLAIM-GATE anti-faca: SEM reclaim (excursão ALTA) a qualidade cai a FRACO —
+    não se chama LONG numa faca a cair (lição Cp: facas=custo estrutural, gate de 1º-reclaim). Advisory."""
+    try:
+        ax = json.loads(E0_F.read_text()).get("axes") or {}
+    except Exception:
+        return None, None
+    def _num(x):
+        try: return float(str(x).replace(",", ""))
+        except Exception: return None
+    reg = ax.get("regime") or {}
+    r5 = (reg.get("v5_4h") or {}).get("regime"); r1 = (reg.get("structural_1d") or {}).get("regime")
+    regime_ok = r5 in ("BULL", "RANGE")
+    mtf = ax.get("mtf") or {}
+    def _pos(tf):
+        m = mtf.get(tf) or {}; return m.get("trend"), _num((m.get("leg") or {}).get("pos_in_leg"))
+    t15, p15 = _pos("15"); t60, p60 = _pos("60")
+    pos = p15 if (t15 == "DOWN" and p15 is not None) else (p60 if p60 is not None else 0.0)
+    mature = (pos or 0) >= 0.5                                  # down-leg exausta/profunda (capitulação) vs faca fresca
+    reclaim = mag >= 6 and exc_dir == "ALTA"                    # RECLAIM p/ cima = anti-faca (o gate-chave)
+    mi = ax.get("micro_15m") or {}
+    rsi = _num(mi.get("rsi"))
+    oversold = bool(rsi is not None and rsi < 45)
+    cf = (ax.get("confluence") or {}).get("15") or {}
+    buy_init = (_num(cf.get("buy")) or 0) > (_num(cf.get("sell")) or 0)
+    fav = sum([regime_ok, mature, reclaim, oversold, buy_init])
+    q = "FRACO (sem reclaim=faca)" if not reclaim else ("FORTE" if (mature and fav >= 4) else "MÉDIO")
+    ck = (f"regime {r5}/{r1} {'✓' if regime_ok else '·'} · perna baixa "
+          f"{'exausta ✓' if mature else 'fresca ✗ (faca?)'} (pos {pos:.2f}) · reclaim {'✓' if reclaim else '✗'} "
+          f"{mag:.0f}pts · RSI {(rsi or 0):.0f} {'oversold ✓' if oversold else '·'} · "
+          f"iniciativa {'BUY ✓' if buy_init else 'sell/neutra ·'}")
+    return ck, q
+
+
 def check_ob_touch(price, bars, now, exc):
     """Alerta quando o preço 5M live ENTRA numa zona do OB Detector 15M REAL. A subir para a zona = teste de
     RESISTÊNCIA (contexto short); a descer = SUPORTE (contexto long). Dedup por zona (rearma ao sair >2pts).
@@ -153,10 +188,11 @@ def check_ob_touch(price, bars, now, exc):
                     body = (f"{ck}\nqualidade: {q}") if ck else f"rejeição {mag:.0f}pts {exc_dir}"
                     _notify(f"🔻 <b>SHORT-context a formar — zona OB 15M {lo:.1f}-{hi:.1f}</b> (íman testado ✓)\n"
                             f"{body}\n{iso(now)} Lisboa · timing 5M · advisory — decides + marca #N short (journal aprende)")
-                else:                                            # SUPORTE = contexto long (só aviso simples)
-                    _notify(f"🎯 <b>XAU tocou ZONA OB 15M — SUPORTE (contexto LONG)</b>\n"
-                            f"zona {lo:.1f}-{hi:.1f} · preço {price:.2f} ↓ a descer para\n"
-                            f"{iso(now)} Lisboa · OB Detector real · timing 5M — contexto, não ordem")
+                else:                                            # SUPORTE = MONITOR DE CONTEXTO LONG (complementa Cp)
+                    ck, q = _long_context(mag, exc_dir)
+                    body = (f"{ck}\nqualidade: {q}") if ck else f"reclaim {mag:.0f}pts {exc_dir}"
+                    _notify(f"🟢 <b>LONG-context a formar — zona OB 15M {lo:.1f}-{hi:.1f}</b> (íman demand testado ✓)\n"
+                            f"{body}\n{iso(now)} Lisboa · timing 5M · advisory · Cp cobre a capitulação mecânica — decides + marca #N long")
         elif not (lo <= price <= hi) and not armed and (price < lo - 2 or price > hi + 2):
             state[zk] = {"armed": True}; changed = True   # saiu da zona -> rearma p/ próximo toque
     if changed:
