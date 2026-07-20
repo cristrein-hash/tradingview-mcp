@@ -43,3 +43,4 @@
 - 2026-07-20 11:06 UTC · `memory_delta_20260720_5m_feed.sql` · memory_items 326→327 · tag-rows 1/1 · OK
 - 2026-07-20 12:56 UTC · `memory_delta_20260720_short_gt1_engine.sql` · memory_items 327→329 · tag-rows 2/2 · OK
 - 2026-07-20 17:05 UTC · `memory_delta_20260720_shock_v3_and_4040.sql` · memory_items 329→331 · tag-rows 2/2 · OK
+- 2026-07-20 21:42 UTC · `memory_delta_20260720_contextual_read_protocol.sql` · memory_items 331→332 · tag-rows 1/1 · OK
