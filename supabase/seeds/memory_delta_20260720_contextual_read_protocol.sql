@@ -1,0 +1,12 @@
+-- memory_delta_20260720_contextual_read_protocol
+-- Resolucao definitiva do padrao recorrente "inventar medicao em vez de ler o indicador que existe".
+-- Sem secrets. ASCII. Sem ponto-e-virgula no texto.
+-- ROLLBACK (via SQL Editor): apagar memory_items com a tag deste seed.
+insert into memory_items (id, scope, visibility, category, title, body, tags, source_ref, status)
+values
+ (md5('contextual_read_protocol_20260720')::uuid, 'private', 'private', 'feedback',
+  'CONTEXTUAL_READ_PROTOCOL: leitor completo + hook guard (mais forte que memoria) contra inventar medicao/zona',
+  'Falha recorrente e grave (Cris indignado 2026-07-20): Claude inventa medicao/zona/banda (BB computado, zona 4031-4041 a mao) em vez de LER o indicador canonico que ja existe no store. Prova: o OB Detector v11 tinha a zona 4032.55-4040.58 EXATA do spike de hoje, e o Claude inventou um BB(20,2) para a substituir. Diagnostico do proprio Claude: leitura de indicadores era reativa/parcial (por enquadramento/memoria), subconjunto inconsistente, e o vazio enchia-se com invencao. Memoria e ignoravel (provado - ja existia feedback_verify_raw_source e foi violado). RESOLUCAO DEFINITIVA, mais forte que memoria: (1) my-strategy/core/contextual_read.py = UMA leitura completa de TODOS os indicadores do store por TF (OB Detector/SMC/Power-of-Three/Sessions + RSI/DMI/SVP/NAS/Bubbles/Choppiness/Volume, cada zona marcada vs preco), escreve .crp_state.json (token de leitura feita). (2) docs/architecture/CONTEXTUAL_READ_PROTOCOL.md = a regra (quando correr, o que ler, como). (3) scripts/safety/check_no_invented_zones.py = tripwire. (4) HOOK PreToolUse ~/.claude/hooks/contextual_read_guard.py (registado no settings.json) = BLOQUEIA no ato (exit 2) DUAS coisas: A) computar banda/std como nivel ou hardcodar preco-zona (substituicao), B) tocar em QUALQUER indicador parcial (pine_boxes/study_values/OB/SMC/SVP/RSI...) SEM ter corrido a leitura COMPLETA (token fresco 15min) = forca ler TODOS em profundidade antes de cherry-pick/decisao. Testado 6/6. Zonas inventadas check_bb15m/check_zones derrubadas do price_shock. Fonte de zona = SEMPRE OB Detector/SMC/SVP lidos, nunca computados. Dias anteriores via MCP chart_scroll_to_date (zonas OB persistem). Commit f6bde18.',
+  array['seed:memory_delta_20260720_contextual_read_protocol','contextual-read','guard','hook','ob-detector','never-invent','protocolo'],
+  'docs/architecture/CONTEXTUAL_READ_PROTOCOL.md + memory feedback_never_invent_read_existing_indicator + commit f6bde18', 'active')
+on conflict (id) do nothing;
