@@ -74,7 +74,10 @@ BEAR_XAU = {"hawkish":2,"rate hike":2,"hikes rates":2,"raise rates":2,"rate-hike
             "yields rise":2,"yields climb":2,"higher yields":2,"rising yields":2,"yields jump":2,"yields edge higher":2,"treasury yields rise":2,
             "strong jobs":2,"robust jobs":2,"hot jobs":2,"strong payrolls":2,"strong data":2,"beat estimates":2,"beats estimates":2,"upbeat":1,"solid data":1,
             "risk-on":2,"risk appetite":1,"stocks rally":1,"equities surge":1,
-            "hot inflation":1,"inflation accelerates":1,"cpi rises":1,"gold outflows":2,"etf outflows":2}
+            "hot inflation":1,"inflation accelerates":1,"cpi rises":1,"gold outflows":2,"etf outflows":2,
+            # DE-ESCALAÇÃO geopolítica = tira o prémio safe-haven = OURO CAI (ex. queda de hoje no cessar-fogo Irão-EUA)
+            "ceasefire":2,"cease-fire":2,"de-escalat":2,"deescalat":2,"truce":2,"peace deal":2,"peace talks":1,
+            "diplomatic breakthrough":2,"deal reached":2,"revive":1,"interim deal":2,"agreement reached":2}
 
 
 def classify_xau_bias(text):
