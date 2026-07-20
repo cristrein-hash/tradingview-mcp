@@ -114,7 +114,8 @@ def main():
                    f"{arrow}{mag:.1f} pts em ≤5min · preço {price:.2f} (extremo {extreme:.2f})\n"
                    f"{iso(now)} Lisboa · verifica news (guerra/Fed/petróleo) — contexto, não ordem")
             r = _notify(msg) if send else "DRY (sem L1_PRODUCTION_AUTHORIZED)"
-            ALERT_F.write_text(json.dumps({"last_ts": now, "last_key": key, "tg": str(r)}))
+            if (not send) or (r is True):               # marca cooldown/dedup SÓ se entregue (ou DRY) -> falha re-tenta
+                ALERT_F.write_text(json.dumps({"last_ts": now, "last_key": key, "tg": str(r)}))
             out["telegram"] = str(r)
         out["status"] = f"SHOCK {tier} {direction} {mag:.1f}pts"
     else:

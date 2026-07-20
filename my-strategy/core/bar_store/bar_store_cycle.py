@@ -77,10 +77,20 @@ def _log(o):
 
 
 def _jl(f):
+    """Lê jsonl SALTANDO linhas corrompidas (NUNCA devolve [] por 1 linha má — isso truncava o RAW canónico)."""
+    out = []
     try:
-        return [json.loads(x) for x in f.read_text().splitlines() if x.strip()]
+        text = f.read_text()
     except Exception:
         return []
+    for x in text.splitlines():
+        if not x.strip():
+            continue
+        try:
+            out.append(json.loads(x))
+        except Exception:
+            continue                                    # linha corrompida: salta, preserva as boas
+    return out
 
 
 def _meta():
@@ -130,8 +140,20 @@ def append_tf(tf, tid, bars):
     """Valida e appenda barras fechadas novas. Devolve (n_novas, erro)."""
     cfg = TFS[tf]; D = cfg["dur"]; f = cfg["file"]
     now = int(time.time())
-    rows = _jl(f)
+    try: raw_lines = [x for x in f.read_text().splitlines() if x.strip()]
+    except Exception: raw_lines = []
+    raw_n = len(raw_lines)
+    rows = []
+    for x in raw_lines:
+        try: rows.append(json.loads(x))
+        except Exception: continue
     n0 = len(rows)
+    # GUARD anti-truncamento (auditoria #1, 2026-07-20): NUNCA reescrever um ficheiro canónico (retain=None,
+    # ex. raw_4h/raw_1h multi-ano) se parseei <50% das linhas que lá estão = corrupção em massa. Fail-loud,
+    # preserva o ficheiro no disco para inspeção manual.
+    if cfg["retain"] is None and raw_n >= 100 and n0 < raw_n * 0.5:
+        return 0, (f"HARD_STOP {tf}: só parseei {n0}/{raw_n} linhas de {f.name} — RECUSO reescrever "
+                   f"(corrupção provável; ficheiro canónico preservado, corrige à mão)")
     if cfg["retain"]:
         cut = now - cfg["retain"]
         rows = [r for r in rows if r["t"] >= cut]

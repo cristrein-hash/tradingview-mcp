@@ -148,6 +148,8 @@ def detect_and_alert(rows, bub, send):
                 ok = TN.send_telegram(msg)
             except Exception as e:
                 ok = f"ERR {str(e)[:60]}"
+        if send and ok is not True:                       # envio TENTADO e FALHOU -> NÃO marca dedup (re-tenta no próximo ciclo)
+            continue
         with open(ALERTED_F, "a") as fh:
             fh.write(json.dumps({**s, "telegram": bool(send), "tg_ok": str(ok), "ts": iso(int(time.time()))}) + "\n")
         fired.append(s)

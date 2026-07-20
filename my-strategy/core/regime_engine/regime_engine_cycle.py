@@ -30,11 +30,20 @@ iso = lambda t: dt.datetime.fromtimestamp(int(t), LX).strftime("%Y-%m-%d %H:%M")
 
 
 def _load_last_t(f):
+    """t da ÚLTIMA barra válida. Recua se a última linha estiver corrompida (não devolve 0 = phase=0 =
+    rejeitava TODAS as barras 4H → HARD_STOP). None = ficheiro ILEGÍVEL (caller aborta, não assume 0)."""
     try:
         lines = f.read_text().splitlines()
-        return json.loads(lines[-1])["t"] if lines else 0
     except Exception:
-        return 0
+        return None                                    # ilegível -> desconhecido (NÃO 0)
+    for x in reversed(lines):
+        if not x.strip():
+            continue
+        try:
+            return json.loads(x)["t"]
+        except Exception:
+            continue                                   # última linha corrompida: recua até uma válida
+    return 0                                            # ficheiro vazio (legítimo) = 0
 
 
 def append_bars(res, tid, path):
@@ -49,6 +58,8 @@ def append_bars(res, tid, path):
     if not bars:
         return 0, "sem barras MCP"
     now = int(time.time()); D = dur[res]; last = _load_last_t(path)
+    if last is None:                        # ficheiro ilegível: aborta LOUD (não assumo 0 = rejeitaria tudo)
+        return 0, f"HARD_STOP {res}: {Path(path).name} ilegível — não appendo (evito phase=0)"
     phase = last % D                        # fase do ficheiro (4H XAU = 7200s; 1H = 0) — não epoch-aligned
     new = []
     prev_t = last
@@ -69,9 +80,11 @@ def append_bars(res, tid, path):
             return 0, "não-monotónico"
         new.append({"t": t, "o": o, "h": h, "l": l, "c": cc}); prev_t = t
     if new:
-        with open(path, "a") as fh:
-            for r in new:
-                fh.write(json.dumps(r) + "\n")
+        try: cur = [x for x in path.read_text().splitlines() if x.strip()]
+        except Exception: cur = []
+        tmp = path.with_suffix(path.suffix + f".regime.{os.getpid()}.tmp")   # tmp ÚNICO (não colide c/ bar-store)
+        tmp.write_text("\n".join(cur + [json.dumps(r) for r in new]) + "\n")
+        os.replace(tmp, path)               # ATÓMICO: nunca deixa linha meio-escrita (corrompia o RAW canónico)
     return len(new), None
 
 

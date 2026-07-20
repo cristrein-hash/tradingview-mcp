@@ -89,20 +89,26 @@ def main():
     # --- F1: novos setups H4 ---
     for s in sigs:
         sid = _setup_id(s)
-        if sid in by_id: continue
+        existing = by_id.get(sid)
+        if existing and (existing.get("ping1_sent") or existing.get("state") == "STALE"):
+            continue                                       # já tratado: ping ENTREGUE, ou stale (sem ping)
         stale = (last_t - s["t"]) > FRESH_H4_S
-        hu = dt.datetime.fromtimestamp(s["t"], UTC)
-        rec = {"setup_id": sid, "dir": s["dir"], "level": s["level"], "bias": s["bias"], "bias_layer1": l1,
-               "killzone": KZ.get(hu.hour), "h4_bar_t": s["t"], "h4_bar_ts": lx(s["t"]), "sweep_wick": s["wick"],
-               "h4_close": s["h4c"], "close_pos": s["close_pos"], "window_expires_epoch": s["t"] + 16 * 3600,
-               "armed_ts": lx(now), "state": "STALE" if stale else "ARMED", "ping1_sent": False, "tg_ok": None,
-               "candidates_pinged": []}
-        if not stale:
-            ok = _send(_ping1(s, sid, l1)) if send else None
-            rec["ping1_sent"] = bool(send); rec["tg_ok"] = str(ok); armed += 1
+        if existing:
+            rec = existing                                 # ARMED cujo ping1 falhou -> re-tentar (não re-dedup)
         else:
-            new_stale += 1
-        by_id[sid] = rec; rows.append(rec)
+            hu = dt.datetime.fromtimestamp(s["t"], UTC)
+            rec = {"setup_id": sid, "dir": s["dir"], "level": s["level"], "bias": s["bias"], "bias_layer1": l1,
+                   "killzone": KZ.get(hu.hour), "h4_bar_t": s["t"], "h4_bar_ts": lx(s["t"]), "sweep_wick": s["wick"],
+                   "h4_close": s["h4c"], "close_pos": s["close_pos"], "window_expires_epoch": s["t"] + 16 * 3600,
+                   "armed_ts": lx(now), "state": "STALE" if stale else "ARMED", "ping1_sent": False, "tg_ok": None,
+                   "candidates_pinged": []}
+            armed += 0 if stale else 1
+            new_stale += 1 if stale else 0
+        if not stale and send:
+            ok = _send(_ping1(s, sid, l1))
+            rec["ping1_sent"] = (ok is True); rec["tg_ok"] = str(ok)   # entregue SÓ se sucesso -> senão re-tenta
+        if not existing:
+            by_id[sid] = rec; rows.append(rec)
     # --- F2: candidatos 1H p/ setups ARMED dentro da janela ---
     h1 = SR.bars("60"); ping2 = 0
     for rec in rows:

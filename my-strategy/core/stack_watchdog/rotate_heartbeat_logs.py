@@ -21,6 +21,11 @@ WHITELIST = [
     REPO / "alert-bridge/logs/e2_outcome_backfill.log",
     REPO / "external_factors_v2/snapshots/news_daemon.log",
     REPO / "external_factors_v2/snapshots/daemon.log",
+    # + os mais frequentes que faltavam (auditoria 2026-07-20) — heartbeat operacional, cresciam sem limite:
+    REPO / "my-strategy/core/price_shock/.shock_state/shock_cycle.log",           # ~30-60s = o mais frequente
+    REPO / "my-strategy/strategies/xau_15m_long/ENTRY_ROUTER/.router_state/router_cycle.log",
+    REPO / "my-strategy/strategies/xau_amd/amd_live/.amd_state/amd_cycle.log",
+    REPO / "copilot/journal/.state/capture.log",
 ]
 
 
