@@ -1,0 +1,12 @@
+-- memory_delta_20260720_5m_feed
+-- Liga a tab 5M ao stack para entry timing + price-shock exato + gap de monitorizacao fechado.
+-- Sem secrets/RAW/params de edge. ASCII. Sem ponto-e-virgula no texto.
+-- ROLLBACK (via SQL Editor): apagar memory_items com a tag deste seed.
+insert into memory_items (id, scope, visibility, category, title, body, tags, source_ref, status)
+values
+ (md5('5m_feed_live_20260720')::uuid, 'private', 'private', 'project',
+  'Tab 5M ligada ao stack (Cris 2026-07-20): entry timing + price-shock exato + watchdog per-TF (gap 15M fechado)',
+  'Cris pediu para ligar a tab 5M ao sistema live com proposito definido = ajudar entry timing + price-shocking exato. TRES mudancas, live sem restart (daemons StartInterval apanharam o edit sozinhos). (1) BAR-STORE: adicionado TF 5 ao dict TFS -> store/bars_5m.jsonl + snaps study_values_5.json e pine_boxes_5.json (indicadores + LuxAlgo Sessions 5M store-first para entry timing). dur 300 phase 0 count 60 poll 60 retain 14d. Todas as outras TFs byte-intactas (15M/1H/4H/1D/DXY). (2) PRICE-SHOCK: read_live passa a ler a tab 5M e mede o movimento de 5min contra ATR5 em vez de ATR15 = escala COERENTE com a janela de 5min do detetor (movimento de 5min vs range tipico de 5min) = shocking exato e mais sensivel. Antes ATR15 (~5-7) exigia ~7pts para disparar, agora ATR5 (~2.8) dispara a ~3.3pts. Thresholds congelados 1.2/2.5 + cooldown 600s + dedup inalterados (sem flood). Rotulos atr15->atr5. Verificado live: apanhou 1.34xATR5 no primeiro ciclo. (3) WATCHDOG: novo check chk_bar_fresh por-TF (Bars 5M / Bars 15M) que le a ultima barra FECHADA de cada store e alarma se ficar sem barra nova, CIENTE de mercado fechado (via America/New_York DST-robusto: fim-de-semana Sex 17:00 ET -> Dom 17:00 ET + rollover diario 17:00-18:00 ET nao alarmam). Fecha o gap que deixou a morte silenciosa da tab 15M invisivel na manha de 2026-07-20 (o log-status GLOBAL do bar-store segue a correr em PARTIAL quando um so TF morre, entao staleness+HARD_STOP nao apanhavam). Watchdog 22->24 componentes, todos OK. LICAO: um feed nao-monitorizado por-TF = morte silenciosa possivel mesmo com o daemon vivo. Commit d26e81f (pushed). Nota: 5M NAO cria estrategia nova nem gate - so alimenta timing/shock, alert-only.',
+  array['seed:memory_delta_20260720_5m_feed','5m','bar-store','price-shock','watchdog','entry-timing','live'],
+  'commit d26e81f + bar_store_cycle.py/price_shock_cycle.py/stack_watchdog.py', 'active')
+on conflict (id) do nothing;
