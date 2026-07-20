@@ -178,6 +178,12 @@ def main():
         rows, bub = st
         out["source"] = "store"
     else:
+        try:                                    # anti-herd (auditoria #5): store stale -> gate o fallback-MCP
+            import store_reader as SR
+            if not SR.fallback_ok("cp"):
+                out["status"] = "NO-OP: store stale + fallback gated (anti-herd)"; _log(out); print(json.dumps(out)); return
+        except Exception:
+            pass
         # fallback legado: leitura MCP própria + buffers locais (store doente)
         out["source"] = "mcp-fallback"
         tid = None

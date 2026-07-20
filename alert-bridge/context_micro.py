@@ -121,6 +121,12 @@ def read_micro(count=120):
             return st
     except Exception:
         pass                                              # store doente -> caminho MCP antigo
+    try:                                                  # anti-herd (auditoria #5): gate o fallback-MCP
+        import store_reader as SR
+        if not SR.fallback_ok("micro"):
+            return None
+    except Exception:
+        pass
     saved = os.environ.get("TVMCP_TARGET_CHART_ID")
     try:
         for tid in list_chart_targets():

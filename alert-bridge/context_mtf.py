@@ -108,6 +108,12 @@ def read_mtf(count=OHLCV_COUNT, with_zones=True):
             return st
     except Exception:
         pass                                              # qualquer falha do store -> caminho MCP antigo
+    try:                                                  # anti-herd (auditoria #5): store stale -> gate o
+        import store_reader as SR                         # fallback-MCP (rate-limit partilhado). Salta se outro
+        if not SR.fallback_ok("mtf"):                     # consumidor caiu para MCP há pouco (evita N leitores
+            return None                                   # CDP simultâneos a martelar :9222; recupera no próx. ciclo)
+    except Exception:
+        pass
     out = {}
     saved = os.environ.get("TVMCP_TARGET_CHART_ID")
     try:

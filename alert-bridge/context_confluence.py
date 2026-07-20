@@ -90,6 +90,12 @@ def read_confluence(tf="15", count=320, max_bars=500):
             return st
     except Exception:
         pass
+    try:                                                  # anti-herd (auditoria #5): gate o fallback-MCP
+        import store_reader as SR
+        if not SR.fallback_ok("confluence"):
+            return None
+    except Exception:
+        pass
     saved = os.environ.get("TVMCP_TARGET_CHART_ID")
     try:
         for tid in list_chart_targets():
