@@ -29,6 +29,7 @@ iso = lambda t: dt.datetime.fromtimestamp(int(t), LX).strftime("%Y-%m-%d %H:%M")
 # TF -> (dur_s, fase_da_grelha, ficheiro, count_leitura, periodo_poll_s, retenção_s|None=infinita)
 # res/symbol default = a chave/XAUUSD; DXY1D lê a tab TVC:DXY 1D e estende o canónico raw_dxy_1d (Layer1).
 TFS = {
+    "5":   {"dur": 300,   "phase": 0,    "file": STORE / "bars_5m.jsonl",  "count": 60,  "poll": 60,  "retain": 14*86400},
     "15":  {"dur": 900,   "phase": 0,    "file": STORE / "bars_15m.jsonl", "count": 40,  "poll": 60,  "retain": 30*86400},
     "60":  {"dur": 3600,  "phase": 0,    "file": REV / "raw_1h_ohlc.jsonl", "count": 12, "poll": 300, "retain": None},
     "240": {"dur": 14400, "phase": 7200, "file": REV / "raw_4h_ohlc.jsonl", "count": 8,  "poll": 900, "retain": None},

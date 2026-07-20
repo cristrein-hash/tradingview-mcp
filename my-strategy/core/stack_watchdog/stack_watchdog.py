@@ -116,6 +116,30 @@ def chk_ef_news(f, max_age_s):
     return "ok", f"há {int(age/60)}min"
 
 
+def _market_closed(ts):
+    """XAUUSD spot fechado (em horas de NOVA IORQUE, DST-robusto): Sex ≥17:00 ET → Dom 17:00 ET (fim-de-
+    semana) + break diário de rollover 17:00-18:00 ET. Nestes períodos não há barras novas = NÃO é cegueira."""
+    e = dt.datetime.fromtimestamp(ts, ZoneInfo("America/New_York"))
+    wd, hh = e.weekday(), e.hour                        # Mon=0..Sun=6
+    if wd == 4 and hh >= 17: return True               # Sexta ≥17:00 ET
+    if wd == 5: return True                            # Sábado
+    if wd == 6 and hh < 17: return True                # Domingo antes das 17:00 (reabre 17:00 ET)
+    if hh == 17: return True                           # rollover diário 17:00-17:59 ET
+    return False
+
+
+def chk_bar_fresh(f, dur_s, max_stale_s):
+    """Frescura da ÚLTIMA barra FECHADA de UM TF no store (por-TF). Apanha a morte silenciosa de um feed
+    (ex. tab sumida como o 15M hoje) que o log-status GLOBAL do bar-store não vê (o log segue a correr em
+    PARTIAL). Ciente de mercado fechado = não alarma ao fim-de-semana/rollover."""
+    r = _last_jsonl(f)
+    if not r: return "blind", "store vazio"
+    if _market_closed(now()): return "ok", "mercado fechado"
+    age = now() - ((r.get("t") or 0) + dur_s)          # tempo desde o fecho da última barra que temos
+    if age <= max_stale_s: return "ok", f"última barra há {int(age/60)}min"
+    return "blind", f"sem barra nova há {int(age/60)}min (tab sumida?)"
+
+
 def components():
     paused = any(p.exists() for p in PAUSES)
     c = {
@@ -136,6 +160,8 @@ def components():
         "EF v2":       chk_mtime(REPO / "external_factors_v2/snapshots/latest.json", 70*60),
         "Backfill":    chk_mtime(AB / "logs/e2_outcome_backfill.log", 130*60),
         "Bar-store":   chk_log_status(REPO / "my-strategy/core/bar_store/store/store_cycle.log", 10*60, bad_prefixes=("HARD_STOP",)),
+        "Bars 5M":     chk_bar_fresh(REPO / "my-strategy/core/bar_store/store/bars_5m.jsonl", 300, 20*60),   # tab 5M viva? (entry timing + price-shock)
+        "Bars 15M":    chk_bar_fresh(REPO / "my-strategy/core/bar_store/store/bars_15m.jsonl", 900, 45*60),  # tab 15M viva? (o susto de hoje)
         "PriceShock":  chk_log_status(REPO / "my-strategy/core/price_shock/.shock_state/shock_cycle.log", 5*60, bad_prefixes=("HARD_STOP",)),
         "GLD-ws":      chk_gld_ws(REPO / "my-strategy/core/price_shock/.shock_state/gld_ws_heartbeat.json"),
         "FJ-ws":       chk_gld_ws(REPO / "external_factors_v2/snapshots/fj_ws_heartbeat.json", 300),

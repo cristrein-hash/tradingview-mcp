@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""DETETOR DE CHOQUE DE PREÇO (Cris 2026-07-18) — o gatilho realtime MAIS RÁPIDO, independente de qualquer
-news feed: o mercado precifica a notícia ANTES dos feeds a reportarem. Loop dedicado 30s: lê o preço live
-do 15M (forming bar, tab-pinned, leve) e mede velocidade vs ATR15. Choque = |Δpreço em ≤5min| ≥ 1.2·ATR15
-(major ≥ 2.5). Na hora: escreve snapshot (lido pelo news_gate → E0/E2) + escalada Telegram imediata
-(dedup+cooldown). Fail-closed, horas Lisboa, py3.9. Grelha CONGELADA. CLI: --once (default 1 ciclo)."""
+"""DETETOR DE CHOQUE DE PREÇO (Cris 2026-07-18; 5M exato 2026-07-20) — o gatilho realtime MAIS RÁPIDO,
+independente de qualquer news feed: o mercado precifica a notícia ANTES dos feeds a reportarem. Loop dedicado
+30s: lê o preço live do 5M (forming bar, tab-pinned, leve) e mede velocidade vs ATR5 — escala COERENTE com a
+janela de 5min (movimento de 5min contra o range típico de 5min = shocking exato; antes usava ATR15, grosso).
+Choque = |Δpreço em ≤5min| ≥ 1.2·ATR5 (major ≥ 2.5). Na hora: escreve snapshot (lido pelo news_gate → E0/E2)
++ escalada Telegram imediata (dedup+cooldown). Fail-closed, horas Lisboa, py3.9. Grelha CONGELADA
+(thresholds 1.2/2.5 + cooldown 600s inalterados). CLI: --once (default 1 ciclo)."""
 import os, sys, json, time, datetime as dt
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -38,8 +40,9 @@ def _samples():
 
 
 def read_live():
-    """Preço live do 15M (forming bar) + ATR15, tab-pinned, leve (count 30). None em falha."""
-    tid = tab_pin.discover_tab("15")
+    """Preço live do 5M (forming bar) + ATR5, tab-pinned, leve (count 30). None em falha.
+    5M (não 15M) = escala coerente com a janela de 5min do detetor: shocking mais exato/sensível."""
+    tid = tab_pin.discover_tab("5")
     if not tid: return None, None
     os.environ["TVMCP_TARGET_CHART_ID"] = tid
     c = MCPClient(); c.start()
@@ -51,8 +54,8 @@ def read_live():
     if len(bars) < 16: return None, None
     H = [b.get("high") for b in bars]; L = [b.get("low") for b in bars]; C = [b.get("close") for b in bars]
     if any(x is None for x in H + L + C): return None, None
-    atr = cs.atr(H, L, C, len(C) - 1, 14)
-    return C[-1], (atr or 5.0)                          # C[-1] = forming bar close = preço agora
+    atr = cs.atr(H, L, C, len(C) - 1, 14)               # ATR5 (barras agora são 5M)
+    return C[-1], (atr or 2.0)                           # C[-1] = forming bar close = preço agora
 
 
 def _notify(text):
@@ -77,7 +80,7 @@ def main():
     # velocidade: preço agora vs amostra mais antiga dentro da janela
     win = [s for s in sm if s["t"] >= now - WINDOW_S]
     ref = min(win, key=lambda s: s["t"]) if len(win) >= 2 else None
-    out.update({"price": price, "atr15": round(atr, 2), "n_samples": len(sm)})
+    out.update({"price": price, "atr5": round(atr, 2), "n_samples": len(sm)})
     if ref is None:
         out["status"] = "SEED (a acumular janela)"; _log(out); print(json.dumps(out)); return
     move = price - ref["p"]; move_atr = round(abs(move) / atr, 2); dtmin = round((now - ref["t"]) / 60, 1)
@@ -95,7 +98,7 @@ def main():
         send = os.environ.get("L1_PRODUCTION_AUTHORIZED") == "1"   # só o wrapper autoriza; runs de teste = DRY
         if now - al.get("last_ts", 0) >= COOLDOWN_S and key != al.get("last_key"):
             msg = (f"⚡ <b>CHOQUE DE PREÇO XAU — {tier} {direction}</b>\n"
-                   f"{move:+.2f} ({move_atr:.1f}×ATR15) em {dtmin}min · preço {price:.2f}\n"
+                   f"{move:+.2f} ({move_atr:.1f}×ATR5) em {dtmin}min · preço {price:.2f}\n"
                    f"{iso(now)} Lisboa · verifica news (guerra/Fed/petróleo) — contexto, não ordem")
             r = _notify(msg) if send else "DRY (sem L1_PRODUCTION_AUTHORIZED)"
             ALERT_F.write_text(json.dumps({"last_ts": now, "last_key": key, "tg": str(r)}))
