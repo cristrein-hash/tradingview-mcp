@@ -40,3 +40,4 @@
 - 2026-07-19 01:46 UTC · `memory_delta_20260719_regime_consolidation_audit.sql` · memory_items 321→324 · tag-rows 3/3 · OK
 - 2026-07-19 14:17 UTC · `memory_delta_20260719_copilot_journal.sql` · memory_items 324→325 · tag-rows 1/1 · OK
 - 2026-07-19 22:01 UTC · `memory_delta_20260719_amd_live.sql` · memory_items 325→326 · tag-rows 1/1 · OK
+- 2026-07-20 11:06 UTC · `memory_delta_20260720_5m_feed.sql` · memory_items 326→327 · tag-rows 1/1 · OK
