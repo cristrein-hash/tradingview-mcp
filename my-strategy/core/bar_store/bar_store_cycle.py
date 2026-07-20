@@ -39,6 +39,36 @@ TFS = {
 }
 BUB_F = STORE / "bubbles_15m.jsonl"
 BUB_RETAIN = 30 * 86400
+# guard "tab crítica sumiu" (Cris muda TF de uma tab → feed abaixo): alerta Telegram INSTANTÂNEO (≤60s),
+# em vez de esperar o watchdog (≤45min). Dedup por conjunto + cooldown. Gated BAR_STORE_ALERTS=1 (wrapper).
+ALERT_STATE = STORE / ".tab_alert_state.json"
+CRITICAL_TFS = {"5", "15", "60", "240", "1D"}          # core XAU; DXY excluído
+TAB_ALERT_COOLDOWN = 600
+
+
+def _alert_missing(missing):
+    """Alerta Telegram no ATO quando uma tab crítica XAU não é encontrada (mudança manual de TF parte o feed).
+    Dedup por conjunto de TFs + cooldown 10min. O guard que faltava: saber no segundo, não em 45min."""
+    miss = sorted(t for t in missing if t in CRITICAL_TFS)
+    if not miss:
+        return None
+    now = int(time.time()); key = ",".join(miss)
+    try: st = json.loads(ALERT_STATE.read_text())
+    except Exception: st = {"last_ts": 0, "last_key": ""}
+    if now - st.get("last_ts", 0) < TAB_ALERT_COOLDOWN and key == st.get("last_key"):
+        return None
+    if os.environ.get("BAR_STORE_ALERTS") != "1":
+        return "DRY"
+    try:
+        sys.path.insert(0, str(REPO / "my-strategy/strategies/xau_4h_long/continuation/L1_EMA21_CONTINUATION"))
+        import telegram_notify as TN
+        r = TN.send_telegram(f"⚠️ <b>TAB XAU SUMIU — feed {'/'.join(miss)} abaixo</b>\n"
+                             f"o bar-store não encontra a(s) tab(s) {', '.join(miss)}. "
+                             f"Mudaste o timeframe de alguma tab? Repõe-a para restaurar o feed.")
+    except Exception as e:
+        r = f"ERR {type(e).__name__}"
+    tmp = ALERT_STATE.with_suffix(".json.tmp"); tmp.write_text(json.dumps({"last_ts": now, "last_key": key})); os.replace(tmp, ALERT_STATE)
+    return str(r)
 
 
 def _log(o):
@@ -253,6 +283,8 @@ def main():
     meta["last_cycle"] = ts; meta["errors"] = errs
     _save_meta(meta)
     out["errors"] = errs
+    a = _alert_missing([e.split(":")[0].strip() for e in errs if "sem tab" in e])   # guard: tab crítica sumiu
+    if a: out["tab_alert"] = a
     out["status"] = "OK" if not errs else f"PARTIAL ({len(errs)} err)"
     _log(out); print(json.dumps(out, ensure_ascii=False))
     return 0
