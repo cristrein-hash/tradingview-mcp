@@ -23,6 +23,7 @@ ALERT_F = STATE / "alert_state.json"
 LOG = STATE / "shock_cycle.log"
 OB_TOUCH_F = STATE / "ob_touch_state.json"          # dedup do alerta de toque em zona OB
 PB15_F = CORE / "bar_store/store/pine_boxes_15.json"  # zonas do OB Detector 15M REAIS (CRP) — NUNCA inventar
+E0_F = CORE.parent.parent / "external_factors_v2/snapshots/market_context.json"  # dossiê E0 (contexto SHORT)
 # CALIBRAÇÃO (v3 2026-07-20: deteção por EXCURSÃO high/low, não close-to-close). Choque = maior excursão
 # rápida (≤5min, high/low da barra 5M) ≥ limiar em PONTOS ABSOLUTOS. Provado nos dados reais de hoje:
 # apanha 4/132 barras (spike 4040 +18, wick 4001 −11, +2 moves 10-13pts) e ignora 95% normais (range<8).
@@ -91,6 +92,42 @@ def _read_ob15_zones():
     return []
 
 
+def _short_context(mag, exc_dir):
+    """Monitor de contexto SHORT (Cris 2026-07-21): lê o dossiê E0 (market_context.json, zero MCP) e compõe o
+    checklist dos 6 fatores + qualidade. ADVISORY — a qualidade REALÇA (FORTE/MÉDIO/FRACO), NUNCA veta (o Cris
+    é o árbitro). Encoda os 2 exemplos: 4040=FORTE (perna madura+íman+rejeição), sexta=FRACO (perna imatura).
+    Devolve (linha_checklist, qualidade) ou (None, None) se o E0 não estiver disponível."""
+    try:
+        ax = json.loads(E0_F.read_text()).get("axes") or {}
+    except Exception:
+        return None, None
+    reg = ax.get("regime") or {}
+    r5 = (reg.get("v5_4h") or {}).get("regime"); r1 = (reg.get("structural_1d") or {}).get("regime")
+    regime_ok = r5 in ("BEAR", "RANGE")
+    mtf = ax.get("mtf") or {}
+    def _num(x):
+        try: return float(str(x).replace(",", ""))
+        except Exception: return None
+    def _pos(tf):
+        m = mtf.get(tf) or {}; return m.get("trend"), _num((m.get("leg") or {}).get("pos_in_leg"))
+    t15, p15 = _pos("15"); t60, p60 = _pos("60")
+    pos = p15 if (t15 == "UP" and p15 is not None) else (p60 if p60 is not None else 0.0)
+    mature = (pos or 0) >= 0.5                                  # perna de alta madura/esticada (>=0.5) vs 1ª pullback
+    rejection = mag >= 6 and exc_dir == "BAIXA"                 # rejeição da subida (excursão p/ baixo)
+    mi = ax.get("micro_15m") or {}
+    rsi = _num(mi.get("rsi")); rma = _num(mi.get("rsi_ma"))
+    stretch = bool(rsi is not None and rma is not None and rsi > 55 and rsi > rma)   # esticado (RSI alto e > MA)
+    cf = (ax.get("confluence") or {}).get("15") or {}
+    sell_init = (_num(cf.get("sell")) or 0) > (_num(cf.get("buy")) or 0)   # iniciativa vendedora na perna
+    fav = sum([regime_ok, mature, rejection, stretch, sell_init])
+    q = "FORTE" if (mature and rejection and fav >= 4) else ("FRACO" if (not mature or not rejection) else "MÉDIO")
+    ck = (f"regime {r5}/{r1} {'✓' if regime_ok else '·'} · perna {'madura ✓' if mature else 'imatura ✗'} "
+          f"(pos {pos:.2f}) · rejeição {'✓' if rejection else '·'} {mag:.0f}pts · "
+          f"RSI {(rsi or 0):.0f} {'esticado ✓' if stretch else '·'} · "
+          f"iniciativa {'SELL ✓' if sell_init else 'buy/neutra ·'}")
+    return ck, q
+
+
 def check_ob_touch(price, bars, now, exc):
     """Alerta quando o preço 5M live ENTRA numa zona do OB Detector 15M REAL. A subir para a zona = teste de
     RESISTÊNCIA (contexto short); a descer = SUPORTE (contexto long). Dedup por zona (rearma ao sair >2pts).
@@ -110,14 +147,16 @@ def check_ob_touch(price, bars, now, exc):
         armed = state.get(zk, {}).get("armed", True)
         if lo <= price <= hi and armed:
             state[zk] = {"armed": False, "ts": now}; changed = True; fired.append(zk)
-            kind = "RESISTÊNCIA (contexto SHORT)" if rising else "SUPORTE (contexto LONG)"
-            arrow = "↑ a subir para" if rising else "↓ a descer para"
-            rej = (f" · REJEIÇÃO {mag:.0f}pts {exc_dir} ✓"                # excursão CONTRA a aproximação = rejeição
-                   if mag >= 6 and ((rising and exc_dir == "BAIXA") or (not rising and exc_dir == "ALTA")) else "")
             if send:
-                _notify(f"🎯 <b>XAU tocou ZONA OB 15M — {kind}</b>\n"
-                        f"zona {lo:.1f}-{hi:.1f} · preço {price:.2f} {arrow}{rej}\n"
-                        f"{iso(now)} Lisboa · OB Detector real · timing 5M — contexto, não ordem")
+                if rising:                                       # RESISTÊNCIA = MONITOR DE CONTEXTO SHORT (E0)
+                    ck, q = _short_context(mag, exc_dir)
+                    body = (f"{ck}\nqualidade: {q}") if ck else f"rejeição {mag:.0f}pts {exc_dir}"
+                    _notify(f"🔻 <b>SHORT-context a formar — zona OB 15M {lo:.1f}-{hi:.1f}</b> (íman testado ✓)\n"
+                            f"{body}\n{iso(now)} Lisboa · timing 5M · advisory — decides + marca #N short (journal aprende)")
+                else:                                            # SUPORTE = contexto long (só aviso simples)
+                    _notify(f"🎯 <b>XAU tocou ZONA OB 15M — SUPORTE (contexto LONG)</b>\n"
+                            f"zona {lo:.1f}-{hi:.1f} · preço {price:.2f} ↓ a descer para\n"
+                            f"{iso(now)} Lisboa · OB Detector real · timing 5M — contexto, não ordem")
         elif not (lo <= price <= hi) and not armed and (price < lo - 2 or price > hi + 2):
             state[zk] = {"armed": True}; changed = True   # saiu da zona -> rearma p/ próximo toque
     if changed:
