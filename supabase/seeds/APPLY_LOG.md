@@ -42,3 +42,4 @@
 - 2026-07-19 22:01 UTC · `memory_delta_20260719_amd_live.sql` · memory_items 325→326 · tag-rows 1/1 · OK
 - 2026-07-20 11:06 UTC · `memory_delta_20260720_5m_feed.sql` · memory_items 326→327 · tag-rows 1/1 · OK
 - 2026-07-20 12:56 UTC · `memory_delta_20260720_short_gt1_engine.sql` · memory_items 327→329 · tag-rows 2/2 · OK
+- 2026-07-20 17:05 UTC · `memory_delta_20260720_shock_v3_and_4040.sql` · memory_items 329→331 · tag-rows 2/2 · OK
