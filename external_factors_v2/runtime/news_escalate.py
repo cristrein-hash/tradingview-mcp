@@ -59,12 +59,42 @@ def gather_breaking():
     return cands, advisory
 
 
+# Léxico de viés para OURO (gold-specific): ouro sobe com risk-off/dovish/USD-fraco/yields-a-cair e cai com
+# hawkish/USD-forte/yields-a-subir/dados-fortes. Heurística RÁPIDA por keywords (não é modelo validado) —
+# dá ao Cris leitura contextual imediata; o olho dele decide. Peso 2=forte, 1=fraco.
+BULL_XAU = {"dovish":2,"rate cut":2,"cuts rates":2,"cut rates":2,"rate-cut":2,"easing":1,"stimulus":1,
+            "weak dollar":2,"dollar falls":2,"dollar slips":2,"dollar drops":2,"dollar weakens":2,"softer dollar":2,"greenback falls":2,
+            "yields fall":2,"yields drop":2,"lower yields":2,"falling yields":2,"yields slip":2,
+            "safe haven":2,"safe-haven":2,"war":2,"invasion":2,"invade":2,"missile":2,"airstrike":2,"nuclear":2,"conflict":1,"escalat":1,"tension":1,"sanction":1,"crisis":1,
+            "recession":2,"slowdown":1,"contraction":1,"weak data":2,"misses":1,"disappointing":1,"downbeat":1,"layoffs":1,"jobless claims rise":2,"unemployment rises":2,
+            "disinflation":2,"inflation eases":2,"cooler inflation":2,"cpi cooler":2,"cools":1,
+            "gold demand":2,"central bank buying":2,"etf inflows":2}
+BEAR_XAU = {"hawkish":2,"rate hike":2,"hikes rates":2,"raise rates":2,"rate-hike":2,"tightening":2,"higher for longer":2,
+            "strong dollar":2,"dollar rises":2,"dollar climbs":2,"dollar strengthens":2,"firmer dollar":2,"greenback rises":2,"dollar jumps":2,
+            "yields rise":2,"yields climb":2,"higher yields":2,"rising yields":2,"yields jump":2,"yields edge higher":2,"treasury yields rise":2,
+            "strong jobs":2,"robust jobs":2,"hot jobs":2,"strong payrolls":2,"strong data":2,"beat estimates":2,"beats estimates":2,"upbeat":1,"solid data":1,
+            "risk-on":2,"risk appetite":1,"stocks rally":1,"equities surge":1,
+            "hot inflation":1,"inflation accelerates":1,"cpi rises":1,"gold outflows":2,"etf outflows":2}
+
+
+def classify_xau_bias(text):
+    """Devolve label direcional CURTO p/ XAU. Heurística por keywords; empate/0 = sem viés claro (honesto)."""
+    t = (text or "").lower()
+    b = sum(w for k, w in BULL_XAU.items() if k in t)
+    s = sum(w for k, w in BEAR_XAU.items() if k in t)
+    if b > s: return "🟢 <b>BULLISH XAU</b>"
+    if s > b: return "🔴 <b>BEARISH XAU</b>"
+    return "⚪ <b>SEM VIÉS CLARO (XAU)</b>"
+
+
 def build_msg(name, top, advisory):
-    return ("📰⚠️ <b>NEWS ALTO IMPACTO — XAUUSD</b>\n\n"
+    bias = classify_xau_bias(f"{top.get('title') or ''} {' '.join(top.get('keywords', []) or [])}")
+    return (f"{bias}\n"
+            "📰⚠️ <b>NEWS ALTO IMPACTO — XAUUSD</b>\n\n"
             f"[{name}] \"{(top.get('title') or '')[:130]}\"\n"
             f"({', '.join(top.get('keywords', []) or [])} · -{top.get('age_min')}m)\n\n"
             f"Contexto: {advisory[:180]}\n"
-            "▶️ Contexto para decisão (não é sinal de trade).")
+            "▶️ Viés = heurística rápida (não é sinal); a tua leitura decide.")
 
 
 def main():

@@ -20,6 +20,7 @@ STATE = HERE / ".shock_state"; STATE.mkdir(exist_ok=True)
 SAMPLES = STATE / "samples.jsonl"
 SHOCK_F = STATE / "shock.json"          # lido pelo news_gate (price_shock_now)
 ALERT_F = STATE / "alert_state.json"
+ZONE_F = STATE / "zone_watch.json"      # zonas de preço vigiadas (alerta ao TOCAR) — pedido do Cris
 LOG = STATE / "shock_cycle.log"
 # GRELHA CONGELADA
 SHOCK_ATR = 1.2         # choque = movimento ≥ 1.2·ATR15 na janela
@@ -58,6 +59,35 @@ def read_live():
     return C[-1], (atr or 2.0)                           # C[-1] = forming bar close = preço agora
 
 
+def check_zones(price, now):
+    """Zonas de preço vigiadas (zone_watch.json): alerta Telegram UMA vez quando o preço ENTRA na banda
+    [lo,hi]; re-arma quando sai >2pts fora (permite avisar um retest genuíno mais tarde). Alert-only,
+    gated pelo mesmo L1_PRODUCTION_AUTHORIZED. Nunca negoceia. Devolve lista de labels disparados."""
+    try:
+        zones = json.loads(ZONE_F.read_text())
+    except Exception:
+        return []
+    send = os.environ.get("L1_PRODUCTION_AUTHORIZED") == "1"
+    fired, changed = [], False
+    for z in zones:
+        lo, hi = z.get("lo"), z.get("hi")
+        if lo is None or hi is None:
+            continue
+        inside = lo <= price <= hi
+        if inside and z.get("armed", True):
+            z["armed"] = False; z["fired_ts"] = now; changed = True; fired.append(z.get("label") or f"{lo}-{hi}")
+            if send:
+                msg = (f"🎯 <b>XAU TOCOU A ZONA — {z.get('label') or f'{lo}-{hi}'}</b>\n"
+                       f"preço {price:.2f} dentro de {lo:.0f}-{hi:.0f} · {iso(now)} Lisboa\n"
+                       f"{z.get('note') or 'a tua zona de entrada — vê a reação (rejeição vs rompimento)'}")
+                z["tg"] = str(_notify(msg))
+        elif not inside and not z.get("armed", True) and (price < lo - 2 or price > hi + 2):
+            z["armed"] = True; changed = True                # saiu da banda: re-arma p/ próximo retest
+    if changed:
+        tmp = ZONE_F.with_suffix(".json.tmp"); tmp.write_text(json.dumps(zones, ensure_ascii=False)); os.replace(tmp, ZONE_F)
+    return fired
+
+
 def _notify(text):
     try:
         sys.path.insert(0, str(CORE.parent / "strategies/xau_4h_long/continuation/L1_EMA21_CONTINUATION"))
@@ -73,6 +103,8 @@ def main():
     out = {"ts": dt.datetime.now(dt.timezone.utc).isoformat()}
     if price is None:
         out["status"] = "NO_PRICE (no-op)"; _log(out); print(json.dumps(out)); return
+    zt = check_zones(price, now)                          # zonas vigiadas (alerta ao tocar) — independente do choque
+    if zt: out["zone_touch"] = zt
     # amostras (retenção 15min)
     sm = [s for s in _samples() if s["t"] >= now - RETAIN_S]
     sm.append({"t": now, "p": price})
