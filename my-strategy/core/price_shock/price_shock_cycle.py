@@ -18,10 +18,8 @@ from draw_xau_4h_trades import MCPClient
 import context_structure as cs
 LX = ZoneInfo("Europe/Lisbon")
 STATE = HERE / ".shock_state"; STATE.mkdir(exist_ok=True)
-SAMPLES = STATE / "samples.jsonl"
 SHOCK_F = STATE / "shock.json"          # lido pelo news_gate (price_shock_now)
 ALERT_F = STATE / "alert_state.json"
-ZONE_F = STATE / "zone_watch.json"      # zonas de preço vigiadas (alerta ao TOCAR) — pedido do Cris
 LOG = STATE / "shock_cycle.log"
 # CALIBRAÇÃO (v3 2026-07-20: deteção por EXCURSÃO high/low, não close-to-close). Choque = maior excursão
 # rápida (≤5min, high/low da barra 5M) ≥ limiar em PONTOS ABSOLUTOS. Provado nos dados reais de hoje:
@@ -30,18 +28,12 @@ LOG = STATE / "shock_cycle.log"
 SHOCK_PTS = 10.0        # choque = excursão ≥ 10 pts em ≤5min (movimento real de ouro; <10 = ruído)
 MAJOR_PTS = 18.0        # choque MAJOR ≥ 18 pts
 WINDOW_S = 300          # a excursão de 1 barra 5M = janela ≤5 min
-RETAIN_S = 900          # mantém 15 min de amostras (log)
 COOLDOWN_S = 600        # ≥10 min entre alertas Telegram
 iso = lambda t: dt.datetime.fromtimestamp(int(t), LX).strftime("%H:%M:%S")
 
 
 def _log(o):
     with open(LOG, "a") as fh: fh.write(json.dumps(o, ensure_ascii=False) + "\n")
-
-
-def _samples():
-    try: return [json.loads(x) for x in SAMPLES.read_text().splitlines() if x.strip()]
-    except Exception: return []
 
 
 def read_live():
@@ -84,84 +76,6 @@ def detect_excursion(bars, lookback=4):
     return best
 
 
-def check_zones(price, now):
-    """Zonas de preço vigiadas (zone_watch.json): alerta Telegram UMA vez quando o preço ENTRA na banda
-    [lo,hi]; re-arma quando sai >2pts fora (permite avisar um retest genuíno mais tarde). Alert-only,
-    gated pelo mesmo L1_PRODUCTION_AUTHORIZED. Nunca negoceia. Devolve lista de labels disparados."""
-    try:
-        zones = json.loads(ZONE_F.read_text())
-    except Exception:
-        return []
-    send = os.environ.get("L1_PRODUCTION_AUTHORIZED") == "1"
-    fired, changed = [], False
-    for z in zones:
-        lo, hi = z.get("lo"), z.get("hi")
-        if lo is None or hi is None:
-            continue
-        inside = lo <= price <= hi
-        if inside and z.get("armed", True):
-            z["armed"] = False; z["fired_ts"] = now; changed = True; fired.append(z.get("label") or f"{lo}-{hi}")
-            if send:
-                msg = (f"🎯 <b>XAU TOCOU A ZONA — {z.get('label') or f'{lo}-{hi}'}</b>\n"
-                       f"preço {price:.2f} dentro de {lo:.0f}-{hi:.0f} · {iso(now)} Lisboa\n"
-                       f"{z.get('note') or 'a tua zona de entrada — vê a reação (rejeição vs rompimento)'}")
-                z["tg"] = str(_notify(msg))
-        elif not inside and not z.get("armed", True) and (price < lo - 2 or price > hi + 2):
-            z["armed"] = True; changed = True                # saiu da banda: re-arma p/ próximo retest
-    if changed:
-        tmp = ZONE_F.with_suffix(".json.tmp"); tmp.write_text(json.dumps(zones, ensure_ascii=False)); os.replace(tmp, ZONE_F)
-    return fired
-
-
-BB15M_F = STATE / "bb15m_watch.json"      # BB 15M dinâmico (computado dos closes) — alerta ao TOCAR a banda
-
-
-def check_bb15m(price, now):
-    """BB de 15M DINÂMICO (não há indicador no chart → computo de bars_15m.jsonl). Bandas = SMA(len) ±
-    mult·stdev(len) sobre os últimos closes 15M COM a barra viva (=preço) na cauda, p/ bater com o que o Cris
-    vê live. Alerta Telegram UMA vez ao TOCAR (>=upper / <=lower); re-arma ao voltar >3pts p/ dentro. Settings
-    default 20/2.0 ambas as bandas (editáveis em bb15m_watch.json). Alert-only, gated L1_PRODUCTION_AUTHORIZED."""
-    try:
-        cfg = json.loads(BB15M_F.read_text())
-    except Exception:
-        cfg = {"len": 20, "mult": 2.0, "bands": "both", "armed_up": True, "armed_dn": True, "fired_ts": 0}
-    L = int(cfg.get("len", 20)); M = float(cfg.get("mult", 2.0)); bands = cfg.get("bands", "both")
-    S15 = CORE / "bar_store/store/bars_15m.jsonl"
-    try:
-        closes = [json.loads(x)["c"] for x in S15.read_text().splitlines() if x.strip()]
-    except Exception:
-        return []
-    if len(closes) < L:
-        return []
-    win = closes[-(L - 1):] + [price]                    # inclui a barra viva na cauda (= BB live do chart)
-    mean = sum(win) / L
-    sd = (sum((x - mean) ** 2 for x in win) / L) ** 0.5  # population stdev (convenção TradingView)
-    upper, lower = mean + M * sd, mean - M * sd
-    send = os.environ.get("L1_PRODUCTION_AUTHORIZED") == "1"
-    fired, changed = [], False
-    hit_up = bands in ("both", "upper") and price >= upper and cfg.get("armed_up", True)
-    hit_dn = bands in ("both", "lower") and price <= lower and cfg.get("armed_dn", True)
-    if hit_up:
-        cfg["armed_up"] = False; cfg["fired_ts"] = now; changed = True; fired.append("BB15M_SUP")
-        if send:
-            _notify(f"📐 <b>XAU TOCOU O BB 15M SUPERIOR</b> ({L}/{M:g}σ)\n"
-                    f"preço {price:.2f} ≥ banda {upper:.2f} · basis {mean:.2f} · {iso(now)} Lisboa\n"
-                    "íman de venda — vê rejeição vs rompimento (contexto SHORT, não é sinal)")
-    if hit_dn:
-        cfg["armed_dn"] = False; cfg["fired_ts"] = now; changed = True; fired.append("BB15M_INF")
-        if send:
-            _notify(f"📐 <b>XAU TOCOU O BB 15M INFERIOR</b> ({L}/{M:g}σ)\n"
-                    f"preço {price:.2f} ≤ banda {lower:.2f} · basis {mean:.2f} · {iso(now)} Lisboa\n"
-                    "íman de compra/oversold — vê reação (contexto LONG, não é sinal)")
-    if not cfg.get("armed_up", True) and price < upper - 3:
-        cfg["armed_up"] = True; changed = True     # voltou p/ dentro: re-arma superior
-    if not cfg.get("armed_dn", True) and price > lower + 3:
-        cfg["armed_dn"] = True; changed = True     # re-arma inferior
-    if changed:
-        tmp = BB15M_F.with_suffix(".json.tmp"); tmp.write_text(json.dumps(cfg, ensure_ascii=False)); os.replace(tmp, BB15M_F)
-    return fired
-
-
 def _notify(text):
     try:
         sys.path.insert(0, str(CORE.parent / "strategies/xau_4h_long/continuation/L1_EMA21_CONTINUATION"))
@@ -177,10 +91,8 @@ def main():
     out = {"ts": dt.datetime.now(dt.timezone.utc).isoformat()}
     if price is None:
         out["status"] = "NO_PRICE (no-op)"; _log(out); print(json.dumps(out)); return
-    zt = check_zones(price, now)                          # zonas vigiadas (alerta ao tocar) — independente do choque
-    if zt: out["zone_touch"] = zt
-    bt = check_bb15m(price, now)                           # BB 15M dinâmico (alerta ao tocar banda)
-    if bt: out["bb15m_touch"] = bt
+    # DERRUBADO 2026-07-20 (Cris): check_zones (zona 4031-4041 à mão) + check_bb15m (BB computado por mim)
+    # eram INVENÇÃO — a fonte de zona é o OB Detector v11 (real). Substituição por zonas OB reais = pendente.
     # DETEÇÃO POR EXCURSÃO (high/low das barras 5M) — apanha wicks que o close-to-close perde
     mag, direction, ref_c, extreme = detect_excursion(bars)
     is_major = mag >= MAJOR_PTS
