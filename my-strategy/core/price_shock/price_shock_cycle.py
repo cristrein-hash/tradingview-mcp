@@ -21,6 +21,8 @@ STATE = HERE / ".shock_state"; STATE.mkdir(exist_ok=True)
 SHOCK_F = STATE / "shock.json"          # lido pelo news_gate (price_shock_now)
 ALERT_F = STATE / "alert_state.json"
 LOG = STATE / "shock_cycle.log"
+OB_TOUCH_F = STATE / "ob_touch_state.json"          # dedup do alerta de toque em zona OB
+PB15_F = CORE / "bar_store/store/pine_boxes_15.json"  # zonas do OB Detector 15M REAIS (CRP) — NUNCA inventar
 # CALIBRAÇÃO (v3 2026-07-20: deteção por EXCURSÃO high/low, não close-to-close). Choque = maior excursão
 # rápida (≤5min, high/low da barra 5M) ≥ limiar em PONTOS ABSOLUTOS. Provado nos dados reais de hoje:
 # apanha 4/132 barras (spike 4040 +18, wick 4001 −11, +2 moves 10-13pts) e ignora 95% normais (range<8).
@@ -76,6 +78,53 @@ def detect_excursion(bars, lookback=4):
     return best
 
 
+def _read_ob15_zones():
+    """Zonas do OB Detector 15M REAIS do store (pine_boxes, CRP — NUNCA inventadas). Devolve [(hi, lo)]."""
+    try:
+        d = json.loads(PB15_F.read_text()).get("data") or {}
+    except Exception:
+        return []
+    for s in d.get("studies", []):
+        if "OB Detector" in (s.get("name") or ""):
+            return [(z["high"], z["low"]) for z in (s.get("zones") or [])
+                    if z.get("high") is not None and z.get("low") is not None]
+    return []
+
+
+def check_ob_touch(price, bars, now, exc):
+    """Alerta quando o preço 5M live ENTRA numa zona do OB Detector 15M REAL. A subir para a zona = teste de
+    RESISTÊNCIA (contexto short); a descer = SUPORTE (contexto long). Dedup por zona (rearma ao sair >2pts).
+    Realça a rejeição (excursão contra a aproximação). Alert-only, gated. Timing 5M, zona 15M. Devolve labels."""
+    zones = _read_ob15_zones()
+    if not zones or price is None:
+        return []
+    try: state = json.loads(OB_TOUCH_F.read_text())
+    except Exception: state = {}
+    prev = bars[-4].get("close") if bars and len(bars) >= 4 else price   # aproximação: preço vs ~3 barras 5M atrás
+    rising = price > (prev or price)
+    mag, exc_dir, _, _ = exc
+    send = os.environ.get("L1_PRODUCTION_AUTHORIZED") == "1"
+    fired, changed = [], False
+    for hi, lo in zones:
+        zk = f"{lo:.0f}-{hi:.0f}"
+        armed = state.get(zk, {}).get("armed", True)
+        if lo <= price <= hi and armed:
+            state[zk] = {"armed": False, "ts": now}; changed = True; fired.append(zk)
+            kind = "RESISTÊNCIA (contexto SHORT)" if rising else "SUPORTE (contexto LONG)"
+            arrow = "↑ a subir para" if rising else "↓ a descer para"
+            rej = (f" · REJEIÇÃO {mag:.0f}pts {exc_dir} ✓"                # excursão CONTRA a aproximação = rejeição
+                   if mag >= 6 and ((rising and exc_dir == "BAIXA") or (not rising and exc_dir == "ALTA")) else "")
+            if send:
+                _notify(f"🎯 <b>XAU tocou ZONA OB 15M — {kind}</b>\n"
+                        f"zona {lo:.1f}-{hi:.1f} · preço {price:.2f} {arrow}{rej}\n"
+                        f"{iso(now)} Lisboa · OB Detector real · timing 5M — contexto, não ordem")
+        elif not (lo <= price <= hi) and not armed and (price < lo - 2 or price > hi + 2):
+            state[zk] = {"armed": True}; changed = True   # saiu da zona -> rearma p/ próximo toque
+    if changed:
+        tmp = OB_TOUCH_F.with_suffix(".json.tmp"); tmp.write_text(json.dumps(state, ensure_ascii=False)); os.replace(tmp, OB_TOUCH_F)
+    return fired
+
+
 def _notify(text):
     try:
         sys.path.insert(0, str(CORE.parent / "strategies/xau_4h_long/continuation/L1_EMA21_CONTINUATION"))
@@ -91,10 +140,10 @@ def main():
     out = {"ts": dt.datetime.now(dt.timezone.utc).isoformat()}
     if price is None:
         out["status"] = "NO_PRICE (no-op)"; _log(out); print(json.dumps(out)); return
-    # DERRUBADO 2026-07-20 (Cris): check_zones (zona 4031-4041 à mão) + check_bb15m (BB computado por mim)
-    # eram INVENÇÃO — a fonte de zona é o OB Detector v11 (real). Substituição por zonas OB reais = pendente.
     # DETEÇÃO POR EXCURSÃO (high/low das barras 5M) — apanha wicks que o close-to-close perde
     mag, direction, ref_c, extreme = detect_excursion(bars)
+    ot = check_ob_touch(price, bars, now, (mag, direction, ref_c, extreme))   # toque em ZONA OB 15M REAL (timing 5M)
+    if ot: out["ob_touch"] = ot
     is_major = mag >= MAJOR_PTS
     is_shock = mag >= SHOCK_PTS
     out.update({"price": price, "atr5": round(atr, 2), "excursion_pts": round(mag, 1),
