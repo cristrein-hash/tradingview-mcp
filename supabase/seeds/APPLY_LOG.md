@@ -46,3 +46,4 @@
 - 2026-07-20 21:42 UTC · `memory_delta_20260720_contextual_read_protocol.sql` · memory_items 331→332 · tag-rows 1/1 · OK
 - 2026-07-20 22:14 UTC · `memory_delta_20260720_live_audit_fixes.sql` · memory_items 332→333 · tag-rows 1/1 · OK
 - 2026-07-20 22:56 UTC · `memory_delta_20260720_ob_touch_5m.sql` · memory_items 333→334 · tag-rows 1/1 · OK
+- 2026-07-20 23:33 UTC · `memory_delta_20260721_short_context_monitor.sql` · memory_items 334→335 · tag-rows 1/1 · OK
