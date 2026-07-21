@@ -67,6 +67,9 @@ def load_env():
 
 
 def send_telegram(text: str, parse_mode: str = "HTML"):
+    import os
+    if os.path.exists("/Users/cristrein/tradingview-mcp/.telegram_muted"):
+        return False                                    # 🔇 MUTE GLOBAL — Cris pausou os sinais (2026-07-21)
     env = load_env()
     token = env.get("TELEGRAM_BOT_TOKEN")
     chat_ids_raw = env.get("TELEGRAM_CHAT_IDS") or env.get("TELEGRAM_CHAT_ID")
