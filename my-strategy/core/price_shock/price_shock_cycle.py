@@ -16,6 +16,7 @@ sys.path.insert(0, str(CORE)); sys.path.insert(0, "/Users/cristrein/tradingview-
 import tab_pin
 from draw_xau_4h_trades import MCPClient
 import context_structure as cs
+import mtf_cross as mx                     # motor de cruzamento MTF (OB tipado + SVP + SMC + regime + NAS + Bubbles)
 LX = ZoneInfo("Europe/Lisbon")
 STATE = HERE / ".shock_state"; STATE.mkdir(exist_ok=True)
 SHOCK_F = STATE / "shock.json"          # lido pelo news_gate (price_shock_now)
@@ -92,107 +93,97 @@ def _read_ob15_zones():
     return []
 
 
-def _short_context(mag, exc_dir):
-    """Monitor de contexto SHORT (Cris 2026-07-21): lê o dossiê E0 (market_context.json, zero MCP) e compõe o
-    checklist dos 6 fatores + qualidade. ADVISORY — a qualidade REALÇA (FORTE/MÉDIO/FRACO), NUNCA veta (o Cris
-    é o árbitro). Encoda os 2 exemplos: 4040=FORTE (perna madura+íman+rejeição), sexta=FRACO (perna imatura).
-    Devolve (linha_checklist, qualidade) ou (None, None) se o E0 não estiver disponível."""
-    try:
-        ax = json.loads(E0_F.read_text()).get("axes") or {}
-    except Exception:
-        return None, None
-    reg = ax.get("regime") or {}
-    r5 = (reg.get("v5_4h") or {}).get("regime"); r1 = (reg.get("structural_1d") or {}).get("regime")
-    regime_ok = r5 in ("BEAR", "RANGE")
-    mtf = ax.get("mtf") or {}
-    def _num(x):
-        try: return float(str(x).replace(",", ""))
-        except Exception: return None
-    def _pos(tf):
-        m = mtf.get(tf) or {}; return m.get("trend"), _num((m.get("leg") or {}).get("pos_in_leg"))
-    t15, p15 = _pos("15"); t60, p60 = _pos("60")
-    pos = p15 if (t15 == "UP" and p15 is not None) else (p60 if p60 is not None else 0.0)
-    mature = (pos or 0) >= 0.5                                  # perna de alta madura/esticada (>=0.5) vs 1ª pullback
-    rejection = mag >= 6 and exc_dir == "BAIXA"                 # rejeição da subida (excursão p/ baixo)
-    mi = ax.get("micro_15m") or {}
-    rsi = _num(mi.get("rsi")); rma = _num(mi.get("rsi_ma"))
-    stretch = bool(rsi is not None and rma is not None and rsi > 55 and rsi > rma)   # esticado (RSI alto e > MA)
-    cf = (ax.get("confluence") or {}).get("15") or {}
-    sell_init = (_num(cf.get("sell")) or 0) > (_num(cf.get("buy")) or 0)   # iniciativa vendedora na perna
-    fav = sum([regime_ok, mature, rejection, stretch, sell_init])
-    q = "FORTE" if (mature and rejection and fav >= 4) else ("FRACO" if (not mature or not rejection) else "MÉDIO")
-    ck = (f"regime {r5}/{r1} {'✓' if regime_ok else '·'} · perna {'madura ✓' if mature else 'imatura ✗'} "
-          f"(pos {pos:.2f}) · rejeição {'✓' if rejection else '·'} {mag:.0f}pts · "
-          f"RSI {(rsi or 0):.0f} {'esticado ✓' if stretch else '·'} · "
-          f"iniciativa {'SELL ✓' if sell_init else 'buy/neutra ·'}")
-    return ck, q
+def classify_zone(z, exc, im):
+    """FRACO/FORTE por CONVERGÊNCIA de camadas ORTOGONAIS (Cris 2026-07-21; validado visual + RSI/ADX/CHOP add).
+    NÃO é veto nem score cego — exige 3 coisas para FORTE: (1) GATILHO obrigatório (rejeição/reclaim ≥6pts na
+    direção do TIPO), (2) ÂNCORA estrutural do modo, (3) ≥2 camadas de SUPORTE a convergir para a direção.
+      • REVERSÃO (regime contra/RANGE): âncora = institucional (íman OB-HTF real).
+      • CONTINUAÇÃO (regime a-favor): âncora = regime alinhado (DEMAND↔BULL, SUPPLY↔BEAR).
+    Suporte (concorda com a direção `want`): institucional · fluxo (NAS/bubbles) · RSI · trend-fit (ADX/CHOP).
+    Direção pelo TIPO da zona (nunca por aproximação). BOS/CHoCH = contexto, não load-bearing (direção inferida).
+    Devolve (dir, modo, q, checklist)."""
+    ty = z["type"]                                              # SUPPLY / DEMAND (lido do all_boxes.text)
+    want = "LONG" if ty == "DEMAND" else "SHORT"
+    mag, exc_dir, _, _ = exc
+    regime = (im.get("regime") or {}).get("regime")
+    mom = im.get("momentum") or {}
+    adx, chop = mom.get("adx"), mom.get("chop")
+    rsis = {"5M": mom.get("rsi_5m"), "15M": mom.get("rsi_15m"), "1H": mom.get("rsi_1h")}
+
+    inst = bool(z.get("institutional"))                         # confluência OB do MESMO tipo em HTF (espacial)
+    align = (ty == "DEMAND" and regime == "BULL") or (ty == "SUPPLY" and regime == "BEAR")
+    confirm = mag >= 6 and ((want == "SHORT" and exc_dir == "BAIXA") or (want == "LONG" and exc_dir == "ALTA"))
+    flow = bool(z.get("nas_agree")) or (z.get("bub_agree") is True)
+    # RSI = ALINHAMENTO multi-TF (5M/15M/1H): a favor em ≥2/3 → amortece o tremor da barra em formação de 1 TF só
+    def _rsi_sup(r): return r is not None and ((want == "LONG" and r < 50) or (want == "SHORT" and r > 50))
+    n_rsi = sum(_rsi_sup(r) for r in rsis.values())
+    rsi_agree = n_rsi >= 2
+    mode = "continuação" if align else "reversão"
+    if mode == "continuação":
+        trend_fit = adx is not None and adx >= 20              # tendência viva favorece continuação
+        anchor = align
+    else:
+        trend_fit = (chop is not None and chop >= 55) or (adx is not None and adx < 20)  # range/sem-tendência favorece fade
+        anchor = inst
+    supports = sum([inst, flow, rsi_agree, trend_fit])
+    forte = bool(confirm and anchor and supports >= 2)
+    q = "FORTE" if forte else "FRACO"
+
+    parts = []
+    parts.append(("🏛️ institucional " + "/".join(z.get("ob_htf") or [])) if inst else "· local")
+    if z.get("svp"): parts.append("SVP " + ", ".join(z["svp"]))
+    parts.append(f"gatilho {'✓' if confirm else '✗'} {mag:.0f}pts")
+    parts.append(f"regime {regime} {'a-favor' if align else 'contra/range'}")
+    rtxt = "/".join(f"{rsis[t]:.0f}" if rsis[t] is not None else "-" for t in ("5M", "15M", "1H"))
+    parts.append(f"RSI(5/15/60) {rtxt} {'✓' if rsi_agree else '·'}{n_rsi}/3")
+    if adx is not None: parts.append(f"ADX {adx:.0f}")
+    if chop is not None: parts.append(f"CHOP {chop:.0f}")
+    parts.append(f"trend-fit {'✓' if trend_fit else '·'}")
+    if z.get("nas_agree"): parts.append("NAS✓")
+    if z.get("bub_agree") is True: parts.append("bubbles✓")
+    parts.append(f"suportes {supports}/4")
+    return want, mode, q, " · ".join(parts)
 
 
-def _long_context(mag, exc_dir):
-    """Monitor de contexto LONG (Cris 2026-07-21) — COMPLEMENTA o Cp (não substitui). Lê o E0, checklist
-    LONG-adaptado + qualidade. RECLAIM-GATE anti-faca: SEM reclaim (excursão ALTA) a qualidade cai a FRACO —
-    não se chama LONG numa faca a cair (lição Cp: facas=custo estrutural, gate de 1º-reclaim). Advisory."""
-    try:
-        ax = json.loads(E0_F.read_text()).get("axes") or {}
-    except Exception:
-        return None, None
-    def _num(x):
-        try: return float(str(x).replace(",", ""))
-        except Exception: return None
-    reg = ax.get("regime") or {}
-    r5 = (reg.get("v5_4h") or {}).get("regime"); r1 = (reg.get("structural_1d") or {}).get("regime")
-    regime_ok = r5 in ("BULL", "RANGE")
-    mtf = ax.get("mtf") or {}
-    def _pos(tf):
-        m = mtf.get(tf) or {}; return m.get("trend"), _num((m.get("leg") or {}).get("pos_in_leg"))
-    t15, p15 = _pos("15"); t60, p60 = _pos("60")
-    pos = p15 if (t15 == "DOWN" and p15 is not None) else (p60 if p60 is not None else 0.0)
-    mature = (pos or 0) >= 0.5                                  # down-leg exausta/profunda (capitulação) vs faca fresca
-    reclaim = mag >= 6 and exc_dir == "ALTA"                    # RECLAIM p/ cima = anti-faca (o gate-chave)
-    mi = ax.get("micro_15m") or {}
-    rsi = _num(mi.get("rsi"))
-    oversold = bool(rsi is not None and rsi < 45)
-    cf = (ax.get("confluence") or {}).get("15") or {}
-    buy_init = (_num(cf.get("buy")) or 0) > (_num(cf.get("sell")) or 0)
-    fav = sum([regime_ok, mature, reclaim, oversold, buy_init])
-    q = "FRACO (sem reclaim=faca)" if not reclaim else ("FORTE" if (mature and fav >= 4) else "MÉDIO")
-    ck = (f"regime {r5}/{r1} {'✓' if regime_ok else '·'} · perna baixa "
-          f"{'exausta ✓' if mature else 'fresca ✗ (faca?)'} (pos {pos:.2f}) · reclaim {'✓' if reclaim else '✗'} "
-          f"{mag:.0f}pts · RSI {(rsi or 0):.0f} {'oversold ✓' if oversold else '·'} · "
-          f"iniciativa {'BUY ✓' if buy_init else 'sell/neutra ·'}")
-    return ck, q
+def slow_move(bars, want, price, win=8):
+    """Movimento acumulado DIRECIONAL na janela (~40min de 5M): LONG=quanto recuperou do fundo, SHORT=quanto caiu
+    do topo. DIAGNÓSTICO — NÃO entra na decisão. Serve p/ calibrar com dados reais o gatilho lento (a virada
+    gradual que o impulso-de-barra-única não apanha), sem palpite/overfit."""
+    seg = bars[-win:] if len(bars) >= win else bars
+    lows = [b.get("low") for b in seg if b.get("low") is not None]
+    highs = [b.get("high") for b in seg if b.get("high") is not None]
+    if want == "LONG" and lows: return round(price - min(lows), 1)
+    if want == "SHORT" and highs: return round(max(highs) - price, 1)
+    return 0.0
 
 
 def check_ob_touch(price, bars, now, exc):
-    """Alerta quando o preço 5M live ENTRA numa zona do OB Detector 15M REAL. A subir para a zona = teste de
-    RESISTÊNCIA (contexto short); a descer = SUPORTE (contexto long). Dedup por zona (rearma ao sair >2pts).
-    Realça a rejeição (excursão contra a aproximação). Alert-only, gated. Timing 5M, zona 15M. Devolve labels."""
-    zones = _read_ob15_zones()
+    """Alerta quando o preço 5M live ENTRA numa zona OB Detector 15M REAL — direção pelo TIPO (SUPPLY→SHORT,
+    DEMAND→LONG), NUNCA por aproximação. Qualidade FRACO/FORTE via cruzamento MTF (classify_zone). SÓ FORTE vai
+    ao Telegram; FRACO só loga. Dedup por zona (rearma ao sair >2pts). Alert-only, gated. Devolve os toques."""
+    im = mx.cross()                                            # imagem cruzada (zonas tipadas + confluência + fluxo + regime)
+    zones = im.get("zones") or []
     if not zones or price is None:
         return []
     try: state = json.loads(OB_TOUCH_F.read_text())
     except Exception: state = {}
-    prev = bars[-4].get("close") if bars and len(bars) >= 4 else price   # aproximação: preço vs ~3 barras 5M atrás
-    rising = price > (prev or price)
-    mag, exc_dir, _, _ = exc
+    mag = exc[0] if exc else 0.0
     send = os.environ.get("L1_PRODUCTION_AUTHORIZED") == "1"
     fired, changed = [], False
-    for hi, lo in zones:
+    for z in zones:
+        hi, lo = z["high"], z["low"]
         zk = f"{lo:.0f}-{hi:.0f}"
         armed = state.get(zk, {}).get("armed", True)
         if lo <= price <= hi and armed:
-            state[zk] = {"armed": False, "ts": now}; changed = True; fired.append(zk)
-            if send:
-                if rising:                                       # RESISTÊNCIA = MONITOR DE CONTEXTO SHORT (E0)
-                    ck, q = _short_context(mag, exc_dir)
-                    body = (f"{ck}\nqualidade: {q}") if ck else f"rejeição {mag:.0f}pts {exc_dir}"
-                    _notify(f"🔻 <b>SHORT-context a formar — zona OB 15M {lo:.1f}-{hi:.1f}</b> (íman testado ✓)\n"
-                            f"{body}\n{iso(now)} Lisboa · timing 5M · advisory — decides + marca #N short (journal aprende)")
-                else:                                            # SUPORTE = MONITOR DE CONTEXTO LONG (complementa Cp)
-                    ck, q = _long_context(mag, exc_dir)
-                    body = (f"{ck}\nqualidade: {q}") if ck else f"reclaim {mag:.0f}pts {exc_dir}"
-                    _notify(f"🟢 <b>LONG-context a formar — zona OB 15M {lo:.1f}-{hi:.1f}</b> (íman demand testado ✓)\n"
-                            f"{body}\n{iso(now)} Lisboa · timing 5M · advisory · Cp cobre a capitulação mecânica — decides + marca #N long")
+            want, mode, q, ck = classify_zone(z, exc, im)
+            state[zk] = {"armed": False, "ts": now}; changed = True
+            # sharp_pts = impulso que DECIDE; slow_pts = acumulado (diagnóstico p/ calibrar o gatilho lento depois)
+            fired.append({"zone": zk, "type": z["type"], "dir": want, "mode": mode, "q": q,
+                          "sharp_pts": round(mag, 1), "slow_pts": slow_move(bars, want, price)})
+            if q == "FORTE" and send:                          # FRACO nunca vai ao Telegram (só loga)
+                arrow = "🟢" if want == "LONG" else "🔻"
+                _notify(f"{arrow} <b>{want} FORTE ({mode}) — OB {z['type']} 15M {lo:.1f}-{hi:.1f}</b>\n"
+                        f"{ck}\n{iso(now)} Lisboa · timing 5M · advisory — decides + marca #N (journal aprende)")
         elif not (lo <= price <= hi) and not armed and (price < lo - 2 or price > hi + 2):
             state[zk] = {"armed": True}; changed = True   # saiu da zona -> rearma p/ próximo toque
     if changed:

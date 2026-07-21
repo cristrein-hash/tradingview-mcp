@@ -49,12 +49,21 @@ def _price():
 
 
 def _zones(res):
+    """Zonas tipadas: cada zona = {high, low, type} onde type=SUPPLY/DEMAND (OB Detector via all_boxes) ou None.
+    O tipo vem do all_boxes.text (capturado no store desde 2026-07-21); casa por (high,low) com a zona deduplicada."""
     d = _load(f"pine_boxes_{res}.json").get("data") or {}
     out = {}
     for s in d.get("studies") or []:
         nm = s.get("name") or "?"
-        zs = [(z.get("high"), z.get("low")) for z in (s.get("zones") or []) if z.get("high") and z.get("low")]
-        if zs: out.setdefault(nm, []).extend(zs)
+        types = {}
+        for b in (s.get("all_boxes") or []):
+            hi, lo, tx = b.get("high"), b.get("low"), b.get("text")
+            if hi and lo and tx:
+                types[(round(hi, 2), round(lo, 2))] = tx
+        for z in (s.get("zones") or []):
+            hi, lo = z.get("high"), z.get("low")
+            if hi and lo:
+                out.setdefault(nm, []).append({"high": hi, "low": lo, "type": types.get((round(hi, 2), round(lo, 2)))})
     return out
 
 
@@ -66,12 +75,24 @@ def _values(res):
     return out
 
 
+def _smc(res):
+    """Estrutura SMC (LuxAlgo): lista de eventos {text, price} — BOS/CHoCH/EQH/EQL. Do store smc_labels_{res}.json."""
+    d = _load(f"smc_labels_{res}.json").get("data") or {}
+    out = []
+    for s in d.get("studies") or []:
+        for l in (s.get("labels") or []):
+            t, p = l.get("text"), l.get("price")
+            if t and p is not None:
+                out.append({"text": t, "price": p})
+    return out
+
+
 def read_all():
     px = _price()
     ctx = {"ts": int(dt.datetime.now(dt.timezone.utc).timestamp()), "price": px, "tf": {}}
     for label, res in TFS:
         z = _zones(res); v = _values(res)
-        ctx["tf"][label] = {"zones": z, "values": v}
+        ctx["tf"][label] = {"zones": z, "values": v, "smc": _smc(res)}
     try: CRP_TOKEN.write_text(json.dumps({"ts": ctx["ts"], "price": ctx["price"]}))   # marca leitura completa feita
     except Exception: pass
     return ctx
@@ -93,11 +114,13 @@ def print_view():
         # ZONAS — mais próximas do preço primeiro; marca a que CONTÉM o preço
         for nm, zs in t["zones"].items():
             if "session" in nm.lower(): continue        # Sessions = ruído visual, salta no print
-            zz = sorted(zs, key=lambda z: abs((z[0] + z[1]) / 2 - (px or 0)))[:4]
+            zz = sorted(zs, key=lambda z: abs((z["high"] + z["low"]) / 2 - (px or 0)))[:4]
             tag = []
-            for hi, lo in zz:
+            for z in zz:
+                hi, lo, ty = z["high"], z["low"], z.get("type")
                 mark = "◄PREÇO" if px and lo <= px <= hi else ("↑" if px and lo > px else "↓")
-                tag.append(f"{lo:.1f}-{hi:.1f}{mark}")
+                ts = f" {ty[:3]}" if ty else ""          # SUP=supply / DEM=demand (OB Detector)
+                tag.append(f"{lo:.1f}-{hi:.1f}{mark}{ts}")
             print(f"  {_short(nm):18} {' · '.join(tag)}")
         # VALORES-chave
         vv = t["values"]
@@ -114,6 +137,8 @@ def print_view():
         if chop is not None: line.append(f"CHOP {chop:.0f}")
         up, dn = g("Volume Profile", "Up"), g("Volume Profile", "Down")
         if up is not None: line.append(f"SVP U/D {up/1000:.0f}K/{dn/1000:.0f}K")
+        poc, vah, val = g("SVP Levels", "POC"), g("SVP Levels", "VAH"), g("SVP Levels", "VAL")
+        if poc is not None: line.append(f"SVP POC {poc:.1f} VA {val:.0f}-{vah:.0f}")
         nrsi, ndist = g("NAS", "NAS_RSI"), g("NAS", "NAS_DISTANCE_FROM_EMA_ATR")
         if ndist is not None: line.append(f"NASdistEMA {ndist:+.2f}")
         smc = g("Smart Money", "PlotCandle")

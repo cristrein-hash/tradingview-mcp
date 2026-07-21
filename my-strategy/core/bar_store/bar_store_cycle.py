@@ -221,13 +221,31 @@ def read_tab(tid, tf, count):
     try:
         oh = c.call_tool("data_get_ohlcv", {"count": count}) or {}
         bars = oh.get("bars") or oh.get("ohlcv") or []
-        boxes = c.call_tool("data_get_pine_boxes") or {}
+        boxes = c.call_tool("data_get_pine_boxes", {"verbose": True}) or {}  # all_boxes tipado (text=SUPPLY/DEMAND, bgColor) p/ reader profundo + cruzamento MTF
         sv = c.call_tool("data_get_study_values") or {}
+        # SVP POC/VAH/VAL não vêm no study_values normal (só Up/Down/Total) — só no at_bar. Mescla p/ reader profundo.
+        try:
+            svp = c.call_tool("data_get_study_values_at_bar", {"study_filter": "Volume Profile", "count": 1}) or {}
+            for s in (svp.get("studies") or []):
+                bb = s.get("bars") or []
+                if not bb:
+                    continue
+                vals = bb[-1].get("values") or {}
+                lv = {dst: vals[src] for src, dst in
+                      (("Developing POC", "POC"), ("Developing VA High", "VAH"), ("Developing VA Low", "VAL"))
+                      if vals.get(src) is not None}
+                if lv:
+                    sv.setdefault("studies", []).append({"name": "SVP Levels", "values": lv})
+                break
+        except Exception:
+            pass
+        # SMC BOS/CHoCH/EQH/EQL (labels) — estrutura de mercado p/ reader profundo + cruzamento MTF (não vem em boxes/values).
+        smc_lab = c.call_tool("data_get_pine_labels", {"study_filter": "Smart Money", "max_labels": 30}) or {}
         pairs = nas = []
         if tf == "15":
             pairs = _shape_pairs(c.call_tool("data_get_pine_shapes", {"study_filter": "Market Order", "max_bars": 200}) or {})
             nas = _shape_pairs(c.call_tool("data_get_pine_shapes", {"study_filter": "NAS", "max_bars": 200}) or {})
-        return bars, pairs, nas, boxes, sv
+        return bars, pairs, nas, boxes, sv, smc_lab
     finally:
         c.stop()
 
@@ -288,7 +306,7 @@ def main():
         if not tid:
             errs.append(f"{tf}: sem tab"); continue
         try:
-            bars, pairs, nas, boxes, sv = read_tab(tid, tf, cfg["count"])
+            bars, pairs, nas, boxes, sv, smc_lab = read_tab(tid, tf, cfg["count"])
         except Exception as e:
             errs.append(f"{tf}: read {str(e)[:40]}"); continue
         n, err = append_tf(tf, tid, bars)
@@ -298,6 +316,7 @@ def main():
         if symbol == "XAUUSD":                      # snaps só XAU (DXY não alimenta o E0 mtf)
             _snap("pine_boxes", tf, boxes)          # zonas/OB p/ E0 mtf
             _snap("study_values", tf, sv)           # indicadores p/ E0 mtf/micro
+            _snap("smc_labels", tf, smc_lab)        # BOS/CHoCH/EQH/EQL p/ reader profundo + cruzamento MTF
         if tf == "15":
             out["new_bub"] = append_bubbles(pairs)
             out["new_nas"] = append_nas(nas)
