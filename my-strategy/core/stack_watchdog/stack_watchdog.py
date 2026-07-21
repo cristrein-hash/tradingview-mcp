@@ -91,6 +91,22 @@ def chk_process(pattern):
         return "blind", f"pgrep falhou ({type(e).__name__})"
 
 
+def chk_network(host="api.telegram.org", timeout=6):
+    """Alcance da INTERNET a partir do Mac — a dependência do canal de aviso. Se isto está cego, o próprio
+    Telegram do watchdog NÃO entrega (lição 2026-07-21: queda de rede ~35h, tunnel+ponte caíram, alerta gerado
+    mas nunca chegou porque a rede que o levaria estava down). Por isso o aviso LOCAL (osascript) cobre este caso."""
+    import urllib.request
+    try:
+        urllib.request.urlopen(f"https://{host}", timeout=timeout)
+        return "ok", host
+    except Exception as e:
+        # 4xx/302 = alcançável (servidor respondeu); só falha de rede/DNS = cego
+        import urllib.error
+        if isinstance(e, urllib.error.HTTPError):
+            return "ok", f"{host} (HTTP {e.code})"
+        return "blind", f"sem rede ({type(e).__name__})"
+
+
 def chk_gld_ws(f, max_age_s=180):
     """WebSocket GLD (persistente): heartbeat ≤3min E status conectado/idle/live (não reconnecting/NO_KEY)."""
     r = _last_jsonl_or_json(f)
@@ -167,6 +183,8 @@ def components():
         "FJ-ws":       chk_gld_ws(REPO / "external_factors_v2/snapshots/fj_ws_heartbeat.json", 300),
         "Receiver":    chk_http_health("http://127.0.0.1:8787/health"),      # webhook ENTRADA (A auditoria)
         "Cloudflared": chk_process("cloudflared tunnel run"),               # túnel público ENTRADA
+        "Bridge":      chk_process("telegram_assistant_bridge"),            # ponte Cris↔Claude (o canal que caiu 2026-07-21)
+        "Rede":        chk_network(),                                       # internet do Mac (raiz da queda ~35h; se cego, Telegram não entrega → aviso local)
     }
     if paused:   # pipeline E0/E1/E2 honra pausa: não é cegueira
         for k in ("E0 dossiê", "E1 detector", "E2 quality"):
@@ -181,6 +199,20 @@ def _notify(text):
         return TN.send_telegram(text)
     except Exception as e:
         return f"ERR {str(e)[:60]}"
+
+
+def _local_notify(title, text):
+    """Aviso LOCAL no Mac via osascript — funciona OFFLINE. Cobre o caso em que a rede caiu e o Telegram NÃO
+    entrega (2026-07-21). Dispara em toda cegueira, além do Telegram. Best-effort, nunca levanta."""
+    import subprocess
+    try:
+        safe = text.replace('"', "'").replace("\\", "")[:200]
+        subprocess.run(["osascript", "-e",
+                        f'display notification "{safe}" with title "{title}" sound name "Basso"'],
+                       capture_output=True, timeout=6)
+        return True
+    except Exception:
+        return False
 
 
 def main():
@@ -221,6 +253,10 @@ def main():
                 st_prev[k]["last_alert"] = now()
         r = _notify("🩺 STACK WATCHDOG\n" + "\n".join(msgs))
         out["telegram"] = str(r)
+        # aviso LOCAL sempre que há cegueira NOVA — offline-safe (Telegram pode não entregar se a rede caiu)
+        blind_now = [m for m in changes if m.startswith("🔴")]
+        if blind_now:
+            out["local"] = _local_notify("🩺 STACK WATCHDOG — cegueira", " · ".join(b[2:] for b in blind_now))
     tmp = STATE_F.with_suffix(".json.tmp"); tmp.write_text(json.dumps(st_prev)); os.replace(tmp, STATE_F)
     with open(LOG, "a") as fh:
         fh.write(json.dumps(out, ensure_ascii=False) + "\n")
