@@ -93,6 +93,44 @@ def _bars15_map():
     return m
 
 
+LEG_LOOKBACK = 12                    # ~3h de 15M — a PERNA imediata (não o regime macro 4H/1D lento)
+LEG_STRONG_PTS = 20.0                # deslocamento ≥20pts na janela = perna com força (markup/markdown)
+
+
+def _leg_read(px):
+    """DIREÇÃO E FORÇA DA PERNA IMEDIATA (15M, ~3h) — a leitura que faltou na noite 2026-07-21 (o motor shortou
+    um markup porque o regime macro dizia BEAR). Estrutura de swing (HH+HL = markup UP / LH+LL = markdown DOWN)
+    + deslocamento líquido. NÃO é o regime (macro lento); é a perna operativa. Devolve {dir, net_pts, strong}."""
+    bars = [r for r in _jl(BARS15_F) if r.get("c") is not None][-LEG_LOOKBACK - 1:]
+    if len(bars) < 6:
+        return {"dir": "RANGE", "net_pts": 0.0, "strong": False}
+    highs = [b["h"] for b in bars]; lows = [b["l"] for b in bars]; closes = [b["c"] for b in bars]
+    net = closes[-1] - closes[0]
+    mid = len(bars) // 2
+    old_hi, new_hi = max(highs[:mid]), max(highs[mid:])
+    old_lo, new_lo = min(lows[:mid]), min(lows[mid:])
+    hh_hl = new_hi > old_hi and new_lo > old_lo         # higher-high + higher-low = markup
+    lh_ll = new_hi < old_hi and new_lo < old_lo         # lower-high + lower-low = markdown
+    if hh_hl and net > 0:
+        d = "UP"
+    elif lh_ll and net < 0:
+        d = "DOWN"
+    else:
+        d = "RANGE"
+    return {"dir": d, "net_pts": round(net, 1), "strong": abs(net) >= LEG_STRONG_PTS and d != "RANGE"}
+
+
+def _consumed(zones, px, leg_dir):
+    """Zonas OB do MESMO tipo VARRIDAS na direção da perna, agora do lado 'já-comido' do preço = sinal de FORÇA
+    (compra a esmagar supply em cadeia = o oposto de resistência). Conta supplies abaixo (markup) / demands acima
+    (markdown). Foi a cadeia 4066→4077→4084→... consumida que o motor ignorou."""
+    if px is None or leg_dir == "RANGE":
+        return 0
+    if leg_dir == "UP":     # markup: supplies que ficaram ABAIXO do preço = comidas
+        return sum(1 for z in zones if z["type"] == "SUPPLY" and z["high"] < px)
+    return sum(1 for z in zones if z["type"] == "DEMAND" and z["low"] > px)   # markdown
+
+
 def _nas_events(bmap):
     """Eventos NAS (últimas 24h) com PREÇO real (do bar no tempo do evento): LONG→low do bar (fundo marcado),
     SHORT→high (topo). Só assim a confluência é ESPACIAL — um NAS SHORT lá em cima NÃO conta para uma DEMAND."""
@@ -233,8 +271,10 @@ def cross(ctx=None, focus="15M"):
         z["nas_agree"] = len(z_nas) > 0
         z["bub_agree"] = (len(z_bub) > 0) if bub_ev else None
         z["nas_n"] = len(z_nas); z["bub_n"] = len(z_bub)
+    leg = _leg_read(px)
+    leg["consumed"] = _consumed(out_zones, px, leg["dir"])   # zonas varridas em cadeia = força da perna
     return {"price": px, "regime": reg, "focus": focus, "zones": out_zones,
-            "structure": structure, "nas": nas, "bubbles": bubbles, "momentum": momentum}
+            "structure": structure, "nas": nas, "bubbles": bubbles, "momentum": momentum, "leg": leg}
 
 
 def _regime_align(ty, regime):
@@ -250,6 +290,8 @@ def print_view():
     im = cross()
     px = im["price"]; reg = im["regime"]
     print(f"═══ CRUZAMENTO MTF · foco {im['focus']} · preço {px} · regime {reg['regime']} ({reg['as_of']}) ═══")
+    lg = im.get("leg") or {}
+    print(f"[PERNA IMEDIATA 15M ~3h]  dir {lg.get('dir')} · {lg.get('net_pts'):+.0f}pts · {'FORTE' if lg.get('strong') else 'fraca'} · zonas consumidas em cadeia: {lg.get('consumed')}")
     nas, bub = im.get("nas"), im.get("bubbles") or {}
     print("\n[FLUXO 15M]  (direcional, não espacial — polaridade bubbles = contexto)")
     if nas:

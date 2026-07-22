@@ -94,54 +94,76 @@ def _read_ob15_zones():
 
 
 def classify_zone(z, exc, im):
-    """FRACO/FORTE por CONVERGÊNCIA de camadas ORTOGONAIS (Cris 2026-07-21; validado visual + RSI/ADX/CHOP add).
-    NÃO é veto nem score cego — exige 3 coisas para FORTE: (1) GATILHO obrigatório (rejeição/reclaim ≥6pts na
-    direção do TIPO), (2) ÂNCORA estrutural do modo, (3) ≥2 camadas de SUPORTE a convergir para a direção.
-      • REVERSÃO (regime contra/RANGE): âncora = institucional (íman OB-HTF real).
-      • CONTINUAÇÃO (regime a-favor): âncora = regime alinhado (DEMAND↔BULL, SUPPLY↔BEAR).
-    Suporte (concorda com a direção `want`): institucional · fluxo (NAS/bubbles) · RSI · trend-fit (ADX/CHOP).
-    Direção pelo TIPO da zona (nunca por aproximação). BOS/CHoCH = contexto, não load-bearing (direção inferida).
+    """FRACO/FORTE com a PERNA IMEDIATA (15M ~3h) como DRIVER DE DIREÇÃO (Cris 2026-07-22, após 2 SHORTs FORTE
+    stopados num markup: o motor shortava supply institucional porque o REGIME MACRO dizia BEAR, cego à perna de
+    alta que consumia supply em cadeia). Correção:
+      • A PERNA MANDA: leg UP → opera-se LONG (continuação, INCLUI romper supply no markup); leg DOWN → SHORT;
+        leg RANGE → FADE das zonas (reversão: SUPPLY→SHORT, DEMAND→LONG).
+      • 2 VETOS DUROS: (1) nunca CONTRA a perna imediata; (2) nunca CONTRA fluxo fresco esmagador (bubbles).
+      • RSI muda de sentido por modo: continuação=MOMENTUM (LONG quer RSI alto), reversão=EXAUSTÃO (LONG quer RSI baixo).
     Devolve (dir, modo, q, checklist)."""
-    ty = z["type"]                                              # SUPPLY / DEMAND (lido do all_boxes.text)
-    want = "LONG" if ty == "DEMAND" else "SHORT"
+    ty = z["type"]
     mag, exc_dir, _, _ = exc
     regime = (im.get("regime") or {}).get("regime")
+    leg = im.get("leg") or {}
+    leg_dir = leg.get("dir"); leg_strong = bool(leg.get("strong")); consumed = leg.get("consumed") or 0
+    bub = im.get("bubbles") or {}
+    buy, sell = bub.get("buy") or 0, bub.get("sell") or 0
     mom = im.get("momentum") or {}
     adx, chop = mom.get("adx"), mom.get("chop")
     rsis = {"5M": mom.get("rsi_5m"), "15M": mom.get("rsi_15m"), "1H": mom.get("rsi_1h")}
 
-    inst = bool(z.get("institutional"))                         # confluência OB do MESMO tipo em HTF (espacial)
-    align = (ty == "DEMAND" and regime == "BULL") or (ty == "SUPPLY" and regime == "BEAR")
-    confirm = mag >= 6 and ((want == "SHORT" and exc_dir == "BAIXA") or (want == "LONG" and exc_dir == "ALTA"))
-    flow = bool(z.get("nas_agree")) or (z.get("bub_agree") is True)
-    # RSI = ALINHAMENTO multi-TF (5M/15M/1H): a favor em ≥2/3 → amortece o tremor da barra em formação de 1 TF só
-    def _rsi_sup(r): return r is not None and ((want == "LONG" and r < 50) or (want == "SHORT" and r > 50))
-    n_rsi = sum(_rsi_sup(r) for r in rsis.values())
-    rsi_agree = n_rsi >= 2
-    mode = "continuação" if align else "reversão"
-    if mode == "continuação":
-        trend_fit = adx is not None and adx >= 20              # tendência viva favorece continuação
-        anchor = align
+    # 1) DIREÇÃO = perna (tendência) ou tipo-de-zona (range)
+    if leg_dir == "UP":
+        want, mode = "LONG", "continuação"
+    elif leg_dir == "DOWN":
+        want, mode = "SHORT", "continuação"
     else:
-        trend_fit = (chop is not None and chop >= 55) or (adx is not None and adx < 20)  # range/sem-tendência favorece fade
-        anchor = inst
-    supports = sum([inst, flow, rsi_agree, trend_fit])
-    forte = bool(confirm and anchor and supports >= 2)
+        want, mode = ("LONG" if ty == "DEMAND" else "SHORT"), "reversão"
+
+    # 2) VETOS DUROS (a lição das 2 vendas stopadas)
+    leg_veto = (want == "SHORT" and leg_dir == "UP") or (want == "LONG" and leg_dir == "DOWN")
+    flow_veto = (want == "SHORT" and buy >= 4 and buy >= 3 * max(sell, 1)) or \
+                (want == "LONG" and sell >= 4 and sell >= 3 * max(buy, 1))
+
+    # 3) GATILHO (momentum na direção do trade)
+    confirm = mag >= 6 and ((want == "SHORT" and exc_dir == "BAIXA") or (want == "LONG" and exc_dir == "ALTA"))
+
+    # 4) SUPORTES — RSI com sentido dependente do modo
+    inst = bool(z.get("institutional"))
+    flow_agree = bool(z.get("nas_agree")) or (z.get("bub_agree") is True)
+    def _rsi_sup(r):
+        if r is None: return False
+        if mode == "continuação":                              # momentum a favor da perna
+            return (want == "LONG" and r > 50) or (want == "SHORT" and r < 50)
+        return (want == "LONG" and r < 50) or (want == "SHORT" and r > 50)   # reversão = exaustão
+    n_rsi = sum(_rsi_sup(r) for r in rsis.values()); rsi_agree = n_rsi >= 2
+    if mode == "continuação":
+        trend_fit = (adx is not None and adx >= 20) or leg_strong or consumed >= 1
+        anchor = leg_strong or consumed >= 1                   # a perna tem convicção (força OU zonas comidas em cadeia)
+    else:
+        trend_fit = (chop is not None and chop >= 55) or (adx is not None and adx < 20)
+        anchor = inst                                          # reversão precisa do íman institucional
+
+    supports = sum([inst, flow_agree, rsi_agree, trend_fit])
+    forte = bool(confirm and anchor and supports >= 2 and not leg_veto and not flow_veto)
     q = "FORTE" if forte else "FRACO"
 
     parts = []
+    parts.append(f"perna {leg_dir} {leg.get('net_pts', 0):+.0f}pts{' FORTE' if leg_strong else ''}"
+                 + (f" · consumiu {consumed} zona(s)" if consumed else ""))
+    if leg_veto: parts.append("🛑 VETO-perna (contra a perna imediata)")
+    if flow_veto: parts.append(f"🛑 VETO-fluxo (bubbles BUY{buy}/SELL{sell})")
     parts.append(("🏛️ institucional " + "/".join(z.get("ob_htf") or [])) if inst else "· local")
     if z.get("svp"): parts.append("SVP " + ", ".join(z["svp"]))
     parts.append(f"gatilho {'✓' if confirm else '✗'} {mag:.0f}pts")
-    parts.append(f"regime {regime} {'a-favor' if align else 'contra/range'}")
     rtxt = "/".join(f"{rsis[t]:.0f}" if rsis[t] is not None else "-" for t in ("5M", "15M", "1H"))
     parts.append(f"RSI(5/15/60) {rtxt} {'✓' if rsi_agree else '·'}{n_rsi}/3")
     if adx is not None: parts.append(f"ADX {adx:.0f}")
-    if chop is not None: parts.append(f"CHOP {chop:.0f}")
     parts.append(f"trend-fit {'✓' if trend_fit else '·'}")
     if z.get("nas_agree"): parts.append("NAS✓")
     if z.get("bub_agree") is True: parts.append("bubbles✓")
-    parts.append(f"suportes {supports}/4")
+    parts.append(f"suportes {supports}/4 · regime {regime}(contexto)")
     return want, mode, q, " · ".join(parts)
 
 
