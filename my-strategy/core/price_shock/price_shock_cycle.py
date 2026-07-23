@@ -100,6 +100,12 @@ def _e0():
     except Exception: return {}
 
 
+def _tier1():
+    """Macro tier1 do E0 (latest.json, pipeline FRED) — yields/DXY/vix/WTI. CONSUMIR o FRED existente, não paralelo."""
+    try: return json.loads((E0_F.parent / "latest.json").read_text()).get("tier1_macro_recorded_context") or {}
+    except Exception: return {}
+
+
 def classify_zone(z, exc, im):
     """FRACO/FORTE que CONSOME o DOSSIÊ E0 (Cris 2026-07-23 — consolidação: reverti o reader paralelo pobre que
     tinha desligado o E0). Direção pela TRAJETÓRIA MULTI-TF do E0 (15M+1H+4H trend+CHoCH), não a perna-15M cega.
@@ -124,10 +130,12 @@ def classify_zone(z, exc, im):
     else:                           mtf_dir = "RANGE"
     mtf_strong = max(bear, bull) >= 3
 
-    # ── MACRO E0 (variável-mestra do ouro): yield real alto/subindo + DXY = teto → viés SHORT ──
+    # ── MACRO E0 (variável-mestra do ouro): yield real alto OU oil a SUBIR = teto → viés SHORT ──
     mac = e0.get("macro") or {}
     ry = mac.get("real_yield_10y"); event_window = (mac.get("risk_level") == "event_window")
-    macro_short = bool(ry is not None and ry >= 1.5)
+    oil = _tier1().get("wti_oil") or {}                        # WTI (FRED, mesma via que yields/DXY)
+    oil_chg = oil.get("chg20"); oil_rising = bool(oil_chg is not None and oil_chg >= 5)
+    macro_short = bool((ry is not None and ry >= 1.5) or oil_rising)   # yields altos OU oil↑ → teto ouro (canal inflação)
 
     # ── FLUXO: E0.confluence (sell/buy por TF) + bubbles ──
     def _num(x):
@@ -178,7 +186,11 @@ def classify_zone(z, exc, im):
     q = "FORTE" if forte else "FRACO"
 
     parts = [f"trajetória MTF {mtf_dir} (bear{bear}/bull{bull} de 15/60/240){' alinhado' if mtf_strong else ''}"]
-    if macro_short: parts.append(f"macro E0: yield real {ry} = teto ouro (SHORT-fav)")
+    if macro_short:
+        why = []
+        if ry is not None and ry >= 1.5: why.append(f"yield real {ry}")
+        if oil_rising: why.append(f"oil +{oil_chg:.0f}%/20d")
+        parts.append(f"macro E0: {' + '.join(why)} = teto ouro (SHORT-fav)")
     if event_window: parts.append("⚠️ janela de evento (E0)")
     if mtf_veto: parts.append("🛑 VETO-trajetória (contra multi-TF)")
     if flow_veto: parts.append(f"🛑 VETO-fluxo (bubbles BUY{buy}/SELL{sell})")
