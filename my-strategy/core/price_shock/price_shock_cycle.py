@@ -93,77 +93,102 @@ def _read_ob15_zones():
     return []
 
 
+def _e0():
+    """DOSSIÊ E0 (market_context.json) — o CÉREBRO DE CONTEXTO ÚNICO já computado (mtf multi-TF, macro yields/DXY,
+    confluence, regime, magnets). CONSUMIR — nunca reconstruir paralelo (feedback_consume_existing_never_rebuild)."""
+    try: return json.loads(E0_F.read_text()).get("axes") or {}
+    except Exception: return {}
+
+
 def classify_zone(z, exc, im):
-    """FRACO/FORTE com a PERNA IMEDIATA (15M ~3h) como DRIVER DE DIREÇÃO (Cris 2026-07-22, após 2 SHORTs FORTE
-    stopados num markup: o motor shortava supply institucional porque o REGIME MACRO dizia BEAR, cego à perna de
-    alta que consumia supply em cadeia). Correção:
-      • A PERNA MANDA: leg UP → opera-se LONG (continuação, INCLUI romper supply no markup); leg DOWN → SHORT;
-        leg RANGE → FADE das zonas (reversão: SUPPLY→SHORT, DEMAND→LONG).
-      • 2 VETOS DUROS: (1) nunca CONTRA a perna imediata; (2) nunca CONTRA fluxo fresco esmagador (bubbles).
-      • RSI muda de sentido por modo: continuação=MOMENTUM (LONG quer RSI alto), reversão=EXAUSTÃO (LONG quer RSI baixo).
-    Devolve (dir, modo, q, checklist)."""
+    """FRACO/FORTE que CONSOME o DOSSIÊ E0 (Cris 2026-07-23 — consolidação: reverti o reader paralelo pobre que
+    tinha desligado o E0). Direção pela TRAJETÓRIA MULTI-TF do E0 (15M+1H+4H trend+CHoCH), não a perna-15M cega.
+    Macro (yields reais/DXY) e confluence do E0 entram como contexto/suporte. Devolve (dir, modo, q, checklist)."""
     ty = z["type"]
     mag, exc_dir, _, _ = exc
-    regime = (im.get("regime") or {}).get("regime")
-    leg = im.get("leg") or {}
-    leg_dir = leg.get("dir"); leg_strong = bool(leg.get("strong")); consumed = leg.get("consumed") or 0
+    e0 = _e0()
+    regime = ((e0.get("regime") or {}).get("v5_4h") or {}).get("regime") or (im.get("regime") or {}).get("regime")
+
+    # ── DIREÇÃO = TRAJETÓRIA MULTI-TF do E0 (15/60/240 trend+CHoCH) — resolve a cegueira do 1H lower-highs ──
+    mtf = e0.get("mtf") or {}
+    def _bear(tf):
+        v = mtf.get(tf) or {}; ch = v.get("choch") or {}
+        return v.get("trend") == "DOWN" or ch.get("dn") is True
+    def _bull(tf):
+        v = mtf.get(tf) or {}; ch = v.get("choch") or {}
+        return v.get("trend") == "UP" or ch.get("up") is True
+    bear = sum(_bear(tf) for tf in ("15", "60", "240"))
+    bull = sum(_bull(tf) for tf in ("15", "60", "240"))
+    if bear >= 2 and bear > bull:   mtf_dir = "DOWN"
+    elif bull >= 2 and bull > bear: mtf_dir = "UP"
+    else:                           mtf_dir = "RANGE"
+    mtf_strong = max(bear, bull) >= 3
+
+    # ── MACRO E0 (variável-mestra do ouro): yield real alto/subindo + DXY = teto → viés SHORT ──
+    mac = e0.get("macro") or {}
+    ry = mac.get("real_yield_10y"); event_window = (mac.get("risk_level") == "event_window")
+    macro_short = bool(ry is not None and ry >= 1.5)
+
+    # ── FLUXO: E0.confluence (sell/buy por TF) + bubbles ──
+    def _num(x):
+        try: return float(str(x).replace(",", ""))
+        except Exception: return None
+    conf15 = (e0.get("confluence") or {}).get("15") or {}
+    csell, cbuy = _num(conf15.get("sell")), _num(conf15.get("buy"))
     bub = im.get("bubbles") or {}
     buy, sell = bub.get("buy") or 0, bub.get("sell") or 0
-    mom = im.get("momentum") or {}
-    adx, chop = mom.get("adx"), mom.get("chop")
-    rsis = {"5M": mom.get("rsi_5m"), "15M": mom.get("rsi_15m"), "1H": mom.get("rsi_1h")}
 
-    # 1) DIREÇÃO = perna (tendência) ou tipo-de-zona (range)
-    if leg_dir == "UP":
-        want, mode = "LONG", "continuação"
-    elif leg_dir == "DOWN":
-        want, mode = "SHORT", "continuação"
-    else:
-        want, mode = ("LONG" if ty == "DEMAND" else "SHORT"), "reversão"
+    # 1) DIREÇÃO pela trajetória multi-TF; RANGE → fade por tipo-de-zona
+    if mtf_dir == "UP":     want, mode = "LONG", "continuação"
+    elif mtf_dir == "DOWN": want, mode = "SHORT", "continuação"
+    else:                   want, mode = ("LONG" if ty == "DEMAND" else "SHORT"), "reversão"
 
-    # 2) VETOS DUROS (a lição das 2 vendas stopadas)
-    leg_veto = (want == "SHORT" and leg_dir == "UP") or (want == "LONG" and leg_dir == "DOWN")
+    # 2) VETOS DUROS: contra a trajetória multi-TF · contra fluxo esmagador
+    mtf_veto = (want == "SHORT" and mtf_dir == "UP") or (want == "LONG" and mtf_dir == "DOWN")
     flow_veto = (want == "SHORT" and buy >= 4 and buy >= 3 * max(sell, 1)) or \
                 (want == "LONG" and sell >= 4 and sell >= 3 * max(buy, 1))
 
-    # 3) GATILHO (momentum na direção do trade)
+    # 3) GATILHO
     confirm = mag >= 6 and ((want == "SHORT" and exc_dir == "BAIXA") or (want == "LONG" and exc_dir == "ALTA"))
 
-    # 4) SUPORTES — RSI com sentido dependente do modo
+    # 4) SUPORTES (institucional · fluxo · RSI · trend-fit · MACRO E0)
     inst = bool(z.get("institutional"))
-    flow_agree = bool(z.get("nas_agree")) or (z.get("bub_agree") is True)
+    flow_agree = bool(z.get("nas_agree")) or (z.get("bub_agree") is True) or \
+                 (csell is not None and cbuy is not None and
+                  ((want == "SHORT" and csell > cbuy) or (want == "LONG" and cbuy > csell)))
+    mom = im.get("momentum") or {}
+    adx, chop = mom.get("adx"), mom.get("chop")
+    rsis = {"5M": mom.get("rsi_5m"), "15M": mom.get("rsi_15m"), "1H": mom.get("rsi_1h")}
     def _rsi_sup(r):
         if r is None: return False
-        if mode == "continuação":                              # momentum a favor da perna
+        if mode == "continuação":
             return (want == "LONG" and r > 50) or (want == "SHORT" and r < 50)
-        return (want == "LONG" and r < 50) or (want == "SHORT" and r > 50)   # reversão = exaustão
+        return (want == "LONG" and r < 50) or (want == "SHORT" and r > 50)
     n_rsi = sum(_rsi_sup(r) for r in rsis.values()); rsi_agree = n_rsi >= 2
+    macro_sup = (want == "SHORT" and macro_short)
     if mode == "continuação":
-        trend_fit = (adx is not None and adx >= 20) or leg_strong or consumed >= 1
-        anchor = leg_strong or consumed >= 1                   # a perna tem convicção (força OU zonas comidas em cadeia)
+        trend_fit = (adx is not None and adx >= 20) or mtf_strong
+        anchor = mtf_strong or max(bear, bull) >= 2            # trajetória multi-TF com convicção
     else:
         trend_fit = (chop is not None and chop >= 55) or (adx is not None and adx < 20)
-        anchor = inst                                          # reversão precisa do íman institucional
+        anchor = inst
 
-    supports = sum([inst, flow_agree, rsi_agree, trend_fit])
-    forte = bool(confirm and anchor and supports >= 2 and not leg_veto and not flow_veto)
+    supports = sum([inst, flow_agree, rsi_agree, trend_fit, macro_sup])
+    forte = bool(confirm and anchor and supports >= 2 and not mtf_veto and not flow_veto)
     q = "FORTE" if forte else "FRACO"
 
-    parts = []
-    parts.append(f"perna {leg_dir} {leg.get('net_pts', 0):+.0f}pts{' FORTE' if leg_strong else ''}"
-                 + (f" · consumiu {consumed} zona(s)" if consumed else ""))
-    if leg_veto: parts.append("🛑 VETO-perna (contra a perna imediata)")
+    parts = [f"trajetória MTF {mtf_dir} (bear{bear}/bull{bull} de 15/60/240){' alinhado' if mtf_strong else ''}"]
+    if macro_short: parts.append(f"macro E0: yield real {ry} = teto ouro (SHORT-fav)")
+    if event_window: parts.append("⚠️ janela de evento (E0)")
+    if mtf_veto: parts.append("🛑 VETO-trajetória (contra multi-TF)")
     if flow_veto: parts.append(f"🛑 VETO-fluxo (bubbles BUY{buy}/SELL{sell})")
     parts.append(("🏛️ institucional " + "/".join(z.get("ob_htf") or [])) if inst else "· local")
     if z.get("svp"): parts.append("SVP " + ", ".join(z["svp"]))
     parts.append(f"gatilho {'✓' if confirm else '✗'} {mag:.0f}pts")
     rtxt = "/".join(f"{rsis[t]:.0f}" if rsis[t] is not None else "-" for t in ("5M", "15M", "1H"))
     parts.append(f"RSI(5/15/60) {rtxt} {'✓' if rsi_agree else '·'}{n_rsi}/3")
-    if adx is not None: parts.append(f"ADX {adx:.0f}")
-    parts.append(f"trend-fit {'✓' if trend_fit else '·'}")
-    if z.get("nas_agree"): parts.append("NAS✓")
-    if z.get("bub_agree") is True: parts.append("bubbles✓")
-    parts.append(f"suportes {supports}/4 · regime {regime}(contexto)")
+    if macro_sup: parts.append("macro✓")
+    parts.append(f"trend-fit {'✓' if trend_fit else '·'} · suportes {supports}/5 · regime {regime}(ctx)")
     return want, mode, q, " · ".join(parts)
 
 
