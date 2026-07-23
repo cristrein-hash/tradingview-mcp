@@ -25,6 +25,7 @@ BARS5 = HERE / "bar_store/store/bars_5m.jsonl"
 
 # SELL: bounce a supply / polaridade-de-fundo (fundos antigos agora resistência) → vigiar REJEIÇÃO p/ short
 SELL_ZONES = [
+    (4076.0, "🔻 OURO 4076 — bounce à 1ª resistência (fundo antigo 4076-4084=resist) · vigia REJEIÇÃO p/ short"),
     (4088.0, "🔻 OURO 4088 — bounce à polaridade-flip (4088-4095, fundo antigo=resistência) · vigia REJEIÇÃO p/ short"),
     (4123.0, "🔻 OURO 4123 — bounce ao SUPPLY institucional (4123-4130, POC multi-TF) · vigia REJEIÇÃO p/ short"),
     (4134.0, "🔻 OURO 4134 — bounce ao SUPPLY institucional (4134-4141) · vigia REJEIÇÃO p/ short"),
