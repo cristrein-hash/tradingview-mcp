@@ -50,3 +50,4 @@
 - 2026-07-20 23:44 UTC · `memory_delta_20260721_long_context_monitor.sql` · memory_items 335→336 · tag-rows 1/1 · OK
 - 2026-07-21 13:16 UTC · `memory_delta_20260721_mtf_reader_cross_engine.sql` · memory_items 336→338 · tag-rows 2/2 · OK
 - 2026-07-23 11:39 UTC · `memory_delta_20260723_consolidation_e0_guard.sql` · memory_items 338→340 · tag-rows 2/2 · OK
+- 2026-07-24 17:28 UTC · `memory_delta_20260724_leg_based_signal_engine.sql` · memory_items 340→341 · tag-rows 1/1 · OK
