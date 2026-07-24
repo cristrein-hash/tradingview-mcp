@@ -100,107 +100,117 @@ def _e0():
     except Exception: return {}
 
 
-def _tier1():
-    """Macro tier1 do E0 (latest.json, pipeline FRED) — yields/DXY/vix/WTI. CONSUMIR o FRED existente, não paralelo."""
-    try: return json.loads((E0_F.parent / "latest.json").read_text()).get("tier1_macro_recorded_context") or {}
-    except Exception: return {}
+def _leg_1h(e0):
+    """PERNA ATUAL pela TF 1H (E0) = a direção-mestra (Cris 2026-07-24). Pivô 1H mais recente (low→viés up /
+    high→viés down) CONFIRMADO pelo reclaim/perda das EMAs (micro_15m.ema.pos). Se pivô e EMA DISCORDAM = virada
+    não confirmada → mantém a perna dominante (leg.dir 1H). Consome só o E0 (market_context). Validado nos 2 casos
+    de 2026-07-24 (AM flush=BEAR, PM up-leg=BULL) em research/leg_reader_validation_20260724.py. Devolve (leg, why)."""
+    m = (e0.get("mtf") or {}).get("60") or {}
+    sw = m.get("swings") or {}
+    lh_cb = (sw.get("last_high") or {}).get("confirm_bar")
+    ll_cb = (sw.get("last_low") or {}).get("confirm_bar")
+    if lh_cb is None or ll_cb is None:
+        return "RANGE", "sem swings 1H"
+    pivot_bias = "up" if ll_cb > lh_cb else "down"           # pivô mais recente: low→viés up / high→viés down
+    ema_pos = ((e0.get("micro_15m") or {}).get("ema") or {}).get("pos")
+    ema_confirm = "up" if ema_pos == "above" else ("down" if ema_pos == "below" else None)
+    leg_dir = (m.get("leg") or {}).get("dir")                # perna dominante 1H (up/down)
+    if pivot_bias == "up" and ema_confirm == "up":
+        return "BULL", "pivô-low + reclaim EMAs = virada de alta confirmada"
+    if pivot_bias == "down" and ema_confirm == "down":
+        return "BEAR", "pivô-high + perda EMAs = virada de baixa confirmada"
+    if leg_dir == "down":
+        return "BEAR", f"virada não confirmada (pivô {pivot_bias}/ema {ema_confirm}) → dominante down"
+    if leg_dir == "up":
+        return "BULL", f"virada não confirmada (pivô {pivot_bias}/ema {ema_confirm}) → dominante up"
+    return "RANGE", "indefinido"
 
 
 def classify_zone(z, exc, im):
-    """FRACO/FORTE que CONSOME o DOSSIÊ E0 (Cris 2026-07-23 — consolidação: reverti o reader paralelo pobre que
-    tinha desligado o E0). Direção pela TRAJETÓRIA MULTI-TF do E0 (15M+1H+4H trend+CHoCH), não a perna-15M cega.
-    Macro (yields reais/DXY) e confluence do E0 entram como contexto/suporte. Devolve (dir, modo, q, checklist)."""
-    ty = z["type"]
+    """FRACO/FORTE por PERNA 1H + regra de zonas (Cris 2026-07-24, substitui a direção-por-voto-MTF que fadava
+    contra o movimento e custou stops). CONSOME o E0 (market_context: mtf 1H swings + micro_15m EMAs + confluence +
+    macro + regime) — zero reader paralelo. REGRA: a PERNA 1H manda a direção. Perna BULL → demanda=BUY (continuação);
+    supply 15M/1H = só marca pullback p/ demanda mais baixa (NÃO vende); SELL só em supply com OB 4H/1D + confluências
+    (reversão). Perna BEAR = inverso. Devolve (want, mode, q, checklist). mode 'pullback-marker' → q='SKIP' (loga, nunca alerta)."""
+    ty = z["type"]                                            # SUPPLY / DEMAND (zona 15M do foco)
     mag, exc_dir, _, _ = exc
     e0 = _e0()
     regime = ((e0.get("regime") or {}).get("v5_4h") or {}).get("regime") or (im.get("regime") or {}).get("regime")
+    leg, leg_why = _leg_1h(e0)
 
-    # ── DIREÇÃO = TRAJETÓRIA MULTI-TF do E0 (15/60/240 trend+CHoCH) — resolve a cegueira do 1H lower-highs ──
-    mtf = e0.get("mtf") or {}
-    def _bear(tf):
-        v = mtf.get(tf) or {}; ch = v.get("choch") or {}
-        return v.get("trend") == "DOWN" or ch.get("dn") is True
-    def _bull(tf):
-        v = mtf.get(tf) or {}; ch = v.get("choch") or {}
-        return v.get("trend") == "UP" or ch.get("up") is True
-    bear = sum(_bear(tf) for tf in ("15", "60", "240"))
-    bull = sum(_bull(tf) for tf in ("15", "60", "240"))
-    if bear >= 2 and bear > bull:   mtf_dir = "DOWN"
-    elif bull >= 2 and bull > bear: mtf_dir = "UP"
-    else:                           mtf_dir = "RANGE"
-    mtf_strong = max(bear, bull) >= 3
+    # a zona 15M só é elegível a REVERSÃO (contra-perna) se tiver OB Detector de 4H ou 1D sobreposto (z.ob_htf de mtf_cross)
+    ob_htf = z.get("ob_htf") or []
+    has_htf_ob = ("4H" in ob_htf) or ("1D" in ob_htf)
 
-    # ── MACRO E0 (variável-mestra do ouro): yield real alto OU oil a SUBIR = teto → viés SHORT ──
-    mac = e0.get("macro") or {}
-    ry = mac.get("real_yield_10y"); event_window = (mac.get("risk_level") == "event_window")
-    oil = _tier1().get("wti_oil") or {}                        # WTI (FRED, mesma via que yields/DXY)
-    oil_chg = oil.get("chg20"); oil_rising = bool(oil_chg is not None and oil_chg >= 5)
-    macro_short = bool((ry is not None and ry >= 1.5) or oil_rising)   # yields altos OU oil↑ → teto ouro (canal inflação)
+    # ── DIREÇÃO = PERNA + REGRA DE ZONAS ──
+    if leg == "BULL":
+        if ty == "DEMAND":   want, mode = "LONG", "continuação"
+        elif has_htf_ob:     want, mode = "SHORT", "reversão"          # supply OB 4H/1D → avaliar venda
+        else:                want, mode = "LONG", "pullback-marker"    # supply 15M/1H em bull → aguarda demanda, NÃO vende
+    elif leg == "BEAR":
+        if ty == "SUPPLY":   want, mode = "SHORT", "continuação"
+        elif has_htf_ob:     want, mode = "LONG", "reversão"           # demanda OB 4H/1D → avaliar compra
+        else:                want, mode = "SHORT", "pullback-marker"   # demanda 15M/1H em bear → aguarda supply, NÃO compra
+    else:  # perna indefinida → conservador: fade por tipo de zona só se institucional
+        want, mode = ("LONG" if ty == "DEMAND" else "SHORT"), "range-fade"
 
-    # ── FLUXO: E0.confluence (sell/buy por TF) + bubbles ──
-    def _num(x):
-        try: return float(str(x).replace(",", ""))
+    # ── FLUXO E0 (confluence 15M, campos {n,weight,dens}) + bubbles ──
+    def _n(x):
+        try: return float(x)
         except Exception: return None
     conf15 = (e0.get("confluence") or {}).get("15") or {}
-    csell, cbuy = _num(conf15.get("sell")), _num(conf15.get("buy"))
+    csell = _n((conf15.get("sell") or {}).get("n") if isinstance(conf15.get("sell"), dict) else conf15.get("sell"))
+    cbuy = _n((conf15.get("buy") or {}).get("n") if isinstance(conf15.get("buy"), dict) else conf15.get("buy"))
     bub = im.get("bubbles") or {}
     buy, sell = bub.get("buy") or 0, bub.get("sell") or 0
 
-    # 1) DIREÇÃO pela trajetória multi-TF; RANGE → fade por tipo-de-zona
-    if mtf_dir == "UP":     want, mode = "LONG", "continuação"
-    elif mtf_dir == "DOWN": want, mode = "SHORT", "continuação"
-    else:                   want, mode = ("LONG" if ty == "DEMAND" else "SHORT"), "reversão"
-
-    # 2) VETOS DUROS: contra a trajetória multi-TF · contra fluxo esmagador
-    mtf_veto = (want == "SHORT" and mtf_dir == "UP") or (want == "LONG" and mtf_dir == "DOWN")
-    flow_veto = (want == "SHORT" and buy >= 4 and buy >= 3 * max(sell, 1)) or \
-                (want == "LONG" and sell >= 4 and sell >= 3 * max(buy, 1))
-
-    # 3) GATILHO
-    confirm = mag >= 6 and ((want == "SHORT" and exc_dir == "BAIXA") or (want == "LONG" and exc_dir == "ALTA"))
-
-    # 4) SUPORTES (institucional · fluxo · RSI · trend-fit · MACRO E0)
+    # ── SUPORTES (institucional · fluxo · RSI · macro-contexto) ──
     inst = bool(z.get("institutional"))
     flow_agree = bool(z.get("nas_agree")) or (z.get("bub_agree") is True) or \
                  (csell is not None and cbuy is not None and
                   ((want == "SHORT" and csell > cbuy) or (want == "LONG" and cbuy > csell)))
     mom = im.get("momentum") or {}
-    adx, chop = mom.get("adx"), mom.get("chop")
     rsis = {"5M": mom.get("rsi_5m"), "15M": mom.get("rsi_15m"), "1H": mom.get("rsi_1h")}
     def _rsi_sup(r):
         if r is None: return False
-        if mode == "continuação":
+        if mode == "continuação":                            # a favor da perna → RSI a favor
             return (want == "LONG" and r > 50) or (want == "SHORT" and r < 50)
-        return (want == "LONG" and r < 50) or (want == "SHORT" and r > 50)
+        return (want == "LONG" and r < 50) or (want == "SHORT" and r > 50)   # reversão/range → RSI esticado ao contrário
     n_rsi = sum(_rsi_sup(r) for r in rsis.values()); rsi_agree = n_rsi >= 2
-    macro_sup = (want == "SHORT" and macro_short)
-    if mode == "continuação":
-        trend_fit = (adx is not None and adx >= 20) or mtf_strong
-        anchor = mtf_strong or max(bear, bull) >= 2            # trajetória multi-TF com convicção
+    ry = (e0.get("macro") or {}).get("real_yield_10y")
+    macro_sup = bool(want == "SHORT" and ry is not None and ry >= 1.5)     # contexto, NÃO direção
+
+    # ── GATILHO (excursão no sentido do trade) + VETO de fluxo esmagador contra ──
+    confirm = mag >= 6 and ((want == "SHORT" and exc_dir == "BAIXA") or (want == "LONG" and exc_dir == "ALTA"))
+    flow_veto = (want == "SHORT" and buy >= 4 and buy >= 3 * max(sell, 1)) or \
+                (want == "LONG" and sell >= 4 and sell >= 3 * max(buy, 1))
+
+    supports = sum([inst, flow_agree, rsi_agree, macro_sup])
+
+    # ── ANCHOR + QUALIDADE por MODO ──
+    if mode == "pullback-marker":
+        q = "SKIP"                                           # contra-perna sem OB 4H/1D = não é sinal (só loga)
     else:
-        trend_fit = (chop is not None and chop >= 55) or (adx is not None and adx < 20)
-        anchor = inst
+        if mode == "continuação":   anchor = True            # a própria perna 1H é o anchor
+        elif mode == "reversão":    anchor = has_htf_ob and (bool(z.get("nas_agree")) or z.get("bub_agree") is True)
+        else:                       anchor = inst            # range-fade só com institucional
+        q = "FORTE" if (confirm and anchor and supports >= 2 and not flow_veto) else "FRACO"
 
-    supports = sum([inst, flow_agree, rsi_agree, trend_fit, macro_sup])
-    forte = bool(confirm and anchor and supports >= 2 and not mtf_veto and not flow_veto)
-    q = "FORTE" if forte else "FRACO"
-
-    parts = [f"trajetória MTF {mtf_dir} (bear{bear}/bull{bull} de 15/60/240){' alinhado' if mtf_strong else ''}"]
-    if macro_short:
-        why = []
-        if ry is not None and ry >= 1.5: why.append(f"yield real {ry}")
-        if oil_rising: why.append(f"oil +{oil_chg:.0f}%/20d")
-        parts.append(f"macro E0: {' + '.join(why)} = teto ouro (SHORT-fav)")
-    if event_window: parts.append("⚠️ janela de evento (E0)")
-    if mtf_veto: parts.append("🛑 VETO-trajetória (contra multi-TF)")
-    if flow_veto: parts.append(f"🛑 VETO-fluxo (bubbles BUY{buy}/SELL{sell})")
-    parts.append(("🏛️ institucional " + "/".join(z.get("ob_htf") or [])) if inst else "· local")
-    if z.get("svp"): parts.append("SVP " + ", ".join(z["svp"]))
+    # ── CHECKLIST ──
+    zlbl = ("OB " + "/".join(ob_htf)) if ob_htf else "15M local"
+    parts = [f"perna 1H {leg} ({leg_why})", f"zona {ty} [{zlbl}]", f"modo {mode}"]
+    if mode == "pullback-marker":
+        parts.append("⏭️ zona contra-perna sem OB 4H/1D = só marca pullback, NÃO sinaliza (aguarda zona a favor)")
+    if mode == "reversão":
+        parts.append("↩️ reversão só em OB 4H/1D + confluências")
     parts.append(f"gatilho {'✓' if confirm else '✗'} {mag:.0f}pts")
     rtxt = "/".join(f"{rsis[t]:.0f}" if rsis[t] is not None else "-" for t in ("5M", "15M", "1H"))
-    parts.append(f"RSI(5/15/60) {rtxt} {'✓' if rsi_agree else '·'}{n_rsi}/3")
+    parts.append(f"fluxo {'✓' if flow_agree else '·'} · {'🏛️inst' if inst else 'local'} · RSI {rtxt} {n_rsi}/3")
     if macro_sup: parts.append("macro✓")
-    parts.append(f"trend-fit {'✓' if trend_fit else '·'} · suportes {supports}/5 · regime {regime}(ctx)")
+    if flow_veto: parts.append(f"🛑 veto-fluxo (BUY{buy}/SELL{sell})")
+    if z.get("svp"): parts.append("SVP " + ", ".join(z["svp"]))
+    if mode != "pullback-marker":
+        parts.append(f"suportes {supports}/4 · regime {regime}(ctx)")
     return want, mode, q, " · ".join(parts)
 
 
@@ -269,6 +279,11 @@ def main():
     mag, direction, ref_c, extreme = detect_excursion(bars)
     ot = check_ob_touch(price, bars, now, (mag, direction, ref_c, extreme))   # toque em ZONA OB 15M REAL (timing 5M)
     if ot: out["ob_touch"] = ot
+    # CONFLUÊNCIA DE OPERAÇÃO p/ o price-detector (Cris 2026-07-24): o choque só ALERTA no Telegram quando o
+    # DESLOCAMENTO coincide com um setup de operação FORTE alinhado (LONG↔ALTA / SHORT↔BAIXA). Sem setup, o
+    # choque REGISTA (shock.json p/ E0/news_gate) mas NÃO alerta — mata o ruído do detector isolado.
+    shock_side = "SHORT" if direction == "BAIXA" else "LONG"
+    op_conf = [f for f in ot if f.get("q") == "FORTE" and f.get("dir") == shock_side]
     is_major = mag >= MAJOR_PTS
     is_shock = mag >= SHOCK_PTS
     out.update({"price": price, "atr5": round(atr, 2), "excursion_pts": round(mag, 1),
@@ -282,16 +297,20 @@ def main():
         except Exception: al = {"last_ts": 0, "last_key": None}
         key = f"{direction}:{round(extreme)}"                       # dedup por direção + preço-extremo arredondado
         send = os.environ.get("L1_PRODUCTION_AUTHORIZED") == "1"    # só o wrapper autoriza; runs de teste = DRY
-        if now - al.get("last_ts", 0) >= COOLDOWN_S and key != al.get("last_key"):
+        if not op_conf:
+            out["shock_telegram"] = "suprimido (choque sem confluência de operação FORTE)"
+        elif now - al.get("last_ts", 0) >= COOLDOWN_S and key != al.get("last_key"):
+            zt = op_conf[0]
             arrow = "↑" if direction == "ALTA" else "↓"
-            msg = (f"⚡ <b>CHOQUE DE PREÇO XAU — {tier} {direction}</b>\n"
+            msg = (f"⚡ <b>CHOQUE + OPERAÇÃO XAU — {tier} {direction}</b>\n"
                    f"{arrow}{mag:.1f} pts em ≤5min · preço {price:.2f} (extremo {extreme:.2f})\n"
-                   f"{iso(now)} Lisboa · verifica news (guerra/Fed/petróleo) — contexto, não ordem")
+                   f"confluência: {shock_side} FORTE em OB {zt.get('type')} {zt.get('zone')} ({zt.get('mode')})\n"
+                   f"{iso(now)} Lisboa · timing 5M · advisory — decides + marca #N")
             r = _notify(msg) if send else "DRY (sem L1_PRODUCTION_AUTHORIZED)"
             if (not send) or (r is True):               # marca cooldown/dedup SÓ se entregue (ou DRY) -> falha re-tenta
                 ALERT_F.write_text(json.dumps({"last_ts": now, "last_key": key, "tg": str(r)}))
             out["telegram"] = str(r)
-        out["status"] = f"SHOCK {tier} {direction} {mag:.1f}pts"
+        out["status"] = f"SHOCK {tier} {direction} {mag:.1f}pts" + (" +OP" if op_conf else " (sem op)")
     else:
         if SHOCK_F.exists() and now - json.loads(SHOCK_F.read_text()).get("ts", 0) > WINDOW_S:
             SHOCK_F.unlink(missing_ok=True)          # limpa flag antiga
