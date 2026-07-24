@@ -251,7 +251,8 @@ def check_ob_touch(price, bars, now, exc):
                           "sharp_pts": round(mag, 1), "slow_pts": slow_move(bars, want, price)})
             if q == "FORTE" and send:                          # FRACO nunca vai ao Telegram (só loga)
                 arrow = "🟢" if want == "LONG" else "🔻"
-                _notify(f"{arrow} <b>{want} FORTE ({mode}) — OB {z['type']} 15M {lo:.1f}-{hi:.1f}</b>\n"
+                shock_tag = f"⚡ CHOQUE {mag:.0f}pts · " if mag >= SHOCK_PTS else ""   # choque coincidente = 1 só msg
+                _notify(f"{arrow} <b>{shock_tag}{want} FORTE ({mode}) — OB {z['type']} 15M {lo:.1f}-{hi:.1f}</b>\n"
                         f"{ck}\n{iso(now)} Lisboa · timing 5M · advisory — decides + marca #N (journal aprende)")
         elif not (lo <= price <= hi) and not armed and (price < lo - 2 or price > hi + 2):
             state[zk] = {"armed": True}; changed = True   # saiu da zona -> rearma p/ próximo toque
@@ -279,38 +280,19 @@ def main():
     mag, direction, ref_c, extreme = detect_excursion(bars)
     ot = check_ob_touch(price, bars, now, (mag, direction, ref_c, extreme))   # toque em ZONA OB 15M REAL (timing 5M)
     if ot: out["ob_touch"] = ot
-    # CONFLUÊNCIA DE OPERAÇÃO p/ o price-detector (Cris 2026-07-24): o choque só ALERTA no Telegram quando o
-    # DESLOCAMENTO coincide com um setup de operação FORTE alinhado (LONG↔ALTA / SHORT↔BAIXA). Sem setup, o
-    # choque REGISTA (shock.json p/ E0/news_gate) mas NÃO alerta — mata o ruído do detector isolado.
-    shock_side = "SHORT" if direction == "BAIXA" else "LONG"
-    op_conf = [f for f in ot if f.get("q") == "FORTE" and f.get("dir") == shock_side]
     is_major = mag >= MAJOR_PTS
     is_shock = mag >= SHOCK_PTS
     out.update({"price": price, "atr5": round(atr, 2), "excursion_pts": round(mag, 1),
                 "dir": direction, "shock": is_shock, "major": is_major})
     if is_shock:
         tier = "MAJOR" if is_major else "choque"
+        # shock.json = contexto p/ E0/news_gate. O ALERTA do choque no Telegram é UMA só mensagem (Cris 2026-07-24):
+        # o alerta da operação FORTE leva o prefixo "⚡ CHOQUE Npts" (em check_ob_touch) quando a excursão coincide.
+        # Sem operação FORTE, o choque NÃO alerta — só regista. Mata o ruído do detector isolado.
         SHOCK_F.write_text(json.dumps({"ts": now, "price": price, "excursion_pts": round(mag, 1),
                                        "move_atr": round(mag / atr, 2) if atr else None, "dir": direction,
                                        "major": is_major}))
-        try: al = json.loads(ALERT_F.read_text())
-        except Exception: al = {"last_ts": 0, "last_key": None}
-        key = f"{direction}:{round(extreme)}"                       # dedup por direção + preço-extremo arredondado
-        send = os.environ.get("L1_PRODUCTION_AUTHORIZED") == "1"    # só o wrapper autoriza; runs de teste = DRY
-        if not op_conf:
-            out["shock_telegram"] = "suprimido (choque sem confluência de operação FORTE)"
-        elif now - al.get("last_ts", 0) >= COOLDOWN_S and key != al.get("last_key"):
-            zt = op_conf[0]
-            arrow = "↑" if direction == "ALTA" else "↓"
-            msg = (f"⚡ <b>CHOQUE + OPERAÇÃO XAU — {tier} {direction}</b>\n"
-                   f"{arrow}{mag:.1f} pts em ≤5min · preço {price:.2f} (extremo {extreme:.2f})\n"
-                   f"confluência: {shock_side} FORTE em OB {zt.get('type')} {zt.get('zone')} ({zt.get('mode')})\n"
-                   f"{iso(now)} Lisboa · timing 5M · advisory — decides + marca #N")
-            r = _notify(msg) if send else "DRY (sem L1_PRODUCTION_AUTHORIZED)"
-            if (not send) or (r is True):               # marca cooldown/dedup SÓ se entregue (ou DRY) -> falha re-tenta
-                ALERT_F.write_text(json.dumps({"last_ts": now, "last_key": key, "tg": str(r)}))
-            out["telegram"] = str(r)
-        out["status"] = f"SHOCK {tier} {direction} {mag:.1f}pts" + (" +OP" if op_conf else " (sem op)")
+        out["status"] = f"SHOCK {tier} {direction} {mag:.1f}pts"
     else:
         if SHOCK_F.exists() and now - json.loads(SHOCK_F.read_text()).get("ts", 0) > WINDOW_S:
             SHOCK_F.unlink(missing_ok=True)          # limpa flag antiga
