@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """E1 — CANDIDATE DETECTOR (Camada 2, P4). Determinístico, 0 tokens, SHADOW (NÃO emite Telegram).
-Lê o dossiê market_context.json (mtime-watch), aplica 6 gatilhos estruturais (ecoam os engines aprovados)
+Lê o dossiê market_context.json (mtime-watch), aplica 7 gatilhos estruturais (incl. R7 magnet_reject: teste-e-rejeicao no iman 4H/1D) (ecoam os engines aprovados)
 e pontua CADA candidato por MULTI-CONFLUÊNCIA (estrutura MTF · zonas · act_dens/auction · momentum ·
 SVP-HTF · macro). Anti-spam (materialidade+cooldown+dedup). Loga tudo em logs/e1_candidates.jsonl para o
 E2 (P5) consumir. Permissivo (recall alto — a precisão é do E2). py3.9.
@@ -82,17 +82,42 @@ def confluence_score(d, direction, tf):
 
 
 # ---------- níveis ----------
+ANCHOR_MAX_ATR = 0.5         # lição S1 (Cris 2026-07-26): entrada ancora NA zona (dist borda <= 0.5·ATR)
+ZONE_RELEVANT_ATR = 3.0      # zona protetora até 3·ATR = a estrutura do trade; mais longe = irrelevante como SL
+
+
 def levels(direction, close, sl_ref, atr, tf_zones, pos=None):
-    # fix#1: sl_ref = swing LOCAL do 15M (passado por detect), atr = ATR15 — SL tight executável, nunca o
-    # swing do TF do gatilho (que dava 50pts). fix#4: alvo cap a MAX_TARGET_R.
-    # fix#5 (anti-atraso): só entra em posição FRESCA da perna — SHORT no topo (pos>=0.5), LONG no fundo.
+    """PACOTE 2026-07-26 (Cris, validado pelos SLs dele S2/S4/S5 todos em 3997.55 = borda da demanda):
+    - SL ESTRUTURAL: se existe zona protetora relevante (demanda abaixo p/ LONG, supply acima p/ SHORT, a
+      <=3·ATR), o SL = extremo da zona ∓ 0.1·ATR — nunca swing 15M local (fabricava losers falsos: 99 MFE>=2R).
+      Entrada tem de ANCORAR na zona (dist à borda <= 0.5·ATR) — senão o candidato NÃO nasce (lição S1: longe
+      da zona espera-se o retest, não se estica o stop).
+    - Sem zona relevante: swing 15M local como antes (estrutura local do gatilho local).
+    - fix A (bug dos 31): SL tem de ficar do lado PROTETOR da entry, senão descarta.
+    fix#5 (anti-atraso) mantido: SHORT só topo da perna (pos>=0.5), LONG só fundo. Zonas = dossiê E0 (nunca inventadas)."""
     if pos is not None:
         if direction == "SHORT" and pos < 0.5: return None
         if direction == "LONG" and pos > 0.5: return None
-    if atr is None or sl_ref is None: return None
-    sl = sl_ref - 0.1 * atr if direction == "LONG" else sl_ref + 0.1 * atr
+    if atr is None: return None
+    zprot = (tf_zones or {}).get("below" if direction == "LONG" else "above") or {}
+    sl = None
+    if zprot.get("high") and zprot.get("low"):
+        edge_in = zprot["high"] if direction == "LONG" else zprot["low"]     # borda de entrada
+        edge_out = zprot["low"] if direction == "LONG" else zprot["high"]    # extremo protetor
+        dist = (close - edge_in) if direction == "LONG" else (edge_in - close)
+        if dist <= ZONE_RELEVANT_ATR * atr:                   # a zona É a estrutura deste trade
+            if dist > ANCHOR_MAX_ATR * atr: return None       # não ancorado -> espera retest (lição S1)
+            sl = edge_out - 0.1 * atr if direction == "LONG" else edge_out + 0.1 * atr
+            if abs(close - sl) > MAX_SL_ATR * atr: return None   # zona funda demais p/ RxR são
+    if sl is None:
+        if sl_ref is None: return None
+        sl = sl_ref - 0.1 * atr if direction == "LONG" else sl_ref + 0.1 * atr
+        if abs(close - sl) > MAX_R_ATR15 * atr: return None   # SL local demasiado largo = setup fraco
+    # fix A: SL do lado protetor, sempre
+    if direction == "LONG" and sl >= close: return None
+    if direction == "SHORT" and sl <= close: return None
     r = abs(close - sl)
-    if r <= 0 or r > MAX_R_ATR15 * atr: return None            # SL demasiado largo p/ 15M-local = setup fraco
+    if r <= 0: return None
     if direction == "LONG":
         z = (tf_zones or {}).get("above") or {}
         raw = z.get("low") if z.get("low") and z["low"] > close else close + 3 * r
@@ -177,7 +202,48 @@ def detect(d, p):
             ref = sl15_low if dirn == "LONG" else sl15_high
             lv = levels(dirn, close, ref, atr15, m15.get("zones"))
             if lv: out.append(dict(rule="macro_event", tf="15", direction=dirn, src="news high_impact/SL15m", **lv))
+
+    # R7 magnet_reject (PACOTE 2026-07-26, Cris): teste-e-rejeição no ÍMAN 4H/1D — o gap que deixou o topo
+    # 22-23/07 invisível (0 SHORTs no dia do topo). TOQUE INTRABAR (high/low da barra 15M do bar-store —
+    # wicks contam, como no price-shock v3) na supply/demand HTF + FECHO de volta fora da zona = rejeição.
+    # Zonas = dossiê E0 (nunca inventadas). SL/entrada = caminho estrutural do levels() (ancora+extremo da zona).
+    bt = fnum(micro.get("bar_time"))
+    bar_hl = _bar_hl_15m(bt) if bt else None
+    if bar_hl and atr15:
+        bar_h, bar_l = bar_hl
+        for tf in ("240", "1D"):
+            zz = mtf.get(tf, {}).get("zones") or {}
+            za, zb = zz.get("above") or {}, zz.get("below") or {}
+            # rejeição de SUPPLY HTF: wick tocou a zona, fecho voltou p/ baixo da borda
+            if za.get("low") and bar_h >= za["low"] and close < za["low"]:
+                lv = levels("SHORT", close, sl15_high, atr15, zz)
+                if lv: out.append(dict(rule="magnet_reject", tf=tf, direction="SHORT",
+                                       src=f"teste-e-rejeicao supply {tf}/SL-zona", **lv))
+            # rejeição de DEMANDA HTF: wick tocou, fecho voltou p/ cima da borda
+            if zb.get("high") and bar_l <= zb["high"] and close > zb["high"]:
+                lv = levels("LONG", close, sl15_low, atr15, zz)
+                if lv: out.append(dict(rule="magnet_reject", tf=tf, direction="LONG",
+                                       src=f"teste-e-rejeicao demanda {tf}/SL-zona", **lv))
     return out
+
+
+def _bar_hl_15m(bar_time):
+    """High/low da barra 15M fechada (bar_time do dossiê) — tail do bar-store (leitor único, ficheiro local).
+    O micro do E0 só traz close; o toque no íman vive nos WICKS (lição price-shock v3)."""
+    try:
+        p = REPO / "my-strategy/core/bar_store/store/bars_15m.jsonl"
+        with open(p, "rb") as f:
+            f.seek(0, 2); size = f.tell()
+            f.seek(max(0, size - 8000))
+            tail = f.read().decode(errors="ignore").splitlines()
+        for l in reversed(tail):
+            if not l.strip(): continue
+            b = json.loads(l)
+            if b.get("t") == bar_time:
+                return b.get("h"), b.get("l")
+    except Exception:
+        pass
+    return None
 
 
 # ---------- materialidade + anti-spam ----------
@@ -190,11 +256,12 @@ def materiality(cand, d, atr):
     # mtf_align+svp_htf eram agreement de regime a decapitar reversões). Prereg E1_E2_DEBIAS_20260718.
     score, brk = confluence_score(d, cand["direction"], cand["tf"])
     m["confluence"] = score; m["confluence_breakdown"] = brk
-    # GATE NEUTRO agnóstico à direção: atividade de order-flow na perna (mede atividade, não lado).
+    # act_dens: DESCRITIVO desde 2026-07-26 (pacote Cris) — a auditoria provou zero separação
+    # (TP-rate 19% com vs 16% sem). Continua medido como voz p/ o read; deixou de matar candidatos.
     act = fnum((d["axes"].get("confluence") or {}).get("15", {}).get("act_dens"))
     m["act_dens"] = act
     m["act_ok"] = act is not None and act >= ACT_DENS_FLOOR
-    m["pass"] = bool(m["min_rr_ok"] and sl_ok and m["act_ok"])
+    m["pass"] = bool(m["min_rr_ok"] and sl_ok)
     return m
 
 
@@ -202,24 +269,24 @@ def cand_hash(c):
     return hashlib.md5(f"{c['rule']}{c['tf']}{c['direction']}{round(c['entry'])}{round(c['sl'])}".encode()).hexdigest()[:12]
 
 
-def anti_spam(cand, state, bar_time):
-    # 2026-07-26: removido o desvio "dedup destino-consciente" (dependia do veto session_vacuum,
-    # RETIRADO do sistema por ordem do Cris — sessão nunca mais decide destino de candidato).
-    h = cand_hash(cand); key = f"{cand['rule']}:{cand['tf']}:{cand['direction']}"
-    last_cd = state.get("cooldown", {}).get(key)
-    if last_cd and bar_time and (bar_time - last_cd) < COOLDOWN_BARS * BAR_S:
-        return "cooldown"
-    last_dd = state.get("dedup", {}).get(h)
-    dd_t = last_dd.get("t") if isinstance(last_dd, dict) else last_dd   # compat estado antigo (int)
-    if dd_t and bar_time and (bar_time - dd_t) < DEDUP_BARS * BAR_S:
-        return "dedup"
-    # COLAPSO NEUTRO (2026-07-18): 1 admissão por (hora, direção, nível~) — agnóstico à regra, colapsa
-    # zone_reject+sweep_reclaim no mesmo nível/direção que cooldown/dedup (por-regra) deixam passar.
-    ck = f"{(bar_time or 0)//COLLAPSE_S}:{cand['direction']}:{round(cand.get('entry') or 0)}"
-    last_col = state.get("collapse", {}).get(ck)
-    if last_col and bar_time and (bar_time - last_col) < COLLAPSE_S:
-        return "collapse"
-    return None
+ZONE_SPAM_S = 4 * 3600       # renovação temporal da mesma zona
+ZONE_KEY_PTS = 5             # granularidade da zona p/ anti-spam
+
+
+def anti_spam(cand, state, bar_time, conf=None):
+    """ANTI-SPAM POR ZONA (PACOTE 2026-07-26, Cris — substitui cooldown/dedup por regra cega que sufocou a
+    demanda de 20/07: conf 4-5 PASS suprimidos hora após hora). Chave = (direção, zona ~5pts). Admite se:
+    1º toque na zona · OU o re-teste vem com confluência MAIOR que o máximo anterior da zona (o re-teste que
+    aguenta FORTALECE — leitura do Cris) · OU passaram >=4h. Caso contrário suprime ('zone')."""
+    if not bar_time: return None
+    zk = f"{cand['direction']}:{round((cand.get('entry') or 0) / ZONE_KEY_PTS) * ZONE_KEY_PTS}"
+    zs = (state.setdefault("zones", {})).get(zk)
+    c = conf if conf is not None else 0
+    if zs is None or (bar_time - zs.get("t", 0)) >= ZONE_SPAM_S or c > zs.get("maxconf", -1):
+        state["zones"][zk] = {"t": bar_time, "maxconf": max(c, (zs or {}).get("maxconf", 0))}
+        return None
+    zs["maxconf"] = max(zs.get("maxconf", 0), c)
+    return "zone"
 
 
 # ---------- ciclo ----------
@@ -246,7 +313,7 @@ def run_once(state):
     for c in raw:
         atr = atr_of((d["axes"]["mtf"].get(c["tf"], {}) or {}).get("leg") or {})
         c["materiality"] = materiality(c, d, atr)
-        sup = anti_spam(c, state, bar_t)
+        sup = anti_spam(c, state, bar_t, conf=c["materiality"].get("confluence"))
         c["suppressed"] = sup
         c["id"] = f"e1_{d['_meta']['cycle_ts']}_{c['rule']}_{c['tf']}_{c['direction']}"
         c["ts"] = now_iso(); c["bar_time"] = bar_t

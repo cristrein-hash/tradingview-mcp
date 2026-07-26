@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""E2 — QUALITY READER (Camada 2, P5). SHADOW: 0 Telegram. Consome candidatos MATERIAIS do E1
-(logs/e1_candidates.jsonl, por byte-offset).
+"""E2 — QUALITY READER (Camada 2, P5). LIVE desde 2026-07-26 (ordem Cris): candidato SURFACED emite
+alerta Telegram advisory (hard-lock E2_PRODUCTION_AUTHORIZED=1 no wrapper). Consome candidatos MATERIAIS
+do E1 (logs/e1_candidates.jsonl, por byte-offset). FRAME-EXPLÍCITO: perna 1H no topo do briefing.
 
 PARADIGMA (redesign 2026-07-17): as camadas NÃO criam confluências mecânicas — CONVERGEM numa visão ampla.
   1) GATE determinístico (binário-causal DURO, 0 tokens): 2 vetos de HIGIENE — bad_rr, stale.
@@ -100,10 +101,55 @@ READ_VERSION = "r1-convergence-opus"
 READ_ENABLED = os.environ.get("E2_READ_ENABLED", "1") == "1"
 READ_TIMEOUT = int(os.environ.get("E2_READ_TIMEOUT", "300"))
 
+# ---------- LIVE (Cris 2026-07-26: "VAMOS ACIONAR O E2 SEM SHADOW, EM LIVE") ----------
+# Hard-lock padrão do stack: envio real exige E2_PRODUCTION_AUTHORIZED=1 (exportado no wrapper launchd).
+E2_LIVE = os.environ.get("E2_PRODUCTION_AUTHORIZED", "") == "1"
+
+
+def _tg_send(text):
+    """Envio Telegram advisory (NUNCA ordem). Credenciais alert-bridge/.env; loop por TODOS os chat_ids."""
+    try:
+        env = {}
+        for line in (BASE / ".env").read_text().splitlines():
+            if "=" in line and not line.strip().startswith("#"):
+                k, _, v = line.partition("="); env[k.strip()] = v.strip()
+        tok = env.get("TELEGRAM_BOT_TOKEN"); chats = env.get("TELEGRAM_CHAT_ID", "")
+        if not tok or not chats: return False
+        from urllib.parse import urlencode
+        from urllib.request import Request, urlopen
+        ok = False
+        for cid in [c.strip() for c in chats.split(",") if c.strip()]:
+            data = urlencode({"chat_id": cid, "text": text}).encode()
+            with urlopen(Request(f"https://api.telegram.org/bot{tok}/sendMessage", data=data), timeout=15) as r:
+                ok = ok or (r.status == 200)
+        return ok
+    except Exception as e:
+        print(f"{now_iso()} [tg-erro] {type(e).__name__}:{str(e)[:60]}", flush=True)
+        return False
+
+
+def notify_surfaced(cand, th):
+    """Alerta LIVE de candidato surfaced (contexto converge no lado do candidato). Advisory curto."""
+    if not E2_LIVE: return
+    txt = (f"🧠 E2 {cand.get('direction')} XAUUSD {cand.get('rule')}@{cand.get('tf')}\n"
+           f"entry {cand.get('entry')} · SL {cand.get('sl')} · alvo {cand.get('target')} (RR {cand.get('rr')})\n"
+           f"convergência {th.get('convergence')} · convicção {th.get('conviction')}\n"
+           f"tese: {th.get('thesis')}\n"
+           f"invalida se: {th.get('invalidation')}\n"
+           f"(advisory — a decisão é tua, revê o chart)")
+    _tg_send(txt)
+
 READ_SYS = (
     "És um trader XAUUSD discricionário EXPERIENTE a ler a fita COMPLETA de um candidato de trade já "
-    "pré-filtrado por gates causais duros (R:R, perseguição, sessão morta, frescura do dossiê). NÃO és um "
-    "refutador nem um comité — és UM olhar a ler o TODO.\n"
+    "pré-filtrado por gates de higiene (R:R, frescura do dossiê). NÃO és um refutador nem um comité — és UM "
+    "olhar a ler o TODO.\n"
+    "FRAME (2026-07-26, regra do trader): o briefing abre com o FRAME — a PERNA 1H viva e a regra de zonas. "
+    "O frame é o ENQUADRAMENTO contra o qual lês todas as outras vozes: não é mais um número no meio, e "
+    "também não é veto — é a gramática. Com-perna nas zonas a favor = continuação (o caso-base). "
+    "Supply/demand de 15M/1H CONTRA a perna = marcador de pullback, não reversão. Reversão contra a perna "
+    "só é candidata a alta probabilidade em supply/demand de 4H/1D COM confluências de exaustão. O grau "
+    "emerge da leitura do todo: com-perna sozinho = enquadramento (grau médio); com-perna + as outras vozes "
+    "a encadearem na mesma história = alta convicção. Nunca por contagem.\n"
     "A tua tarefa: julgar se as leituras (estrutura MTF 1D→15M, micro, auction/bubbles, macro, zonas HTF) "
     "CONVERGEM numa história coerente de ALTA PROBABILIDADE — ou não. Convergência NÃO é 'nenhuma leitura "
     "objeta'; convergência = as leituras APONTAM PARA O MESMO LADO e encadeiam uma causa (ex.: fundo de perna "
@@ -154,15 +200,46 @@ def _sw(s):
     return f"{fmt(s.get('price'))}@bar{s.get('bar')}(conf{s.get('confirm_bar')})"
 
 
+def _frame_leg(ax):
+    """PERNA 1H p/ o FRAME — CONSOME o leitor aprovado do price-shock (_leg_1h, Cris 2026-07-24: pivô 1H
+    mais recente confirmado pelo reclaim/perda das EMAs; discórdia = mantém dominante). Fallback local
+    fiel se o import falhar (mesma lógica, nunca outra)."""
+    try:
+        sys.path.insert(0, str(REPO / "my-strategy" / "core" / "price_shock"))
+        from price_shock_cycle import _leg_1h
+        return _leg_1h(ax)
+    except Exception:
+        m = (ax.get("mtf") or {}).get("60") or {}
+        sw = m.get("swings") or {}
+        lh = (sw.get("last_high") or {}).get("confirm_bar"); ll = (sw.get("last_low") or {}).get("confirm_bar")
+        ema = ((ax.get("micro_15m") or {}).get("ema") or {}).get("pos")
+        if lh is None or ll is None: return "RANGE", "sem swings 1H"
+        pb = "up" if ll > lh else "down"
+        ec = "up" if ema == "above" else ("down" if ema == "below" else None)
+        if pb == "up" and ec == "up": return "BULL", "pivô-low + reclaim EMAs"
+        if pb == "down" and ec == "down": return "BEAR", "pivô-high + perda EMAs"
+        ld = (m.get("leg") or {}).get("dir")
+        return ("BEAR", "dominante down") if ld == "down" else (("BULL", "dominante up") if ld == "up" else ("RANGE", "indefinido"))
+
+
 def render_composite(dsr, cand):
     """Serializa o dossiê E0 INTEIRO como briefing rotulado top-down (NÃO json cru, NÃO migalha).
-    O read lê isto como um trader lê a fita, secção a secção."""
+    O read lê isto como um trader lê a fita, secção a secção. FRAME-EXPLÍCITO no topo (Cris 2026-07-25/26):
+    a perna 1H é o enquadramento de 1ª classe; as outras vozes leem-se CONTRA ela; grau = convergência."""
     ax = dsr.get("axes", {}); mtf = ax.get("mtf", {}) or {}
     micro = ax.get("micro_15m", {}) or {}; macro = ax.get("macro", {}) or {}
     conf = (ax.get("confluence") or {}).get("15", {}) or {}
     L = []
     d = cand.get("direction"); m = cand.get("materiality", {}) or {}
-    L.append(f"# CANDIDATO: {d} {cand.get('rule')} @TF{cand.get('tf')}")
+    leg, why = _frame_leg(ax)
+    fav, pull = ("demandas", "supplies") if leg == "BULL" else (("supplies", "demandas") if leg == "BEAR" else ("—", "—"))
+    L.append(f"# FRAME (lê TUDO contra isto): PERNA 1H = {leg} ({why})")
+    if leg in ("BULL", "BEAR"):
+        L.append(f"  regra das zonas: com-perna → {fav} = continuação (caso-base) · {pull} de 15M/1H contra-perna "
+                 f"= pullback, NÃO reversão · reversão contra a perna SÓ em supply/demand 4H/1D com confluências de exaustão.")
+    else:
+        L.append("  perna indefinida (RANGE): sem caso-base direcional — exige convergência clara num dos lados.")
+    L.append(f"\n# CANDIDATO: {d} {cand.get('rule')} @TF{cand.get('tf')}")
     L.append(f"  entry {fmt(cand.get('entry'))} | SL {fmt(cand.get('sl'))} | alvo {fmt(cand.get('target'))} "
              f"| R:R {fmt(cand.get('rr'),1)} | SL {fmt(m.get('sl_atr'),1)}×ATR | regime HTF {regime(dsr)}")
     L.append(f"  (o E1 disparou por: confluência {m.get('confluence')} {m.get('confluence_breakdown', {})})")
@@ -543,7 +620,8 @@ def main_loop():
     PIDFILE.write_text(str(os.getpid()))
     try: offset = json.loads(OFFSET_F.read_text()).get("offset", 0)
     except Exception: offset = 0
-    print(f"[e2_quality] ativo | GATE higiene bad_rr+stale (0 tokens) + READ {READ_MODEL if READ_ENABLED else 'OFF'} | shadow", flush=True)
+    print(f"[e2_quality] ativo | GATE higiene bad_rr+stale + FRAME perna-1H + READ "
+          f"{READ_MODEL if READ_ENABLED else 'OFF'} | {'LIVE Telegram' if E2_LIVE else 'em validação (0 Telegram)'}", flush=True)
     retry_q = []   # [(cand, tentativas)] — leituras 'claude is_error' re-tentadas enquanto frescas (Cris 2026-07-17)
     try:
         while True:
@@ -563,6 +641,7 @@ def main_loop():
                                 if th.get("error") and att < 2:
                                     retry_q.append((c, att + 1)); continue
                                 v["read"] = th; v["surfaced"] = surfaced(th, c)
+                                if v["surfaced"] and not th.get("error"): notify_surfaced(c, th)
                                 archive_read(c, dsr_r, image, th, dc, f"live-retry{att}")
                                 print(f"{now_iso()} [retry{att}|{'ERR' if th.get('error') else 'ok'}|surf {v['surfaced']}] "
                                       f"{v['direction']}/{v['rule']}/{v['tf']}", flush=True)
@@ -584,6 +663,7 @@ def main_loop():
                                 image = render_composite(dsr, c)
                                 th = run_read(c, dsr)
                                 v["read"] = th; v["surfaced"] = surfaced(th, c)
+                                if v["surfaced"] and not th.get("error"): notify_surfaced(c, th)
                                 archive_read(c, dsr, image, th, dc, "live")
                                 if th.get("error"):
                                     retry_q.append((c, 1))   # re-tenta no próximo ciclo enquanto fresco
