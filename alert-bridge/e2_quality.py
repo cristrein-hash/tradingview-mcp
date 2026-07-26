@@ -290,8 +290,21 @@ def _read_sdk(prompt, model=None):
 
 
 def run_read(cand, dsr, timeout=None, model=None):
-    """UMA leitura contextual (Opus). Devolve a tese verbatim ou {"error":...}. Não agrega, não pontua.
-    Via: E2_READ_VIA=sdk (Anthropic SDK, requer API key) | default cli (claude -p, sessão Max)."""
+    """UMA leitura contextual (Opus) com RETRY (Cris 2026-07-24: 4 reads do dia-1 falharam por
+    'claude is_error' transitório e escreveram branco). 3 tentativas com backoff; só devolve erro se todas
+    falharem. Não agrega, não pontua."""
+    last = {"error": "read não corrido"}
+    for attempt in range(3):
+        v = _read_once(cand, dsr, timeout, model)
+        if isinstance(v, dict) and not v.get("error"):
+            return v
+        last = v
+        time.sleep(2 * (attempt + 1))          # backoff p/ erro transitório do SDK/CLI
+    return last
+
+
+def _read_once(cand, dsr, timeout=None, model=None):
+    """Uma tentativa de leitura. Via: E2_READ_VIA=sdk (Anthropic SDK) | default cli (claude -p, sessão Max)."""
     import subprocess
     image = render_composite(dsr, cand)
     prompt = image + SCHEMA_HINT
