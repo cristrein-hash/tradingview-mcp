@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-"""ESCALADA DE NEWS UNIFICADA (Telegram) — passo da news lane. Escala UMA vez a headline breaking mais
-fresca de fontes de news BREAKING de BAIXO VOLUME (Finnhub Reuters-tier / InvestingLive) + release de
-calendário just-out. Dedup por id, cooldown ≥10min. EXCLUI price_shock/GLD (auto-alertam pelos seus daemons).
-🚫 GEOPOLÍTICO (GDELT) FORA do Telegram desde 2026-07-19 (ordem Cris): guerra em curso (Irão/Israel) produz
-SEMPRE headlines TOP-tier frescas → inundava (10/10 dos pings eram geopolíticos). Coerente com a doutrina do
-news_gate: guerra-em-curso/oil-shock = CONTEXTO persistente, NÃO breaking. O GDELT continua a alimentar o
-news_gate/E2 como contexto; um choque geopolítico REAL move o preço → o price-shock daemon dispara (price-first).
-Só envia se NEWS_ALERTS_AUTHORIZED=1 (senão DRY-RUN). Reusa o merge do news_gate p/ o advisory. py3.9."""
+"""ESCALADA DE NEWS (Telegram) — SÓ CALENDÁRIO ECONÓMICO DE ALTO IMPACTO (ordem Cris 2026-07-27).
+Alerta apenas o release just-out do ff_calendar (o news_gate já filtra impact=HIGH US). TODAS as headlines
+(Finnhub / InvestingLive / GDELT / guerra / geopolítica) FICARAM FORA do Telegram: continuam recolhidas
+pelos collectors e a alimentar o news_gate/E0 como CONTEXTO (o read do E2 pesa-as), mas não alertam —
+um choque REAL move o preço e o price-shock daemon dispara (price-first). Dedup por id, cooldown ≥10min.
+Só envia se NEWS_ALERTS_AUTHORIZED=1 (senão DRY-RUN). Reusa o merge do news_gate p/ o advisory. py3.9.
+[histórico: GDELT fora desde 2026-07-19; Finnhub/InvestingLive fora desde 2026-07-27]"""
 import json, os, sys, datetime as dt
 from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent.parent
@@ -14,9 +13,6 @@ SNAP = REPO / "external_factors_v2" / "snapshots"
 STATE = SNAP / "news_alert_state.json"
 COOLDOWN_S = 600
 NOWT = int(dt.datetime.now(dt.timezone.utc).timestamp())
-# fontes BREAKING de baixo volume que escalam ao Telegram (NÃO price_shock=auto-alerta · NÃO geopolítico=contexto)
-NEWS_SNAPS = [("Finnhub", SNAP / "finnhub_news.json"),
-              ("InvestingLive", SNAP / "investinglive_news.json")]
 
 
 def _load(p):
@@ -34,17 +30,9 @@ def save_state(s):
 
 
 def gather_breaking():
-    """Recolhe (fonte, item) de cada snapshot cujo gate.escalate=True + release de calendário just-out."""
+    """SÓ calendário económico alto-impacto just-released (via merge do news_gate; ff_calendar já filtra
+    impact=HIGH). Headlines de qualquer fonte NÃO entram aqui (contexto no news_gate/E0, sem Telegram)."""
     cands = []
-    for name, path in NEWS_SNAPS:
-        d = _load(path)
-        if not d or not (d.get("gate") or {}).get("escalate"):
-            continue
-        items = d.get("items", []) or []
-        top = next((i for i in items if i.get("urgency") == "high"), items[0] if items else None)
-        if top:
-            cands.append((name, top))
-    # calendário just-released (via merge do news_gate)
     try:
         sys.path.insert(0, str(REPO / "alert-bridge"))
         from news_gate import read_gate
@@ -93,7 +81,7 @@ def classify_xau_bias(text):
 def build_msg(name, top, advisory):
     bias = classify_xau_bias(f"{top.get('title') or ''} {' '.join(top.get('keywords', []) or [])}")
     return (f"{bias}\n"
-            "📰⚠️ <b>NEWS ALTO IMPACTO — XAUUSD</b>\n\n"
+            "📅⚠️ <b>CALENDÁRIO ALTO IMPACTO — XAUUSD</b>\n\n"
             f"[{name}] \"{(top.get('title') or '')[:130]}\"\n"
             f"({', '.join(top.get('keywords', []) or [])} · -{top.get('age_min')}m)\n\n"
             f"Contexto: {advisory[:180]}\n"
