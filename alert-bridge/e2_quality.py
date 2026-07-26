@@ -543,7 +543,7 @@ def main_loop():
     PIDFILE.write_text(str(os.getpid()))
     try: offset = json.loads(OFFSET_F.read_text()).get("offset", 0)
     except Exception: offset = 0
-    print(f"[e2_quality] ativo | GATE 4-vetos (0 tokens) + READ {READ_MODEL if READ_ENABLED else 'OFF'} | shadow", flush=True)
+    print(f"[e2_quality] ativo | GATE higiene bad_rr+stale (0 tokens) + READ {READ_MODEL if READ_ENABLED else 'OFF'} | shadow", flush=True)
     retry_q = []   # [(cand, tentativas)] — leituras 'claude is_error' re-tentadas enquanto frescas (Cris 2026-07-17)
     try:
         while True:
