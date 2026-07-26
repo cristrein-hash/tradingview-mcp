@@ -3,9 +3,9 @@
 (logs/e1_candidates.jsonl, por byte-offset).
 
 PARADIGMA (redesign 2026-07-17): as camadas NÃO criam confluências mecânicas — CONVERGEM numa visão ampla.
-  1) GATE determinístico (binário-causal DURO, 0 tokens): 3 vetos — bad_rr, chase, stale. session_vacuum
-     é OBSERVACIONAL desde 2026-07-17 (regista, não descarta) até o mapa forward sessão×hora (e2_outcome_
-     backfill) dar base real para vetos horários (ordem Cris).
+  1) GATE determinístico (binário-causal DURO, 0 tokens): 2 vetos de HIGIENE — bad_rr, stale.
+     session_vacuum e chase foram REMOVIDOS do sistema (ordem Cris 2026-07-26): sessão e frescura são
+     contexto que o READ pesa, nunca morte automática (a auditoria provou que matavam winners).
   2) READ contextual único (Opus, 1 chamada/candidato-sobrevivente): recebe a IMAGEM COMPOSTA COMPLETA
      (dossiê E0 inteiro renderizado como briefing) e julga se as leituras CONVERGEM numa tese de alta
      probabilidade — com raciocínio. NÃO é refutador, NÃO conta kills, NÃO pontua. Tese guardada VERBATIM.
@@ -32,10 +32,8 @@ PAUSE_LOCAL = LOGS / "monitor.pause"
 PAUSE_GLOBAL = Path("/tmp/claude_recheck.paused")
 FLOOR_S = 20
 
-# GATE determinístico (só binário-causal duro). MIN_RR/MAX_CHASE = PRINCÍPIO (definição), não fit ao dia.
-from config_stack import DEAD_SESSIONS as _DEAD
-CFG = {"MIN_RR_E2": 2.0, "MAX_CHASE_ATR": 1.5, "DEAD_SESSIONS": _DEAD,
-       "DRIFT_MAX_CYCLES": 2, "CYCLE_S": 60}
+# GATE determinístico (só binário-causal duro). MIN_RR = PRINCÍPIO (definição), não fit ao dia.
+CFG = {"MIN_RR_E2": 2.0, "DRIFT_MAX_CYCLES": 2, "CYCLE_S": 60}
 
 
 def now_iso(): return dt.datetime.now(dt.timezone.utc).isoformat()
@@ -48,14 +46,6 @@ def fmt(x, nd=2):
 
 
 # ---------- helpers de dossiê ----------
-def catalyst(dsr):
-    ng = (dsr["axes"].get("macro") or {}).get("news_gate", {}) or {}
-    imm = (dsr["axes"].get("macro") or {}).get("imminent_events", []) or []
-    ff = fnum(ng.get("ff_event_le_min"))
-    return bool(ng.get("high_impact_now") or (ff is not None and ff <= 30)
-               or any((fnum(e.get("hours_until")) or 99) <= 1 for e in imm))
-
-
 def regime(dsr):
     mtf = dsr["axes"].get("mtf", {})
     ts = [mtf.get(t, {}).get("trend") for t in ("1D", "240")]
@@ -70,33 +60,16 @@ def atr_of(leg):
     except Exception: return None
 
 
-# ---------- GATE: 4 vetos duros (binário-causal, puros) ----------
-def veto_session_vacuum(cand, dsr):
-    """OBSERVACIONAL desde 2026-07-17 (ordem Cris): o mapa de sessões era grosseiro (dead_zone 01-11 UTC
-    matava toda a manhã europeia — caso do short válido 07:14 Lisboa). NÃO veta nada até o mapa FORWARD
-    (e2_outcome_backfill, sessão×hora×outcome) dar base real para validar vetos a horários específicos.
-    Continua registado (fired/value) em vetos_all para alimentar exatamente esse mapa."""
-    ng = (dsr["axes"].get("macro") or {}).get("news_gate", {}) or {}
-    sess = ng.get("session"); cat = catalyst(dsr)
-    fired = (sess in CFG["DEAD_SESSIONS"]) and not cat
-    return {"name": "session_vacuum", "hard": False, "fired": fired, "value": sess,
-            "reason": f"vácuo: sessão {sess} sem catalisador (observacional)" if fired else ""}
-
-
+# ---------- GATE: 2 vetos duros de higiene (binário-causal, puros) ----------
+# session_vacuum e chase REMOVIDOS DO SISTEMA (ordem Cris 2026-07-26): blocks primitivos que matavam
+# winners (auditoria semana 16-24/07: vacuum matou 4, chase matou 1). Sessão e frescura da entrada são
+# CONTEXTO que o READ pesa na imagem composta — nunca morte automática.
 def veto_bad_rr(cand, dsr):
     # RR-only: target 3R = runway limpo = POSITIVO. Só veta RR realmente pequeno (alvo perto demais).
     rr = fnum(cand.get("rr"))
     fired = rr is None or rr < CFG["MIN_RR_E2"]
     return {"name": "bad_rr", "hard": True, "fired": fired, "value": rr,
             "reason": f"RR {rr} < {CFG['MIN_RR_E2']} (alvo perto demais)" if fired else ""}
-
-
-def veto_chase(cand, dsr):
-    sl_atr = fnum(cand.get("materiality", {}).get("sl_atr"))
-    chase = (sl_atr - 0.1) if sl_atr is not None else None
-    fired = chase is not None and chase > CFG["MAX_CHASE_ATR"]
-    return {"name": "chase", "hard": True, "fired": fired, "value": round(chase, 2) if chase is not None else None,
-            "reason": f"entry a {round(chase,2)}×ATR do nível (perseguição)" if fired else ""}
 
 
 def veto_stale(cand, dsr, drift_c):
@@ -112,10 +85,9 @@ def veto_stale(cand, dsr, drift_c):
 
 
 def evaluate_vetos(cand, dsr, drift_c):
-    """GATE binário-causal duro. no_catalyst e counter_regime_no_exhaustion SAÍRAM do gate (2026-07-17):
-    eram juízo contextual (pesavam leituras) — agora vivem no READ, não em aritmética de vetos."""
-    vs = [veto_session_vacuum(cand, dsr), veto_bad_rr(cand, dsr), veto_chase(cand, dsr),
-          veto_stale(cand, dsr, drift_c)]
+    """GATE binário-causal duro = SÓ HIGIENE: bad_rr (geometria) + stale (dados podres). Todo juízo
+    contextual (sessão, frescura/chase, catalisador, contra-regime) vive no READ, não em vetos."""
+    vs = [veto_bad_rr(cand, dsr), veto_stale(cand, dsr, drift_c)]
     hard = [v for v in vs if v["fired"] and v["hard"]]
     grade = "discard" if hard else "survivor"
     return grade, vs, hard, []
@@ -486,7 +458,8 @@ def cli_anchors():
                 if grade == "survivor": a_pass = True
         prev = dsr
     print(f"ANCHOR A (short-de-hoje sobrevive o GATE): {'PASS' if a_pass else 'FALHA'}")
-    # ANCORA B: SL de hoje (LONG Ásia-morta) -> vetado por session_vacuum (contra-regime agora vive no READ)
+    # ANCORA B (2026-07-26): candidato de sessão morta sobrevive o gate LIMPO — session_vacuum e chase
+    # foram REMOVIDOS do sistema; nenhum registo deles pode existir nos vetos.
     b = {"direction": "LONG", "rule": "ema_reclaim", "tf": "15", "entry": 4035.3, "sl": 4027.0,
          "target": 4051.9, "rr": 2.0, "materiality": {"sl_atr": 1.0, "confluence": 3}}
     bd = {"_meta": {"cycle_ts": 1}, "source_health": {"mtf": {"status": "fresh"}, "micro_15m": {"status": "fresh"}, "macro": {"status": "fresh"}},
@@ -495,9 +468,9 @@ def cli_anchors():
                    "macro": {"risk_level": "normal", "imminent_events": [], "news_gate": {"session": "dead_zone", "high_impact_now": False, "ff_event_le_min": None}}}}
     grade, vs, hard, soft = evaluate_vetos(b, bd, 0)
     fired = [v["name"] for v in vs if v["fired"]]
-    # 2026-07-17: vacuum OBSERVACIONAL — âncora B passa a: sobrevive o gate MAS vacuum fica REGISTADO
-    b_pass = grade == "survivor" and "session_vacuum" in fired
-    print(f"ANCHOR B (SL-Ásia-morta: sobrevive c/ vacuum registado): {'PASS' if b_pass else 'FALHA'} (grade {grade}, fired {fired})")
+    names = [v["name"] for v in vs]
+    b_pass = grade == "survivor" and "session_vacuum" not in names and "chase" not in names
+    print(f"ANCHOR B (sessão-morta sobrevive gate limpo, sem vacuum/chase no sistema): {'PASS' if b_pass else 'FALHA'} (grade {grade}, fired {fired})")
     ok = a_pass and b_pass
     print("ÂNCORAS:", "PASS" if ok else "FALHA")
     return 0 if ok else 1
@@ -511,16 +484,17 @@ def cli_selftest():
     cand = {"direction": "LONG", "rule": "ema_reclaim", "tf": "15", "rr": 3.0, "materiality": {"sl_atr": 1.0, "confluence": 4}}
     r = []
     dv = json.loads(json.dumps(base_d)); dv["axes"]["macro"]["news_gate"]["session"] = "dead_zone"
-    r.append(("session_vacuum fire", veto_session_vacuum(cand, dv)["fired"] is True))
-    r.append(("session_vacuum no-fire(ny)", veto_session_vacuum(cand, base_d)["fired"] is False))
     r.append(("bad_rr fire(rr1)", veto_bad_rr({**cand, "rr": 1.0}, base_d)["fired"] is True))
     r.append(("bad_rr no-fire(rr3)", veto_bad_rr(cand, base_d)["fired"] is False))
-    r.append(("chase fire", veto_chase({**cand, "materiality": {"sl_atr": 2.0}}, base_d)["fired"] is True))
     ds = json.loads(json.dumps(base_d)); ds["source_health"]["mtf"]["status"] = "stale"
     r.append(("stale fire", veto_stale(cand, ds, 0)["fired"] is True))
-    r.append(("GATE 4-vetos survivor(limpo)", evaluate_vetos(cand, base_d, 0)[0] == "survivor"))
-    # session_vacuum é OBSERVACIONAL (2026-07-17): dead_zone regista mas NÃO descarta (mapa forward decide)
-    r.append(("GATE survivor(dead_zone, vacuum observacional)", evaluate_vetos(cand, dv, 0)[0] == "survivor"))
+    r.append(("GATE 2-vetos survivor(limpo)", evaluate_vetos(cand, base_d, 0)[0] == "survivor"))
+    # 2026-07-26: session_vacuum e chase REMOVIDOS — sessão morta e SL largo passam o gate (juízo = READ)
+    r.append(("GATE survivor(dead_zone, sem vacuum no sistema)", evaluate_vetos(cand, dv, 0)[0] == "survivor"))
+    r.append(("GATE survivor(sl_atr 2.0, sem chase no sistema)",
+              evaluate_vetos({**cand, "materiality": {"sl_atr": 2.0, "confluence": 4}}, base_d, 0)[0] == "survivor"))
+    vetonames = [v["name"] for v in evaluate_vetos(cand, base_d, 0)[1]]
+    r.append(("vetos = só bad_rr+stale", vetonames == ["bad_rr", "stale_dossier"]))
     # renderer não rebenta com dossiê real nem mínimo
     try:
         _ = render_composite(base_d, cand); _ = render_composite(load_dossier() or base_d, cand)

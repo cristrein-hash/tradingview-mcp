@@ -202,23 +202,9 @@ def cand_hash(c):
     return hashlib.md5(f"{c['rule']}{c['tf']}{c['direction']}{round(c['entry'])}{round(c['sl'])}".encode()).hexdigest()[:12]
 
 
-from config_stack import DEAD_SESSIONS as DEAD_SESSIONS_E2   # fonte única (config_stack, Fase 4)
-
-
-def _verdict_veto_of(cand_id):
-    """Veto do gate E2 para um candidato emitido (lê a cauda de e2_verdicts). None se não encontrado."""
-    try:
-        lines = (LOGS / "e2_verdicts.jsonl").read_text().splitlines()[-300:]
-        for l in reversed(lines):
-            r = json.loads(l)
-            if r.get("candidate_id") == cand_id:
-                return r.get("veto")
-    except Exception:
-        pass
-    return None
-
-
-def anti_spam(cand, state, bar_time, sess=None):
+def anti_spam(cand, state, bar_time):
+    # 2026-07-26: removido o desvio "dedup destino-consciente" (dependia do veto session_vacuum,
+    # RETIRADO do sistema por ordem do Cris — sessão nunca mais decide destino de candidato).
     h = cand_hash(cand); key = f"{cand['rule']}:{cand['tf']}:{cand['direction']}"
     last_cd = state.get("cooldown", {}).get(key)
     if last_cd and bar_time and (bar_time - last_cd) < COOLDOWN_BARS * BAR_S:
@@ -226,11 +212,6 @@ def anti_spam(cand, state, bar_time, sess=None):
     last_dd = state.get("dedup", {}).get(h)
     dd_t = last_dd.get("t") if isinstance(last_dd, dict) else last_dd   # compat estado antigo (int)
     if dd_t and bar_time and (bar_time - dd_t) < DEDUP_BARS * BAR_S:
-        # dedup CONSCIENTE DO DESTINO (Cris 2026-07-17): se o original foi gate-vetoado por
-        # session_vacuum e a sessão ATUAL já não é morta, o re-trigger merece re-avaliação.
-        if (isinstance(last_dd, dict) and sess and sess not in DEAD_SESSIONS_E2
-                and _verdict_veto_of(last_dd.get("id")) == "session_vacuum"):
-            return None
         return "dedup"
     # COLAPSO NEUTRO (2026-07-18): 1 admissão por (hora, direção, nível~) — agnóstico à regra, colapsa
     # zone_reject+sweep_reclaim no mesmo nível/direção que cooldown/dedup (por-regra) deixam passar.
@@ -265,8 +246,7 @@ def run_once(state):
     for c in raw:
         atr = atr_of((d["axes"]["mtf"].get(c["tf"], {}) or {}).get("leg") or {})
         c["materiality"] = materiality(c, d, atr)
-        sess_now = (d["axes"]["macro"].get("news_gate") or {}).get("session")
-        sup = anti_spam(c, state, bar_t, sess_now)
+        sup = anti_spam(c, state, bar_t)
         c["suppressed"] = sup
         c["id"] = f"e1_{d['_meta']['cycle_ts']}_{c['rule']}_{c['tf']}_{c['direction']}"
         c["ts"] = now_iso(); c["bar_time"] = bar_t

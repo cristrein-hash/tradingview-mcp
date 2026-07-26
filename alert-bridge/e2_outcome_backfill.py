@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """E2 OUTCOME BACKFILL — resolução CONTRAFACTUAL de TODOS os candidatos materiais (survivors E vetados)
-para construir o mapa forward sessão×hora×outcome (ordem Cris 2026-07-17: nenhum veto horário sem base
-real; session_vacuum ficou observacional até este mapa decidir). Lê e2_verdicts.jsonl (levels entry/sl/
-target), resolve first-touch TP-vs-SL nas barras 15M do buffer Cp (10 dias retenção), escreve
-logs/e2_outcomes.jsonl (idempotente por candidate_id; OPEN re-tentado em corridas futuras).
-Uso: python3 e2_outcome_backfill.py [--map]   (--map imprime o painel sessão×hora acumulado)
+para o painel forward hora×outcome. session_vacuum e chase foram REMOVIDOS do sistema (ordem Cris
+2026-07-26) — o painel por hora Lisboa continua como leitura observacional, nunca gera veto. Lê
+e2_verdicts.jsonl (levels entry/sl/target), resolve first-touch TP-vs-SL nas barras 15M do buffer Cp
+(10 dias retenção), escreve logs/e2_outcomes.jsonl (idempotente por candidate_id; OPEN re-tentado).
+Uso: python3 e2_outcome_backfill.py [--map]   (--map imprime o painel por hora acumulado)
 Horas humanas em Lisboa (feedback_timezone_lisboa_always). py3.9 stdlib."""
 import sys, json, bisect, datetime as dt
 from pathlib import Path
@@ -45,13 +45,6 @@ def resolve(direction, entry, sl, tgt, bar_time, T, H, L):
     return ("EXPIRED", HORIZON) if len(T) - i0 >= HORIZON else ("OPEN", None)
 
 
-def sess_of(v):
-    for x in (v.get("vetos_all") or []):
-        if x.get("name") == "session_vacuum":
-            return x.get("value")
-    return None
-
-
 def main():
     bars = _jl(BUF)
     if not bars:
@@ -78,7 +71,7 @@ def main():
             rec = {"candidate_id": cid, "ts": dt.datetime.now(dt.timezone.utc).isoformat(),
                    "outcome": oc, "bars_to": nb, "direction": v.get("direction"), "rule": v.get("rule"),
                    "tf": v.get("tf"), "grade": v.get("grade"), "veto": v.get("veto"),
-                   "session": sess_of(v), "hour_lx": lx.hour, "date_lx": lx.strftime("%Y-%m-%d"),
+                   "hour_lx": lx.hour, "date_lx": lx.strftime("%Y-%m-%d"),
                    "surfaced": v.get("surfaced"), "rr": lv.get("rr")}
             fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
             done[cid] = rec
@@ -86,15 +79,8 @@ def main():
     print(f"outcomes: {n_new} novos, {n_re} re-resolvidos · total {len(done)}")
     if "--map" in sys.argv:
         rows = [r for r in done.values() if r.get("outcome") in ("TP", "SL")]
-        print(f"\n=== MAPA sessão × outcome (decididos N={len(rows)}) ===")
         from collections import defaultdict
-        by = defaultdict(lambda: [0, 0])
-        for r in rows:
-            k = r.get("session") or "?"
-            by[k][0] += 1 if r["outcome"] == "TP" else 0; by[k][1] += 1
-        for k, (tp, n) in sorted(by.items()):
-            print(f"  {k:<15} TP {tp}/{n}  ({100*tp/max(1,n):.0f}%)")
-        print("=== por hora Lisboa ===")
+        print(f"\n=== MAPA por hora Lisboa (decididos N={len(rows)}, observacional — nunca veto) ===")
         byh = defaultdict(lambda: [0, 0])
         for r in rows:
             byh[r["hour_lx"]][0] += 1 if r["outcome"] == "TP" else 0; byh[r["hour_lx"]][1] += 1

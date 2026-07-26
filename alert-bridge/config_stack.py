@@ -7,9 +7,8 @@ from zoneinfo import ZoneInfo
 REPO = Path("/Users/cristrein/tradingview-mcp")
 STORE_DIR = REPO / "my-strategy/core/bar_store/store"
 
-# Sessões "mortas" do mapa ANTIGO de volatilidade. Desde 2026-07-17 NÃO vetam nada (session_vacuum
-# observacional) — servem só de rótulo até o mapa forward (e2_outcome_backfill --map) dar base real.
-DEAD_SESSIONS = {"dead_zone", "asia", "other"}
+# DEAD_SESSIONS removido 2026-07-26 (ordem Cris): session_vacuum retirado do sistema por completo —
+# sessão é contexto no read do E2, nunca rótulo de veto.
 
 # Timezone humano (feedback_timezone_lisboa_always): TODA hora mostrada a humanos = Lisboa.
 LX = ZoneInfo("Europe/Lisbon")
