@@ -100,7 +100,10 @@ def build_context(mtf, mtf_age, micro, macro, confluence=None, magnets=None, reg
             "micro_15m": _health(micro, 0, 120),
             "macro": _health(macro, 0, 3600),
             "confluence": _health((confluence or {}).get("15"), mtf_age, 1800),
-            "regime": {"v5_4h": (reg.get("v5_4h") or {}).get("status", "absent"),
+            # shape uniforme (2026-07-27): status agregado como os outros eixos + detalhe por voz
+            "regime": {"status": ("fresh" if all((reg.get(k) or {}).get("status") == "fresh"
+                                                 for k in ("v5_4h", "structural_1d")) else "degraded"),
+                       "v5_4h": (reg.get("v5_4h") or {}).get("status", "absent"),
                        "structural_1d": (reg.get("structural_1d") or {}).get("status", "absent")},
             "amd_setup": "active" if (amd or {}).get("active") else "none",
         },

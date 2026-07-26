@@ -175,7 +175,7 @@ SCHEMA_HINT = (
     "\n\nDevolve SÓ este JSON (raciocínio primeiro):\n"
     '{"reasoning":"<percorre a fita: estrutura MTF, micro, auction, macro, zonas — o que cada uma diz e como '
     'encadeiam>","context_direction":"LONG|SHORT|NONE","converges":true,'
-    '"convergence":"high|moderate|low|incoherent","conviction":0,'
+    '"convergence":"high|moderate|low|incoherent","conviction":<INTEIRO 0-100 (nunca 0-1)>,'
     '"aligned_readings":["..."],"conflicting_readings":["..."],'
     '"candidate_fit":"aligned|against|orthogonal","thesis":"<uma frase: a história de alta-prob, ou \'sem edge '
     'coerente\'>","invalidation":"<o que na fita quebra a tese>"}'
@@ -346,6 +346,10 @@ def run_read(cand, dsr, timeout=None, model=None):
     for attempt in range(3):
         v = _read_once(cand, dsr, timeout, model)
         if isinstance(v, dict) and not v.get("error"):
+            # normalização defensiva da convicção p/ escala única 0-100 (obs 2026-07-27: 33 vs 0.3)
+            cv = fnum(v.get("conviction"))
+            if cv is not None:
+                v["conviction"] = int(round(cv * 100)) if 0 <= cv <= 1 else int(round(cv))
             return v
         last = v
         time.sleep(2 * (attempt + 1))          # backoff p/ erro transitório do SDK/CLI
