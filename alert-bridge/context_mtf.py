@@ -54,9 +54,17 @@ def _zone_view(zs, last):
     below = max((z for z in zs if z["high"] < last), key=lambda z: z["high"], default=None)
     out = {"n": len(zs), "above": above, "below": below}
     if STACKED:
+        def _dedup(seq):
+            # estudos duplicados no chart (ex. HTF PoT ×2) desperdiçavam slots do stack; geometria igual = 1
+            seen, uni = set(), []
+            for z in seq:
+                k = (z["low"], z["high"])
+                if k not in seen:
+                    seen.add(k); uni.append(z)
+            return uni[:STACK_N]
         out["stack"] = {
-            "above": sorted((z for z in zs if z["high"] > last), key=lambda z: z["low"])[:STACK_N],
-            "below": sorted((z for z in zs if z["low"] < last), key=lambda z: -z["high"])[:STACK_N],
+            "above": _dedup(sorted((z for z in zs if z["high"] > last), key=lambda z: z["low"])),
+            "below": _dedup(sorted((z for z in zs if z["low"] < last), key=lambda z: -z["high"])),
         }
     return out
 
