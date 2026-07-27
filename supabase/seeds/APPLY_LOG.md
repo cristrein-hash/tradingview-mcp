@@ -54,3 +54,4 @@
 - 2026-07-26 19:09 UTC · `memory_delta_20260726_bootstrap_e2_week1.sql` · memory_items 341→344 · tag-rows 3/3 · OK
 - 2026-07-26 23:04 UTC · `memory_delta_20260727_e2_golive_package.sql` · memory_items 344→346 · tag-rows 2/2 · OK
 - 2026-07-26 23:22 UTC · `memory_delta_20260727_news_calendar_only.sql` · memory_items 346→347 · tag-rows 1/1 · OK
+- 2026-07-27 16:55 UTC · `memory_delta_20260727_stacked_zones.sql` · memory_items 347→348 · tag-rows 1/1 · OK
