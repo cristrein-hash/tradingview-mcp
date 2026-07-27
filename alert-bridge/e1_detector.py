@@ -28,6 +28,9 @@ MAX_R_ATR15 = 2.0            # PRINCÍPIO: SL local ~1-2×ATR (escala A1/Cp); ca
 MAX_TARGET_R = 5.0           # PRINCÍPIO: alvo canónico 3R; cap generoso anti-fantasia
 COOLDOWN_BARS = 4; DEDUP_BARS = 12; BAR_S = 900   # anti-spam ops — a calibrar no shadow (não a hoje)
 STRUCT_TFS = ("240", "60", "15")
+# gap #1 (Cris 2026-07-27): gatilhos de rejeição iteram o STACK de zonas empilhadas (dossiê zones.stack,
+# construído por context_mtf com a MESMA flag). OFF = nearest-only byte-idêntico.
+STACKED = os.environ.get("E1_STACKED_ZONES", "0") == "1"
 
 
 def now_iso(): return dt.datetime.now(dt.timezone.utc).isoformat()
@@ -173,14 +176,20 @@ def detect(d, p):
             lv = levels("SHORT", close, sl15_high, atr15, zones, pos_tf)
             if lv: out.append(dict(rule="sweep_reclaim", tf=tf, direction="SHORT", src="swept prev_high+reclaim/SL15m", **lv))
 
-        # R4 zone reject — SL 15M-local, entrada fresca
-        za, zb = (zones or {}).get("above") or {}, (zones or {}).get("below") or {}
-        if pclose and za.get("low") and pclose >= za["low"] and close < za["low"]:
-            lv = levels("SHORT", close, sl15_high, atr15, zones, pos_tf)
-            if lv: out.append(dict(rule="zone_reject", tf=tf, direction="SHORT", src="reject supply/SL15m", **lv))
-        if pclose and zb.get("high") and pclose <= zb["high"] and close > zb["high"]:
-            lv = levels("LONG", close, sl15_low, atr15, zones, pos_tf)
-            if lv: out.append(dict(rule="zone_reject", tf=tf, direction="LONG", src="reject demand/SL15m", **lv))
+        # R4 zone reject — SL estrutural da zona rejeitada, entrada fresca. Com E1_STACKED_ZONES itera o
+        # STACK (zonas empilhadas/atravessadas — gap do topo 27/07); nearest-first + break = 1 candidato.
+        for z in _zstack(zones, "above"):
+            if pclose and z.get("low") and pclose >= z["low"] and close < z["low"]:
+                lv = levels("SHORT", close, sl15_high, atr15, dict(zones or {}, above=z), pos_tf)
+                if lv:
+                    out.append(dict(rule="zone_reject", tf=tf, direction="SHORT", src="reject supply/SL15m", **lv))
+                    break
+        for z in _zstack(zones, "below"):
+            if pclose and z.get("high") and pclose <= z["high"] and close > z["high"]:
+                lv = levels("LONG", close, sl15_low, atr15, dict(zones or {}, below=z), pos_tf)
+                if lv:
+                    out.append(dict(rule="zone_reject", tf=tf, direction="LONG", src="reject demand/SL15m", **lv))
+                    break
 
     # R5 ema reclaim (15M): fundo/topo de perna + cruza EMA21 — SL 15M-local
     ema21 = fnum(micro.get("ema", {}).get("ema21")); pema21 = fnum((pmicro or {}).get("ema", {}).get("ema21"))
@@ -213,18 +222,36 @@ def detect(d, p):
         bar_h, bar_l = bar_hl
         for tf in ("240", "1D"):
             zz = mtf.get(tf, {}).get("zones") or {}
-            za, zb = zz.get("above") or {}, zz.get("below") or {}
-            # rejeição de SUPPLY HTF: wick tocou a zona, fecho voltou p/ baixo da borda
-            if za.get("low") and bar_h >= za["low"] and close < za["low"]:
-                lv = levels("SHORT", close, sl15_high, atr15, zz)
-                if lv: out.append(dict(rule="magnet_reject", tf=tf, direction="SHORT",
-                                       src=f"teste-e-rejeicao supply {tf}/SL-zona", **lv))
-            # rejeição de DEMANDA HTF: wick tocou, fecho voltou p/ cima da borda
-            if zb.get("high") and bar_l <= zb["high"] and close > zb["high"]:
-                lv = levels("LONG", close, sl15_low, atr15, zz)
-                if lv: out.append(dict(rule="magnet_reject", tf=tf, direction="LONG",
-                                       src=f"teste-e-rejeicao demanda {tf}/SL-zona", **lv))
+            # rejeição de SUPPLY HTF: wick tocou a zona, fecho voltou p/ baixo da borda (stack-aware)
+            for z in _zstack(zz, "above"):
+                if z.get("low") and bar_h >= z["low"] and close < z["low"]:
+                    lv = levels("SHORT", close, sl15_high, atr15, dict(zz, above=z))
+                    if lv:
+                        out.append(dict(rule="magnet_reject", tf=tf, direction="SHORT",
+                                        src=f"teste-e-rejeicao supply {tf}/SL-zona", **lv))
+                        break
+            # rejeição de DEMANDA HTF: wick tocou, fecho voltou p/ cima da borda (stack-aware)
+            for z in _zstack(zz, "below"):
+                if z.get("high") and bar_l <= z["high"] and close > z["high"]:
+                    lv = levels("LONG", close, sl15_low, atr15, dict(zz, below=z))
+                    if lv:
+                        out.append(dict(rule="magnet_reject", tf=tf, direction="LONG",
+                                        src=f"teste-e-rejeicao demanda {tf}/SL-zona", **lv))
+                        break
     return out
+
+
+def _zstack(zones, side):
+    """Zonas a testar num gatilho de rejeição, nearest-first. Flag ON + stack presente = zonas empilhadas/
+    atravessadas (o gap do topo 27/07: zonas que o preço atravessa não são 'above' nem 'below'). Flag OFF
+    ou stack ausente = exatamente a única zona nearest de hoje (paridade byte-exata)."""
+    zones = zones or {}
+    if STACKED:
+        st = (zones.get("stack") or {}).get(side)
+        if st:
+            return st
+    z = zones.get(side)
+    return [z] if z else []
 
 
 def _bar_hl_15m(bar_time):

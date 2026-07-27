@@ -36,27 +36,32 @@ def _bars_hlc(oh):
     return H, L, C, len(bars)
 
 
-def _nearest_zones(c, last):
-    """Leitura leve de zonas (pine_boxes): a zona OB/demanda/supply mais próxima acima/abaixo do preço."""
-    try:
-        pb = c.call_tool("data_get_pine_boxes") or {}
-    except Exception:
-        return None
-    zs = []
-    for study in pb.get("studies", []):
-        for z in study.get("zones", []):
-            hi = z.get("high"); lo = z.get("low")
-            if hi is None or lo is None:
-                continue
-            zs.append({"high": round(float(hi), 2), "low": round(float(lo), 2), "src": (study.get("name") or "")[:14]})
+# E1_STACKED_ZONES (gap #1, Cris 2026-07-27): expõe o STACK de zonas empilhadas/atravessadas no campo
+# aditivo "stack" — a lógica nearest-only perdia o topo de supply em camadas (4110-4116 de 27/07: zonas
+# que o preço ATRAVESSA não são "above" nem "below" e eram deitadas fora). Flag OFF = byte-idêntico.
+STACKED = os.environ.get("E1_STACKED_ZONES", "0") == "1"
+STACK_N = 3
+
+
+def _zone_view(zs, last):
+    """Vista de zonas partilhada (caminho STORE e caminho MCP — nunca dessincronizar). Comportamento
+    nearest-only preservado VERBATIM em above/below; "stack" = aditivo, só com E1_STACKED_ZONES=1.
+    stack.above = zonas NÃO totalmente abaixo do preço (high>last, inclui atravessadas), nearest-first;
+    stack.below = zonas NÃO totalmente acima (low<last, inclui atravessadas), nearest-first."""
     if not zs or last is None:
         return {"n": len(zs), "above": None, "below": None}
     above = min((z for z in zs if z["low"] > last), key=lambda z: z["low"], default=None)
     below = max((z for z in zs if z["high"] < last), key=lambda z: z["high"], default=None)
-    return {"n": len(zs), "above": above, "below": below}
+    out = {"n": len(zs), "above": above, "below": below}
+    if STACKED:
+        out["stack"] = {
+            "above": sorted((z for z in zs if z["high"] > last), key=lambda z: z["low"])[:STACK_N],
+            "below": sorted((z for z in zs if z["low"] < last), key=lambda z: -z["high"])[:STACK_N],
+        }
+    return out
 
 
-def _zones_from_payload(pb, last):
+def _zs_of(pb):
     zs = []
     for study in (pb or {}).get("studies", []):
         for z in study.get("zones", []):
@@ -64,11 +69,20 @@ def _zones_from_payload(pb, last):
             if hi is None or lo is None:
                 continue
             zs.append({"high": round(float(hi), 2), "low": round(float(lo), 2), "src": (study.get("name") or "")[:14]})
-    if not zs or last is None:
-        return {"n": len(zs), "above": None, "below": None}
-    above = min((z for z in zs if z["low"] > last), key=lambda z: z["low"], default=None)
-    below = max((z for z in zs if z["high"] < last), key=lambda z: z["high"], default=None)
-    return {"n": len(zs), "above": above, "below": below}
+    return zs
+
+
+def _nearest_zones(c, last):
+    """Leitura leve de zonas (pine_boxes) via MCP — delega na vista partilhada."""
+    try:
+        pb = c.call_tool("data_get_pine_boxes") or {}
+    except Exception:
+        return None
+    return _zone_view(_zs_of(pb), last)
+
+
+def _zones_from_payload(pb, last):
+    return _zone_view(_zs_of(pb), last)
 
 
 def _svp_from_payload(sv):
