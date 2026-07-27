@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """ENTRY ROUTER 15M — ciclo LIVE em modo DRY (Cris 2026-07-19). Roteia, por REGIME MACRO (autoridade
 única = Layer1 1D, current_layer1.json escrito pelo regime-engine), qual camada de entry é ELEGÍVEL:
-  BEAR  -> território do Cp (já live, alert-only) — o router NÃO duplica, só regista.
+  BEAR  -> Cp (capitulação profunda, já live — não duplica) + RETOMA v1 DRY (higher-low em demanda,
+           camada órfã; Cris 2026-07-27): só entrada fresca <=2 barras (zonas as-of deste ciclo = sem a
+           circularidade retro apanhada pelo DA), ledger próprio, 0 Telegram.
   RANGE -> engine de B v1.1 via b_forward_score (deep loader gz+store) — DRY: pontua+loga+resolve, 0 Telegram.
   BULL  -> A1/A2 (pullback) — SEM detetor de fundo automático ainda (task #35) -> só regista pendência.
 Roteamento (elegibilidade por contexto), NÃO hard-gate/veto. Store-first (bar-store, zero CDP próprio).
@@ -82,6 +84,65 @@ def run_B(rows, out):
     out["resolved"] = BF.resolve_pending()                   # árbitro forward: resolve OPEN->WIN/LOSS SL-first
 
 
+RETOMA_LEDGER = STATE / "retoma_ledger.jsonl"
+
+
+def run_retoma(rows, out):
+    """Ramo BEAR: RETOMA v1 DRY (prereg RETOMA_ENGINE_V1_PREREG_FORWARD_20260727). Forward-only limpo:
+    zonas AS-OF do store agora, e SÓ regista candidato cuja ENTRADA acabou de acontecer (<=2 barras) —
+    o passado nunca é varrido com zonas de hoje. Ledger próprio + resolve SL-first. 0 Telegram."""
+    import store_reader as SR
+    import retoma_engine_v1 as re1
+    import cp_engine_live as cp
+    T = [r["t"] for r in rows]; O = [r["o"] for r in rows]; H = [r["h"] for r in rows]
+    L = [r["l"] for r in rows]; C = [r["c"] for r in rows]
+    # bubbles do store (mesma fonte do Cp/E0)
+    bp = Path("/Users/cristrein/tradingview-mcp/my-strategy/core/bar_store/store/bubbles_15m.jsonl")
+    pairs = [(x["t"], x["plot"]) for x in (json.loads(l) for l in bp.read_text().splitlines() if l.strip())]
+    BUYS, SELLS = cp.bubbles_from_pairs(pairs)
+    # zonas AS-OF (snapshot do store NESTE ciclo — registadas no ledger p/ auditoria)
+    zones, seen = [], set()
+    for tf in ("15", "60", "240"):
+        pb, _ = SR.pine_boxes(tf)
+        for st in (pb or {}).get("studies", []):
+            for z in st.get("zones", []):
+                k = (round(z["low"], 1), round(z["high"], 1))
+                if k not in seen:
+                    seen.add(k); zones.append({"low": z["low"], "high": z["high"]})
+    t_lo = T[-1] - 96 * BAR_S                                 # fundo recente (<=1 dia)
+    cands = re1.retoma_scan(T, O, H, L, C, BUYS, SELLS, zones, t_lo=t_lo)
+    fresh = [c for c in cands if c["etime"] >= T[-1] - FRESH_BARS * BAR_S]
+    led = [json.loads(l) for l in RETOMA_LEDGER.read_text().splitlines() if l.strip()] if RETOMA_LEDGER.exists() else []
+    known = {r.get("fundo_t") for r in led}
+    added = 0
+    with open(RETOMA_LEDGER, "a") as fh:
+        for c in fresh:
+            if c["fundo_t"] in known:
+                continue
+            rec = dict(c); rec["ts"] = out["ts"]; rec["outcome"] = "OPEN"; rec["zona_asof"] = c["zona"]
+            fh.write(json.dumps(rec, ensure_ascii=False) + "\n"); added += 1
+    # resolve OPEN -> WIN/LOSS SL-first (árbitro forward)
+    resolved = 0
+    if led:
+        chg = False
+        for r in led:
+            if r.get("outcome") != "OPEN":
+                continue
+            i0 = next((i for i, t in enumerate(T) if t > r["etime"]), None)
+            if i0 is None:
+                continue
+            for i in range(i0, len(T)):
+                if L[i] <= r["sl"]:
+                    r["outcome"] = "LOSS"; chg = True; resolved += 1; break
+                if H[i] >= r["tgt"]:
+                    r["outcome"] = "WIN"; chg = True; resolved += 1; break
+        if chg:
+            tmp = RETOMA_LEDGER.with_suffix(".tmp")
+            tmp.write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in led))
+            os.replace(tmp, RETOMA_LEDGER)
+    out["retoma"] = f"cands janela {len(cands)} · frescos {len(fresh)} · registados {added} · resolvidos {resolved}"
+
+
 def main():
     ts = dt.datetime.now(dt.timezone.utc).isoformat()
     out = {"ts": ts, "mode": "DRY"}
@@ -100,7 +161,11 @@ def main():
     if regime == "RANGE":
         run_B(rows, out)
     elif regime == "BEAR":
-        out["route"] = "BEAR -> território do Cp (router dormante; sem duplicar)"
+        out["route"] = "BEAR -> Cp (live, sem duplicar) + RETOMA v1 dry"
+        try:
+            run_retoma(rows, out)
+        except Exception as e:
+            out["retoma"] = f"erro {type(e).__name__}:{str(e)[:60]}"
     elif regime == "BULL":
         out["route"] = "BULL -> A1/A2 pendente detetor de fundo (task #35)"
     else:
