@@ -64,7 +64,12 @@ while True:
         # superior (Cris 2026-07-28: só consultar o reader na viragem verdadeira, não em cada verde abaixo).
         reclaim_shaped = (z and cur["l"] <= z[1] + TOUCH_BUF and cur["c"] > z[1]
                           and cur["c"] > cur["o"])
-        if reclaim_shaped and cur["t"] not in read_bars:
+        # cooldown de CONSULTA (29/07: preço a serrar no bordo pré-FOMC gerava leitura igual por barra):
+        # re-consulta só se passaram >=90min OU o preço fez algo NOVO (fecho 6+ pts acima da última consulta).
+        _lr = getattr(sys.modules[__name__], "_last_read", None)
+        _novel = _lr is None or (cur["t"] - _lr[0]) >= 5400 or cur["c"] >= _lr[1] + 6.0
+        if reclaim_shaped and cur["t"] not in read_bars and _novel:
+            setattr(sys.modules[__name__], "_last_read", (cur["t"], cur["c"]))
             read_bars.add(cur["t"])
             cand = build_long_cand(z[0], cur["c"], atr)
             print(f"RECLAIM A FORMAR-SE na {z[2]} (barra {hm(cur['t'])} close {cur['c']}) — a pedir juízo ao reader…")
