@@ -16,10 +16,10 @@ import e2_quality as E2                      # O READER SANCIONADO (consome, nã
 import cp_engine_live as cp                  # atr_series verbatim
 hm = lambda t: dt.datetime.fromtimestamp(int(t), LX).strftime("%d/%m %H:%M")
 
-# fundo previsto Cris = primário; fallbacks mais abaixo (nível → rótulo)
-DEMANDS = [(4050.0, 4053.0, "4050-4053 (fundo previsto Cris)"),
-           (4044.0, 4049.9, "4044 (OB 15M/1H/4H)"),
-           (4022.0, 4043.0, "4022-4043 (demanda inferior)")]
+# ZONA HTF (Cris 2026-07-28: preço furou as 15M, chegou à demanda 4H 3997-4020 c/ 1H 4000-4011 dentro —
+# aqui a reversão contra o bear QUALIFICA pela regra da perna). Reclaim = fecho acima da 1H (4011).
+DEMANDS = [(4000.0, 4011.0, "1H demand 4000-4011 (reclaim aqui)"),
+           (3997.0, 4020.0, "4H demand 3997-4020 (HTF — reversão qualifica)")]
 TOUCH_BUF = 1.0
 
 def bars(name, n=20):
@@ -43,7 +43,8 @@ def build_long_cand(zl, close, atr):
             "entry": round(close, 2), "sl": sl, "target": tgt, "rr": round((tgt - close) / r, 2),
             "materiality": {"sl_atr": round(r / atr, 1) if atr else None, "confluence": None, "confluence_breakdown": {}}}
 
-touched = set(); read_bars = set()
+touched = {}; read_bars = set()          # touched[label] = bar_time do último toque (dedup por barra)
+ZTOP = max(z[1] for z in DEMANDS)         # topo do bloco de demanda (re-arme só bem acima disto)
 print(f"vigia+reader armado: fundo previsto 4050-4053 (+ fallbacks 4044, 4022-4043). Toque=heads-up; reclaim=juízo do reader.")
 while True:
     try:
@@ -54,9 +55,10 @@ while True:
         H = [b["h"] for b in b15]; L = [b["l"] for b in b15]; C = [b["c"] for b in b15]
         atr = cp.atr_series(H, L, C)[-1] or 6.0
         z = zone_of(cur["l"], cur["c"])
-        # heads-up geográfico (1× por zona)
-        if z and z[2] not in touched:
-            touched.add(z[2])
+        # heads-up geográfico: 1× por ENTRADA na zona. touched[label]=1 quando tocada; só re-arma quando o
+        # preço FECHA bem acima do bloco todo (ZTOP+12) — evita o flood de re-toque ao oscilar no bordo.
+        if z and not touched.get(z[2]):
+            touched[z[2]] = 1
             print(f"TOQUE na demanda {z[2]}: low {cur['l']} @ {hm(cur['t'])} (close {cur['c']}) — a aguardar reclaim; o reader julga a legitimidade")
         # gatilho de LEITURA (não veredito): RECLAIM REAL = tocou a zona e FECHOU de volta ACIMA da borda
         # superior (Cris 2026-07-28: só consultar o reader na viragem verdadeira, não em cada verde abaixo).
@@ -80,9 +82,9 @@ while True:
                 if th.get('conflicting_readings'):
                     print(f"   contra: {'; '.join(th.get('conflicting_readings')[:3])}")
                 print(f"   níveis lidos: entry {cand['entry']} · SL {cand['sl']} · alvo {cand['target']} (RR {cand['rr']})")
-        # re-arma zonas se o preço subiu bem acima
-        if cur["c"] > DEMANDS[0][1] + 8:
-            touched.discard(DEMANDS[0][2])
+        # re-arma TODAS as zonas só quando o preço fecha bem acima do bloco (saiu de vez); senão fica tocado
+        if cur["c"] > ZTOP + 12:
+            touched.clear()
     except Exception as e:
         print(f"vigia+reader erro transitório: {type(e).__name__}:{str(e)[:50]}")
     time.sleep(45)
