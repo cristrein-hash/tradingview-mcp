@@ -156,6 +156,15 @@ state={
 SNAP=H/"snapshots"; SNAP.mkdir(exist_ok=True)
 (SNAP/f"state_{NOWT}.json").write_text(json.dumps(state,indent=1))
 (SNAP/"latest.json").write_text(json.dumps(state,indent=1))
+# ROTAÇÃO (Cris 2026-07-28): os state_<ts> são snapshots write-only (nada os lê de volta; latest.json é o
+# corrente). Sem cap acumulavam ~45/dia. Mantém só as últimas 24h; apaga os mais antigos. Fail-soft.
+try:
+    _cut=NOWT-86400
+    for _p in SNAP.glob("state_*.json"):
+        try:
+            if int(_p.stem.split("state_")[-1])<_cut: _p.unlink()
+        except Exception: pass
+except Exception: pass
 # ---- report ----
 print(f"=== EXTERNAL FACTORS MONITOR — ciclo {state['_meta']['cycle_dt']} ===")
 print(f"Tier-1 macro (recorded_context): {sum(1 for v in tier1.values() if v.get('fresh'))}/{len(tier1)} fresh | stale: {stale or 'nenhum'}")
