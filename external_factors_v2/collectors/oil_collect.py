@@ -20,21 +20,52 @@ def curl(url):
     return subprocess.run(["curl", "-sS", "--http1.1", "--max-time", "40", url], capture_output=True, text=True).stdout
 
 
-def quote(sym):
-    if not FMP:
-        return {"error": "FMP_API_KEY ausente"}
-    raw = curl(f"https://financialmodelingprep.com/stable/quote?symbol={sym}&apikey={FMP}")
+def _yahoo_brent():
+    """Fallback KEYLESS (Cris 2026-07-28, pre-FOMC): FMP free esgota o limite diário -> Brent None.
+    Yahoo BZ=F (Brent futures contínuo) é keyless e estável; devolve o mesmo shape do FMP."""
+    raw = subprocess.run(["curl", "-sS", "--http1.1", "--max-time", "20", "-A", "Mozilla/5.0",
+                          "https://query1.finance.yahoo.com/v8/finance/chart/BZ%3DF?interval=1d&range=2d"],
+                         capture_output=True, text=True).stdout
     try:
         d = json.loads(raw)
-        if isinstance(d, list) and d:
-            q = d[0]
-            return {"symbol": sym, "name": q.get("name"), "price_usd": q.get("price"),
-                    "change": q.get("change"), "change_pct": q.get("changePercentage"),
-                    "day_low": q.get("dayLow"), "day_high": q.get("dayHigh"),
-                    "year_high": q.get("yearHigh"), "year_low": q.get("yearLow")}
-        return {"error": f"FMP inesperado: {str(d)[:100]}"}
+        r = (((d.get("chart") or {}).get("result") or [None])[0]) or {}
+        m = r.get("meta") or {}
+        px = m.get("regularMarketPrice"); prev = m.get("chartPreviousClose") or m.get("previousClose")
+        if px is None:
+            return None
+        chg = (px - prev) if prev else None
+        pct = (100 * chg / prev) if (prev and chg is not None) else None
+        return {"symbol": "BZUSD", "name": "Brent (Yahoo BZ=F)", "price_usd": round(px, 2),
+                "change": round(chg, 2) if chg is not None else None,
+                "change_pct": round(pct, 3) if pct is not None else None,
+                "day_low": m.get("regularMarketDayLow"), "day_high": m.get("regularMarketDayHigh"),
+                "year_high": m.get("fiftyTwoWeekHigh"), "year_low": m.get("fiftyTwoWeekLow"), "src": "yahoo"}
     except Exception:
-        return {"error": f"FMP não-JSON: {raw[:100]}"}
+        return None
+
+
+def quote(sym):
+    fmp = None
+    if FMP:
+        raw = curl(f"https://financialmodelingprep.com/stable/quote?symbol={sym}&apikey={FMP}")
+        try:
+            d = json.loads(raw)
+            if isinstance(d, list) and d:
+                q = d[0]
+                if q.get("price") is not None:
+                    return {"symbol": sym, "name": q.get("name"), "price_usd": q.get("price"),
+                            "change": q.get("change"), "change_pct": q.get("changePercentage"),
+                            "day_low": q.get("dayLow"), "day_high": q.get("dayHigh"),
+                            "year_high": q.get("yearHigh"), "year_low": q.get("yearLow"), "src": "fmp"}
+            fmp = {"error": f"FMP inesperado: {str(d)[:80]}"}
+        except Exception:
+            fmp = {"error": f"FMP não-JSON: {raw[:80]}"}
+    # FMP ausente / limit-reach / vazio -> fallback keyless Yahoo (só Brent)
+    if sym == "BZUSD":
+        y = _yahoo_brent()
+        if y:
+            return y
+    return fmp or {"error": "FMP_API_KEY ausente e sem fallback"}
 
 
 def main():
