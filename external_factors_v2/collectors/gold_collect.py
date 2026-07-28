@@ -17,20 +17,40 @@ NOWT=int(dt.datetime.now(dt.timezone.utc).timestamp())
 FMP=os.environ.get("FMP_API_KEY")
 def curl(url):
     return subprocess.run(["curl","-sS","--http1.1","--max-time","45",url],capture_output=True,text=True).stdout
-def gold_price():
-    if not FMP: return {"error":"FMP_API_KEY ausente; preço de ouro vem do trading system (RAW/TradingView)"}
-    raw=curl(f"https://financialmodelingprep.com/stable/quote?symbol=GCUSD&apikey={FMP}")
+def _yahoo_gold():
+    """Fallback KEYLESS (Cris 2026-07-28): FMP free esgota o limite -> ouro None. Yahoo GC=F (Gold futures
+    contínuo), com User-Agent (senão 'Too Many Requests'). NB: o preço de ouro do TRADING vem do bar-store/
+    TradingView; isto é só o snapshot de CONTEXTO EF."""
+    raw=subprocess.run(["curl","-sS","--http1.1","--max-time","20","-A","Mozilla/5.0",
+                        "https://query1.finance.yahoo.com/v8/finance/chart/GC%3DF?interval=1d&range=2d"],
+                       capture_output=True,text=True).stdout
     try:
-        d=json.loads(raw)
-        if isinstance(d,list) and d:
-            q=d[0]
-            return {"symbol":"GCUSD","name":q.get("name"),"price_usd":q.get("price"),
-                    "change":q.get("change"),"change_pct":q.get("changePercentage"),"volume":q.get("volume"),
-                    "day_low":q.get("dayLow"),"day_high":q.get("dayHigh"),"year_high":q.get("yearHigh"),"year_low":q.get("yearLow"),
-                    "source":"CME/COMEX Gold Futures via FMP /stable (key grátis)"}
-        return {"error":f"FMP quote inesperado: {str(d)[:120]}"}
+        d=json.loads(raw); r=(((d.get("chart") or {}).get("result") or [None])[0]) or {}; m=r.get("meta") or {}
+        px=m.get("regularMarketPrice"); prev=m.get("chartPreviousClose") or m.get("previousClose")
+        if px is None: return None
+        chg=(px-prev) if prev else None; pct=(100*chg/prev) if (prev and chg is not None) else None
+        return {"symbol":"GCUSD","name":"Gold (Yahoo GC=F)","price_usd":round(px,2),
+                "change":round(chg,2) if chg is not None else None,"change_pct":round(pct,3) if pct is not None else None,
+                "day_low":m.get("regularMarketDayLow"),"day_high":m.get("regularMarketDayHigh"),
+                "year_high":m.get("fiftyTwoWeekHigh"),"year_low":m.get("fiftyTwoWeekLow"),
+                "source":"CME/COMEX Gold Futures via Yahoo GC=F (keyless fallback)","src":"yahoo"}
     except Exception:
-        return {"error":f"FMP não-JSON: {raw[:120]}"}
+        return None
+def gold_price():
+    if FMP:
+        raw=curl(f"https://financialmodelingprep.com/stable/quote?symbol=GCUSD&apikey={FMP}")
+        try:
+            d=json.loads(raw)
+            if isinstance(d,list) and d and d[0].get("price") is not None:
+                q=d[0]
+                return {"symbol":"GCUSD","name":q.get("name"),"price_usd":q.get("price"),
+                        "change":q.get("change"),"change_pct":q.get("changePercentage"),"volume":q.get("volume"),
+                        "day_low":q.get("dayLow"),"day_high":q.get("dayHigh"),"year_high":q.get("yearHigh"),"year_low":q.get("yearLow"),
+                        "source":"CME/COMEX Gold Futures via FMP /stable (key grátis)"}
+        except Exception:
+            pass
+    y=_yahoo_gold()
+    return y if y else {"error":"FMP limit/ausente e Yahoo falhou; preço de ouro do trading vem do bar-store"}
 def cot_gold():
     where=urllib.parse.quote("upper(market_and_exchange_names) like '%GOLD%'")
     order=urllib.parse.quote("report_date_as_yyyy_mm_dd")
