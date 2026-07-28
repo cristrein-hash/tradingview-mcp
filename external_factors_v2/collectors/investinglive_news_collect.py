@@ -5,7 +5,7 @@ lento demais p/ isto. Corre em LaunchAgent SEPARADA (~4min). Determinístico, se
 a lógica de alert-bridge/investinglive_news.py + adiciona guid/link p/ dedup estável, urgency/session/gate.
 Saída: snapshots/investinglive_news.json (escrita ATÓMICA os.replace; single-writer deste ficheiro).
 Falha de rede/parse -> no-op honesto: mantém snapshot anterior, marca fetch_ok=false. NUNCA lança."""
-import json, os, sys, hashlib, urllib.request, datetime as dt
+import json, os, sys, hashlib, urllib.request, urllib.error, datetime as dt
 import xml.etree.ElementTree as ET
 from email.utils import parsedate_to_datetime
 from pathlib import Path
@@ -29,10 +29,37 @@ KEEP_N = 15          # headlines relevantes guardadas
 CADENCE_S = 240
 
 
+_HDRS = {"User-Agent": "Mozilla/5.0 (Macintosh) ef-news-poller",
+         "Accept": "application/rss+xml, application/xml, text/xml, */*"}
+
+
 def fetch(url=FEED, timeout=15):
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 ef-news-poller"})
-    with urllib.request.urlopen(req, timeout=timeout) as r:
-        return r.read()
+    """Robusto ao 301 INTERMITENTE do investinglive (redirect-loop /feed <-> /feed/ que o urllib às vezes
+    reporta como HTTPError; o curl dá 200 = conteúdo alcançável). Retry 3× + variante de trailing-slash +
+    seguir Location manualmente. Se tudo falhar, levanta (o caller mantém o snapshot anterior — graceful)."""
+    import time as _t
+    variants = [url, url.rstrip("/") if url.endswith("/") else url + "/"]
+    last = None
+    for attempt in range(3):
+        for u in variants:
+            try:
+                req = urllib.request.Request(u, headers=_HDRS)
+                with urllib.request.urlopen(req, timeout=timeout) as r:
+                    return r.read()
+            except urllib.error.HTTPError as e:
+                last = e
+                if e.code in (301, 302, 303, 307, 308):
+                    loc = e.headers.get("Location") if e.headers else None
+                    if loc and loc not in variants:
+                        try:
+                            with urllib.request.urlopen(urllib.request.Request(loc, headers=_HDRS), timeout=timeout) as r2:
+                                return r2.read()
+                        except Exception as e2:
+                            last = e2
+            except Exception as e:
+                last = e
+        _t.sleep(1.5 * (attempt + 1))
+    raise last if last else RuntimeError("investinglive fetch falhou sem exceção")
 
 
 def txt(it, *tags):
