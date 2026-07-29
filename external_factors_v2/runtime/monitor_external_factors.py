@@ -30,14 +30,27 @@ def chg(sid,days):
     i=bisect.bisect_right(a,(tgt,float("inf")))-1
     return round(v1-a[i][1],3) if i>=0 else None
 # ---- Tier-1 estado + frescor ----
+# (Cris 2026-07-29, auditoria "external factor a cair"): a janela era CAD*2 fixa e QUALQUER série stale
+# marcava external_stale=True. wti_oil (FRED DCOILWTICO) publica com lag ~4d úteis + salta fins-de-semana ->
+# aparecia stale a toda a hora e flippava a camada inteira. Fix: (1) janela CIENTE DO LAG (asof_lag_days +
+# folga de fim-de-semana); (2) external_stale só reflete séries CORE acionáveis (as surfaçadas no schema),
+# não confirmadores secundários lentos. stale_series (completo) fica p/ transparência.
 CAD={"daily":3,"monthly":45}
-tier1={}; stale=[]
+CORE_SERIES={"usd_broad","us10y_real","vix"}   # acionáveis (surfaçadas em external_*); restantes = contexto lento
+tier1={}; stale=[]; stale_core=[]
 for s in REG["tier1_series"]:
     lt=latest(s["id"])
-    if not lt: tier1[s["id"]]={"status":"no_data"}; stale.append(s["id"]); continue
-    age=(NOWT-lt[0])/86400; fresh= age<=CAD.get(s["cadence"],3)*2
+    if not lt:
+        tier1[s["id"]]={"status":"no_data"}; stale.append(s["id"])
+        if s["id"] in CORE_SERIES: stale_core.append(s["id"])
+        continue
+    age=(NOWT-lt[0])/86400
+    win=CAD.get(s["cadence"],3)*2 + int(s.get("asof_lag_days",0)) + 3   # +3d = folga fim-de-semana/feriado
+    fresh= age<=win
     tier1[s["id"]]={"value":lt[1],"obs_age_days":round(age,1),"fresh":fresh,"chg20":chg(s["id"],20),"driver":s["driver"]}
-    if not fresh: stale.append(s["id"])
+    if not fresh:
+        stale.append(s["id"])
+        if s["id"] in CORE_SERIES: stale_core.append(s["id"])
 # ---- Camada A: calendário via coletor ForexFactory (keyless, snapshots/ff_calendar.json) ----
 # Substitui o gerador 1ª-sexta (bug shift feriado) + overlay manual. Datas/consenso/actual REAIS do feed FF.
 ffc=H/"snapshots/ff_calendar.json"; events=[]
@@ -144,10 +157,10 @@ state={
    "scoreboard":theory_board.get("scoreboard"),"theory_consensus":theory_board.get("theory_consensus"),
    "scored_total":theory_board.get("scored_total"),"claims_total":theory_board.get("claims_total")},
  "source_health":health,
- "stale_series":stale,
+ "stale_series":stale,"stale_core":stale_core,
  # schema external_* (consumo claude_recheck) — neutro até Tier-2 agents (Phase 3)
  "external_factors":{"external_bias":"unknown","external_risk_level":"event_window" if imminent else "normal",
-   "external_trade_validation":"neutral","external_confidence":0,"external_fetch_ok":True,"external_stale":bool(stale),
+   "external_trade_validation":"neutral","external_confidence":0,"external_fetch_ok":True,"external_stale":bool(stale_core),
    "external_event_direction_bias":nfp_bias,
    "external_main_reasons":news_headline_reason+[f"{e['event']} em {e['hours_until']}h"+(f" (consenso {e.get('consensus')} vs ant {e.get('previous')} -> {e.get('direction',{}).get('bias')})" if e.get('consensus_k') is not None else "") for e in imminent],
    "external_us10y_real":tier1.get("us10y_real",{}).get("value"),"external_usd_broad":tier1.get("usd_broad",{}).get("value"),
@@ -167,7 +180,7 @@ try:
 except Exception: pass
 # ---- report ----
 print(f"=== EXTERNAL FACTORS MONITOR — ciclo {state['_meta']['cycle_dt']} ===")
-print(f"Tier-1 macro (recorded_context): {sum(1 for v in tier1.values() if v.get('fresh'))}/{len(tier1)} fresh | stale: {stale or 'nenhum'}")
+print(f"Tier-1 macro (recorded_context): {sum(1 for v in tier1.values() if v.get('fresh'))}/{len(tier1)} fresh | stale(total): {stale or 'nenhum'} | stale_CORE (marca external_stale): {stale_core or 'nenhum'}")
 print(f"  real_yield_10y={tier1.get('us10y_real',{}).get('value')} (Δ20={tier1.get('us10y_real',{}).get('chg20')}) | USD_broad={tier1.get('usd_broad',{}).get('value')} (Δ20={tier1.get('usd_broad',{}).get('chg20')}) | VIX={tier1.get('vix',{}).get('value')}")
 print(f"\nCamada A — eventos imediatos próximos (≤96h): {len(imminent)}")
 for e in imminent:

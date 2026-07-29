@@ -7,6 +7,8 @@ ACIONAR RÁPIDO (lane 4min → news_gate → E0 → E2 + escalada Telegram). Det
 NÃO é sinal de trade — é contexto/gate de alto-impacto."""
 import json, os, sys, hashlib, subprocess, datetime as dt, urllib.parse
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _resilient import write_resilient   # keep-last-good em vazio intermitente (anti-flapping)
 H = Path(__file__).resolve().parent.parent; SNAP = H / "snapshots"; SNAP.mkdir(exist_ok=True)
 NOWT = int(dt.datetime.now(dt.timezone.utc).timestamp())
 OUT = SNAP / "geopolitical_news.json"
@@ -84,8 +86,19 @@ def main():
            "n_total": len(arts), "n_relevant": len(uniq), "n_high": n_high,
            "high_impact_now": bool(high_impact), "urgency": ("high" if high_impact else ("med" if uniq else "none")),
            "items": uniq[:15], "gate": gate}
-    tmp = OUT.with_suffix(".json.tmp"); tmp.write_text(json.dumps(out, indent=1, ensure_ascii=False)); os.replace(tmp, OUT)
-    print(f"geopolitical: {len(arts)} arts, {len(uniq)} relevantes, {n_high} TOP, high_impact={high_impact}")
+    # SAUDÁVEL = fetch OK e o GDELT devolveu artigos brutos (a query ampla de 24h SEMPRE traz ~50; 0 = falha
+    # de fetch, não ausência real). Vazio -> preserva o último bom snapshot (não grava buraco) e neutraliza
+    # gatilhos de alarme para não escalar Telegram em dados velhos.
+    healthy = bool(fetch_ok and len(arts) > 0)
+    _written, served_stale = write_resilient(
+        OUT, out, healthy,
+        neutralize=["high_impact_now", "gate.high_impact_headline", "gate.escalate"])
+    if served_stale:
+        cf = _written.get("_meta", {}).get("consecutive_fail")
+        print(f"geopolitical: FETCH VAZIO (fetch_ok={fetch_ok} arts={len(arts)}) -> mantido último bom "
+              f"snapshot (falhas seguidas={cf}, alarmes neutralizados)")
+    else:
+        print(f"geopolitical: {len(arts)} arts, {len(uniq)} relevantes, {n_high} TOP, high_impact={high_impact}")
 
 
 if __name__ == "__main__":

@@ -40,6 +40,11 @@ COLLECTORS = {
     "E0 dossiê":     ("market_context.json", 400, None),
 }
 
+# nº de ciclos seguidos a servir-stale (keep-last-good) a partir do qual = outage GENUÍNO (não flap transitório).
+# Os coletores keyless correm ~4min; 5 falhas seguidas ≈ 20min de fonte morta = vale auditar. Flaps de 1-4
+# ciclos ficam silenciosos (era o "a cair o tempo todo": agora o keep-last-good absorve-os).
+STALE_FAIL_THRESHOLD = 5
+
 def status(name, spec):
     fn, max_age, contentf = spec
     p = SN + fn
@@ -48,11 +53,15 @@ def status(name, spec):
     age = time.time() - os.path.getmtime(p)
     if age > max_age:
         return "FALHA", f"stale {int(age)}s (max {max_age}s) — coletor parou de escrever"
+    try:
+        d = json.load(open(p))
+    except Exception as e:
+        return "FALHA", f"ilegível ({type(e).__name__})"
+    # keep-last-good: só alerta em outage PROLONGADO (muitos ciclos), não no flap transitório absorvido
+    cf = (d.get("_meta", {}) or {}).get("consecutive_fail") or 0
+    if d.get("_meta", {}).get("serving_stale") and cf >= STALE_FAIL_THRESHOLD:
+        return "FALHA", f"serving_stale há {cf} ciclos seguidos — fonte keyless em outage prolongado"
     if contentf:
-        try:
-            d = json.load(open(p))
-        except Exception as e:
-            return "FALHA", f"ilegível ({type(e).__name__})"
         m = contentf(d)
         if m:
             return "FALHA", m

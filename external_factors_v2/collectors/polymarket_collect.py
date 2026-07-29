@@ -5,8 +5,10 @@ Odds de mercados de previsão sobre os DRIVERS do ouro: guerra Irão/Ormuz (geop
 (uma probabilidade a mover = evento a ser precificado). Gamma API (gamma-api.polymarket.com), determinístico,
 py3.9, graceful. Saída: polymarket.json {markets, key_probs, shifts, read}. Contexto (não gatilho), lido pelo
 news_gate. NÃO copia nada do Fincept (só a ideia; API pública do Polymarket)."""
-import json, os, subprocess, datetime as dt
+import json, os, sys, subprocess, datetime as dt
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _resilient import write_resilient   # keep-last-good em vazio intermitente (anti-flapping)
 H = Path(__file__).resolve().parent.parent; SNAP = H / "snapshots"; SNAP.mkdir(exist_ok=True)
 NOWT = int(dt.datetime.now(dt.timezone.utc).timestamp())
 OUT = SNAP / "polymarket.json"
@@ -88,8 +90,14 @@ def main():
            "read": (f"Fed no-change {key_probs.get('fed_no_change_jul')}% · invasão Irão {key_probs.get('us_invade_iran')}% · "
                     f"Ormuz normaliza {key_probs.get('hormuz_normal')}%" +
                     (f" · ⚠️ SHIFT: {shifts[0]['q'][:50]} {shifts[0]['delta']:+.0f}pp" if shifts else ""))}
-    tmp = OUT.with_suffix(".json.tmp"); tmp.write_text(json.dumps(out, indent=1, ensure_ascii=False)); os.replace(tmp, OUT)
-    print(f"polymarket: {len(uniq)} mercados relevantes | shifts: {len(shifts)} | {out['read'][:90]}")
+    # SAUDÁVEL = a Gamma API devolveu mercados. Vazio (rate-limit/timeout) -> preserva as últimas odds boas
+    # (as odds do FOMC não podem "desaparecer" por um fetch falhado); sem gatilho de alarme aqui a neutralizar.
+    healthy = bool(uniq)
+    _w, served_stale = write_resilient(OUT, out, healthy)
+    if served_stale:
+        print(f"polymarket: FETCH VAZIO -> mantidas últimas odds boas (falhas seguidas={_w.get('_meta',{}).get('consecutive_fail')})")
+    else:
+        print(f"polymarket: {len(uniq)} mercados relevantes | shifts: {len(shifts)} | {out['read'][:90]}")
 
 
 if __name__ == "__main__":
