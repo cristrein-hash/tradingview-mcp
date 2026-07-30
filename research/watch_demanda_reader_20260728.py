@@ -16,10 +16,13 @@ import e2_quality as E2                      # O READER SANCIONADO (consome, nã
 import cp_engine_live as cp                  # atr_series verbatim
 hm = lambda t: dt.datetime.fromtimestamp(int(t), LX).strftime("%d/%m %H:%M")
 
-# ZONA HTF (Cris 2026-07-28: preço furou as 15M, chegou à demanda 4H 3997-4020 c/ 1H 4000-4011 dentro —
-# aqui a reversão contra o bear QUALIFICA pela regra da perna). Reclaim = fecho acima da 1H (4011).
-DEMANDS = [(4000.0, 4011.0, "1H demand 4000-4011 (reclaim aqui)"),
-           (3997.0, 4020.0, "4H demand 3997-4020 (HTF — reversão qualifica)")]
+# ZONA (Cris 2026-07-30, pós revisão do chart via MCP): RANGE macro-estrutural 3995↔4116. A procura REAL é o
+# ORDER BLOCK 3995-4010 (OB Detector v11), não o pivô 4042. Long estrutural = RECLAIM LEGÍTIMO no OB (fecho de
+# volta acima de 4010) — o reader julga; o toque é só heads-up. Macro: petróleo↑ → DXY a recuperar → dólar a
+# firmar = sobe a hipótese de o preço DESCER a testar o OB antes do repique. Boa chance de repique de alta lá.
+# Mantenho também o teto CHoCH 4051 (reclaim de momentum) como 2ª zona qualificante.
+DEMANDS = [(3995.84, 4010.0, "OB demand 3995-4010 (ESTRUTURAL — reclaim acima de 4010 = juízo do reader)"),
+           (4040.0, 4051.0, "teto CHoCH 4051 (reclaim de momentum acima de 4051 = juízo do reader)")]
 TOUCH_BUF = 1.0
 
 def bars(name, n=20):
