@@ -58,3 +58,4 @@
 - 2026-07-27 17:29 UTC · `memory_delta_20260727_retoma_engine.sql` · memory_items 348→349 · tag-rows 1/1 · OK
 - 2026-07-28 10:11 UTC · `memory_delta_20260728_forward_case_retoma_vs_reader.sql` · memory_items 349→350 · tag-rows 1/1 · OK
 - 2026-07-28 20:01 UTC · `memory_delta_20260728_news_stabilize_retoma_forward.sql` · memory_items 350→352 · tag-rows 2/2 · OK
+- 2026-07-30 06:48 UTC · `memory_delta_20260730_xau_fomc_range_structure.sql` · memory_items 352→353 · tag-rows 1/1 · OK
