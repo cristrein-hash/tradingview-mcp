@@ -50,8 +50,16 @@ def _zone_view(zs, last):
     stack.below = zonas NÃO totalmente acima (low<last, inclui atravessadas), nearest-first."""
     if not zs or last is None:
         return {"n": len(zs), "above": None, "below": None}
-    above = min((z for z in zs if z["low"] > last), key=lambda z: z["low"], default=None)
-    below = max((z for z in zs if z["high"] < last), key=lambda z: z["high"], default=None)
+    # PRIORIZAR OB Detector (Cris 2026-07-30): antes escolhia a box mais próxima por geometria misturando
+    # TODOS os estudos (OB Detector + HTF Power of Three + SMC), e a "supply/demand" saía muitas vezes como
+    # uma RANGE do PoT, não um order block. Regra: se houver zona do OB Detector desse lado, usa a mais
+    # próxima OB; senão FALLBACK = mais próxima de qualquer estudo (byte-idêntico ao comportamento antigo).
+    _is_ob = lambda z: "OB Det" in (z.get("src") or "")
+    _above = lambda pool: min((z for z in pool if z["low"] > last), key=lambda z: z["low"], default=None)
+    _below = lambda pool: max((z for z in pool if z["high"] < last), key=lambda z: z["high"], default=None)
+    _ob = [z for z in zs if _is_ob(z)]
+    above = _above(_ob) or _above(zs)
+    below = _below(_ob) or _below(zs)
     out = {"n": len(zs), "above": above, "below": below}
     if STACKED:
         def _dedup(seq):
@@ -62,9 +70,10 @@ def _zone_view(zs, last):
                 if k not in seen:
                     seen.add(k); uni.append(z)
             return uni[:STACK_N]
+        # stack também prioriza OB: zonas OB primeiro, depois as restantes por geometria (fallback preservado).
         out["stack"] = {
-            "above": _dedup(sorted((z for z in zs if z["high"] > last), key=lambda z: z["low"])),
-            "below": _dedup(sorted((z for z in zs if z["low"] < last), key=lambda z: -z["high"])),
+            "above": _dedup(sorted((z for z in zs if z["high"] > last), key=lambda z: (0 if _is_ob(z) else 1, z["low"]))),
+            "below": _dedup(sorted((z for z in zs if z["low"] < last), key=lambda z: (0 if _is_ob(z) else 1, -z["high"]))),
         }
     return out
 
