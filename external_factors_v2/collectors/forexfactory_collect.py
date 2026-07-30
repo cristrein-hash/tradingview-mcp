@@ -4,8 +4,10 @@ Substitui o gerador determinístico 1ª-sexta (bug de shift de feriado) + o fetc
 a captura de actual. Traz previous + forecast(consenso) + actual num só feed, com a data REAL (já com
 shift de feriado). Normaliza p/ o schema de eventos da Camada A e calcula direção NFP (surpresa->ouro).
 Determinístico, py3.9. Saída: snapshots/ff_calendar.json. Fonte canônica (whitelist), só leitura."""
-import json,subprocess,datetime as dt,re
+import json,sys,subprocess,datetime as dt,re
 from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from _resilient import write_resilient   # keep-last-good: fetch vazio NÃO apaga o calendário (countdown crítico)
 H=Path(__file__).parent.parent; SNAP=H/"snapshots"; SNAP.mkdir(exist_ok=True)
 URL="https://nfs.faireconomy.media/ff_calendar_thisweek.json"
 NOWT=int(dt.datetime.now(dt.timezone.utc).timestamp())
@@ -66,7 +68,14 @@ def main():
     for ev in events: ev["hours_until"]=round((ev["release_ts"]-NOWT)/3600,1)
     state={"_meta":{"built_ts":NOWT,"source":URL,"purpose":"Camada A calendário keyless (substitui gerador+consenso manual+captura)"},
            "events":events,"imminent_le96h":[e for e in events if 0<=e["hours_until"]<=96]}
-    (SNAP/"ff_calendar.json").write_text(json.dumps(state,indent=1,ensure_ascii=False))
+    # SAUDÁVEL = o feed devolveu linhas cruas (raw). Fetch vazio/falhado (o que disparou o auditor 30/07:
+    # calendário sem eventos) NÃO deve apagar o calendário bom — o countdown de eventos (FOMC/GDP/PCE) é
+    # crítico. Recompute-mos hours_until na leitura, por isso servir o calendário anterior é seguro.
+    healthy = bool(raw)
+    _w, served_stale = write_resilient(SNAP/"ff_calendar.json", state, healthy)
+    if served_stale:
+        print(f"ForexFactory: FETCH VAZIO -> mantido calendário anterior (falhas seguidas={_w.get('_meta',{}).get('consecutive_fail')}); countdown preservado")
+        return
     print(f"ForexFactory: {len(events)} eventos USD (high+mapeados) | imminent ≤96h: {len(state['imminent_le96h'])}")
     for e in state["imminent_le96h"]:
         ex=f" | cons={e['consensus']} prev={e['previous']} act={e['actual']} dir={e.get('direction',{}).get('bias')}" if e.get('consensus_k') is not None else f" | cons={e['consensus']}"
