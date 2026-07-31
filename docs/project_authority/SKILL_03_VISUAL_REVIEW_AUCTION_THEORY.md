@@ -35,6 +35,13 @@ For each trade/checkpoint, inspect:
    - aggression failing or continuing
    - seller/buyer pressure shrinking or expanding
 
+   **REGRA DE POLARIDADE DE BUBBLES — CONTEXTO-DEPENDENTE (canónica; validada 2026-06-03, n=1163 XAU 4H; memory `feedback_bubbles_polarity_rule`; código: `alert-bridge/bubble_polarity.py`).**
+   A cor da bubble por si só NÃO é o sinal — o sinal é se a agressão está a ser **absorvida** num nível (reversão) ou a **continuar** com a perna (pullback). Classifica o CONTEXTO primeiro, depois aplica a polaridade. NUNCA "sell=bearish" nem "LONG exige buy-cluster" como regra fixa (foi o bug de 2026-06-03). Mapeamento cru: BUY=plot_0/2/4, SELL=plot_6/8/10.
+   - **Reversal-em-fundo** (drawdown/capitulação/fundo em demanda 4H/1D, RSI oversold): **SELL-bubble absorvido = BULLISH** (agressão vendedora no low absorvida por limit-buyers = acumulação); BUY-bubble = anti-padrão. → um LONG de reversão-em-fundo com SELL absorvido está CONFIRMADO, não bloqueado por "falta de buy-cluster".
+   - **Pullback em uptrend** (demanda em regime BULL, continuação): **BUY-bubble = BULLISH**; SELL = neutro.
+   - **Reversal-em-topo** (SHORT em supply, RSI overbought): **BUY-bubble absorvido = BEARISH** (distribuição); SELL = anti-padrão.
+   - **GUARDA (absorção ≠ faca):** "absorvido" exige reclaim/hold ≥2 barras fechadas no nível. Vertical news-driven (FOMC-spike, high_impact) que atravessa o nível = FACA/continuação, não absorção.
+
 5. **Structure**
    - BOS
    - CHoCH

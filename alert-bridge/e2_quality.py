@@ -23,6 +23,7 @@ BASE = Path(__file__).resolve().parent
 REPO = BASE.parent
 LOGS = BASE / "logs"; LOGS.mkdir(exist_ok=True)
 sys.path.insert(0, str(BASE))
+from bubble_polarity import BUBBLE_POLARITY_RULE   # fonte única — polaridade context-dependente das bubbles
 DOSSIER = REPO / "external_factors_v2" / "snapshots" / "market_context.json"
 CAND_F = LOGS / "e1_candidates.jsonl"
 VERD_F = LOGS / "e2_verdicts.jsonl"
@@ -171,6 +172,8 @@ READ_SYS = (
     "Usa só o dossiê dado; não inventes números. Advisory para um humano, NUNCA uma ordem. "
     "Devolve SÓ um objeto JSON, nada de texto à volta."
 )
+# polaridade context-dependente das bubbles (fonte única, partilhada com claude_recheck — não podem divergir)
+READ_SYS = READ_SYS + "\n\n" + BUBBLE_POLARITY_RULE
 SCHEMA_HINT = (
     "\n\nDevolve SÓ este JSON (raciocínio primeiro):\n"
     '{"reasoning":"<percorre a fita: estrutura MTF, micro, auction, macro, zonas — o que cada uma diz e como '
@@ -271,6 +274,9 @@ def render_composite(dsr, cand):
     if vsn:
         L.append(f"  vol sessão: up {fmt(vsn.get('up'),0)} / dn {fmt(vsn.get('dn'),0)} (ratio {fmt(vsn.get('ratio'),2)})")
     L.append("\n# AUCTION / CONFLUÊNCIA 15M (ativação de bubbles ao longo da perna)")
+    L.append("  (lê a polaridade destas bubbles pela BUBBLE POLARITY RULE do sistema: em reversal-em-fundo/demanda "
+             "SELL-absorvido = BULLISH e BUY = anti-padrão; em pullback-uptrend BUY = bullish; em reversal-em-topo "
+             "BUY-absorvido = bearish. Exige reclaim/hold >=2 barras p/ 'absorção'; vertical news-driven = faca, não absorção.)")
     L.append(f"  perna {conf.get('leg_dur_bars','—')} barras | buy_dens {fmt(conf.get('buy_dens'),2)} "
              f"sell_dens {fmt((conf.get('sell') or {}).get('dens'),2)} | act_dens {fmt(conf.get('act_dens'),2)} "
              f"| leg_sell {conf.get('leg_sell','—')} | nas_n {conf.get('nas_n','—')}")

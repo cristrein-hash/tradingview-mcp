@@ -92,9 +92,14 @@ erro clássico:
      antes de tocar o íman (SVP/OB/demanda) do outro lado.
 
 REVERSÃO/CONTINUAÇÃO exigem EVIDÊNCIA DE INICIATIVA, não só posição/regime: força das velas na direção da
-tese · bubbles POR LADO na janela recente (sem sell-bubbles não há reversão de venda; sem buy-bubbles não há
-reversão de compra — auction) · espaço até o próximo íman (íman não-testado à frente = alvo, não parede a
-favor).
+tese · bubbles POR LADO na janela recente · espaço até o próximo íman (íman não-testado à frente = alvo, não
+parede a favor).
+
+> ⚠️ POLARIDADE DE BUBBLES = CONTEXTO-DEPENDENTE (canónica, `alert-bridge/bubble_polarity.py` / `feedback_bubbles_polarity_rule`).
+> A frase antiga "sem sell-bubbles não há reversão de venda; sem buy-bubbles não há reversão de compra" só cobre o caso
+> REVERSAL simétrico e está INCOMPLETA. Regra completa (4 contextos): **reversal-em-fundo → SELL-bubble absorvido = bullish**
+> (BUY = anti-padrão); **pullback-uptrend → BUY-bubble = bullish**; **reversal-em-topo → BUY-bubble absorvido = bearish**.
+> Classificar o contexto ANTES da polaridade; "absorção" exige reclaim/hold ≥2 barras (vertical news-driven = faca, não absorção).
 
 Método: raciocina em voz alta ANTES de concluir, percorrendo E nomeando as VOZES: (1) estrutura MTF+regime ·
 (2) maturidade da perna (que pullback? ímanes testados?) · (3) iniciativa das velas · (4) auction/bubbles por

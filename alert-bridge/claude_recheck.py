@@ -7,6 +7,8 @@ import textwrap
 import fcntl
 import time
 from datetime import datetime
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from bubble_polarity import BUBBLE_POLARITY_RULE   # fonte única — polaridade context-dependente das bubbles
 
 CHART_LOCK_PATH = "/tmp/tradingview_chart.lock"
 CHART_LOCK_TIMEOUT_S = 90
@@ -320,22 +322,25 @@ def build_prompt(alert: dict) -> str:
 
     REGRAS OPERACIONAIS V4 (D2R Phase 1 — 2026-05-13, baseadas em 95 trades reais):
 
-    1. **BUBBLE CLUSTER GATE (restrito por TF — atualizado 2026-05-15):**
-       - TF 15M / 30M: SEM cluster bubbles → no MÁXIMO SETUP_EM_OBSERVACAO.
-         Razão: LTF mais propenso a noise; cluster é confluência crítica em baixa
-         resolução temporal.
-       - TF 1H / 4H / 12H / 1D: cluster bubbles é OPCIONAL. NÃO bloqueia promoção
-         a SETUP_CANDIDATO_FORTE quando ausente. Outras confluências estruturais
-         (CHoCH/BOS, RSI extremo, divergência, sweep, NAS, rejeição, zona nested
-         HTF) substituem o sinal de cluster.
-         Razão: auditoria 2026-05-15 (n=557 records operacionais) mostrou cluster
-         present em 0/13 records TF 4H. Gate impedia CANDIDATO_FORTE em 4H —
-         justamente o TF de melhor win rate documentado (D2R Phase 1: TF 4H = 71%
-         win, avg +1.63R). Phase 1 (n=2 no grupo controle sem cluster) é base
-         estatística frágil; relaxamento por TF mantém proteção em LTF onde
-         noise domina e libera HTF onde estrutura dispensa cluster.
-       - Em TF 1H / 4H / 12H / 1D: AINDA assim, se cluster bubble estiver PRESENT,
-         tratar como confluência extra forte (peso na decisão).
+    {BUBBLE_POLARITY_RULE}
+
+    1. **BUBBLE CLUSTER GATE (restrito por TF; polaridade CONTEXTO-DEPENDENTE — corrigido 2026-07-31):**
+       O "cluster" que satisfaz o gate é o cluster do LADO CORRETO ao contexto (ver BUBBLE POLARITY RULE
+       acima), NUNCA um cluster de compra por defeito. Classifica o contexto do setup PRIMEIRO, depois exige
+       o lado certo:
+       - reversal-em-fundo/demanda (LONG): o cluster que satisfaz é SELL-bubble ABSORVIDO no low + reclaim/hold
+         (acumulação). NÃO exigir buy-cluster; um buy-cluster no low é ANTI-PADRÃO. NUNCA rebaixar um LONG de
+         reversão-em-fundo por "falta de buy-cluster" — foi o bug de 2026-06-03.
+       - pullback em uptrend confirmado (LONG continuação): o cluster que satisfaz é BUY-bubble (iniciativa a retomar).
+       - reversal-em-topo/supply (SHORT): o cluster que satisfaz é BUY-bubble ABSORVIDO no high + rejeição/hold (distribuição).
+       - TF 15M / 30M: SEM cluster DO LADO CORRETO → no MÁXIMO SETUP_EM_OBSERVACAO — mas só quando nenhuma
+         outra confluência estrutural o substitui, e nunca contra a regra de polaridade acima.
+         Razão: LTF mais propenso a noise; cluster do lado certo é confluência crítica em baixa resolução.
+       - TF 1H / 4H / 12H / 1D: cluster é OPCIONAL. NÃO bloqueia promoção a SETUP_CANDIDATO_FORTE quando ausente.
+         Outras confluências estruturais (CHoCH/BOS, RSI extremo, divergência, sweep, NAS, rejeição, zona nested
+         HTF) substituem o sinal de cluster. Auditoria 2026-05-15 (n=557): cluster present em 0/13 records TF 4H,
+         e o gate impedia CANDIDATO_FORTE justamente no melhor TF (4H = 71% win, +1.63R).
+       - Se cluster do lado correto estiver PRESENT em qualquer TF, tratar como confluência extra forte (absorção).
 
     2. **SHORT side — política por ativo (PR 4, D2R n=220 atualizado 2026-05-14):**
        ATIVOS COM SHORT OPERACIONAL (podem virar CANDIDATO_FORTE se critérios OK):
@@ -350,7 +355,8 @@ def build_prompt(alert: dict) -> str:
        - **XAUUSD SHORT**: marginal (n=23, 39% win). Máximo SETUP_EM_OBSERVACAO até nova análise.
        - **USOUSD SHORT**: BLOQUEADO operacionalmente (n=6, 17% win, -2.58R). Pode classificar OBSERVACAO ou NO_TRADE.
 
-       Em todos os casos: bear divergence obrigatória + CHoCH/BOS fechado + cluster bubbles para CANDIDATO_FORTE.
+       Em todos os casos: bear divergence obrigatória + CHoCH/BOS fechado + cluster de bubbles DO LADO CORRETO
+       ao contexto (SHORT em topo = BUY-bubble absorvido; ver BUBBLE POLARITY RULE) para CANDIDATO_FORTE.
 
     3. **LONG side — política por ativo (PR 4, D2R n=220):**
        ATIVOS COM LONG OPERACIONAL (podem virar CANDIDATO_FORTE se critérios OK):
@@ -478,7 +484,7 @@ def build_prompt(alert: dict) -> str:
     - sweep/reentry;
     - sinal NAS100 LONG/SHORT dentro ou na borda da zona;
     - rejeição clara;
-    - cluster Market Order Bubbles;
+    - cluster Market Order Bubbles DO LADO CORRETO ao contexto (ver BUBBLE POLARITY RULE — SELL-absorção no fundo p/ LONG de reversão; BUY-absorção no topo p/ SHORT);
     - zona nested em HTF;
     - linha dinâmica de invalidação/reentry/breakout;
     - contexto HTF favorecendo direção;
@@ -807,7 +813,8 @@ def build_prompt(alert: dict) -> str:
                                           (real yield escalonado + writer 9 fatores).
 
       OPERATIONAL GATES (NÃO são hard blocks globais, são downgrade caps por ativo/TF):
-        - BUBBLE_CLUSTER_GATE_LTF       — TF 15M/30M sem cluster → max OBSERVACAO
+        - BUBBLE_CLUSTER_GATE_LTF       — TF 15M/30M sem cluster DO LADO CORRETO ao contexto → max OBSERVACAO
+                                          (SELL-absorção no fundo SATISFAZ o gate p/ LONG de reversão; ver BUBBLE POLARITY RULE)
                                           (TF 1H+ liberado em 2026-05-15)
         - ASSET_DIRECTION_BLOCKED       — ex: XPT SHORT bloqueado, USOUSD SHORT bloqueado.
                                           Use formato ASSET_DIRECTION_BLOCKED:{{SYMBOL}}_{{DIR}}.
@@ -897,7 +904,7 @@ def build_prompt(alert: dict) -> str:
       Operational gates (NÃO são hard blocks — usar somente quando essa for
       A ÚNICA razão do downgrade; senão deixar NONE e mencionar em Module
       checklist notes):
-        BUBBLE_CLUSTER_GATE_LTF       — apenas em TF 15M/30M
+        BUBBLE_CLUSTER_GATE_LTF       — apenas em TF 15M/30M; polaridade context-dependente (lado correto ao setup)
         ASSET_DIRECTION_BLOCKED:{{SYMBOL}}_{{LONG|SHORT}}
 
       Reserva:
