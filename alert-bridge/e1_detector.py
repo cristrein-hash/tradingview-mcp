@@ -31,6 +31,11 @@ STRUCT_TFS = ("240", "60", "15")
 # gap #1 (Cris 2026-07-27): gatilhos de rejeição iteram o STACK de zonas empilhadas (dossiê zones.stack,
 # construído por context_mtf com a MESMA flag). OFF = nearest-only byte-idêntico.
 STACKED = os.environ.get("E1_STACKED_ZONES", "0") == "1"
+# 2ª quebra = CONFIRMAÇÃO (Cris 2026-07-31): o 1º CHoCH/BOS é muitas vezes manipulação (liquidity grab);
+# a 2ª quebra (nova quebra de swing DENTRO de uma perna já ESTABELECIDA/confirmada = trend==DOWN/UP) é a
+# confirmação real, e vale mais que a 1ª. R3 choch só apanha a 1ª borda; este apanha as continuações. OFF=byte-idêntico.
+BOS_CONT = os.environ.get("E1_BOS_CONTINUATION", "0") == "1"
+MIN_CONT_LEG_ATR = 1.0       # perna mínima (mag_atr) p/ a continuação valer — mata micro-legs/ruído de range
 
 
 def now_iso(): return dt.datetime.now(dt.timezone.utc).isoformat()
@@ -167,6 +172,29 @@ def detect(d, p):
         if m.get("choch", {}).get("up") and not (pm.get("choch", {}) or {}).get("up"):
             lv = levels("LONG", close, sl15_low, atr15, zones, pos_tf)
             if lv: out.append(dict(rule="choch", tf=tf, direction="LONG", src="mtf.choch.up/SL15m", **lv))
+
+        # R8 bos_continuation (2ª quebra = CONFIRMAÇÃO): perna JÁ estabelecida (trend==DOWN/UP => a 1ª quebra
+        # já aconteceu e confirmou por fractal) + quebra FRESCA de novo extremo do swing na direção da perna.
+        # pos=None: a continuação dispara NO extremo (pos≈0), logo o gate de pos-freshness do levels() (SHORT só
+        # pos>=0.5) tem de estar OFF. SL 15M-local (fix#1). Dedup: a cruz pclose→close só arma na barra da quebra.
+        # Consome o dossiê E0 já parseado (m = mtf[tf]); NÃO reconstrói leitura — é mais um gatilho no detector.
+        if BOS_CONT:
+            legd = m.get("leg") or {}; mag = legd.get("mag_atr")
+            pchoch = pm.get("choch") or {}   # 1ª quebra JÁ registada no ciclo/barra anterior (marcador "estab.")
+            # "perna estabelecida" = pm.choch.dn/up (a 1ª quebra já aconteceu; R3 apanhou-a). NÃO uso trend==DOWN:
+            # o fractal m=3 raramente confirma DOWN numa queda rápida (provado no replay: trend=RANGE na quebra
+            # real da barra 378). pm.choch garante que NÃO é a 1ª quebra (essa é do R3) = a 2ª = confirmação.
+            # SL ESTRUTURAL da continuação = logo acima/abaixo do NÍVEL QUEBRADO (o ll/lh que acabou de partir):
+            # se o preço reclamar o nível quebrado, a continuação falhou. Usar sl15_high daria R largo demais
+            # (entrada num novo extremo, longe do último swing 15M) e levels() descartava (provado no replay b378).
+            if (pchoch.get("dn") and legd.get("dir") == "down" and mag and mag >= MIN_CONT_LEG_ATR
+                    and ll.get("price") and pclose is not None and pclose >= ll["price"] and close < ll["price"]):
+                lv = levels("SHORT", close, ll["price"], atr15, zones, pos=None)
+                if lv: out.append(dict(rule="bos_continuation", tf=tf, direction="SHORT", src="2a quebra lower-low (choch-dn prévio+perna down)/SL nível-quebrado", **lv))
+            if (pchoch.get("up") and legd.get("dir") == "up" and mag and mag >= MIN_CONT_LEG_ATR
+                    and lh.get("price") and pclose is not None and pclose <= lh["price"] and close > lh["price"]):
+                lv = levels("LONG", close, lh["price"], atr15, zones, pos=None)
+                if lv: out.append(dict(rule="bos_continuation", tf=tf, direction="LONG", src="2a quebra higher-high (choch-up prévio+perna up)/SL nível-quebrado", **lv))
 
         # R1 sweep+reclaim (gatilho no TF; SL 15M-local; entrada fresca)
         if ll.get("price") and pl.get("price") and ll["price"] < pl["price"] and close > pl["price"]:
@@ -427,7 +455,32 @@ if __name__ == "__main__":
         print(f"CHoCH-dn transição -> SHORT candidato: {ok_trigger} (n={len(short_choch)})")
         print(f"confluência SHORT: score={score} breakdown={brk} (esp>=5): {ok_conf}")
         print(f"materialidade pass (RR ok + SL banda + conf>=2): {ok_pass}")
-        print("RESULTADO:", "PASS" if (ok_trigger and ok_conf and ok_pass) else "FALHA")
-        sys.exit(0 if (ok_trigger and ok_conf and ok_pass) else 1)
+        # --- R8 bos_continuation (2ª quebra = confirmação); fixtures sintéticos, não reader paralelo ---
+        globals()["BOS_CONT"] = True
+        def mkcont(chdn, close):
+            b = mk(chdn, close)   # mk define 240 choch.dn = chdn (marcador da 1ª quebra)
+            b["axes"]["mtf"]["240"]["leg"] = {"low": 80, "high": 120, "mag_atr": 4.0, "pos_in_leg": 0.0, "dir": "down"}
+            b["axes"]["mtf"]["240"]["swings"] = {"last_high": {"price": 120, "bar": 5}, "last_low": {"price": 100, "bar": 2},
+                                                 "prev_high": {"price": 122, "bar": 1}, "prev_low": {"price": 118, "bar": 0}}
+            b["axes"]["mtf"]["240"]["zones"] = {}
+            b["axes"]["mtf"]["15"]["leg"] = {"low": 80, "high": 120, "mag_atr": 4.0, "pos_in_leg": 0.0}
+            b["axes"]["mtf"]["15"]["swings"] = {"last_high": {"price": 108, "bar": 5}, "last_low": {"price": 100, "bar": 2}}
+            b["axes"]["micro_15m"]["close"] = close
+            return b
+        cc = detect(mkcont(True, 99.0), mkcont(True, 101.0))
+        bos_fire = [c for c in cc if c["rule"] == "bos_continuation" and c["direction"] == "SHORT"]
+        cf = detect(mkcont(True, 99.0), mkcont(False, 101.0))
+        bos_first = [c for c in cf if c["rule"] == "bos_continuation"]
+        globals()["BOS_CONT"] = False
+        coff = detect(mkcont(True, 99.0), mkcont(True, 101.0))
+        ok_bos_fire = len(bos_fire) >= 1
+        ok_bos_first = len(bos_first) == 0
+        ok_bos_off = not any(c["rule"] == "bos_continuation" for c in coff)
+        print(f"bos_continuation 2a-quebra dispara SHORT: {ok_bos_fire} (n={len(bos_fire)})")
+        print(f"bos_continuation NAO dispara na 1a quebra (pm.choch.dn False = R3): {ok_bos_first}")
+        print(f"bos_continuation OFF = byte-identico (0 candidatos): {ok_bos_off}")
+        allok = ok_trigger and ok_conf and ok_pass and ok_bos_fire and ok_bos_first and ok_bos_off
+        print("RESULTADO:", "PASS" if allok else "FALHA")
+        sys.exit(0 if allok else 1)
     else:
         main_loop()

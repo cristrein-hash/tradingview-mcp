@@ -108,6 +108,14 @@ def main():
     post = [(i, px, c) for (i, px, c) in shorts if i >= peak_i]
     passed = [(i, px, c) for (i, px, c) in post if c["materiality"]["pass"]]
     print(f"\n=== SHORT candidatos na queda (após pico @ barra {peak_i}): {len(post)} (materiais: {len(passed)}) ===")
+    from collections import Counter
+    rc = Counter(c["rule"] for (_i, _px, c) in post)
+    print("  por regra:", dict(rc))
+    _bc = [(i, px, c) for (i, px, c) in post if c["rule"] == "bos_continuation"]
+    if _bc:
+        print(f"  bos_continuation ({len(_bc)}):")
+        for i, px, c in _bc[:8]:
+            print(f"    barra {i} px {px} | {c['tf']} entry {c['entry']} SL {c['sl']} tgt {c['target']} RR {c['rr']} pass {c['materiality']['pass']}")
     for i, px, c in post[:12]:
         print(f"  barra {i} px {px} | {c['rule']} {c['tf']} entry {c['entry']} SL {c['sl']} tgt {c['target']} "
               f"RR {c['rr']} conf {c['materiality']['confluence']} pass {c['materiality']['pass']}")
