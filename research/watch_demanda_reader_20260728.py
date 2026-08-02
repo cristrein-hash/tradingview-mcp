@@ -21,7 +21,11 @@ hm = lambda t: dt.datetime.fromtimestamp(int(t), LX).strftime("%d/%m %H:%M")
 # volta acima de 4010) — o reader julga; o toque é só heads-up. Macro: petróleo↑ → DXY a recuperar → dólar a
 # firmar = sobe a hipótese de o preço DESCER a testar o OB antes do repique. Boa chance de repique de alta lá.
 # Mantenho também o teto CHoCH 4051 (reclaim de momentum) como 2ª zona qualificante.
-DEMANDS = [(3995.84, 4010.0, "OB demand 3995-4010 (ESTRUTURAL — reclaim acima de 4010 = juízo do reader)"),
+# Cris 2026-07-31: "possível compra nesta região, qualquer reclaim genuíno sinalizado". Cobre as 3 zonas
+# vivas: OB Detector 15M 4028-4036 (demanda real onde a retoma disparou), OB 4H 3995-4010 (estrutural profundo),
+# e o teto CHoCH 4051 (momentum). Reclaim = fecho de volta acima do topo da zona; o reader julga a legitimidade.
+DEMANDS = [(4028.0, 4036.66, "OB Detector 15M 4028-4036 (demanda real — reclaim acima de 4036 = juízo do reader)"),
+           (3995.84, 4010.0, "OB demand 4H 3995-4010 (ESTRUTURAL profundo — reclaim acima de 4010 = juízo do reader)"),
            (4040.0, 4051.0, "teto CHoCH 4051 (reclaim de momentum acima de 4051 = juízo do reader)")]
 TOUCH_BUF = 1.0
 
