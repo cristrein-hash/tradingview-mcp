@@ -6,5 +6,5 @@ export PATH="$HOME/.local/bin:/usr/local/bin:$PATH"
 export E1_STACKED_ZONES=1
 export E1_BOS_CONTINUATION=1   # 2ª quebra = confirmação (Cris 2026-07-31); shadow, E2 julga cada candidato
 export E1_OB_TOUCH=1           # R9 toque+hold no OB HTF (Cris 2026-08-02); shadow, E2 julga
-export E1_TOP_FADE=0           # R10 fade de exaustão — MODO ESTUDO (Cris decide ON após rever qualidade)
+export E1_TOP_FADE=1           # R10 fade de exaustão — LIVE (Cris 2026-08-02: "mercado em bear"); shadow, E2 julga
 exec python3 -u e1_detector.py
