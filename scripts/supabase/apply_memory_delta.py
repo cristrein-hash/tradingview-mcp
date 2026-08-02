@@ -35,7 +35,10 @@ def die(msg):
 
 
 def strip_sql(text):
-    text = re.sub(r"--[^\n]*", "", text)
+    # BUG FIX 2026-08-02: o regex antigo r"--[^\n]*" comia '--' DENTRO de string literals dos corpos
+    # (ex.: '--selftest', '--week') engolindo a aspa de fecho -> "syntax error at or near seed" (HTTP 400).
+    # Agora so remove comentarios de LINHA INTEIRA (linha que comeca com --), o unico uso nos seeds.
+    text = re.sub(r"^\s*--[^\n]*$", "", text, flags=re.M)
     text = text.replace("begin;", "").replace("commit;", "")
     return text.strip().rstrip(";").strip()
 
