@@ -180,7 +180,8 @@ def components():
         "Bars 15M":    chk_bar_fresh(REPO / "my-strategy/core/bar_store/store/bars_15m.jsonl", 900, 45*60),  # tab 15M viva? (o susto de hoje)
         "PriceShock":  chk_log_status(REPO / "my-strategy/core/price_shock/.shock_state/shock_cycle.log", 5*60, bad_prefixes=("HARD_STOP",)),
         "GLD-ws":      chk_gld_ws(REPO / "my-strategy/core/price_shock/.shock_state/gld_ws_heartbeat.json"),
-        "FJ-ws":       chk_gld_ws(REPO / "external_factors_v2/snapshots/fj_ws_heartbeat.json", 300),
+        # FJ-ws REMOVIDO do painel (Cris 2026-08-02): daemon DESLIGADO por decisão 31/07 (403/plano caro,
+        # fonte secundária) — vigiá-lo gerava "ainda cego" a cada 6h a poluir o Telegram. Ver project_fj_ws_disabled.
         "Receiver":    chk_http_health("http://127.0.0.1:8787/health"),      # webhook ENTRADA (A auditoria)
         "Cloudflared": chk_process("cloudflared tunnel run"),               # túnel público ENTRADA
         "Bridge":      chk_process("telegram_assistant_bridge"),            # ponte Cris↔Claude (o canal que caiu 2026-07-21)
