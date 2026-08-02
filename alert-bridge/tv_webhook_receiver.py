@@ -1995,6 +1995,25 @@ class Handler(BaseHTTPRequestHandler):
         with LOG_FILE.open("a", encoding="utf-8") as f:
             f.write(json.dumps(event, ensure_ascii=False) + "\n")
 
+        # === ALERTAS PESSOAIS do TradingView = MUDOS (Cris 2026-08-02) ===
+        # "Vou seguir colocando alertas no TradingView para minha análise pessoal, não preciso deles
+        # sinalizados no Telegram nem a serem considerados pelo sistema." Alerta pessoal = corpo não-JSON
+        # (raw_message só nasce no parse-fail acima) ou payload não-dict; sem alert_type/symbol/ticker.
+        # Fica LOGADO (auditoria, linha acima) mas: sem Telegram, sem claude_recheck, sem schema_warnings.
+        # 200 sempre (senão o TradingView desativa o alerta). Rollback: TV_MUTE_PERSONAL_ALERTS=0 + restart.
+        if os.environ.get("TV_MUTE_PERSONAL_ALERTS", "1") == "1":
+            _personal = (not isinstance(parsed, dict)) or (
+                "raw_message" in parsed and not parsed.get("alert_type")
+                and not (parsed.get("symbol") or parsed.get("ticker")))
+            if _personal:
+                _rm = parsed.get("raw_message") if isinstance(parsed, dict) else str(parsed)
+                print(json.dumps({"personal_tv_alert": True, "raw_message": str(_rm)[:120],
+                                  "telegram_ok": "skipped_personal", "claude_recheck_queued": False},
+                                 ensure_ascii=False), flush=True)
+                self._send(200, {"ok": True, "saved_to": str(LOG_FILE), "personal_tv_alert": True,
+                                 "telegram_ok": "skipped_personal", "claude_recheck_queued": False})
+                return
+
         # === Schema enforcement Fase 1 SHADOW (2026-05-24) ===
         # Não rejeita — só loga warnings estruturados em logs/schema_warnings.jsonl
         try:
