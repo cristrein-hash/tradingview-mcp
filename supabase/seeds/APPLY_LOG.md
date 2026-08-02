@@ -64,3 +64,4 @@
 - 2026-08-02 18:31 UTC · `memory_delta_20260731_bubble_polarity_context_fix.sql` · memory_items 355→356 · tag-rows 1/1 · OK
 - 2026-08-02 18:31 UTC · `memory_delta_20260802_week_eval_r9_r10_retoma_archive.sql` · memory_items 356→358 · tag-rows 2/2 · OK
 - 2026-08-02 18:32 UTC · `memory_delta_20260802_r10_live_r9_descritores.sql` · memory_items 358→359 · tag-rows 1/1 · OK
+- 2026-08-02 18:53 UTC · `memory_delta_20260802_telegram_hygiene.sql` · memory_items 359→360 · tag-rows 1/1 · OK
