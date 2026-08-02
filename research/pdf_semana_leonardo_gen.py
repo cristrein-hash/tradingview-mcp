@@ -17,14 +17,21 @@ H2 = ParagraphStyle("H2", parent=ss["Heading2"], fontSize=12.5, spaceBefore=10, 
 P = ParagraphStyle("P", parent=ss["BodyText"], fontSize=9.8, leading=13.5, spaceAfter=4)
 SM = ParagraphStyle("SM", parent=P, fontSize=8.8, textColor=colors.HexColor("#555555"))
 
+CELL = ParagraphStyle("CELL", parent=ss["BodyText"], fontSize=8.2, leading=10.5, spaceAfter=0)
+CELLH = ParagraphStyle("CELLH", parent=CELL, textColor=colors.white, fontName="Helvetica-Bold")
+
+
 def tbl(data, widths):
-    t = Table(data, colWidths=widths)
+    # células como Paragraph => quebra de linha automática (strings simples sobrepunham texto longo)
+    wrapped = []
+    for ri, row in enumerate(data):
+        wrapped.append([Paragraph(str(c), CELLH if ri == 0 else CELL) for c in row])
+    t = Table(wrapped, colWidths=widths)
     t.setStyle(TableStyle([
-        ("FONTSIZE", (0, 0), (-1, -1), 8.4), ("GRID", (0, 0), (-1, -1), 0.4, colors.HexColor("#cccccc")),
+        ("GRID", (0, 0), (-1, -1), 0.4, colors.HexColor("#cccccc")),
         ("VALIGN", (0, 0), (-1, -1), "TOP"), ("TOPPADDING", (0, 0), (-1, -1), 3),
         ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
-        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#0f3460")),
-        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white), ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold")]))
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#0f3460"))]))
     return t
 
 doc = SimpleDocTemplate(OUT, pagesize=A4, topMargin=15 * mm, bottomMargin=13 * mm,
