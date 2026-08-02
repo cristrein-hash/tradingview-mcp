@@ -87,6 +87,13 @@ def run_B(rows, out):
 RETOMA_LEDGER = STATE / "retoma_ledger.jsonl"
 
 
+# RETOMA v1 = ARQUIVADA (Cris 2026-08-02, avaliação da semana): prereg REPROVADO (streak 8L > baliza 5;
+# painel N=10 1W/9L −6R). A experiência cumpriu o propósito de contraste mecânico-vs-reader; a classe
+# estrutural (comprar NO OB) herda no E1 R9 ob_touch_hold. ARQUIVO = não regista candidatos NOVOS;
+# a resolução SL-first continua até os OPEN restantes fecharem (2 à data do arquivo).
+RETOMA_ARCHIVED = True
+
+
 def run_retoma(rows, out):
     """Ramo BEAR: RETOMA v1 DRY (prereg RETOMA_ENGINE_V1_PREREG_FORWARD_20260727). Forward-only limpo:
     zonas AS-OF do store agora, e SÓ regista candidato cuja ENTRADA acabou de acontecer (<=2 barras) —
@@ -110,17 +117,18 @@ def run_retoma(rows, out):
                 if k not in seen:
                     seen.add(k); zones.append({"low": z["low"], "high": z["high"]})
     t_lo = T[-1] - 96 * BAR_S                                 # fundo recente (<=1 dia)
-    cands = re1.retoma_scan(T, O, H, L, C, BUYS, SELLS, zones, t_lo=t_lo)
-    fresh = [c for c in cands if c["etime"] >= T[-1] - FRESH_BARS * BAR_S]
     led = [json.loads(l) for l in RETOMA_LEDGER.read_text().splitlines() if l.strip()] if RETOMA_LEDGER.exists() else []
-    known = {r.get("fundo_t") for r in led}
-    added = 0
-    with open(RETOMA_LEDGER, "a") as fh:
-        for c in fresh:
-            if c["fundo_t"] in known:
-                continue
-            rec = dict(c); rec["ts"] = out["ts"]; rec["outcome"] = "OPEN"; rec["zona_asof"] = c["zona"]
-            fh.write(json.dumps(rec, ensure_ascii=False) + "\n"); added += 1
+    added = 0; cands = []; fresh = []
+    if not RETOMA_ARCHIVED:                                   # arquivo: sem candidatos novos, só resolução
+        cands = re1.retoma_scan(T, O, H, L, C, BUYS, SELLS, zones, t_lo=t_lo)
+        fresh = [c for c in cands if c["etime"] >= T[-1] - FRESH_BARS * BAR_S]
+        known = {r.get("fundo_t") for r in led}
+        with open(RETOMA_LEDGER, "a") as fh:
+            for c in fresh:
+                if c["fundo_t"] in known:
+                    continue
+                rec = dict(c); rec["ts"] = out["ts"]; rec["outcome"] = "OPEN"; rec["zona_asof"] = c["zona"]
+                fh.write(json.dumps(rec, ensure_ascii=False) + "\n"); added += 1
     # resolve OPEN -> WIN/LOSS SL-first (árbitro forward)
     resolved = 0
     if led:
