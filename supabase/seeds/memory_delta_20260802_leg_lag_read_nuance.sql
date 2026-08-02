@@ -1,0 +1,18 @@
+-- ============================================================================
+-- SUPABASE MEMORY — DELTA SEED · seed:memory_delta_20260802_leg_lag_read_nuance
+-- ============================================================================
+-- Auditoria zero-longs + afinacao READ_SYS "perna nova em formacao" (aprovada Cris). 1 row. Idempotente.
+-- ============================================================================
+begin;
+insert into memory_items (id, scope, visibility, category, title, body, tags, source_ref, status) values
+(
+  md5('seed:memory_delta_20260802_leg_lag_read_nuance:memory_items:fix')::uuid,
+  'product', 'internal', 'feedback',
+  'Rotulo perna-1H ATRASA nas viragens -> READ_SYS "PERNA NOVA EM FORMACAO" (auditoria zero-longs 27-31/07; aprovado Cris 2026-08-02; discriminacao provada viva)',
+  'AUDITORIA (Cris: "porque o live nao gerou nenhum long numa semana com 2 longs fortes claros que podiam ser sinalizados APOS RECLAIM?"): matriz de confusao das 27 recusas de LONG do reader na semana, resolvidas SL-first contra o preco = 23 recusas CERTAS (facas, +23R evitados) vs 4 ERRADAS (teriam ganho, -11.9R oportunidade); saldo +11.1R (a conservadoria pagou) MAS os 4 erros = exatamente as 2 janelas do Cris: LONG 4010.71 no OB 4H qua 16:31 (conv22) + LONG 4044.97 qua 21:00 + LONGs 4037/4045.84 qui 08:01/08:46 (o rally de +70pts). MECANISMO UNICO nos 4: o rotulo perna-1H e ATRASADO nas viragens (vira so depois de a subida estar avancada) e o prompt mandava "ler TUDO contra o frame" -> todo long de viragem morria como contra-a-perna no exato momento da viragem (beco estrutural: impossivel aprovar o INICIO de uma reversao). Contribuintes ja corrigidos antes: polaridade bubbles (as sell-bubbles nos fundos eram lidas como pressao, fix 31/07 posterior aos 4 casos) + R9 (geracao no bloco). FIX (prompt READ_SYS, e2_quality.py): bloco "PERNA NOVA EM FORMACAO" = sequencia de reclaim CONFIRMADA (sweep do extremo + reclaim + higher-low/lower-high a segurar >=2-3 barras fechadas + CHoCH 15M no sentido novo, sobretudo apoiada em demanda/supply 4H/1D) e evidencia de perna nova e PESA COMO VOZ FORTE na convergencia — NAO descartada automaticamente como contra-a-perna. Rigor mantido: verde isolado / reclaim sem hold multi-barra / fundo fora de zona HTF = continuam faca (frame integral); a sequencia nao obriga a aprovar. PROVAS: selftest+anchors PASS (gates intactos). Sonda de discriminacao VIVA (2 reads Opus sinteticos, research/probe_reader_turn_nuance_20260802.py): A faca (verde isolado sem sequencia) -> recusada conv12 tese cita "zero reclaim" (porta as facas NAO abriu); B viragem confirmada (sweep+reclaim+HL 3barras+CHoCH-up+demanda 4H+sell absorvido) -> SURFACED conv57 contexto LONG "sweep+reclaim segurado, buy initiative, sell absorvido" temperado por macro bear. NOTA fixture v1 do B foi recusado com razao (entrada no topo do bounce pos0.85) = o reader critica cenarios maus mesmo com a nuance. Regressao exata dos 23 naos historicos impossivel (dossies rotacionados) -> forward = arbitro. Paralelo: mesmo tipo de lag que o R8 resolveu na geracao (trend==DOWN raramente confirma a tempo -> pm.choch). e2 kickstarted; commit 396ab8a.',
+  array['seed:memory_delta_20260802_leg_lag_read_nuance','rotulo-perna-atrasa-nas-viragens','perna-nova-em-formacao','auditoria-zero-longs','matriz-confusao-23-certas-4-erradas','sequencia-reclaim-confirmada','discriminacao-provada-viva-conv12-vs-57','beco-estrutural-reversoes','forward-arbitro'],
+  'alert-bridge/e2_quality.py (READ_SYS) · research/audit_no_longs_20260802.py · research/probe_reader_turn_nuance_20260802.py · feedback_leg_label_lags_at_turns · commit 396ab8a',
+  'active'
+)
+on conflict (id) do nothing;
+commit;
