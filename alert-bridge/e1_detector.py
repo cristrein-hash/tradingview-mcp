@@ -36,6 +36,19 @@ STACKED = os.environ.get("E1_STACKED_ZONES", "0") == "1"
 # confirmação real, e vale mais que a 1ª. R3 choch só apanha a 1ª borda; este apanha as continuações. OFF=byte-idêntico.
 BOS_CONT = os.environ.get("E1_BOS_CONTINUATION", "0") == "1"
 MIN_CONT_LEG_ATR = 1.0       # perna mínima (mag_atr) p/ a continuação valer — mata micro-legs/ruído de range
+# R9 ob_touch_hold (Cris 2026-08-02, avaliação da semana): comprar/vender NO bloco OB HTF (toque+hold),
+# SL atrás da borda — o gap que deixou o LONG 4011 (28/07, +5.8R ideal) sem candidato (zone_reject só
+# dispara no reclaim de SAÍDA da zona). R10 top_fade (estudo): fade de exaustão em supply HTF (sweep +
+# >=2 retests rejeitados + guarda anti-evento) — a classe do SHORT 4106 (27/07). Ambos shadow; E2 julga.
+OB_TOUCH = os.environ.get("E1_OB_TOUCH", "0") == "1"
+TOP_FADE = os.environ.get("E1_TOP_FADE", "0") == "1"
+OB_TOUCH_TOL_ATR = 0.25      # FIT: toque = wick a <=0.25·ATR15 da borda (28/07: low 4011.39 vs borda 4010)
+FADE_MIN_REJECTS = 2         # PRINCÍPIO (Cris): ouro re-testa supply 3-4x; >=2 retests rejeitados antes do fire
+FADE_EVENT_MIN = 45          # anti-FOMC: ff_event_le_min <= 45 => não dispara
+FADE_WICK_ATR = 0.25         # pavio superior mínimo da rejection bar (em ATR15)
+FADE_SPIKE_RANGE_ATR = 2.0   # barra vertical (range >= 2·ATR15) = spike de evento => não dispara
+FADE_LOOKBACK_BARS = 96      # ~24h de barras 15M p/ contar episódios de retest
+FADE_RSI_MAX = 70            # não fazer fade com momentum ainda a rasgar p/ cima (overbought no fire = skip)
 
 
 def now_iso(): return dt.datetime.now(dt.timezone.utc).isoformat()
@@ -246,6 +259,7 @@ def detect(d, p):
     # Zonas = dossiê E0 (nunca inventadas). SL/entrada = caminho estrutural do levels() (ancora+extremo da zona).
     bt = fnum(micro.get("bar_time"))
     bar_hl = _bar_hl_15m(bt) if bt else None
+    pbar = _bar_15m_prev(bt) if (bt and (OB_TOUCH or TOP_FADE)) else None
     if bar_hl and atr15:
         bar_h, bar_l = bar_hl
         for tf in ("240", "1D"):
@@ -266,6 +280,103 @@ def detect(d, p):
                         out.append(dict(rule="magnet_reject", tf=tf, direction="LONG",
                                         src=f"teste-e-rejeicao demanda {tf}/SL-zona", **lv))
                         break
+            # R9 ob_touch_hold (Cris 2026-08-02): entra NO bloco OB HTF — toque (wick chega a <=0.25·ATR15
+            # da borda) + HOLD (fecho do lado protetor do extremo; fecho ALÉM do extremo = faca => nada; a
+            # recuperação posterior é do R4). Dispara ANTES do zone_reject (que exige o reclaim de saída).
+            # ATR = do TF DA ZONA (atr_of(leg HTF)) — com atr15 a âncora de 0.5·ATR mata qualquer fecho
+            # causal junto a um bloco 4H (provado 28/07: closes 4017-4022 vs borda 4010 = 1.1·ATR15);
+            # "no bloco" é afirmação à escala 4H. SL = extremo do bloco ∓0.1·ATR via levels() estrutural.
+            # Dedup por EPISÓDIO: a condição completa (incl. levels válido) NÃO era verdadeira na barra
+            # 15M fechada anterior — sentado no bloco não re-emite; sai-e-volta re-arma. pos=None (o toque
+            # é a prova de frescura; e deve disparar também em retests de demanda a meio de perna up).
+            if OB_TOUCH:
+                atr_tf = atr_of(mtf.get(tf, {}).get("leg") or {})
+                if atr_tf:
+                    def _r9_ok(bl, c, z, side):
+                        if side == "LONG":
+                            return (z.get("low") and z.get("high") and bl <= z["high"] + OB_TOUCH_TOL_ATR * atr15
+                                    and c > z["low"]
+                                    and levels("LONG", c, sl15_low, atr_tf, dict(zz, below=z), pos=None))
+                        return (z.get("low") and z.get("high") and bl >= z["low"] - OB_TOUCH_TOL_ATR * atr15
+                                and c < z["high"]
+                                and levels("SHORT", c, sl15_high, atr_tf, dict(zz, above=z), pos=None))
+                    for z in _zstack(zz, "below"):
+                        lv = _r9_ok(bar_l, close, z, "LONG")
+                        if lv:
+                            prev_ok = (pbar and _r9_ok(pbar.get("l"), pbar.get("c"), z, "LONG"))
+                            if not prev_ok:
+                                out.append(dict(rule="ob_touch_hold", tf=tf, direction="LONG",
+                                                src=f"toque+hold demanda {tf}/SL-borda-bloco", **lv))
+                            break
+                    for z in _zstack(zz, "above"):
+                        lv = _r9_ok(bar_h, close, z, "SHORT")
+                        if lv:
+                            prev_ok = (pbar and _r9_ok(pbar.get("h"), pbar.get("c"), z, "SHORT"))
+                            if not prev_ok:
+                                out.append(dict(rule="ob_touch_hold", tf=tf, direction="SHORT",
+                                                src=f"toque+hold supply {tf}/SL-borda-bloco", **lv))
+                            break
+
+    # R10 top_fade (Cris 2026-08-02, ESTUDO — default OFF): fade de exaustão em supply HTF ANTES da quebra.
+    # A classe do SHORT 4106 (27/07, +6.3R ideal). SHORT-only até o estudo validar (espelho LONG não construído).
+    # Ordem das guardas (a mais barata/hard primeiro): (1) ANTI-EVENTO: high_impact_now OU evento <=45min OU
+    # barra vertical (range>=2·ATR15) => NUNCA dispara (o spike FOMC não passa); (2) zona supply HTF real
+    # (stack, OB-first); (3) cruz de rejeição fresca (pclose>=z.low -> close<z.low) + pavio superior >=0.25·ATR;
+    # (4) RAID PROFUNDO: o lookback atingiu >= o MEIO do bloco (liquidez tomada DENTRO da zona) e agora fecha
+    #     abaixo dela — [sonda 27/07: a referência prev_high-60M era o PRÓPRIO topo (o sweep vira a própria
+    #     referência ao confirmar) = estruturalmente errada; raid-profundo-na-zona é a semântica causal];
+    # (5) >=2 EPISÓDIOS de retest rejeitados no lookback (1º-toque-vertical tem 0 => impossível disparar);
+    # (6) rsi < 70 (não fazer fade com momentum ainda overbought) — [sonda: rsi<rsi_ma na barra de breakdown
+    #     está mal-temporizado (a exaustão mostra-se no HIGH do retest, não no fecho da quebra)].
+    # SL = high da ÚLTIMA REJEIÇÃO +0.1·ATR — [sonda: swept-high dava R>2·ATR e levels() descartava sempre;
+    #     reclamar acima do último high de rejeição = breakdown falhou = invalidação causal] (mesma lição R8).
+    if TOP_FADE and bar_hl and atr15 and pbar:
+        _rng_ok = (bar_h - bar_l) < FADE_SPIKE_RANGE_ATR * atr15
+        _ev_ok = not ng.get("high_impact_now") and not (
+            ng.get("ff_event_le_min") is not None and ng.get("ff_event_le_min") <= FADE_EVENT_MIN)
+        rsi_v = fnum(micro.get("rsi"))
+        _rsi_ok = rsi_v is None or rsi_v < FADE_RSI_MAX
+        if _rng_ok and _ev_ok and _rsi_ok:
+            tail = _bars_15m_tail(bt, FADE_LOOKBACK_BARS)
+            if tail:
+                swept_high = max(b["h"] for b in tail)
+                for tf in ("240", "1D"):
+                    zz = mtf.get(tf, {}).get("zones") or {}
+                    fired = False
+                    for z in _zstack(zz, "above"):
+                        if not (z.get("low") and z.get("high")): continue
+                        # (3) cruz de rejeição fresca + pavio
+                        cross = (pbar.get("c") is not None and pbar["c"] >= z["low"] and close < z["low"])
+                        bo = None
+                        cur = [b for b in tail if b["t"] == bt]
+                        if cur: bo = cur[-1].get("o")
+                        wick = (bar_h >= z["low"] and bo is not None
+                                and (bar_h - max(bo, close)) >= FADE_WICK_ATR * atr15)
+                        if not (cross and wick): continue
+                        # (4) raid profundo na zona
+                        if swept_high < (z["low"] + z["high"]) / 2.0: continue
+                        # (5) episódios de retest rejeitados (excluí a barra atual) + high da última rejeição
+                        eps = 0; in_ep = False; ep_rej = False; ep_hi = None; last_rej_hi = None
+                        for b in tail:
+                            if b["t"] >= bt: break
+                            touch = b["h"] >= z["low"]
+                            if touch and not in_ep:
+                                in_ep = True; ep_rej = b["c"] < z["low"]; ep_hi = b["h"]
+                            elif touch and in_ep:
+                                ep_rej = b["c"] < z["low"]; ep_hi = max(ep_hi, b["h"])
+                            elif not touch and in_ep:
+                                in_ep = False
+                                if ep_rej: eps += 1; last_rej_hi = ep_hi
+                        if in_ep and ep_rej:
+                            eps += 1; last_rej_hi = ep_hi
+                        if eps < FADE_MIN_REJECTS or not last_rej_hi: continue
+                        lv = levels("SHORT", close, last_rej_hi, atr15, dict(zz, above=None), pos=None)
+                        if lv:
+                            out.append(dict(rule="top_fade", tf=tf, direction="SHORT",
+                                            src=f"fade exaustao supply {tf} (raid {round(swept_high,1)}+{eps}retests)/SL-ultima-rejeicao", **lv))
+                            fired = True
+                        break
+                    if fired: break
     return out
 
 
@@ -299,6 +410,35 @@ def _bar_hl_15m(bar_time):
     except Exception:
         pass
     return None
+
+
+def _bars_15m_tail(bar_time, n):
+    """Últimas n barras 15M FECHADAS com t <= bar_time, oldest-first (tail-read ~32KB, read-only, fail-soft).
+    Justificação (R9/R10): os 4 swing-points do dossiê não contam episódios de retest nem veem o extremo do
+    sweep pré-confirmação fractal; precedente = _bar_hl_15m (lição price-shock v3). Sem estado novo."""
+    try:
+        p = REPO / "my-strategy/core/bar_store/store/bars_15m.jsonl"
+        with open(p, "rb") as f:
+            f.seek(0, 2); size = f.tell()
+            f.seek(max(0, size - 32000))
+            tail = f.read().decode(errors="ignore").splitlines()
+        rows = []
+        for l in tail:
+            if not l.strip() or l[0] != "{": continue
+            try: b = json.loads(l)
+            except Exception: continue
+            if b.get("t") is not None and b["t"] <= bar_time:
+                rows.append(b)
+        return rows[-n:]
+    except Exception:
+        return []
+
+
+def _bar_15m_prev(bar_time):
+    """Barra 15M fechada imediatamente ANTERIOR a bar_time (imune a gaps de sessão)."""
+    rows = _bars_15m_tail(bar_time, 3)
+    prevs = [b for b in rows if b["t"] < bar_time]
+    return prevs[-1] if prevs else None
 
 
 # ---------- materialidade + anti-spam ----------
@@ -479,7 +619,85 @@ if __name__ == "__main__":
         print(f"bos_continuation 2a-quebra dispara SHORT: {ok_bos_fire} (n={len(bos_fire)})")
         print(f"bos_continuation NAO dispara na 1a quebra (pm.choch.dn False = R3): {ok_bos_first}")
         print(f"bos_continuation OFF = byte-identico (0 candidatos): {ok_bos_off}")
-        allok = ok_trigger and ok_conf and ok_pass and ok_bos_fire and ok_bos_first and ok_bos_off
+
+        # --- R9 ob_touch_hold (fixtures sinteticos; monkeypatch dos helpers de barra do store) ---
+        _orig = (globals()["_bar_hl_15m"], globals()["_bars_15m_tail"], globals()["_bar_15m_prev"])
+        BT = 2000
+        def mk9(close=4011.0, prev_bar=None, cur_hl=(4013.0, 4008.0)):
+            b = mk(False, close)
+            b["axes"]["mtf"]["240"]["leg"] = {"low": 3990, "high": 4115, "mag_atr": 5.0, "pos_in_leg": 0.1, "dir": "down"}
+            b["axes"]["mtf"]["240"]["zones"] = {"below": {"high": 4010.0, "low": 3996.0, "src": "Custom OB Dete"}}
+            b["axes"]["mtf"]["15"]["leg"] = {"low": 4000, "high": 4070, "mag_atr": 10.0, "pos_in_leg": 0.1}
+            b["axes"]["micro_15m"]["close"] = close
+            b["axes"]["micro_15m"]["bar_time"] = BT
+            globals()["_bar_hl_15m"] = lambda t: cur_hl
+            globals()["_bar_15m_prev"] = lambda t: prev_bar
+            globals()["_bars_15m_tail"] = lambda t, n: []
+            return b
+        globals()["OB_TOUCH"] = True
+        c9 = detect(mk9(prev_bar={"l": 4020.0, "c": 4021.0, "h": 4022.0}), None)
+        r9_fire = [c for c in c9 if c["rule"] == "ob_touch_hold" and c["direction"] == "LONG"]
+        ok_r9_fire = len(r9_fire) == 1 and 3991 <= r9_fire[0]["sl"] <= 3996
+        c9k = detect(mk9(close=3994.0, prev_bar={"l": 4020.0, "c": 4021.0, "h": 4022.0}), None)
+        ok_r9_knife = not any(c["rule"] == "ob_touch_hold" for c in c9k)
+        c9s = detect(mk9(prev_bar={"l": 4008.0, "c": 4011.0, "h": 4013.0}), None)
+        ok_r9_sit = not any(c["rule"] == "ob_touch_hold" for c in c9s)
+        globals()["OB_TOUCH"] = False
+        c9o = detect(mk9(prev_bar={"l": 4020.0, "c": 4021.0, "h": 4022.0}), None)
+        ok_r9_off = not any(c["rule"] == "ob_touch_hold" for c in c9o)
+        print(f"ob_touch_hold FIRE no bloco (SL na borda): {ok_r9_fire} (n={len(r9_fire)}, sl={r9_fire[0]['sl'] if r9_fire else None})")
+        print(f"ob_touch_hold NAO dispara em faca (fecho alem do bloco): {ok_r9_knife}")
+        print(f"ob_touch_hold NAO re-emite sentado no bloco (episodio): {ok_r9_sit}")
+        print(f"ob_touch_hold OFF = 0: {ok_r9_off}")
+
+        # --- R10 top_fade (fixtures; sweep + 2 episodios + guardas) ---
+        TAIL_OK = [{"t": 100, "o": 4100, "h": 4116, "l": 4096, "c": 4098},
+                   {"t": 200, "o": 4097, "h": 4095, "l": 4090, "c": 4094},
+                   {"t": 300, "o": 4096, "h": 4105, "l": 4094, "c": 4097},
+                   {"t": 400, "o": 4096, "h": 4093, "l": 4090, "c": 4092},
+                   {"t": BT,  "o": 4103, "h": 4107, "l": 4095, "c": 4097}]
+        def mk10(close=4097.0, tail=None, hi_now=False, ev_min=None, cur_hl=(4107.0, 4095.0)):
+            b = mk(False, close)
+            b["axes"]["mtf"]["240"]["zones"] = {"above": {"low": 4100.0, "high": 4112.0, "src": "Custom OB Dete"},
+                                                "below": {"high": 4040.0, "low": 4030.0, "src": "Custom OB Dete"}}
+            b["axes"]["mtf"]["60"]["swings"] = {"prev_high": {"price": 4102.0, "bar": 1}}
+            b["axes"]["mtf"]["15"]["leg"] = {"low": 4000, "high": 4100, "mag_atr": 10.0, "pos_in_leg": 0.9}
+            b["axes"]["micro_15m"]["close"] = close
+            b["axes"]["micro_15m"]["bar_time"] = BT
+            b["axes"]["macro"]["news_gate"] = {"session": "ny", "high_impact_now": hi_now, "ff_event_le_min": ev_min}
+            globals()["_bar_hl_15m"] = lambda t: cur_hl
+            globals()["_bar_15m_prev"] = lambda t: {"l": 4098.0, "c": 4101.0, "h": 4106.0}
+            globals()["_bars_15m_tail"] = lambda t, n: (tail if tail is not None else TAIL_OK)
+            return b
+        globals()["TOP_FADE"] = True
+        c10 = detect(mk10(), None)
+        f10 = [c for c in c10 if c["rule"] == "top_fade" and c["direction"] == "SHORT"]
+        # SL = high da última rejeição (4105) + 0.1·ATR15(10) = 4106
+        ok_f_fire = len(f10) == 1 and 4105.0 <= f10[0]["sl"] <= 4107.0
+        ok_f_ev1 = not any(c["rule"] == "top_fade" for c in detect(mk10(hi_now=True), None))
+        ok_f_ev2 = not any(c["rule"] == "top_fade" for c in detect(mk10(ev_min=10), None))
+        TAIL_NOTOUCH = [{"t": 100, "o": 4090, "h": 4095, "l": 4085, "c": 4090},
+                        {"t": BT, "o": 4103, "h": 4107, "l": 4095, "c": 4097}]
+        ok_f_first = not any(c["rule"] == "top_fade" for c in detect(mk10(tail=TAIL_NOTOUCH), None))
+        # sem RAID PROFUNDO: toques rasos rejeitados (episódios existem) mas o lookback nunca atingiu o MEIO
+        # do bloco (4106) — liquidez dentro da zona não foi tomada => não é fade, é só borda a segurar.
+        TAIL_NORAID = [{"t": 100, "o": 4099, "h": 4104, "l": 4096, "c": 4098},
+                       {"t": 200, "o": 4097, "h": 4095, "l": 4090, "c": 4094},
+                       {"t": 300, "o": 4096, "h": 4103, "l": 4094, "c": 4097},
+                       {"t": 400, "o": 4096, "h": 4093, "l": 4090, "c": 4092},
+                       {"t": BT, "o": 4098.4, "h": 4101, "l": 4095, "c": 4097}]
+        ok_f_nosw = not any(c["rule"] == "top_fade" for c in detect(mk10(tail=TAIL_NORAID, cur_hl=(4101.0, 4095.0)), None))
+        globals()["TOP_FADE"] = False
+        ok_f_off = not any(c["rule"] == "top_fade" for c in detect(mk10(), None))
+        globals()["_bar_hl_15m"], globals()["_bars_15m_tail"], globals()["_bar_15m_prev"] = _orig
+        print(f"top_fade FIRE (raid+2retests, SL ultima-rejeicao): {ok_f_fire} (n={len(f10)}, sl={f10[0]['sl'] if f10 else None})")
+        print(f"top_fade NAO dispara high_impact_now: {ok_f_ev1} | evento<=45min: {ok_f_ev2}")
+        print(f"top_fade NAO dispara 1o-toque-vertical (0 episodios): {ok_f_first}")
+        print(f"top_fade NAO dispara sem raid profundo: {ok_f_nosw} | OFF = 0: {ok_f_off}")
+
+        allok = (ok_trigger and ok_conf and ok_pass and ok_bos_fire and ok_bos_first and ok_bos_off
+                 and ok_r9_fire and ok_r9_knife and ok_r9_sit and ok_r9_off
+                 and ok_f_fire and ok_f_ev1 and ok_f_ev2 and ok_f_first and ok_f_nosw and ok_f_off)
         print("RESULTADO:", "PASS" if allok else "FALHA")
         sys.exit(0 if allok else 1)
     else:
