@@ -245,6 +245,9 @@ def render_composite(dsr, cand):
     L.append(f"\n# CANDIDATO: {d} {cand.get('rule')} @TF{cand.get('tf')}")
     L.append(f"  entry {fmt(cand.get('entry'))} | SL {fmt(cand.get('sl'))} | alvo {fmt(cand.get('target'))} "
              f"| R:R {fmt(cand.get('rr'),1)} | SL {fmt(m.get('sl_atr'),1)}×ATR | regime HTF {regime(dsr)}")
+    if cand.get("src"):
+        # descritores do gatilho (ex. R9: perna→zona/toque#/janela buy-sell) — qualidade do setup p/ o read
+        L.append(f"  gatilho: {cand['src']}")
     L.append(f"  (o E1 disparou por: confluência {m.get('confluence')} {m.get('confluence_breakdown', {})})")
     L.append("\n# ESTRUTURA MTF (top-down; pivots CONFIRMADOS confirm_bar≤i, close-only, NÃO repinta)")
     for tf, lbl in (("1D", "1D"), ("240", "4H"), ("60", "1H"), ("15", "15M")):

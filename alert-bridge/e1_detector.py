@@ -300,21 +300,60 @@ def detect(d, p):
                         return (z.get("low") and z.get("high") and bl >= z["low"] - OB_TOUCH_TOL_ATR * atr15
                                 and c < z["high"]
                                 and levels("SHORT", c, sl15_high, atr_tf, dict(zz, above=z), pos=None))
+
+                    def _r9_desc(z, side):
+                        """Opção C (Cris 2026-08-02): descritores SEM gate — o reader pesa a qualidade.
+                        leg_into_zone_atr = magnitude da perna de CHEGADA à zona (despenca vs deriva);
+                        touch_n = nº de episódios de toque no lookback 24h (1º toque = zona virgem);
+                        janela buy/sell = iniciativa das últimas 4 barras (dossiê) — no bloco, agressão
+                        contrária ABSORVIDA (hold) = acumulação/distribuição (regra de polaridade)."""
+                        desc = {}
+                        try:
+                            t32 = _bars_15m_tail(bt, 32)
+                            if t32:
+                                if side == "LONG":
+                                    desc["leg_into_zone_atr"] = round((max(b["h"] for b in t32) - bar_l) / atr15, 1)
+                                else:
+                                    desc["leg_into_zone_atr"] = round((bar_h - min(b["l"] for b in t32)) / atr15, 1)
+                            t96 = _bars_15m_tail(bt, 96)
+                            edge = z["high"] if side == "LONG" else z["low"]
+                            n = 0; in_ep = False
+                            for b in t96:
+                                touch = (b["l"] <= edge + OB_TOUCH_TOL_ATR * atr15) if side == "LONG" \
+                                    else (b["h"] >= edge - OB_TOUCH_TOL_ATR * atr15)
+                                if touch and not in_ep: in_ep = True; n += 1
+                                elif not touch: in_ep = False
+                            desc["touch_n"] = n
+                            win = ((d["axes"].get("confluence") or {}).get("15") or {}).get("window") or {}
+                            wb = (win.get("buy") or {}).get("weight"); ws = (win.get("sell") or {}).get("weight")
+                            desc["win_buy"] = wb; desc["win_sell"] = ws
+                        except Exception:
+                            pass
+                        return desc
+
                     for z in _zstack(zz, "below"):
                         lv = _r9_ok(bar_l, close, z, "LONG")
                         if lv:
                             prev_ok = (pbar and _r9_ok(pbar.get("l"), pbar.get("c"), z, "LONG"))
                             if not prev_ok:
+                                dc = _r9_desc(z, "LONG")
                                 out.append(dict(rule="ob_touch_hold", tf=tf, direction="LONG",
-                                                src=f"toque+hold demanda {tf}/SL-borda-bloco", **lv))
+                                                src=(f"toque+hold demanda {tf}/SL-borda-bloco | perna→zona "
+                                                     f"{dc.get('leg_into_zone_atr','?')}ATR · toque#{dc.get('touch_n','?')} "
+                                                     f"· janela sell {dc.get('win_sell','?')}/buy {dc.get('win_buy','?')}"),
+                                                **dc, **lv))
                             break
                     for z in _zstack(zz, "above"):
                         lv = _r9_ok(bar_h, close, z, "SHORT")
                         if lv:
                             prev_ok = (pbar and _r9_ok(pbar.get("h"), pbar.get("c"), z, "SHORT"))
                             if not prev_ok:
+                                dc = _r9_desc(z, "SHORT")
                                 out.append(dict(rule="ob_touch_hold", tf=tf, direction="SHORT",
-                                                src=f"toque+hold supply {tf}/SL-borda-bloco", **lv))
+                                                src=(f"toque+hold supply {tf}/SL-borda-bloco | perna→zona "
+                                                     f"{dc.get('leg_into_zone_atr','?')}ATR · toque#{dc.get('touch_n','?')} "
+                                                     f"· janela buy {dc.get('win_buy','?')}/sell {dc.get('win_sell','?')}"),
+                                                **dc, **lv))
                             break
 
     # R10 top_fade (Cris 2026-08-02, ESTUDO — default OFF): fade de exaustão em supply HTF ANTES da quebra.
