@@ -31,7 +31,8 @@ DEMANDS = [(4028.0, 4036.66, "OB Detector 15M 4028-4036 (demanda real — reclai
 # descer". Lado SHORT: toque na supply = heads-up; REJEIÇÃO real (tocou e FECHOU de volta abaixo da borda
 # inferior, vela vermelha) = juízo do reader (agora com os blocos fade-sequência + compressão).
 SUPPLIES = [(4047.0, 4062.0, "supply 1H 4047-4062 (reteste p/ VENDER — juízo do reader)"),
-            (4065.0, 4072.0, "supply 15M 4065-4072 (reteste superior — juízo do reader)")]
+            (4065.0, 4072.0, "supply 15M 4065-4072 (reteste superior — juízo do reader)"),
+            (4101.07, 4116.28, "OB Detector supply 4H 4101-4116 (reteste PREMIUM — Cris 2º cenário — juízo do reader)")]
 TOUCH_BUF = 1.0
 
 def bars(name, n=20):
