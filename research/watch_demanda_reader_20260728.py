@@ -27,6 +27,11 @@ hm = lambda t: dt.datetime.fromtimestamp(int(t), LX).strftime("%d/%m %H:%M")
 DEMANDS = [(4028.0, 4036.66, "OB Detector 15M 4028-4036 (demanda real — reclaim acima de 4036 = juízo do reader)"),
            (3995.84, 4010.0, "OB demand 4H 3995-4010 (ESTRUTURAL profundo — reclaim acima de 4010 = juízo do reader)"),
            (4040.0, 4051.0, "teto CHoCH 4051 (reclaim de momentum acima de 4051 = juízo do reader)")]
+# Cris 2026-08-03: "tendência claramente BEAR; o ouro vem fazer RETESTE nas demandas superiores antes de
+# descer". Lado SHORT: toque na supply = heads-up; REJEIÇÃO real (tocou e FECHOU de volta abaixo da borda
+# inferior, vela vermelha) = juízo do reader (agora com os blocos fade-sequência + compressão).
+SUPPLIES = [(4047.0, 4062.0, "supply 1H 4047-4062 (reteste p/ VENDER — juízo do reader)"),
+            (4065.0, 4072.0, "supply 15M 4065-4072 (reteste superior — juízo do reader)")]
 TOUCH_BUF = 1.0
 
 def bars(name, n=20):
@@ -40,6 +45,16 @@ def zone_of(low, close):
         if low <= zh + TOUCH_BUF:               # tocou/entrou (wick inclui)
             return (zl, zh, lab)
     return None
+
+def build_short_cand(zh, close, atr):
+    sl = round(zh + 0.1 * atr, 2)
+    r = round(sl - close, 2)
+    if r <= 0: r = round(0.5 * atr, 2); sl = round(close + r, 2)
+    tgt = round(close - 3 * r, 2)
+    return {"direction": "SHORT", "rule": "zone_reject", "tf": "15",
+            "entry": round(close, 2), "sl": sl, "target": tgt, "rr": round((close - tgt) / r, 2),
+            "materiality": {"sl_atr": round(r / atr, 1) if atr else None, "confluence": None, "confluence_breakdown": {}}}
+
 
 def build_long_cand(zl, close, atr):
     sl = round(zl - 0.1 * atr, 2)
@@ -75,6 +90,14 @@ while True:
         # re-consulta só se passaram >=90min OU o preço fez algo NOVO (fecho 6+ pts acima da última consulta).
         _lr = getattr(sys.modules[__name__], "_last_read", None)
         _novel = _lr is None or (cur["t"] - _lr[0]) >= 5400 or cur["c"] >= _lr[1] + 6.0
+
+        def _novel_s(bar):
+            # cooldown das consultas SHORT: 90min OU fecho 6+ pts ABAIXO da última consulta short
+            _ls = getattr(sys.modules[__name__], "_last_read_s", None)
+            if _ls is None or (bar["t"] - _ls[0]) >= 5400 or bar["c"] <= _ls[1] - 6.0:
+                setattr(sys.modules[__name__], "_last_read_s", (bar["t"], bar["c"]))
+                return True
+            return False
         if reclaim_shaped and cur["t"] not in read_bars and _novel:
             setattr(sys.modules[__name__], "_last_read", (cur["t"], cur["c"]))
             read_bars.add(cur["t"])
@@ -94,9 +117,33 @@ while True:
                 if th.get('conflicting_readings'):
                     print(f"   contra: {'; '.join(th.get('conflicting_readings')[:3])}")
                 print(f"   níveis lidos: entry {cand['entry']} · SL {cand['sl']} · alvo {cand['target']} (RR {cand['rr']})")
+        # ---- lado SHORT: reteste de supply (Cris 2026-08-03) ----
+        for szl, szh, slab in SUPPLIES:
+            if cur["h"] >= szl - TOUCH_BUF and not touched.get(slab):
+                touched[slab] = 1
+                print(f"TOQUE na {slab}: high {cur['h']} @ {hm(cur['t'])} (close {cur['c']}) — a aguardar rejeição; o reader julga")
+            # rejeição real: tocou a supply e FECHOU de volta ABAIXO da borda inferior, vela vermelha
+            rej = (cur["h"] >= szl - TOUCH_BUF and cur["c"] < szl and cur["c"] < cur["o"])
+            if rej and (cur["t"], slab) not in read_bars and _novel_s(cur):
+                read_bars.add((cur["t"], slab))
+                cand = build_short_cand(szh, cur["c"], atr)
+                print(f"REJEIÇÃO A FORMAR-SE na {slab} (barra {hm(cur['t'])} close {cur['c']}) — a pedir juízo ao reader…")
+                dsr = E2.load_dossier()
+                if dsr:
+                    th = E2.run_read(cand, dsr)
+                    if not th.get("error"):
+                        surf = E2.surfaced(th, cand)
+                        print(f"   JUÍZO DO READER — rejeição {'LEGÍTIMA p/ SHORT ✅' if surf else 'AINDA NÃO / não converge ❌'}")
+                        print(f"   convergência {th.get('convergence')} · convicção {th.get('conviction')} · contexto pende {th.get('context_direction')}")
+                        print(f"   tese: {th.get('thesis')}")
+                        print(f"   níveis: entry {cand['entry']} · SL {cand['sl']} · alvo {cand['target']} (RR {cand['rr']})")
+                break
         # re-arma TODAS as zonas só quando o preço fecha bem acima do bloco (saiu de vez); senão fica tocado
         if cur["c"] > ZTOP + 12:
             touched.clear()
+        # re-arma supplies quando o preço cai bem abaixo delas (saiu de vez do reteste)
+        if cur["c"] < min(s[0] for s in SUPPLIES) - 12:
+            for _s in SUPPLIES: touched.pop(_s[2], None)
     except Exception as e:
         print(f"vigia+reader erro transitório: {type(e).__name__}:{str(e)[:50]}")
     time.sleep(45)
