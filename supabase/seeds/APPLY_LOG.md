@@ -71,3 +71,4 @@
 - 2026-08-04 09:44 UTC · `memory_delta_20260804_copiloto_mapa_vela.sql` · memory_items 363→364 · tag-rows 1/1 · OK
 - 2026-08-04 09:54 UTC · `memory_delta_20260804_vela_telegram_demand.sql` · memory_items 364→365 · tag-rows 1/1 · OK
 - 2026-08-04 12:27 UTC · `memory_delta_20260804_liquidity_axis.sql` · memory_items 365→366 · tag-rows 1/1 · OK
+- 2026-08-04 16:23 UTC · `memory_delta_20260804_amd_audit_and_voice_decision.sql` · memory_items 366→368 · tag-rows 2/2 · OK
