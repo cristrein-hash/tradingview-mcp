@@ -65,6 +65,38 @@ def crossings(prev, cur, levels, armed, now):
     return fired
 
 
+def _entry_on_break(price, level):
+    """Entrada SHORT PRECISA no ATO do rompimento (Cris 2026-08-05: 'nunca temos entrada precisa realtime').
+    SL apertado = nível rompido + buffer (invalidação = reclaim do nível); alvo = 1º OB Detector abaixo que
+    dê RR>=2, senão o mais profundo. Também swing-SL 'seguro'. NADA de esperar fecho de vela."""
+    try:
+        with open(STORE / "bars_15m.jsonl", "rb") as f:
+            f.seek(0, 2); sz = f.tell(); f.seek(max(0, sz - 30000))
+            rows = [json.loads(l) for l in f.read().decode(errors="ignore").splitlines()
+                    if l.strip() and l[0] == "{"]
+        b = [x for x in rows if all(k in x for k in ("t", "o", "h", "l", "c"))][-20:]
+        trs = [max(x["h"] - x["l"], abs(x["h"] - p["c"]), abs(x["l"] - p["c"])) for p, x in zip(b, b[1:])]
+        atr = sum(trs[-14:]) / 14 if len(trs) >= 14 else 8.0
+        swing = max(x["h"] for x in b[-8:])
+    except Exception:
+        atr, swing = 8.0, price + 12
+    sl_tight = round(level + max(0.5 * atr, 3.0), 2)          # invalidação = reclaim do nível rompido
+    sl_safe = round(swing + 0.15 * atr, 2)                    # estrutural (acima do swing)
+    risk = abs(sl_tight - price) or 1
+    # alvo = OB abaixo que dê RR>=2 com o SL apertado; senão o mais profundo
+    tgt = None
+    try:
+        import market_read as MR
+        obs = MR.ob_zones("240", ref_price=price) + MR.ob_zones("60", ref_price=price) + MR.ob_zones("15", ref_price=price)
+        below = sorted({round(z["high"], 2) for z in obs if z["high"] < price - 3}, reverse=True)
+        good = [t for t in below if (price - t) / risk >= 2.0]
+        tgt = good[0] if good else (below[-1] if below else None)
+    except Exception:
+        pass
+    rr = round((price - tgt) / risk, 1) if (tgt and risk) else None
+    return {"entry": round(price, 2), "sl": sl_tight, "sl_safe": sl_safe, "target": tgt, "rr": rr}
+
+
 def store_price():
     try:
         with open(STORE / "bars_5m.jsonl", "rb") as f:
@@ -106,6 +138,19 @@ def main_loop():
                 for f in crossings(prev, float(px), levels, armed, now):
                     print(f"👁️ {hm()} CRUZOU {f['dir']} {f['level']:.2f} ({f['name']}, tese {f['tese']}) "
                           f"— preço {f['price']:.2f} [{src}]", flush=True)
+                    # ENTRADA PRECISA NO ATO: break do gatilho p/ baixo = SHORT já (sem esperar fecho)
+                    if f["name"] == "GATILHO_BREAK" and f["dir"] == "ABAIXO":
+                        e = _entry_on_break(f["price"], f["level"])
+                        txt = (f"⚡🔻 ENTRADA SHORT REALTIME — rompeu {f['level']:.2f} AGORA ({hm()})\n"
+                               f"entry {e['entry']} · SL {e['sl']} · alvo {e['target'] or '—'} · RR {e['rr'] or '—'}\n"
+                               f"SL seguro (swing) {e['sl_safe']} · tick-level, NÃO espera fecho")
+                        print(txt, flush=True)
+                        try:
+                            import e2_quality as E2
+                            if os.environ.get("SENTINEL_TG_AUTHORIZED", "") == "1":
+                                E2._tg_send(txt); print("(→ Telegram)", flush=True)
+                        except Exception:
+                            pass
                 prev = float(px)
         except Exception as e:
             print(f"sentinela erro: {type(e).__name__}:{str(e)[:60]}", flush=True)
