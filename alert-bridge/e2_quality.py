@@ -272,7 +272,20 @@ def render_composite(dsr, cand):
     a perna 1H é o enquadramento de 1ª classe; as outras vozes leem-se CONTRA ela; grau = convergência."""
     ax = dsr.get("axes", {}); mtf = ax.get("mtf", {}) or {}
     micro = ax.get("micro_15m", {}) or {}; macro = ax.get("macro", {}) or {}
+    # AGRESSÃO/LIQUIDEZ FRESCAS (Cris 2026-08-04): o dossiê pode estar 1 ciclo atrasado — isso atrasava
+    # pontos de entrada/sinais. SÓ no caminho LIVE (dossiê com cycle_ts recente) recalculamos do store no
+    # instante do read; em replay/selftest (cycle antigo/sintético) usa-se o dossiê = byte-idêntico.
+    import time as _time
+    _live_read = abs(_time.time() - float((dsr.get("_meta") or {}).get("cycle_ts", 0) or 0)) < 600
     conf = (ax.get("confluence") or {}).get("15", {}) or {}
+    if _live_read:
+        try:
+            from context_confluence import read_confluence_store as _rcs
+            _fresh_conf = _rcs("15")
+            if _fresh_conf:
+                conf = _fresh_conf
+        except Exception:
+            pass
     L = []
     d = cand.get("direction"); m = cand.get("materiality", {}) or {}
     leg, why = _frame_leg(ax)
@@ -292,13 +305,20 @@ def render_composite(dsr, cand):
             L.append(_TM.render_section(_tmap))
     except Exception:
         pass
-    # LIQUIDEZ/MANIPULAÇÃO (Cris 2026-08-04): eixo do dossiê como voz de 1ª classe. Sem eixo/flag OFF = zero linhas.
+    # LIQUIDEZ/MANIPULAÇÃO (Cris 2026-08-04): voz de 1ª classe. Sem flag = zero linhas.
+    # FRESCA no instante do read (recalcula do store — bars + agressão frescas), NÃO o snapshot do dossiê
+    # que estava 1 ciclo atrasado (o que te atrasava nos pontos de entrada). Fallback ao dossiê se store off.
     if E2_LIQUIDITY_VOICE:
         try:
-            from context_liquidity import render_section as _liq_render
-            _liq = (dsr.get("axes") or {}).get("liquidity")
+            import context_liquidity as _CL
+            _liq = None
+            if _live_read:
+                _liq = _CL.read_liquidity(magnets=ax.get("magnets"), mtf=mtf,
+                                          amd=ax.get("amd_setup"), window=conf.get("window"))
+            if _liq is None:
+                _liq = (dsr.get("axes") or {}).get("liquidity")
             if _liq:
-                L.append(_liq_render(_liq))
+                L.append(_CL.render_section(_liq))
         except Exception:
             pass
     L.append(f"\n# CANDIDATO: {d} {cand.get('rule')} @TF{cand.get('tf')}")
