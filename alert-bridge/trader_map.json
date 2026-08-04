@@ -1,44 +1,84 @@
 {
   "version": 1,
-  "updated_ts": "2026-08-04T20:45:00Z",
-  "updated_by": "chat (Cris -> Claude) — consolidado nas zonas REAIS do OB Detector v11 (leitura MCP no fecho)",
+  "updated_ts": "2026-08-04T20:55:00Z",
+  "updated_by": "chat (Cris -> Claude) — todas as zonas mantidas em monitoracao; 4090-4106 = mais forte (OB Detector real)",
   "zones": [
     {
-      "id": "ob_supply_4090_4106",
+      "id": "ob_supply_4090_4106_FORTE",
       "low": 4090.59,
       "high": 4106.46,
       "tese": "SHORT",
-      "nota": "OB Detector v11 REAL (fecho 04/08) — supply de reteste. Consolida as zonas anteriores (4088-91/4099-4106/4101-16) numa so, a verdadeira. O 4090-4095 do Cris = borda inferior. Reteste + rejeicao aqui = short, SL>4106.5, alvo 4045-4060 -> 3995-4010",
+      "nota": "OB Detector v11 REAL (MCP fecho 04/08) — ZONA MAIS FORTE de reteste. O 4090-4095 do Cris = borda inferior. Reteste + rejeicao aqui = short prioritario, SL>4106.5, alvo 4045-4060 -> 3995-4010 (alvo verdadeiro)",
       "criticidade": "critica",
       "validade": "2026-08-08T21:00:00Z",
       "created_ts": "2026-08-04T20:45:00Z"
     },
     {
-      "id": "ob_supply_4149_4166",
-      "low": 4149.37,
+      "id": "supply_4066_4073",
+      "low": 4066.0,
+      "high": 4073.0,
+      "tese": "SHORT",
+      "nota": "zona declarada Cris (03/08) — mantida em monitoracao",
+      "criticidade": "critica",
+      "validade": "2026-08-08T21:00:00Z",
+      "created_ts": "2026-08-03T22:10:00Z"
+    },
+    {
+      "id": "micro_supply_4088_4091",
+      "low": 4088.0,
+      "high": 4091.0,
+      "tese": "SHORT",
+      "nota": "micro-supply pullback raso (Cris 'e se nao passar de 4090') — mantida em monitoracao",
+      "criticidade": "critica",
+      "validade": "2026-08-06T21:00:00Z",
+      "created_ts": "2026-08-04T18:40:00Z"
+    },
+    {
+      "id": "ob_supply_15m_4099_4106",
+      "low": 4098.98,
+      "high": 4106.46,
+      "tese": "SHORT",
+      "nota": "OB supply 15M da rejeicao das 18:00 — mantida em monitoracao (dentro da mais-forte)",
+      "criticidade": "critica",
+      "validade": "2026-08-06T21:00:00Z",
+      "created_ts": "2026-08-04T18:35:00Z"
+    },
+    {
+      "id": "ob_premium_4101_4116",
+      "low": 4101.07,
+      "high": 4116.28,
+      "tese": "SHORT",
+      "nota": "premium 1H declarada Cris ('seguir a 4100 pra virar mais acima') — mantida em monitoracao",
+      "criticidade": "critica",
+      "validade": "2026-08-08T21:00:00Z",
+      "created_ts": "2026-08-03T22:10:00Z"
+    },
+    {
+      "id": "ob_supply_4138_4166",
+      "low": 4138.2,
       "high": 4166.19,
       "tese": "SHORT",
-      "nota": "OB Detector v11 REAL — supply acima (substitui o 4138-4166 aproximado); iman mais profundo do cenario do Cris",
+      "nota": "supply 4H declarada Cris (iman profundo 4100-4170) — mantida; OB Detector real = 4149-4166",
       "criticidade": "critica",
       "validade": "2026-08-08T21:00:00Z",
-      "created_ts": "2026-08-04T20:45:00Z"
+      "created_ts": "2026-08-04T18:20:00Z"
     },
     {
-      "id": "ob_demand_3995_4010",
+      "id": "ob_demand_3995_4010_ALVO",
       "low": 3995.84,
       "high": 4010.0,
       "tese": "LONG",
-      "nota": "OB Detector v11 REAL — demanda (o bloco do monstro); alvo final do short / monitoracao de LONG",
+      "nota": "OB Detector v11 REAL — DEMANDA = ALVO VERDADEIRO do short (Cris 04/08). Onde o short toma lucro / potencial LONG (o bloco do monstro)",
       "criticidade": "critica",
       "validade": "2026-08-08T21:00:00Z",
-      "created_ts": "2026-08-04T20:45:00Z"
+      "created_ts": "2026-08-04T13:00:00Z"
     }
   ],
   "tese_geral": {
     "direcao": "SHORT",
-    "nota": "BEAR no visual; ouro raramente desce direto — reteste do topo antes de cair (analogo 30/07: multi-reteste + lower highs, breakdown na Asia). Maior probabilidade HOJE: reteste UP a 4090-4106 (OB Detector), lower high, rejeicao, depois continua. Suporte/alvos OB abaixo: 4045-4060 -> 3995-4010.",
+    "nota": "BEAR; ouro raramente desce direto — reteste do topo antes de cair (analogo 30/07: multi-reteste + lower highs, breakdown na Asia). Zona MAIS FORTE de reteste = 4090-4106 (OB Detector real); pode ir acima (4138-4166) ou nao. ALVO VERDADEIRO do short = 3995-4010 (demanda). Alvo intermedio 4045-4060.",
     "nivel_confirmacao_short": 4075.0,
-    "nivel_confirmacao_nota": "fecho decisivo 15M abaixo de 4075 = REVERSAO/continuidade SHORT confirmada (gatilho Cris)",
+    "nivel_confirmacao_nota": "fecho decisivo 15M abaixo de 4075 = continuidade SHORT confirmada (gatilho Cris)",
     "validade": "2026-08-08T21:00:00Z"
   }
 }
