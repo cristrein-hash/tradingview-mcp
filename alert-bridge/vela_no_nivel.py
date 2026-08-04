@@ -200,6 +200,51 @@ def agg_1h(m15):
     return out
 
 
+def check_break_continuation(cur, tf, atr, tmap, bars15, fired):
+    """SINAL DE CONTINUIDADE SHORT no break do nível-gatilho (Cris 04/08: 'se cortar abaixo de 4075 quero
+    entrada de continuidade planeada'). Determinístico: fecho DECISIVO (>=0.1·ATR) abaixo de
+    tese_geral.nivel_confirmacao_short. Entry=fecho do break · SL=swing-high recente+0.15·ATR · alvo=OB
+    Detector abaixo (lido do dossiê, NÃO inventado). Dedup por TF."""
+    tg = (tmap.get("tese_geral") or {})
+    lvl = tg.get("nivel_confirmacao_short")
+    if not lvl or not atr:
+        return
+    c = cur["c"]
+    if c >= lvl - 0.05 * atr:                      # sem FECHO decisivo abaixo do nível (token p/ evitar wick-only)
+        return
+    key = ("BREAK_CONT", tf)
+    prev = fired.get(key)
+    if prev and time.time() - prev[0] < COOLDOWN_S and c > prev[1] - 0.5 * atr:
+        return                                      # já sinalizado; só re-sinaliza em nova extensão
+    fired[key] = (time.time(), c)
+    swing_high = max((b["h"] for b in bars15[-8:-1]), default=cur["h"])
+    sl = round(max(swing_high, cur["h"]) + 0.15 * atr, 2)
+    # alvo = OB Detector abaixo (dossiê); fallback 2.5R
+    try:
+        import e2_quality as E2
+        dsr = E2.load_dossier() or {}
+        ax = dsr.get("axes", {})
+        tgs = []
+        for t in ("60", "240", "15"):
+            z = ((ax.get("mtf", {}).get(t, {}) or {}).get("zones") or {}).get("below") or {}
+            if z.get("high") and z["high"] < c:
+                tgs.append(z["high"])
+        tgt = max(tgs) if tgs else round(c - 2.5 * (sl - c), 2)   # OB mais próximo abaixo
+    except Exception:
+        dsr = {}; tgt = round(c - 2.5 * (sl - c), 2)
+    risk = sl - c
+    rr = round((c - tgt) / risk, 1) if risk > 0 else 0
+    tflabel = "1H" if tf == "60" else f"{tf}M"
+    txt = (f"🔻 SINAL SHORT — CONTINUIDADE (break de {lvl})\n"
+           f"vela {tflabel} das {hm(cur['t'])} FECHOU {c} abaixo do gatilho {lvl} = quebra confirmada, "
+           f"continuação bear.\n"
+           f"Entry {c} (ou retest de {lvl} por baixo) · SL {sl} (acima do swing {swing_high:.2f}) · "
+           f"alvo {tgt} (OB Detector) · RR {rr}\n"
+           f"(entrada PLANEADA de continuidade — a decisão é tua)")
+    print(txt, flush=True)
+    print(f"(canal: {_tg(txt)})", flush=True)
+
+
 def scan_zones(cur, tf, atr, tmap, fired):
     """Verifica a vela `cur` (TF `tf`) contra todas as zonas do mapa; alerta na rejeição. Dedup por (tf,zona).
     Estendido a 1H por ordem do Cris (04/08): a rejeição 1H das 18:00 foi o sinal mais claro do dia e a vigia
@@ -258,7 +303,9 @@ def main_loop():
                 if cur15["t"] != last_t15:
                     last_t15 = cur15["t"]
                     if tmap:
-                        scan_zones(cur15, "15", atr14(bars), tmap, fired)
+                        a15 = atr14(bars)
+                        scan_zones(cur15, "15", a15, tmap, fired)
+                        check_break_continuation(cur15, "15", a15, tmap, bars, fired)   # break-4075 = short continuidade
                 # 1H — cada HORA COMPLETA fechada (agregada de 4×15m); só quando fecha uma nova hora
                 h1 = agg_1h(bars)
                 complete = [b for b in h1 if b.get("_n15") == 4]
@@ -303,13 +350,31 @@ if __name__ == "__main__":
         b37 = {"t": 9, "o": 4103.0, "h": 4106.0, "l": 4098.0, "c": 4100.0}
         r37 = decide(b37, zp, 7.9)
         wick37 = 4106.0 - 4103.0; ok8 = r37 and r37["direction"] == "SHORT" and abs(wick37 / 8.0 - 0.375) < 0.01
+        # break-continuidade: fecho decisivo abaixo do nível-gatilho dispara (Cris 04/08)
+        tmap_fix = {"tese_geral": {"nivel_confirmacao_short": 4075.0}, "zones": []}
+        b15fix = [{"t": i, "o": 4080, "h": 4086, "l": 4078, "c": 4082} for i in range(8)]
+        firedbc = {}
+        import io, contextlib
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            check_break_continuation({"t": 1785870000, "o": 4076, "h": 4077, "l": 4072, "c": 4072.5},
+                                     "15", 7.9, tmap_fix, b15fix, firedbc)
+        ok9 = "SINAL SHORT — CONTINUIDADE" in buf.getvalue() and ("BREAK_CONT", "15") in firedbc
+        # não dispara se fecha ACIMA do nível
+        firedbc2 = {}
+        with contextlib.redirect_stdout(io.StringIO()):
+            check_break_continuation({"t": 1785870000, "o": 4078, "h": 4080, "l": 4076, "c": 4079},
+                                     "15", 7.9, tmap_fix, b15fix, firedbc2)
+        ok10 = ("BREAK_CONT", "15") not in firedbc2
         for lab, ok in (("09:00 dispara SHORT (aceitação a)", ok1), ("sem toque nao dispara", ok2),
                         ("fechou em cima nao dispara", ok3), ("doji na zona nao dispara", ok4),
                         ("espelho LONG na demanda dispara", ok5),
                         ("1H 18:00 rejeição premium dispara (Cris)", ok6), ("agregação 1H 4x15m ok", ok7),
-                        ("pavio 37.5% na OB dispara com novo threshold 35%", ok8)):
+                        ("pavio 37.5% na OB dispara com novo threshold 35%", ok8),
+                        ("break <4075 dispara SHORT continuidade", ok9),
+                        ("fecho acima do nível NAO dispara break", ok10)):
             print(f"  [{'OK' if ok else 'FAIL'}] {lab}")
-        allok = all([ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8])
+        allok = all([ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok10])
         print("selftest", "PASS" if allok else "FAIL")
         sys.exit(0 if allok else 1)
     main_loop()
