@@ -22,6 +22,16 @@
       "criticidade": "critica",
       "validade": "2026-08-08T21:00:00Z",
       "created_ts": "2026-08-03T22:10:00Z"
+    },
+    {
+      "id": "ob_demand_4h_3995_4011_w32",
+      "low": 3995.84,
+      "high": 4011.0,
+      "tese": "LONG",
+      "nota": "OB demand 4H 3995-4011 (Cris 04/08: monitoração de LONG — o bloco do monstro da semana passada)",
+      "criticidade": "critica",
+      "validade": "2026-08-08T21:00:00Z",
+      "created_ts": "2026-08-04T13:00:00Z"
     }
   ],
   "tese_geral": {
