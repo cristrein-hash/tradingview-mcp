@@ -139,9 +139,11 @@ while True:
                         print(f"   tese: {th.get('thesis')}")
                         print(f"   níveis: entry {cand['entry']} · SL {cand['sl']} · alvo {cand['target']} (RR {cand['rr']})")
                 break
-        # re-arma TODAS as zonas só quando o preço fecha bem acima do bloco (saiu de vez); senão fica tocado
+        # re-arma só as DEMANDAS quando o preço fecha bem acima do bloco (saiu de vez); NÃO tocar no estado
+        # das supplies (bug 2026-08-04: touched.clear() global re-disparava o toque da supply a cada barra
+        # quando o preço estava acima de ZTOP+12 mas ainda no reteste da supply).
         if cur["c"] > ZTOP + 12:
-            touched.clear()
+            for _d in DEMANDS: touched.pop(_d[2], None)
         # re-arma supplies quando o preço cai bem abaixo delas (saiu de vez do reteste)
         if cur["c"] < min(s[0] for s in SUPPLIES) - 12:
             for _s in SUPPLIES: touched.pop(_s[2], None)
