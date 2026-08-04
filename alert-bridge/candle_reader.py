@@ -175,10 +175,22 @@ def send_confirmed_tg(tf, bar, v):
 def main_loop():
     print(f"📖 candle-reader ARMADO — Opus lê cada vela 5M/15M/1H no fecho → log (Telegram confirmado={'ON' if TG_OK else 'OFF'})", flush=True)
     seen = {tf: None for tf in TFS}
-    # baseline: não relê o histórico ao arrancar
-    for tf in TFS:
-        b = load_bars(tf, 1)
-        if b: seen[tf] = b[-1]["t"]
+    # ARRANQUE: lê IMEDIATAMENTE o último 15M FECHADO (há sempre um read disponível pós-start; Cris 2026-08-04
+    # "não estás lendo constantemente?" — sem isto ficava-se sem read entre o arranque e o próximo fecho).
+    try:
+        b15 = load_bars("15", 3)
+        if len(b15) >= 2:
+            dsr0 = E2.load_dossier() or {}
+            v0 = read_candle("15", b15[-2], dsr0)
+            rec0 = log_read("15", b15[-2], v0)
+            print("[arranque] " + fmt_chat("15", b15[-2], v0), flush=True)
+            if rec0["confirmed"]:
+                print(f"   ✅ CONFIRMADO → {send_confirmed_tg('15', b15[-2], v0)}", flush=True)
+    except Exception as e:
+        print(f"[arranque] read falhou: {type(e).__name__}", flush=True)
+    for tf in TFS:                                    # baseline: novos closes após o arranque
+        b = load_bars(tf, 2)
+        if len(b) >= 2: seen[tf] = b[-2]["t"]
     while True:
         try:
             dsr = E2.load_dossier() or {}
