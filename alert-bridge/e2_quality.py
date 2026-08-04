@@ -209,6 +209,12 @@ READ_SYS = (
 )
 # polaridade context-dependente das bubbles (fonte única, partilhada com claude_recheck — não podem divergir)
 READ_SYS = READ_SYS + "\n\n" + BUBBLE_POLARITY_RULE
+# VOZ LIQUIDEZ/MANIPULAÇÃO (Cris 2026-08-04, VOZ ON imediata — desenho B pós 2 falhas 04/08).
+# Flag E2_LIQUIDITY_VOICE (default ON por ordem; =0 restaura READ_SYS + briefing byte-idênticos).
+E2_LIQUIDITY_VOICE = os.environ.get("E2_LIQUIDITY_VOICE", "1") == "1"
+if E2_LIQUIDITY_VOICE:
+    from context_liquidity import LIQUIDITY_RULE
+    READ_SYS = READ_SYS + "\n\n" + LIQUIDITY_RULE
 SCHEMA_HINT = (
     "\n\nDevolve SÓ este JSON (raciocínio primeiro):\n"
     '{"reasoning":"<percorre a fita: estrutura MTF, micro, auction, macro, zonas — o que cada uma diz e como '
@@ -286,6 +292,15 @@ def render_composite(dsr, cand):
             L.append(_TM.render_section(_tmap))
     except Exception:
         pass
+    # LIQUIDEZ/MANIPULAÇÃO (Cris 2026-08-04): eixo do dossiê como voz de 1ª classe. Sem eixo/flag OFF = zero linhas.
+    if E2_LIQUIDITY_VOICE:
+        try:
+            from context_liquidity import render_section as _liq_render
+            _liq = (dsr.get("axes") or {}).get("liquidity")
+            if _liq:
+                L.append(_liq_render(_liq))
+        except Exception:
+            pass
     L.append(f"\n# CANDIDATO: {d} {cand.get('rule')} @TF{cand.get('tf')}")
     L.append(f"  entry {fmt(cand.get('entry'))} | SL {fmt(cand.get('sl'))} | alvo {fmt(cand.get('target'))} "
              f"| R:R {fmt(cand.get('rr'),1)} | SL {fmt(m.get('sl_atr'),1)}×ATR | regime HTF {regime(dsr)}")

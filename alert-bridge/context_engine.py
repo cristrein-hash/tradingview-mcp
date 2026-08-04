@@ -89,7 +89,7 @@ def _health(axis, age_s, stale_after):
     return {"status": "fresh" if (age_s is None or age_s <= stale_after) else "stale", "age_s": age_s}
 
 
-def build_context(mtf, mtf_age, micro, macro, confluence=None, magnets=None, regime=None, amd=None):
+def build_context(mtf, mtf_age, micro, macro, confluence=None, magnets=None, regime=None, amd=None, liquidity=None):
     t = int(time.time())
     reg = regime or {}
     return {
@@ -106,6 +106,7 @@ def build_context(mtf, mtf_age, micro, macro, confluence=None, magnets=None, reg
                        "v5_4h": (reg.get("v5_4h") or {}).get("status", "absent"),
                        "structural_1d": (reg.get("structural_1d") or {}).get("status", "absent")},
             "amd_setup": "active" if (amd or {}).get("active") else "none",
+            "liquidity": "fresh" if liquidity else "absent",
         },
         "axes": {
             "mtf": {tf: {"trend": (d.get("structure") or {}).get("trend"),
@@ -120,6 +121,7 @@ def build_context(mtf, mtf_age, micro, macro, confluence=None, magnets=None, reg
             "magnets": magnets,            # F-A2: {above:[...], below:[...], pullback:{...}} — voz, não sinal
             "regime": regime,              # vozes convergentes v5-4H + Layer1-1D (NÃO veto) — E2 lê como contexto
             "amd_setup": amd,              # F3: setup AMD H4 ativo + candidatos FVG/OB 1H (voz advisory, NUNCA veto)
+            "liquidity": liquidity,        # eixo liquidez/manipulação (2026-08-04): sweeps+FSM+classe do movimento
         },
     }
 
@@ -149,7 +151,16 @@ def once(state):
         state["last_mtf_close"] = close
         state["mtf_ts"] = time.time()
     mtf_age = int(time.time() - state["mtf_ts"]) if state.get("mtf_ts") else None
-    ctx = build_context(state["mtf"], mtf_age, micro, macro, state.get("confluence"), state.get("magnets"), read_regime(), read_amd_setup())
+    amd_now = read_amd_setup()
+    if need_mtf:                                             # eixo liquidez: mesma cadência do MTF (bar-close/move)
+        try:
+            from context_liquidity import read_liquidity
+            state["liquidity"] = read_liquidity(
+                magnets=state.get("magnets"), mtf=state.get("mtf"), amd=amd_now,
+                window=((state.get("confluence") or {}).get("15") or {}).get("window"))
+        except Exception as e:
+            log(f"[liquidity] falhou: {type(e).__name__}"); state["liquidity"] = None
+    ctx = build_context(state["mtf"], mtf_age, micro, macro, state.get("confluence"), state.get("magnets"), read_regime(), amd_now, state.get("liquidity"))
     atomic_write(OUT, ctx)
     return ctx
 
