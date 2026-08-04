@@ -24,8 +24,9 @@ BARS_F = REPO / "my-strategy/core/bar_store/store/bars_15m.jsonl"
 
 # FIT (calibrados na vela 09:00 04/08; rever na 1ª semana de shadow)
 TOUCH_BUF = 1.0            # toque = wick chega a <=1pt da borda (valor do vigia)
-WICK_MIN_RANGE = 0.45      # pavio contra a excursão >= 45% do range da vela
-WICK_MIN_ATR = 0.6         # E >= 0.6×ATR15 (o AND mata dojis minúsculos na zona)
+WICK_MIN_RANGE = 0.35      # pavio >= 35% do range (Cris 04/08: "qualquer pavio 35-50% vale, EM região OB")
+WICK_MIN_ATR = 0.30        # piso baixo (só mata dojis minúsculos); a REGIÃO OB (zona do mapa) é o filtro de ruído,
+                           # não o tamanho do pavio — por isso o piso ATR desceu p/ o 35% passar em vela normal
 SL_BUF_ATR = 0.15          # SL = extremo do wick + 0.15×ATR
 COOLDOWN_S = 2 * 3600      # por zona; override se novo extremo > anterior +0.5×ATR
 VELA_LIVE = os.environ.get("VELA_PRODUCTION_AUTHORIZED", "") == "1"
@@ -297,12 +298,18 @@ if __name__ == "__main__":
         m = [{"t": 1785862800 + i * 900, "o": 4093 + i, "h": 4106 - i, "l": 4092 + i, "c": 4095 + i} for i in range(4)]
         agg = agg_1h(m)
         ok7 = len(agg) == 1 and agg[0]["_n15"] == 4 and agg[0]["o"] == 4093 and agg[0]["h"] == 4106
+        # NOVO THRESHOLD 35% (Cris 04/08): pavio de 37.5% na premium + fecho abaixo da zona -> dispara agora
+        # (com o antigo 45% NÃO disparava). Prova o ajuste do threshold.
+        b37 = {"t": 9, "o": 4103.0, "h": 4106.0, "l": 4098.0, "c": 4100.0}
+        r37 = decide(b37, zp, 7.9)
+        wick37 = 4106.0 - 4103.0; ok8 = r37 and r37["direction"] == "SHORT" and abs(wick37 / 8.0 - 0.375) < 0.01
         for lab, ok in (("09:00 dispara SHORT (aceitação a)", ok1), ("sem toque nao dispara", ok2),
                         ("fechou em cima nao dispara", ok3), ("doji na zona nao dispara", ok4),
                         ("espelho LONG na demanda dispara", ok5),
-                        ("1H 18:00 rejeição premium dispara (Cris)", ok6), ("agregação 1H 4x15m ok", ok7)):
+                        ("1H 18:00 rejeição premium dispara (Cris)", ok6), ("agregação 1H 4x15m ok", ok7),
+                        ("pavio 37.5% na OB dispara com novo threshold 35%", ok8)):
             print(f"  [{'OK' if ok else 'FAIL'}] {lab}")
-        allok = all([ok1, ok2, ok3, ok4, ok5, ok6, ok7])
+        allok = all([ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8])
         print("selftest", "PASS" if allok else "FAIL")
         sys.exit(0 if allok else 1)
     main_loop()
