@@ -23,7 +23,7 @@ except Exception:
 LX = ZoneInfo("Europe/Lisbon")
 STORE = BASE.parent / "my-strategy/core/bar_store/store"
 LOG = BASE / "logs" / "candle_reads.jsonl"
-TFS = {"5": "bars_5m.jsonl", "15": "bars_15m.jsonl", "60": "AGG15"}   # 60 = agregado de 4×15m (store não tem 1h)
+TFS = {"15": "bars_15m.jsonl", "60": "AGG15"}   # 5M REMOVIDO (ordem Cris 04/08: parar leitura 5min — saturava o Opus); 60 = agregado 4×15m
 TG_OK = os.environ.get("CANDLE_TG_AUTHORIZED", "") == "1"   # Telegram só confirmado; default OFF
 POLL_S = 20
 
@@ -218,7 +218,7 @@ def main_loop():
                 if closed["t"] > seen[tf]:
                     todo.append((tf, closed))
             if todo:
-                prio = {"60": 0, "15": 1, "5": 2}      # 60>15>5: os TFs que importam nunca ficam à fome do 5M
+                prio = {"60": 0, "15": 1}              # 60>15: sem 5M (ordem Cris)
                 todo.sort(key=lambda x: (prio[x[0]], -x[1]["t"]))
                 tf, bar = todo[0]
                 skipped = [(t, b["t"]) for t, b in todo[1:]]
