@@ -189,43 +189,45 @@ def main_loop():
     # "não estás lendo constantemente?" — sem isto ficava-se sem read entre o arranque e o próximo fecho).
     try:
         b15 = load_bars("15", 3)
-        if len(b15) >= 2:
-            dsr0 = E2.load_dossier() or {}
-            v0 = read_candle("15", b15[-2], dsr0)
-            rec0 = log_read("15", b15[-2], v0)
-            print("[arranque] " + fmt_chat("15", b15[-2], v0), flush=True)
+        dsr0 = E2.load_dossier()
+        if len(b15) >= 1 and dsr0:                     # store escreve SO fechadas: [-1] = ultima FECHADA
+            v0 = read_candle("15", b15[-1], dsr0)
+            rec0 = log_read("15", b15[-1], v0)
+            print("[arranque] " + fmt_chat("15", b15[-1], v0), flush=True)
             if rec0["confirmed"]:
-                print(f"   ✅ CONFIRMADO → {send_confirmed_tg('15', b15[-2], v0)}", flush=True)
+                print(f"   ✅ CONFIRMADO → {send_confirmed_tg('15', b15[-1], v0)}", flush=True)
     except Exception as e:
         print(f"[arranque] read falhou: {type(e).__name__}", flush=True)
     for tf in TFS:                                    # baseline: novos closes após o arranque
         b = load_bars(tf, 2)
-        if len(b) >= 2: seen[tf] = b[-2]["t"]
+        if b: seen[tf] = b[-1]["t"]                   # [-1] = última fechada (store só escreve fechadas)
     while True:
         try:
-            dsr = E2.load_dossier() or {}
-            # escolher a vela mais fresca não-lida entre os 3 TFs (1 read de cada vez, freshest-first)
+            dsr = E2.load_dossier()
+            if not dsr:
+                time.sleep(POLL_S); continue          # dossiê ausente (E0 down): não crashar render
             todo = []
             for tf in TFS:
                 bars = load_bars(tf, 3)
-                if len(bars) < 2: continue
-                closed = bars[-2]                      # penúltima = última FECHADA (a última está a formar)
+                if not bars: continue
+                closed = bars[-1]                      # [-1] = última FECHADA (store nunca escreve em-formação)
+                if tf == "60" and closed.get("_n15") != 4:      # 1H: só hora COMPLETA
+                    closed = bars[-2] if len(bars) >= 2 and bars[-2].get("_n15") == 4 else None
+                if not closed: continue
                 if seen[tf] is None: seen[tf] = closed["t"]; continue
                 if closed["t"] > seen[tf]:
                     todo.append((tf, closed))
             if todo:
-                todo.sort(key=lambda x: x[1]["t"])     # mais antiga primeiro? não — freshest-first p/ não atrasar
-                tf, bar = todo[-1]
-                skipped = [(t, b["t"]) for t, b in todo[:-1]]
+                prio = {"60": 0, "15": 1, "5": 2}      # 60>15>5: os TFs que importam nunca ficam à fome do 5M
+                todo.sort(key=lambda x: (prio[x[0]], -x[1]["t"]))
+                tf, bar = todo[0]
+                skipped = [(t, b["t"]) for t, b in todo[1:]]
                 v = read_candle(tf, bar, dsr)
                 rec = log_read(tf, bar, v)
                 print(fmt_chat(tf, bar, v), flush=True)
-                for t, _ in [(tf, bar)] + [(t, None) for t, _ in skipped]:
-                    # marca lidas TODAS as velas até à mais fresca lida (as saltadas ficam registadas no print)
-                    b = load_bars(t, 2)
-                    if b: seen[t] = b[-2]["t"]
+                seen[tf] = bar["t"]                    # marca SÓ o TF lido, com o t lido (nunca re-load)
                 if skipped:
-                    print(f"   (saltadas por 1-read-de-cada-vez: {[(t,hm(ts)) for t,ts in skipped]})", flush=True)
+                    print(f"   (pendentes p/ próximo ciclo: {[(t, hm(ts)) for t, ts in skipped]})", flush=True)
                 if rec["confirmed"]:
                     ch = send_confirmed_tg(tf, bar, v)
                     print(f"   ✅ CONFIRMADO → {ch}: {v.get('direction')} {v.get('entry')}/{v.get('sl')}/{v.get('target')}", flush=True)
@@ -257,7 +259,7 @@ if __name__ == "__main__":
         tf = sys.argv[sys.argv.index("--once") + 1] if len(sys.argv) > sys.argv.index("--once") + 1 else "15"
         dsr = E2.load_dossier() or {}
         bars = load_bars(tf, 3)
-        bar = bars[-2]
+        bar = bars[-1]
         print(f"read único vela {tf}M {hm(bar['t'])}...", flush=True)
         v = read_candle(tf, bar, dsr)
         print(json.dumps(v, ensure_ascii=False, indent=1))

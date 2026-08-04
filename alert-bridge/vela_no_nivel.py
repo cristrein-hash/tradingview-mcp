@@ -52,7 +52,7 @@ def decide(bar, zone, atr15):
     """Função PURA de decisão (testável; usada pela aceitação). Devolve leitura ou None.
     tese SHORT: toque na borda inferior da supply + pavio superior de rejeição + fecho de volta em baixo.
     tese LONG (espelho): toque na borda superior da demanda + pavio inferior + fecho de volta em cima."""
-    if not atr15 or zone.get("criticidade") != "critica":
+    if not atr15:
         return None
     o, h, l, c = bar["o"], bar["h"], bar["l"], bar["c"]
     rng = h - l
@@ -174,10 +174,10 @@ def _tg(txt):
         return "tg-erro"
 
 
-def load_bars(n=40):
+def load_bars(n=80):
     try:
         with open(BARS_F, "rb") as f:
-            f.seek(0, 2); size = f.tell(); f.seek(max(0, size - 12000))
+            f.seek(0, 2); size = f.tell(); f.seek(max(0, size - 30000))
             rows = [json.loads(l) for l in f.read().decode(errors="ignore").splitlines()
                     if l.strip() and l[0] == "{"]
         rows = [b for b in rows if all(k in b for k in ("t", "o", "h", "l", "c"))]
@@ -235,6 +235,9 @@ def check_break_continuation(cur, tf, atr, tmap, bars15, fired):
     risk = sl - c
     rr = round((c - tgt) / risk, 1) if risk > 0 else 0
     tflabel = "1H" if tf == "60" else f"{tf}M"
+    if not tg_claim(f"break_{cur['t']}"):
+        print("(break: dedup — evento já alertado)", flush=True)
+        return
     txt = (f"🔻 SINAL SHORT — CONTINUIDADE (break de {lvl})\n"
            f"vela {tflabel} das {hm(cur['t'])} FECHOU {c} abaixo do gatilho {lvl} = quebra confirmada, "
            f"continuação bear.\n"
@@ -245,11 +248,36 @@ def check_break_continuation(cur, tf, atr, tmap, bars15, fired):
     print(f"(canal: {_tg(txt)})", flush=True)
 
 
+
+
+def tg_claim(key):
+    """True se somos os PRIMEIROS a alertar este evento (dedup entre daemons + zonas sobrepostas).
+    Chave = classe_evento + t da vela. Lockfile O_EXCL em logs/.tg_dedup (limpos >24h)."""
+    import os
+    d = BASE.parent / "alert-bridge" / "logs" / ".tg_dedup"
+    try:
+        d.mkdir(exist_ok=True)
+        now = time.time()
+        for f in d.iterdir():
+            if now - f.stat().st_mtime > 86400:
+                f.unlink(missing_ok=True)
+        fd = os.open(str(d / f"{key}.lock"), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+        os.close(fd)
+        return True
+    except FileExistsError:
+        return False
+    except Exception:
+        return True                                    # fail-open: melhor duplicar que silenciar
+
+
 def scan_zones(cur, tf, atr, tmap, fired):
     """Verifica a vela `cur` (TF `tf`) contra todas as zonas do mapa; alerta na rejeição. Dedup por (tf,zona).
     Estendido a 1H por ordem do Cris (04/08): a rejeição 1H das 18:00 foi o sinal mais claro do dia e a vigia
     só corria em 15M. Mesma régua-de-zona, ATR próprio do TF. (5M fica de fora — ordem Cris: ruído.)"""
+    consulted = False
     for zone in tmap["zones"]:
+        if zone.get("criticidade") != "critica":
+            continue
         read = decide(cur, zone, atr)
         if not read:
             continue
@@ -270,8 +298,12 @@ def scan_zones(cur, tf, atr, tmap, fired):
         tgts = targets_for(read, tmap, dsr) if dsr else []
         txt = alert_text(read, zone, g, notes, tgts, cur["t"], tf)
         print(txt, flush=True)
-        print(f"(canal: {_tg(txt)})", flush=True)
-        if CONSULT and dsr:
+        if tg_claim(f"reject_{tf}_{cur['t']}"):        # 1 Telegram por vela+classe (zonas sobrepostas + validador)
+            print(f"(canal: {_tg(txt)})", flush=True)
+        else:
+            print("(canal: dedup — evento já alertado)", flush=True)
+        if CONSULT and dsr and not consulted:
+            consulted = True
             try:
                 import e2_quality as E2
                 cand = {"direction": read["direction"], "rule": "zone_reject", "tf": tf,
@@ -280,7 +312,7 @@ def scan_zones(cur, tf, atr, tmap, fired):
                                                         if read["direction"] == "SHORT" else
                                                         read["entry"] + 3 * abs(read["entry"] - read["sl"])),
                         "rr": 3.0, "materiality": {"sl_atr": None, "confluence": None, "confluence_breakdown": {}}}
-                th = E2.run_read(cand, dsr)
+                th = E2.run_read(cand, dsr, timeout=90)
                 if not th.get("error"):
                     print(f"   juízo do reader ({tf}): surfaced={E2.surfaced(th, cand)} · "
                           f"convicção {th.get('conviction')} · {str(th.get('thesis'))[:180]}", flush=True)

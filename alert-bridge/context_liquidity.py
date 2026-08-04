@@ -116,7 +116,7 @@ def _sweeps(bars, levels, atr):
                     ev.append({"kind": kind, "level": round(lvl, 2), "side": "high" if is_high else "low",
                                "sweep_i": i, "sweep_extreme": round(extreme, 2), "reclaim_i": rec,
                                "trapped": "buyers" if is_high else "shorts"})
-                i = (rec if rec is not None else j) + 1
+                i = (rec + 1) if rec is not None else j   # sem reclaim: barra j reavaliada como novo sweep
             else:
                 i += 1
     ev.sort(key=lambda e: e["sweep_i"])

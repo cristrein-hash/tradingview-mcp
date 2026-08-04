@@ -27,10 +27,10 @@ NEAR_ATR = 1.5           # dentro de 1.5·ATR da zona = EM JOGO (ESPERA); mais l
 def hm(t): return dt.datetime.fromtimestamp(int(t), LX).strftime("%d/%m %H:%M")
 
 
-def _bars(fname, n=40):
+def _bars(fname, n=80):
     try:
         with open(STORE / fname, "rb") as f:
-            f.seek(0, 2); sz = f.tell(); f.seek(max(0, sz - 14000))
+            f.seek(0, 2); sz = f.tell(); f.seek(max(0, sz - 30000))
             rows = [json.loads(l) for l in f.read().decode(errors="ignore").splitlines()
                     if l.strip() and l[0] == "{"]
         return [b for b in rows if all(k in b for k in ("t", "o", "h", "l", "c"))][-n:]
@@ -86,13 +86,17 @@ def _tg(txt):
     if not TG_OK:
         return "tg-off"
     try:
-        return "tg" if V.__dict__.get("_tg") and __import__("e2_quality")._tg_send(txt) else "tg-fail"
+        import e2_quality as E2
+        return "tg" if E2._tg_send(txt) else "tg-fail"
     except Exception:
         return "tg-erro"
 
 
 def snapshot(rows, price, ts):
-    STATUS_F.write_text(json.dumps({"ts": ts, "price": price, "levels": rows}, ensure_ascii=False, indent=1))
+    import os, tempfile
+    tmp = STATUS_F.with_suffix(".tmp")
+    tmp.write_text(json.dumps({"ts": ts, "price": price, "levels": rows}, ensure_ascii=False, indent=1))
+    os.replace(tmp, STATUS_F)
 
 
 def main_loop():
@@ -128,13 +132,16 @@ def main_loop():
                 # alertar só TRANSIÇÕES para GO (o momento de entrar)
                 for r in rows:
                     if r["state"] == "GO" and last_state.get(r["id"]) != "GO":
+                        klass = "break" if r["id"] == "break_gatilho" else f"reject_{r.get('tf','15')}"
+                        key = f"{klass}_{last15['t']}"
+                        first = V.tg_claim(key)
                         e = r.get("entry"); s = r.get("sl"); t = r.get("target"); rr = r.get("rr")
                         txt = (f"🎯 VALIDADOR: GO — {r['tese']} @ {r.get('zona')} ({r.get('id')})\n"
                                f"{r.get('detail','rejeição/break confirmado')}\n"
                                f"entry {e} · SL {s} · alvo {t or '—'} · RR {rr or '—'}\n"
                                f"(validação da TUA entrada — a decisão é tua)")
                         print(txt, flush=True)
-                        print(f"(canal: {_tg(txt)})", flush=True)
+                        print(f"(canal: {_tg(txt) if first else 'dedup — vela já alertou'})", flush=True)
                     last_state[r["id"]] = r["state"]
         except Exception as e:
             print(f"validador erro: {type(e).__name__}:{str(e)[:70]}", flush=True)

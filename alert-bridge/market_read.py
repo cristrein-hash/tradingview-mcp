@@ -6,7 +6,7 @@ SVP, NAS, Market Order Bubbles, RSI, Volume. NUNCA aproximar/inventar — a font
 
 Este é o CAMINHO DE LEITURA único; vela/validador/candle-reader/map-sync devem consumir `snapshot(tf)`.
 NÃO reconstrói readers paralelos — assembla o store_reader. py3.9."""
-import json, time, sys
+import sys
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent
@@ -15,8 +15,11 @@ import store_reader as SR
 
 
 def _num(x):
+    """Parser numérico dos valores TradingView. FIX auditoria: TV usa narrow-nbsp (\u202f) em '9.27 K' —
+    sem o strip, SVP/Volume viravam None silenciosamente e o prompt levava 'SVP comprador' falso."""
     try:
-        return float(str(x).replace(",", "").replace(" ", "").replace("K", "e3"))
+        s = str(x).replace(",", "").replace(" ", "").replace("\u202f", "").replace("\xa0", "").replace("K", "e3").replace("M", "e6")
+        return float(s)
     except Exception:
         return None
 
@@ -92,7 +95,10 @@ def read_line(tf="15"):
         return f"[{tf}] sem dados no store"
     obs = " · ".join(f"{z['low']:.0f}-{z['high']:.0f}" for z in s["ob_zones"][:4])
     svp = s["svp"]
-    side = "vendedor" if (svp["down"] or 0) > (svp["up"] or 0) else "comprador"
+    if svp["up"] is None and svp["down"] is None:
+        side = "—"                                       # não inventar lado quando o SVP não existe no TF
+    else:
+        side = "vendedor" if (svp["down"] or 0) > (svp["up"] or 0) else "comprador"
     return (f"[{tf}] px {s['price']} · RSI {s['rsi']}/{s['rsi_ma']} · SVP {side} "
             f"(U{svp['up']}/D{svp['down']}) · NAS rsi {s['nas']['rsi']} dist {s['nas']['dist_ema_atr']}ATR · "
             f"bubbles {s['bubbles_recent']}/6b · OB: {obs}")
