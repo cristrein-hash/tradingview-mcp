@@ -149,12 +149,13 @@ def targets_for(read, tmap, dsr):
     return uniq[:2]
 
 
-def alert_text(read, zone, g, notes, tgts, bar_t):
+def alert_text(read, zone, g, notes, tgts, bar_t, tf="15"):
     r = abs(read["entry"] - read["sl"])
     rrs = " / ".join(f"{abs(read['entry'] - t) / r:.1f}" for t in tgts) if (tgts and r > 0) else "—"
     tgt_s = " / ".join(str(t) for t in tgts) if tgts else "—"
-    return (f"🕯️ VELA-NO-NÍVEL — COPILOTO (leitura de barra, NÃO é sinal E2)\n"
-            f"zona declarada {zone['low']:.2f}–{zone['high']:.2f} (tese {zone['tese']}, crítica): a vela 15M "
+    tflabel = "1H" if tf == "60" else f"{tf}M"
+    return (f"🕯️ VELA-NO-NÍVEL {tflabel} — COPILOTO (leitura de barra, NÃO é sinal E2)\n"
+            f"zona declarada {zone['low']:.2f}–{zone['high']:.2f} (tese {zone['tese']}, crítica): a vela {tflabel} "
             f"das {hm(bar_t)} tocou {read['touch_extreme']}, pavio {read['wick_pts']}pts "
             f"({read['wick_pct']}% do range, {read['wick_atr']}×ATR) e fechou de volta em {read['entry']}.\n"
             f"{'; '.join(notes)}. [grau {g}]\n"
@@ -175,67 +176,97 @@ def _tg(txt):
 def load_bars(n=40):
     try:
         with open(BARS_F, "rb") as f:
-            f.seek(0, 2); size = f.tell(); f.seek(max(0, size - 6000))
+            f.seek(0, 2); size = f.tell(); f.seek(max(0, size - 12000))
             rows = [json.loads(l) for l in f.read().decode(errors="ignore").splitlines()
                     if l.strip() and l[0] == "{"]
+        rows = [b for b in rows if all(k in b for k in ("t", "o", "h", "l", "c"))]
         return rows[-n:]
     except Exception:
         return []
 
 
+def agg_1h(m15):
+    """Agrega 15m em velas 1H (bucket t//3600). _n15==4 = hora COMPLETA (fechada). Store não tem bars_1h."""
+    buckets = {}
+    for b in m15:
+        hb = (b["t"] // 3600) * 3600
+        buckets.setdefault(hb, []).append(b)
+    out = []
+    for hb in sorted(buckets):
+        g = sorted(buckets[hb], key=lambda x: x["t"])
+        out.append({"t": hb, "o": g[0]["o"], "h": max(x["h"] for x in g),
+                    "l": min(x["l"] for x in g), "c": g[-1]["c"], "_n15": len(g)})
+    return out
+
+
+def scan_zones(cur, tf, atr, tmap, fired):
+    """Verifica a vela `cur` (TF `tf`) contra todas as zonas do mapa; alerta na rejeição. Dedup por (tf,zona).
+    Estendido a 1H por ordem do Cris (04/08): a rejeição 1H das 18:00 foi o sinal mais claro do dia e a vigia
+    só corria em 15M. Mesma régua-de-zona, ATR próprio do TF. (5M fica de fora — ordem Cris: ruído.)"""
+    for zone in tmap["zones"]:
+        read = decide(cur, zone, atr)
+        if not read:
+            continue
+        key = (tf, zone["id"])
+        prev = fired.get(key)
+        if prev and time.time() - prev[0] < COOLDOWN_S:
+            new_ext = (read["touch_extreme"] > prev[1] + 0.5 * (atr or 6)) if read["direction"] == "SHORT" \
+                else (read["touch_extreme"] < prev[1] - 0.5 * (atr or 6))
+            if not new_ext:
+                continue
+        fired[key] = (time.time(), read["touch_extreme"])
+        try:
+            import e2_quality as E2
+            dsr = E2.load_dossier() or {}
+        except Exception:
+            dsr = {}
+        g, notes = grade(read, dsr)
+        tgts = targets_for(read, tmap, dsr) if dsr else []
+        txt = alert_text(read, zone, g, notes, tgts, cur["t"], tf)
+        print(txt, flush=True)
+        print(f"(canal: {_tg(txt)})", flush=True)
+        if CONSULT and dsr:
+            try:
+                import e2_quality as E2
+                cand = {"direction": read["direction"], "rule": "zone_reject", "tf": tf,
+                        "entry": read["entry"], "sl": read["sl"],
+                        "target": tgts[0] if tgts else (read["entry"] - 3 * abs(read["entry"] - read["sl"])
+                                                        if read["direction"] == "SHORT" else
+                                                        read["entry"] + 3 * abs(read["entry"] - read["sl"])),
+                        "rr": 3.0, "materiality": {"sl_atr": None, "confluence": None, "confluence_breakdown": {}}}
+                th = E2.run_read(cand, dsr)
+                if not th.get("error"):
+                    print(f"   juízo do reader ({tf}): surfaced={E2.surfaced(th, cand)} · "
+                          f"convicção {th.get('conviction')} · {str(th.get('thesis'))[:180]}", flush=True)
+            except Exception as e:
+                print(f"   (reader consult falhou: {type(e).__name__})", flush=True)
+
+
 def main_loop():
-    print("🕯️ vela-no-nível armado: leio cada barra 15M FECHADA nas zonas CRÍTICAS do mapa do trader "
-          f"(telegram={'ON' if VELA_LIVE else 'OFF/chat'})")
-    last_t = None
-    fired = {}                                    # zone_id -> (ts, extreme)
+    print("🕯️ vela-no-nível armado: leio cada barra 15M E 1H FECHADA nas zonas CRÍTICAS do mapa do trader "
+          f"(1H estendido por ordem Cris 04/08; telegram={'ON' if VELA_LIVE else 'OFF/chat'})")
+    last_t15 = None; last_t1h = None
+    fired = {}                                    # (tf, zone_id) -> (ts, extreme)
     while True:
         try:
             bars = load_bars()
             if len(bars) >= 16:
-                cur = bars[-1]
-                if cur["t"] != last_t:
-                    last_t = cur["t"]
-                    tmap = trader_map.load_map()
+                tmap = trader_map.load_map()
+                # 15M — cada barra fechada (comportamento original)
+                cur15 = bars[-1]
+                if cur15["t"] != last_t15:
+                    last_t15 = cur15["t"]
                     if tmap:
-                        a = atr14(bars)
-                        for zone in tmap["zones"]:
-                            read = decide(cur, zone, a)
-                            if not read:
-                                continue
-                            prev = fired.get(zone["id"])
-                            if prev and time.time() - prev[0] < COOLDOWN_S:
-                                new_ext = (read["touch_extreme"] > prev[1] + 0.5 * (a or 6)) if \
-                                    read["direction"] == "SHORT" else (read["touch_extreme"] < prev[1] - 0.5 * (a or 6))
-                                if not new_ext:
-                                    continue
-                            fired[zone["id"]] = (time.time(), read["touch_extreme"])
-                            try:
-                                import e2_quality as E2
-                                dsr = E2.load_dossier() or {}
-                            except Exception:
-                                dsr = {}
-                            g, notes = grade(read, dsr)
-                            tgts = targets_for(read, tmap, dsr) if dsr else []
-                            txt = alert_text(read, zone, g, notes, tgts, cur["t"])
-                            print(txt, flush=True)
-                            ch = _tg(txt)
-                            print(f"(canal: {ch})", flush=True)
-                            if CONSULT and dsr:
-                                try:
-                                    import e2_quality as E2
-                                    cand = {"direction": read["direction"], "rule": "zone_reject", "tf": "15",
-                                            "entry": read["entry"], "sl": read["sl"],
-                                            "target": tgts[0] if tgts else (read["entry"] - 3 * abs(read["entry"] - read["sl"])
-                                                                            if read["direction"] == "SHORT" else
-                                                                            read["entry"] + 3 * abs(read["entry"] - read["sl"])),
-                                            "rr": 3.0, "materiality": {"sl_atr": None, "confluence": None,
-                                                                       "confluence_breakdown": {}}}
-                                    th = E2.run_read(cand, dsr)
-                                    if not th.get("error"):
-                                        print(f"   juízo do reader: surfaced={E2.surfaced(th, cand)} · "
-                                              f"convicção {th.get('conviction')} · {str(th.get('thesis'))[:180]}", flush=True)
-                                except Exception as e:
-                                    print(f"   (reader consult falhou: {type(e).__name__})", flush=True)
+                        scan_zones(cur15, "15", atr14(bars), tmap, fired)
+                # 1H — cada HORA COMPLETA fechada (agregada de 4×15m); só quando fecha uma nova hora
+                h1 = agg_1h(bars)
+                complete = [b for b in h1 if b.get("_n15") == 4]
+                if complete:
+                    cur1h = complete[-1]
+                    if cur1h["t"] != last_t1h:
+                        last_t1h = cur1h["t"]
+                        if tmap:
+                            scan_zones(cur1h, "60", atr14(complete), tmap, fired)
         except Exception as e:
             print(f"vela-no-nível erro transitório: {type(e).__name__}:{str(e)[:60]}", flush=True)
         time.sleep(45)
@@ -257,11 +288,21 @@ if __name__ == "__main__":
         b_long = {"t": 5, "o": 4037.0, "h": 4038.5, "l": 4029.0, "c": 4036.8}          # pavio inferior + fecho em cima
         rl = decide(b_long, zl, 5.77)
         ok5 = rl and rl["direction"] == "LONG" and rl["sl"] <= 4028.2
+        # 1H 18:00 (Cris 04/08): rejeição da premium 4101-4116 — o sinal mais claro do dia, tem de disparar
+        zp = {"id": "premium", "low": 4101.07, "high": 4116.28, "tese": "SHORT", "criticidade": "critica", "nota": ""}
+        b1h_1800 = {"t": 1785862800, "o": 4093.46, "h": 4106.46, "l": 4086.26, "c": 4086.26}
+        r1h = decide(b1h_1800, zp, 15.0)
+        ok6 = r1h and r1h["direction"] == "SHORT" and r1h["entry"] == 4086.26 and r1h["sl"] > 4106
+        # agregação 1H: 4×15m -> 1 hora completa
+        m = [{"t": 1785862800 + i * 900, "o": 4093 + i, "h": 4106 - i, "l": 4092 + i, "c": 4095 + i} for i in range(4)]
+        agg = agg_1h(m)
+        ok7 = len(agg) == 1 and agg[0]["_n15"] == 4 and agg[0]["o"] == 4093 and agg[0]["h"] == 4106
         for lab, ok in (("09:00 dispara SHORT (aceitação a)", ok1), ("sem toque nao dispara", ok2),
                         ("fechou em cima nao dispara", ok3), ("doji na zona nao dispara", ok4),
-                        ("espelho LONG na demanda dispara", ok5)):
+                        ("espelho LONG na demanda dispara", ok5),
+                        ("1H 18:00 rejeição premium dispara (Cris)", ok6), ("agregação 1H 4x15m ok", ok7)):
             print(f"  [{'OK' if ok else 'FAIL'}] {lab}")
-        allok = all([ok1, ok2, ok3, ok4, ok5])
+        allok = all([ok1, ok2, ok3, ok4, ok5, ok6, ok7])
         print("selftest", "PASS" if allok else "FAIL")
         sys.exit(0 if allok else 1)
     main_loop()
