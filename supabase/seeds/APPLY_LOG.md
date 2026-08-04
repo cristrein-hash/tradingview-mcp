@@ -74,3 +74,4 @@
 - 2026-08-04 16:23 UTC · `memory_delta_20260804_amd_audit_and_voice_decision.sql` · memory_items 366→368 · tag-rows 2/2 · OK
 - 2026-08-04 18:27 UTC · `memory_delta_20260804_candle_reader.sql` · memory_items 368→369 · tag-rows 1/1 · OK
 - 2026-08-04 19:14 UTC · `memory_delta_20260804_vela_fixes_day_lessons.sql` · memory_items 369→371 · tag-rows 2/2 · OK
+- 2026-08-04 21:13 UTC · `memory_delta_20260804_canonical_reader.sql` · memory_items 371→372 · tag-rows 1/1 · OK
