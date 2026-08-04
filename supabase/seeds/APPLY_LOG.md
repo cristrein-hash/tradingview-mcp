@@ -77,3 +77,4 @@
 - 2026-08-04 21:13 UTC · `memory_delta_20260804_canonical_reader.sql` · memory_items 371→372 · tag-rows 1/1 · OK
 - 2026-08-04 21:26 UTC · `memory_delta_20260804_validator_asia_ath.sql` · memory_items 372→374 · tag-rows 2/2 · OK
 - 2026-08-04 21:30 UTC · `memory_delta_20260804_live_review_fixes.sql` · memory_items 374→375 · tag-rows 1/1 · OK
+- 2026-08-04 21:34 UTC · `memory_delta_20260804_5m_off.sql` · memory_items 375→376 · tag-rows 1/1 · OK
