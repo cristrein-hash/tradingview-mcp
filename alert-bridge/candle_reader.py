@@ -106,9 +106,19 @@ def read_candle(tf, bar, dsr):
     """UM read Opus da fita no fecho da vela. Reutiliza a imagem do E2 + CLI Opus. Retry via _read_once-like."""
     cand = obs_candidate(tf, bar, dsr)
     image = E2.render_composite(dsr, cand)
+    # LEITURA CANÓNICA de TODOS os indicadores no fecho (Cris 04/08: "leitura permanente de todos os
+    # indicadores a cada vela"): snapshot real do market_read (OB/SMC/SVP/NAS/Bubbles/RSI/Vol) no prompt.
+    indic = ""
+    try:
+        import market_read as MR
+        lines = [MR.read_line(t) for t in ("15", "60") if MR.snapshot(t)]
+        if lines:
+            indic = "\n\n# INDICADORES REAIS NO FECHO (leitura canónica do chart)\n" + "\n".join(f"  {l}" for l in lines)
+    except Exception:
+        pass
     focus = (f"\n\n# VELA EM FOCO ({tf}M, fecho {hm(bar['t'])} Lisboa): O{bar['o']} H{bar['h']} "
              f"L{bar['l']} C{bar['c']} — lê ESTA vela na fita acima.")
-    prompt = image + focus + TAPE_SCHEMA
+    prompt = image + indic + focus + TAPE_SCHEMA
     env = dict(os.environ); env.pop("ANTHROPIC_API_KEY", None)
     for attempt in range(2):
         try:

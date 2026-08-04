@@ -35,13 +35,22 @@ def _find(studies, sub):
     return {}
 
 
-def ob_zones(tf):
-    """Zonas OB Detector v11 REAIS do store (caminho canónico; NUNCA aproximar). pine_boxes->(data,age)."""
+def ob_zones(tf, ref_price=None):
+    """Zonas OB Detector v11 REAIS do store (caminho canónico; NUNCA aproximar). pine_boxes->(data,age).
+    GUARD DE CONTAMINAÇÃO (auditoria 04/08: pine_boxes_240 capturou zonas 4515-5598 = símbolo errado na tab):
+    com ref_price, exclui zonas a >12% do preço e avisa — nunca deixar zonas de outro símbolo entrar em decisão."""
     data, _age = SR.pine_boxes(tf)
     for st in (data or {}).get("studies", []):
         if "OB Detector" in st.get("name", ""):
-            return sorted([{"low": z["low"], "high": z["high"]} for z in st.get("zones", [])
-                           if "low" in z], key=lambda z: -z["high"])
+            zs = sorted([{"low": z["low"], "high": z["high"]} for z in st.get("zones", [])
+                         if "low" in z], key=lambda z: -z["high"])
+            if ref_price:
+                ok = [z for z in zs if abs((z["low"] + z["high"]) / 2 - ref_price) / ref_price <= 0.08]
+                if len(ok) < len(zs):
+                    print(f"[market_read] AVISO: {len(zs)-len(ok)} zonas OB {tf} excluídas por suspeita de "
+                          f"símbolo errado (>8% do preço {ref_price}) — verificar a tab {tf}", flush=True)
+                return ok
+            return zs
     return []
 
 
@@ -66,7 +75,7 @@ def snapshot(tf="15"):
         bub_recent = nas_recent = 0
     return {
         "tf": tf, "price": price, "fresh": SR.fresh(tf),
-        "ob_zones": ob_zones(tf),                                   # OB Detector REAL
+        "ob_zones": ob_zones(tf, ref_price=price),                  # OB Detector REAL (com guard de contaminação)
         "smc_plotcandle": _num(smc.get("PlotCandle")),
         "svp": {"up": _num(svp.get("Up")), "down": _num(svp.get("Down")), "total": _num(svp.get("Total"))},
         "rsi": _num(rsi.get("RSI")), "rsi_ma": _num(rsi.get("RSI-based MA")),
