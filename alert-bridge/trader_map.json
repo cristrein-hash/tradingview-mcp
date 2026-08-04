@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "updated_ts": "2026-08-04T11:30:00Z",
+  "updated_by": "chat (Cris -> Claude)",
+  "zones": [
+    {
+      "id": "supply_4066_4073_w32",
+      "low": 4066.0,
+      "high": 4073.0,
+      "tese": "SHORT",
+      "nota": "reteste da abertura da semana; zona crítica de viragem 4070/4080 (declarada pré-preço 03/08)",
+      "criticidade": "critica",
+      "validade": "2026-08-08T21:00:00Z",
+      "created_ts": "2026-08-03T22:10:00Z"
+    },
+    {
+      "id": "ob_premium_4101_4116_w32",
+      "low": 4101.07,
+      "high": 4116.28,
+      "tese": "SHORT",
+      "nota": "OB Detector supply 4H — 2º cenário do Cris: 'seguir a 4100 pra virar mais acima'",
+      "criticidade": "critica",
+      "validade": "2026-08-08T21:00:00Z",
+      "created_ts": "2026-08-03T22:10:00Z"
+    }
+  ],
+  "tese_geral": {
+    "direcao": "SHORT",
+    "nota": "tendência claramente BEAR no visual; reteste das demandas superiores antes de descer",
+    "validade": "2026-08-08T21:00:00Z"
+  }
+}

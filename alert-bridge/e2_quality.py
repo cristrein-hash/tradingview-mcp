@@ -130,9 +130,21 @@ def _tg_send(text):
 
 
 def notify_surfaced(cand, th):
-    """Alerta LIVE de candidato surfaced (contexto converge no lado do candidato). Advisory curto."""
+    """Alerta LIVE de candidato surfaced (contexto converge no lado do candidato). Advisory curto.
+    MAPA DO TRADER (Cris 2026-08-04): sinal CONTRA a tese declarada numa zona do mapa (<=1 ATR) leva
+    prefixo de CONFLITO OBRIGATÓRIO — determinístico, independente do que o read declarou. Nunca mais
+    um long 'limpo' para dentro da zona de venda declarada (a falha de 04/08 08:03)."""
     if not E2_LIVE: return
-    txt = (f"🧠 E2 {cand.get('direction')} XAUUSD {cand.get('rule')}@{cand.get('tf')}\n"
+    prefix = ""
+    try:
+        import trader_map as _TM
+        z = _TM.conflict(cand, _TM.load_map(), atr=None)
+        if z:
+            prefix = (f"⚠️ CONTRA A TUA LEITURA DECLARADA — zona {z['low']:.2f}–{z['high']:.2f}, "
+                      f"tese {z['tese']} (\"{z['nota'][:60]}\")\n")
+    except Exception:
+        pass
+    txt = (f"{prefix}🧠 E2 {cand.get('direction')} XAUUSD {cand.get('rule')}@{cand.get('tf')}\n"
            f"entry {cand.get('entry')} · SL {cand.get('sl')} · alvo {cand.get('target')} (RR {cand.get('rr')})\n"
            f"convergência {th.get('convergence')} · convicção {th.get('conviction')}\n"
            f"tese: {th.get('thesis')}\n"
@@ -265,6 +277,15 @@ def render_composite(dsr, cand):
                  f"= pullback, NÃO reversão · reversão contra a perna SÓ em supply/demand 4H/1D com confluências de exaustão.")
     else:
         L.append("  perna indefinida (RANGE): sem caso-base direcional — exige convergência clara num dos lados.")
+    # MAPA DO TRADER (Cris 2026-08-04): voz de 1ª classe logo após o FRAME. SEM mapa = zero linhas
+    # (byte-idêntico ao anterior — regressão (d) do accept_mapa_trader_20260804).
+    try:
+        import trader_map as _TM
+        _tmap = _TM.load_map()
+        if _tmap:
+            L.append(_TM.render_section(_tmap))
+    except Exception:
+        pass
     L.append(f"\n# CANDIDATO: {d} {cand.get('rule')} @TF{cand.get('tf')}")
     L.append(f"  entry {fmt(cand.get('entry'))} | SL {fmt(cand.get('sl'))} | alvo {fmt(cand.get('target'))} "
              f"| R:R {fmt(cand.get('rr'),1)} | SL {fmt(m.get('sl_atr'),1)}×ATR | regime HTF {regime(dsr)}")
