@@ -37,19 +37,18 @@ def _find(studies, sub):
 
 def ob_zones(tf, ref_price=None):
     """Zonas OB Detector v11 REAIS do store (caminho canónico; NUNCA aproximar). pine_boxes->(data,age).
-    GUARD DE CONTAMINAÇÃO (auditoria 04/08: pine_boxes_240 capturou zonas 4515-5598 = símbolo errado na tab):
-    com ref_price, exclui zonas a >12% do preço e avisa — nunca deixar zonas de outro símbolo entrar em decisão."""
+    NOTA DE AUDITORIA (04/08): as zonas 4515-5598 do 240 SÃO XAU REAL — ATH 5597.91 em 2026-01-28 e a escada
+    de supplies do crash (verificado em bars_1d). O 'guard de contaminação' que aqui esteve por 1 commit era
+    ERRO MEU (assumi teto 4382 sem ler os dados) e excluía zonas HTF reais — removido. A captura (tab_pin
+    verifica símbolo XAUUSD + resolução) estava certa. NUNCA assumir — ler os dados. ref_price mantido só
+    para ordenar por proximidade se fornecido."""
     data, _age = SR.pine_boxes(tf)
     for st in (data or {}).get("studies", []):
         if "OB Detector" in st.get("name", ""):
             zs = sorted([{"low": z["low"], "high": z["high"]} for z in st.get("zones", [])
                          if "low" in z], key=lambda z: -z["high"])
             if ref_price:
-                ok = [z for z in zs if abs((z["low"] + z["high"]) / 2 - ref_price) / ref_price <= 0.08]
-                if len(ok) < len(zs):
-                    print(f"[market_read] AVISO: {len(zs)-len(ok)} zonas OB {tf} excluídas por suspeita de "
-                          f"símbolo errado (>8% do preço {ref_price}) — verificar a tab {tf}", flush=True)
-                return ok
+                zs = sorted(zs, key=lambda z: abs((z["low"] + z["high"]) / 2 - ref_price))
             return zs
     return []
 
