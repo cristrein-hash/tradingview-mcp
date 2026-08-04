@@ -70,3 +70,4 @@
 - 2026-08-03 17:26 UTC · `memory_delta_20260803_bear_retest_watch.sql` · memory_items 362→363 · tag-rows 1/1 · OK
 - 2026-08-04 09:44 UTC · `memory_delta_20260804_copiloto_mapa_vela.sql` · memory_items 363→364 · tag-rows 1/1 · OK
 - 2026-08-04 09:54 UTC · `memory_delta_20260804_vela_telegram_demand.sql` · memory_items 364→365 · tag-rows 1/1 · OK
+- 2026-08-04 12:27 UTC · `memory_delta_20260804_liquidity_axis.sql` · memory_items 365→366 · tag-rows 1/1 · OK
