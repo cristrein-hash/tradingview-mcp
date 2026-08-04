@@ -1,0 +1,18 @@
+-- ============================================================================
+-- SUPABASE MEMORY — DELTA SEED · seed:memory_delta_20260804_candle_reader
+-- ============================================================================
+-- Reader de vela constante LIVE + fix do lag do reader. 1 row. Idempotente.
+-- ============================================================================
+begin;
+insert into memory_items (id, scope, visibility, category, title, body, tags, source_ref, status) values
+(
+  md5('seed:memory_delta_20260804_candle_reader:memory_items:reader')::uuid,
+  'product', 'internal', 'project',
+  'READER DE VELA CONSTANTE LIVE (Cris 2026-08-04 opcao B): daemon candle-reader — Opus le CADA vela 5M/15M/1H no fecho -> log/chat NAO Telegram; Telegram SO sinal confirmado (RR>=2 conv>=60, ON) + fix do LAG do reader (liquidez/agressao frescas do store no read)',
+  'MOTIVO: dia -4R em que o sistema reagia tarde a gatilhos em vez de LER a fita continuamente. Cris: "cada vela 5M/15M/1H precisa ser lida no fechamento, avaliacao do reader constante"; "no Telegram quero sinal confirmado apenas, nao reads" -> opcao B literal. (A) FIX DO LAG (pre-requisito, commit 2cf2e6d): o dossie chegava ~1 ciclo atrasado -> o reader julgava liquidez/agressao stale -> pontos de entrada/sinais atrasados (Cris: "por isso estas sempre atrasado em pontos de entrada e sinais"). e2_quality render_composite passa a recalcular read_confluence_store(15) + context_liquidity.read_liquidity() do bar-store NO INSTANTE do read (mesma fonte fresca da vela-no-nivel), gate _live_read (dossie cycle_ts <600s = live recalcula; replay/selftest = dossie byte-identico). selftest PASS; frescura provada. Percalco: 1o commit revertido por conflito de git stash com ficheiros do store escritos pelos daemons -> recuperado do stash. (B) READER DE VELA CONSTANTE: daemon com.cristrein.candle-reader (KeepAlive, start_candle_reader.sh, candle_reader.py). Cada fecho de vela 5M/15M/1H -> Opus le a FITA (prompt TAPE_SYS: fase EXAUSTAO/CONTINUACAO/REVERSAO_A_FORMAR/RANGE + localizacao + assinatura rejeicao/absorcao/sweep+reclaim + regra de liquidez; LE a vela nao julga um trade proposto) -> grava logs/candle_reads.jsonl + chat. NUNCA Telegram para reads. Telegram SO quando is_confirmed(v): confirmed_signal + direcao LONG/SHORT + entry/sl/alvo + RR>=2 + conviccao>=60; atras de hard-lock CANDLE_TG_AUTHORIZED=1 (LIGADO por ordem Cris apos go-live; msg "SINAL CONFIRMADO"). 1H agregado de 4x15m (_agg_1h; store nao tem bars_1h so 5m/15m/1d). Fisico: Opus ~1min/read > cadencia 5M -> le a mais FRESCA primeiro, regista saltadas, 1 read de cada vez (nao empilha); acompanha 15M/1H 100%, 5M quase sempre. CONSOME E2 (render_composite + CLI Opus + _extract_json) + liquidez/confluence frescas. VALIDACAO: selftest is_confirmed 6/6 PASS; read real vela 18:45 leu corretamente "vela de venda a fechar no low = devolucao do sweep dos highs, buyers presos 4100/4102; fora de zona = nao-sinal" e NAO confirmou (leitura nao sinal forcado), usou liquidez fresca. Arbitro = forward. commits candle_reader + telegram ON.',
+  array['seed:memory_delta_20260804_candle_reader','reader-vela-constante-live','opus-cada-vela-5m-15m-1h','tape-sys-le-a-fita','telegram-so-confirmado-rr2-conv60','fix-lag-reader-liquidez-agressao-fresca','gate-_live_read','1h-agregado-4x15m','freshest-first-1-read-de-cada-vez','consome-e2-liquidez'],
+  'alert-bridge/candle_reader.py + start_candle_reader.sh · com.cristrein.candle-reader.plist · e2_quality.py (fix lag) · project_candle_reader_constant · project_liquidity_axis_e0_e2 · commits 2cf2e6d+',
+  'active'
+)
+on conflict (id) do nothing;
+commit;
