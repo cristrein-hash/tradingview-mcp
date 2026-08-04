@@ -34,6 +34,16 @@
       "created_ts": "2026-08-04T18:20:00Z"
     },
     {
+      "id": "micro_supply_4088_4091_pullback_raso",
+      "low": 4088.0,
+      "high": 4091.0,
+      "tese": "SHORT",
+      "nota": "micro-supply (topos iguais 4089.08/4089.03 das 19:00/19:15 + FVG) — PULLBACK RASO (Cris 04/08: 'e se nao passar de 4090?'); rejeicao aqui = re-short menor-qualidade (SL apertado >4092/4096, alvo 4066), decide conviccao no fecho",
+      "criticidade": "critica",
+      "validade": "2026-08-05T21:00:00Z",
+      "created_ts": "2026-08-04T18:40:00Z"
+    },
+    {
       "id": "ob_supply_15m_4099_4106_pullback",
       "low": 4098.98,
       "high": 4106.46,
