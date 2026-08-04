@@ -65,7 +65,11 @@ def decide(bar, zone, atr15):
         wick = h - max(o, c)
         if wick < WICK_MIN_RANGE * rng or wick < WICK_MIN_ATR * atr15:
             return None
-        if c > l + 0.5 * rng or c > mid:                         # não rejeitou (fechou em cima)
+        # REJEIÇÃO baseada na ZONA (fix Cris 04/08: a vela 18:00 fechou 4099.85 = ABAIXO da premium 4101,
+        # rejeição real, mas falhava por 0.36pt a regra antiga de "metade inferior da vela"). Rejeitou se:
+        # fechou de volta ABAIXO da zona, OU na metade inferior da própria vela — e nunca na metade sup. da zona.
+        rejected = (c < zl) or (c <= l + 0.5 * rng)
+        if not rejected or c > mid:
             return None
         sl = round(h + SL_BUF_ATR * atr15, 2)
         return {"direction": "SHORT", "entry": round(c, 2), "sl": sl, "wick_pts": round(wick, 2),
@@ -77,7 +81,8 @@ def decide(bar, zone, atr15):
         wick = min(o, c) - l
         if wick < WICK_MIN_RANGE * rng or wick < WICK_MIN_ATR * atr15:
             return None
-        if c < h - 0.5 * rng or c < mid:
+        rejected = (c > zh) or (c >= h - 0.5 * rng)             # espelho: fechou acima da zona OU metade sup. da vela
+        if not rejected or c < mid:
             return None
         sl = round(l - SL_BUF_ATR * atr15, 2)
         return {"direction": "LONG", "entry": round(c, 2), "sl": sl, "wick_pts": round(wick, 2),
