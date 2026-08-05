@@ -121,8 +121,6 @@ def _tg_send(text, audience="group"):
         if audience == "assistant":
             chats = env.get("AUTHORIZED_CHAT_ID", "") or chats
         if not tok or not chats: return False
-        if "LIVE SYSTEM" not in text.split("\n", 1)[0]:
-            text = "🤖 LIVE SYSTEM\n" + text            # label padrão (Cris 05/08) — senders específicos põem o próprio
         from urllib.parse import urlencode
         from urllib.request import Request, urlopen
         ok = False

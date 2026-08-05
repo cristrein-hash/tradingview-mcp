@@ -136,7 +136,7 @@ def detect_and_alert(rows, bub, send):
             with open(ALERTED_F, "a") as fh:
                 fh.write(json.dumps({**s, "stale": True, "ts": iso(int(time.time()))}) + "\n")
             continue
-        msg = (f"🤖 LIVE SYSTEM · CP CAPITULAÇÃO 15M\n"
+        msg = (f"📊 CP CAPITULAÇÃO 15M\n"
                f"🔻 Cp CAPITULATION LONG (15M) — ENTRY\n"
                f"entry {s['ent']:.2f} · SL {s['sl']:.2f} · TGT 3R {s['tgt']:.2f}\n"
                f"fundo {iso(s['fundo_t'])} · barra entrada {iso(s['etime'])} Lisboa\n"
