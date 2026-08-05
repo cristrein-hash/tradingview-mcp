@@ -124,7 +124,8 @@ def cycle():
            "regime": reg, "gate": "PASS" if ok_gate else "BLOCK", "detect": why}
     if r and ok_gate and not already(last_t):
         ts = dt.datetime.fromtimestamp(last_t, LX).strftime("%d/%m %H:%M")
-        txt = (f"🟢 XAU 15M LONG — {r['layer']} PULLBACK (MB3)\n"
+        txt = (f"🤖 LIVE SYSTEM · A1/A2 PULLBACK 15M\n"
+               f"🟢 XAU 15M LONG — {r['layer']} PULLBACK (MB3)\n"
                f"vela 15M {ts}: MB3 confirmado após fundo de pullback ({r['depth_atr']}×ATR da perna)\n"
                f"Entry {r['ent']} · SL {r['sl']} (low real −0.1ATR) · alvo {r['tgt']} (3R) · risco {r['R']}pts\n"
                f"(estratégia A1/A2 aprovada — forward em registo; a decisão é tua)")

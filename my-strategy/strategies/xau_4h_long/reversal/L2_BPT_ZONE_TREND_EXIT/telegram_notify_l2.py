@@ -103,6 +103,7 @@ def build_exit_message(c):
 
 def send_telegram(text):
     import os
+    text = "🤖 LIVE SYSTEM · L2 BPT 4H\n" + text   # label p/ identificar a estratégia (Cris 05/08)
     if os.path.exists("/Users/cristrein/tradingview-mcp/.telegram_muted"):
         return False                                    # 🔇 MUTE GLOBAL — Cris pausou os sinais (2026-07-21)
     env = load_env()

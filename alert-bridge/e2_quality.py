@@ -121,6 +121,8 @@ def _tg_send(text, audience="group"):
         if audience == "assistant":
             chats = env.get("AUTHORIZED_CHAT_ID", "") or chats
         if not tok or not chats: return False
+        if "LIVE SYSTEM" not in text.split("\n", 1)[0]:
+            text = "🤖 LIVE SYSTEM\n" + text            # label padrão (Cris 05/08) — senders específicos põem o próprio
         from urllib.parse import urlencode
         from urllib.request import Request, urlopen
         ok = False
@@ -149,7 +151,8 @@ def notify_surfaced(cand, th):
                       f"tese {z['tese']} (\"{z['nota'][:60]}\")\n")
     except Exception:
         pass
-    txt = (f"{prefix}🧠 E2 {cand.get('direction')} XAUUSD {cand.get('rule')}@{cand.get('tf')}\n"
+    txt = (f"🤖 LIVE SYSTEM · E1/E2 READER 15M\n"
+           f"{prefix}🧠 E2 {cand.get('direction')} XAUUSD {cand.get('rule')}@{cand.get('tf')}\n"
            f"entry {cand.get('entry')} · SL {cand.get('sl')} · alvo {cand.get('target')} (RR {cand.get('rr')})\n"
            f"convergência {th.get('convergence')} · convicção {th.get('conviction')}\n"
            f"tese: {th.get('thesis')}\n"

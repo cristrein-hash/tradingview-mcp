@@ -172,7 +172,8 @@ def fmt_chat(tf, bar, v):
 
 def send_confirmed_tg(tf, bar, v):
     if not TG_OK: return "tg-off"
-    txt = (f"✅ SINAL CONFIRMADO ({tf}M {hm(bar['t'])}) — {v['direction']} XAUUSD\n"
+    txt = (f"🤖 LIVE SYSTEM · READER — SINAL CONFIRMADO\n"
+           f"✅ SINAL CONFIRMADO ({tf}M {hm(bar['t'])}) — {v['direction']} XAUUSD\n"
            f"entry {v['entry']} · SL {v['sl']} · alvo {v['target']} (RR {v.get('rr')})\n"
            f"{v.get('phase')} · {v.get('at_level') or ''} · convicção {v.get('conviction')}\n"
            f"{str(v.get('note'))[:180]}\n(advisory — a decisão é tua)")
