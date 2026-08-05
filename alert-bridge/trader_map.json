@@ -148,6 +148,26 @@
       "criticidade": "critica",
       "nota": "OB Detector 4H/1D real — GRANDE supply HTF (1D estende 4290-4382), 1º degrau da escada do crash desde o ATH 5598. Reteste maior da subida.",
       "validade": "2026-08-12T21:00:00Z"
+    },
+    {
+      "id": "sell_trigger_4185_4190",
+      "low": 4185.0,
+      "high": 4190.0,
+      "tese": "SHORT",
+      "criticidade": "critica",
+      "fast_5m": true,
+      "nota": "TESE CRIS 05/08 08:45: 'se chegar a 4185-4190 temos que vender' — topo em formação, 1º pullback capturado, pouca absorção no topo 4180; provável tentativa de 4185 com PAVIO. Vigiar rejeição/pavio aqui = venda. UPDATE 12:38: pela força, Cris estima paragem só em 4200-4220 — 4185-90 pode ser atravessado; não vender aqui sem pavio claro.",
+      "validade": "2026-08-06T21:00:00Z"
+    },
+    {
+      "id": "sell_watch_4200_4220",
+      "low": 4200.0,
+      "high": 4220.0,
+      "tese": "SHORT",
+      "criticidade": "critica",
+      "fast_5m": true,
+      "nota": "TESE CRIS 05/08 12:38: 'pela força só para em 4200-4220' — zona de paragem/venda estimada. Vigiar pavio/rejeição aqui em 5M; sobrepõe topo do OB 1H 4183-4203 + 4200 psicológico.",
+      "validade": "2026-08-06T21:00:00Z"
     }
   ],
   "tese_geral": {
