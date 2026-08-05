@@ -187,6 +187,8 @@ def components():
         "Bridge":      chk_process("telegram_assistant_bridge"),            # ponte Cris↔Claude (o canal que caiu 2026-07-21)
         "Rede":        chk_network(),                                       # internet do Mac (raiz da queda ~35h; se cego, Telegram não entrega → aviso local)
     }
+    if (STRAT / "xau_amd/amd_live/.amd_state/PAUSED_BY_ORDER").exists():
+        c["AMD live"] = ("paused", "em repouso por ordem Cris (range) — não é cegueira")
     if paused:   # pipeline E0/E1/E2 honra pausa: não é cegueira
         for k in ("E0 dossiê", "E1 detector", "E2 quality"):
             if c[k][0] == "blind": c[k] = ("paused", "pausado (monitor.pause)")
@@ -194,10 +196,21 @@ def components():
 
 
 def _notify(text):
+    """SÓ para o chat pessoal Trading Assistant Trein (AUTHORIZED_CHAT_ID) — ordem Cris 05/08:
+    watchdog NUNCA no grupo. (Antes usava o sender do L1: ia a todos os chats + rótulo errado.)"""
     try:
-        sys.path.insert(0, str(STRAT / "xau_4h_long/continuation/L1_EMA21_CONTINUATION"))
-        import telegram_notify as TN
-        return TN.send_telegram(text)
+        env = {}
+        for line in (REPO / "alert-bridge/.env").read_text().splitlines():
+            if "=" in line and not line.strip().startswith("#"):
+                k, _, v = line.partition("="); env[k.strip()] = v.strip()
+        tok = env.get("TELEGRAM_BOT_TOKEN"); cid = env.get("AUTHORIZED_CHAT_ID")
+        if not tok or not cid:
+            return "ERR sem credenciais"
+        from urllib.parse import urlencode
+        from urllib.request import Request, urlopen
+        data = urlencode({"chat_id": cid, "text": text}).encode()
+        with urlopen(Request(f"https://api.telegram.org/bot{tok}/sendMessage", data=data), timeout=15) as r:
+            return r.status == 200
     except Exception as e:
         return f"ERR {str(e)[:60]}"
 
