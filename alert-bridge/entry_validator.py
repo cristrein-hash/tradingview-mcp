@@ -87,7 +87,7 @@ def _tg(txt):
         return "tg-off"
     try:
         import e2_quality as E2
-        return "tg" if E2._tg_send(txt) else "tg-fail"
+        return "tg" if E2._tg_send(txt, audience="assistant") else "tg-fail"
     except Exception:
         return "tg-erro"
 
@@ -134,14 +134,47 @@ def main_loop():
                     if r["state"] == "GO" and last_state.get(r["id"]) != "GO":
                         klass = "break" if r["id"] == "break_gatilho" else f"reject_{r.get('tf','15')}"
                         key = f"{klass}_{last15['t']}"
-                        first = V.tg_claim(key)
                         e = r.get("entry"); s = r.get("sl"); t = r.get("target"); rr = r.get("rr")
+                        # GATE DO READER (ordem Cris 05/08 02:4x: "validador TEM QUE passar pelo reader" —
+                        # o GO SHORT 4084 saiu com o preço em força máxima; 1 vela de rejeição ≠ rejeição da
+                        # zona). GO mecânico → reader lê o contexto; só vai a TG se o reader NÃO refutar.
+                        # Reader indisponível = fail-open (TG sai — o gate nunca pode calar por avaria).
+                        jz = ""
+                        ok_reader = True
+                        try:
+                            import e2_quality as E2
+                            dsr = E2.load_dossier() or {}
+                            if dsr:
+                                cand = {"direction": r["tese"], "rule": "validator_go", "tf": r.get("tf", "15"),
+                                        "entry": e, "sl": s, "target": t or (e - 3 * abs(e - s) if r["tese"] == "SHORT"
+                                                                             else e + 3 * abs(e - s)),
+                                        "rr": rr or 3.0,
+                                        "materiality": {"sl_atr": None, "confluence": None, "confluence_breakdown": {}}}
+                                th = E2.run_read(cand, dsr, timeout=90)
+                                if not th.get("error"):
+                                    sf = E2.surfaced(th, cand)
+                                    jz = (f"\nreader: {'CONFIRMA' if sf else 'NÃO confirma'} · conv {th.get('conviction')} · "
+                                          f"{str(th.get('thesis'))[:150]}")
+                                    ok_reader = bool(sf)
+                        except Exception as ex:
+                            jz = f"\n(reader indisponível: {type(ex).__name__} — enviado sem juízo)"
                         txt = (f"🎯 VALIDADOR: GO — {r['tese']} @ {r.get('zona')} ({r.get('id')})\n"
                                f"{r.get('detail','rejeição/break confirmado')}\n"
-                               f"entry {e} · SL {s} · alvo {t or '—'} · RR {rr or '—'}\n"
+                               f"entry {e} · SL {s} · alvo {t or '—'} · RR {rr or '—'}{jz}\n"
                                f"(validação da TUA entrada — a decisão é tua)")
                         print(txt, flush=True)
-                        print(f"(canal: {_tg(txt) if first else 'dedup — vela já alertou'})", flush=True)
+                        if not ok_reader:
+                            print("(canal: chat-only — reader refutou o GO mecânico)", flush=True)
+                        else:
+                            first = V.tg_claim(key)
+                            print(f"(canal: {_tg(txt) if first else 'dedup — vela já alertou'})", flush=True)
+                    # sinal que TINHA dado GO e invalidou = alerta de SL/saída (relativo ao sinal — Cris 05/08:
+                    # TG só sinais entry/SL/TP e alertas relativos a eles)
+                    if r["state"] == "INVALIDOU" and last_state.get(r["id"]) == "GO":
+                        txt = (f"🛑 INVALIDOU — {r.get('tese')} @ {r.get('zona')} ({r.get('id')})\n"
+                               f"{r.get('detail','')}\nSe estás no trade deste sinal: zona perdida, reavalia SL/saída.")
+                        print(txt, flush=True)
+                        print(f"(canal: {_tg(txt)})", flush=True)
                     last_state[r["id"]] = r["state"]
         except Exception as e:
             print(f"validador erro: {type(e).__name__}:{str(e)[:70]}", flush=True)

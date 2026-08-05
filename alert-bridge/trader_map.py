@@ -50,6 +50,7 @@ def load_map(now=None):
         zones.append({"id": z.get("id") or f"z_{lo}_{hi}", "low": lo, "high": hi,
                       "tese": z["tese"], "nota": str(z.get("nota") or "")[:160],
                       "criticidade": z.get("criticidade") or "normal",
+                      "fast_5m": bool(z.get("fast_5m")),   # preservar flag do fast-lane 5M (era descartada)
                       "validade": z.get("validade")})
     tg = raw.get("tese_geral") or None
     if tg:

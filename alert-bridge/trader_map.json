@@ -48,7 +48,7 @@
       "low": 4101.07,
       "high": 4116.28,
       "tese": "SHORT",
-      "nota": "premium 1H declarada Cris ('seguir a 4100 pra virar mais acima') — mantida em monitoracao",
+      "nota": "premium 1H declarada Cris ('seguir a 4100 pra virar mais acima') — mantida em monitoracao FAST-5M: toque 4116 lido em vela 5M realtime (ordem Cris 05/08) — rejeição = entrada rápida.",
       "criticidade": "critica",
       "validade": "2026-08-08T21:00:00Z",
       "created_ts": "2026-08-03T22:10:00Z"
@@ -72,6 +72,45 @@
       "criticidade": "critica",
       "validade": "2026-08-08T21:00:00Z",
       "created_ts": "2026-08-04T13:00:00Z"
+    },
+    {
+      "id": "demand_intra_4060_4066",
+      "low": 4060.0,
+      "high": 4066.0,
+      "tese": "LONG",
+      "criticidade": "critica",
+      "nota": "Demanda intradia FORTE (Cris 05/08 00:27: fechou short +200$ aqui, 'chance de voltar é alta'). Reação = repique provável; reentrada SHORT é em cima, no retest. REENTRADA: rejeição AQUI também conta (Cris 05/08: monitorar retest SEJA ONDE FOR).",
+      "validade": "2026-08-06T21:00:00Z"
+    },
+    {
+      "id": "premium_touch_4110_4116",
+      "low": 4110.0,
+      "high": 4116.28,
+      "tese": "SHORT",
+      "criticidade": "critica",
+      "fast_5m": true,
+      "nota": "TOQUE 4115/4116 (Cris 05/08): rejeição lida em VELA 5M realtime — entrada rápida, nem que seja pullback. Banda superior da premium 4101-4116.",
+      "validade": "2026-08-08T21:00:00Z"
+    },
+    {
+      "id": "supply_touch_4096_4101",
+      "low": 4096.0,
+      "high": 4101.0,
+      "tese": "SHORT",
+      "criticidade": "critica",
+      "fast_5m": true,
+      "nota": "TOQUE 4096/4100 (Cris 05/08): rejeição lida em VELA 5M realtime, reação rápida.",
+      "validade": "2026-08-08T21:00:00Z"
+    },
+    {
+      "id": "supply_touch_4101_4106",
+      "low": 4101.0,
+      "high": 4106.46,
+      "tese": "SHORT",
+      "criticidade": "critica",
+      "fast_5m": true,
+      "nota": "TOQUE 4105 (Cris 05/08): rejeição lida em VELA 5M realtime, reação rápida. Topo do OB 4099-4106.",
+      "validade": "2026-08-08T21:00:00Z"
     }
   ],
   "tese_geral": {

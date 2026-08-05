@@ -116,7 +116,7 @@ def grade(read, dsr):
     except Exception:
         notes.append("contexto indisponível")
     g = "A" if (a_absorb and a_regime) else "B"
-    return g, notes
+    return g, notes, a_regime
 
 
 def targets_for(read, tmap, dsr):
@@ -169,7 +169,7 @@ def _tg(txt):
         return "chat-only"
     try:
         import e2_quality as E2
-        return "tg" if E2._tg_send(txt) else "tg-fail"
+        return "tg" if E2._tg_send(txt, audience="assistant") else "tg-fail"
     except Exception:
         return "tg-erro"
 
@@ -177,6 +177,20 @@ def _tg(txt):
 def load_bars(n=80):
     try:
         with open(BARS_F, "rb") as f:
+            f.seek(0, 2); size = f.tell(); f.seek(max(0, size - 30000))
+            rows = [json.loads(l) for l in f.read().decode(errors="ignore").splitlines()
+                    if l.strip() and l[0] == "{"]
+        rows = [b for b in rows if all(k in b for k in ("t", "o", "h", "l", "c"))]
+        return rows[-n:]
+    except Exception:
+        return []
+
+
+def load_bars_5m(n=60):
+    """5M do store — SÓ para o fast-lane das zonas com fast_5m (ordem Cris 05/08: toque em 4116/premium
+    precisa reação em 5M; 15M/1H atrasam a entrada). Fora dessas zonas, 5M continua fora (ruído)."""
+    try:
+        with open(BARS_F.parent / "bars_5m.jsonl", "rb") as f:
             f.seek(0, 2); size = f.tell(); f.seek(max(0, size - 30000))
             rows = [json.loads(l) for l in f.read().decode(errors="ignore").splitlines()
                     if l.strip() and l[0] == "{"]
@@ -245,6 +259,12 @@ def check_break_continuation(cur, tf, atr, tmap, bars15, fired):
            f"alvo {tgt} (OB Detector) · RR {rr}\n"
            f"(entrada PLANEADA de continuidade — a decisão é tua)")
     print(txt, flush=True)
+    # TG só sinal OPERÁVEL (Cris 05/08: apenas entry/SL/TP claros): 1º break do nível E RR>=1.5.
+    # Re-extensões (preço já longe do gatilho) e RR pobre = chat-only — o RR 0.3 das 00:15 no TG foi spam.
+    if prev is not None or (rr and rr < 1.5):
+        why = "re-extensão" if prev is not None else "RR<1.5"
+        print(f"(canal: chat-only — {why})", flush=True)
+        return
     print(f"(canal: {_tg(txt)})", flush=True)
 
 
@@ -294,16 +314,15 @@ def scan_zones(cur, tf, atr, tmap, fired):
             dsr = E2.load_dossier() or {}
         except Exception:
             dsr = {}
-        g, notes = grade(read, dsr)
+        g, notes, _reg_ok = grade(read, dsr)
         tgts = targets_for(read, tmap, dsr) if dsr else []
         txt = alert_text(read, zone, g, notes, tgts, cur["t"], tf)
-        print(txt, flush=True)
-        if tg_claim(f"reject_{tf}_{cur['t']}"):        # 1 Telegram por vela+classe (zonas sobrepostas + validador)
-            print(f"(canal: {_tg(txt)})", flush=True)
-        else:
-            print("(canal: dedup — evento já alertado)", flush=True)
-        if CONSULT and dsr and not consulted:
-            consulted = True
+        # GATE DO READER NO TELEGRAM DA VELA (ordem Cris 05/08 ~06:1x: "aplica mesmo gate do reader no
+        # Telegram da vela"). A vela grau-A com absorção MECÂNICA (janela buy N/0) chegava ao TG mesmo com
+        # o reader a refutar ("sem absorção efetiva, short prematuro"). Agora: reader julga ANTES; grau A
+        # que o reader NÃO confirma = chat-only. Fail-open: reader indisponível → envia (avaria não cala).
+        jz = ""; ok_reader = True
+        if CONSULT and dsr:
             try:
                 import e2_quality as E2
                 cand = {"direction": read["direction"], "rule": "zone_reject", "tf": tf,
@@ -314,22 +333,41 @@ def scan_zones(cur, tf, atr, tmap, fired):
                         "rr": 3.0, "materiality": {"sl_atr": None, "confluence": None, "confluence_breakdown": {}}}
                 th = E2.run_read(cand, dsr, timeout=90)
                 if not th.get("error"):
-                    print(f"   juízo do reader ({tf}): surfaced={E2.surfaced(th, cand)} · "
-                          f"convicção {th.get('conviction')} · {str(th.get('thesis'))[:180]}", flush=True)
+                    sf = E2.surfaced(th, cand)
+                    jz = (f"\nreader: {'CONFIRMA' if sf else 'NÃO confirma'} · conv {th.get('conviction')} · "
+                          f"{str(th.get('thesis'))[:150]}")
+                    ok_reader = bool(sf)
             except Exception as e:
-                print(f"   (reader consult falhou: {type(e).__name__})", flush=True)
+                jz = f"\n(reader indisponível: {type(e).__name__} — enviado sem juízo)"
+        txt = txt + jz
+        print(txt, flush=True)
+        if not ok_reader:
+            print("(canal: chat-only — reader refutou a vela)", flush=True)
+        elif tg_claim(f"reject_{tf}_{cur['t']}"):      # 1 Telegram por vela+classe (zonas sobrepostas + validador)
+            print(f"(canal: {_tg(txt)})", flush=True)
+        else:
+            print("(canal: dedup — evento já alertado)", flush=True)
 
 
 def main_loop():
     print("🕯️ vela-no-nível armado: leio cada barra 15M E 1H FECHADA nas zonas CRÍTICAS do mapa do trader "
           f"(1H estendido por ordem Cris 04/08; telegram={'ON' if VELA_LIVE else 'OFF/chat'})")
-    last_t15 = None; last_t1h = None
+    last_t15 = None; last_t1h = None; last_t5 = None
     fired = {}                                    # (tf, zone_id) -> (ts, extreme)
     while True:
         try:
             bars = load_bars()
             if len(bars) >= 16:
                 tmap = trader_map.load_map()
+                # FAST-LANE 5M (ordem Cris 05/08): zonas fast_5m (premium 4101-4116, toque 4116) lidas a
+                # cada 5M fechada — rejeição lá = entrada rápida, 15M/1H atrasam. Restrito às zonas marcadas.
+                if tmap and any(z.get("fast_5m") for z in tmap["zones"]):
+                    b5 = load_bars_5m()
+                    if len(b5) >= 16 and b5[-1]["t"] != last_t5:
+                        last_t5 = b5[-1]["t"]
+                        fmap = {"zones": [z for z in tmap["zones"] if z.get("fast_5m")],
+                                "tese_geral": {}}
+                        scan_zones(b5[-1], "5", atr14(b5), fmap, fired)
                 # 15M — cada barra fechada (comportamento original)
                 cur15 = bars[-1]
                 if cur15["t"] != last_t15:

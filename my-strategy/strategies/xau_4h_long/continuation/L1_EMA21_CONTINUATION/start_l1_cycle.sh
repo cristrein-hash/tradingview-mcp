@@ -9,5 +9,6 @@ set -u
 cd "/Users/cristrein/tradingview-mcp/my-strategy/strategies/xau_4h_long/continuation/L1_EMA21_CONTINUATION" || exit 1
 export PATH="$HOME/.local/bin:/usr/local/bin:$PATH"
 export L1_PRODUCTION_AUTHORIZED=1
+export L1_REGIME_GATE_OFF=1   # ordem Cris 05/08: sem gate de regime (engine atrasa nas viragens)
 
 exec /usr/bin/python3 run_l1_cycle.py --pin-tabs --send-telegram

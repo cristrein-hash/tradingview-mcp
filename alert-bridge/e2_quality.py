@@ -107,14 +107,19 @@ READ_TIMEOUT = int(os.environ.get("E2_READ_TIMEOUT", "300"))
 E2_LIVE = os.environ.get("E2_PRODUCTION_AUTHORIZED", "") == "1"
 
 
-def _tg_send(text):
-    """Envio Telegram advisory (NUNCA ordem). Credenciais alert-bridge/.env; loop por TODOS os chat_ids."""
+def _tg_send(text, audience="group"):
+    """Envio Telegram advisory (NUNCA ordem). Credenciais alert-bridge/.env.
+    ROTEAMENTO (Cris 05/08 ~06:4x): audience="group" = TODOS os chat_ids (grupo LIMPO — só sinais
+    qualificados: L1/L2/15M-BULL/validados-pelo-reader). audience="assistant" = SÓ o chat privado
+    Trading Assistant Trein (AUTHORIZED_CHAT_ID): validador de regiões, leituras de vela, sentinela."""
     try:
         env = {}
         for line in (BASE / ".env").read_text().splitlines():
             if "=" in line and not line.strip().startswith("#"):
                 k, _, v = line.partition("="); env[k.strip()] = v.strip()
         tok = env.get("TELEGRAM_BOT_TOKEN"); chats = env.get("TELEGRAM_CHAT_ID", "")
+        if audience == "assistant":
+            chats = env.get("AUTHORIZED_CHAT_ID", "") or chats
         if not tok or not chats: return False
         from urllib.parse import urlencode
         from urllib.request import Request, urlopen

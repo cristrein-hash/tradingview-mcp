@@ -42,6 +42,25 @@ def levels_from_map():
     return out
 
 
+PROX_PTS = 2.0           # aviso de APROXIMAÇÃO: preço chega a <=2pts de um nível sem o cruzar
+
+
+def proximities(cur, levels, prox_state, now):
+    """Aviso one-shot quando o preço APROXIMA (<=PROX_PTS) de um nível sem cruzar — cobre a rejeição
+    ANTES do toque (miss 04/08 23:30: spike a 4086 rejeitou a 4pts da micro-supply 4088-91 sem sinal).
+    Re-arma com a mesma mecânica: afastou >=REARM_PTS+PROX_PTS ou REARM_S."""
+    fired = []
+    for name, lvl, tese in levels:
+        st = prox_state.get(name, {"armed": True, "ts": 0})
+        if not st["armed"] and (abs(cur - lvl) >= REARM_PTS + PROX_PTS or now - st["ts"] >= REARM_S):
+            st["armed"] = True
+        if st["armed"] and abs(cur - lvl) <= PROX_PTS:
+            fired.append({"name": name, "level": lvl, "tese": tese, "price": cur})
+            st = {"armed": False, "ts": now}
+        prox_state[name] = st
+    return fired
+
+
 def crossings(prev, cur, levels, armed, now):
     """Cruzamentos entre prev->cur. Puro/testável. armed: nome->(armado_bool, ultimo_fire_ts).
     Re-arma por afastamento (REARM_PTS) ou tempo (REARM_S)."""
@@ -114,6 +133,7 @@ def main_loop():
     c = None
     prev = None
     armed = {}
+    prox_state = {}
     last_map_load = 0
     levels = []
     while True:
@@ -135,9 +155,26 @@ def main_loop():
                 c = None
                 px = store_price(); src = "store"
             if px is not None:
+                # aproximação: SÓ chat/log (Cris 05/08: "não atrolha o Telegram") — TG fica p/ entrada/reclaim/GO.
+                # coalesce: níveis partilhados (ex. 4066 = borda de 2 zonas) -> 1 linha por preço de nível
+                prox = {f["level"]: f for f in proximities(float(px), levels, prox_state, now)}
+                for f in prox.values():
+                    print(f"📍 {hm()} APROXIMOU {f['level']:.2f} ({f['name']}, tese {f['tese']}) — "
+                          f"preço {f['price']:.2f}. Atenção à reação AQUI.", flush=True)
                 for f in crossings(prev, float(px), levels, armed, now):
                     print(f"👁️ {hm()} CRUZOU {f['dir']} {f['level']:.2f} ({f['name']}, tese {f['tese']}) "
                           f"— preço {f['price']:.2f} [{src}]", flush=True)
+                    # RECLAIM do gatilho p/ cima = retest a falhar OU invalidação — avisa na hora
+                    if f["name"] == "GATILHO_BREAK" and f["dir"] == "ACIMA":
+                        txt = (f"⚠️ RECLAIM {f['level']:.2f} ({hm()}) — preço {f['price']:.2f} de volta ACIMA do nível "
+                               f"rompido. Short de continuação em risco: se segurar acima, invalida; rejeição aqui = retest SHORT.")
+                        print(txt, flush=True)
+                        try:
+                            import e2_quality as E2
+                            if os.environ.get("SENTINEL_TG_AUTHORIZED", "") == "1":
+                                E2._tg_send(txt, audience="assistant"); print("(→ Telegram)", flush=True)
+                        except Exception:
+                            pass
                     # ENTRADA PRECISA NO ATO: break do gatilho p/ baixo = SHORT já (sem esperar fecho)
                     if f["name"] == "GATILHO_BREAK" and f["dir"] == "ABAIXO":
                         e = _entry_on_break(f["price"], f["level"])
@@ -148,7 +185,7 @@ def main_loop():
                         try:
                             import e2_quality as E2
                             if os.environ.get("SENTINEL_TG_AUTHORIZED", "") == "1":
-                                E2._tg_send(txt); print("(→ Telegram)", flush=True)
+                                E2._tg_send(txt, audience="assistant"); print("(→ Telegram)", flush=True)
                         except Exception:
                             pass
                 prev = float(px)

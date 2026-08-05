@@ -20,7 +20,7 @@ Uso:
   python3 scanner.py                 # avalia o ÚLTIMO bar do RAW canônico
   python3 scanner.py --at <unixts>   # avalia o bar daquele timestamp (dry-run/verificação)
 """
-import gzip, json, bisect, statistics, sys, hashlib
+import gzip, json, bisect, statistics, sys, hashlib, os
 from collections import deque
 from datetime import datetime, timezone
 from pathlib import Path
@@ -171,7 +171,11 @@ def gate_trace(S, i):
     if i < 60: return False, "history"
     if None in (EMA21[i - 1], SMA50[i - 1], ATR14[i - 1]) or i - 7 < 0 or SMA50[i - 7] is None:
         return False, "indicators_none"
-    if regime_d1(S, T[i]) != "BULL": return False, "regime_d1_not_BULL"
+    # GATE DE REGIME desativável por env (ORDEM Cris 2026-08-05 ~07:0x: "cancela regime-gated nessa
+    # estratégia a partir de agora" — o regime engine horário/D-1 ATRASA nas viragens; a pernada BULL de
+    # 05/08 4060->4140 foi perdida com o gate. Default preserva V1 (gate ON) — só o wrapper live desliga.
+    if os.environ.get("L1_REGIME_GATE_OFF", "") != "1":
+        if regime_d1(S, T[i]) != "BULL": return False, "regime_d1_not_BULL"
     if not (C[i - 1] > EMA21[i - 1]): return False, "close_prev<=EMA21"
     if not (C[i - 1] > SMA50[i - 1]): return False, "close_prev<=SMA50"
     if not (EMA21[i - 1] > EMA21[i - 4]): return False, "ema21_slope3<=0"
