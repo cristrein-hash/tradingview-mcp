@@ -111,6 +111,43 @@
       "fast_5m": true,
       "nota": "TOQUE 4105 (Cris 05/08): rejeição lida em VELA 5M realtime, reação rápida. Topo do OB 4099-4106.",
       "validade": "2026-08-08T21:00:00Z"
+    },
+    {
+      "id": "ob_supply_1h_4183_4203",
+      "low": 4183.0,
+      "high": 4203.1,
+      "tese": "SHORT",
+      "criticidade": "critica",
+      "nota": "OB Detector 1H real — 1ª supply acima do topo 4166 (zona psicológica 4200 dentro dela). FAST-5M ON (Cris 05/08): rejeição lida em vela 5M realtime.",
+      "validade": "2026-08-09T21:00:00Z",
+      "fast_5m": true
+    },
+    {
+      "id": "ob_supply_1h_4256_4277",
+      "low": 4256.0,
+      "high": 4276.8,
+      "tese": "SHORT",
+      "criticidade": "alta",
+      "nota": "OB Detector 1H real — 2ª supply da escada.",
+      "validade": "2026-08-09T21:00:00Z"
+    },
+    {
+      "id": "ob_supply_1h_4310_4330",
+      "low": 4310.3,
+      "high": 4329.9,
+      "tese": "SHORT",
+      "criticidade": "alta",
+      "nota": "OB Detector 1H real — 3ª supply da escada.",
+      "validade": "2026-08-09T21:00:00Z"
+    },
+    {
+      "id": "ob_supply_4h_4337_4382",
+      "low": 4337.1,
+      "high": 4382.1,
+      "tese": "SHORT",
+      "criticidade": "critica",
+      "nota": "OB Detector 4H/1D real — GRANDE supply HTF (1D estende 4290-4382), 1º degrau da escada do crash desde o ATH 5598. Reteste maior da subida.",
+      "validade": "2026-08-12T21:00:00Z"
     }
   ],
   "tese_geral": {
