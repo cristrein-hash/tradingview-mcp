@@ -4,66 +4,6 @@
   "updated_by": "chat (Cris -> Claude) — todas as zonas mantidas em monitoracao; 4090-4106 = mais forte (OB Detector real)",
   "zones": [
     {
-      "id": "ob_supply_4090_4106_FORTE",
-      "low": 4090.59,
-      "high": 4106.46,
-      "tese": "SHORT",
-      "nota": "OB Detector v11 REAL (MCP fecho 04/08) — ZONA MAIS FORTE de reteste. O 4090-4095 do Cris = borda inferior. Reteste + rejeicao aqui = short prioritario, SL>4106.5, alvo 4045-4060 -> 3995-4010 (alvo verdadeiro)",
-      "criticidade": "critica",
-      "validade": "2026-08-08T21:00:00Z",
-      "created_ts": "2026-08-04T20:45:00Z"
-    },
-    {
-      "id": "supply_4066_4073",
-      "low": 4066.0,
-      "high": 4073.0,
-      "tese": "SHORT",
-      "nota": "zona declarada Cris (03/08) — mantida em monitoracao",
-      "criticidade": "critica",
-      "validade": "2026-08-08T21:00:00Z",
-      "created_ts": "2026-08-03T22:10:00Z"
-    },
-    {
-      "id": "micro_supply_4088_4091",
-      "low": 4088.0,
-      "high": 4091.0,
-      "tese": "SHORT",
-      "nota": "micro-supply pullback raso (Cris 'e se nao passar de 4090') — mantida em monitoracao",
-      "criticidade": "critica",
-      "validade": "2026-08-06T21:00:00Z",
-      "created_ts": "2026-08-04T18:40:00Z"
-    },
-    {
-      "id": "ob_supply_15m_4099_4106",
-      "low": 4098.98,
-      "high": 4106.46,
-      "tese": "SHORT",
-      "nota": "OB supply 15M da rejeicao das 18:00 — mantida em monitoracao (dentro da mais-forte)",
-      "criticidade": "critica",
-      "validade": "2026-08-06T21:00:00Z",
-      "created_ts": "2026-08-04T18:35:00Z"
-    },
-    {
-      "id": "ob_premium_4101_4116",
-      "low": 4101.07,
-      "high": 4116.28,
-      "tese": "SHORT",
-      "nota": "premium 1H declarada Cris ('seguir a 4100 pra virar mais acima') — mantida em monitoracao FAST-5M: toque 4116 lido em vela 5M realtime (ordem Cris 05/08) — rejeição = entrada rápida.",
-      "criticidade": "critica",
-      "validade": "2026-08-08T21:00:00Z",
-      "created_ts": "2026-08-03T22:10:00Z"
-    },
-    {
-      "id": "ob_supply_4138_4166",
-      "low": 4138.2,
-      "high": 4166.19,
-      "tese": "SHORT",
-      "nota": "supply 4H declarada Cris (iman profundo 4100-4170) — mantida; OB Detector real = 4149-4166",
-      "criticidade": "critica",
-      "validade": "2026-08-08T21:00:00Z",
-      "created_ts": "2026-08-04T18:20:00Z"
-    },
-    {
       "id": "ob_demand_3995_4010_ALVO",
       "low": 3995.84,
       "high": 4010.0,
@@ -79,48 +19,8 @@
       "high": 4066.0,
       "tese": "LONG",
       "criticidade": "critica",
-      "nota": "Demanda intradia FORTE (Cris 05/08 00:27: fechou short +200$ aqui, 'chance de voltar é alta'). Reação = repique provável; reentrada SHORT é em cima, no retest. REENTRADA: rejeição AQUI também conta (Cris 05/08: monitorar retest SEJA ONDE FOR).",
+      "nota": "Demanda validada (fundo do dia 05/08). Suporte de continuação.",
       "validade": "2026-08-06T21:00:00Z"
-    },
-    {
-      "id": "premium_touch_4110_4116",
-      "low": 4110.0,
-      "high": 4116.28,
-      "tese": "SHORT",
-      "criticidade": "critica",
-      "fast_5m": true,
-      "nota": "TOQUE 4115/4116 (Cris 05/08): rejeição lida em VELA 5M realtime — entrada rápida, nem que seja pullback. Banda superior da premium 4101-4116.",
-      "validade": "2026-08-08T21:00:00Z"
-    },
-    {
-      "id": "supply_touch_4096_4101",
-      "low": 4096.0,
-      "high": 4101.0,
-      "tese": "SHORT",
-      "criticidade": "critica",
-      "fast_5m": true,
-      "nota": "TOQUE 4096/4100 (Cris 05/08): rejeição lida em VELA 5M realtime, reação rápida.",
-      "validade": "2026-08-08T21:00:00Z"
-    },
-    {
-      "id": "supply_touch_4101_4106",
-      "low": 4101.0,
-      "high": 4106.46,
-      "tese": "SHORT",
-      "criticidade": "critica",
-      "fast_5m": true,
-      "nota": "TOQUE 4105 (Cris 05/08): rejeição lida em VELA 5M realtime, reação rápida. Topo do OB 4099-4106.",
-      "validade": "2026-08-08T21:00:00Z"
-    },
-    {
-      "id": "ob_supply_1h_4183_4203",
-      "low": 4183.0,
-      "high": 4203.1,
-      "tese": "SHORT",
-      "criticidade": "critica",
-      "nota": "OB Detector 1H real — 1ª supply acima do topo 4166 (zona psicológica 4200 dentro dela). FAST-5M ON (Cris 05/08): rejeição lida em vela 5M realtime.",
-      "validade": "2026-08-09T21:00:00Z",
-      "fast_5m": true
     },
     {
       "id": "ob_supply_1h_4256_4277",
@@ -128,7 +28,7 @@
       "high": 4276.8,
       "tese": "SHORT",
       "criticidade": "alta",
-      "nota": "OB Detector 1H real — 2ª supply da escada.",
+      "nota": "Referência de escada 1H — SEM busca de reversão (doutrina continuação 05/08).",
       "validade": "2026-08-09T21:00:00Z"
     },
     {
@@ -137,7 +37,7 @@
       "high": 4329.9,
       "tese": "SHORT",
       "criticidade": "alta",
-      "nota": "OB Detector 1H real — 3ª supply da escada.",
+      "nota": "Referência de escada 1H — SEM busca de reversão (doutrina continuação 05/08).",
       "validade": "2026-08-09T21:00:00Z"
     },
     {
@@ -146,35 +46,22 @@
       "high": 4382.1,
       "tese": "SHORT",
       "criticidade": "critica",
-      "nota": "OB Detector 4H/1D real — GRANDE supply HTF (1D estende 4290-4382), 1º degrau da escada do crash desde o ATH 5598. Reteste maior da subida.",
+      "nota": "ÚNICA zona de análise de reversão permitida (4H/1D macro, doutrina Cris 05/08): só com CLARA rejeição macro indicada. Fora disto, mentalidade = CONTINUAÇÃO.",
       "validade": "2026-08-12T21:00:00Z"
     },
     {
-      "id": "sell_trigger_4185_4190",
-      "low": 4185.0,
-      "high": 4190.0,
-      "tese": "SHORT",
+      "id": "suporte_4138_4166",
+      "low": 4138.2,
+      "high": 4166.19,
+      "tese": "LONG",
       "criticidade": "critica",
-      "fast_5m": true,
-      "nota": "TESE CRIS 05/08 08:45: 'se chegar a 4185-4190 temos que vender' — topo em formação, 1º pullback capturado, pouca absorção no topo 4180; provável tentativa de 4185 com PAVIO. Vigiar rejeição/pavio aqui = venda. UPDATE 12:38: pela força, Cris estima paragem só em 4200-4220 — 4185-90 pode ser atravessado; não vender aqui sem pavio claro.",
-      "validade": "2026-08-06T21:00:00Z"
-    },
-    {
-      "id": "sell_watch_4200_4220",
-      "low": 4200.0,
-      "high": 4220.0,
-      "tese": "SHORT",
-      "criticidade": "critica",
-      "fast_5m": true,
-      "nota": "TESE CRIS 05/08 12:38: 'pela força só para em 4200-4220' — zona de paragem/venda estimada. Vigiar pavio/rejeição aqui em 5M; sobrepõe topo do OB 1H 4183-4203 + 4200 psicológico.",
-      "validade": "2026-08-06T21:00:00Z"
+      "nota": "Ex-supply 4H rompida = SUPORTE de continuação. Pullback curto que rejeitar AQUI para cima = compra de continuidade (doutrina 05/08).",
+      "validade": "2026-08-09T21:00:00Z"
     }
   ],
   "tese_geral": {
-    "direcao": "SHORT",
-    "nota": "BEAR; ouro raramente desce direto — reteste do topo antes de cair (analogo 30/07: multi-reteste + lower highs, breakdown na Asia). Zona MAIS FORTE de reteste = 4090-4106 (OB Detector real); pode ir acima (4138-4166) ou nao. ALVO VERDADEIRO do short = 3995-4010 (demanda). Alvo intermedio 4045-4060.",
-    "nivel_confirmacao_short": 4075.0,
-    "nivel_confirmacao_nota": "fecho decisivo 15M abaixo de 4075 = continuidade SHORT confirmada (gatilho Cris)",
-    "validade": "2026-08-08T21:00:00Z"
+    "direcao": "LONG",
+    "nota": "DOUTRINA 05/08 (Cris): ouro em tendência de alta pede MENTALIDADE DE CONTINUAÇÃO, não reversão. Foco total: COMPRAS em pullbacks curtos com continuidade confirmada nas velas 15M (A1/A2 = motor). Reversão SÓ em região 4H/1D com clara rejeição macro (única: 4337-4382). Claude: SINALIZAR E QUESTIONAR o Cris sempre que surgir ideia/sugestão de venda contra tendência.",
+    "validade": "2026-08-12T21:00:00Z"
   }
 }
