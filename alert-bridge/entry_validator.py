@@ -144,16 +144,14 @@ def main_loop():
                         # GATE DE DOUTRINA (Cris 05/08 16:4x): reversão SÓ em região 4H/1D macro (mapa
                         # marca a única permitida). SHORT fora dela = chat-only SEMPRE, mesmo com o
                         # reader indisponível (o fail-open deixou passar um short contra-doutrina às 19:1x).
-                        if r["tese"] == "SHORT" and "reversão permitida" not in str(
-                                next((z.get("nota","") for z in tmap["zones"] if z["id"] == r.get("id")), "")).lower()                                 and r.get("id") != "ob_supply_4h_4337_4382":
-                            print(txt_doctrine_note := f"(doutrina: SHORT em {r.get('id')} fora da região macro — chat-only)", flush=True)
+                        if r["tese"] == "SHORT" and r.get("id") != "ob_supply_4h_4337_4382":
+                            print(f"(doutrina: SHORT em {r.get('id')} fora da região macro — chat-only)", flush=True)
                             ok_reader = False
-                            jz = "
-(doutrina continuação: reversão só na zona 4H/1D macro — não enviado)"
+                            jz = "\n(doutrina continuação: reversão só na zona 4H/1D macro — não enviado)"
                         try:
                             import e2_quality as E2
                             dsr = E2.load_dossier() or {}
-                            if dsr:
+                            if dsr and ok_reader:               # doutrina-bloqueado NÃO consulta (nem re-abre)
                                 cand = {"direction": r["tese"], "rule": "validator_go", "tf": r.get("tf", "15"),
                                         "entry": e, "sl": s, "target": t or (e - 3 * abs(e - s) if r["tese"] == "SHORT"
                                                                              else e + 3 * abs(e - s)),
