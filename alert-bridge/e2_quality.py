@@ -134,6 +134,30 @@ def _tg_send(text, audience="group"):
         return False
 
 
+def recent_strategy_signal(direction, within_s=2700):
+    """True se uma ESTRATÉGIA mecânica (A1/A2, Cp) emitiu sinal na MESMA direção há <within_s.
+    Usado p/ a exceção do Cris (05/08): sinal LIVE do reader vai ao GRUPO só quando conflui com estratégia."""
+    import time as _t, json as _j
+    now = _t.time()
+    try:
+        p = REPO / "my-strategy/strategies/xau_15m_long/continuation_A1A2/.a1a2_state/alerted.jsonl"
+        for l in open(p):
+            r = _j.loads(l)
+            if now - r.get("entry_t", 0) < within_s and direction == "LONG":
+                return True
+    except Exception:
+        pass
+    try:
+        p = REPO / "my-strategy/strategies/xau_15m_long/reversal/CP_CAPITULATION/.cp_state/alerted.jsonl"
+        for l in open(p):
+            r = _j.loads(l)
+            if now - r.get("etime", 0) < within_s and direction == "LONG":
+                return True
+    except Exception:
+        pass
+    return False
+
+
 def notify_surfaced(cand, th):
     """Alerta LIVE de candidato surfaced (contexto converge no lado do candidato). Advisory curto.
     MAPA DO TRADER (Cris 2026-08-04): sinal CONTRA a tese declarada numa zona do mapa (<=1 ATR) leva
@@ -156,7 +180,7 @@ def notify_surfaced(cand, th):
            f"tese: {th.get('thesis')}\n"
            f"invalida se: {th.get('invalidation')}\n"
            f"(advisory — a decisão é tua, revê o chart)")
-    _tg_send(txt)
+    _tg_send(txt, audience=("group" if recent_strategy_signal(cand.get("direction")) else "assistant"))
 
 READ_SYS = (
     "És um trader XAUUSD discricionário EXPERIENTE a ler a fita COMPLETA de um candidato de trade já "

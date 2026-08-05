@@ -183,7 +183,8 @@ def send_confirmed_tg(tf, bar, v):
            f"{v.get('phase')} · {v.get('at_level') or ''} · convicção {v.get('conviction')}\n"
            f"{str(v.get('note'))[:180]}\n(advisory — a decisão é tua)")
     try:
-        return "tg" if E2._tg_send(txt) else "tg-fail"
+        aud = "group" if E2.recent_strategy_signal(v.get("direction")) else "assistant"
+        return f"tg-{aud}" if E2._tg_send(txt, audience=aud) else "tg-fail"
     except Exception:
         return "tg-erro"
 
