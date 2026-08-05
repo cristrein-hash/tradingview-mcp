@@ -28,7 +28,8 @@ WICK_MIN_RANGE = 0.35      # pavio >= 35% do range (Cris 04/08: "qualquer pavio 
 WICK_MIN_ATR = 0.30        # piso baixo (só mata dojis minúsculos); a REGIÃO OB (zona do mapa) é o filtro de ruído,
                            # não o tamanho do pavio — por isso o piso ATR desceu p/ o 35% passar em vela normal
 SL_BUF_ATR = 0.15          # SL = extremo do wick + 0.15×ATR
-COOLDOWN_S = 2 * 3600      # por zona; override se novo extremo > anterior +0.5×ATR
+COOLDOWN_S = 2 * 3600
+_TOUCH5 = {}          # zona_id -> [ts das rejeições 5M] (2ª-rejeição, ordem Cris 05/08)      # por zona; override se novo extremo > anterior +0.5×ATR
 VELA_LIVE = os.environ.get("VELA_PRODUCTION_AUTHORIZED", "") == "1"
 CONSULT = os.environ.get("VELA_READER_CONSULT", "1") == "1"
 
@@ -309,6 +310,34 @@ def scan_zones(cur, tf, atr, tmap, fired):
             if not new_ext:
                 continue
         fired[key] = (time.time(), read["touch_extreme"])
+        # ---- GUARDAS ANTI-PERDA (Cris 05/08 13:2x, após SL do sinal 13:10) — correm ANTES do reader ----
+        guard_block = None
+        # (1) ESCADARIA 5M: >=4 das últimas 5 velas verdes com highs a subir = perna impulsiva; rejeição de
+        #     1 vela é pausa, não topo (o sinal 13:10 vendeu uma escadaria de 5 verdes).
+        if tf == "5":
+            _b5 = load_bars_5m(6)
+            b5g = _b5[:-1]                                   # exclui a própria vela da rejeição
+            if len(b5g) >= 5:
+                greens = sum(1 for b in b5g if b["c"] > b["o"])
+                hh_up = all(b5g[x]["h"] >= b5g[x-1]["h"] for x in range(1, len(b5g)))
+                if read["direction"] == "SHORT" and greens >= 4 and hh_up:
+                    guard_block = "escadaria 5M (>=4 verdes, HH) — pausa, não topo"
+        # (2) 2ª REJEIÇÃO (ordem Cris: TG do fast-5M só na 2ª rejeição da zona; a 1ª = aviso de copiloto)
+        if tf == "5" and guard_block is None:
+            hist = _TOUCH5.setdefault(zone["id"], [])
+            now_g = time.time()
+            hist[:] = [h for h in hist if now_g - h < 4 * 3600]
+            hist.append(now_g)
+            if len(hist) < 2:
+                guard_block = "1ª rejeição da zona — copiloto; TG só na 2ª (ordem Cris 05/08)"
+        # (3) FRESCURA NO ENVIO: se o preço corrente já está além do SL, o sinal nasceu morto (13:10→13:16)
+        if guard_block is None:
+            b5f = load_bars_5m(2)
+            px_now = b5f[-1]["c"] if b5f else None
+            if px_now is not None:
+                if (read["direction"] == "SHORT" and px_now >= read["sl"]) or \
+                   (read["direction"] == "LONG" and px_now <= read["sl"]):
+                    guard_block = f"JÁ INVALIDADO no envio (preço {px_now} além do SL {read['sl']})"
         try:
             import e2_quality as E2
             dsr = E2.load_dossier() or {}
@@ -321,6 +350,10 @@ def scan_zones(cur, tf, atr, tmap, fired):
         # Telegram da vela"). A vela grau-A com absorção MECÂNICA (janela buy N/0) chegava ao TG mesmo com
         # o reader a refutar ("sem absorção efetiva, short prematuro"). Agora: reader julga ANTES; grau A
         # que o reader NÃO confirma = chat-only. Fail-open: reader indisponível → envia (avaria não cala).
+        if guard_block:
+            print(txt, flush=True)
+            print(f"(canal: chat-only — guarda: {guard_block})", flush=True)
+            continue
         jz = ""; ok_reader = True
         if CONSULT and dsr:
             try:
