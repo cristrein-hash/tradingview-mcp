@@ -87,19 +87,35 @@ def detect(S):
     N, H, L, ATR = S["N"], S["H"], S["L"], S["ATR"]
     i = N - 1
     atr = ATR[i] or 5.0
-    hh = max(H[max(0, i-HH_WIN):i-HH_GAP]) if i - HH_GAP > 0 else None
-    if hh is None:
+    if i - HH_GAP <= 0:
         return None, "sem HH"
-    lo_win = range(max(0, i-PB_WIN), i+1)
-    j = min(lo_win, key=lambda z: L[z])
+    hh_win = range(max(0, i-HH_WIN), i-HH_GAP)
+    hh_i = max(hh_win, key=lambda z: H[z])
+    hh = H[hh_i]
+    # FIX 05/08 (2ª perna do bug do SL-94pts): o fundo do pullback é o min low DEPOIS do topo da perna —
+    # nunca uma barra do rally (o min-24b cego caía no rally e inflava depth/SL).
+    j = min(range(hh_i + 1, i + 1), key=lambda z: L[z])
+    if i - j > PB_WIN:
+        return None, f"fundo do pullback velho ({i-j}b atrás)"
     depth = (hh - L[j]) / atr
     if depth < PB_MIN_ATR:
         return None, f"pullback raso demais ({depth:.1f}ATR)"
-    r = ACE.causal_entry(S, j, kind="MB3")
+    # FIX 05/08 (bug apanhado pelo Cris: SL 94pts): a âncora do módulo-mãe olha j-16 barras — num rally
+    # vertical isso agarra o low do RALLY, não do pullback. Fatiar a série a partir de j-3 prende a âncora
+    # ao fundo real do pullback (espec: "SL = low REAL do pullback").
+    start = max(0, j - 3)
+    Sx = {k: (v[start:] if isinstance(v, list) else v) for k, v in S.items()}
+    Sx["N"] = len(Sx["T"])
+    r = ACE.causal_entry(Sx, j - start, kind="MB3")
     if not r:
         return None, f"fundo@{j} sem MB3 ainda (depth {depth:.1f}ATR)"
+    r["ei"] += start
     if r["ei"] != N - 1:
         return None, f"MB3 antigo (ei={r['ei']} != {N-1}) — não é a barra corrente"
+    # GUARDA DE ESCALA 15M (Cris 05/08: "SL gigantesco = estratégia de 4H, não 15M"): risco > 2.5×ATR
+    # descaracteriza o A1/A2 — sem sinal.
+    if r["R"] > 2.5 * atr:
+        return None, f"R {r['R']:.1f}pts > 2.5×ATR({atr:.1f}) — escala de 4H, não é A1/A2 15M"
     layer = "A2" if depth <= A2_MAX_ATR else "A1"
     r["layer"], r["depth_atr"] = layer, round(depth, 2)
     return r, "SINAL"
