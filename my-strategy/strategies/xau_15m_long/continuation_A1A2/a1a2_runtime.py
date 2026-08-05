@@ -118,6 +118,15 @@ def detect(S):
         return None, f"R {r['R']:.1f}pts > 2.5×ATR({atr:.1f}) — escala de 4H, não é A1/A2 15M"
     layer = "A2" if depth <= A2_MAX_ATR else "A1"
     r["layer"], r["depth_atr"] = layer, round(depth, 2)
+    # LOCALIZAÇÃO (lição Cris 05/08: MB3 pode imprimir com o bounce quase corrido = compra no topo do
+    # retrace; a entrada ideal era o retest ~4155). Reportar no sinal: % do bounce já corrido + zona de
+    # entrada LIMITE (retest do high rompido ↔ 50% do bounce). Advisory — não muda a mecânica aprovada.
+    pb_low = L[j]
+    bounce = r["ent"] - pb_low
+    r["bounce_pct"] = round(100 * bounce / (hh - pb_low)) if hh > pb_low else None
+    broken_h = H[r["ei"] - 1] if r["ei"] >= 1 else None
+    mid_b = round(pb_low + 0.5 * bounce, 2)
+    r["retest_zone"] = (min(mid_b, broken_h), max(mid_b, broken_h)) if broken_h else (mid_b, mid_b)
     return r, "SINAL"
 
 
@@ -144,6 +153,8 @@ def cycle():
                f"🟢 XAU 15M LONG — {r['layer']} PULLBACK (MB3)\n"
                f"vela 15M {ts}: MB3 confirmado após fundo de pullback ({r['depth_atr']}×ATR da perna)\n"
                f"Entry {r['ent']} · SL {r['sl']} (low real −0.1ATR) · alvo {r['tgt']} (3R) · risco {r['R']}pts\n"
+               f"bounce já corrido {r.get('bounce_pct','?')}% — entrada LIMITE ideal no retest "
+               f"{r['retest_zone'][0]:.2f}–{r['retest_zone'][1]:.2f} (melhor preço, mesmo SL)\n"
                f"(estratégia A1/A2 aprovada — forward em registo; a decisão é tua)")
         out["signal"] = {k: r[k] for k in ("layer", "ent", "sl", "tgt", "R", "depth_atr")}
         with open(DEDUP, "a") as f:
