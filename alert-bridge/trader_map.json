@@ -19,7 +19,7 @@
       "high": 4066.0,
       "tese": "LONG",
       "criticidade": "critica",
-      "nota": "Demanda validada (fundo do dia 05/08). Suporte de continuação.",
+      "nota": "COMPRA DA NOVA PERNA (Cris 06/08 17:1x: 'preço verdadeiramente faz nova perna em 4080/4070/4050'). Fundo do dia 05/08. LONG só com rejeição + nova perna impressa aqui. Alvo seguro: 4138 → 4225.",
       "validade": "2026-08-06T21:00:00Z"
     },
     {
@@ -53,24 +53,69 @@
       "id": "suporte_4138_4166",
       "low": 4138.2,
       "high": 4166.19,
-      "tese": "LONG",
+      "tese": "SHORT",
       "criticidade": "critica",
-      "nota": "Suporte inferior de continuação. Compra em pullback profundo com rejeição+nova perna.",
+      "nota": "Ex-supra 4H rompida (agora no caminho): retest por baixo = supply de correção.",
       "validade": "2026-08-09T21:00:00Z"
     },
     {
       "id": "demanda_4225_4233",
       "low": 4225.0,
-      "high": 4233.0,
+      "high": 4239.0,
+      "tese": "SHORT",
+      "criticidade": "critica",
+      "nota": "Demanda 4225-33 QUEBROU (06/08) -> agora SUPPLY. OB 15M 4231-39. Retest por baixo que rejeite = SHORT.",
+      "validade": "2026-08-08T21:00:00Z"
+    },
+    {
+      "id": "buy_4183_4191",
+      "low": 4183.0,
+      "high": 4191.0,
+      "tese": "SHORT",
+      "criticidade": "critica",
+      "nota": "Ex-demanda 4183-91 -> se quebrar e retestar por baixo = SUPPLY/short.",
+      "validade": "2026-08-08T21:00:00Z"
+    },
+    {
+      "id": "buy_newleg_4045_4080",
+      "low": 4045.0,
+      "high": 4080.0,
       "tese": "LONG",
       "criticidade": "critica",
-      "nota": "Demanda que SEGUROU (compra forte 14:30). LONG no próximo pullback comprável que rejeite AQUI.",
+      "nota": "ZONA DE COMPRA DA NOVA PERNA (Cris 06/08 17:1x): 4080/4070/4050 — onde o preço provavelmente faz a verdadeira reversão para nova perna de alta. Engloba OB 1H 4045-4060/4065-4077 + demanda intra 4060-66. LONG só com rejeição + nova perna. NÃO comprar a queda antes.",
       "validade": "2026-08-08T21:00:00Z"
+    },
+    {
+      "id": "flip_supply_4247_4263",
+      "low": 4247.0,
+      "high": 4263.0,
+      "tese": "SHORT",
+      "criticidade": "critica",
+      "nota": "Demanda 1H 4247-63 QUEBROU (06/08) -> SUPPLY. Retest por baixo/rejeição = SHORT (a demanda que segurou e depois cedeu).",
+      "validade": "2026-08-13T21:00:00Z"
+    },
+    {
+      "id": "flip_supply_4267_4285",
+      "low": 4267.0,
+      "high": 4285.0,
+      "tese": "SHORT",
+      "criticidade": "critica",
+      "nota": "OB 15M/1H 4267-85 -> supply do topo. Rejeição = short.",
+      "validade": "2026-08-13T21:00:00Z"
+    },
+    {
+      "id": "flip_supply_4296_4304",
+      "low": 4296.0,
+      "high": 4304.0,
+      "tese": "SHORT",
+      "criticidade": "critica",
+      "nota": "OB 15M/1H -> supply. Rejeição = short.",
+      "validade": "2026-08-13T21:00:00Z"
     }
   ],
   "tese_geral": {
-    "direcao": "LONG",
-    "nota": "DOUTRINA DE CONTINUAÇÃO retomada (Cris 06/08 14:3x, após reflexão): a demanda 4225-33 segurou com compra forte = pullback comprado, continuação viva. SHORTS FECHADOS — reversão SÓ em 4H/1D (4337-82) com clara rejeição macro. FOCO: comprar próximo pullback curto 15M que a demanda segure. Claude questiona toda tentação de reversão fora da condição macro.",
-    "validade": "2026-08-12T21:00:00Z"
+    "direcao": "SHORT",
+    "nota": "FASE DE CORREÇÃO/DOWNTREND CURTO (Cris 06/08 17:3x, pode durar ~1 mês): topo 4286. SHORTS ATIVOS = vender REJEIÇÕES nas demandas-antigas-viradas-supply (4225-39, 4247-63, 4267-85, 4296-4304) + supplies HTF (4310-30, 4337-82). LONGS: repique curto OU nova perna em 4045-4080 (swing). Sinal SÓ com rejeição impressa, nunca a faca. Reader julga. Reavaliar p/ BULL quando estrutura 4H virar.",
+    "validade": "2026-08-13T21:00:00Z"
   }
 }
