@@ -27,8 +27,8 @@
       "low": 4256.0,
       "high": 4276.8,
       "tese": "SHORT",
-      "criticidade": "critica",
-      "nota": "SHORT da correção (Cris 06/08 14:0x: reversão configurada). Retest por baixo/rejeição = venda.",
+      "criticidade": "alta",
+      "nota": "Referência 1H — SEM short (doutrina continuação retomada 06/08 14:3x).",
       "validade": "2026-08-09T21:00:00Z"
     },
     {
@@ -55,7 +55,7 @@
       "high": 4166.19,
       "tese": "LONG",
       "criticidade": "critica",
-      "nota": "DEMANDA INFERIOR (fase correção): LONG só com nova perna de alta impressa aqui.",
+      "nota": "Suporte inferior de continuação. Compra em pullback profundo com rejeição+nova perna.",
       "validade": "2026-08-09T21:00:00Z"
     },
     {
@@ -64,13 +64,13 @@
       "high": 4233.0,
       "tese": "LONG",
       "criticidade": "critica",
-      "nota": "OB 15M real — 1ª demanda inferior da correção. LONG só com rejeição + nova perna (Cris 06/08).",
+      "nota": "Demanda que SEGUROU (compra forte 14:30). LONG no próximo pullback comprável que rejeite AQUI.",
       "validade": "2026-08-08T21:00:00Z"
     }
   ],
   "tese_geral": {
-    "direcao": "SHORT",
-    "nota": "FASE DE CORREÇÃO (Cris 06/08 14:0x): reversão configurada — validação de SHORTS reaberta (rejeições impressas, reader julga qualidade). LONGS daqui em diante = SÓ pullback completo às demandas inferiores (4225-33 → 4138-66 → 4060-66 → 3995-4010) COM nova perna de alta impressa. Estudo macro: retrace mediano ~68% da perna 4007→4286 aponta 4100-4160 sem quebrar 4007. NÃO comprar o meio da queda.",
-    "validade": "2026-08-08T21:00:00Z"
+    "direcao": "LONG",
+    "nota": "DOUTRINA DE CONTINUAÇÃO retomada (Cris 06/08 14:3x, após reflexão): a demanda 4225-33 segurou com compra forte = pullback comprado, continuação viva. SHORTS FECHADOS — reversão SÓ em 4H/1D (4337-82) com clara rejeição macro. FOCO: comprar próximo pullback curto 15M que a demanda segure. Claude questiona toda tentação de reversão fora da condição macro.",
+    "validade": "2026-08-12T21:00:00Z"
   }
 }

@@ -36,7 +36,7 @@ TAPE_SYS = (
     "O preço está numa zona CRÍTICA do mapa do trader ou numa supply/demand HTF? Há assinatura de rejeição/"
     "absorção/sweep+reclaim, ou é vela morta? Aplica a regra de liquidez (iniciativa-para-íman = manipulação; "
     "deslocamento-pós-sweep = genuíno; sweep+reclaim sobrepõe o rótulo de perna atrasado).\n"
-    "FASE ATUAL (Cris 2026-08-06 14:0x): CORREÇÃO configurada após topo 4286 (perna 4007→4286). SHORTS revalidados — vender rejeições IMPRESSAS da correção (reader julga qualidade, nunca antecipação). LONGS: SÓ nas demandas inferiores do mapa (4225-33 / 4138-66 / 4060-66 / 3995-4010) e SÓ com NOVA PERNA DE ALTA impressa — nunca comprar o meio da queda.\n"
+    "DOUTRINA DE CONTINUAÇÃO (Cris, retomada 06/08 14:3x): ouro em tendência de alta = mentalidade de CONTINUAÇÃO. A demanda 4225-33 segurou (compra forte) = pullback comprado. NUNCA confirmes SHORT salvo em 4H/1D (4337-82) com CLARA rejeição macro. FOCO: compras em pullbacks curtos 15M que a demanda segure. Tentação de reversão fora disso = di-lo como AVISO e recusa.\n"
     "REGRA DO 1º PULLBACK (Cris 2026-08-05, após short confirmado às 10h que falhou): o ouro NUNCA desce "
     "verdadeiramente na PRIMEIRA correção de uma perna impulsiva forte (perna fresca de vários ATR / dezenas "
     "de pontos). Pullback raso da 1ª correção NÃO é venda — NUNCA confirmes SHORT contra perna impulsiva de "
