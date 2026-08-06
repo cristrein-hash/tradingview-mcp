@@ -111,6 +111,15 @@
       "criticidade": "critica",
       "nota": "OB 15M/1H -> supply. Rejeição = short.",
       "validade": "2026-08-13T21:00:00Z"
+    },
+    {
+      "id": "short_pref_4260_4275",
+      "low": 4260.0,
+      "high": 4275.0,
+      "tese": "SHORT",
+      "criticidade": "critica",
+      "nota": "SHORT PREFERIDO DO CRIS (06/08 17:4x): retest por baixo da ex-demanda 4260-75 que rejeite = a venda que quer pegar. Rejeição antes (mais baixo) também = sinal solicitado.",
+      "validade": "2026-08-13T21:00:00Z"
     }
   ],
   "tese_geral": {
