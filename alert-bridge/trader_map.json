@@ -27,8 +27,8 @@
       "low": 4256.0,
       "high": 4276.8,
       "tese": "SHORT",
-      "criticidade": "alta",
-      "nota": "Referência de escada 1H — SEM busca de reversão (doutrina continuação 05/08).",
+      "criticidade": "critica",
+      "nota": "SHORT da correção (Cris 06/08 14:0x: reversão configurada). Retest por baixo/rejeição = venda.",
       "validade": "2026-08-09T21:00:00Z"
     },
     {
@@ -55,13 +55,22 @@
       "high": 4166.19,
       "tese": "LONG",
       "criticidade": "critica",
-      "nota": "Ex-supply 4H rompida = SUPORTE de continuação. Pullback curto que rejeitar AQUI para cima = compra de continuidade (doutrina 05/08).",
+      "nota": "DEMANDA INFERIOR (fase correção): LONG só com nova perna de alta impressa aqui.",
       "validade": "2026-08-09T21:00:00Z"
+    },
+    {
+      "id": "demanda_4225_4233",
+      "low": 4225.0,
+      "high": 4233.0,
+      "tese": "LONG",
+      "criticidade": "critica",
+      "nota": "OB 15M real — 1ª demanda inferior da correção. LONG só com rejeição + nova perna (Cris 06/08).",
+      "validade": "2026-08-08T21:00:00Z"
     }
   ],
   "tese_geral": {
-    "direcao": "LONG",
-    "nota": "DOUTRINA 05/08 (Cris): ouro em tendência de alta pede MENTALIDADE DE CONTINUAÇÃO, não reversão. Foco total: COMPRAS em pullbacks curtos com continuidade confirmada nas velas 15M (A1/A2 = motor). Reversão SÓ em região 4H/1D com clara rejeição macro (única: 4337-4382). Claude: SINALIZAR E QUESTIONAR o Cris sempre que surgir ideia/sugestão de venda contra tendência.",
-    "validade": "2026-08-12T21:00:00Z"
+    "direcao": "SHORT",
+    "nota": "FASE DE CORREÇÃO (Cris 06/08 14:0x): reversão configurada — validação de SHORTS reaberta (rejeições impressas, reader julga qualidade). LONGS daqui em diante = SÓ pullback completo às demandas inferiores (4225-33 → 4138-66 → 4060-66 → 3995-4010) COM nova perna de alta impressa. Estudo macro: retrace mediano ~68% da perna 4007→4286 aponta 4100-4160 sem quebrar 4007. NÃO comprar o meio da queda.",
+    "validade": "2026-08-08T21:00:00Z"
   }
 }
