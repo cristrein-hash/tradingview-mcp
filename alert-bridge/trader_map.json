@@ -118,13 +118,23 @@
       "high": 4275.0,
       "tese": "SHORT",
       "criticidade": "critica",
-      "nota": "SHORT PREFERIDO DO CRIS (06/08 17:4x): retest por baixo da ex-demanda 4260-75 que rejeite = a venda que quer pegar. Rejeição antes (mais baixo) também = sinal solicitado.",
+      "nota": "SHORT PRIMÁRIO (Cris 06-07/08): repique+HOLD em 4260-4275 + QUEBRA DE ESTRUTURA no 5M (lower-low/CHoCH-down após testar) = ALARME SHORT. Leitura 5M realtime. SL acima de 4285. Alvo 4223→4183. Se NÃO quebra estrutura (absorve e sobe) -> rompe 4285 = inverter p/ BULL.",
+      "validade": "2026-08-13T21:00:00Z",
+      "fast_5m": true
+    },
+    {
+      "id": "inval_bull_4285",
+      "low": 4285.0,
+      "high": 4286.0,
+      "tese": "NEUTRA",
+      "criticidade": "critica",
+      "nota": "LINHA DE INVALIDAÇÃO DO SHORT / INVERSÃO BULL (Cris 06-07/08): fecho+HOLD acima de 4285 = correção morreu, continuação retoma -> reabrir viés BULL (comprar recuos). Abaixo = correção viva.",
       "validade": "2026-08-13T21:00:00Z"
     }
   ],
   "tese_geral": {
     "direcao": "SHORT",
-    "nota": "FASE DE CORREÇÃO/DOWNTREND CURTO (Cris 06/08 17:3x, pode durar ~1 mês): topo 4286. SHORTS ATIVOS = vender REJEIÇÕES nas demandas-antigas-viradas-supply (4225-39, 4247-63, 4267-85, 4296-4304) + supplies HTF (4310-30, 4337-82). LONGS: repique curto OU nova perna em 4045-4080 (swing). Sinal SÓ com rejeição impressa, nunca a faca. Reader julga. Reavaliar p/ BULL quando estrutura 4H virar.",
+    "nota": "FASE DE CORREÇÃO/DOWNTREND CURTO (Cris 06/08 17:3x, pode durar ~1 mês): topo 4286. SHORTS ATIVOS = vender REJEIÇÕES nas demandas-antigas-viradas-supply (4225-39, 4247-63, 4267-85, 4296-4304) + supplies HTF (4310-30, 4337-82). LONGS: repique curto OU nova perna em 4045-4080 (swing). Sinal SÓ com rejeição impressa, nunca a faca. Reader julga. Reavaliar p/ BULL quando estrutura 4H virar. | GATILHO PRIMÁRIO: short em 4260-4275 SÓ com quebra de estrutura no 5M (não só pavio). LINHA DA VERDADE: 4285 — acima+hold = inverter p/ BULL.",
     "validade": "2026-08-13T21:00:00Z"
   }
 }
