@@ -8,3 +8,9 @@
 - **AVALIAÇÃO CLAUDE (co-piloto):** baixar SL de 4310→4300 NÃO é mais segurança — é +risco (perda maior, % maior).
   Para swing/fim-de-semana com stop mais largo, a proteção correta é REDUZIR SIZE proporcionalmente (manter $ risco ≤0,5-1%),
   não alargar o stop. E stop NÃO protege contra GAP de domingo — só size menor protege. Direção a confirmar.
+
+### ATUALIZAÇÃO trade 07/08 (confirmado):
+- **Direção: LONG** — sinal A1/A2 pullback 15M XAU (sinal do sistema, continuação — DENTRO do pacto ✓)
+- FN entry 4338 · FTMO entry 4341 · **SL ambos 4300** · **size ajustado a 1% risco/conta** (lote correto)
+- Cris aplicou a lição: stop largo + size cortado = risco $ controlado (NÃO alargou risco). Execução disciplinada ✓
+- Gap de domingo agora mitigado pelo size 1% (sobrevivível). Regra do pacto: deixar correr até SL/alvo.
