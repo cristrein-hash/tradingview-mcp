@@ -159,9 +159,16 @@ def main_loop():
                                 th = E2.run_read(cand, dsr, timeout=90)
                                 if not th.get("error"):
                                     sf = E2.surfaced(th, cand)
+                                    cv = E2.fnum(th.get("conviction")) or 0
+                                    thesis = str(th.get("thesis") or "")
+                                    # ANTI-PREMATURO (Cris 07/08 03:xx: GO conv48 'CONFIRMA' mas tese='preço ainda
+                                    # a subir/prematuro' chegou ao TG). Exigir conv>=55 E que a tese NÃO se
+                                    # auto-contradiga com 'prematuro/ainda a subir/antecipa'. Fronteira = chat-only.
+                                    premature = any(w in thesis.lower() for w in
+                                                    ("prematur", "ainda a sub", "antecipa", "sem rejeição", "não imp"))
                                     jz = (f"\nreader: {'CONFIRMA' if sf else 'NÃO confirma'} · conv {th.get('conviction')} · "
-                                          f"{str(th.get('thesis'))[:150]}")
-                                    ok_reader = bool(sf)
+                                          f"{thesis[:150]}")
+                                    ok_reader = bool(sf) and cv >= 55 and not premature
                         except Exception as ex:
                             jz = f"\n(reader indisponível: {type(ex).__name__} — enviado sem juízo)"
                         txt = (f"🎯 VALIDADOR: GO — {r['tese']} @ {r.get('zona')} ({r.get('id')})\n"
