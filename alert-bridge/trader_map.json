@@ -53,7 +53,7 @@
       "id": "suporte_4138_4166",
       "low": 4138.2,
       "high": 4166.19,
-      "tese": "SHORT",
+      "tese": "LONG",
       "criticidade": "critica",
       "nota": "Ex-supra 4H rompida (agora no caminho): retest por baixo = supply de correção.",
       "validade": "2026-08-09T21:00:00Z"
@@ -62,16 +62,16 @@
       "id": "demanda_4225_4233",
       "low": 4225.0,
       "high": 4239.0,
-      "tese": "SHORT",
-      "criticidade": "critica",
-      "nota": "Demanda 4225-33 QUEBROU (06/08) -> agora SUPPLY. OB 15M 4231-39. Retest por baixo que rejeite = SHORT.",
+      "tese": "LONG",
+      "criticidade": "alta",
+      "nota": "Ex-zona; agora suporte inferior de continuação.",
       "validade": "2026-08-08T21:00:00Z"
     },
     {
       "id": "buy_4183_4191",
       "low": 4183.0,
       "high": 4191.0,
-      "tese": "SHORT",
+      "tese": "LONG",
       "criticidade": "critica",
       "nota": "Ex-demanda 4183-91 -> se quebrar e retestar por baixo = SUPPLY/short.",
       "validade": "2026-08-08T21:00:00Z"
@@ -86,55 +86,18 @@
       "validade": "2026-08-08T21:00:00Z"
     },
     {
-      "id": "flip_supply_4247_4263",
-      "low": 4247.0,
-      "high": 4263.0,
-      "tese": "SHORT",
-      "criticidade": "critica",
-      "nota": "Demanda 1H 4247-63 QUEBROU (06/08) -> SUPPLY. Retest por baixo/rejeição = SHORT (a demanda que segurou e depois cedeu).",
-      "validade": "2026-08-13T21:00:00Z"
-    },
-    {
-      "id": "flip_supply_4267_4285",
-      "low": 4267.0,
-      "high": 4285.0,
-      "tese": "SHORT",
-      "criticidade": "critica",
-      "nota": "OB 15M/1H 4267-85 -> supply do topo. Rejeição = short.",
-      "validade": "2026-08-13T21:00:00Z"
-    },
-    {
-      "id": "flip_supply_4296_4304",
-      "low": 4296.0,
-      "high": 4304.0,
-      "tese": "SHORT",
-      "criticidade": "critica",
-      "nota": "OB 15M/1H -> supply. Rejeição = short.",
-      "validade": "2026-08-13T21:00:00Z"
-    },
-    {
-      "id": "short_pref_4260_4275",
-      "low": 4260.0,
-      "high": 4275.0,
-      "tese": "SHORT",
-      "criticidade": "critica",
-      "nota": "SHORT PRIMÁRIO (Cris 06-07/08): repique+HOLD em 4260-4275 + QUEBRA DE ESTRUTURA no 5M (lower-low/CHoCH-down após testar) = ALARME SHORT. Leitura 5M realtime. SL acima de 4285. Alvo 4223→4183. Se NÃO quebra estrutura (absorve e sobe) -> rompe 4285 = inverter p/ BULL.",
-      "validade": "2026-08-13T21:00:00Z",
-      "fast_5m": true
-    },
-    {
-      "id": "inval_bull_4285",
-      "low": 4285.0,
+      "id": "suporte_4285",
+      "low": 4278.0,
       "high": 4286.0,
-      "tese": "NEUTRA",
+      "tese": "LONG",
       "criticidade": "critica",
-      "nota": "LINHA DE INVALIDAÇÃO DO SHORT / INVERSÃO BULL (Cris 06-07/08): fecho+HOLD acima de 4285 = correção morreu, continuação retoma -> reabrir viés BULL (comprar recuos). Abaixo = correção viva.",
-      "validade": "2026-08-13T21:00:00Z"
+      "nota": "4285 ROMPIDO (07/08) = suporte de continuação (ex-supply virada demanda). Pullback que rejeite p/ cima AQUI = compra.",
+      "validade": "2026-08-10T21:00:00Z"
     }
   ],
   "tese_geral": {
-    "direcao": "SHORT",
-    "nota": "FASE DE CORREÇÃO/DOWNTREND CURTO (Cris 06/08 17:3x, pode durar ~1 mês): topo 4286. SHORTS ATIVOS = vender REJEIÇÕES nas demandas-antigas-viradas-supply (4225-39, 4247-63, 4267-85, 4296-4304) + supplies HTF (4310-30, 4337-82). LONGS: repique curto OU nova perna em 4045-4080 (swing). Sinal SÓ com rejeição impressa, nunca a faca. Reader julga. Reavaliar p/ BULL quando estrutura 4H virar. | GATILHO PRIMÁRIO: short em 4260-4275 SÓ com quebra de estrutura no 5M (não só pavio). LINHA DA VERDADE: 4285 — acima+hold = inverter p/ BULL.",
-    "validade": "2026-08-13T21:00:00Z"
+    "direcao": "LONG",
+    "nota": "CONTINUAÇÃO retomada (Cris 07/08: 'esquece shorts'). Inversão bull confirmada: 4285 rompido com fecho, +buy12/0. SHORTS FECHADOS — reversão só 4337-82 macro c/ rejeição clara. FOCO: comprar recuos curtos que os suportes (4285, 4260, 4225) segurem, A1/A2 = motor. CUIDADO: NFP 13:30 hoje (whipsaw). Claude questiona toda tentação de short fora do macro.",
+    "validade": "2026-08-12T21:00:00Z"
   }
 }

@@ -144,9 +144,12 @@ def main_loop():
                         # GATE DE DOUTRINA (Cris 05/08 16:4x): reversão SÓ em região 4H/1D macro (mapa
                         # marca a única permitida). SHORT fora dela = chat-only SEMPRE, mesmo com o
                         # reader indisponível (o fail-open deixou passar um short contra-doutrina às 19:1x).
-                        # SHORTS REATIVADOS (Cris 06/08 17:3x: fase de correção que pode durar ~1 mês).
-                        # Gate de doutrina levantado; qualidade dos shorts continua no reader.
-                        pass
+                        # GATE DE DOUTRINA (Cris 07/08: "esquece shorts" — inversão bull confirmada 4285).
+                        # SHORT fora de 4337-82 macro = chat-only SEMPRE.
+                        if r["tese"] == "SHORT" and r.get("id") != "ob_supply_4h_4337_4382":
+                            print(f"(doutrina: SHORT em {r.get('id')} fora da região macro — chat-only)", flush=True)
+                            ok_reader = False
+                            jz = "\n(continuação: reversão só na zona 4H/1D macro — não enviado)"
                         try:
                             import e2_quality as E2
                             dsr = E2.load_dossier() or {}
