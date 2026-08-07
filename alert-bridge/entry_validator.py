@@ -173,7 +173,13 @@ def main_loop():
                                           f"{thesis[:150]}")
                                     ok_reader = bool(sf) and cv >= 55 and not premature
                         except Exception as ex:
-                            jz = f"\n(reader indisponível: {type(ex).__name__} — enviado sem juízo)"
+                            # FAIL-CLOSED p/ SHORT (Cris 07/08: GO short 4341 chegou ao TG sem juízo por
+                            # falha do reader). Reader indisponível: LONG mantém fail-open; SHORT = chat-only.
+                            if r["tese"] == "SHORT":
+                                ok_reader = False
+                                jz = f"\n(reader indisponível — SHORT retido por segurança, não enviado)"
+                            else:
+                                jz = f"\n(reader indisponível: {type(ex).__name__} — long enviado sem juízo)"
                         txt = (f"🎯 VALIDADOR: GO — {r['tese']} @ {r.get('zona')} ({r.get('id')})\n"
                                f"{r.get('detail','rejeição/break confirmado')}\n"
                                f"entry {e} · SL {s} · alvo {t or '—'} · RR {rr or '—'}{jz}\n"
