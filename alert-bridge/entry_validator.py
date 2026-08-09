@@ -140,7 +140,10 @@ def main_loop():
                         # zona). GO mecânico → reader lê o contexto; só vai a TG se o reader NÃO refutar.
                         # Reader indisponível = fail-open (TG sai — o gate nunca pode calar por avaria).
                         jz = ""
-                        ok_reader = True
+                        # FAIL-CLOSED p/ SHORT (Cris 10/08: short 4341 vazou ao TG por reader SALTADO —
+                        # dossiê momentaneamente vazio no race, o consult não correu, ok_reader ficou True).
+                        # LONG = fail-open (default True); SHORT = fail-CLOSED (só ao TG se o reader CONFIRMAR).
+                        ok_reader = (r["tese"] == "LONG")
                         # GATE DE DOUTRINA (Cris 05/08 16:4x): reversão SÓ em região 4H/1D macro (mapa
                         # marca a única permitida). SHORT fora dela = chat-only SEMPRE, mesmo com o
                         # reader indisponível (o fail-open deixou passar um short contra-doutrina às 19:1x).

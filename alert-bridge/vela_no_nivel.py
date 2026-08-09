@@ -354,7 +354,7 @@ def scan_zones(cur, tf, atr, tmap, fired):
             print(txt, flush=True)
             print(f"(canal: chat-only — guarda: {guard_block})", flush=True)
             continue
-        jz = ""; ok_reader = True
+        jz = ""; ok_reader = (read["direction"] == "LONG")   # SHORT fail-closed, LONG fail-open (Cris 10/08)
         if CONSULT and dsr:
             try:
                 import e2_quality as E2
