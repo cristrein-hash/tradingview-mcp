@@ -25,7 +25,11 @@ ZF = STATE / "zones.json"
 CATF = STATE / "catalog.json"                       # catálogo de supplies/demands VISTOS (sobrevive à caixa sumir)
 D_ATR = 1.0                                         # invalidação = fecho além da zona por D·ATR (validado v2)
 NEAR_PTS = float(os.environ.get("POLARITY_NEAR_PTS") or 80.0)
-ENABLED = os.environ.get("POLARITY_OFF", "") != "1"
+# DESLIGADO POR DEFEITO (2026-08-10): a "lei de polaridade" NÃO passou validação — o DA provou que o edge
+# (+12pp) era ARTEFACTO de ancoragem do null (edge real ≈ −2,7pp; ex-supply NÃO segura melhor que um nível
+# aleatório na mesma posição). Não corre live com edge falso. Requer POLARITY_ON=1 explícito para reativar
+# (só depois de a lei ser genuinamente demonstrada). Ver project_polarity_tracker_live (estado: REFUTADO).
+ENABLED = os.environ.get("POLARITY_ON", "") == "1"
 TFS = ("15", "60")
 
 
