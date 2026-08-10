@@ -111,6 +111,15 @@
       "criticidade": "critica",
       "nota": "REENTRADA LONG PRIMÁRIA — FVG-fill PROFUNDO: 15M+30M+1H FVG sobrepostos + demanda 15M 4301-10. Melhor ponto de entry (método Cris 10/08). SL abaixo ~4290. Rejeição+nova perna = compra de qualidade.",
       "validade": "2026-08-13T21:00:00Z"
+    },
+    {
+      "id": "ob_demand_4313_4330",
+      "low": 4313.24,
+      "high": 4330.49,
+      "tese": "LONG",
+      "criticidade": "critica",
+      "nota": "OB Detector v11 REAL — demanda CONVERGENTE 15M(4317-21)+60M(4313-30). Ressaltou a 4318 (10/08 14:0x). Foi ignorada por não estar declarada; marcada agora. Rejeição p/ cima aqui = compra de continuação.",
+      "validade": "2026-08-13T21:00:00Z"
     }
   ],
   "tese_geral": {

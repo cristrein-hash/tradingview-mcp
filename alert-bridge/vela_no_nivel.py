@@ -396,6 +396,19 @@ def main_loop():
             bars = load_bars()
             if len(bars) >= 16:
                 tmap = trader_map.load_map()
+                # OB AUTO-WATCH (Cris 10/08: "descobrir demandas onde capitula, não só as declaradas").
+                # Injeta as demandas OB Detector perto do preço como zonas CRÍTICAS LONG — o scan_zones
+                # trata-as igual às declaradas (rejeição + gate do reader + dedup). Fail-safe: se falha,
+                # a vela segue só com o mapa declarado. Dedup vs declaradas dentro de load_ob_zones.
+                if tmap:
+                    try:
+                        import ob_watch
+                        px = bars[-1]["c"]
+                        obz = ob_watch.load_ob_zones(px, tmap["zones"])
+                        if obz:
+                            tmap = {**tmap, "zones": tmap["zones"] + obz}
+                    except Exception as e:
+                        print(f"ob_watch erro transitório: {type(e).__name__}:{str(e)[:50]}", flush=True)
                 # FAST-LANE 5M (ordem Cris 05/08): zonas fast_5m (premium 4101-4116, toque 4116) lidas a
                 # cada 5M fechada — rejeição lá = entrada rápida, 15M/1H atrasam. Restrito às zonas marcadas.
                 if tmap and any(z.get("fast_5m") for z in tmap["zones"]):

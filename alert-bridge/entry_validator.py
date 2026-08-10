@@ -109,6 +109,15 @@ def main_loop():
             m15 = _bars("bars_15m.jsonl"); m5 = _bars("bars_5m.jsonl")
             if tmap and len(m15) >= 16:
                 price = (m5[-1]["c"] if m5 else m15[-1]["c"])
+                # OB AUTO-WATCH (Cris 10/08): valida também as demandas OB Detector perto do preço, não só
+                # as declaradas. Dedup vs declaradas dentro de load_ob_zones. Fail-safe.
+                try:
+                    import ob_watch
+                    obz = ob_watch.load_ob_zones(price, tmap["zones"])
+                    if obz:
+                        tmap = {**tmap, "zones": tmap["zones"] + obz}
+                except Exception as e:
+                    print(f"ob_watch erro transitório: {type(e).__name__}:{str(e)[:50]}", flush=True)
                 last15 = m15[-1]
                 h1 = [b for b in V.agg_1h(m15) if b.get("_n15") == 4]
                 last1h = h1[-1] if h1 else None
