@@ -28,17 +28,33 @@ ENABLED = os.environ.get("OB_WATCH_OFF", "") != "1"                   # destrav�
 
 
 def _read_ob(tf):
-    """Devolve lista de {high, low} do OB Detector no store para o TF, ou []."""
+    """Devolve [{high, low, text}] do OB Detector no store. all_boxes traz o TIPO REAL (DEMAND/SUPPLY);
+    fallback para zones (sem tipo) se all_boxes ausente."""
     p = STORE / f"pine_boxes_{tf}.json"
     try:
         d = json.load(open(p))
     except Exception:
         return []
-    studies = (d.get("data") or {}).get("studies") or []
-    for s in studies:
+    for s in ((d.get("data") or {}).get("studies") or []):
         if "OB" in (s.get("name") or ""):
-            return [z for z in (s.get("zones") or []) if "high" in z and "low" in z]
+            out = [{"high": b["high"], "low": b["low"], "text": str(b.get("text") or "").upper()}
+                   for b in (s.get("all_boxes") or []) if "high" in b and "low" in b]
+            if out:
+                return out
+            return [{"high": z["high"], "low": z["low"], "text": ""}
+                    for z in (s.get("zones") or []) if "high" in z and "low" in z]
     return []
+
+
+def _recent_max_close(n=40):
+    """Máximo close das últimas n barras 15M do store — para saber se o preço RECONQUISTOU uma supply
+    (fecho real acima do topo = polaridade virada suporte). Facto das barras, não métrica inventada."""
+    try:
+        rows = [json.loads(l) for l in open(STORE / "bars_15m.jsonl") if l.strip() and l[0] == "{"]
+    except Exception:
+        return None
+    cs = [b["c"] for b in rows[-n:] if "c" in b]
+    return max(cs) if cs else None
 
 
 def _overlaps(a_lo, a_hi, b_lo, b_hi):
@@ -46,43 +62,61 @@ def _overlaps(a_lo, a_hi, b_lo, b_hi):
 
 
 def load_ob_zones(price, declared_zones=None):
-    """Demandas OB perto do preço como zonas de vigia LONG (formato trader_map). Dedup vs zonas declaradas
-    (declarada tem prioridade — OB que sobrepõe uma declarada é descartada). Marca convergência multi-TF.
-    Devolve lista de dicts {id, low, high, tese:LONG, criticidade:critica, nota, source:ob_auto}."""
+    """Zonas OB perto do preço como vigia LONG (formato trader_map). Dois tipos, ambos por ESTRUTURA REAL:
+      - DEMAND (tipo real) abaixo/no preço = suporte nativo.
+      - SUPPLY (tipo real) RECONQUISTADA (preço acima do topo, OU a atravessá-la com fecho recente > topo)
+        = suporte por POLARIDADE (ex-supply virada suporte — doutrina Cris no trader_map).
+    Dedup vs declaradas (declarada prioridade). Convergência multi-TF marcada."""
     if not ENABLED or not price:
         return []
     declared = declared_zones or []
-    # recolhe demandas de todos os TFs, com o(s) TF(s) onde aparece
-    raw = {}   # (low,high) arredondado -> set de TFs
+    rmax = _recent_max_close()                                    # p/ reconquista de supply (facto)
+    raw = {}   # (low,high) -> {"tfs": set, "kind": "demand"|"polarity"}
     for tf in TFS:
         for z in _read_ob(tf):
-            lo, hi = float(z["low"]), float(z["high"])
-            # DEMANDA perto do preço: topo da zona <= preço+3 (abaixo/no preço) E dentro da banda NEAR_PTS
-            if hi <= price + 3.0 and hi >= price - NEAR_PTS:
-                key = (round(lo, 1), round(hi, 1))
-                raw.setdefault(key, set()).add(tf)
+            lo, hi, txt = float(z["low"]), float(z["high"]), z["text"]
+            if hi < price - NEAR_PTS:                             # fora da banda por baixo
+                continue
+            kind = None
+            if hi <= price + 3.0:
+                # zona ABAIXO do preço: demanda nativa; se for SUPPLY, o preço já a reconquistou = polaridade
+                kind = "polarity" if "SUPPLY" in txt else "demand"
+            elif "SUPPLY" in txt and (lo - 3.0) <= price <= hi and rmax is not None and rmax > hi:
+                # supply que o preço ATRAVESSA e JÁ reconquistou (fecho recente > topo) = suporte polaridade
+                kind = "polarity"
+            if kind is None:
+                continue
+            key = (round(lo, 1), round(hi, 1))
+            e = raw.setdefault(key, {"tfs": set(), "kind": kind})
+            e["tfs"].add(tf)
+            if kind == "polarity":
+                e["kind"] = "polarity"
     # funde zonas quase-iguais entre TFs (convergência) por sobreposição
-    merged = []   # [lo, hi, tfs]
-    for (lo, hi), tfs in sorted(raw.items(), key=lambda kv: -kv[0][1]):
+    merged = []   # [lo, hi, tfs, kind]
+    for (lo, hi), meta in sorted(raw.items(), key=lambda kv: -kv[0][1]):
         placed = False
         for m in merged:
             if _overlaps(lo, hi, m[0], m[1]):
-                m[0] = min(m[0], lo); m[1] = max(m[1], hi); m[2] |= tfs; placed = True; break
+                m[0] = min(m[0], lo); m[1] = max(m[1], hi); m[2] |= meta["tfs"]
+                if meta["kind"] == "polarity":
+                    m[3] = "polarity"
+                placed = True; break
         if not placed:
-            merged.append([lo, hi, set(tfs)])
+            merged.append([lo, hi, set(meta["tfs"]), meta["kind"]])
     out = []
-    for lo, hi, tfs in merged:
+    for lo, hi, tfs, kind in merged:
         # dedup vs declaradas
         if any(_overlaps(lo, hi, float(z["low"]), float(z["high"])) for z in declared):
             continue
         conv = "+".join(sorted(tfs))
         strong = len(tfs) >= 2
+        tipo = "ex-SUPPLY reconquistada (POLARIDADE=suporte)" if kind == "polarity" else "demanda nativa"
         out.append({
             "id": f"ob_auto_{lo:.0f}_{hi:.0f}",
             "low": lo, "high": hi, "tese": "LONG", "criticidade": "critica",
-            "nota": (f"OB Detector v11 AUTO ({conv}{'  CONVERGENTE' if strong else ''}) — demanda perto do "
+            "nota": (f"OB Detector v11 AUTO ({conv}{'  CONVERGENTE' if strong else ''}) — {tipo} perto do "
                      f"preço, vigia automática (não declarada). Rejeição p/ cima aqui = compra."),
-            "source": "ob_auto", "conv_tfs": sorted(tfs),
+            "source": "ob_auto", "conv_tfs": sorted(tfs), "kind": kind,
         })
     # mais perto do preço primeiro, cap
     out.sort(key=lambda z: price - z["high"])
@@ -93,6 +127,6 @@ if __name__ == "__main__":
     import sys
     price = float(sys.argv[1]) if len(sys.argv) > 1 else 4345.0
     zs = load_ob_zones(price)
-    print(f"OB auto-watch @ preço {price} — {len(zs)} demandas (TFs {TFS}, near {NEAR_PTS}pts, cap {MAX_ZONES}):")
+    print(f"OB auto-watch @ preço {price} — {len(zs)} zonas (TFs {TFS}, near {NEAR_PTS}pts, cap {MAX_ZONES}):")
     for z in zs:
-        print(f"  {z['low']:.1f}-{z['high']:.1f}  [{'+'.join(z['conv_tfs'])}]  {z['nota'][:60]}")
+        print(f"  {z['low']:.1f}-{z['high']:.1f}  [{'+'.join(z['conv_tfs'])}]  {z['kind']:8}  {z['nota'][:55]}")
