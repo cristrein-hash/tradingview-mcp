@@ -19,6 +19,22 @@ import vela_no_nivel as V
 LX = ZoneInfo("Europe/Lisbon")
 STORE = BASE.parent / "my-strategy/core/bar_store/store"
 STATUS_F = BASE / "logs" / "entry_validator_status.json"
+LAST_TG_F = BASE / "logs" / ".entry_validator_last_tg.json"   # cooldown PERSISTENTE (sobrevive a restarts —
+                                                              # cada restart zerava o dedup e re-enviava; Cris 10/08)
+
+
+def _load_last_tg():
+    try:
+        return {k: float(v) for k, v in json.loads(LAST_TG_F.read_text()).items()}
+    except Exception:
+        return {}
+
+
+def _save_last_tg(d):
+    try:
+        tmp = LAST_TG_F.with_suffix(".tmp"); tmp.write_text(json.dumps(d)); os.replace(tmp, LAST_TG_F)
+    except Exception:
+        pass
 TG_OK = os.environ.get("EV_TG_AUTHORIZED", "") == "1"
 POLL_S = 25
 NEAR_ATR = 1.5           # dentro de 1.5·ATR da zona = EM JOGO (ESPERA); mais longe = DISTANTE
@@ -107,7 +123,7 @@ def main_loop():
     print(f"🎯 VALIDADOR DE ENTRADA armado — GO/ESPERA/INVALIDOU nos níveis do Cris, realtime "
           f"(telegram GO={'ON' if TG_OK else 'OFF'})", flush=True)
     last_state = {}                                   # id -> state (p/ alertar só transições p/ GO)
-    last_tg = {}                                      # id -> ts do último TG (anti-spam do mesmo sinal/zona)
+    last_tg = _load_last_tg()                          # id -> ts último TG, PERSISTENTE (anti-spam sobrevive restart)
     while True:
         try:
             tmap = trader_map.load_map()
@@ -210,7 +226,7 @@ def main_loop():
                         else:
                             first = V.tg_claim(key)
                             if first:
-                                last_tg[r["id"]] = time.time()
+                                last_tg[r["id"]] = time.time(); _save_last_tg(last_tg)   # persiste cooldown
                             print(f"(canal: {_tg(txt) if first else 'dedup — vela já alertou'})", flush=True)
                     # sinal que TINHA dado GO e invalidou = alerta de SL/saída (relativo ao sinal — Cris 05/08:
                     # TG só sinais entry/SL/TP e alertas relativos a eles)
