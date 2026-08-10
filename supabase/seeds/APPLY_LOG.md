@@ -78,3 +78,14 @@
 - 2026-08-04 21:26 UTC · `memory_delta_20260804_validator_asia_ath.sql` · memory_items 372→374 · tag-rows 2/2 · OK
 - 2026-08-04 21:30 UTC · `memory_delta_20260804_live_review_fixes.sql` · memory_items 374→375 · tag-rows 1/1 · OK
 - 2026-08-04 21:34 UTC · `memory_delta_20260804_5m_off.sql` · memory_items 375→376 · tag-rows 1/1 · OK
+- 2026-08-05 06:19 UTC · `memory_delta_night_0508_overhaul.sql` · memory_items 376→377 · tag-rows 1/1 · OK
+- 2026-08-05 07:21 UTC · `memory_delta_gold_recovery_pattern_20260805.sql` · memory_items 377→378 · tag-rows 1/1 · OK
+- 2026-08-05 11:31 UTC · `memory_delta_a1a2_scale_lesson_20260805.sql` · memory_items 378→379 · tag-rows 1/1 · OK
+- 2026-08-05 15:38 UTC · `memory_delta_continuation_doctrine_20260805.sql` · memory_items 379→380 · tag-rows 1/1 · OK
+- 2026-08-06 16:38 UTC · `memory_delta_correction_phase_20260806.sql` · memory_items 380→381 · tag-rows 1/1 · OK
+- 2026-08-07 10:06 UTC · `memory_delta_discipline_pact_20260807.sql` · memory_items 381→382 · tag-rows 1/1 · OK
+- 2026-08-07 12:28 UTC · `memory_delta_trade_log_20260807.sql` · memory_items 382→383 · tag-rows 1/1 · OK
+- 2026-08-07 13:03 UTC · `memory_delta_blbe_technique_20260807.sql` · memory_items 383→384 · tag-rows 1/1 · OK
+- 2026-08-07 18:33 UTC · `memory_delta_weekclose_20260807.sql` · memory_items 384→385 · tag-rows 1/1 · OK
+- 2026-08-10 06:59 UTC · `memory_delta_fvg_earlyclose_20260810.sql` · memory_items 385→387 · tag-rows 2/2 · OK
+- 2026-08-10 06:59 UTC · `memory_delta_fvg_earlyclose_20260810.sql` · memory_items 385→387 · tag-rows 2/2 · OK
