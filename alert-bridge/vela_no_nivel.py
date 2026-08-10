@@ -473,6 +473,9 @@ if __name__ == "__main__":
         # break-continuidade: fecho decisivo abaixo do nível-gatilho dispara (Cris 04/08)
         tmap_fix = {"tese_geral": {"nivel_confirmacao_short": 4075.0}, "zones": []}
         b15fix = [{"t": i, "o": 4080, "h": 4086, "l": 4078, "c": 4082} for i in range(8)]
+        # hermético: limpa o lockfile de dedup deste evento — senão a 2ª corrida do selftest (dentro de 24h)
+        # deduplica em tg_claim e não imprime o sinal → FAIL falso (o teste colidia consigo próprio).
+        (BASE / "logs" / ".tg_dedup" / "break_1785870000.lock").unlink(missing_ok=True)
         firedbc = {}
         import io, contextlib
         buf = io.StringIO()
