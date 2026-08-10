@@ -91,6 +91,16 @@ def load_ob_zones(price, declared_zones=None):
             e["tfs"].add(tf)
             if kind == "polarity":
                 e["kind"] = "polarity"
+    # + POLARIDADES PERSISTENTES do tracker (ex-supplies furadas que já não têm caixa OB viva mas a
+    # polaridade do nível PERMANECE — lei validada). Sobrevivem à caixa sumir. read-only.
+    try:
+        import polarity_tracker
+        for z in polarity_tracker.load_active_supports(price):
+            k = (round(float(z["low"]), 1), round(float(z["high"]), 1))
+            e = raw.setdefault(k, {"tfs": set(), "kind": "polarity"})
+            e["tfs"].add((z.get("tf") or "P") + "·persist"); e["kind"] = "polarity"
+    except Exception:
+        pass
     # funde zonas quase-iguais entre TFs (convergência) por sobreposição
     merged = []   # [lo, hi, tfs, kind]
     for (lo, hi), meta in sorted(raw.items(), key=lambda kv: -kv[0][1]):

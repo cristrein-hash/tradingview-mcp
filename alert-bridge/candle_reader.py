@@ -176,7 +176,21 @@ def read_candle(tf, bar, dsr):
                      f"  o que esperavas: {plan.get('note')}\n"
                      f"  → Se o GATILHO disparou NESTA vela (condição cumprida com fecho): CONFIRMA (se genuíno) ou "
                      f"INVALIDA (se fakeout/estrutura mudou). NÃO peças gatilho novo.")
-    prompt = image + indic + focus + planblock + TAPE_SCHEMA
+    # POLARIDADES ATIVAS (manutenção da leitura — ex-supplies furadas = suportes prováveis; lei validada +12pp
+    # vs null; sobrevivem à caixa OB sumir via polarity_tracker).
+    polblock = ""
+    try:
+        import polarity_tracker
+        pol = polarity_tracker.load_active_supports(bar["c"])
+        if pol:
+            zs = " · ".join(f"{z['low']:.0f}-{z['high']:.0f}" for z in pol[:5])
+            polblock = (f"\n\n# 🔁 POLARIDADES ATIVAS (ex-SUPPLIES furadas COM FORÇA = SUPORTES obrigatórios de "
+                        f"alta-prob no pullback — lei de price action, prioridade de leitura): {zs}\n"
+                        f"  Se o preço recuar a uma destas e imprimir RECLAIM LEGÍTIMO, é entrada de continuação "
+                        f"de ALTA prioridade. Lê-as em 1º lugar como suporte, mesmo sem a caixa OB desenhada.")
+    except Exception:
+        pass
+    prompt = image + indic + focus + planblock + polblock + TAPE_SCHEMA
     env = dict(os.environ); env.pop("ANTHROPIC_API_KEY", None)
     for attempt in range(2):
         try:
@@ -265,6 +279,10 @@ def main_loop():
         if b: seen[tf] = b[-1]["t"]                   # [-1] = última fechada (store só escreve fechadas)
     while True:
         try:
+            try:
+                import polarity_tracker; polarity_tracker.update()   # single-writer: mantém polaridades vivas
+            except Exception:
+                pass
             dsr = E2.load_dossier()
             if not dsr:
                 time.sleep(POLL_S); continue          # dossiê ausente (E0 down): não crashar render
