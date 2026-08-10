@@ -22,6 +22,10 @@ STATUS_F = BASE / "logs" / "entry_validator_status.json"
 TG_OK = os.environ.get("EV_TG_AUTHORIZED", "") == "1"
 POLL_S = 25
 NEAR_ATR = 1.5           # dentro de 1.5·ATR da zona = EM JOGO (ESPERA); mais longe = DISTANTE
+import os as _os
+TG_COOLDOWN_S = int(_os.environ.get("EV_TG_COOLDOWN_S") or 7200)   # anti-spam: mesma zona não re-alerta TG <2h
+                                                                   # (o estado oscila GO→ESPERA→GO entre barras
+                                                                   # e re-disparava o MESMO sinal 5×; Cris 10/08)
 
 
 def hm(t): return dt.datetime.fromtimestamp(int(t), LX).strftime("%d/%m %H:%M")
@@ -103,6 +107,7 @@ def main_loop():
     print(f"🎯 VALIDADOR DE ENTRADA armado — GO/ESPERA/INVALIDOU nos níveis do Cris, realtime "
           f"(telegram GO={'ON' if TG_OK else 'OFF'})", flush=True)
     last_state = {}                                   # id -> state (p/ alertar só transições p/ GO)
+    last_tg = {}                                      # id -> ts do último TG (anti-spam do mesmo sinal/zona)
     while True:
         try:
             tmap = trader_map.load_map()
@@ -199,8 +204,13 @@ def main_loop():
                         print(txt, flush=True)
                         if not ok_reader:
                             print("(canal: chat-only — reader refutou o GO mecânico)", flush=True)
+                        elif time.time() - last_tg.get(r["id"], 0) < TG_COOLDOWN_S:
+                            # ANTI-SPAM (Cris 10/08: 5 msgs iguais): mesma zona já alertou há <2h — chat-only.
+                            print("(canal: chat-only — cooldown do mesmo sinal/zona, já alertado <2h)", flush=True)
                         else:
                             first = V.tg_claim(key)
+                            if first:
+                                last_tg[r["id"]] = time.time()
                             print(f"(canal: {_tg(txt) if first else 'dedup — vela já alertou'})", flush=True)
                     # sinal que TINHA dado GO e invalidou = alerta de SL/saída (relativo ao sinal — Cris 05/08:
                     # TG só sinais entry/SL/TP e alertas relativos a eles)
