@@ -171,8 +171,11 @@ def main_loop():
                         print(txt, flush=True)
                         try:
                             import e2_quality as E2
-                            if os.environ.get("SENTINEL_TG_AUTHORIZED", "") == "1":
+                            if os.environ.get("SENTINEL_TG_AUTHORIZED", "") == "1" and not os.path.exists(
+                                    os.path.join(os.path.dirname(os.path.abspath(__file__)), "logs", ".break_retest_tg_off")):
                                 E2._tg_send(txt, audience="assistant"); print("(→ Telegram)", flush=True)
+                            else:
+                                print("(kill-switch rompimento/reteste — chat-only)", flush=True)
                         except Exception:
                             pass
                     # ENTRADA PRECISA NO ATO: break do gatilho p/ baixo = SHORT já (sem esperar fecho)
@@ -184,8 +187,11 @@ def main_loop():
                         print(txt, flush=True)
                         try:
                             import e2_quality as E2
-                            if os.environ.get("SENTINEL_TG_AUTHORIZED", "") == "1":
+                            if os.environ.get("SENTINEL_TG_AUTHORIZED", "") == "1" and not os.path.exists(
+                                    os.path.join(os.path.dirname(os.path.abspath(__file__)), "logs", ".break_retest_tg_off")):
                                 E2._tg_send(txt, audience="assistant"); print("(→ Telegram)", flush=True)
+                            else:
+                                print("(kill-switch rompimento/reteste — chat-only)", flush=True)
                         except Exception:
                             pass
                 prev = float(px)
