@@ -93,6 +93,24 @@
       "criticidade": "critica",
       "nota": "4285 ROMPIDO (07/08) = suporte de continuação (ex-supply virada demanda). Pullback que rejeite p/ cima AQUI = compra.",
       "validade": "2026-08-10T21:00:00Z"
+    },
+    {
+      "id": "buy_fvg_4337_4341",
+      "low": 4337.0,
+      "high": 4341.0,
+      "tese": "LONG",
+      "criticidade": "critica",
+      "nota": "REENTRADA LONG — FVG triplo (15M+30M+1H) + demanda 15M/1H. Retest raso. Rejeição p/ cima = compra (método FVG-confluência Cris 10/08).",
+      "validade": "2026-08-13T21:00:00Z"
+    },
+    {
+      "id": "buy_fvg_deep_4298_4303",
+      "low": 4298.0,
+      "high": 4303.0,
+      "tese": "LONG",
+      "criticidade": "critica",
+      "nota": "REENTRADA LONG PRIMÁRIA — FVG-fill PROFUNDO: 15M+30M+1H FVG sobrepostos + demanda 15M 4301-10. Melhor ponto de entry (método Cris 10/08). SL abaixo ~4290. Rejeição+nova perna = compra de qualidade.",
+      "validade": "2026-08-13T21:00:00Z"
     }
   ],
   "tese_geral": {
