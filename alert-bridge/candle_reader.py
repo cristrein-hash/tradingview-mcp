@@ -27,6 +27,34 @@ TFS = {"15": "bars_15m.jsonl", "60": "AGG15"}   # 5M REMOVIDO (ordem Cris 04/08:
 TG_OK = os.environ.get("CANDLE_TG_AUTHORIZED", "") == "1"   # Telegram só confirmado; default OFF
 POLL_S = 20
 
+# CONTINUIDADE DE TESE (Cris 2026-08-10): o reader era amnésico (cada vela = subprocess isolado) → declarava
+# "espera reclaim>X" e na barra do reclaim re-adiava para outro gatilho (movia a baliza, sempre atrás do
+# preço). Fix: persistir o PLANO que o reader declara e RE-ALIMENTÁ-LO no prompt da vela seguinte, para ele
+# HONRAR o próprio gatilho (com discrição no gatilho: genuíno=confirma, fakeout=invalida). Estado por TF.
+STATE = BASE / ".reader_state"; STATE.mkdir(exist_ok=True)
+
+
+def _planf(tf):
+    return STATE / f"plan_{tf}.json"
+
+
+def load_plan(tf):
+    try:
+        return json.loads(_planf(tf).read_text())
+    except Exception:
+        return None
+
+
+def save_plan(tf, plan):
+    """Persiste o plano só se for acionável (direção + gatilho); senão limpa (sem plano em aberto)."""
+    try:
+        if isinstance(plan, dict) and plan.get("direction") in ("LONG", "SHORT") and plan.get("trigger"):
+            _planf(tf).write_text(json.dumps(plan, ensure_ascii=False))
+        else:
+            _planf(tf).unlink(missing_ok=True)
+    except Exception:
+        pass
+
 TAPE_SYS = (
     "És um trader XAUUSD discricionário experiente a LER A FITA no fecho de uma vela. NÃO estás a julgar um "
     "trade proposto — estás a ler o que a vela que ACABOU DE FECHAR, no seu contexto completo, está a dizer. "
@@ -45,7 +73,15 @@ TAPE_SYS = (
     "SINAL CONFIRMADO (confirmed_signal=true) SÓ quando: convergência ALTA num sentido + numa zona/nível que "
     "importa + assinatura confirmada (rejeição/absorção/break com fecho, não antecipação) + entry/SL/alvo "
     "deriváveis com R:R>=2. Na dúvida, confirmed_signal=false (é leitura, não sinal). Não inventes números; "
-    "usa só o dossiê. Devolve SÓ um objeto JSON."
+    "usa só o dossiê.\n"
+    "CONTINUIDADE DE TESE (Cris 2026-08-10 — REGRA CRÍTICA, o teu erro de hoje): NÃO és amnésico. Se te for "
+    "dado um PLANO EM ABERTO (declaraste numa vela anterior 'espera gatilho X para entrar'), tens de o HONRAR. "
+    "Se o gatilho do teu plano DISPAROU nesta vela (a condição cumpriu-se COM FECHO — ex.: declaraste 'espera "
+    "reclaim>4321' e a vela fechou 4330), decide AGORA: (a) se a impressão é genuína, confirmed_signal=true com "
+    "entry/SL/alvo — EXECUTA o plano; (b) se é fakeout ou a estrutura mudou, invalida e diz porquê. O QUE É "
+    "PROIBIDO é ver o gatilho cumprido e simplesmente pedir OUTRO gatilho ('agora espera um pullback') — isso é "
+    "MOVER A BALIZA e deixa-te sempre atrás do preço. Quando NÃO tens sinal mas vês um setup a formar-se, "
+    "declara o PLANO (direction+trigger+invalidation concretos) para o honrares na próxima vela. Devolve SÓ um objeto JSON."
 )
 TAPE_SCHEMA = (
     "\n\nDevolve SÓ este JSON:\n"
@@ -53,7 +89,9 @@ TAPE_SCHEMA = (
     '"phase":"EXAUSTAO|CONTINUACAO|REVERSAO_A_FORMAR|RANGE","bias":"LONG|SHORT|NONE",'
     '"at_level":"<zona/nível crítico onde está, ou vazio>","convergence":"high|moderate|low|incoherent",'
     '"confirmed_signal":false,"direction":"LONG|SHORT|NONE","entry":<num|null>,"sl":<num|null>,'
-    '"target":<num|null>,"rr":<num|null>,"conviction":<INTEIRO 0-100>,"note":"<uma frase para o Cris>"}'
+    '"target":<num|null>,"rr":<num|null>,"conviction":<INTEIRO 0-100>,"note":"<uma frase para o Cris>",'
+    '"plan":{"direction":"LONG|SHORT|NONE","trigger":"<condição concreta do gatilho, ex \'fecho 15M>4321\', ou vazio se sem plano>",'
+    '"invalidation":"<condição que mata o plano, ex \'fecho<4310\'>","note":"<o que esperas p/ entrar>"}}'
 )
 
 
@@ -124,7 +162,15 @@ def read_candle(tf, bar, dsr):
         pass
     focus = (f"\n\n# VELA EM FOCO ({tf}M, fecho {hm(bar['t'])} Lisboa): O{bar['o']} H{bar['h']} "
              f"L{bar['l']} C{bar['c']} — lê ESTA vela na fita acima.")
-    prompt = image + indic + focus + TAPE_SCHEMA
+    # CONTINUIDADE: re-alimenta o PLANO EM ABERTO que o reader declarou numa vela anterior (honra o gatilho).
+    plan = load_plan(tf); planblock = ""
+    if plan and plan.get("direction") in ("LONG", "SHORT"):
+        planblock = (f"\n\n# ⚠️ O TEU PLANO EM ABERTO (declarado numa vela ANTERIOR — HONRA-O, não movas a baliza):\n"
+                     f"  direção {plan['direction']} · GATILHO: {plan.get('trigger')} · invalidação: {plan.get('invalidation')}\n"
+                     f"  o que esperavas: {plan.get('note')}\n"
+                     f"  → Se o GATILHO disparou NESTA vela (condição cumprida com fecho): CONFIRMA (se genuíno) ou "
+                     f"INVALIDA (se fakeout/estrutura mudou). NÃO peças gatilho novo.")
+    prompt = image + indic + focus + planblock + TAPE_SCHEMA
     env = dict(os.environ); env.pop("ANTHROPIC_API_KEY", None)
     for attempt in range(2):
         try:
@@ -139,6 +185,8 @@ def read_candle(tf, bar, dsr):
                 cv = E2.fnum(v.get("conviction"))
                 if cv is not None:
                     v["conviction"] = int(round(cv * 100)) if 0 <= cv <= 1 else int(round(cv))
+                # CONTINUIDADE: sinal confirmado = plano executado (limpa); senão persiste o plano declarado.
+                save_plan(tf, None if v.get("confirmed_signal") else v.get("plan"))
                 return v
             last = {"error": "sem tese", "raw": (out.get("result") or "")[:200]}
         except Exception as e:
