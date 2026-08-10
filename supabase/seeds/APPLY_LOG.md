@@ -95,3 +95,5 @@
 - 2026-08-10 14:47 UTC · `memory_delta_ob_auto_watch_20260810.sql` · memory_items 388→389 · tag-rows 1/1 · OK
 - 2026-08-10 20:11 UTC · `memory_delta_polarity_20260810.sql` · memory_items 389→391 · tag-rows 2/2 · OK
 - 2026-08-10 20:11 UTC · `memory_delta_polarity_20260810.sql` · memory_items 389→391 · tag-rows 2/2 · OK
+- 2026-08-10 20:17 UTC · `memory_delta_polarity_refuted_20260810.sql` · memory_items 391→392 · tag-rows 1/1 · OK
+- 2026-08-10 20:17 UTC · `memory_delta_polarity_refuted_20260810.sql` · memory_items 391→392 · tag-rows 1/1 · OK
