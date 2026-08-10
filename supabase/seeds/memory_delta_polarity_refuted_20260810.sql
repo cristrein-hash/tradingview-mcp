@@ -1,0 +1,8 @@
+insert into memory_items (id, scope, visibility, category, title, body, tags, source_ref, status)
+values
+ (md5('polarity_law_refuted_correction')::uuid, 'private', 'private', 'project',
+  'CORRECAO: lei de polaridade REFUTADA (supersede polarity_tracker_live)',
+  'CORRECAO/SUPERSEDE o item polarity_tracker_live (que dizia "lei validada +12pp" — FALSO). 2o Devil-s Advocate REFUTOU o edge: o +12pp do v2 era ARTEFATO DE ANCORAGEM DO NULL. O evento real resolve no pullback que toca o TOPO da zona (mediana frac 1.03 = ja a 1 ATR da linha de hold); o null largava o preco no MEIO da zona (equidistante) = 52%. Ancorando o null no TOPO (onde o evento real comeca) = 65%. Logo edge real ~ -2.7pp (SUPPLY) / -1.5pp (DEMAND): ex-supply furada segura LIGEIRAMENTE PIOR que um nivel aleatorio na mesma posicao. O ~62-65% de hold e funcao de ONDE o preco esta vs os limiares, NAO de a zona ser ex-supply. v1 67% = artefato pavio/fecho; v2 +12pp = artefato de ancoragem; ambos ~-2.7pp real. A LEI (supply furada segura melhor que aleatorio) NAO esta demonstrada. ACAO: polarity_tracker.py DESLIGADO (default OFF, ENABLED=POLARITY_ON==1); wire ob_watch/candle_reader inerte; codigo+estudos mantidos como registo. ERRO DE DISCIPLINA assumido: construi+commitei+liguei LIVE antes do DA confirmar (padrao supoe-demais). LICAO METODOLOGICA: o NULL tem de ser ancorado ONDE o evento real comeca (topo p/ ex-supply, fundo p/ ex-demand), nunca no meio — baseline mal-ancorado inventa +13pp de edge do nada; aplica-se a TODA validacao de hold/rejeicao.',
+  array['seed:memory_delta_polarity_refuted_20260810','polaridade-refutada','null-mal-ancorado','correcao','supersede','licao-metodologica'],
+  'memory/project_polarity_tracker_live.md', 'active')
+on conflict (id) do nothing;
