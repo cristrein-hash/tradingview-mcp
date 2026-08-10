@@ -91,3 +91,5 @@
 - 2026-08-10 06:59 UTC · `memory_delta_fvg_earlyclose_20260810.sql` · memory_items 385→387 · tag-rows 2/2 · OK
 - 2026-08-10 13:11 UTC · `memory_delta_fvg_localization_result_20260810.sql` · memory_items 387→388 · tag-rows 1/1 · OK
 - 2026-08-10 13:11 UTC · `memory_delta_fvg_localization_result_20260810.sql` · memory_items 387→388 · tag-rows 1/1 · OK
+- 2026-08-10 14:46 UTC · `memory_delta_ob_auto_watch_20260810.sql` · memory_items 388→389 · tag-rows 1/1 · OK
+- 2026-08-10 14:47 UTC · `memory_delta_ob_auto_watch_20260810.sql` · memory_items 388→389 · tag-rows 1/1 · OK
