@@ -145,15 +145,14 @@ def load_active_supports(price):
 if __name__ == "__main__":
     import sys
     if "--selftest" in sys.argv:
-        import polarity_tracker as _self
         _save([])
         z = [{"low": 4350.0, "high": 4362.0, "type": "ex_supply_demand", "tf": "60", "broken_ts": 0}]
         _save(z)
         ok_state = len(load_zones()) == 1                 # estado persiste
-        _self.ENABLED = True                              # força-liga só p/ testar o mecanismo
+        globals()["ENABLED"] = True                       # força-liga só p/ testar o mecanismo
         ok_near = len(load_active_supports(4390)) == 1    # perto = aparece
         ok_far = len(load_active_supports(4200)) == 0     # longe = não aparece
-        _self.ENABLED = False                             # OFF por defeito (lei refutada)
+        globals()["ENABLED"] = False                      # OFF por defeito (lei refutada)
         ok_off = load_active_supports(4390) == []         # gate: desligado devolve []
         _save([])
         allok = ok_state and ok_near and ok_far and ok_off
