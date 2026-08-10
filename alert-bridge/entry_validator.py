@@ -103,6 +103,8 @@ def eval_break(tmap, last15, atr15, price):
 
 
 def _tg(txt):
+    if (BASE / "logs" / ".break_retest_tg_off").exists():   # kill-switch (Cris 10/08: para spam rompimento/reteste)
+        return "tg-off (kill-switch rompimento/reteste)"
     if not TG_OK:
         return "tg-off"
     try:

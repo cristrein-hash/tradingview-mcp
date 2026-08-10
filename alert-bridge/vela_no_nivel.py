@@ -166,6 +166,8 @@ def alert_text(read, zone, g, notes, tgts, bar_t, tf="15"):
 
 
 def _tg(txt):
+    if (BASE / "logs" / ".break_retest_tg_off").exists():   # kill-switch (Cris 10/08: para spam rompimento/reteste)
+        return "chat-only (kill-switch rompimento/reteste)"
     if not VELA_LIVE:
         return "chat-only"
     try:
