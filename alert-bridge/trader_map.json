@@ -139,6 +139,15 @@
       "criticidade": "critica",
       "nota": "ATENÇÃO REDOBRADA (Cris 10/08) — FVG 4367-4373: pullback RASO mais próximo do preço. Fill do gap + reclaim legítimo = continuação. Vigia atenta a reclaim genuíno aqui (1ª zona antes do 4330-35).",
       "validade": "2026-08-11T14:00:00Z"
+    },
+    {
+      "id": "polarity_ex_supply_4350_4362",
+      "low": 4350.0,
+      "high": 4362.0,
+      "tese": "LONG",
+      "criticidade": "critica",
+      "nota": "POLARIDADE PRIORITÁRIA (Cris 10/08): ex-supply OB 4350-4362 rompida COM FORÇA (preço 4350->4390 impulsivo) = DEMANDA OBRIGATÓRIA, alta-prob de segurar. Ler EM 1º LUGAR como suporte de continuação, mesmo sem a caixa OB. Teto máximo do pullback numa perna forte. Reclaim legítimo aqui = continuação prioritária.",
+      "validade": "2026-08-11T14:00:00Z"
     }
   ],
   "tese_geral": {
