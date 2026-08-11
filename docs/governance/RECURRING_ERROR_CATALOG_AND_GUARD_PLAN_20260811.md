@@ -194,12 +194,14 @@ Assunções de plataforma Pine/TV (alert cacheia snapshot; pine_open slot ambíg
 4. **Report-only nunca bloqueia** (forbidden_paths, slim, hardcoded_paths).
 5. **Escape-hatches auto-declaráveis:** SANITY_PROBE (honra), listas de negação, dedup 12h (2ª repetição passa).
 
-## Plano de guards determinísticos (a construir — priorizado por dano, NÃO implementado ainda)
-| # | Guard novo | Fecha | Tier |
+## Plano de guards determinísticos (priorizado por dano)
+| # | Guard | Fecha | Estado |
 |---|---|---|---|
-| G1 | **pre_golive_da_ledger_guard** (PreToolUse Bash em git commit/launchctl de ficheiros de sinal): bloqueia sem DA registado num ledger para esse diff | S4 | 🟥 novo |
-| G2 | **pre_build_source_citation_guard** (Write/Edit): código de sinal com limiar numérico exige `# SOURCE:` de indicador/RAW aprovado | S1,S3 | 🟥 novo |
-| G3 | **auto-invoke dos checkers no commit** (source_gate + check_no_invented_zones + xau_15m_lab_gate correm como pre-commit, não à mão) | S1,S3,S6,A3 | 🟥 novo |
+| G1 | **pre_golive_da_guard.py** (PreToolUse Bash em git commit): bloqueia commit de lógica de sinal sem DA registado no ledger; escapes auditáveis DA_OK / NO_DA_NEEDED:<razão> / `--record` | S4 | ✅ **LIVE 2026-08-11** (selftest 7/7 + e2e) |
+| G2 | **pre_source_citation_guard.py** (Write/Edit): bloqueia nível-preço XAU hardcoded em código de sinal sem `# SOURCE:` (invenção por literal; a por fórmula fica ao G1/DA) | S1,S3 | ✅ **LIVE 2026-08-11** (selftest 7/7 + e2e) |
+| G3 | **pre_commit_checkers_guard.py** (PreToolUse Bash em git commit): corre check_no_invented_zones + check_slim_policy automaticamente; bloqueia se falharem | S1,S3 | ✅ **LIVE 2026-08-11** (selftest 4/4 + e2e) |
+
+Hooks versionados em `docs/governance/hooks/` (backup); ativos em `~/.claude/hooks/` + registados em `~/.claude/settings.json`.
 | G4 | **MCP-surface guard** (fechar tab_pin obrigatório + bloquear screenshot/draw/replay-trade sem ordem) | B3,C3,S3-via-MCP | 🟥 novo — precisa hook em tools MCP |
 | G5 | **pre_assert_verification_guard**: bloqueia afirmar "OK/não existe/blocked/consumido" sem comando de verificação registado | B7,A6 | 🟥 novo |
 | G6 | **daemon-reload rate-limiter** (max N restarts/janela) + cooldown persistente universal | B8 | 🟥 novo |
