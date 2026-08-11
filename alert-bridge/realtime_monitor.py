@@ -146,6 +146,10 @@ class SafeMCP:
 
 # ---------- Telegram alerta de nível ----------
 def send_level_alert(level, last, repeat=3):
+    # ❌ CONCEITO CANCELADO EM DEFINITIVO (Cris 2026-08-11): sem alertas de NÍVEL/BREAKOUT/monitoração de
+    # preço no Telegram — poluía o grupo (3× "NÍVEL ARMADO CRUZADO Camada 1"). Não trabalhamos breakout.
+    # Daemon realtime-monitor bootout+disable; esta função fica no-op como trava dura no código.
+    return False
     side_txt = "abaixo de" if level["side"] == "cross_below" else "acima de"
     arrow = "🔻" if level["side"] == "cross_below" else "🔺"
     text = (f"🔔🔔 <b>NÍVEL ARMADO CRUZADO — Camada 1</b> {arrow}\n\n"
