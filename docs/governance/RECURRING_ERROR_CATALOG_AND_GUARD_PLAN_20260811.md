@@ -201,7 +201,15 @@ Assunções de plataforma Pine/TV (alert cacheia snapshot; pine_open slot ambíg
 | G2 | **pre_source_citation_guard.py** (Write/Edit): bloqueia nível-preço XAU hardcoded em código de sinal sem `# SOURCE:` (invenção por literal; a por fórmula fica ao G1/DA) | S1,S3 | ✅ **LIVE 2026-08-11** (selftest 7/7 + e2e) |
 | G3 | **pre_commit_checkers_guard.py** (PreToolUse Bash em git commit): corre check_no_invented_zones + check_slim_policy automaticamente; bloqueia se falharem | S1,S3 | ✅ **LIVE 2026-08-11** (selftest 4/4 + e2e) |
 
+| G4 | **pre_mcp_action_guard.py** (PreToolUse `mcp__tradingview__.*`): bloqueia screenshot/replay/alertas/mover-chart/desenhar sem flag fresco `~/.claude/.mcp_action_ok` (touch quando o Cris autoriza) | C3,B4,B5 | ✅ **LIVE 2026-08-11** (selftest 7/7). CAVEAT: firing em matchers MCP a confirmar na 1ª ação real (se não disparar = no-op seguro) |
+| G5 | assert-sem-verificação | B7,A6 | ❌ **SEM forma determinística limpa** — afirmações vivem no CHAT (hooks só veem tool-calls), não há hook honesto. Mitigado por G1 (DA-gate apanha a conclusão falsa antes de virar live) + humano |
+| G6 | **pre_daemon_reload_guard.py** (PreToolUse Bash): bloqueia >3 reloads do mesmo daemon em 10 min (escape RELOAD_OK) | B8 | ✅ **LIVE 2026-08-11** (selftest 6/6) |
+| G7 | **endurecimento do myopia guard**: bypass agora exige `SANITY_PROBE: <razão>` (auditável, não a palavra só) + dedup 12h→1h | transversal | ✅ **LIVE 2026-08-11** (e2e provado) |
+
 Hooks versionados em `docs/governance/hooks/` (backup); ativos em `~/.claude/hooks/` + registados em `~/.claude/settings.json`.
+
+**Resumo:** 6 guards determinísticos LIVE (G1,G2,G3,G4,G6,G7). G5 sem forma limpa (honesto). Superfície agora
+coberta: commit-sem-DA · invenção-por-literal · checkers-auto · MCP-actions · reloads-repetidos · escape-hatch-auditável.
 | G4 | **MCP-surface guard** (fechar tab_pin obrigatório + bloquear screenshot/draw/replay-trade sem ordem) | B3,C3,S3-via-MCP | 🟥 novo — precisa hook em tools MCP |
 | G5 | **pre_assert_verification_guard**: bloqueia afirmar "OK/não existe/blocked/consumido" sem comando de verificação registado | B7,A6 | 🟥 novo |
 | G6 | **daemon-reload rate-limiter** (max N restarts/janela) + cooldown persistente universal | B8 | 🟥 novo |
