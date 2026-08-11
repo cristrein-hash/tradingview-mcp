@@ -28,6 +28,9 @@ PRICE_LIT = re.compile(r"(?<![\w.])([2-5]\d{3})\.\d+(?![\w])")
 READS_REAL = re.compile(r"pine_boxes|study_values|ob_zones|ob_watch|market_read|_read_ob|OB Detector|"
                         r"svp|SVP|smc|SMC|session_vp|data_get_pine|snapshot\(", re.I)
 HAS_SOURCE = re.compile(r"#\s*SOURCE\s*:|SOURCE:", re.I)
+# fix do audit: linha de CONFIG/DURAÇÃO (não preço) — floats como 3600.0/5000.0 não são níveis-preço
+CONFIG_LINE = re.compile(r"(COOLDOWN|TIMEOUT|WINDOW|SLEEP|INTERVAL|POLL|FRESH|BUDGET|PORT|DELAY|TTL|"
+                         r"_MS|_SEC|EPOCH|PERIOD|CACHE|RETRY|SECONDS|MILLIS|_S\s*=)", re.I)
 
 
 def is_protected(path):
@@ -50,6 +53,8 @@ def decide(file_path, new_content):
         end = new_content.find("\n", m.end()); end = end if end >= 0 else len(new_content)
         line = new_content[start:end]
         if line.lstrip().startswith("#"):        # literal em comentário = ok (ex.: nota/exemplo)
+            continue
+        if CONFIG_LINE.search(line):             # config/duração (COOLDOWN_S=3600.0 etc.) = não é preço
             continue
         lits.append((m.group(0), line.strip()[:80]))
     if not lits:
@@ -105,6 +110,12 @@ if __name__ == "__main__":
         # 5) constante não-preço (ATR mult, janela) → passa
         ok, _ = decide(SIG, "    SCALE = 2.5\n    WIN = 96\n    buf = 0.1 * atr")
         t.append(("constantes nao-preco passam", ok is True))
+        # 5b) float de config/duração (3600.0/5000.0) em linha de config → passa (fix do audit)
+        ok, _ = decide(SIG, "    COOLDOWN_S = 3600.0\n    TIMEOUT_MS = 5000.0\n    POLL = 2400.0")
+        t.append(("config/duracao float passa (fix audit)", ok is True))
+        # 5c) MAS um preço real numa comparação continua a bloquear
+        ok, _ = decide(SIG, "    if bar['c'] >= 4337.10 and go: entry()")
+        t.append(("preco real ainda bloqueia", ok is False))
         # 6) ficheiro de estudo/research → passa (não protegido)
         ok, _ = decide("my-strategy/research/revalidation/a1a2_fvg_lab/study_v9.py", "if price > 4337.10: pass")
         t.append(("estudo passa", ok is True))

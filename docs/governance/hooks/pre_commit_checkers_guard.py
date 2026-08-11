@@ -43,6 +43,23 @@ def run_checkers():
     return out
 
 
+LIVE_CODE = [r"alert-bridge/.*\.py$", r"strategies/.*\.py$", r"my-strategy/core/.*\.py$"]
+
+
+def _staged_has_live_code():
+    """True se o commit inclui CÓDIGO LIVE. Fix do audit: sem código live (docs/memória/research), NÃO
+    corre os checkers — senão uma violação num ficheiro live não-relacionado bloqueava commits de docs/memória
+    (e os commits autónomos da ponte-Telegram)."""
+    try:
+        r = subprocess.run(["git", "diff", "--cached", "--name-only"], capture_output=True, text=True, timeout=10)
+        files = [l.strip() for l in r.stdout.splitlines() if l.strip()]
+    except Exception:
+        return True   # incerto = corre (conservador)
+    if not files:
+        return True
+    return any(any(re.search(p, f) for p in LIVE_CODE) for f in files)
+
+
 def main():
     try:
         data = json.load(sys.stdin)
@@ -51,7 +68,9 @@ def main():
     if data.get("tool_name") not in (None, "Bash"):
         return 0
     cmd = ((data.get("tool_input") or {}).get("command")) or ""
-    if not re.search(r"\bgit\s+commit\b", cmd):
+    if not re.search(r"^\s*git\s+commit\b|&&\s*git\s+commit\b|;\s*git\s+commit\b", cmd):
+        return 0
+    if not _staged_has_live_code():          # commit só de docs/memória/research → não corre checkers
         return 0
     ok, msg = decide(run_checkers())
     if ok:
