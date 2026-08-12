@@ -252,7 +252,10 @@ def send_confirmed_tg(tf, bar, v):
            f"{v.get('phase')} · {v.get('at_level') or ''} · convicção {v.get('conviction')}\n"
            f"{str(v.get('note'))[:180]}\n(advisory — a decisão é tua)")
     try:
-        aud = "group" if E2.recent_strategy_signal(v.get("direction")) else "assistant"
+        # Cris 2026-08-12: REATIVAR mensagens do reader no GRUPO. O sinal CONFIRMADO já é qualificado
+        # (RR>=2 + conv>=60), logo vai SEMPRE ao grupo — corroborado por estratégia ou não.
+        # (watchdog continua OFF; sem alertas de nível/breakout — só sinal confirmado do reader.)
+        aud = "group"
         return f"tg-{aud}" if E2._tg_send(txt, audience=aud) else "tg-fail"
     except Exception:
         return "tg-erro"
