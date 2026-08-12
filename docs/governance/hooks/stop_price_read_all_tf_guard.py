@@ -40,10 +40,11 @@ def _norm_tf(v):
     return _TF_NORM.get(v, v.upper() if v in ("d", "w") else v)
 
 
-def decide(user_text, switched_tfs, had_data_read, assistant_text, stop_hook_active=False):
+def decide(user_text, switched_tfs, had_data_read, assistant_text, stop_hook_active=False, ob_box_tfs=None):
     """(ok, msg). Puro.
-    user_text = última msg do utilizador; switched_tfs = set de TFs normalizados de chart_set_timeframe
-    NESTE turno; had_data_read = bool (houve data_get_*); assistant_text = texto que respondi."""
+    user_text = última msg do utilizador; switched_tfs = set de TFs normalizados de chart_set_timeframe;
+    had_data_read = bool (houve data_get_*); ob_box_tfs = set de TFs onde se leu pine_boxes (OB) — reforço
+    após falhar a demanda 15M 4381-4390 por ler study_values mas NÃO os boxes OB (assumir vs ler)."""
     if stop_hook_active:
         return True, ""                              # anti-brick: já é continuação forçada
     if not user_text or not PRICE_REQ.search(user_text):
@@ -52,21 +53,25 @@ def decide(user_text, switched_tfs, had_data_read, assistant_text, stop_hook_act
         return True, ""                              # dispensa auditável (ex.: TV offline)
     covered = {_norm_tf(t) for t in (switched_tfs or set())}
     missing = REQUIRED_TF - covered
-    if had_data_read and len(missing) <= MAX_MISSING:
-        return True, ""                              # cobriu (o único que falta = TF-base lido sem trocar)
-    falta = ", ".join(sorted(missing, key=lambda x: {"5": 0, "15": 1, "60": 2, "240": 3, "D": 4}.get(x, 9)))
+    ob = {_norm_tf(t) for t in (ob_box_tfs or set())}
+    need_ob = len(REQUIRED_TF) - MAX_MISSING         # = 4 (o TF-base pode ser lido sem trocar)
+    tf_ok = had_data_read and len(missing) <= MAX_MISSING
+    ob_ok = len(ob) >= need_ob                        # OB boxes lidos em ≥4 TFs distintos
+    if tf_ok and ob_ok:
+        return True, ""
+    falta = ", ".join(sorted(missing, key=lambda x: {"5": 0, "15": 1, "60": 2, "240": 3, "D": 4}.get(x, 9))) or "(nenhum)"
     lidos = ", ".join(sorted(covered)) or "(nenhum switch)"
+    ob_lidos = ", ".join(sorted(str(x) for x in ob)) or "(nenhum)"
     return False, (
-        "🛑 G8 — LEITURA DE PREÇO SEM TODOS OS TFS (Cris 2026-08-11)\n"
-        "  O Cris pediu leitura de preço → é OBRIGATÓRIO ler o stack MTF COMPLETO antes de responder:\n"
-        "  5M · 15M · 1H · 4H · 1D  (OB Detector + study_values em CADA um).\n"
-        f"  TFs que leste este turno: {lidos}\n"
-        f"  FALTAM: {falta}\n"
-        "  RAIZ: ler UM só TF dá leitura errada — li OB só no 1H (demanda grossa 4316) e o timing real\n"
-        "  estava no 5M (demanda 4394). Cada TF é uma região diferente; a resposta tem de convergir todos.\n"
-        "  → PAUSA daemons (touch /tmp/claude_recheck.paused), chart_set_timeframe para cada TF em falta,\n"
-        "    lê a OB+studies, RESTAURA o TF-base e despausa; só então responde.\n"
-        "  → Se o TradingView estiver mesmo offline, escreve 'TF_READ_WAIVED: <razão>' na resposta.\n"
+        "🛑 G8 — LEITURA DE PREÇO INCOMPLETA (Cris 2026-08-11)\n"
+        "  O Cris pediu leitura de preço → OBRIGATÓRIO ler o stack MTF COMPLETO antes de responder:\n"
+        "  5M · 15M · 1H · 4H · 1D — com OB Detector (pine_boxes) E study_values em CADA um.\n"
+        f"  TFs visitados: {lidos}  | FALTAM: {falta}\n"
+        f"  TFs onde leste a OB (pine_boxes): {ob_lidos}  | precisas de ≥{need_ob}\n"
+        "  RAIZ: (a) ler UM só TF dá timing errado; (b) ler study_values MAS NÃO os pine_boxes = ASSUMIR a\n"
+        "  estrutura OB em vez de a LER — foi assim que falhei a demanda 15M fresca 4381-4390 (o Cris viu, eu não).\n"
+        "  → chart_set_timeframe p/ cada TF + data_get_pine_boxes (OB) + study_values; restaura e despausa.\n"
+        "  → TradingView offline: escreve 'TF_READ_WAIVED: <razão>'.\n"
         "  (Bloqueio determinístico — auto-disciplina de LLM não segura.)\n")
 
 
@@ -114,7 +119,8 @@ def _is_real_user(obj):
 
 
 def gather(transcript_path):
-    """Devolve (user_text, switched_tfs, had_data_read, assistant_text) do ÚLTIMO turno."""
+    """Devolve (user_text, switched_tfs, had_data_read, assistant_text, ob_box_tfs) do ÚLTIMO turno.
+    ob_box_tfs = TFs (contexto do chart_set_timeframe corrente) onde se chamou data_get_pine_boxes."""
     rows = list(_iter_lines(transcript_path))
     # índice da última msg de utilizador real
     last_u = -1
@@ -122,9 +128,11 @@ def gather(transcript_path):
         if _is_real_user(o):
             last_u = i
     if last_u < 0:
-        return "", set(), False, ""
+        return "", set(), False, "", set()
     user_text = _text_of((rows[last_u].get("message") or {}).get("content"))
     switched, had_read, atext = set(), False, []
+    ob_box_tfs = set()
+    current_tf = None                                # TF-base (antes do 1º switch) = "BASE"
     for o in rows[last_u + 1:]:
         if o.get("type") == "assistant":
             content = (o.get("message") or {}).get("content")
@@ -138,11 +146,14 @@ def gather(transcript_path):
                     if name.endswith("chart_set_timeframe"):
                         tf = inp.get("timeframe")
                         if tf is not None:
-                            switched.add(_norm_tf(tf))
+                            current_tf = _norm_tf(tf)
+                            switched.add(current_tf)
+                    if "data_get_pine_boxes" in name:
+                        ob_box_tfs.add(current_tf if current_tf is not None else "BASE")
                     if "data_get_pine_boxes" in name or "data_get_study_values" in name or \
                        "data_get_ohlcv" in name or "data_get_pine" in name:
                         had_read = True
-    return user_text, switched, had_read, "\n".join(atext)
+    return user_text, switched, had_read, "\n".join(atext), ob_box_tfs
 
 
 def main():
@@ -153,9 +164,9 @@ def main():
     tp = data.get("transcript_path") or ""
     if not tp or not Path(tp).exists():
         return 0
-    user_text, switched, had_read, atext = gather(tp)
+    user_text, switched, had_read, atext, ob_box_tfs = gather(tp)
     ok, msg = decide(user_text, switched, had_read, atext,
-                     stop_hook_active=bool(data.get("stop_hook_active")))
+                     stop_hook_active=bool(data.get("stop_hook_active")), ob_box_tfs=ob_box_tfs)
     if ok:
         return 0
     sys.stderr.write(msg)
@@ -167,35 +178,42 @@ if __name__ == "__main__":
         t = []
         REQ = "QUAL SITUAÇÃO DO PREÇO? é boa compra?"
         FULL = {"5", "15", "60", "240", "D"}
-        # 1) pediu preço + leu todos os 5 TFs + data read → passa
-        ok, _ = decide(REQ, FULL, True, "resposta", False)
-        t.append(("pediu+todos TFs → passa", ok is True))
-        # 2) pediu preço + só 1 TF (1H) → BLOQUEIA
-        ok, m = decide(REQ, {"60"}, True, "resposta", False)
+        OB4 = {"5", "15", "240", "D"}                 # OB boxes em 4 TFs (base=1H lido sem switch)
+        # 1) pediu preço + 5 TFs + OB boxes nos 5 → passa
+        ok, _ = decide(REQ, FULL, True, "resposta", ob_box_tfs=FULL)
+        t.append(("pediu+todos TFs+OB → passa", ok is True))
+        # 2) pediu preço + só 1 TF → BLOQUEIA
+        ok, m = decide(REQ, {"60"}, True, "resposta", ob_box_tfs={"60"})
         t.append(("pediu+só 1H → bloqueia", ok is False and "FALTAM" in m))
-        # 3) pediu preço + leu 4 dos 5 (falta base 1H, lido sem switch) → passa (MAX_MISSING=1)
-        ok, _ = decide(REQ, {"5", "15", "240", "D"}, True, "resposta", False)
+        # 3) 4 de 5 TFs + OB em 4 → passa (MAX_MISSING=1)
+        ok, _ = decide(REQ, OB4, True, "resposta", ob_box_tfs=OB4)
         t.append(("4 de 5 (base lido) → passa", ok is True))
-        # 4) pediu preço + trocou TFs mas SEM data read → bloqueia
-        ok, _ = decide(REQ, FULL, False, "resposta", False)
+        # 4) trocou TFs mas SEM data read → bloqueia
+        ok, _ = decide(REQ, FULL, False, "resposta", ob_box_tfs=FULL)
         t.append(("switch sem data read → bloqueia", ok is False))
-        # 5) NÃO é pedido de preço → passa mesmo sem TFs
-        ok, _ = decide("commita o ficheiro e faz push", set(), False, "resposta", False)
+        # 4b) NOVO — visitou os 5 TFs + study_values, MAS OB boxes só em 2 → BLOQUEIA (o buraco 4390!)
+        ok, m = decide(REQ, FULL, True, "resposta", ob_box_tfs={"60", "5"})
+        t.append(("5 TFs mas OB só em 2 → bloqueia (fix 4390)", ok is False and "pine_boxes" in m))
+        # 5) NÃO é pedido de preço → passa
+        ok, _ = decide("commita o ficheiro e faz push", set(), False, "resposta", ob_box_tfs=set())
         t.append(("não-pedido → passa", ok is True))
         # 6) waiver auditável → passa
-        ok, _ = decide(REQ, {"60"}, True, "TF_READ_WAIVED: TradingView offline", False)
+        ok, _ = decide(REQ, {"60"}, True, "TF_READ_WAIVED: TradingView offline", ob_box_tfs={"60"})
         t.append(("waiver → passa", ok is True))
         # 7) anti-brick stop_hook_active → passa
-        ok, _ = decide(REQ, {"60"}, True, "resposta", True)
+        ok, _ = decide(REQ, {"60"}, True, "resposta", stop_hook_active=True, ob_box_tfs={"60"})
         t.append(("stop_hook_active → passa (anti-brick)", ok is True))
-        # 8) variações de frase do Cris
+        # 8) variações de frase do Cris (OB incompleto → bloqueia)
         for phrase in ["LEIA NO 5 MIN E AVALIE REGIÕES", "faz a leitura de preço agora",
                        "lê a OB", "como está o preço?", "situação do preço"]:
-            ok, _ = decide(phrase, {"60"}, True, "x", False)
+            ok, _ = decide(phrase, {"60"}, True, "x", ob_box_tfs={"60"})
             t.append((f"detecta pedido: {phrase[:22]!r}", ok is False))
-        # 9) normalização 1H/4H/1D
-        ok, _ = decide(REQ, {"5", "15", "1H", "4H", "1D"}, True, "x", False)
+        # 9) normalização 1H/4H/1D + OB normalizado → passa
+        ok, _ = decide(REQ, {"5", "15", "1H", "4H", "1D"}, True, "x", ob_box_tfs={"5", "15", "1H", "4H", "1D"})
         t.append(("normaliza 1H/4H/1D → passa", ok is True))
+        # 10) base counta como TF de OB: switches cobrem 4, OB em BASE+3 = 4 → passa
+        ok, _ = decide(REQ, {"5", "15", "240", "D"}, True, "x", ob_box_tfs={"BASE", "5", "15", "240"})
+        t.append(("OB em BASE+3 = 4 → passa", ok is True))
         for lab, r in t:
             print(f"  [{'OK' if r else 'FAIL'}] {lab}")
         allok = all(r for _, r in t)

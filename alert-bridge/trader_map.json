@@ -118,7 +118,8 @@
       "high": 4330.49,
       "tese": "LONG",
       "criticidade": "critica",
-      "nota": "OB Detector v11 REAL — demanda CONVERGENTE 15M(4317-21)+60M(4313-30). Ressaltou a 4318 (10/08 14:0x). Foi ignorada por não estar declarada; marcada agora. Rejeição p/ cima aqui = compra de continuação.",
+      "sl": 4307.0,
+      "nota": "CHÃO REAL VIGIADO (Cris 11/08 ~06:15). SOURCE: OB v11 — demanda CONVERGENTE 15M(4313-21)+1H(4316-34), a mais robusta abaixo do preço. Ressaltou a 4318 (10/08). DUPLO PAPEL: (1) alvo do short de polaridade 4386-4398; (2) se o preço vier e imprimir REJEIÇÃO/HOLD = LONG de qualidade (o chão), SL abaixo 4307. Se ESTE chão furar com convicção -> próxima é 4223-4261 (demanda 4H) e a tese vira mais baixista.",
       "validade": "2026-08-13T21:00:00Z"
     },
     {
@@ -150,13 +151,23 @@
       "validade": "2026-08-11T14:00:00Z"
     },
     {
-      "id": "buy_demand_4386_4398_ALERTA_TOTAL",
+      "id": "short_reject_spike_4400_4420",
+      "low": 4400.0,
+      "high": 4420.53,
+      "tese": "SHORT",
+      "criticidade": "critica",
+      "sl": 4436.0,
+      "nota": "VIGIA DE REJEIÇÃO/SPIKE — ALARME SONORO LOCAL (ordem Cris 11/08; ALARGADO ~14:15 após rejeição a 4404 ter ficado 8pt abaixo do limiar rígido 4412 = erro de literalismo). SOURCE: OB v11 — approach do supply 5M 4415.83-4420.53 + 1H 4418.12-4435.2; banda alargada p/ 4400 pois a rejeição real topou 4404.34. AVISAR O CRIS (som local 4x, NÃO Telegram) se vela 15M/1H imprimir REJEIÇÃO COM SPIKE em qualquer ponto de 4400-4420 (pavio superior grande + fecho de volta abaixo) = potencial SHORT (fim do bounce), alvo 4386 depois chão 4316-4334, SL acima 4436. Intenção>limiar: apanhar a rejeição no supply, não uma linha exata.",
+      "validade": "2026-08-11T20:00:00Z"
+    },
+    {
+      "id": "polarity_short_retest_4386_4398",
       "low": 4385.68,
       "high": 4398.25,
-      "tese": "LONG",
+      "tese": "SHORT",
       "criticidade": "critica",
-      "sl": 4383.0,
-      "nota": "ALERTA TOTAL (ordem Cris 11/08 ~06:00). SOURCE: OB Detector v11 lido no 5M — demanda dupla 4393.71-4398.25 (a mais forte; = wick 4393.71 que segurou no 1H) + 4385.68-4388.65. Nível a defender = 4387-4393. RAMO A (primário): se 15M VIER à zona e imprimir REJEIÇÃO/HOLD -> LONG de continuação, SL abaixo 4383 (Cris flutuou 4380). RAMO B: se o 15M NÃO chegar à zona e SEGUIR em alta -> NÃO é sinal automático de breakout (conceito deletado); o READER avalia a possibilidade de sinal de continuação (juízo do reader, exige convicção). Contexto HTF up + demanda abaixo. Não apanhar a faca a ENTRAR na zona (gatilhos têm marcado prematuro c/ iniciativa vendedora viva); esperar o HOLD.",
+      "sl": 4410.0,
+      "nota": "POLARIDADE DE FUNDO FURADA (Cris 11/08 ~06:15). SOURCE: OB v11 5M — a demanda 4386-4398 que armei como LONG FUROU no flush (preço a 4372.3, fecho 4382). Ex-demanda -> agora candidata a SUPPLY. RETESTE POR BAIXO + REJEIÇÃO = SHORT, SL acima 4410 (acima do swing 4398-4409). Respaldo macro: NAS TOP/SHORT=1 em 4H E 1D + 4H +4.16ATR esticado. Alvo = chão 4316-4334, depois 4223-4261 (demanda 4H). CONDICIONAL: só com break CONFIRMADO (absorção 15M ainda a decorrer); se 15M ABSORVER e reclaim 4398+ = tese short cai, volta a long.",
       "validade": "2026-08-11T20:00:00Z"
     }
   ],
