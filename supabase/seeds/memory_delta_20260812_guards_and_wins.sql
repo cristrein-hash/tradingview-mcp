@@ -1,0 +1,28 @@
+insert into memory_items (id, scope, visibility, category, title, body, tags, source_ref, status)
+values
+ (md5('cris_exit_leak_2x05_20260812')::uuid, 'private', 'internal', 'feedback',
+  'LEAK no1 do Cris = SAIDA; protocolo 2x0,5%',
+  'Edge do Cris (leitura+entrada) provado; a fuga e a SAIDA: corta vencedores cedo por medo do pullback (psicologico me trai). FIX mecanico combinado 12/08: entrar com 2 ops de 0,5% (=1%); Op1 fecha no Alvo 1 (banca lucro garantido, mata o instinto de segurar algo); Op2 SL para BE + trailing atras das velas 15M (house-money, sem risco = sem medo, aguenta o pullback). Claude declara a saida ANTES de cada trade e cobra o plano. Remover a dor, nao pedir para aguentar a dor.',
+  array['seed:memory_delta_20260812_guards_and_wins','psychology','exit','xau','protocol'],
+  'memory/feedback_cris_exit_leak_hold_pullbacks.md', 'active'),
+ (md5('no_standdown_inside_zone_fsm_20260812')::uuid, 'private', 'internal', 'feedback',
+  'NAO desligar vigia DENTRO da zona (zone-watch FSM)',
+  'Erro grave 11-12/08: declarei short-zone 4408-4435; preco entrou (4411), vendo-o subir DENTRO da zona declarei rompimento e desliguei-me; foi 4pt mais (4415/16) e rejeitou = o short que eu nomeei, nao sinalizado. Conceito: push para dentro da supply = pre-condicao da rejeicao, nao a negacao; a tese so morre ao FECHAR alem da invalidacao. FIX determinista: daemon launchd com.cristrein.zone-watch (30s) com FSM ARMED->TAGGED->REJEICAO/ROMPIMENTO por zona; deteta a rejeicao no fecho INDEPENDENTE do juizo do Claude; som local 4x. Selftest 8/8. Regra: nunca declarar tese de zona morta com preco dentro da zona abaixo da invalidacao.',
+  array['seed:memory_delta_20260812_guards_and_wins','guard','zone','fsm','xau'],
+  'memory/feedback_no_standdown_inside_zone_watch_fsm.md · alert-bridge/zone_watch.py', 'active'),
+ (md5('price_read_all_tfs_g8_20260812')::uuid, 'private', 'internal', 'feedback',
+  'Leitura de preco = TODOS os TFs + OB boxes (G8)',
+  'Toda leitura de preco pedida pelo Cris exige ler 5M/15M/1H/4H/1D com pine_boxes (OB tipada DEMAND/SUPPLY) E study_values em CADA TF. Falhas: (1) li OB so no 1H (demanda grossa 4316) e errei o timing real do 5M (4394); (2) li study_values sem os boxes no 15M e falhei a demanda fresca 4381-4390 (Cris viu, eu nao). Guard G8 (Stop-hook stop_price_read_all_tf_guard.py) bloqueia se faltar TF OU se OB boxes lidos em menos de 4 TFs. Largura sem profundidade ainda e assumir; nunca assumir OB, ler sempre.',
+  array['seed:memory_delta_20260812_guards_and_wins','guard','read','mtf','ob'],
+  'memory/feedback_price_read_all_tfs_guard.md · docs/governance/hooks/stop_price_read_all_tf_guard.py', 'active'),
+ (md5('live_wins_20260811_12')::uuid, 'private', 'internal', 'project',
+  'Wins co-piloto XAU 11-12/08 (+500 e +950) + estado contas',
+  'Dois LONG vencedores no bounce do flush XAU, co-pilotados (leitura MTF + entrada em demanda + risco definido + saida disciplinada): 11/08 long 4363/4367 SL4350 = +500 USD ambas; 12/08 reentrada long 4363+4371 SL4350 = +950 USD ambas. Estado contas 12/08: FTMO +3,57% (de 10% da fase 1), FN a recuperar bem, saldo 98538 USD. Padrao que aprova conta: ler certo (todos TFs+OB), entrar sinalizado em demanda, sair verde com 2x0,5%. CPI 12/08 as 13:30 Lisboa (core exp +0,2%): hot=gold down, soft=gold up.',
+  array['seed:memory_delta_20260812_guards_and_wins','trade','win','xau','accounts'],
+  'memory/project_live_long_20260811_bounce.md', 'active'),
+ (md5('concept_delete_level_breakout_20260811')::uuid, 'private', 'internal', 'project',
+  'Conceito NIVEL ARMADO/breakout CANCELADO + 8 guards',
+  'Cris 11/08: cancelar em definitivo alertas de nivel/breakout no Telegram (poluiu o grupo 3x). realtime_monitor daemon disable + send_level_alert no-op. Sem breakout, sem monitoracao de niveis-preco no Telegram; grupo so sinais qualificados. Guards deterministas LIVE (auto-disciplina de LLM nao segura): G1 DA-ledger no commit, G2 source-citation, G3 checkers no commit, G4 MCP-action, G6 daemon-reload, G7 anti-miopia, G8 leitura-todos-TFs+OB, zone-watch FSM. Alarme sonoro local via launchd (nao Telegram).',
+  array['seed:memory_delta_20260812_guards_and_wins','telegram','guard','breakout','governance'],
+  'memory/project_delete_level_breakout_concept_20260811.md', 'active')
+on conflict (id) do nothing;
