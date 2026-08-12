@@ -244,6 +244,43 @@ def fmt_chat(tf, bar, v):
             f"{str(v.get('note'))[:140]}")
 
 
+# --- FILTRO ANTI-CHASE do reader-grupo (Cris 2026-08-12) ---
+# Buraco: o reader confirmou LONG 4416/4421 NO TOPO do breakout e mandou ao GRUPO; ambos falharam (TP nunca
+# tocado, voltaram ao SL). Fix: um LONG a comprar perto do TOPO da janela 15M rolante = chase -> vai só ao
+# privado, nao ao grupo. Metrica = posicao do entry no range recente (chase compra ~topo; pullback ~fundo).
+# 1a-cut calibrada para apanhar o caso de hoje; a validar em forward (nao e edge provado). Config, nao preco.
+CHASE_WIN = 16          # barras 15M (~4h) da janela rolante que TERMINA no sinal
+CHASE_POS = 0.80        # entry >= 80% do range da janela = topo = chase
+
+
+def _range_pos(entry, win):
+    """Posicao 0..1 do entry no range [min low, max high] de `win` bars. None se indefinido. Puro/testavel."""
+    if entry is None or not win:
+        return None
+    his = [b["h"] for b in win if b.get("h") is not None]
+    los = [b["l"] for b in win if b.get("l") is not None]
+    if len(his) < 8 or len(los) < 8:
+        return None
+    hi, lo = max(his), min(los)
+    if hi - lo < 1e-6:
+        return None
+    return (entry - lo) / (hi - lo)
+
+
+def is_chase_long(v):
+    """LONG a comprar perto do TOPO da janela 15M rolante = chase -> so privado, fora do grupo.
+    SHORT e LONG-de-pullback passam ao grupo. Usa bars 15M REAIS do store (nao inventa)."""
+    if (v.get("direction") or "") != "LONG":
+        return False
+    e = E2.fnum(v.get("entry"))
+    try:
+        bars = load_bars("15", CHASE_WIN + 6)
+    except Exception:
+        return False
+    pos = _range_pos(e, (bars or [])[-CHASE_WIN:])
+    return pos is not None and pos >= CHASE_POS
+
+
 def send_confirmed_tg(tf, bar, v):
     if not TG_OK: return "tg-off"
     txt = (f"🤖 LIVE SYSTEM · READER — SINAL CONFIRMADO\n"
@@ -252,10 +289,11 @@ def send_confirmed_tg(tf, bar, v):
            f"{v.get('phase')} · {v.get('at_level') or ''} · convicção {v.get('conviction')}\n"
            f"{str(v.get('note'))[:180]}\n(advisory — a decisão é tua)")
     try:
-        # Cris 2026-08-12: REATIVAR mensagens do reader no GRUPO. O sinal CONFIRMADO já é qualificado
-        # (RR>=2 + conv>=60), logo vai SEMPRE ao grupo — corroborado por estratégia ou não.
-        # (watchdog continua OFF; sem alertas de nível/breakout — só sinal confirmado do reader.)
+        # Reader no GRUPO (Cris 12/08) — MAS com FILTRO ANTI-CHASE: LONG no topo do range 15M -> so privado.
         aud = "group"
+        if is_chase_long(v):
+            aud = "assistant"
+            txt += "\n⚠️ CHASE (topo do range 15M) — enviado só ao teu privado, fora do grupo."
         return f"tg-{aud}" if E2._tg_send(txt, audience=aud) else "tg-fail"
     except Exception:
         return "tg-erro"
