@@ -71,6 +71,13 @@ TAPE_SYS = (
     "nível permanece). Numa perna forte, o pullback deve NO MÁXIMO vir a essa polaridade (ex-topos rompidos) "
     "e segurar; um RECLAIM LEGÍTIMO aí é entrada de continuação de alta prioridade. Vigia essas ex-supplies "
     "com atenção redobrada.\n"
+    "FUNDO DE PULLBACK MACRO — PADRÃO APRENDIDO (05→13/08, 3 pullbacks macro de ~1.2-1.9% / 52-81pt): o fundo "
+    "de um pullback macro imprime, no 4H, uma sequência de HIGHER-LOWS (escada de acumulação: 4223→4313→4356→"
+    "4382) e a vela-de-fundo é VERDE + fecha no TERÇO SUPERIOR do range + tem pavio inferior (absorção na "
+    "demanda) + a vela 4H SEGUINTE RECLAMA acima. Essa assinatura = ACUMULAÇÃO = LONG de continuação de ALTA "
+    "qualidade (o simétrico do sweep+rejeição-no-topo para short). Enquanto o 4H mantém higher-lows a tendência "
+    "é UP e o pullback é para COMPRAR na demanda; um LOWER-LOW no 4H quebra a escada = mudança de tendência. "
+    "USA o bloco FUNDOS SEQUENCIAIS (30M/1H) como confirmação macro extra deste padrão.\n"
     "REGRA DO 1º PULLBACK (Cris 2026-08-05, após short confirmado às 10h que falhou): o ouro NUNCA desce "
     "verdadeiramente na PRIMEIRA correção de uma perna impulsiva forte (perna fresca de vários ATR / dezenas "
     "de pontos). Pullback raso da 1ª correção NÃO é venda — NUNCA confirmes SHORT contra perna impulsiva de "
@@ -202,6 +209,40 @@ def seq_tops_block(bars15, n=4):
             "ASCENDENTES (higher-highs) = continuação de alta → reforça long e enfraquece short.\n" + "\n".join(out))
 
 
+def _pivot_lows(bars, k=2):
+    """Pivô de baixa = low[i] é o mínimo local numa janela de ±k. Puro/testável."""
+    out = []
+    for i in range(k, len(bars) - k):
+        lo = bars[i]["l"]
+        if all(lo <= bars[i + j]["l"] for j in range(-k, k + 1) if j != 0):
+            out.append(bars[i])
+    return out
+
+
+def seq_bottoms_block(bars15, n=4):
+    """FUNDOS SEQUENCIAIS 30M/1H (simétrico aos topos). Higher-lows = acumulação/continuação-up (reforça
+    LONG); lower-lows = breakdown/tendência-baixa (reforça SHORT). Confirmação EXTRA, nunca gatilho isolado."""
+    if not bars15 or len(bars15) < 12:
+        return ""
+    out = []
+    for name, step in (("1H", 3600), ("30M", 1800)):
+        bt = _pivot_lows(_agg15(bars15, step), 2)[-n:]
+        if len(bt) < 2:
+            continue
+        ls = [b["l"] for b in bt]
+        seq = " → ".join("%.2f" % x for x in ls)
+        last = ("HIGHER-LOW (acumulação/continuação-up)" if ls[-1] > ls[-2]
+                else "LOWER-LOW (breakdown)" if ls[-1] < ls[-2] else "igual")
+        hl = sum(1 for i in range(1, len(ls)) if ls[i] > ls[i - 1])
+        ll = sum(1 for i in range(1, len(ls)) if ls[i] < ls[i - 1])
+        out.append("  %s: %s | último = %s | %dHL/%dLL" % (name, seq, last, hl, ll))
+    if not out:
+        return ""
+    return ("\n\n# 🏔️ FUNDOS SEQUENCIAIS (confirmação macro EXTRA, NÃO gatilho isolado): fundos ASCENDENTES "
+            "(higher-lows consecutivos) = acumulação / continuação-up → REFORÇA long e enfraquece short; "
+            "DESCENDENTES (lower-lows) = breakdown / tendência-baixa → reforça short e enfraquece long.\n" + "\n".join(out))
+
+
 def read_candle(tf, bar, dsr):
     """UM read Opus da fita no fecho da vela. Reutiliza a imagem do E2 + CLI Opus. Retry via _read_once-like."""
     cand = obs_candidate(tf, bar, dsr)
@@ -240,12 +281,14 @@ def read_candle(tf, bar, dsr):
                         f"de ALTA prioridade. Lê-as em 1º lugar como suporte, mesmo sem a caixa OB desenhada.")
     except Exception:
         pass
-    topsblock = ""
+    topsblock = botsblock = ""
     try:
-        topsblock = seq_tops_block(load_bars("15", 80))   # topos sequenciais 30M/1H = confirmação macro extra
+        b15 = load_bars("15", 80)
+        topsblock = seq_tops_block(b15)      # topos sequenciais 30M/1H = confirmação macro extra
+        botsblock = seq_bottoms_block(b15)   # fundos sequenciais 30M/1H = confirmação macro extra (simétrico)
     except Exception:
         pass
-    prompt = image + indic + focus + planblock + polblock + topsblock + TAPE_SCHEMA
+    prompt = image + indic + focus + planblock + polblock + topsblock + botsblock + TAPE_SCHEMA
     env = dict(os.environ); env.pop("ANTHROPIC_API_KEY", None)
     for attempt in range(2):
         try:
