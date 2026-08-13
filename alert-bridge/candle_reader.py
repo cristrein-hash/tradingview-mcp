@@ -64,40 +64,35 @@ TAPE_SYS = (
     "O preço está numa zona CRÍTICA do mapa do trader ou numa supply/demand HTF? Há assinatura de rejeição/"
     "absorção/sweep+reclaim, ou é vela morta? Aplica a regra de liquidez (iniciativa-para-íman = manipulação; "
     "deslocamento-pós-sweep = genuíno; sweep+reclaim sobrepõe o rótulo de perna atrasado).\n"
-    "CONTEXTO DE CONTINUAÇÃO (default, NÃO um veto): ouro em tendência de alta = caso-base é comprar recuos que os suportes segurem. MAS és um SINALIZADOR NEUTRO, não um confirmador do viés — a FITA manda, e um sinal CONTRA-tese pode ser o melhor sinal. SHORT É CONFIRMÁVEL, SIMÉTRICO AO LONG (Cris 2026-08-13), quando há REJEIÇÃO IMPRESSA NO ÍMAN: sweep/varrimento de um topo/PDH OU retest de nível-rompido-por-baixo, + fecho no TERÇO INFERIOR da vela + buyers varridos/PRESOS + iniciativa SELL (idealmente CHoCH down). É a MESMA assinatura de teste-e-rejeição-NO-íman que exiges para o long, aplicada ao contrário — a doutrina de continuação NÃO pode vetar um short com essa assinatura impressa. PROIBIDO continua: short ANTECIPADO (sem rejeição impressa) e short de pullback raso sem assinatura. Cuidado com whipsaw em janelas de notícia (ex.: PPI/CPI). USA o bloco TOPOS SEQUENCIAIS (30M/1H) como CONFIRMAÇÃO MACRO EXTRA: lower-highs consecutivos = distribuição/topo (reforça short, enfraquece long); higher-highs = continuação (reforça long, enfraquece short) — nunca gatilho isolado.\n"
+    "CONTEXTO DE CONTINUAÇÃO (default, NÃO um veto): ouro em tendência de alta = caso-base é comprar recuos que os suportes segurem. MAS és um SINALIZADOR NEUTRO, não um confirmador do viés — a FITA manda, e um sinal CONTRA-tese pode ser o melhor sinal. SHORT É CONFIRMÁVEL, SIMÉTRICO AO LONG (Cris 2026-08-13), quando há REJEIÇÃO IMPRESSA NO ÍMAN: sweep/varrimento de um topo/PDH OU retest de nível-rompido-por-baixo, + fecho no TERÇO INFERIOR da vela + buyers varridos/PRESOS + iniciativa SELL (idealmente CHoCH down). É a MESMA assinatura de teste-e-rejeição-NO-íman que exiges para o long, aplicada ao contrário — a doutrina de continuação NÃO pode vetar um short com essa assinatura impressa. PROIBIDO continua: short ANTECIPADO (sem rejeição impressa) e short de pullback raso sem assinatura. Cuidado com whipsaw em janelas de notícia (ex.: PPI/CPI). USA o bloco TOPOS SEQUENCIAIS (4H/1H, RAW nativo) como CONFIRMAÇÃO MACRO EXTRA: lower-highs consecutivos = distribuição/topo (reforça short, enfraquece long); higher-highs = continuação (reforça long, enfraquece short) — nunca gatilho isolado.\n"
     "POLARIDADE — PRIORIDADE DE LEITURA (Cris 2026-08-10): uma SUPPLY rompida COM FORÇA (fecho decisivo "
     "acima, movimento impulsivo) vira DEMANDA OBRIGATÓRIA de ALTA PROBABILIDADE de segurar. LÊ-A EM PRIMEIRO "
     "LUGAR como suporte de continuação — mesmo que o indicador OB já não desenhe a caixa (a polaridade do "
     "nível permanece). Numa perna forte, o pullback deve NO MÁXIMO vir a essa polaridade (ex-topos rompidos) "
     "e segurar; um RECLAIM LEGÍTIMO aí é entrada de continuação de alta prioridade. Vigia essas ex-supplies "
     "com atenção redobrada.\n"
-    "FUNDO DE PULLBACK MACRO — PADRÃO APRENDIDO MULTI-TF (análise 4H+1H+30M, 05→13/08; é confirmação EXTRA que "
-    "COMPLEMENTA o dossiê E0/market_context, não o substitui). Camadas por TF:\n"
-    "  • 4H (ÂNCORA macro): a tendência sobe em ESCADA de HIGHER-LOWS (4223→4313→4316→4356→4382). Os 3 "
-    "pullbacks macro foram de ~1.2-1.9% (52-81pt) e a vela-de-fundo 4H foi 3/3: VERDE + fecho no TERÇO SUPERIOR "
-    "do range + pavio inferior (absorção na demanda) + a vela 4H SEGUINTE RECLAMA acima. Define a DIREÇÃO e a "
-    "zona-alvo do pullback.\n"
-    "  • 1H (CONFIRMAÇÃO / timing): a mesma assinatura aparece em ~65% dos fundos 1H (verde/fecho-alto/reclaim). "
-    "Usa-a para CRONOMETRAR o fundo DENTRO do pullback 4H — é o TF onde confirmas que a demanda 4H segurou.\n"
-    "  • 30M (GATILHO fino): ~60%, mais RUÍDO (muitos pivôs são bounces em down-leg, não o fundo macro). SÓ vale "
-    "em CONFLUÊNCIA com 1H+4H; sozinho é falível.\n"
-    "  REGRA DE FIABILIDADE (precisão): o fundo de ALTA qualidade mostra a assinatura nos TRÊS TFs (30M E 1H E "
-    "4H) AO MESMO TEMPO, todos em HIGHER-LOW. Quantos mais TFs concordam, maior a convicção.\n"
-    "  ASSINATURA FORTE de fundo: pavio inferior GRANDE (≥50% do range) + fecho no terço superior (≥66%) + vela "
-    "seguinte reclama acima.\n"
-    "  FILTRO DE ESTRUTURA (decisivo): a assinatura só é ACUMULAÇÃO-para-COMPRAR se for HIGHER-LOW; num LOWER-LOW "
-    "é apenas bounce-em-down-leg (fraco/faca) e exige confirmação extra. Enquanto o 4H mantém higher-lows a "
-    "tendência é UP (comprar demandas); um LOWER-LOW no 4H quebra a escada = mudança de tendência.\n"
-    "  SIMÉTRICO para topos (short): lower-highs + sweep/rejeição no íman + fecho no terço inferior = distribuição. "
-    "Consome os blocos TOPOS/FUNDOS SEQUENCIAIS (30M/1H) já dados no prompt.\n"
-    "REGRA DO 1º PULLBACK (Cris 2026-08-05, após short confirmado às 10h que falhou): o ouro NUNCA desce "
-    "verdadeiramente na PRIMEIRA correção de uma perna impulsiva forte (perna fresca de vários ATR / dezenas "
-    "de pontos). Pullback raso da 1ª correção NÃO é venda — NUNCA confirmes SHORT contra perna impulsiva de "
-    "alta na sua 1ª correção (nem LONG no espelho de perna impulsiva de baixa). Short contra perna forte SÓ "
-    "após DISTRIBUIÇÃO visível: múltiplos testes do topo, compra a secar toque a toque, sweep+rejeição+CHoCH. "
-    "MAS um FAILED-BREAK do topo/PDH (varrimento ACIMA do high + devolução + fecho no terço inferior + buyers "
-    "presos), OU o RECUO a um nível já ROMPIDO-por-baixo que rejeita e fecha no low, JÁ SÃO essa "
-    "distribuição/exaustão impressa — NÃO os descartes como '1º pullback'; aí o short qualifica.\n"
+    "FUNDO DE PULLBACK MACRO — PADRÃO QUALITATIVO (confirmação EXTRA que COMPLEMENTA o dossiê E0/market_context, "
+    "NÃO o substitui). ATENÇÃO: é uma HEURÍSTICA de leitura observada numa amostra PEQUENA (poucos pullbacks, "
+    "05-13/08), NÃO um edge validado — trata-a como prior fraco, o forward é o árbitro; NÃO pesa como gate nem "
+    "força o sinal. Padrão por camada (usa os blocos TOPOS/FUNDOS SEQUENCIAIS 4H+1H, RAW nativo, dados no prompt):\n"
+    "  • 4H (ÂNCORA): enquanto os FUNDOS 4H forem HIGHER-LOWS a tendência é UP e o pullback é para COMPRAR na "
+    "demanda; a vela-de-fundo tende a ser VERDE + fechar no TERÇO SUPERIOR do range + ter pavio inferior "
+    "(absorção na demanda) + a vela 4H seguinte reclamar acima. Define direção e zona.\n"
+    "  • 1H (CONFIRMAÇÃO/timing): a mesma assinatura, mais frequente mas mais RUIDOSA — cronometra o fundo DENTRO "
+    "do pullback 4H (confirmas que a demanda 4H segurou).\n"
+    "  FIABILIDADE = CONFLUÊNCIA: quantos mais TFs (4H E 1H) mostram a assinatura em HIGHER-LOW ao mesmo tempo, "
+    "maior a convicção. Assinatura mais forte = pavio inferior GRANDE + fecho no terço superior + vela seguinte "
+    "reclama (qualitativo, não limiar rígido).\n"
+    "  FILTRO DE ESTRUTURA (decisivo): só é ACUMULAÇÃO-para-COMPRAR se for HIGHER-LOW; num LOWER-LOW é bounce-em-"
+    "down-leg (fraco/faca) e exige confirmação extra. Um LOWER-LOW no 4H quebra a escada = mudança de tendência.\n"
+    "  SIMÉTRICO para topos (short): lower-highs + sweep/rejeição no íman + fecho no terço inferior = distribuição.\n"
+    "REGRA DO 1º PULLBACK (Cris 2026-08-05; reconciliada com a simetria acima, 2026-08-13): um pullback RASO da "
+    "primeira correção de uma perna impulsiva forte, SEM rejeição impressa, NÃO é venda — espera, não vendas o "
+    "pullback raso (nem o espelho no LONG). MAS isto NÃO é um veto absoluto ao short: se a rejeição está "
+    "IMPRESSA no íman (failed-break do topo/PDH com fecho no terço inferior + buyers presos, OU sweep+rejeição, "
+    "OU recuo a um nível ROMPIDO-por-baixo que rejeita e fecha no low), o short QUALIFICA mesmo na correção — a "
+    "ASSINATURA IMPRESSA manda sobre o 'é-só-o-1º-pullback'. Sem assinatura impressa = espera; com assinatura "
+    "impressa = short válido (simétrico ao long).\n"
     "SINAL CONFIRMADO (confirmed_signal=true) SÓ quando: convergência ALTA num sentido + numa zona/nível que "
     "importa + assinatura confirmada (rejeição/absorção/break com fecho, não antecipação) + entry/SL/alvo "
     "deriváveis com R:R>=2. Na dúvida, confirmed_signal=false (é leitura, não sinal). Não inventes números; "
@@ -175,36 +170,43 @@ def obs_candidate(tf, bar, dsr):
 
 
 # --- TOPOS SEQUENCIAIS (feature macro, Cris 2026-08-13): confirmação EXTRA de topo/continuação ---
-def _agg15(bars, step):
-    """Agrega bars 15M em velas de `step` segundos (30M=1800, 1H=3600). Só h/l precisam para pivôs."""
-    g = {}
-    for b in bars:
-        k = (b["t"] // step) * step
-        if k not in g:
-            g[k] = {"t": k, "h": b["h"], "l": b["l"]}
-        else:
-            g[k]["h"] = max(g[k]["h"], b["h"]); g[k]["l"] = min(g[k]["l"], b["l"])
-    return [g[k] for k in sorted(g)]
-
-
 def _pivot_highs(bars, k=2):
-    """Pivô de alta = high[i] é o máximo local numa janela de ±k. Puro/testável."""
+    """Pivô de alta: high[i] >= vizinhos à ESQUERDA e > à DIREITA (right-strict evita pivôs duplicados em
+    plateaus achatados — fix B1 auditoria 13/08). Puro/testável."""
     out = []
     for i in range(k, len(bars) - k):
         h = bars[i]["h"]
-        if all(h >= bars[i + j]["h"] for j in range(-k, k + 1) if j != 0):
+        if all(h >= bars[i - j]["h"] for j in range(1, k + 1)) and all(h > bars[i + j]["h"] for j in range(1, k + 1)):
             out.append(bars[i])
     return out
 
 
-def seq_tops_block(bars15, n=4):
-    """Bloco de TOPOS SEQUENCIAIS 30M/1H para o prompt. Lower-highs = distribuição/topo (reforça SHORT);
-    higher-highs = continuação (reforça LONG). Confirmação EXTRA, nunca gatilho isolado. '' se dados curtos."""
-    if not bars15 or len(bars15) < 12:
-        return ""
+def _pivot_lows(bars, k=2):
+    """Pivô de baixa: low[i] <= vizinhos à ESQUERDA e < à DIREITA (right-strict, fix B1). Puro/testável."""
     out = []
-    for name, step in (("1H", 3600), ("30M", 1800)):
-        tp = _pivot_highs(_agg15(bars15, step), 2)[-n:]
+    for i in range(k, len(bars) - k):
+        lo = bars[i]["l"]
+        if all(lo <= bars[i - j]["l"] for j in range(1, k + 1)) and all(lo < bars[i + j]["l"] for j in range(1, k + 1)):
+            out.append(bars[i])
+    return out
+
+
+def _native_bars(tf, count=200):
+    """Barras RAW NATIVAS do TF via store_reader (fix S1/C1 auditoria 13/08): 60=raw_1h, 240=raw_4h
+    capturadas do CHART (fechadas/validadas). NUNCA resample de 15M."""
+    try:
+        import store_reader as SR
+        return SR.bars(tf, count) or []
+    except Exception:
+        return []
+
+
+def seq_tops_block(n=4):
+    """TOPOS SEQUENCIAIS 4H+1H — RAW NATIVO (store_reader.bars('240'/'60'), nunca resample). Lower-highs =
+    distribuição/topo (reforça SHORT); higher-highs = continuação (reforça LONG). Confirmação EXTRA."""
+    out = []
+    for name, tf in (("4H", "240"), ("1H", "60")):
+        tp = _pivot_highs(_native_bars(tf), 2)[-n:]
         if len(tp) < 2:
             continue
         hs = [t["h"] for t in tp]
@@ -216,29 +218,17 @@ def seq_tops_block(bars15, n=4):
         out.append("  %s: %s | último = %s | %dLH/%dHH" % (name, seq, last, lh, hh))
     if not out:
         return ""
-    return ("\n\n# ⛰️ TOPOS SEQUENCIAIS (confirmação macro EXTRA, NÃO gatilho isolado): topos DESCENDENTES "
-            "(lower-highs consecutivos) = distribuição / topo a formar-se → REFORÇA short e enfraquece long; "
-            "ASCENDENTES (higher-highs) = continuação de alta → reforça long e enfraquece short.\n" + "\n".join(out))
+    return ("\n\n# ⛰️ TOPOS SEQUENCIAIS 4H+1H (RAW nativo; confirmação macro EXTRA, NÃO gatilho isolado): topos "
+            "DESCENDENTES (lower-highs) = distribuição/topo → REFORÇA short e enfraquece long; ASCENDENTES "
+            "(higher-highs) = continuação → reforça long e enfraquece short.\n" + "\n".join(out))
 
 
-def _pivot_lows(bars, k=2):
-    """Pivô de baixa = low[i] é o mínimo local numa janela de ±k. Puro/testável."""
+def seq_bottoms_block(n=4):
+    """FUNDOS SEQUENCIAIS 4H+1H — RAW NATIVO (simétrico aos topos). Higher-lows = acumulação/continuação-up
+    (reforça LONG); lower-lows = breakdown (reforça SHORT). Confirmação EXTRA, nunca gatilho isolado."""
     out = []
-    for i in range(k, len(bars) - k):
-        lo = bars[i]["l"]
-        if all(lo <= bars[i + j]["l"] for j in range(-k, k + 1) if j != 0):
-            out.append(bars[i])
-    return out
-
-
-def seq_bottoms_block(bars15, n=4):
-    """FUNDOS SEQUENCIAIS 30M/1H (simétrico aos topos). Higher-lows = acumulação/continuação-up (reforça
-    LONG); lower-lows = breakdown/tendência-baixa (reforça SHORT). Confirmação EXTRA, nunca gatilho isolado."""
-    if not bars15 or len(bars15) < 12:
-        return ""
-    out = []
-    for name, step in (("1H", 3600), ("30M", 1800)):
-        bt = _pivot_lows(_agg15(bars15, step), 2)[-n:]
+    for name, tf in (("4H", "240"), ("1H", "60")):
+        bt = _pivot_lows(_native_bars(tf), 2)[-n:]
         if len(bt) < 2:
             continue
         ls = [b["l"] for b in bt]
@@ -250,9 +240,9 @@ def seq_bottoms_block(bars15, n=4):
         out.append("  %s: %s | último = %s | %dHL/%dLL" % (name, seq, last, hl, ll))
     if not out:
         return ""
-    return ("\n\n# 🏔️ FUNDOS SEQUENCIAIS (confirmação macro EXTRA, NÃO gatilho isolado): fundos ASCENDENTES "
-            "(higher-lows consecutivos) = acumulação / continuação-up → REFORÇA long e enfraquece short; "
-            "DESCENDENTES (lower-lows) = breakdown / tendência-baixa → reforça short e enfraquece long.\n" + "\n".join(out))
+    return ("\n\n# 🏔️ FUNDOS SEQUENCIAIS 4H+1H (RAW nativo; confirmação macro EXTRA, NÃO gatilho isolado): fundos "
+            "ASCENDENTES (higher-lows) = acumulação/continuação-up → REFORÇA long e enfraquece short; "
+            "DESCENDENTES (lower-lows) = breakdown → reforça short e enfraquece long.\n" + "\n".join(out))
 
 
 def read_candle(tf, bar, dsr):
@@ -295,9 +285,8 @@ def read_candle(tf, bar, dsr):
         pass
     topsblock = botsblock = ""
     try:
-        b15 = load_bars("15", 80)
-        topsblock = seq_tops_block(b15)      # topos sequenciais 30M/1H = confirmação macro extra
-        botsblock = seq_bottoms_block(b15)   # fundos sequenciais 30M/1H = confirmação macro extra (simétrico)
+        topsblock = seq_tops_block()      # topos sequenciais 4H+1H (RAW nativo) = confirmação macro extra
+        botsblock = seq_bottoms_block()   # fundos sequenciais 4H+1H (RAW nativo) = confirmação macro extra
     except Exception:
         pass
     prompt = image + indic + focus + planblock + polblock + topsblock + botsblock + TAPE_SCHEMA
@@ -399,11 +388,12 @@ def send_confirmed_tg(tf, bar, v):
            f"{v.get('phase')} · {v.get('at_level') or ''} · convicção {v.get('conviction')}\n"
            f"{str(v.get('note'))[:180]}\n(advisory — a decisão é tua)")
     try:
-        # Reader no GRUPO (Cris 12/08) — MAS com FILTRO ANTI-CHASE: LONG no topo do range 15M -> so privado.
+        # Reader no GRUPO (Cris 12/08). ANTI-CHASE DESATIVADO (auditoria 13/08): _range_pos media a entry
+        # contra o topo do range recente e, numa perna de alta, a entry de CONTINUAÇÃO está sempre perto do
+        # topo (pos>=0.80) -> desviava a MAIORIA dos longs de continuação legítimos (o pão-com-manteiga),
+        # não só os chases; era 1a-cut afinada ao caso 4416/4421, não-validada. Reativar só com discriminador
+        # validado em shadow multi-dia. is_chase_long/_range_pos ficam definidas (não usadas) p/ versão futura.
         aud = "group"
-        if is_chase_long(v):
-            aud = "assistant"
-            txt += "\n⚠️ CHASE (topo do range 15M) — enviado só ao teu privado, fora do grupo."
         return f"tg-{aud}" if E2._tg_send(txt, audience=aud) else "tg-fail"
     except Exception:
         return "tg-erro"
