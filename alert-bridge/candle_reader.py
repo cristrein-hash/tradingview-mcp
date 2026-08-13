@@ -64,7 +64,7 @@ TAPE_SYS = (
     "O preço está numa zona CRÍTICA do mapa do trader ou numa supply/demand HTF? Há assinatura de rejeição/"
     "absorção/sweep+reclaim, ou é vela morta? Aplica a regra de liquidez (iniciativa-para-íman = manipulação; "
     "deslocamento-pós-sweep = genuíno; sweep+reclaim sobrepõe o rótulo de perna atrasado).\n"
-    "CONTEXTO DE CONTINUAÇÃO (default, NÃO um veto): ouro em tendência de alta = caso-base é comprar recuos que os suportes segurem. MAS és um SINALIZADOR NEUTRO, não um confirmador do viés — a FITA manda, e um sinal CONTRA-tese pode ser o melhor sinal. SHORT É CONFIRMÁVEL, SIMÉTRICO AO LONG (Cris 2026-08-13), quando há REJEIÇÃO IMPRESSA NO ÍMAN: sweep/varrimento de um topo/PDH OU retest de nível-rompido-por-baixo, + fecho no TERÇO INFERIOR da vela + buyers varridos/PRESOS + iniciativa SELL (idealmente CHoCH down). É a MESMA assinatura de teste-e-rejeição-NO-íman que exiges para o long, aplicada ao contrário — a doutrina de continuação NÃO pode vetar um short com essa assinatura impressa. PROIBIDO continua: short ANTECIPADO (sem rejeição impressa) e short de pullback raso sem assinatura. Cuidado com whipsaw em janelas de notícia (ex.: PPI/CPI).\n"
+    "CONTEXTO DE CONTINUAÇÃO (default, NÃO um veto): ouro em tendência de alta = caso-base é comprar recuos que os suportes segurem. MAS és um SINALIZADOR NEUTRO, não um confirmador do viés — a FITA manda, e um sinal CONTRA-tese pode ser o melhor sinal. SHORT É CONFIRMÁVEL, SIMÉTRICO AO LONG (Cris 2026-08-13), quando há REJEIÇÃO IMPRESSA NO ÍMAN: sweep/varrimento de um topo/PDH OU retest de nível-rompido-por-baixo, + fecho no TERÇO INFERIOR da vela + buyers varridos/PRESOS + iniciativa SELL (idealmente CHoCH down). É a MESMA assinatura de teste-e-rejeição-NO-íman que exiges para o long, aplicada ao contrário — a doutrina de continuação NÃO pode vetar um short com essa assinatura impressa. PROIBIDO continua: short ANTECIPADO (sem rejeição impressa) e short de pullback raso sem assinatura. Cuidado com whipsaw em janelas de notícia (ex.: PPI/CPI). USA o bloco TOPOS SEQUENCIAIS (30M/1H) como CONFIRMAÇÃO MACRO EXTRA: lower-highs consecutivos = distribuição/topo (reforça short, enfraquece long); higher-highs = continuação (reforça long, enfraquece short) — nunca gatilho isolado.\n"
     "POLARIDADE — PRIORIDADE DE LEITURA (Cris 2026-08-10): uma SUPPLY rompida COM FORÇA (fecho decisivo "
     "acima, movimento impulsivo) vira DEMANDA OBRIGATÓRIA de ALTA PROBABILIDADE de segurar. LÊ-A EM PRIMEIRO "
     "LUGAR como suporte de continuação — mesmo que o indicador OB já não desenhe a caixa (a polaridade do "
@@ -155,6 +155,53 @@ def obs_candidate(tf, bar, dsr):
             "materiality": {"sl_atr": None, "confluence": None, "confluence_breakdown": {}}}
 
 
+# --- TOPOS SEQUENCIAIS (feature macro, Cris 2026-08-13): confirmação EXTRA de topo/continuação ---
+def _agg15(bars, step):
+    """Agrega bars 15M em velas de `step` segundos (30M=1800, 1H=3600). Só h/l precisam para pivôs."""
+    g = {}
+    for b in bars:
+        k = (b["t"] // step) * step
+        if k not in g:
+            g[k] = {"t": k, "h": b["h"], "l": b["l"]}
+        else:
+            g[k]["h"] = max(g[k]["h"], b["h"]); g[k]["l"] = min(g[k]["l"], b["l"])
+    return [g[k] for k in sorted(g)]
+
+
+def _pivot_highs(bars, k=2):
+    """Pivô de alta = high[i] é o máximo local numa janela de ±k. Puro/testável."""
+    out = []
+    for i in range(k, len(bars) - k):
+        h = bars[i]["h"]
+        if all(h >= bars[i + j]["h"] for j in range(-k, k + 1) if j != 0):
+            out.append(bars[i])
+    return out
+
+
+def seq_tops_block(bars15, n=4):
+    """Bloco de TOPOS SEQUENCIAIS 30M/1H para o prompt. Lower-highs = distribuição/topo (reforça SHORT);
+    higher-highs = continuação (reforça LONG). Confirmação EXTRA, nunca gatilho isolado. '' se dados curtos."""
+    if not bars15 or len(bars15) < 12:
+        return ""
+    out = []
+    for name, step in (("1H", 3600), ("30M", 1800)):
+        tp = _pivot_highs(_agg15(bars15, step), 2)[-n:]
+        if len(tp) < 2:
+            continue
+        hs = [t["h"] for t in tp]
+        seq = " → ".join("%.2f" % h for h in hs)
+        last = ("LOWER-HIGH (distribuição/topo a formar-se)" if hs[-1] < hs[-2]
+                else "HIGHER-HIGH (continuação)" if hs[-1] > hs[-2] else "igual")
+        lh = sum(1 for i in range(1, len(hs)) if hs[i] < hs[i - 1])
+        hh = sum(1 for i in range(1, len(hs)) if hs[i] > hs[i - 1])
+        out.append("  %s: %s | último = %s | %dLH/%dHH" % (name, seq, last, lh, hh))
+    if not out:
+        return ""
+    return ("\n\n# ⛰️ TOPOS SEQUENCIAIS (confirmação macro EXTRA, NÃO gatilho isolado): topos DESCENDENTES "
+            "(lower-highs consecutivos) = distribuição / topo a formar-se → REFORÇA short e enfraquece long; "
+            "ASCENDENTES (higher-highs) = continuação de alta → reforça long e enfraquece short.\n" + "\n".join(out))
+
+
 def read_candle(tf, bar, dsr):
     """UM read Opus da fita no fecho da vela. Reutiliza a imagem do E2 + CLI Opus. Retry via _read_once-like."""
     cand = obs_candidate(tf, bar, dsr)
@@ -193,7 +240,12 @@ def read_candle(tf, bar, dsr):
                         f"de ALTA prioridade. Lê-as em 1º lugar como suporte, mesmo sem a caixa OB desenhada.")
     except Exception:
         pass
-    prompt = image + indic + focus + planblock + polblock + TAPE_SCHEMA
+    topsblock = ""
+    try:
+        topsblock = seq_tops_block(load_bars("15", 80))   # topos sequenciais 30M/1H = confirmação macro extra
+    except Exception:
+        pass
+    prompt = image + indic + focus + planblock + polblock + topsblock + TAPE_SCHEMA
     env = dict(os.environ); env.pop("ANTHROPIC_API_KEY", None)
     for attempt in range(2):
         try:
