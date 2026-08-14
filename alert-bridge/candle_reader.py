@@ -386,7 +386,7 @@ def send_confirmed_tg(tf, bar, v):
     # no 4H E 1H (consome dossiê E0). Fail-open: sem dossiê = não bloqueia. Impede induzir compras na faca.
     if (v.get("direction") == "LONG"):
         try:
-            import choch_shadow_guard as CHG
+            import choch_guard as CHG
             if CHG.blocks_long():
                 print("   🔴 CHoCH-guard BLOQUEOU long confirmado (choch_dn 4H+1H) — NÃO enviado", flush=True)
                 return "choch-blocked"

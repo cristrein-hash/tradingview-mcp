@@ -164,7 +164,7 @@ def cycle():
             try:
                 import e2_quality as E2
                 # GUARD-CHoCH ATIVO (Cris 2026-08-14): A1/A2 é LONG — não enviar se CHoCH-down 4H+1H (faca).
-                import choch_shadow_guard as CHG
+                import choch_guard as CHG
                 if CHG.blocks_long():
                     out["tg"] = "choch-blocked (dn 4H+1H)"
                     print("(CHoCH-guard: A1/A2 LONG bloqueado — choch_dn 4H+1H, não enviado)", flush=True)

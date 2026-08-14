@@ -1,19 +1,22 @@
 #!/usr/bin/env python3
-"""GUARD-CHoCH em SHADOW MODE (Cris 2026-08-14) — LOG-ONLY, NÃO bloqueia nada, NÃO toca em nenhum sinal.
+"""GUARD-CHoCH ATIVO (Cris 2026-08-14) — blocks_long() BLOQUEIA emissão de LONG e está LIGADO em 5 emissores
+(candle_reader send_confirmed_tg, entry_validator, e2 notify_surfaced, A1/A2 runtime, L1 cycle). tick() é SÓ
+registo forward (log-only) — não toca em sinais; quem bloqueia é blocks_long(), chamado pelos emissores.
 
 CONSOME o dossiê E0 (market_context.json) — NÃO reconstrói nem recomputa (honra o consolidation_guard e
-feedback_consume_existing_never_rebuild). Lê o campo `choch` que o E0 já produz por TF em `axes.mtf` e
-regista o veredito shadow "bloquearia longs?" = há CHoCH-down (quebra do higher-low) no 4H OU no 1H.
-ZERO MÉTRICA INVENTADA: o único cálculo meu é um OR de dois booleanos que o E0 já computou.
+feedback_consume_existing_never_rebuild). Lê o campo `choch` que o E0 já produz por TF em `axes.mtf`.
+ZERO MÉTRICA INVENTADA: o único cálculo meu é um AND de dois booleanos que o E0 já computou.
 
-Uso: launchd StartInterval (shadow forward). Junta-se OFFLINE aos logs de sinais (candle_reads/e1) para
-medir FP (longs vencedores que bloquearia) e acerto (perdedores que apanharia). Só passa a bloquear a sério
-quando os números forward se aguentarem em amostra grande. py3."""
+REGRA DE BLOQUEIO (blocks_long) = CHoCH-down no 4H **E** 1H (AND). O log (tick/verdict.block) regista a MESMA
+regra AND, para o forward medir exatamente o que bloqueia ao vivo. Fail-open: sem dossiê = não bloqueia.
+LIMITAÇÃO CONHECIDA (Cris 2026-08-14): choch_dn = fecho abaixo do higher-low = PERDA DE REGIÃO DE PREÇO, não
+um setup de short convergente (não lê pavio/absorção/rejeição-no-íman). Pode bloquear long de continuação num
+recuo forte. Reavaliar com evidência forward. py3."""
 import json, sys, time
 
 # dossiê E0 canónico (o approved) — CONSUMIR, não reconstruir
 MC = "/Users/cristrein/tradingview-mcp/external_factors_v2/snapshots/market_context.json"
-LOG = "/Users/cristrein/tradingview-mcp/alert-bridge/logs/choch_shadow.jsonl"
+LOG = "/Users/cristrein/tradingview-mcp/alert-bridge/logs/choch_guard.jsonl"
 
 
 def _e0():
@@ -25,8 +28,8 @@ def _e0():
 
 
 def verdict():
-    """Veredito shadow a partir do dossiê E0 (consumido, não recomputado).
-    block = choch_dn (campo do E0) no 4H OU no 1H. Nada inventado além do OR."""
+    """Veredito a partir do dossiê E0 (consumido, não recomputado).
+    block = choch_dn (campo do E0) no 4H **E** 1H — a MESMA regra que blocks_long() aplica ao vivo."""
     d = _e0()
     ax = d.get("axes") or {}
     mtf = ax.get("mtf") or {}
@@ -42,7 +45,7 @@ def verdict():
     dn60, dn240 = dn("60"), dn("240")
     px = (ax.get("micro_15m") or {}).get("close")
     age = (d.get("_meta") or {}).get("age_s")
-    return {"block": dn60 or dn240, "dn_1h": dn60, "dn_4h": dn240,
+    return {"block": dn60 and dn240, "dn_1h": dn60, "dn_4h": dn240,
             "trend_1h": tr("60"), "trend_4h": tr("240"), "price": px, "dossier_age_s": age}
 
 
@@ -65,7 +68,7 @@ def tick():
             f.write(json.dumps(v) + "\n")
     except Exception:
         pass
-    print("SHADOW choch-guard (log-only, consome E0): block=%s (dn_1h=%s dn_4h=%s trend_1h=%s trend_4h=%s) px=%s"
+    print("choch-guard FORWARD-LOG (tick log-only; blocks_long ATIVO nos emissores, consome E0): block=%s (dn_1h=%s dn_4h=%s trend_1h=%s trend_4h=%s) px=%s"
           % (v.get("block"), v.get("dn_1h"), v.get("dn_4h"), v.get("trend_1h"), v.get("trend_4h"), v.get("price")))
 
 
@@ -76,7 +79,7 @@ if __name__ == "__main__":
         if v.get("err"):
             print("  (dossiê E0 ausente agora — veredito:", v, ")")
         else:
-            t.append(("block == dn_1h OR dn_4h", v["block"] == (v["dn_1h"] or v["dn_4h"])))
+            t.append(("block == dn_1h AND dn_4h (mesma regra que blocks_long)", v["block"] == (v["dn_1h"] and v["dn_4h"])))
             t.append(("dn_1h/dn_4h bool", isinstance(v["dn_1h"], bool) and isinstance(v["dn_4h"], bool)))
         # auditoria de construção via AST (não string-match, para não ser auto-referencial):
         import inspect, ast
@@ -84,7 +87,7 @@ if __name__ == "__main__":
         imports = {n.name for nd in ast.walk(tree) if isinstance(nd, ast.Import) for n in nd.names}
         calls = {getattr(getattr(nd, "func", None), "attr", None) for nd in ast.walk(tree) if isinstance(nd, ast.Call)}
         t.append(("consome E0, NÃO importa context_structure (não recomputa)", "context_structure" not in imports))
-        t.append(("shadow puro: nenhuma chamada _tg_send/send (não toca sinais)",
+        t.append(("módulo não-emissor: nenhuma chamada _tg_send/send (bloqueio é dos emissores)",
                   "_tg_send" not in calls and "send" not in calls))
         t.append(("lê market_context (dossiê E0)", "market_context" in _e0.__module__ or True))  # MC path const
         for lab, r in t:

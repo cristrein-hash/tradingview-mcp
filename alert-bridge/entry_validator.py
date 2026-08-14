@@ -190,7 +190,7 @@ def main_loop():
                         # GO-longs o dia todo num down-leg). Fail-open: sem dossiê = não bloqueia.
                         if r["tese"] == "LONG":
                             try:
-                                import choch_shadow_guard as CHG
+                                import choch_guard as CHG
                                 if CHG.blocks_long():
                                     print("(CHoCH-guard: GO-LONG bloqueado — choch_dn 4H+1H, não enviado)", flush=True)
                                     ok_reader = False

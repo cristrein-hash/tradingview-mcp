@@ -174,7 +174,7 @@ def notify_surfaced(cand, th):
     # no 4H E 1H (consome dossiê E0). Impede induzir compra na faca (13/08). Fail-open (sem dossiê = passa).
     if cand.get("direction") == "LONG":
         try:
-            import choch_shadow_guard as CHG
+            import choch_guard as CHG
             if CHG.blocks_long():
                 print("(CHoCH-guard: E1/E2 LONG bloqueado — choch_dn 4H+1H, não notificado)", flush=True)
                 return

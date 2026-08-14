@@ -165,7 +165,7 @@ def _run_refresh_and_runtime(send_telegram, ts, env_refresh=None, env_runtime=No
     try:
         import sys as _sys
         _sys.path.insert(0, "/Users/cristrein/tradingview-mcp/alert-bridge")
-        import choch_shadow_guard as _CHG
+        import choch_guard as _CHG
         _choch_block = _CHG.blocks_long()
     except Exception:
         _choch_block = False
