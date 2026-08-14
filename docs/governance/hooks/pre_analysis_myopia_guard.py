@@ -68,21 +68,9 @@ if _sp:
         pass
     sys.exit(0)
 
-# dedup per session+script
-m = re.search(r"python3?\s+(\S+\.py)", cmd)
-script = m.group(1) if m else cmd[:80]
-sig = hashlib.sha256(script.encode()).hexdigest()[:16]
-ack_dir = Path("/tmp/.claude_myopia_acknowledged"); ack_dir.mkdir(exist_ok=True)
-sid = data.get("session_id") or "unknown"
-ack = ack_dir / f"{sid}_{sig}"
-now = time.time()
-for f in ack_dir.glob("*"):
-    try:
-        if now - f.stat().st_mtime > 1*3600: f.unlink()   # G7: 12h→1h (dedup re-arma mais cedo)
-    except Exception: pass
-if ack.exists():
-    sys.exit(0)
-ack.touch()
+# Cris 2026-08-14: dedup REMOVIDO. O ack era criado NA corrida bloqueada, logo re-correr o mesmo
+# script passava por dedup SEM exigir/registar SANITY_PROBE = bypass silencioso (furo real apanhado).
+# Agora o único caminho de passagem é SANITY_PROBE (acima, LOGADO). Sem ele, bloqueia SEMPRE.
 
 msg = (
     "🧭 ANÁLISE DE LEITURA/SEPARAÇÃO DETECTADA — checklist anti-miopia ANTES de rodar.\n\n"
@@ -99,8 +87,8 @@ msg = (
     "     ATRASA; a quebra (choch) e a VELA real dao o sinal em tempo real. ERRO 13/08: li so o rotulo lento\n"
     "     e chamei 4H up, ignorando a quebra impressa — nao vi a faca e custou dinheiro. Usa os 3 sempre.\n\n"
     "Se a análise viola 1-2, é MIOPIA — re-desenhe como leitura dinâmica multi-fatorial ANTES de rodar.\n"
-    "Se é sonda de sanidade deliberada, declare 'SANITY_PROBE: <razão>' no comando (razão OBRIGATÓRIA, auditável) e prossiga.\n"
-    "(Este hook registra ack por script; roda 1× por análise.)"
+    "Se é sonda de sanidade deliberada, declare 'SANITY_PROBE: <razão>' no comando (razão OBRIGATÓRIA, auditável, REGISTADA) e prossiga.\n"
+    "(Sem dedup: bloqueia SEMPRE até declarares SANITY_PROBE — não há bypass silencioso por re-run.)"
 )
 print(msg, file=sys.stderr)
 sys.exit(2)
