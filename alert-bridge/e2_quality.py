@@ -346,6 +346,33 @@ def _swing_state(mtf):
     return out
 
 
+def _sweep_context():
+    """CONTEXTO ESTRUTURAL 4H (Cris 2026-08-14) — INFORMAÇÃO pura (NÃO gate). Secção do render_composite, que
+    CONSOME o dossiê E0 market_context.json; aqui consome o verdict de sweep_reject_guard (que lê o mesmo store
+    nativo) — não reconstrói reader nem inventa. Dá ao reader a moldura HTF que faltava (2 misses de 14/08):
+    sweep-reject 4H ATIVO = distribuição no topo (short na rejeição de lower-high legítimo, long=faca até
+    quebra 15M); quebra de estrutura 15M dada = retomada (long estrutural). Fail-safe: erro/ausente = 0 linhas."""
+    try:
+        import sweep_reject_guard as SRG
+        v = SRG.verdict()
+    except Exception:
+        return []
+    if not v or v.get("sweep_t") is None:
+        return ["  sem sweep-reject 4H recente — sem moldura de distribuição ativa."]
+    import datetime as _dt
+    def _h(t):
+        try:
+            return _dt.datetime.utcfromtimestamp(int(t)).strftime("%m-%d %H:%M")
+        except Exception:
+            return "?"
+    if v.get("block"):
+        return [f"  ⚠️ SWEEP-REJECT 4H ATIVO (vela {_h(v.get('sweep_t'))}, high {v.get('sweep_high')}) = DISTRIBUIÇÃO no topo.",
+                "     → SHORT na rejeição de lower-high = LEGÍTIMO (NÃO 'contra-perna'). LONG dentro disto = faca.",
+                "     → ainda SEM quebra de estrutura 15M (HH+HL) desde o sweep — longs só após a quebra."]
+    return [f"  SWEEP-REJECT 4H resolvido — 15M QUEBROU estrutura (HH+HL) em {_h(v.get('break15_t'))}.",
+            "     → RETOMADA: long de estrutura legítimo; moldura de distribuição invalidada."]
+
+
 def render_composite(dsr, cand):
     """Serializa o dossiê E0 INTEIRO como briefing rotulado top-down (NÃO json cru, NÃO migalha).
     O read lê isto como um trader lê a fita, secção a secção. FRAME-EXPLÍCITO no topo (Cris 2026-07-25/26):
@@ -380,6 +407,10 @@ def render_composite(dsr, cand):
     # 1H→4H→15M. NÃO é gate. Torna explícita a sequência e os níveis de quebra que o reader hoje só recebe soltos.
     L.append("\n# ESTADO DA PERNA (swings LH/LL, prioridade 1H→4H→15M — informação, NÃO gate)")
     L.extend(_swing_state(mtf))
+    # CONTEXTO ESTRUTURAL 4H (Cris 2026-08-14): moldura HTF de distribuição/retomada consumindo o
+    # market_context.json + sweep_reject_guard — INFORMAÇÃO pura, não gate.
+    L.append("\n# CONTEXTO ESTRUTURAL 4H (sweep-reject/distribuição/retomada — informação, NÃO gate)")
+    L.extend(_sweep_context())
     # MAPA DO TRADER (Cris 2026-08-04): voz de 1ª classe logo após o FRAME. SEM mapa = zero linhas
     # (byte-idêntico ao anterior — regressão (d) do accept_mapa_trader_20260804).
     try:
