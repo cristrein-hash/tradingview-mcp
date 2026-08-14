@@ -392,6 +392,15 @@ def send_confirmed_tg(tf, bar, v):
                 return "choch-blocked"
         except Exception:
             pass
+        # SWEEP-REJECT 4H (Cris 2026-08-14, tripwire de protecao, nao edge): vela 4H pavio-sup>50%corpo
+        # bloqueia long ate quebra de estrutura 15M (HH+HL). Fail-open.
+        try:
+            import sweep_reject_guard as SRG
+            if SRG.blocks_long():
+                print("   🔴 sweep-reject-4H BLOQUEOU long (sweep>50%corpo, sem quebra 15M) — NÃO enviado", flush=True)
+                return "sweep-blocked"
+        except Exception:
+            pass
     txt = (f"🤖 LIVE SYSTEM · READER — SINAL CONFIRMADO\n"
            f"✅ SINAL CONFIRMADO ({tf}M {hm(bar['t'])}) — {v['direction']} XAUUSD\n"
            f"entry {v['entry']} · SL {v['sl']} · alvo {v['target']} (RR {v.get('rr')})\n"

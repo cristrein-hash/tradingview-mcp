@@ -197,6 +197,16 @@ def main_loop():
                                     jz = "\n(CHoCH-guard: quebra estrutural 4H+1H — long não enviado, é faca)"
                             except Exception:
                                 pass
+                            # SWEEP-REJECT 4H (Cris 2026-08-14, tripwire): vela 4H pavio-sup>50%corpo bloqueia
+                            # GO-LONG ate quebra de estrutura 15M (HH+HL). Fail-open.
+                            try:
+                                import sweep_reject_guard as SRG
+                                if SRG.blocks_long():
+                                    print("(sweep-reject-4H: GO-LONG bloqueado — sweep>50%corpo sem quebra 15M)", flush=True)
+                                    ok_reader = False
+                                    jz = "\n(sweep-reject-4H: vela 4H pavio>50%corpo, sem quebra 15M — long não enviado)"
+                            except Exception:
+                                pass
                         try:
                             import e2_quality as E2
                             dsr = E2.load_dossier() or {}

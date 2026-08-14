@@ -180,6 +180,15 @@ def notify_surfaced(cand, th):
                 return
         except Exception:
             pass
+        # SWEEP-REJECT 4H (Cris 2026-08-14, tripwire): vela 4H pavio-sup>50%corpo bloqueia long ate
+        # quebra de estrutura 15M (HH+HL). Fail-open.
+        try:
+            import sweep_reject_guard as SRG
+            if SRG.blocks_long():
+                print("(sweep-reject-4H: E1/E2 LONG bloqueado — sweep>50%corpo sem quebra 15M)", flush=True)
+                return
+        except Exception:
+            pass
     prefix = ""
     try:
         import trader_map as _TM
