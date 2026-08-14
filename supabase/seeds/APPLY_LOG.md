@@ -100,3 +100,4 @@
 - 2026-08-12 06:46 UTC · `memory_delta_20260812_guards_and_wins.sql` · memory_items 392→397 · tag-rows 5/5 · OK
 - 2026-08-14 05:02 UTC · `memory_delta_20260814_choch_guard_and_interpretation_error.sql` · memory_items 397→400 · tag-rows 3/3 · OK
 - 2026-08-14 11:44 UTC · `memory_delta_20260814b_choch_guard_limitation_and_rename.sql` · memory_items 400→401 · tag-rows 1/1 · OK
+- 2026-08-14 12:46 UTC · `memory_delta_20260814c_rederive_vs_read_indicator_guard.sql` · memory_items 401→402 · tag-rows 1/1 · OK
