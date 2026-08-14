@@ -104,3 +104,4 @@
 - 2026-08-14 18:10 UTC · `memory_delta_20260814d_swing_state_reader_info.sql` · memory_items 402→404 · tag-rows 2/2 · OK
 - 2026-08-14 19:28 UTC · `memory_delta_20260814e_sweep_reject_guard_live.sql` · memory_items 404→405 · tag-rows 1/1 · OK
 - 2026-08-14 19:41 UTC · `memory_delta_20260814f_sweep_context_reader.sql` · memory_items 405→406 · tag-rows 1/1 · OK
+- 2026-08-14 19:45 UTC · `memory_delta_20260814g_prompt_recalibracao_contra_perna.sql` · memory_items 406→407 · tag-rows 1/1 · OK
