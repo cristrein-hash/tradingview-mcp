@@ -312,6 +312,31 @@ def _frame_leg(ax):
         return ("BEAR", "dominante down") if ld == "down" else (("BULL", "dominante up") if ld == "up" else ("RANGE", "indefinido"))
 
 
+def _swing_state(mtf):
+    """ESTADO DA PERNA por TF via sequência LH/LL — INFORMAÇÃO PURA (Cris 2026-08-14), NÃO é gate/gatilho.
+    Prioridade 1H→4H→15M. CONSOME axes.mtf[tf].swings (last/prev high/low do context_structure) — não
+    recomputa nem inventa. Torna explícita a sequência (LOWER-HIGH/LOWER-LOW → DOWN) e os níveis de quebra,
+    que hoje o reader recebe só como valores soltos. O read pesa isto contra o preço vivo (leitura holística)."""
+    out = []
+    for tf, lbl in (("60", "1H"), ("240", "4H"), ("15", "15M")):
+        sw = (mtf.get(tf) or {}).get("swings") or {}
+        lh = (sw.get("last_high") or {}).get("price"); ph = (sw.get("prev_high") or {}).get("price")
+        ll = (sw.get("last_low") or {}).get("price"); pl = (sw.get("prev_low") or {}).get("price")
+        if lh is None or ll is None:
+            out.append(f"  [{lbl}] swings insuficientes"); continue
+        hi_seq = "LOWER-HIGH" if (ph is not None and lh < ph) else ("higher-high" if (ph is not None and lh > ph) else "=")
+        lo_seq = "LOWER-LOW" if (pl is not None and ll < pl) else ("higher-low" if (pl is not None and ll > pl) else "=")
+        if ph is not None and pl is not None and lh < ph and ll < pl:
+            st = "DOWN (LH+LL)"
+        elif ph is not None and pl is not None and lh > ph and ll > pl:
+            st = "UP (HH+HL)"
+        else:
+            st = "RANGE/misto"
+        out.append(f"  [{lbl}] {st} | high {fmt(lh)} ({hi_seq} vs {fmt(ph)}) · low {fmt(ll)} ({lo_seq} vs {fmt(pl)}) "
+                   f"| quebra↑ fechar>{fmt(lh)} · continua↓ perder {fmt(ll)}")
+    return out
+
+
 def render_composite(dsr, cand):
     """Serializa o dossiê E0 INTEIRO como briefing rotulado top-down (NÃO json cru, NÃO migalha).
     O read lê isto como um trader lê a fita, secção a secção. FRAME-EXPLÍCITO no topo (Cris 2026-07-25/26):
@@ -342,6 +367,10 @@ def render_composite(dsr, cand):
                  f"= pullback, NÃO reversão · reversão contra a perna SÓ em supply/demand 4H/1D com confluências de exaustão.")
     else:
         L.append("  perna indefinida (RANGE): sem caso-base direcional — exige convergência clara num dos lados.")
+    # ESTADO DA PERNA — swings LH/LL por TF (Cris 2026-08-14): INFORMAÇÃO estrutural pura, prioridade
+    # 1H→4H→15M. NÃO é gate. Torna explícita a sequência e os níveis de quebra que o reader hoje só recebe soltos.
+    L.append("\n# ESTADO DA PERNA (swings LH/LL, prioridade 1H→4H→15M — informação, NÃO gate)")
+    L.extend(_swing_state(mtf))
     # MAPA DO TRADER (Cris 2026-08-04): voz de 1ª classe logo após o FRAME. SEM mapa = zero linhas
     # (byte-idêntico ao anterior — regressão (d) do accept_mapa_trader_20260804).
     try:
