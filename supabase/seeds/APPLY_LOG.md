@@ -102,3 +102,4 @@
 - 2026-08-14 11:44 UTC · `memory_delta_20260814b_choch_guard_limitation_and_rename.sql` · memory_items 400→401 · tag-rows 1/1 · OK
 - 2026-08-14 12:46 UTC · `memory_delta_20260814c_rederive_vs_read_indicator_guard.sql` · memory_items 401→402 · tag-rows 1/1 · OK
 - 2026-08-14 18:10 UTC · `memory_delta_20260814d_swing_state_reader_info.sql` · memory_items 402→404 · tag-rows 2/2 · OK
+- 2026-08-14 19:28 UTC · `memory_delta_20260814e_sweep_reject_guard_live.sql` · memory_items 404→405 · tag-rows 1/1 · OK
