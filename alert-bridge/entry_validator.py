@@ -185,6 +185,18 @@ def main_loop():
                             print(f"(doutrina: SHORT em {r.get('id')} fora da região macro — chat-only)", flush=True)
                             ok_reader = False
                             jz = "\n(continuação: reversão só na zona 4H/1D macro — não enviado)"
+                        # GATE-CHoCH p/ LONG (Cris 2026-08-14): bloqueia GO-LONG se CHoCH-down (quebra do
+                        # higher-low) no 4H E 1H (consome dossiê E0). Impede induzir compra na faca (13/08:
+                        # GO-longs o dia todo num down-leg). Fail-open: sem dossiê = não bloqueia.
+                        if r["tese"] == "LONG":
+                            try:
+                                import choch_shadow_guard as CHG
+                                if CHG.blocks_long():
+                                    print("(CHoCH-guard: GO-LONG bloqueado — choch_dn 4H+1H, não enviado)", flush=True)
+                                    ok_reader = False
+                                    jz = "\n(CHoCH-guard: quebra estrutural 4H+1H — long não enviado, é faca)"
+                            except Exception:
+                                pass
                         try:
                             import e2_quality as E2
                             dsr = E2.load_dossier() or {}

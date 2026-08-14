@@ -382,6 +382,16 @@ def is_chase_long(v):
 
 def send_confirmed_tg(tf, bar, v):
     if not TG_OK: return "tg-off"
+    # GUARD-CHoCH ATIVO (Cris 2026-08-14): bloqueia LONG confirmado se há CHoCH-down (quebra do higher-low)
+    # no 4H E 1H (consome dossiê E0). Fail-open: sem dossiê = não bloqueia. Impede induzir compras na faca.
+    if (v.get("direction") == "LONG"):
+        try:
+            import choch_shadow_guard as CHG
+            if CHG.blocks_long():
+                print("   🔴 CHoCH-guard BLOQUEOU long confirmado (choch_dn 4H+1H) — NÃO enviado", flush=True)
+                return "choch-blocked"
+        except Exception:
+            pass
     txt = (f"🤖 LIVE SYSTEM · READER — SINAL CONFIRMADO\n"
            f"✅ SINAL CONFIRMADO ({tf}M {hm(bar['t'])}) — {v['direction']} XAUUSD\n"
            f"entry {v['entry']} · SL {v['sl']} · alvo {v['target']} (RR {v.get('rr')})\n"

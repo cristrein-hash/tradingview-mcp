@@ -102,6 +102,12 @@ READ_VERSION = "r1-convergence-opus"
 READ_ENABLED = os.environ.get("E2_READ_ENABLED", "1") == "1"
 READ_TIMEOUT = int(os.environ.get("E2_READ_TIMEOUT", "300"))
 
+# --- SINAL DE CONTINUAÇÃO LONG -> Telegram (Cris 2026-08-05: "sinal legítimo ou nada", RR>=2) ---
+# Gate DETERMINÍSTICO (independente do read LLM, para o regime atrasado não silenciar continuações).
+CONT_SIGNAL = os.environ.get("E2_CONT_SIGNAL", "0") == "1"
+CONT_RULES = {"bos_continuation", "ema_reclaim", "sweep_reclaim", "ob_touch_hold", "zone_reject"}
+MIN_RR_SIGNAL = 2.0
+
 # ---------- LIVE (Cris 2026-07-26: "VAMOS ACIONAR O E2 SEM SHADOW, EM LIVE") ----------
 # Hard-lock padrão do stack: envio real exige E2_PRODUCTION_AUTHORIZED=1 (exportado no wrapper launchd).
 E2_LIVE = os.environ.get("E2_PRODUCTION_AUTHORIZED", "") == "1"
@@ -164,6 +170,16 @@ def notify_surfaced(cand, th):
     prefixo de CONFLITO OBRIGATÓRIO — determinístico, independente do que o read declarou. Nunca mais
     um long 'limpo' para dentro da zona de venda declarada (a falha de 04/08 08:03)."""
     if not E2_LIVE: return
+    # GUARD-CHoCH ATIVO (Cris 2026-08-14): não notificar candidato LONG se CHoCH-down (quebra do higher-low)
+    # no 4H E 1H (consome dossiê E0). Impede induzir compra na faca (13/08). Fail-open (sem dossiê = passa).
+    if cand.get("direction") == "LONG":
+        try:
+            import choch_shadow_guard as CHG
+            if CHG.blocks_long():
+                print("(CHoCH-guard: E1/E2 LONG bloqueado — choch_dn 4H+1H, não notificado)", flush=True)
+                return
+        except Exception:
+            pass
     prefix = ""
     try:
         import trader_map as _TM
@@ -506,6 +522,46 @@ def surfaced(thesis, cand):
     return bool(thesis.get("converges")) and thesis.get("context_direction") == cand.get("direction")
 
 
+def _buy_initiative(dsr):
+    """Iniciativa compradora presente: janela F-A1 net buy (se disponível) OU fita da perna compradora
+    (buy_dens>0 e sem venda). Lido do dossiê, nunca inventado."""
+    cf = (dsr["axes"].get("confluence") or {}).get("15", {}) or {}
+    win = cf.get("window") or {}
+    if win:
+        return (win.get("net_side") == "buy") or ((win.get("buy") or {}).get("weight", 0) > (win.get("sell") or {}).get("weight", 0))
+    bd = fnum(cf.get("buy_dens")); sd = fnum((cf.get("sell") or {}).get("dens"))
+    return bool(bd and bd > 0 and (sd is None or sd == 0))
+
+
+def cont_signal_ok(cand, dsr):
+    """Gate DETERMINÍSTICO do sinal de continuação LONG. TODOS obrigatórios: LONG · regra de continuação ·
+    RR>=2 · 1H (ou 15M) UP · iniciativa BUY. NÃO usa o read LLM (o regime atrasado silenciaria continuações)."""
+    if cand.get("direction") != "LONG" or cand.get("rule") not in CONT_RULES:
+        return False
+    if (fnum(cand.get("rr")) or 0) < MIN_RR_SIGNAL:
+        return False
+    mtf = dsr["axes"].get("mtf", {})
+    if (mtf.get("60", {}) or {}).get("trend") != "UP" and (mtf.get("15", {}) or {}).get("trend") != "UP":
+        return False
+    return _buy_initiative(dsr)
+
+
+def emit_cont_signal(cand, dsr, thesis):
+    """Envia sinal LONG de continuação ao Telegram (alarme 3-5×). Alert-only. Loga em cont_signals.jsonl.
+    Reusa tg_trade_signal (mesmo bot/chat; tokens no .env, nunca expostos)."""
+    from tg_trade_signal import send_trade_signal
+    e = fnum(cand.get("entry")); sl = fnum(cand.get("sl")); tgt = fnum(cand.get("target"))
+    r = abs(e - sl); tp2 = round(e + 2 * r, 2)
+    conv = (thesis or {}).get("convergence") if isinstance(thesis, dict) else None
+    reason = (f"CONTINUACAO LONG {cand.get('rule')} {cand.get('tf')} | 1H UP + iniciativa BUY | RR {cand.get('rr')}"
+              + (f" | read {conv}" if conv else ""))
+    res = send_trade_signal("LONG", e, sl, tp2, tgt, reason, test=False, repeat=3)
+    append(LOGS / "cont_signals.jsonl", {"ts": now_iso(), "candidate_id": cand.get("id"), "rule": cand.get("rule"),
+           "tf": cand.get("tf"), "entry": e, "sl": sl, "target": tgt, "rr": cand.get("rr"), "tp2": tp2,
+           "reason": reason, "read_convergence": conv, "telegram": res})
+    return res
+
+
 # ---------- veredito ----------
 def make_verdict(cand, dsr, drift_c):
     grade, vs, hard, soft = evaluate_vetos(cand, dsr, drift_c)
@@ -723,6 +779,19 @@ def cli_selftest():
         r.append(("render F-A2 magnets ok", "ÍMANES" in img2 and "ACIMA:" in img2 and "pullback #" in img2))
     except Exception as e:
         r.append((f"render F-A2 magnets ({e})", False))
+    # SINAL DE CONTINUAÇÃO LONG — gate determinístico
+    dl = json.loads(json.dumps(base_d))
+    dl["axes"]["mtf"]["60"] = {"trend": "UP"}; dl["axes"]["mtf"]["15"]["trend"] = "UP"
+    dl["axes"]["confluence"] = {"15": {"buy_dens": 0.8, "sell": {"dens": 0.0}}}
+    lc = {"direction": "LONG", "rule": "bos_continuation", "tf": "60", "rr": 2.3, "entry": 100, "sl": 99, "target": 103}
+    r.append(("cont_signal LONG ok", cont_signal_ok(lc, dl) is True))
+    r.append(("cont_signal SHORT rejeita", cont_signal_ok({**lc, "direction": "SHORT"}, dl) is False))
+    r.append(("cont_signal RR<2 rejeita", cont_signal_ok({**lc, "rr": 1.8}, dl) is False))
+    r.append(("cont_signal regra nao-cont rejeita", cont_signal_ok({**lc, "rule": "macro_event"}, dl) is False))
+    dnoup = json.loads(json.dumps(dl)); dnoup["axes"]["mtf"]["60"] = {"trend": "DOWN"}; dnoup["axes"]["mtf"]["15"]["trend"] = "DOWN"
+    r.append(("cont_signal sem 1H/15 UP rejeita", cont_signal_ok(lc, dnoup) is False))
+    dnobuy = json.loads(json.dumps(dl)); dnobuy["axes"]["confluence"] = {"15": {"buy_dens": 0.0, "sell": {"dens": 0.5}}}
+    r.append(("cont_signal sem iniciativa BUY rejeita", cont_signal_ok(lc, dnobuy) is False))
     allok = all(ok for _, ok in r)
     for name, ok in r: print(f"  {'OK' if ok else 'FALHA'} {name}")
     print("SELFTEST:", "PASS" if allok else "FALHA")
@@ -794,6 +863,13 @@ def main_loop():
                                       f"{v['direction']}/{v['rule']}/{v['tf']}", flush=True)
                             elif v["grade"] != "discard":
                                 print(f"{now_iso()} [survivor|read-off] {v['direction']}/{v['rule']}/{v['tf']}", flush=True)
+                            if CONT_SIGNAL and v["grade"] == "survivor" and cont_signal_ok(c, dsr):
+                                try:
+                                    res = emit_cont_signal(c, dsr, v.get("read"))
+                                    print(f"{now_iso()} [SINAL CONT LONG tg_ok={res.get('ok_all')}] {c['rule']}/{c['tf']} "
+                                          f"entry {c.get('entry')} SL {c.get('sl')} tgt {c.get('target')} RR {c.get('rr')}", flush=True)
+                                except Exception as _e:
+                                    print(f"{now_iso()} [sinal cont ERRO] {type(_e).__name__}:{str(_e)[:80]}", flush=True)
                             append(VERD_F, v)
                         tmp = OFFSET_F.with_suffix(".json.tmp"); tmp.write_text(json.dumps({"offset": offset})); os.replace(tmp, OFFSET_F)
             except Exception as e:

@@ -163,7 +163,13 @@ def cycle():
         if PROD:
             try:
                 import e2_quality as E2
-                out["tg"] = E2._tg_send(txt)                  # GRUPO (sinal qualificado 15M BULL)
+                # GUARD-CHoCH ATIVO (Cris 2026-08-14): A1/A2 é LONG — não enviar se CHoCH-down 4H+1H (faca).
+                import choch_shadow_guard as CHG
+                if CHG.blocks_long():
+                    out["tg"] = "choch-blocked (dn 4H+1H)"
+                    print("(CHoCH-guard: A1/A2 LONG bloqueado — choch_dn 4H+1H, não enviado)", flush=True)
+                else:
+                    out["tg"] = E2._tg_send(txt)              # GRUPO (sinal qualificado 15M BULL)
             except Exception as e:
                 out["tg"] = f"erro:{type(e).__name__}"
         else:

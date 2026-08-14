@@ -159,8 +159,20 @@ def _run_refresh_and_runtime(send_telegram, ts, env_refresh=None, env_runtime=No
         return {"status": "HARD_STOP", "stage": "refresh", "reason": rj.get("reason")}
     refresh_status = rj.get("status")
     rt_argv = [str(RUNTIME), "--once", "--dedup-path", str(DEDUP)]
-    if send_telegram:
+    # GUARD-CHoCH ATIVO (Cris 2026-08-14): L1 é LONG (continuação 4H) — não enviar ao TG se CHoCH-down
+    # (quebra do higher-low) no 4H E 1H (consome dossiê E0). Fail-open: sem dossiê = envia normal.
+    _choch_block = False
+    try:
+        import sys as _sys
+        _sys.path.insert(0, "/Users/cristrein/tradingview-mcp/alert-bridge")
+        import choch_shadow_guard as _CHG
+        _choch_block = _CHG.blocks_long()
+    except Exception:
+        _choch_block = False
+    if send_telegram and not _choch_block:
         rt_argv.append("--send-telegram")
+    elif send_telegram and _choch_block:
+        print("(CHoCH-guard: L1 LONG bloqueado — choch_dn 4H+1H, sem --send-telegram)", flush=True)
     rt = _run(rt_argv, env=env_runtime)
     try:
         rtj = json.loads(rt.stdout)
