@@ -56,7 +56,16 @@ if sum(1 for p in sep if re.search(p, blob, re.IGNORECASE)) < 1:
 
 # G7 (Cris 2026-08-11) — bypass EXPLÍCITO e AUDITÁVEL: exige `SANITY_PROBE: <razão>` (colon+texto), não o
 # antigo dedup silencioso (que deixava re-correr a mesma análise míope sem endereçar o checklist).
-if re.search(r"SANITY_PROBE\s*:\s*\S", cmd):
+_sp = re.search(r"SANITY_PROBE\s*:\s*(.+)", cmd)
+if _sp:
+    # Cris 2026-08-14: bypass deixa de ser silencioso — TODO uso fica registado e auditável.
+    try:
+        L = Path.home() / ".claude/hooks/logs"; L.mkdir(parents=True, exist_ok=True)
+        with open(L / "bypass_uses.log", "a") as f:
+            f.write(json.dumps({"ts": int(time.time()), "guard": "G7_myopia", "token": "SANITY_PROBE",
+                                "reason": _sp.group(1).strip()[:200], "cmd": cmd[:200]}) + "\n")
+    except Exception:
+        pass
     sys.exit(0)
 
 # dedup per session+script
