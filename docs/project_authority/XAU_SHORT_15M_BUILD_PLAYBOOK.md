@@ -44,8 +44,12 @@ Oito padrões transversais que aparecem em ≥3 estratégias LONG vencedoras. **
 8. **Validação = FORWARD, nunca OOS/cross-asset; painel COMPLETO sempre.** Todo desenho aprovado in-sample fica selado com
    prereg + coletor forward = árbitro. Painel obrigatório: N · WR · sumR · avgR · DD · return/DD · **STREAK** · por-ano.
 
-**Evidência-âncora (in-sample, real):** L1 N24·75%·+45,2R · L2/BPT V2 N17·53%·+36,2R (exit +105,3R, ret/DD 26×) ·
-Cp N21·43%·+12,6R·GT5/5 · B MB3+spring 3W/0L · A1 13/14·A2 16/18 · N96 52W/44L·+112R · RWS N435·47,6%·+291,5R (null p=0).
+**Evidência-âncora (in-sample, real — números verificados byte-exato 2026-08-15):** L1 N24·75%·+45,2R ·
+**L2/BPT V2 N17·53%·+36,2R (exit +105,3R, ret/DD 26×) — ⚠️ o edge de ENTRADA é BETA long-gold, não alpha**
+(teste pure-edge phase51: entradas estruturais NÃO batem 100 draws random em nenhum exit; a L2 vale pelo EXIT/gate/gestão,
+não pela seleção de entrada) · Cp N21·43%·+12,6R·GT5/5 · B MB3+spring 3W/0L · A1 13/14·A2 16/18 · N96 52W/44L·+112R ·
+RWS N435·47,6%·+291,5R (null p=0, o único com edge de sinal genuíno provado). **Regra de leitura desta linha: N e sumR
+positivos NÃO são edge até o null pagar (Padrão 6) — L2 é o caso-escola de beta disfarçado.**
 
 ---
 
