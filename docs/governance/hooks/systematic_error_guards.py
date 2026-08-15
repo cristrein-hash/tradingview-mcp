@@ -41,8 +41,8 @@ if isinstance(tr, dict):
 elif isinstance(tr, str):
     output = tr
 
-# Skip self-tests of the guards themselves
-if "/hooks/" in command or ".claude/hooks" in command:
+# Skip self-tests of the guards themselves + escritas em infra de hooks/governança (não é análise de mercado)
+if "/hooks/" in command or ".claude/hooks" in command or "/hooks/" in fpath or ".claude/hooks" in fpath:
     sys.exit(0)
 
 def src(name):

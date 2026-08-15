@@ -81,6 +81,40 @@ if _sp:
 # script passava por dedup SEM exigir/registar SANITY_PROBE = bypass silencioso (furo real apanhado).
 # Agora o único caminho de passagem é SANITY_PROBE (acima, LOGADO). Sem ele, bloqueia SEMPRE.
 
+# #2 FIX (Cris 2026-08-15): 2º ESTÁGIO — juiz LLM (Haiku) converte keyword→raciocínio. O regex acima é só o
+# GATILHO (alta recall); o juiz LÊ o script e decide se é REALMENTE análise míope. Limpa falsos positivos
+# (commits/infra que o regex apanhou) e reduz falsos negativos. Fail-CLOSED: se o juiz falhar (None), cai no
+# bloqueio+checklist determinístico abaixo (= comportamento atual, seguro). G7_JUDGE=off desliga o estágio.
+try:
+    import _g7_judge
+    _v = _g7_judge.judge(cmd, blob)
+except Exception:
+    _v = None
+if _v is not None:
+    try:
+        import _guard_log
+        _guard_log.fire("G7_judge", "judge",
+                        f"mkt={_v.get('is_market_analysis')} mf={_v.get('multifatorial')} tj={_v.get('trajetoria')} do={_v.get('dois_objetivos')}")
+    except Exception:
+        pass
+    if not _v.get("is_market_analysis"):
+        sys.exit(0)                       # não é análise de mercado → falso positivo do regex, LIMPO pelo juiz
+    _myopic = (_v.get("multifatorial") is False) or (_v.get("trajetoria") is False)
+    if not _myopic:
+        sys.exit(0)                       # é análise mas passa a rubrica → deixa correr
+    _porque = (_v.get("porque") or "")[:220]
+    print("🧭 JUIZ ANTI-MIOPIA (Haiku) — ANÁLISE MÍOPE.\n"
+          f"  multifatorial={_v.get('multifatorial')} · trajetória={_v.get('trajetoria')} · 2-objetivos={_v.get('dois_objetivos')}\n"
+          f"  porquê: {_porque}\n"
+          "  → re-desenha como leitura dinâmica multi-fatorial (convergência de ≥2 sub-estados ortogonais + trajetória)\n"
+          "    ANTES de rodar. Se for sonda deliberada: 'SANITY_PROBE: <razão>'.", file=sys.stderr)
+    try:
+        import _guard_log; _guard_log.fire("G7_myopia", "block", f"judge: {_porque}")
+    except Exception:
+        pass
+    sys.exit(2)
+# juiz indisponível (None) → fallback ao bloqueio+checklist determinístico (fail-closed):
+
 msg = (
     "🧭 ANÁLISE DE LEITURA/SEPARAÇÃO DETECTADA — checklist anti-miopia ANTES de rodar.\n\n"
     "O default errado (repetido o dia inteiro) = teste de EIXO ÚNICO ESTÁTICO na barra i. Confirme:\n"
