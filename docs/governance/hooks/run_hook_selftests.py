@@ -60,13 +60,30 @@ blackbox("pre_approval_guard", {"tool_name": "Write", "tool_input": {"file_path"
 # pre_approval: conteúdo normal → passa
 blackbox("pre_approval_guard", {"tool_name": "Write", "tool_input": {"file_path": MEMF, "content": "nota qualquer sem promoção"}}, 0,
          label="normal passa")
-# pre_mcp_action: screenshot sem flag → bloqueia
-blackbox("pre_mcp_action_guard", {"tool_name": "mcp__tradingview__capture_screenshot", "tool_input": {}}, 2,
-         label="screenshot bloqueia")
+# pre_mcp_action: screenshot sem flag → bloqueia. #3 (Cris 2026-08-15): DEPENDE DE ESTADO — se houver flag
+# de autorização fresca (~/.claude/.mcp_action_ok), o screenshot passa LEGITIMAMENTE; nesse caso SKIP (não FAIL).
+# Usa a MESMA verificação de frescura do próprio hook (import), não uma cópia aproximada.
+_mcp_fresh = False
+try:
+    sys.path.insert(0, str(H))
+    import time as _t
+    import pre_mcp_action_guard as _pm
+    _mcp_fresh = _pm._flag_fresh(_t.time())
+except Exception:
+    _mcp_fresh = False
+if _mcp_fresh:
+    results.append(("pre_mcp_action_guard [screenshot]", None, "SKIP: flag mcp viva (depende de estado)"))
+else:
+    blackbox("pre_mcp_action_guard", {"tool_name": "mcp__tradingview__capture_screenshot", "tool_input": {}}, 2,
+             label="screenshot bloqueia")
 
-# ---- relatório ----
-allok = all(ok for _, ok, _ in results)
+# ---- relatório ----  (ok=True→OK · ok=False→FAIL · ok=None→SKIP; SKIP não falha a suite)
+fails = [r for r in results if r[1] is False]
+allok = not fails
 for lab, ok, detail in results:
-    print(f"  [{'OK' if ok else 'FAIL'}] {lab:52s} {detail}")
-print("META-SELFTEST", "PASS" if allok else "FAIL", f"({sum(1 for _,o,_ in results if o)}/{len(results)})")
+    tag = "SKIP" if ok is None else ("OK" if ok else "FAIL")
+    print(f"  [{tag}] {lab:52s} {detail}")
+n_ok = sum(1 for _, o, _ in results if o is True)
+n_skip = sum(1 for _, o, _ in results if o is None)
+print("META-SELFTEST", "PASS" if allok else "FAIL", f"({n_ok} OK, {len(fails)} FAIL, {n_skip} SKIP)")
 sys.exit(0 if allok else 1)

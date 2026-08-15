@@ -13,8 +13,13 @@ from pathlib import Path
 
 CLAUDE = os.environ.get("CLAUDE_EXE", "/Users/cristrein/.local/bin/claude")
 MODEL = os.environ.get("G7_JUDGE_MODEL", "claude-haiku-4-5")
-TIMEOUT = int(os.environ.get("G7_JUDGE_TIMEOUT", "20"))
+# #2 (Cris 2026-08-15): 15s (o sucesso típico foi ~12.7s) — falha mais cedo, degrada mais depressa ao checklist.
+TIMEOUT = int(os.environ.get("G7_JUDGE_TIMEOUT", "15"))
 CACHE = Path("/tmp/.claude_g7_judge")
+# #1 (Cris 2026-08-15): marca de "Haiku-lento". Após um timeout, o juiz salta durante SLOW_SKIP_S — evita
+# pagar TIMEOUT repetido quando o Haiku está sobrecarregado (cada corrida cairia no checklist na mesma).
+SLOW_MARK = Path("/tmp/.claude_g7_judge_slow")
+SLOW_SKIP_S = int(os.environ.get("G7_JUDGE_SLOW_SKIP", "60"))
 
 SYS = ("Es um juiz de metodologia de analise quantitativa de trading. Les o CODIGO de um script e classificas "
        "o DESENHO da analise contra uma rubrica fixa. Respondes SO com um objeto JSON, sem texto a' volta, sem "
@@ -43,6 +48,12 @@ def judge(cmd, script_text):
     """Devolve dict {is_market_analysis, multifatorial, trajetoria, dois_objetivos, porque} ou None."""
     if os.environ.get("G7_JUDGE", "on") == "off":
         return None
+    # #1: janela "Haiku-lento" — se houve timeout recente, salta o juiz (não paga TIMEOUT de novo).
+    try:
+        if SLOW_MARK.exists() and (time.time() - SLOW_MARK.stat().st_mtime) < SLOW_SKIP_S:
+            return None
+    except Exception:
+        pass
     try:
         blob = ((cmd or "") + "\n" + (script_text or ""))[:16000]
         h = _hash(blob)
@@ -54,9 +65,16 @@ def judge(cmd, script_text):
                 return json.loads(cf.read_text())
         except Exception:
             cf = None
-        r = subprocess.run([CLAUDE, "-p", RUBRIC + blob, "--append-system-prompt", SYS,
-                            "--output-format", "json", "--model", MODEL],
-                           capture_output=True, text=True, timeout=TIMEOUT)
+        try:
+            r = subprocess.run([CLAUDE, "-p", RUBRIC + blob, "--append-system-prompt", SYS,
+                                "--output-format", "json", "--model", MODEL],
+                               capture_output=True, text=True, timeout=TIMEOUT)
+        except subprocess.TimeoutExpired:
+            try:
+                SLOW_MARK.write_text(str(int(time.time())))   # arma a janela de skip
+            except Exception:
+                pass
+            return None
         if r.returncode != 0:
             return None
         outer = json.loads(r.stdout)
