@@ -107,3 +107,4 @@
 - 2026-08-14 19:45 UTC · `memory_delta_20260814g_prompt_recalibracao_contra_perna.sql` · memory_items 406→407 · tag-rows 1/1 · OK
 - 2026-08-15 16:17 UTC · `memory_delta_20260815a_reader_to_strategies_step2.sql` · memory_items 407→409 · tag-rows 2/2 · OK
 - 2026-08-15 17:15 UTC · `memory_delta_20260815b_behavior_guards_tooling.sql` · memory_items 409→410 · tag-rows 1/1 · OK
+- 2026-08-15 19:10 UTC · `memory_delta_20260815c_xau_short_playbook.sql` · memory_items 410→411 · tag-rows 1/1 · OK
