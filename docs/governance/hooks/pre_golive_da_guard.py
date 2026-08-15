@@ -116,6 +116,10 @@ def main():
     ok, msg = decide(cmd, _staged_files(), load_ledger(time.time()), time.time())
     if ok:
         return 0
+    try:
+        import _guard_log; _guard_log.fire("pre_golive_da", "block", msg.split("\n")[0][:120])
+    except Exception:
+        pass
     sys.stderr.write(msg)
     return 2
 

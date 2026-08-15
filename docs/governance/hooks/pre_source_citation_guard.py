@@ -87,6 +87,10 @@ def main():
     ok, msg = decide(fp, content)
     if ok:
         return 0
+    try:
+        import _guard_log; _guard_log.fire("pre_source_citation", "block", msg.split("\n")[0][:120])
+    except Exception:
+        pass
     sys.stderr.write(msg)
     return 2
 

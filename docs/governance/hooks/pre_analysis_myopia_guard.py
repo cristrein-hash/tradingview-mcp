@@ -33,6 +33,15 @@ if re.search(r"python3?\s+-c\s+", cmd):
 # Only fire on ACTUAL analysis execution: running a .py script or a python heredoc (not echoes/greps)
 if not (re.search(r"python3?\s+\S+\.py\b", cmd) or re.search(r"python3?\s+-\s*<<|python3?\s+<<", cmd)):
     sys.exit(0)
+# (a) Cris 2026-08-15: BAIXAR FALSO-POSITIVO. selftests e aplicadores de seed/governança NÃO são análise de
+# mercado — disparavam só porque o comando composto (ex.: 'git add ... && python3 apply_memory_delta.py') corre
+# um .py e o commit/seed menciona 'estrutura/choch'. Exime-os ANTES de montar a assinatura.
+if "--selftest" in cmd:
+    sys.exit(0)
+_scripts = re.findall(r"python3?\s+(\S+\.py)", cmd)
+_EXEMPT = ("apply_memory_delta.py", "/scripts/supabase/", "/scripts/safety/", "check_no_invented", "check_slim_policy")
+if _scripts and all(any(e in s for e in _EXEMPT) for s in _scripts):
+    sys.exit(0)
 
 # Signature of a separation/reading/filter analysis
 sep = [r"separa", r"\blift\b", r"runner", r"\bloser\b", r"\bskip", r"\bfilter\b|filtro",

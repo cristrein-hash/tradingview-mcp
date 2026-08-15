@@ -169,6 +169,10 @@ def main():
                      stop_hook_active=bool(data.get("stop_hook_active")), ob_box_tfs=ob_box_tfs)
     if ok:
         return 0
+    try:
+        import _guard_log; _guard_log.fire("stop_price_all_tf", "block", msg.split("\n")[0][:120])
+    except Exception:
+        pass
     sys.stderr.write(msg)
     return 2
 

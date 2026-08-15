@@ -62,6 +62,10 @@ def main():
     ok, msg = decide(data.get("tool_name") or "", _flag_fresh(time.time()))
     if ok:
         return 0
+    try:
+        import _guard_log; _guard_log.fire("pre_mcp_action", "block", msg.split("\n")[0][:120])
+    except Exception:
+        pass
     sys.stderr.write(msg)
     return 2
 

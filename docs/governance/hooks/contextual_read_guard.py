@@ -66,6 +66,10 @@ if tn == "Bash" and not any(x in low for x in _SELF) and re.search(r"python3?\s+
                   "  → LÊ o indicador real primeiro: MCP data_get_pine_boxes (OB Detector) ou store pine_boxes_*.json.\n"
                   "  → OU corre my-strategy/core/contextual_read.py (token fresco ≤15min) OU declara READ_OB_ZONES (derivas de OB lida).\n"
                   "  Estrutura/zona vem SEMPRE do indicador, NUNCA re-derivada de OHLC crua.", file=sys.stderr)
+            try:
+                import _guard_log; _guard_log.fire("contextual_read_ruleC", "block", "deriva estrutura de OHLC sem ler indicador")
+            except Exception:
+                pass
             sys.exit(2)
 
 # isenções: o próprio leitor/guards/bar-store/research/limpezas + token de derivação legítima de OB já lida
@@ -86,6 +90,10 @@ def block(kind, extra):
           "  → Dias anteriores: MCP `chart_scroll_to_date` + `data_get_pine_boxes` (zonas OB persistem).\n"
           "  → Zona/nível vem SEMPRE do indicador lido, NUNCA computado/hardcodado. Deriva de OB lida = token 'READ_OB_ZONES'.\n"
           "  (docs/architecture/CONTEXTUAL_READ_PROTOCOL.md)", file=sys.stderr)
+    try:
+        import _guard_log; _guard_log.fire("contextual_read", "block", kind)
+    except Exception:
+        pass
     sys.exit(2)
 
 
