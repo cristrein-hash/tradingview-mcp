@@ -86,7 +86,9 @@ def run_B(rows, out):
 
 RETOMA_LEDGER = STATE / "retoma_ledger.jsonl"
 RECLAIM_LEDGER = STATE / "reclaim_ledger.jsonl"
-RECLAIM_AUTH = os.environ.get("RECLAIM_PRODUCTION_AUTHORIZED") == "1"   # group Telegram só com flag (default OFF)
+# RECLAIM Telegram (Cris 2026-08-16): PESSOAL esta semana p/ observar forward; grupo só quando o Cris ativar
+# a semana que vem se correr bem. Modos: personal (chat privado/AUTHORIZED_CHAT_ID) | group | off.
+RECLAIM_TG = os.environ.get("RECLAIM_TELEGRAM", "personal")
 
 
 def run_reclaim(rows, out):
@@ -109,13 +111,15 @@ def run_reclaim(rows, out):
             rec = dict(f); rec["ts"] = out["ts"]; rec["outcome"] = "OPEN"; rec["regime"] = out.get("regime")
             fh.write(json.dumps(rec, ensure_ascii=False) + "\n"); added += 1; known.add(f["reclaim_t"])
             led.append(rec)
-            if RECLAIM_AUTH:
+            if RECLAIM_TG in ("personal", "group"):
                 try:
-                    import telegram_notify as TN
+                    import e2_quality as E2
+                    aud = "group" if RECLAIM_TG == "group" else "assistant"   # assistant = chat privado
                     msg = ("🔄 RETOMADA (reclaim-and-go) LONG XAU 15M @ %.2f\nSL %.2f  TGT3R %.2f  [%s]\n"
                            "regime %s · reversão-long · forward-validação (NÃO provado)" %
                            (f["entry"], f["sl"], f["tgt"], f["mode"], out.get("regime")))
-                    TN.send_telegram(msg); sent += 1
+                    if E2._tg_send(msg, audience=aud):
+                        sent += 1
                 except Exception:
                     pass
     # resolve OPEN -> WIN/LOSS SL-first (árbitro forward)
@@ -136,7 +140,7 @@ def run_reclaim(rows, out):
         tmp.write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in led))
         os.replace(tmp, RECLAIM_LEDGER)
     out["reclaim"] = "frescos %d · registados %d · tg %d(%s) · resolvidos %d" % (
-        len(fresh), added, sent, "ON" if RECLAIM_AUTH else "OFF", resolved)
+        len(fresh), added, sent, RECLAIM_TG, resolved)
 
 
 # RETOMA v1 = ARQUIVADA (Cris 2026-08-02, avaliação da semana): prereg REPROVADO (streak 8L > baliza 5;
