@@ -85,6 +85,58 @@ def run_B(rows, out):
 
 
 RETOMA_LEDGER = STATE / "retoma_ledger.jsonl"
+RECLAIM_LEDGER = STATE / "reclaim_ledger.jsonl"
+RECLAIM_AUTH = os.environ.get("RECLAIM_PRODUCTION_AUTHORIZED") == "1"   # group Telegram só com flag (default OFF)
+
+
+def run_reclaim(rows, out):
+    """Motor RETOMADA (reclaim-sequence) — reversão-long que preenche o buraco Cp/A1A2 (Cris 2026-08-15).
+    Corre em BEAR E RANGE (o 1D NÃO fecha a direção; reversão-long elegível fora de BULL). Forward-ledger
+    próprio (resolve SL-first, como RETOMA/B) — forward=árbitro, NÃO shadow. Group Telegram só com
+    RECLAIM_PRODUCTION_AUTHORIZED=1. Só regista fire FRESCO (<=FRESH_BARS). NÃO é edge provado. Fail-closed."""
+    import reclaim_engine as RE
+    T = [r["t"] for r in rows]; O = [r["o"] for r in rows]; H = [r["h"] for r in rows]
+    L = [r["l"] for r in rows]; C = [r["c"] for r in rows]
+    fires = RE.scan(T, O, H, L, C)
+    fresh = [f for f in fires if f["etime"] >= T[-1] - FRESH_BARS * BAR_S]
+    led = [json.loads(l) for l in RECLAIM_LEDGER.read_text().splitlines() if l.strip()] if RECLAIM_LEDGER.exists() else []
+    known = {r.get("reclaim_t") for r in led}
+    added = 0; sent = 0
+    with open(RECLAIM_LEDGER, "a") as fh:
+        for f in fresh:
+            if f["reclaim_t"] in known:
+                continue
+            rec = dict(f); rec["ts"] = out["ts"]; rec["outcome"] = "OPEN"; rec["regime"] = out.get("regime")
+            fh.write(json.dumps(rec, ensure_ascii=False) + "\n"); added += 1; known.add(f["reclaim_t"])
+            led.append(rec)
+            if RECLAIM_AUTH:
+                try:
+                    import telegram_notify as TN
+                    msg = ("🔄 RETOMADA (reclaim-and-go) LONG XAU 15M @ %.2f\nSL %.2f  TGT3R %.2f  [%s]\n"
+                           "regime %s · reversão-long · forward-validação (NÃO provado)" %
+                           (f["entry"], f["sl"], f["tgt"], f["mode"], out.get("regime")))
+                    TN.send_telegram(msg); sent += 1
+                except Exception:
+                    pass
+    # resolve OPEN -> WIN/LOSS SL-first (árbitro forward)
+    resolved = 0; chg = False
+    for r in led:
+        if r.get("outcome") != "OPEN":
+            continue
+        i0 = next((i for i, t in enumerate(T) if t > r["etime"]), None)
+        if i0 is None:
+            continue
+        for i in range(i0, len(T)):
+            if L[i] <= r["sl"]:
+                r["outcome"] = "LOSS"; chg = True; resolved += 1; break
+            if H[i] >= r["tgt"]:
+                r["outcome"] = "WIN"; chg = True; resolved += 1; break
+    if chg:
+        tmp = RECLAIM_LEDGER.with_suffix(".tmp")
+        tmp.write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in led))
+        os.replace(tmp, RECLAIM_LEDGER)
+    out["reclaim"] = "frescos %d · registados %d · tg %d(%s) · resolvidos %d" % (
+        len(fresh), added, sent, "ON" if RECLAIM_AUTH else "OFF", resolved)
 
 
 # RETOMA v1 = ARQUIVADA (Cris 2026-08-02, avaliação da semana): prereg REPROVADO (streak 8L > baliza 5;
@@ -167,13 +219,22 @@ def main():
     regime, as_of = read_regime()
     out.update({"regime": regime, "as_of": as_of, "buf_bars": len(rows), "last_bar": iso(rows[-1]["t"])})
     if regime == "RANGE":
+        out["route"] = "RANGE -> B (forward) + RECLAIM (reversão-long, 1D=contexto não veto)"
         run_B(rows, out)
+        try:
+            run_reclaim(rows, out)
+        except Exception as e:
+            out["reclaim"] = f"erro {type(e).__name__}:{str(e)[:60]}"
     elif regime == "BEAR":
-        out["route"] = "BEAR -> Cp (live, sem duplicar) + RETOMA v1 dry"
+        out["route"] = "BEAR -> Cp (live) + RETOMA v1 dry + RECLAIM (reversão-long, 1D=contexto não veto)"
         try:
             run_retoma(rows, out)
         except Exception as e:
             out["retoma"] = f"erro {type(e).__name__}:{str(e)[:60]}"
+        try:
+            run_reclaim(rows, out)
+        except Exception as e:
+            out["reclaim"] = f"erro {type(e).__name__}:{str(e)[:60]}"
     elif regime == "BULL":
         out["route"] = "BULL -> A1/A2 pendente detetor de fundo (task #35)"
     else:
