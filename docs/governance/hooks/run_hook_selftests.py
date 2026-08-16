@@ -38,7 +38,7 @@ def blackbox(name, stdin_obj, expect_exit, env=None, label=""):
 
 # (A) selftests nativos das 6 guardas estruturadas
 for n in ("pre_golive_da_guard", "stop_price_read_all_tf_guard", "pre_source_citation_guard",
-          "pre_commit_checkers_guard", "pre_mcp_action_guard", "pre_daemon_reload_guard"):
+          "pre_commit_checkers_guard", "pre_mcp_action_guard", "pre_daemon_reload_guard", "raw_read_guard"):
     native(n)
 
 # (B) black-box das guardas imperativas (determinístico)
