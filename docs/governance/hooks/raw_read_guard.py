@@ -9,16 +9,24 @@ Passa se: usa `raw_reader`; OU é o próprio leitor/coletor/hook; OU declara esc
 Núcleo decide() puro = testável. py3 stdlib."""
 import sys, json, re
 
-EXEMPT = ("raw_reader", "run_xau_replay_feature_collect", "/hooks/", ".claude/hooks", "raw_reader_ok")
+# EXEMPT = o coletor, hooks, e o escape auditável. NÃO o mero import 'raw_reader' (hole-1 2026-08-16: um
+# ficheiro que importe raw_reader podia AINDA fazer gzip.open manual e passar). O próprio leitor/guard eximem-se
+# por FICHEIRO (fpath), não por texto.
+EXEMPT = ("run_xau_replay_feature_collect", "/hooks/", ".claude/hooks", "raw_reader_ok")
+SELF_FILES = ("raw_reader.py", "raw_read_guard.py")
 DIRECT = re.compile(r"gzip\.open|gzip\.gzipfile|\bgunzip\b|\bzcat\b", re.I)
 
 
-def decide(text):
-    """(ok, msg) puro. Bloqueia leitura direta de raw_replay/*.gz sem raw_reader."""
-    low = (text or "").lower()
+def decide(text, fpath=""):
+    """(ok, msg) puro. Bloqueia leitura direta de raw_replay/TradingData *.gz sem raw_reader."""
+    low = (text or "").lower(); fp = (fpath or "").lower()
+    if any(fp.endswith(s) for s in SELF_FILES):        # editar o próprio leitor/guard = ok (por ficheiro)
+        return True, ""
     if any(x in low for x in EXEMPT):
         return True, ""
-    reads_raw_gz = ("raw_replay" in low) and (".gz" in low)
+    # hole-2 (2026-08-16): apanha também o path do HD (TradingData) sem o literal 'raw_replay'. Limite honesto:
+    # se o path vier SÓ de variável (nenhum literal de path no texto), a hook de TEXTO não o vê (irredutível).
+    reads_raw_gz = (".gz" in low) and ("raw_replay" in low or "tradingdata" in low)
     if reads_raw_gz and DIRECT.search(low):
         return False, (
             "🛑 RAW-READ GUARD — leitura DIRETA de raw_replay/*.gz BLOQUEADA (Cris 2026-08-16)\n"
@@ -41,7 +49,7 @@ def main():
         return 0
     ti = data.get("tool_input") or {}
     text = " ".join(str(ti.get(k) or "") for k in ("command", "content", "new_string", "file_path"))
-    ok, msg = decide(text)
+    ok, msg = decide(text, ti.get("file_path") or "")
     if ok:
         return 0
     try:
@@ -73,6 +81,15 @@ if __name__ == "__main__":
         # 6) o próprio coletor → passa
         ok, _ = decide("run_xau_replay_feature_collect.py escreve raw_replay/x.jsonl.gz via gzip.open")
         t.append(("coletor passa", ok is True))
+        # 7) HOLE-1 FECHADO: importa raw_reader MAS faz gzip.open manual de raw_replay → BLOQUEIA
+        ok, _ = decide("import raw_reader as RR\nimport gzip\ngzip.open('raw_replay/x.jsonl.gz')")
+        t.append(("import raw_reader + gzip.open manual bloqueia (hole-1)", ok is False))
+        # 8) editar o próprio raw_reader.py (fpath) → passa
+        ok, _ = decide("import gzip; gzip.open('.../raw_replay/x.gz')", fpath="/x/my-strategy/core/raw_reader.py")
+        t.append(("editar raw_reader.py passa (fpath)", ok is True))
+        # 9) HOLE-2 ALARGADO: path TradingData (sem literal raw_replay) + gunzip → BLOQUEIA
+        ok, _ = decide("gunzip -c '/Volumes/HD/TradingData/XAUUSD/15M/x.jsonl.gz' | head")
+        t.append(("TradingData sem 'raw_replay' bloqueia (hole-2)", ok is False))
         for lab, r in t:
             print("  [%s] %s" % ("OK" if r else "FAIL", lab))
         allok = all(r for _, r in t)

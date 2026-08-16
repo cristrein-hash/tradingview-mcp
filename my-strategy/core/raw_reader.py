@@ -14,7 +14,9 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 REGISTRY = REPO / "docs/data/dataset_registry.json"
 # raízes possíveis do HD (TradingData). O registry guarda paths relativos "TradingData/...".
-HD_ROOTS = ["/Volumes/GUTS_ LACIE", "/Volumes/GUTS_LACIE", str(REPO)]
+# XAU_HD_ROOT (env) tem prioridade — evita hardcode se o HD montar com outro nome.
+HD_ROOTS = [r for r in [os.environ.get("XAU_HD_ROOT"), "/Volumes/GUTS_ LACIE",
+                        "/Volumes/GUTS_LACIE", str(REPO)] if r]
 
 
 # ── extração por-registo (o 'grp' provado, byte-fiel) ──
@@ -85,9 +87,11 @@ def records(gz_path):
 
 
 def series(gz_path):
-    """Série de barras {t:{o,h,l,c}} do buffer (dedup por time — barras repetem entre snaps). Ordenada."""
+    """Série de barras {t:{o,h,l,c}} do buffer (dedup por time — barras repetem entre snaps). Ordenada.
+    Usa records() (ORDENADO por replay_current_date) — igual ao padrão provado (cp_engine ordena snaps ANTES
+    de construir; assim a versão MAIS TARDIA/completa de cada barra ganha, não a ordem de ficheiro)."""
     bars = {}
-    for r in iter_records(gz_path):
+    for r in records(gz_path):
         for b in (r.get("ohlcv") or []):
             if isinstance(b, dict) and b.get("time") is not None:
                 bars[b["time"]] = {"o": b["open"], "h": b["high"], "l": b["low"], "c": b["close"]}

@@ -7,6 +7,7 @@ profundidade do dip, supply overhead. RAW 15M direto do HD (sem cache primitives
 import gzip, json, bisect, datetime as dt
 from pathlib import Path
 HERE = Path(__file__).resolve().parent
+import sys; sys.path.insert(0, str(HERE)); sys.path.insert(0, "/Users/cristrein/tradingview-mcp/my-strategy/core"); import raw_reader as RR
 RAW = Path("/Volumes/GUTS_ LACIE/TradingData/raw_replay/XAUUSD/15M")
 OUT = HERE / "a2_context"; OUT.mkdir(exist_ok=True)
 BLOCKS = ["XAUUSD_15m_replay_2025-02-25_to_2025-05-25.jsonl.gz", "XAUUSD_15m_replay_2025-05-25_to_2025-08-25.jsonl.gz",
@@ -14,7 +15,7 @@ BLOCKS = ["XAUUSD_15m_replay_2025-02-25_to_2025-05-25.jsonl.gz", "XAUUSD_15m_rep
 LOOKBACK, FORWARD = 120, 288
 import macro_structural_v3 as M, leg_v3 as LV
 ds = lambda t: dt.datetime.utcfromtimestamp(t).strftime("%Y-%m-%d %H:%M")
-grp = lambda rec, k, s: next((x for x in (rec.get(k) or []) if s.lower() in str(x.get("name","")).lower()), None)
+grp = RR.study
 def fnum(x):
     try: return float(str(x).replace("−", "-"))
     except Exception: return None
@@ -25,15 +26,7 @@ def iso2ep(x):
 bars = {}; rsi_t = {}; nasd_t = {}; nas_ev = []; smc_ev = []; zones = {}; bub = {}
 for blk_i, blk in enumerate(BLOCKS):
     mnas = msmc = -1; nasi = smci = False
-    snaps = []
-    with gzip.open(RAW/blk, "rt") as fh:
-        for line in fh:
-            line = line.strip()
-            if not line: continue
-            try: r = json.loads(line)
-            except Exception: continue
-            if isinstance(r, dict) and r.get("ohlcv"): snaps.append(r)
-    snaps.sort(key=lambda r: r.get("replay_current_date") or 0)
+    snaps = RR.records(RAW/blk)
     for r in snaps:
         oh = r.get("ohlcv") or []
         cur = oh[-1]["time"] if oh and isinstance(oh[-1], dict) else None
