@@ -207,6 +207,11 @@ Padrão vigente: `decide()` puro + selftest, exit 2, escape auditável. **Priori
 - **GS6 `pre_short_bias_veto_guard`** 🟥 — bloqueia introdução de veto duro de direção ("esquece shorts", "plano LONG intacto", "1º pullback nunca vende") no prompt/gate. O único veto sancionado = rejeição macro 4H/1D impressa (`DIRECTIONAL_VETO_OK:<razão>`). Fecha o veto que custou ~85pt em 13/08.
 - **GS7 (opcional)** — endurecer a superfície MCP (verificar que o G4 dispara na 1ª ação MCP do lab); a invenção-por-MCP (`data_get_pine_boxes`, tab errada) é o buraco #1 da arquitetura e nenhum dos acima o cobre.
 
+**ESTADO (2026-08-16): GS1, GS2, GS3 CONSTRUÍDOS E WIRED (bloqueantes, meta-runner 15/15).**
+- GS2 = `raw_read_guard` + leitor canónico `raw_reader.py` (2 modos, paridade byte-a-byte; os 6+8 scripts migrados). commit 1bec4f3.
+- GS1 = `pre_short_lab_manifest_guard` (no manifest = no lab); GS3 = `pre_short_recall_gate` (recall do GT#1 antes do backtest). commit 78ba2ba.
+- Faltam GS4 (anti-mirror), GS5 (binary-zone), GS6 (bias-veto), GS7 (MCP) — a construir se/quando o lab lá chegar. **O lab SHORT nasce protegido contra os 3 erros mais caros: SLIM/parse-errado, correr-sem-estrutura, otimizar-sobre-substrato-in-selecionável.**
+
 ---
 
 ## Teto honesto + rabbit holes a evitar
