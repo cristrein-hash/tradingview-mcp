@@ -197,7 +197,11 @@ def components():
 
 def _notify(text):
     """SÓ para o chat pessoal Trading Assistant Trein (AUTHORIZED_CHAT_ID) — ordem Cris 05/08:
-    watchdog NUNCA no grupo. (Antes usava o sender do L1: ia a todos os chats + rótulo errado.)"""
+    watchdog NUNCA no grupo. SILENCIADO por default (Cris 2026-08-16: poluía o pessoal). Vigia+log continuam;
+    Telegram só se WATCHDOG_TELEGRAM=on no ambiente/plist."""
+    import os
+    if os.environ.get("WATCHDOG_TELEGRAM", "off") != "on":
+        return "SILENCED (WATCHDOG_TELEGRAM!=on)"
     try:
         env = {}
         for line in (REPO / "alert-bridge/.env").read_text().splitlines():
