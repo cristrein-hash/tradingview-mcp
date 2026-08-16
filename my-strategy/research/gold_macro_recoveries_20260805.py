@@ -16,21 +16,8 @@ STORE = Path(__file__).resolve().parents[1] / "core/bar_store/store/bars_1d.json
 
 
 def load():
-    bars = {}
-    with gzip.open(RAW, "rt") as fh:
-        for l in fh:
-            i = l.find('"ohlcv":')
-            if i < 0: continue
-            s = l.find('[', i); e = l.find(']', s)
-            try: arr = json.loads(l[s:e+1])
-            except Exception: continue
-            for b in arr:
-                t = b.get("time")
-                if t is None: continue
-                if t not in bars:
-                    bars[t] = [b["open"], b["high"], b["low"], b["close"]]
-                else:
-                    bars[t][1] = max(bars[t][1], b["high"]); bars[t][2] = min(bars[t][2], b["low"]); bars[t][3] = b["close"]
+    import sys as _s; _s.path.insert(0, "/Users/cristrein/tradingview-mcp/my-strategy/core"); import raw_reader as RR
+    bars = RR.series_flat([RAW])                 # 2º padrão canónico (merge, single gz), byte-fiel
     # extensão live (store 1d cobre 2026-05→08, o RAW pára 2026-05-25)
     try:
         for l in open(STORE):

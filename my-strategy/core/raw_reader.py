@@ -98,6 +98,41 @@ def series(gz_path):
     return dict(sorted(bars.items()))
 
 
+# ── MODO 2: leitura FLAT + dedup MERGE (2º padrão do código, a1_causal_entry.load_series) ──
+def series_flat(blocks, raw_dir=None, merge=True):
+    """2º padrão de leitura RAW (byte-fiel aos load_series flat do código): extração FLAT por substring
+    '"ohlcv":' + primeiro [..], acumulado sobre a LISTA de blocks, em ordem de FICHEIRO. Devolve {t:[o,h,l,c]}.
+    Dois sub-modos (ambos existem no código):
+      merge=True  (a1_causal_entry / b_range / gold_macro): open=PRIMEIRO, high=max, low=min, close=ÚLTIMO.
+      merge=False (fundos_gt_unify): KEEP-FIRST puro — 1º snapshot ganha, nada é atualizado.
+    SEMÂNTICA DIFERENTE de series() (last-snapshot-wins ordenado por replay_current_date). Streaming, rápido
+    (só json.loads do array ohlcv). `blocks` = nomes (resolvidos contra raw_dir) e/ou paths absolutos."""
+    bars = {}
+    for blk in blocks:
+        p = Path(blk) if str(blk).startswith("/") else (Path(raw_dir) / blk if raw_dir else Path(blk))
+        with gzip.open(p, "rt") as fh:
+            for l in fh:
+                i = l.find('"ohlcv":')
+                if i < 0:
+                    continue
+                s = l.find('[', i); e = l.find(']', s)
+                if s < 0 or e < 0:
+                    continue
+                try:
+                    arr = json.loads(l[s:e + 1])
+                except Exception:
+                    continue
+                for b in arr:
+                    t = b.get("time")
+                    if t is None:
+                        continue
+                    if t not in bars:
+                        bars[t] = [b["open"], b["high"], b["low"], b["close"]]
+                    elif merge:
+                        bars[t][1] = max(bars[t][1], b["high"]); bars[t][2] = min(bars[t][2], b["low"]); bars[t][3] = b["close"]
+    return bars
+
+
 # ── paths canónicos via registry (não hardcodar) ──
 def _load_registry():
     d = json.loads(REGISTRY.read_text())

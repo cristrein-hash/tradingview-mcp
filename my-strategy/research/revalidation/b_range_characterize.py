@@ -12,21 +12,8 @@ BLK = ["XAUUSD_15m_replay_2025-05-25_to_2025-08-25.jsonl.gz", "XAUUSD_15m_replay
        "XAUUSD_15m_replay_2025-11-25_to_2026-02-25.jsonl.gz", "XAUUSD_15m_replay_2026-02-25_to_2026-05-25_rerun_customOBbaseline.jsonl.gz"]
 WB, WL, HF = 480, 1440, 480   # lookback curto(5d), contexto longo(15d), forward(5d)
 ds = lambda t: dt.datetime.utcfromtimestamp(int(t)).strftime("%Y-%m-%d")
-bars = {}
-for blk in BLK:
-    with gzip.open(RAW/blk, "rt") as fh:
-        for l in fh:
-            i = l.find('"ohlcv":')
-            if i < 0: continue
-            s = l.find('[', i); e = l.find(']', s)
-            if s < 0 or e < 0: continue
-            try: arr = json.loads(l[s:e+1])
-            except Exception: continue
-            for b in arr:
-                t = b.get("time")
-                if t is None: continue
-                if t not in bars: bars[t] = [b["open"], b["high"], b["low"], b["close"]]
-                else: bars[t][1] = max(bars[t][1], b["high"]); bars[t][2] = min(bars[t][2], b["low"]); bars[t][3] = b["close"]
+import sys as _s; _s.path.insert(0, "/Users/cristrein/tradingview-mcp/my-strategy/core"); import raw_reader as RR
+bars = RR.series_flat(BLK, RAW)                 # 2º padrão canónico (merge), byte-fiel ao loop flat original
 T = sorted(bars); H=[bars[t][1] for t in T]; L=[bars[t][2] for t in T]; C=[bars[t][3] for t in T]; N = len(T)
 GT = json.load(open(HERE/"results"/"REGIME_GT_FUNDOS_UNIFIED_20260714.json"))
 B = sorted([f for f in GT["fundos"] if f.get("subclasse") == "B_range"], key=lambda x: x["t"])

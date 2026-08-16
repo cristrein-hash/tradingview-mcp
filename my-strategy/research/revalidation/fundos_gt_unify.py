@@ -26,23 +26,11 @@ ds = lambda t: dt.datetime.utcfromtimestamp(t).strftime("%Y-%m-%d %H:%M")
 # --- RAW 15M do HD (snapshots de replay: extrair só o array `ohlcv` por substring — flat, rápido;
 #     reconstruir a série por dedup de time). Só ficheiros que cobrem o range dos fundos (2025+). ---
 def load_15m():
-    rows = {}
+    import sys as _s; _s.path.insert(0, "/Users/cristrein/tradingview-mcp/my-strategy/core"); import raw_reader as RR
     files = [f for f in sorted(glob.glob(str(RAW15_DIR / "*.jsonl.gz"))) if "2024-" not in Path(f).name]
-    for f in files:
-        with gzip.open(f, "rt") as fh:
-            for l in fh:
-                i = l.find('"ohlcv":')
-                if i < 0: continue
-                s = l.find('[', i); e = l.find(']', s)
-                if s < 0 or e < 0: continue
-                try: arr = json.loads(l[s:e + 1])
-                except Exception: continue
-                for b in arr:
-                    t = b.get("time")
-                    if t is not None and t not in rows:
-                        rows[t] = (b.get("low"), b.get("high"), b.get("close"))
-    T = sorted(rows)
-    return T, [rows[t][0] for t in T], [rows[t][1] for t in T], [rows[t][2] for t in T], len(files)
+    bars = RR.series_flat(files, merge=False)     # keep-first; formato original (low,high,close) = [2],[1],[3] de [o,h,l,c]
+    T = sorted(bars)
+    return T, [bars[t][2] for t in T], [bars[t][1] for t in T], [bars[t][3] for t in T], len(files)
 T15, L15, H15, C15, NF = load_15m()
 
 def lowest_in_region(t, r=SNAP_R):
