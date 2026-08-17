@@ -58,7 +58,11 @@ O gate troca **1 sobrevivente (4389,9) por cortar 4 losers de topo** — não é
 1. Localização: a rejeição está num cluster de **supply** HTF **E** o preço **NÃO está sobre uma demanda HTF fresca por baixo** (senão é o fundo de outra pessoa) **E** a **perna imediata 1H é DOWN** (não shortar uma perna que sobe). Se falha qualquer → SKIP.
 2. Posição: entrada no topo do cluster de supply, na rejeição impressa (fecho terço inferior + iniciativa sell + idealmente CHoCH 1H/15M).
 3. SL acima do cluster de supply inteiro +0,1ATR; RR≥2; 3R.
-→ Efeito no 17/08 sobre o short do grupo: **NÃO VERIFICADO.** Hipótese = @~4405 estava ACIMA da demanda 4377-4394 e a perna intradiária subia → o gate SKIParia. Mas a entrada/hora exatas do short-ao-grupo, o estado da perna 1H as-of e a frescura da demanda por baixo **não foram medidos** (sem log de send-ao-grupo localizado). A validar com replay-collect as-of. Não afirmar como facto.
+→ Efeito no 17/08 sobre o short do grupo: **VERIFICADO = RECUSA.** O short-ao-grupo real = 08:02Z `zone_reject` 15M, **entry 4405,42 / SL 4417,19** (`surfaced=True` no `e2_verdicts.jsonl`), stopado (preço→4427). Regra SHORT do gate:
+> - **Perna 1H:** o verdict das 08:02 registou **"PERNA 1H = BULL, 1H up pos 0.48"** (dado contemporâneo, as-of-válido). Perna imediata 1H = **UP**, não DOWN → **viola → SKIP.**
+> - **Sobre demanda:** entry 4405,42 **acima** de abertura dia 4370 / semana 4379 + OB 4377-4394 → segunda violação → SKIP.
+>
+> O E2 enviou-o porque deixou o **sweep-reject 4H suspender o veto contra-perna** e shortou uma rejeição numa perna 1H que subia — a cegueira. O gate exige **perna 1H DOWN** (não aceita a suspensão-por-4H) → **recusa**. Razão primária (perna 1H UP) é as-of-válida, não depende do OB as-of-agora.
 
 ## Caveats
 - A medição de hoje usou OB **as-of-agora** (16:17), não as-of cada sinal — aproximação. O backtest do lab SHORT exige OB **as-of** (replay-collect), o gate live consome o OB fresco do momento.
