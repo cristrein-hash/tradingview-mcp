@@ -48,7 +48,8 @@ def _merge_xau_1d():
     for b in _jl(STORE / "bars_1d.jsonl"):
         base[b["t"]] = b                                   # store corrige/estende (valor final fechado)
     now = NOWT()
-    rows = [base[t] for t in sorted(base) if t + 86400 <= now]  # exclui barra diária em formação
+    rows = [base[t] for t in sorted(base) if t + 23 * 3600 <= now]  # exclui barra em formação (sessão XAU real
+                                                                    # = 23h: fecha 22:00 Lisboa; Cris 2026-08-17)
     return rows
 
 

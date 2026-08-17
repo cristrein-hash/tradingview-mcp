@@ -33,9 +33,12 @@ TFS = {
     "15":  {"dur": 900,   "phase": 0,    "file": STORE / "bars_15m.jsonl", "count": 40,  "poll": 60,  "retain": 30*86400},
     "60":  {"dur": 3600,  "phase": 0,    "file": REV / "raw_1h_ohlc.jsonl", "count": 12, "poll": 300, "retain": None},
     "240": {"dur": 14400, "phase": 7200, "file": REV / "raw_4h_ohlc.jsonl", "count": 8,  "poll": 900, "retain": None},
-    "1D":  {"dur": 86400, "phase": None, "file": STORE / "bars_1d.jsonl",  "count": 400, "poll": 900, "retain": None},
+    # close_s (Cris 2026-08-17): a sessão XAU dura 23h reais (fecha 22:00 Lisboa; stamp = abertura). Sem isto a
+    # barra diária só era aceite 24h após o stamp = 1h DEPOIS do fecho real -> regime 1D atrasava 1h todo dia.
+    "1D":  {"dur": 86400, "phase": None, "file": STORE / "bars_1d.jsonl",  "count": 400, "poll": 900, "retain": None,
+            "close_s": 23 * 3600},
     "DXY1D": {"dur": 86400, "phase": None, "file": REV / "raw_dxy_1d.jsonl", "count": 400, "poll": 900, "retain": None,
-              "res": "1D", "symbol": "DXY"},
+              "res": "1D", "symbol": "DXY", "close_s": 23 * 3600},
 }
 BUB_F = STORE / "bubbles_15m.jsonl"
 BUB_RETAIN = 30 * 86400
@@ -168,7 +171,7 @@ def append_tf(tf, tid, bars):
         t = b.get("time")
         if t is None or b.get("close") is None or t in have:
             continue
-        if t + D > now:                             # em formação
+        if t + cfg.get("close_s", D) > now:         # em formação (close_s = duração REAL da sessão, se difere do stamp)
             continue
         if phase is not None and t % D != phase:
             return 0, f"{tf}: t {iso(t)} fora da fase ({t % D} != {phase})"
