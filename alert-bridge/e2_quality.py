@@ -189,6 +189,21 @@ def notify_surfaced(cand, th):
                 return
         except Exception:
             pass
+    # HTF LOCATION GATE espelho SHORT (Cris 2026-08-17 APROVADO): suprime shorts como o 08:02 (@4405, perna
+    # 1H UP / sobre demanda HTF fresca). Enforcing só na parte medida (perna 1H = as-of-válida). Fail-open.
+    if cand.get("direction") == "SHORT":
+        try:
+            import sys as _s
+            _s.path.insert(0, "/Users/cristrein/tradingview-mcp/my-strategy/core")
+            import reclaim_location_gate as RLG
+            _dsr, _stale = RLG.load_dossier()
+            if _dsr is not None and not _stale:
+                _g = RLG.gate_short(cand, _dsr)
+                if not _g["pass"]:
+                    print("(HTF-location-gate SHORT bloqueado — %s)" % _g["reason"], flush=True)
+                    return
+        except Exception:
+            pass
     prefix = ""
     try:
         import trader_map as _TM

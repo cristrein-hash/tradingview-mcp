@@ -97,50 +97,72 @@ def run_reclaim(rows, out):
     próprio (resolve SL-first, como RETOMA/B) — forward=árbitro, NÃO shadow. Group Telegram só com
     RECLAIM_PRODUCTION_AUTHORIZED=1. Só regista fire FRESCO (<=FRESH_BARS). NÃO é edge provado. Fail-closed."""
     import reclaim_engine as RE
+    import reclaim_location_gate as RLG              # HTF LOCATION GATE (Cris 2026-08-17 APROVADO)
+    dossier, stale = RLG.load_dossier()              # E0 canónico as-of (consumir, não reconstruir)
     T = [r["t"] for r in rows]; O = [r["o"] for r in rows]; H = [r["h"] for r in rows]
     L = [r["l"] for r in rows]; C = [r["c"] for r in rows]
     fires = RE.scan(T, O, H, L, C)
     fresh = [f for f in fires if f["etime"] >= T[-1] - FRESH_BARS * BAR_S]
     led = [json.loads(l) for l in RECLAIM_LEDGER.read_text().splitlines() if l.strip()] if RECLAIM_LEDGER.exists() else []
     known = {r.get("reclaim_t") for r in led}
-    added = 0; sent = 0
+    added = 0; sent = 0; suppressed = 0
     with open(RECLAIM_LEDGER, "a") as fh:
         for f in fresh:
             if f["reclaim_t"] in known:
                 continue
+            # GATE: enforcing em localização+posição (parte PROVADA); fail-open se dossier stale/ausente
+            if dossier is not None and not stale:
+                g = RLG.gate(f, dossier)
+            else:
+                g = {"pass": True, "reason": "fail-open: dossier stale/ausente (não enforça)"}
             rec = dict(f); rec["ts"] = out["ts"]; rec["outcome"] = "OPEN"; rec["regime"] = out.get("regime")
+            rec["gate_pass"] = g["pass"]; rec["gate_reason"] = g["reason"]; rec["gate_cluster"] = g.get("cluster")
+            rec["gate_pos"] = g.get("pos")
+            rec["sl_wide"] = g.get("sl_wide"); rec["tgt_wide"] = g.get("tgt_wide")   # SHADOW (não substitui o SL enviado)
+            rec["outcome_wide"] = "OPEN" if g.get("sl_wide") is not None else None
             fh.write(json.dumps(rec, ensure_ascii=False) + "\n"); added += 1; known.add(f["reclaim_t"])
             led.append(rec)
-            if RECLAIM_TG in ("personal", "group"):
+            # ENFORCING: só envia ao Telegram se o gate passar (corta alto-no-ar/topo). Reprovados ficam
+            # no ledger (com gate_reason) para auditoria forward, mas NÃO poluem o Telegram.
+            if g["pass"] and RECLAIM_TG in ("personal", "group"):
                 try:
                     import e2_quality as E2
                     aud = "group" if RECLAIM_TG == "group" else "assistant"   # assistant = chat privado
                     msg = ("🔄 RETOMADA (reclaim-and-go) LONG XAU 15M @ %.2f\nSL %.2f  TGT3R %.2f  [%s]\n"
-                           "regime %s · reversão-long · forward-validação (NÃO provado)" %
-                           (f["entry"], f["sl"], f["tgt"], f["mode"], out.get("regime")))
+                           "loc: %s · regime %s · reversão-long · forward (NÃO provado)" %
+                           (f["entry"], f["sl"], f["tgt"], f["mode"], g["reason"], out.get("regime")))
                     if E2._tg_send(msg, audience=aud):
                         sent += 1
                 except Exception:
                     pass
-    # resolve OPEN -> WIN/LOSS SL-first (árbitro forward)
+            elif not g["pass"]:
+                suppressed += 1
+    # resolve OPEN -> WIN/LOSS SL-first (árbitro forward). Resolve o SL enviado (outcome) E o SL-alargado
+    # shadow (outcome_wide) lado a lado, para o forward decidir se o SL-alargado melhora.
     resolved = 0; chg = False
     for r in led:
-        if r.get("outcome") != "OPEN":
-            continue
         i0 = next((i for i, t in enumerate(T) if t > r["etime"]), None)
         if i0 is None:
             continue
-        for i in range(i0, len(T)):
-            if L[i] <= r["sl"]:
-                r["outcome"] = "LOSS"; chg = True; resolved += 1; break
-            if H[i] >= r["tgt"]:
-                r["outcome"] = "WIN"; chg = True; resolved += 1; break
+        if r.get("outcome") == "OPEN":
+            for i in range(i0, len(T)):
+                if L[i] <= r["sl"]:
+                    r["outcome"] = "LOSS"; chg = True; resolved += 1; break
+                if H[i] >= r["tgt"]:
+                    r["outcome"] = "WIN"; chg = True; resolved += 1; break
+        # SHADOW: SL-alargado (não afeta o que foi enviado; só mede)
+        if r.get("outcome_wide") == "OPEN" and r.get("sl_wide") is not None:
+            for i in range(i0, len(T)):
+                if L[i] <= r["sl_wide"]:
+                    r["outcome_wide"] = "LOSS"; chg = True; break
+                if H[i] >= r.get("tgt_wide", r["tgt"]):
+                    r["outcome_wide"] = "WIN"; chg = True; break
     if chg:
         tmp = RECLAIM_LEDGER.with_suffix(".tmp")
         tmp.write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in led))
         os.replace(tmp, RECLAIM_LEDGER)
-    out["reclaim"] = "frescos %d · registados %d · tg %d(%s) · resolvidos %d" % (
-        len(fresh), added, sent, RECLAIM_TG, resolved)
+    out["reclaim"] = "frescos %d · registados %d · enviados %d · suprimidos-gate %d(%s) · resolvidos %d%s" % (
+        len(fresh), added, sent, suppressed, RECLAIM_TG, resolved, " · dossier-stale(fail-open)" if stale else "")
 
 
 # RETOMA v1 = ARQUIVADA (Cris 2026-08-02, avaliação da semana): prereg REPROVADO (streak 8L > baliza 5;
