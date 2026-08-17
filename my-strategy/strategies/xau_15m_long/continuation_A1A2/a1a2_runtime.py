@@ -71,15 +71,29 @@ def store_series(n=300):
 
 
 def macro_gate():
-    """(passa: bool, rótulo). Gate = structural_1d BULL (spec); env A1A2_REGIME_GATE_OFF=1 destrava."""
+    """(passa: bool, rótulo). Agilidade na transição (Cris 2026-08-17): elegível se 1D NÃO-BEAR (caso-base,
+    inclui BULL e RANGE) OU caminho-rápido = v5_4h BULL + legs 1H e 4H ambos 'up' (dois rápidos a concordar,
+    proxy de cruzamento). Assim A1/A2 apanha a viragem sem esperar o 1D lento, mas exige confirmação dupla no
+    rápido para não comprar falso-BULL. env A1A2_REGIME_GATE_OFF=1 destrava tudo."""
     try:
         d = json.load(open(E0))
-        reg = (d.get("axes", {}).get("regime", {}).get("structural_1d") or {}).get("regime")
+        ax = d.get("axes", {})
+        reg1d = (ax.get("regime", {}).get("structural_1d") or {}).get("regime")
+        reg4h = (ax.get("regime", {}).get("v5_4h") or {}).get("regime")
+        mtf = ax.get("mtf", {})
+        leg1h = ((mtf.get("60") or {}).get("leg") or {}).get("dir")
+        leg4h = ((mtf.get("240") or {}).get("leg") or {}).get("dir")
     except Exception:
-        reg = None
+        reg1d = reg4h = leg1h = leg4h = None
     if GATE_OFF:
-        return True, f"{reg or '?'} (gate OFF por env)"
-    return reg == "BULL", reg or "indisponível"
+        return True, f"{reg1d or '?'} (gate OFF por env)"
+    base = reg1d in ("BULL", "RANGE")
+    fast = (reg4h == "BULL") and (leg1h == "up") and (leg4h == "up")
+    if base:
+        return True, f"1D {reg1d} (não-BEAR)"
+    if fast:
+        return True, f"rápido: 4H BULL + legs 1H/4H up (1D {reg1d})"
+    return False, f"1D {reg1d or '?'} · 4H {reg4h or '?'} · leg1h {leg1h or '?'} leg4h {leg4h or '?'}"
 
 
 def detect(S):
