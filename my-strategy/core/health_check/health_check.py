@@ -41,11 +41,12 @@ DAEMONS = [
 
 
 def market_open(now_utc):
-    """XAU: fecha sex 21:00 UTC, reabre dom 22:00 UTC."""
+    """XAU: fecha sex 21:00 UTC, reabre dom 22:00 UTC; pausa DIÁRIA de settlement 21:00-22:00 UTC (seg-qui)."""
     wd, hm = now_utc.weekday(), now_utc.hour + now_utc.minute / 60
     if wd == 4 and hm >= 21: return False
     if wd == 5: return False
     if wd == 6 and hm < 22: return False
+    if 21 <= hm < 22: return False                 # pausa diária (o feed não produz barras -> não é congelamento)
     return True
 
 
