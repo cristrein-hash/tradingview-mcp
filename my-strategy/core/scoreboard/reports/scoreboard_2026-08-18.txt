@@ -1,0 +1,7 @@
+SCOREBOARD FORWARD — 2026-08-18 00:49 Lisboa (janela = store 15M ~30d; SL-first)
+linha       N   W-L-O(3R)   sumR(3R)  streak  |  SEGURAR: mediana MFE  sum R-hold  |  falta p/ N
+a1a2        15   5-9-1          +6.0      5L  |        2.07R       +5.8R  |  0
+cp           3   3-0-0          +9.0      0L  |       18.10R      +67.9R  |  17
+e2_reader   17   5-11-1          +4.0      8L  |        1.39R      +56.5R  |  3
+reclaim     10   0-7-3          -7.0      7L  |        1.17R       -4.2R  |  10
+nota: R-hold = SL nunca tocado marca ao preço atual; SL tocado = -1R. MFE = máximo que o trade DEU antes de morrer.
