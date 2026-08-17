@@ -118,8 +118,6 @@ def run_reclaim(rows, out):
             rec = dict(f); rec["ts"] = out["ts"]; rec["outcome"] = "OPEN"; rec["regime"] = out.get("regime")
             rec["gate_pass"] = g["pass"]; rec["gate_reason"] = g["reason"]; rec["gate_cluster"] = g.get("cluster")
             rec["gate_pos"] = g.get("pos")
-            rec["sl_wide"] = g.get("sl_wide"); rec["tgt_wide"] = g.get("tgt_wide")   # SHADOW (não substitui o SL enviado)
-            rec["outcome_wide"] = "OPEN" if g.get("sl_wide") is not None else None
             fh.write(json.dumps(rec, ensure_ascii=False) + "\n"); added += 1; known.add(f["reclaim_t"])
             led.append(rec)
             # ENFORCING: só envia ao Telegram se o gate passar (corta alto-no-ar/topo). Reprovados ficam
@@ -137,26 +135,19 @@ def run_reclaim(rows, out):
                     pass
             elif not g["pass"]:
                 suppressed += 1
-    # resolve OPEN -> WIN/LOSS SL-first (árbitro forward). Resolve o SL enviado (outcome) E o SL-alargado
-    # shadow (outcome_wide) lado a lado, para o forward decidir se o SL-alargado melhora.
+    # resolve OPEN -> WIN/LOSS SL-first (árbitro forward)
     resolved = 0; chg = False
     for r in led:
+        if r.get("outcome") != "OPEN":
+            continue
         i0 = next((i for i, t in enumerate(T) if t > r["etime"]), None)
         if i0 is None:
             continue
-        if r.get("outcome") == "OPEN":
-            for i in range(i0, len(T)):
-                if L[i] <= r["sl"]:
-                    r["outcome"] = "LOSS"; chg = True; resolved += 1; break
-                if H[i] >= r["tgt"]:
-                    r["outcome"] = "WIN"; chg = True; resolved += 1; break
-        # SHADOW: SL-alargado (não afeta o que foi enviado; só mede)
-        if r.get("outcome_wide") == "OPEN" and r.get("sl_wide") is not None:
-            for i in range(i0, len(T)):
-                if L[i] <= r["sl_wide"]:
-                    r["outcome_wide"] = "LOSS"; chg = True; break
-                if H[i] >= r.get("tgt_wide", r["tgt"]):
-                    r["outcome_wide"] = "WIN"; chg = True; break
+        for i in range(i0, len(T)):
+            if L[i] <= r["sl"]:
+                r["outcome"] = "LOSS"; chg = True; resolved += 1; break
+            if H[i] >= r["tgt"]:
+                r["outcome"] = "WIN"; chg = True; resolved += 1; break
     if chg:
         tmp = RECLAIM_LEDGER.with_suffix(".tmp")
         tmp.write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in led))

@@ -29,6 +29,12 @@ SOUND = "/System/Library/Sounds/Sosumi.aiff"
 # entrar = preço ALCANÇA [lo,hi]; rejeição = fecha DE VOLTA fora; invalidação = fecha ALÉM.
 ZONES = [
     {"id": "short_4408_4420", "side": "short", "lo": 4408.0, "hi": 4420.53, "inval": 4435.20},  # SOURCE: SUPPLY 15M/1H
+    # READ_OB_ZONES — break-retest LONG (Cris 12/08 'alarma quando romper 4416 p/ entrar no retest').
+    # B=topo da SUPPLY 15M 4408.57-4416.06 (id 4314); rompe->alarme, volta a tocar 4416->alarme ENTRADA.
+    {"id": "break_retest_long_4416", "side": "break_retest_long", "B": 4416.06, "fail": 4408.0},
+    # READ_OB_ZONES — próximo nível: break-retest do TOPO DO DIA. SOURCE: SUPPLY 15M/1H 4428.42-4435.2 (id 4300).
+    # Rompe 4435 (blue-sky p/ 4450+) -> alarme; volta a tocar 4435 e segura -> alarme ENTRADA LONG.
+    {"id": "break_retest_long_4435", "side": "break_retest_long", "B": 4435.20, "fail": 4420.0},
 ]
 
 
@@ -71,9 +77,27 @@ def alarm(msg):
 def step(zone, bar, st):
     """Avança o FSM de UMA zona. Devolve (novo_estado, alarme_ou_None). Puro (sem I/O)."""
     zid = zone["id"]
-    side, lo, hi, inval = zone["side"], zone["lo"], zone["hi"], zone["inval"]
+    side = zone["side"]
     state = st.get(zid, "ARMED")
     h, l, c = bar["h"], bar["l"], bar["c"]
+
+    # --- MODO break_retest_long (Cris 12/08): romper B -> alarme; voltar a tocar B (retest) -> alarme ENTRADA ---
+    if side == "break_retest_long":
+        B = zone["B"]                    # nivel de rompimento (topo da supply, SOURCE OB)
+        fail = zone.get("fail", B - 8)   # fecho abaixo disto = rompimento falhou
+        if state == "ARMED":
+            if c > B:
+                return "BROKEN", f"{zid}: 🚀 ROMPEU {B} (c={c}) — vigia o RETEST para entrar LONG (nao perseguir o rip)"
+            return "ARMED", None
+        if state == "BROKEN":
+            if c < fail:                 # PRIMEIRO: fechou de volta abaixo = rompimento falhou (nao segurou)
+                return "DONE_FAIL", f"{zid}: rompimento de {B} FALHOU (fechou {c} < {fail}). Sem retest-long; volta a vigiar."
+            if l <= B:                   # voltou a tocar o nivel rompido E segurou (close>=fail) = RETEST
+                return "DONE_RETEST", f"{zid}: 🎯 RETEST de {B} (l={l}, fechou {c}) — ZONA DE ENTRADA LONG. entry ~{B} · SL abaixo do retest · alvo 4435->4450."
+            return "BROKEN", None
+        return state, None               # DONE_* terminal
+
+    lo, hi, inval = zone["lo"], zone["hi"], zone["inval"]
     entered = (h >= lo) if side == "short" else (l <= hi)   # tocou a zona
     if state == "ARMED":
         if entered:
@@ -134,6 +158,22 @@ if __name__ == "__main__":
         t.append(("long rejeicao (fecha>hi) → DONE_REJECT", s == "DONE_REJECT" and a and "REJEICAO" in a))
         s, a = step(L, {"h": 4358, "l": 4345, "c": 4348}, {"l": "TAGGED"})
         t.append(("long rompe (fecha<inval) → DONE_BREAK", s == "DONE_BREAK"))
+        # break_retest_long: ainda abaixo de B → ARMED
+        BR = {"id": "br", "side": "break_retest_long", "B": 4416.06, "fail": 4408.0}
+        s, a = step(BR, {"h": 4412, "l": 4405, "c": 4410}, {})
+        t.append(("br: abaixo de B → ARMED", s == "ARMED" and a is None))
+        # fecha acima de B → BROKEN + alarme rompeu
+        s, a = step(BR, {"h": 4422, "l": 4409, "c": 4419}, {})
+        t.append(("br: fecha>B → BROKEN+alarme", s == "BROKEN" and a and "ROMPEU" in a))
+        # BROKEN + segue a subir sem voltar → MANTEM BROKEN (nao perde o retest)
+        s, a = step(BR, {"h": 4430, "l": 4420, "c": 4428}, {"br": "BROKEN"})
+        t.append(("br: sobe sem voltar → MANTEM BROKEN", s == "BROKEN" and a is None))
+        # BROKEN + volta a tocar B (low<=B) → DONE_RETEST + alarme ENTRADA
+        s, a = step(BR, {"h": 4425, "l": 4415, "c": 4420}, {"br": "BROKEN"})
+        t.append(("br: retest (low<=B) → DONE_RETEST+alarme", s == "DONE_RETEST" and a and "RETEST" in a))
+        # BROKEN + fecha de volta abaixo do fail → DONE_FAIL
+        s, a = step(BR, {"h": 4418, "l": 4402, "c": 4405}, {"br": "BROKEN"})
+        t.append(("br: rompimento falha (c<fail) → DONE_FAIL", s == "DONE_FAIL"))
         for lab, r in t:
             print(f"  [{'OK' if r else 'FAIL'}] {lab}")
         allok = all(r for _, r in t)
