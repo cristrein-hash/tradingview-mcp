@@ -42,13 +42,23 @@ Um cluster = ≥2 destes sobrepostos numa faixa. Fora de qualquer cluster (alto-
 1. Localização: o sweep/retest→reclaim está DENTRO de um cluster de demanda HTF (set acima)? Se NÃO → SKIP (mata os altos-no-ar 4400+).
 2. Posição: entrada no terço inferior do cluster (senão SKIP ou aguarda recuo ao fundo).
 3. SL abaixo do cluster inteiro −0,1ATR; RR≥2 a partir daí; 3R.
-→ Efeito no 17/08: apanha o 4381 (fundo da demanda, SL<4367), corta os chases 4400/4412, e corrige os 4390-topo (SL abaixo da zona em vez de curto).
+
+**Efeito no 17/08 — TESTADO (gate de níveis-fixos: entrada em [~4367, ~4384] = abertura dia/semana ±, SL<~4367; abertura semana/dia SÃO as-of-válidas o dia todo):**
+| sinal | entry | GATE | outcome real | veredito |
+|---|---|---|---|---|
+| 4381 (reclaim genuíno) | 4381,8 | FIRE | bounçou→4427 | ✅ apanha o que interessava |
+| 4400,9 / 4412,4 (chases) | acima | SKIP | LOSS/OPEN | ✅ corta os chases |
+| 4395,8-4398,3 (topo) | acima | SKIP | 3 LOSS | ✅ corta os losers de topo |
+| 4389,9 | acima | SKIP | OPEN (sobreviveu) | ⚠️ **skipa um sobrevivente** |
+| 4379,9 | 4379,9 | FIRE | LOSS (SL 4374 curto) | ⚠️ dispara; SL-largo **poderia** salvar — NÃO provado |
+
+O gate troca **1 sobrevivente (4389,9) por cortar 4 losers de topo** — não é limpo, é honesto. **NÃO "corrige o SL" dos 4390-topo — SKIPa-os por localização.** O componente OB-do-cluster (4377-4394) é **as-of-16:17, não as-of cada sinal** → o efeito com OB real **não está testado** (precisa replay-collect com OB as-of). Só os níveis fixos (abertura semana/dia) foram testáveis agora.
 
 ### SHORT (mirror) — gate ANTES do gatilho local
 1. Localização: a rejeição está num cluster de **supply** HTF **E** o preço **NÃO está sobre uma demanda HTF fresca por baixo** (senão é o fundo de outra pessoa) **E** a **perna imediata 1H é DOWN** (não shortar uma perna que sobe). Se falha qualquer → SKIP.
 2. Posição: entrada no topo do cluster de supply, na rejeição impressa (fecho terço inferior + iniciativa sell + idealmente CHoCH 1H/15M).
 3. SL acima do cluster de supply inteiro +0,1ATR; RR≥2; 3R.
-→ Efeito no 17/08: recusa o short do grupo (@4405-4409 estava ACIMA de uma demanda fresca 4377-4394 e a perna intradiária subia off 4368 → SKIP), que teria evitado o stop a 4427.
+→ Efeito no 17/08 sobre o short do grupo: **NÃO VERIFICADO.** Hipótese = @~4405 estava ACIMA da demanda 4377-4394 e a perna intradiária subia → o gate SKIParia. Mas a entrada/hora exatas do short-ao-grupo, o estado da perna 1H as-of e a frescura da demanda por baixo **não foram medidos** (sem log de send-ao-grupo localizado). A validar com replay-collect as-of. Não afirmar como facto.
 
 ## Caveats
 - A medição de hoje usou OB **as-of-agora** (16:17), não as-of cada sinal — aproximação. O backtest do lab SHORT exige OB **as-of** (replay-collect), o gate live consome o OB fresco do momento.
