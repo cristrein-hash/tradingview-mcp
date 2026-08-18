@@ -32,8 +32,13 @@ def load_dossier(path=DOSSIER):
     return d, (age > STALE_S)
 
 
+POLARITY_ZONES = Path("/Users/cristrein/tradingview-mcp/alert-bridge/.polarity_state/zones.json")
+
+
 def _demand_zones(dossier):
-    """Todas as demandas HTF (1H/4H/1D) do dossier E0, sem inventar: zones.below + zones.stack.below."""
+    """Todas as demandas do sistema, sem inventar: (a) OB below do E0 (1H/4H/1D); (b) zonas de POLARIDADE do
+    polarity_tracker (ex_supply_demand = supply furada que virou suporte; LEI validada pelo Cris, task #54).
+    Wire aprovado Cris 2026-08-18 ('LIGA') após o gate suprimir o reclaim pós-rompimento no reteste 4422-4429."""
     zs = []
     mtf = (dossier.get("axes") or {}).get("mtf") or {}
     for tf in TFS_STRONG:
@@ -44,6 +49,13 @@ def _demand_zones(dossier):
         for zz in ((z.get("stack") or {}).get("below") or []):
             if zz.get("high") and zz.get("low"):
                 zs.append((zz["low"], zz["high"]))
+    try:
+        pz = json.loads(POLARITY_ZONES.read_text())
+        for x in (pz if isinstance(pz, list) else pz.get("zones", [])):
+            if x.get("type") == "ex_supply_demand" and x.get("low") and x.get("high"):
+                zs.append((x["low"], x["high"]))
+    except Exception:
+        pass                                            # tracker ausente -> gate segue só com E0 (fail-open parcial)
     return zs
 
 
