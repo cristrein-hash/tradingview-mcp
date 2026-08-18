@@ -71,11 +71,14 @@ def _merge(zs):
 
 
 def demand_cluster(dossier, entry):
-    """A zona de demanda HTF que CONTÉM a entrada (binário [low<=entry<=high]; sem tolerância inventada)."""
-    for lo, hi in _merge(_demand_zones(dossier)):
-        if lo <= entry <= hi:
-            return {"low": round(lo, 2), "high": round(hi, 2)}
-    return None
+    """A zona de demanda que CONTÉM a entrada. Escolhe a zona ORIGINAL mais APERTADA (não a mancha fundida —
+    o merge colava demanda 4377-94 a polaridade 4417-29 numa faixa de 60pt e a 'metade inferior' perdia o
+    sentido). Binário [low<=entry<=high]; sem tolerância inventada."""
+    inside = [(lo, hi) for lo, hi in _demand_zones(dossier) if lo <= entry <= hi]
+    if not inside:
+        return None
+    lo, hi = min(inside, key=lambda z: z[1] - z[0])
+    return {"low": round(lo, 2), "high": round(hi, 2)}
 
 
 def gate(fire, dossier):
