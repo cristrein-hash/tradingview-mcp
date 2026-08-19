@@ -46,18 +46,30 @@ def _now_lisboa():
 INFRA_LOG = os.path.join(REPO, "my-strategy/core/health_check/.health_state/infra_events.jsonl")
 
 
+AVISO_SHADOW = os.path.join(REPO, "alert-bridge", "logs", "aviso_shadow.jsonl")
+
+
+def _route_to_file(path, text):
+    try:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "a") as fh:
+            import json as _j, time as _t
+            fh.write(_j.dumps({"ts": int(_t.time()), "msg": text}, ensure_ascii=False) + "\n")
+    except Exception:
+        pass
+
+
 def _send(text, audience):
     # 🩺 INFRA NUNCA vai ao Telegram (ordem Cris 2026-08-19: "não quero receber INFRA — é para o Claude
     # monitorar"). Vai para infra_events.jsonl, que o Claude lê ao auditar saúde (par do PENDING.json).
     if text.startswith(CH["INFRA"]):
-        try:
-            os.makedirs(os.path.dirname(INFRA_LOG), exist_ok=True)
-            with open(INFRA_LOG, "a") as fh:
-                import json as _j, time as _t
-                fh.write(_j.dumps({"ts": int(_t.time()), "msg": text}, ensure_ascii=False) + "\n")
-        except Exception:
-            pass
+        _route_to_file(INFRA_LOG, text)
         return "infra-logged(no-telegram)"
+    # ⚡ AVISO em SHADOW (decisão Cris 2026-08-19): Telegram fica SÓ com 🎯 ENTRADA + 🧠 LEITURA.
+    # Avisos continuam a correr e ficam em aviso_shadow.jsonl p/ avaliação futura (validar ou descartar).
+    if text.startswith(CH["AVISO"]):
+        _route_to_file(AVISO_SHADOW, text)
+        return "aviso-shadow(no-telegram)"
     if os.path.exists(MUTE):
         return False
     env = _env()

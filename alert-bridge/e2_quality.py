@@ -121,6 +121,10 @@ def _tg_send(text, audience="group"):
     import os as _os
     if _os.path.exists("/Users/cristrein/tradingview-mcp/.telegram_muted"):
         return False    # 2026-08-19: mute global passa a cobrir TAMBÉM este caminho (auditoria A3)
+    if text.startswith(("⚡", "🩺")):
+        # AVISO/INFRA nunca vão ao Telegram (decisão Cris 19/08) — rota única via notify.py (shadow/infra log)
+        import notify as _NF
+        return _NF._send(text, "personal" if audience == "assistant" else audience)
     try:
         env = {}
         for line in (BASE / ".env").read_text().splitlines():
