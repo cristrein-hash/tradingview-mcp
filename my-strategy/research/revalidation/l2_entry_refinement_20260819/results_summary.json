@@ -1,0 +1,63 @@
+{
+ "paridade": {
+  "sel17": 105.3,
+  "full": 399.2
+ },
+ "cobertura": {
+  "covered": 85,
+  "out": 160
+ },
+ "h1": {
+  "fills": 49,
+  "nofill": 6,
+  "sem_fvg": 30,
+  "delta_pts_paired_full": 664.8400000000038,
+  "delta_pts_paired_sel17": 138.23000000000002,
+  "comb_mech_pts": 15286.6,
+  "comb_fvg_pts": 13758.3,
+  "null_rank": 0.566,
+  "jackknife": {
+   "2024": 463.2,
+   "2025": 342.5,
+   "2026": 524.1
+  }
+ },
+ "h2": {
+  "full_base": {
+   "N": 245,
+   "soma": 399.2,
+   "avg": 1.629,
+   "WR": 31,
+   "maxDD": -71.8,
+   "retDD": 5.6,
+   "streak": 22
+  },
+  "full_flip2": {
+   "N": 245,
+   "soma": 357.0,
+   "avg": 1.457,
+   "WR": 30,
+   "maxDD": -71.8,
+   "retDD": 5.0,
+   "streak": 22
+  },
+  "sel17_base": {
+   "N": 17,
+   "soma": 105.3,
+   "avg": 6.196,
+   "WR": 59,
+   "maxDD": -4.1,
+   "retDD": 26.0,
+   "streak": 3
+  },
+  "sel17_flip2": {
+   "N": 17,
+   "soma": 96.6,
+   "avg": 5.684,
+   "WR": 59,
+   "maxDD": -4.1,
+   "retDD": 23.9,
+   "streak": 3
+  }
+ }
+}
