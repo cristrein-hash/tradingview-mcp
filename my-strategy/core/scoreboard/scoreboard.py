@@ -14,7 +14,7 @@ OUT = Path(__file__).resolve().parent / "reports"
 OUT.mkdir(exist_ok=True)
 
 # metas de fecho (prereg onde existe; veredito GO/KILL ao atingir)
-N_TARGET = {"reclaim": 20, "a1a2": 15, "cp": 20, "e2_reader": 20, "b_range": 20}
+N_TARGET = {"a1a2": 15, "cp": 20, "e2_reader": 20, "b_range": 20}
 
 
 def _jl(p):
@@ -27,11 +27,7 @@ def _jl(p):
 def load_signals():
     """Normaliza cada ledger -> {src, t(entry unix), dir, entry, sl, tgt}. Só sinais ENVIADOS/registados."""
     S = []
-    for r in _jl(REPO / "my-strategy/strategies/xau_15m_long/ENTRY_ROUTER/.router_state/reclaim_ledger.jsonl"):
-        if r.get("gate_pass") is False:
-            continue                                   # suprimidos não foram enviados
-        S.append({"src": "reclaim", "t": r.get("etime"), "dir": "LONG",
-                  "entry": r.get("entry"), "sl": r.get("sl"), "tgt": r.get("tgt")})
+    # reclaim: DELETADO (Cris 2026-08-19, 1W-14L −11R) — ledger histórico fica, linha fora do painel
     for r in _jl(REPO / "my-strategy/strategies/xau_15m_long/continuation_A1A2/.a1a2_state/alerted.jsonl"):
         S.append({"src": "a1a2", "t": r.get("entry_t"), "dir": "LONG",
                   "entry": r.get("ent"), "sl": r.get("sl"), "tgt": r.get("tgt")})
