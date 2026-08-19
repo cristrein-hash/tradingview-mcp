@@ -151,9 +151,19 @@ def chk_bar_fresh(f, dur_s, max_stale_s):
     r = _last_jsonl(f)
     if not r: return "blind", "store vazio"
     if _market_closed(now()): return "ok", "mercado fechado"
-    age = now() - ((r.get("t") or 0) + dur_s)          # tempo desde o fecho da última barra que temos
-    if age <= max_stale_s: return "ok", f"última barra há {int(age/60)}min"
-    return "blind", f"sem barra nova há {int(age/60)}min (tab sumida?)"
+    # idade EFETIVA = só minutos de mercado ABERTO desde o fecho da última barra (fix Cris 19/08:
+    # ao reabrir do settlement/fim-de-semana, o tempo fechado contava como cegueira — falso alarme
+    # 23:04 de 19/08 com "64min" que eram 60 de settlement + 4 reais). Amostragem a 60s, custo ~0.
+    t_close = (r.get("t") or 0) + dur_s
+    nw = now()
+    age = 0
+    ts = t_close
+    while ts < nw:
+        if not _market_closed(ts):
+            age += min(60, nw - ts)
+        ts += 60
+    if age <= max_stale_s: return "ok", f"última barra há {int(age/60)}min (aberto)"
+    return "blind", f"sem barra nova há {int(age/60)}min de mercado aberto (tab sumida?)"
 
 
 def components():
