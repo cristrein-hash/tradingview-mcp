@@ -34,11 +34,14 @@ def load_signals():
     for r in _jl(REPO / "my-strategy/strategies/xau_15m_long/reversal/CP_CAPITULATION/.cp_state/alerted.jsonl"):
         S.append({"src": "cp", "t": r.get("etime") or r.get("entry_t"), "dir": "LONG",
                   "entry": r.get("entry") or r.get("ent"), "sl": r.get("sl"), "tgt": r.get("tgt")})
+    E2_SHORT_CUTOVER = 1787155200   # 2026-08-19 ~16:00 UTC: reader SHORT virou CONTEXTO (não enviado)
     for r in _jl(REPO / "alert-bridge/logs/e2_verdicts.jsonl"):
         if not r.get("surfaced"):
             continue                                   # só o que foi notificado
         lv = r.get("levels") or {}
         t = r.get("bar_time")
+        if r.get("direction") == "SHORT" and (t or 0) >= E2_SHORT_CUTOVER:
+            continue                                   # shadow anti-faca: não foi enviado, não entra no painel
         S.append({"src": "e2_reader", "t": t, "dir": r.get("direction"),
                   "entry": lv.get("entry"), "sl": lv.get("sl"), "tgt": lv.get("target")})
     return [s for s in S if s["t"] and s["entry"] and s["sl"]]
