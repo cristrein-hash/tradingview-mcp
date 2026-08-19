@@ -39,9 +39,30 @@ def _log(o):
 
 
 def read_regime():
+    """Macro 1D (Layer1) — CONTEXTO no output (autoridade macro, contrato 19/08)."""
     try:
         d = json.loads(LAYER1.read_text())
         return d.get("regime"), d.get("as_of")
+    except Exception:
+        return None, None
+
+
+def read_regime_v5():
+    """TÁTICO 4H — CONSUMO dos artefactos APROVADOS (consolidation_check 19/08; não é reader paralelo):
+    1º o dossiê E0 (axes.regime.v5_4h, se fresco <15min), senão o próprio current_regime.json do Regime
+    Engine live (a fonte que o E0 consome — mesmo padrão do read_regime/Layer1). GATE do ramo B por ordem
+    Cris 19/08: B caça range de DIAS; Layer1 (meses) ficou BEAR 26/07→19/08 enquanto o v5 marcou RANGE
+    10/08→16/08 exato. Fail-None."""
+    try:
+        e0 = json.loads((CORE.parent.parent / "external_factors_v2/snapshots/market_context.json").read_text())
+        rg = ((e0.get("axes") or {}).get("regime") or {}).get("v5_4h") or {}
+        if rg.get("regime") and rg.get("status") == "fresh":     # frescura marcada pelo próprio E0
+            return rg.get("regime"), rg.get("as_of")
+    except Exception:
+        pass
+    try:
+        d = json.loads((CORE / "regime_engine/.regime_state/current_regime.json").read_text())
+        return d.get("regime"), d.get("as_of_bar")
     except Exception:
         return None, None
 
@@ -102,17 +123,17 @@ def main():
         out["status"] = f"SKIP: store indisponível ({type(e).__name__})"; _log(out); print(json.dumps(out)); return
     if not rows or len(rows) < 60:
         out["status"] = f"SKIP: 15M insuficiente (n={len(rows) if rows else 0})"; _log(out); print(json.dumps(out)); return
-    regime, as_of = read_regime()
-    out.update({"regime": regime, "as_of": as_of, "buf_bars": len(rows), "last_bar": iso(rows[-1]["t"])})
-    if regime == "RANGE":
-        out["route"] = "RANGE -> B (forward)"
+    regime, as_of = read_regime()                    # macro 1D = contexto
+    reg_v5, as_of_v5 = read_regime_v5()              # tático 4H = gate do B (Cris 19/08)
+    out.update({"regime": regime, "as_of": as_of, "regime_v5_4h": reg_v5, "as_of_v5": as_of_v5,
+                "buf_bars": len(rows), "last_bar": iso(rows[-1]["t"])})
+    if reg_v5 == "RANGE":
+        out["route"] = f"v5-4H RANGE -> B (forward) · macro 1D {regime} (contexto)"
         run_B(rows, out)
-    elif regime == "BEAR":
-        out["route"] = "BEAR -> Cp (ciclo próprio); router sem motor ativo"
-    elif regime == "BULL":
-        out["route"] = "BULL -> A1/A2 pendente detetor de fundo (task #35)"
+    elif reg_v5 in ("BEAR", "BULL"):
+        out["route"] = f"v5-4H {reg_v5} -> sem motor no router (Cp/A1A2 têm ciclos próprios) · macro 1D {regime}"
     else:
-        out["route"] = f"regime desconhecido ({regime})"
+        out["route"] = f"v5-4H desconhecido ({reg_v5}) · macro 1D {regime}"
     out["status"] = "OK"
     _log(out); print(json.dumps(out, ensure_ascii=False, indent=1))
 

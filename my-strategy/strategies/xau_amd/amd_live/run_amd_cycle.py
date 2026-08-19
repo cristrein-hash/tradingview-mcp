@@ -43,6 +43,15 @@ def _layer1():
     except Exception: return None
 
 
+def _v5_4h():
+    """Voz TÁTICA 4H (artefacto aprovado do Regime Engine) — junta-se ao Layer1 no contexto do ledger
+    (fix 19/08: 'Layer1 BEAR (contexto)' sozinho enganava durante rally +8%; duas vozes, zero veto)."""
+    try:
+        return json.loads((REPO / "my-strategy/core/regime_engine/.regime_state/current_regime.json").read_text()).get("regime")
+    except Exception:
+        return None
+
+
 # formato único notify.py (Cris 2026-08-19; reclass 2ª ordem): AMD é ESTRATÉGIA — ping1 = 🎯 ENTRADA
 # fase 1 (setup sem entry ainda: busca do FVG inferior SEMPRE no 1H); ping2 = 🎯 ENTRADA fase 2 (candidato
 # com entry/SL/alvo). Detalhe (bias/killzone/ids) fica no ledger.
@@ -91,7 +100,7 @@ def main():
     if not h4 or len(h4) < 120:
         out["status"] = f"NO-OP: 4H insuficiente (n={len(h4) if h4 else 0})"; _log(out); print(json.dumps(out)); return
     sigs = V.signals_v2(h4, use_bias=True)
-    last_t = h4[-1]["t"]; l1 = _layer1()
+    last_t = h4[-1]["t"]; l1 = _layer1(); v5 = _v5_4h()
     rows = _jl(LEDGER); by_id = {r["setup_id"]: r for r in rows}
     armed = 0; new_stale = 0
     # --- F1: novos setups H4 ---
@@ -105,7 +114,7 @@ def main():
             rec = existing                                 # ARMED cujo ping1 falhou -> re-tentar (não re-dedup)
         else:
             hu = dt.datetime.fromtimestamp(s["t"], UTC)
-            rec = {"setup_id": sid, "dir": s["dir"], "level": s["level"], "bias": s["bias"], "bias_layer1": l1,
+            rec = {"setup_id": sid, "dir": s["dir"], "level": s["level"], "bias": s["bias"], "bias_layer1": l1, "bias_v5_4h": v5,
                    "killzone": KZ.get(hu.hour), "h4_bar_t": s["t"], "h4_bar_ts": lx(s["t"]), "sweep_wick": s["wick"],
                    "h4_close": s["h4c"], "close_pos": s["close_pos"], "window_expires_epoch": s["t"] + 16 * 3600,
                    "armed_ts": lx(now), "state": "STALE" if stale else "ARMED", "ping1_sent": False, "tg_ok": None,

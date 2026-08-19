@@ -9,8 +9,16 @@ Sela as decisões O4 + RC4-regime do DEEP_AUDIT_20260819. Documenta o que É, n�
   Limitação CONHECIDA (Cris 19/08): não imprimiu RANGE nos 2 ranges reais de 26/07-18/08 e atrasa nas
   viragens — PENDENTE research RANGE-recall-forward (ver memória signal-reorg). Override humano nas
   estratégias = padrão `*_REGIME_GATE_OFF` (validação manual do Cris manda).
-- `my-strategy/core/regime_engine/.regime_state/current_regime.json` — **AUXILIAR 4H** (detetor v5;
-  decisão A da auditoria 19/07: leitura auxiliar, nunca autoridade). Consumidores: mtf_cross, context_engine.
+- `my-strategy/core/regime_engine/.regime_state/current_regime.json` — **TÁTICO 4H** (detetor v5).
+  Papel ATUALIZADO (Cris 2026-08-19): além de leitura auxiliar/contexto (mtf_cross, context_engine, voz no
+  dossiê E0), passa a ser o **GATE do ramo B no ENTRY_ROUTER** (RANGE tático de dias — evidência: Layer1
+  ficou BEAR 26/07→19/08 sem uma transição enquanto o v5 marcou o range real 10/08→16/08 e virou BULL
+  16/08 23:00, 2,5 dias antes). AMD loga as DUAS vozes (bias_layer1 + bias_v5_4h) no ledger.
+  Diagnóstico do porquê (auditoria 19/08): o ramo RANGE do Layer1 usa pivôs fractais m_sw=13 DIÁRIOS
+  (confirmação ~13 dias) — ranges de 5-8 dias acabam antes de existirem estruturalmente; e a saída de BEAR
+  exige CHoCH-up 1D (m=5, lag ~5d) + gate de significância — nem +8,5% em 3 dias (04-06/08) quebrou o
+  lower-high protegido. NÃO é bug: é escala. PENDENTE research separada (lab+prereg) se se quiser mexer
+  na viragem do Layer1 — matemática congelada USER_APPROVED.
 - `my-strategy/core/regime_l1/regime_l1_v4_classifications.jsonl` — **GATE INTERNO da estratégia L1**
   (D-1 causal, matemática congelada da aprovação; NÃO é leitura de mercado geral). Consumidores: L1
   scanner/runtime (atualmente neutralizado por L1_REGIME_GATE_OFF=1 no wrapper, ordem Cris 05/08+19/08).
