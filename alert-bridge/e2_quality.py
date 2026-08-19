@@ -227,6 +227,12 @@ def notify_surfaced(cand, th):
     txt = prefix + NF.build_signal("LEITURA", "READER E2", str(cand.get("tf") or "15M"), side,
                                    cand.get("entry"), cand.get("sl"), cand.get("target"),
                                    r=cand.get("rr"), event=ev)
+    # READER SHORT = CONTEXTO, não sinal (Cris 2026-08-19: como entrada 3W-10L −1R; como deteção de
+    # topo/faca funcionou — vira aviso-shadow p/ proteger LONGs, junto do choch_guard/sweep-reject).
+    if side == "SHORT":
+        txt = "⚡ AVISO · READER CONTEXTO SHORT (anti-faca)\n" + txt.split("\n", 1)[1]
+        _tg_send(txt, audience="assistant")   # header ⚡ → rota shadow via notify (nunca Telegram)
+        return
     _tg_send(txt, audience=("group" if recent_strategy_signal(cand.get("direction")) else "assistant"))
 
 READ_SYS = (
