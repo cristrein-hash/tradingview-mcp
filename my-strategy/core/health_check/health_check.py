@@ -37,6 +37,7 @@ DAEMONS = [
     "com.cristrein.e1-detector", "com.cristrein.e2-quality",
     "com.cristrein.telegram-assistant-bridge", "com.cristrein.tv-webhook-receiver",
     "com.cristrein.cloudflared-tunnel", "com.cristrein.stack-watchdog",
+    "com.cristrein.price-shock",   # AUDIT-FIX 19/08 (F8): gatilho realtime estava fora do vigia redundante
 ]
 
 

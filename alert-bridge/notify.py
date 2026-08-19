@@ -129,7 +129,15 @@ if __name__ == "__main__":
         assert "entry   4318.4" in m and "(3R)" in m and "decisão humana" in m
         m2 = build_signal("LEITURA", "READER E2", "15M", "SHORT", 4411.5, 4419.4, 4386.0, 2.9, "rejeição no íman")
         assert "🔴 SHORT XAUUSD — rejeição no íman" in m2 and "(2.9R)" in m2
-        print(m); print(); print(m2); print("\nselftest PASS")
+        # AUDIT-FIX 19/08 (I): ROUTING é a invariante crítica — ⚡/🩺 NUNCA tocam Telegram
+        r_av = _send("⚡ AVISO · SELFTEST\nx", "group")
+        assert r_av == "aviso-shadow(no-telegram)", r_av
+        r_in = _send("🩺 INFRA · SELFTEST\nx", "personal")
+        assert r_in == "infra-logged(no-telegram)", r_in
+        import json as _j
+        last = open(AVISO_SHADOW).read().splitlines()[-1]
+        assert "SELFTEST" in _j.loads(last)["msg"]
+        print(m); print(); print(m2); print("\nselftest PASS (formato + routing shadow/infra)")
     elif "--test-send" in sys.argv:
         print(signal("ENTRADA", "TESTE FORMATO", "15M", "LONG", 4318.4, 4309.2, 4345.9, 3,
                      audience="personal"))
