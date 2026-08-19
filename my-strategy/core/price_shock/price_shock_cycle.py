@@ -262,10 +262,34 @@ def check_ob_touch(price, bars, now, exc):
 
 
 def _notify(text):
+    # Sender PRÓPRIO (Cris 2026-08-19): antes importava o telegram_notify da L1, que prefixa
+    # "📊 L1 EMA21 4H" em tudo — price-shock saía no grupo vestido de L1 e sem parse_mode (o <b> aparecia cru).
+    text = "⚡ PRICE-SHOCK (advisory)\n" + text
+    if os.path.exists("/Users/cristrein/tradingview-mcp/.telegram_muted"):
+        return False
     try:
-        sys.path.insert(0, str(CORE.parent / "strategies/xau_4h_long/continuation/L1_EMA21_CONTINUATION"))
-        import telegram_notify as TN
-        return TN.send_telegram(text)
+        from urllib.request import urlopen, Request
+        from urllib.parse import urlencode
+        env = {}
+        for ln in open("/Users/cristrein/tradingview-mcp/alert-bridge/.env"):
+            ln = ln.strip()
+            if ln and not ln.startswith("#") and "=" in ln:
+                k, v = ln.split("=", 1); env[k] = v.strip().strip('"')
+        token = env.get("TELEGRAM_BOT_TOKEN")
+        chat_raw = env.get("TELEGRAM_CHAT_IDS") or env.get("TELEGRAM_CHAT_ID") or ""
+        if not token or not chat_raw:
+            return "ERR telegram nao configurado"
+        ok = True
+        for cid in [x.strip() for x in chat_raw.split(",") if x.strip()]:
+            data = urlencode({"chat_id": cid, "text": text, "parse_mode": "HTML",
+                              "disable_web_page_preview": "true"}).encode()
+            try:
+                with urlopen(Request(f"https://api.telegram.org/bot{token}/sendMessage",
+                                     data=data, method="POST"), timeout=20) as r:
+                    ok = ok and (r.status == 200)
+            except Exception:
+                ok = False
+        return ok
     except Exception as e:
         return f"ERR {str(e)[:60]}"
 
