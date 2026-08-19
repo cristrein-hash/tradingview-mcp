@@ -89,6 +89,7 @@ def run_B(rows, out):
     loader gz+store) -> upsert no forward log SE engine ON -> resolve PENDING. DRY (0 Telegram)."""
     if not _inject_fresh_macro():
         out["b"] = "SKIP: macro fresco insuficiente"; return
+    os.environ["B_TACTICAL_V5"] = "1"                         # ordem Cris 19/08: B corre em v5-RANGE
     import b_forward_score as BF                              # importa DEPOIS da injeção (b_engine _reg fresco)
     t0 = rows[-1]["t"]; fundo_dt = BF.ds(t0)                  # UTC (casa com BF.ep)
     logged = {r.get("fundo_dt") for r in BF.load_log()}
@@ -96,6 +97,7 @@ def run_B(rows, out):
         out["b"] = f"já pontuado {fundo_dt}"
     else:
         rec = BF.score(fundo_dt)                              # deep gz+store + b_signal + null
+        rec["variant"] = "tactical_v5"                        # NÃO contamina o prereg V1 (linha separada)
         if rec.get("engine"):
             BF.upsert(rec)
             e = rec.get("entry", {})

@@ -30,7 +30,30 @@ def _pct(a, p):
     a = sorted(a); k = (len(a)-1)*p/100; f = int(k)
     return a[f]+(a[min(f+1, len(a)-1)]-a[f])*(k-f)
 
+def _v5_range_onset(t0):
+    """MODO TÁTICO (ordem Cris 2026-08-19): onset do range = última transição *->RANGE do Regime Engine
+    v5-4H (transitions jsonl, artefacto aprovado) anterior a t0. None se não houver."""
+    import os as _os, datetime as _dt
+    if _os.environ.get("B_TACTICAL_V5") != "1":
+        return None
+    try:
+        pth = "/Users/cristrein/tradingview-mcp/my-strategy/core/regime_engine/.regime_state/regime_transitions.jsonl"
+        best = None
+        for ln in open(pth):
+            r = json.loads(ln)
+            if r.get("to") == "RANGE" and r.get("as_of"):
+                ep = int(_dt.datetime.strptime(r["as_of"], "%Y-%m-%d %H:%M").replace(tzinfo=_dt.timezone.utc).timestamp())
+                if ep <= t0:
+                    best = ep
+        return best
+    except Exception:
+        return None
+
+
 def _onset(t0):
+    v5 = _v5_range_onset(t0)                        # modo tático v5 (Cris 19/08) tem prioridade se ativo
+    if v5 is not None:
+        return v5
     i = bisect.bisect_right(_KN1, t0)-1
     for s, a, b in _epis:
         if a <= i <= b and s == "RANGE": return _T1[a]
@@ -58,7 +81,10 @@ def b_signal(t0, S):
     """Sinal causal do engine de B v1.1. dict(engine, reason, pos, band, entry, spring)."""
     j = bisect.bisect_right(S["T"], t0)-1
     g = BG.gate_at(t0)
-    if not g["b_long_allowed"]:
+    import os as _os
+    if not g["b_long_allowed"] and _os.environ.get("B_TACTICAL_V5") != "1":
+        # MODO TÁTICO (Cris 2026-08-19: "cancela essa, deixa correr em v5-4H"): com B_TACTICAL_V5=1 o
+        # veto macro-Layer1 NÃO se aplica (o router já gateia por v5-RANGE). V1 selada = flag ausente.
         return {"engine": False, "reason": f"macro:{g['range_subtype'] or g['regime']}"}
     band = causal_band(t0, S)
     if band is None: return {"engine": False, "reason": "sem-banda"}
