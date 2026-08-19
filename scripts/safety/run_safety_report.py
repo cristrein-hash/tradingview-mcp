@@ -22,6 +22,18 @@ def main():
             findings.extend(mod.run())
         except Exception as e:  # a scanner error must not break the report
             print(f"[scanner error in {mod.__name__}: {e}]")
+    # AUDIT 19/08 (RC1): invariante "sender Telegram único" — regressão = BLOCKER no report
+    try:
+        import subprocess as _sp
+        r = _sp.run([sys.executable, str(Path(__file__).resolve().parent / "check_single_telegram_sender.py")],
+                    capture_output=True, text=True)
+        if r.returncode != 0:
+            for ln in r.stdout.splitlines():
+                if ln.strip().startswith(("alert-bridge", "my-strategy", "external_factors", "copilot", " ")):
+                    findings.append({"severity": "BLOCKER", "check": "single_telegram_sender",
+                                     "file": ln.strip(), "reason": "sender fora do notify.py (allowlist)"})
+    except Exception as e:
+        print(f"[scanner error in check_single_telegram_sender: {e}]")
     findings.sort(key=lambda f: (SEV_ORDER.get(f["severity"], 9), f["check"], f["file"], f.get("line", 0)))
 
     print("=" * 100)

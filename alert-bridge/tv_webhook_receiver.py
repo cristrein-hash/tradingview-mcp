@@ -2108,8 +2108,16 @@ class Handler(BaseHTTPRequestHandler):
         # 2026-05-18: pause flag — touch /tmp/claude_recheck.paused to suspend
         # claude analysis without restarting receiver. Alerts continue logging
         # to research_log/indicator_signals; only claude_recheck thread is skipped.
+        # O1 (Cris 2026-08-19, DEEP_AUDIT C3): recheck DESLIGADO permanente — E2 é o único caminho LLM
+        # operacional (recheck idle desde 02/08; sem consumidores além dos próprios logs). Flag
+        # persistente no repo (sobrevive reboot); apagar alert-bridge/.claude_recheck_off re-liga.
+        off_flag = BASE_DIR / ".claude_recheck_off"
         pause_flag = Path("/tmp/claude_recheck.paused")
-        if pause_flag.exists():
+        if off_flag.exists():
+            print(json.dumps({"claude_recheck_disabled": True, "reason": "O1_20260819_e2_only"},
+                             ensure_ascii=False), flush=True)
+            telegram_result["claude_recheck_disabled"] = True
+        elif pause_flag.exists():
             print(json.dumps({
                 "claude_recheck_paused": True,
                 "reason": "pause_flag_present",

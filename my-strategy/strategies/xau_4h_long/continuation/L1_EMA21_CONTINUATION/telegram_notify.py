@@ -71,28 +71,15 @@ def build_message(cand):
 
 
 def send_telegram(text):
-    # 2026-08-19: prefixo "📊 L1 EMA21 4H" REMOVIDO — era herdado por 7 módulos que importavam este
-    # sender e saíam no grupo vestidos de L1 (bug Cris 19/08). Cada emissor traz o seu header completo.
-    import os
-    if os.path.exists("/Users/cristrein/tradingview-mcp/.telegram_muted"):
-        return False                                    # 🔇 MUTE GLOBAL — Cris pausou os sinais (2026-07-21)
-    env = load_env()
-    token = env.get("TELEGRAM_BOT_TOKEN")
-    chat_raw = env.get("TELEGRAM_CHAT_IDS") or env.get("TELEGRAM_CHAT_ID")
-    if not token or not chat_raw:
-        print("error: Telegram não configurado em alert-bridge/.env", file=sys.stderr)
+    # 2026-08-19: prefixo removido + AUDIT-FIX RC1: transporte delegado ao notify.py (rota única —
+    # mute/routing/audience). Hard-lock L1_PRODUCTION_AUTHORIZED continua no main() deste módulo.
+    try:
+        sys.path.insert(0, "/Users/cristrein/tradingview-mcp/alert-bridge")
+        import notify as NF
+        return NF._send(text, "group") is True
+    except Exception as e:
+        print(f"error: Telegram send falhou: {e}", file=sys.stderr)
         return False
-    chat_ids = [x.strip() for x in chat_raw.split(",") if x.strip()]
-    url = f"https://api.telegram.org/bot{token}/sendMessage"
-    ok = True
-    for cid in chat_ids:
-        data = urlencode({"chat_id": cid, "text": text, "disable_web_page_preview": "true"}).encode()
-        try:
-            with urlopen(Request(url, data=data, method="POST"), timeout=20) as resp:
-                ok = ok and bool(json.loads(resp.read().decode()).get("ok"))
-        except Exception as e:
-            print(f"error: Telegram send falhou: {e}", file=sys.stderr); ok = False
-    return ok
 
 
 def main():

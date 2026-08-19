@@ -118,30 +118,12 @@ def _tg_send(text, audience="group"):
     ROTEAMENTO (Cris 05/08 ~06:4x): audience="group" = TODOS os chat_ids (grupo LIMPO — só sinais
     qualificados: L1/L2/15M-BULL/validados-pelo-reader). audience="assistant" = SÓ o chat privado
     Trading Assistant Trein (AUTHORIZED_CHAT_ID): validador de regiões, leituras de vela, sentinela."""
-    import os as _os
-    if _os.path.exists("/Users/cristrein/tradingview-mcp/.telegram_muted"):
-        return False    # 2026-08-19: mute global passa a cobrir TAMBÉM este caminho (auditoria A3)
-    if text.startswith(("⚡", "🩺")):
-        # AVISO/INFRA nunca vão ao Telegram (decisão Cris 19/08) — rota única via notify.py (shadow/infra log)
-        import notify as _NF
-        return _NF._send(text, "personal" if audience == "assistant" else audience)
+    # AUDIT-FIX 19/08 (RC1/3b): transporte 100% delegado ao notify.py (rota única — mute, routing
+    # AVISO/INFRA, audience group/personal, texto plano). O urlopen próprio deste módulo foi removido.
     try:
-        env = {}
-        for line in (BASE / ".env").read_text().splitlines():
-            if "=" in line and not line.strip().startswith("#"):
-                k, _, v = line.partition("="); env[k.strip()] = v.strip()
-        tok = env.get("TELEGRAM_BOT_TOKEN"); chats = env.get("TELEGRAM_CHAT_ID", "")
-        if audience == "assistant":
-            chats = env.get("AUTHORIZED_CHAT_ID", "") or chats
-        if not tok or not chats: return False
-        from urllib.parse import urlencode
-        from urllib.request import Request, urlopen
-        ok = False
-        for cid in [c.strip() for c in chats.split(",") if c.strip()]:
-            data = urlencode({"chat_id": cid, "text": text}).encode()
-            with urlopen(Request(f"https://api.telegram.org/bot{tok}/sendMessage", data=data), timeout=15) as r:
-                ok = ok or (r.status == 200)
-        return ok
+        import notify as _NF
+        r = _NF._send(text, "personal" if audience == "assistant" else audience)
+        return r is True
     except Exception as e:
         print(f"{now_iso()} [tg-erro] {type(e).__name__}:{str(e)[:60]}", flush=True)
         return False
