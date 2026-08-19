@@ -43,16 +43,17 @@ def _layer1():
     except Exception: return None
 
 
-# formato único notify.py (Cris 2026-08-19): ping1 = ⚡ AVISO (setup armado, sem níveis de entrada);
-# ping2 = 🎯 ENTRADA (candidato com entry/SL/alvo). Detalhe (bias/killzone/ids) fica no ledger.
+# formato único notify.py (Cris 2026-08-19; reclass 2ª ordem): AMD é ESTRATÉGIA — ping1 = 🎯 ENTRADA
+# fase 1 (setup sem entry ainda: busca do FVG inferior SEMPRE no 1H); ping2 = 🎯 ENTRADA fase 2 (candidato
+# com entry/SL/alvo). Detalhe (bias/killzone/ids) fica no ledger.
 def _ping1(s, sid, l1):
     kind = "PDL/PWL" if s["dir"] == "long" else "PDH/PWH"
     side = "🟢 LONG" if s["dir"] == "long" else "🔴 SHORT"
     return "\n".join([
-        "⚡ AVISO · AMD SETUP ARMADO · 4H",
+        "🎯 ENTRADA · AMD (fase 1: setup) · 4H",
         "──────────────",
         f"{side} XAUUSD — varreu {kind} {s['level']} · reclaim {s['h4c']}",
-        "vigia o 1H para o FVG/OB de entrada",
+        "sem entry ainda — busca o FVG inferior no 1H (fase 2 traz entry/SL/alvo)",
         "──────────────",
         f"{lx(s['t'])} Lisboa · decisão humana · #N",
     ])
