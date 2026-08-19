@@ -1,179 +1,41 @@
 {
   "version": 1,
-  "updated_ts": "2026-08-11T05:05:00Z",
-  "updated_by": "chat (Cris -> Claude 11/08) — ALERTA TOTAL demanda 5M 4386-4398 (OB v11 real), 2 ramos (hold=LONG / segue=reader avalia)",
+  "updated_ts": "2026-08-18T11:00:00Z",
+  "updated_by": "chat (Cris 18/08 ~11:55) — reteste recentrado na PL 1H 4405/4410 + FVG",
   "zones": [
     {
-      "id": "ob_demand_3995_4010_ALVO",
-      "low": 3995.84,
-      "high": 4010.0,
-      "tese": "LONG",
-      "nota": "OB Detector v11 REAL — DEMANDA = ALVO VERDADEIRO do short (Cris 04/08). Onde o short toma lucro / potencial LONG (o bloco do monstro)",
-      "criticidade": "critica",
-      "validade": "2026-08-08T21:00:00Z",
-      "created_ts": "2026-08-04T13:00:00Z"
-    },
-    {
-      "id": "demand_intra_4060_4066",
-      "low": 4060.0,
-      "high": 4066.0,
-      "tese": "LONG",
-      "criticidade": "critica",
-      "nota": "COMPRA DA NOVA PERNA (Cris 06/08 17:1x: 'preço verdadeiramente faz nova perna em 4080/4070/4050'). Fundo do dia 05/08. LONG só com rejeição + nova perna impressa aqui. Alvo seguro: 4138 → 4225.",
-      "validade": "2026-08-06T21:00:00Z"
-    },
-    {
-      "id": "ob_supply_1h_4256_4277",
-      "low": 4256.0,
-      "high": 4276.8,
-      "tese": "SHORT",
-      "criticidade": "alta",
-      "nota": "Referência 1H — SEM short (doutrina continuação retomada 06/08 14:3x).",
-      "validade": "2026-08-09T21:00:00Z"
-    },
-    {
-      "id": "ob_supply_1h_4310_4330",
-      "low": 4310.3,
-      "high": 4329.9,
-      "tese": "SHORT",
-      "criticidade": "alta",
-      "nota": "Referência de escada 1H — SEM busca de reversão (doutrina continuação 05/08).",
-      "validade": "2026-08-09T21:00:00Z"
-    },
-    {
-      "id": "ob_supply_4h_4337_4382",
-      "low": 4337.1,
-      "high": 4382.1,
+      "id": "short_retest_4404_4413",
+      "low": 4404.3,
+      "high": 4413.7,
       "tese": "SHORT",
       "criticidade": "critica",
-      "nota": "ÚNICA zona de análise de reversão permitida (4H/1D macro, doutrina Cris 05/08): só com CLARA rejeição macro indicada. Fora disto, mentalidade = CONTINUAÇÃO.",
-      "validade": "2026-08-12T21:00:00Z"
+      "sl": 4419.0,
+      "nota": "RETESTE PRINCIPAL (Cris 18/08 ~11:55: 'PL de 1H 4405/4410 + FVG ali'). SOURCE: polaridade 1H topos 4404.34/4411.42/4413.72 (ex-demandas quebradas) + FVG 15M 4408.3-4411.7 dentro do FVG 1H 4408.3-4419 + ex-demanda 15M 4398.35-4406.2. Reteste por baixo + REJEIÇÃO IMPRESSA (sweep/failed-break + fecho 15M terço inferior) = SHORT, SL acima 4413.7 (+0.1ATR, ref 4419=topo FVG 1H). Alvo1 4386, alvo2 4375-4385, runner chão 4348-52. Fecho 15M >4419 com corpo = zona morta, resta a supply-mãe 4428-4436.",
+      "validade": "2026-08-18T21:00:00Z"
     },
     {
-      "id": "suporte_4138_4166",
-      "low": 4138.2,
-      "high": 4166.19,
-      "tese": "LONG",
+      "id": "short_supply_4428_4436",
+      "low": 4428.5,
+      "high": 4436.2,
+      "tese": "SHORT",
       "criticidade": "critica",
-      "nota": "Ex-supra 4H rompida (agora no caminho): retest por baixo = supply de correção.",
-      "validade": "2026-08-09T21:00:00Z"
+      "sl": 4449.7,
+      "nota": "SUPPLY-MÃE. SOURCE: OB 15M 4428.5-4436.2 + 1H 4429-4450 — onde a rejeição imprimiu 02:00 de 18/08 (sweep 4436.2 + fecho terço inferior). Short A+ num retorno com rejeição. SL acima 4436 (ref 4441-4449.7).",
+      "validade": "2026-08-18T21:00:00Z"
     },
     {
-      "id": "demanda_4225_4233",
-      "low": 4225.0,
-      "high": 4239.0,
+      "id": "floor_4377_4386",
+      "low": 4377.2,
+      "high": 4386.2,
       "tese": "LONG",
       "criticidade": "alta",
-      "nota": "Ex-zona; agora suporte inferior de continuação.",
-      "validade": "2026-08-08T21:00:00Z"
-    },
-    {
-      "id": "buy_4183_4191",
-      "low": 4183.0,
-      "high": 4191.0,
-      "tese": "LONG",
-      "criticidade": "critica",
-      "nota": "Ex-demanda 4183-91 -> se quebrar e retestar por baixo = SUPPLY/short.",
-      "validade": "2026-08-08T21:00:00Z"
-    },
-    {
-      "id": "buy_newleg_4045_4080",
-      "low": 4045.0,
-      "high": 4080.0,
-      "tese": "LONG",
-      "criticidade": "critica",
-      "nota": "ZONA DE COMPRA DA NOVA PERNA (Cris 06/08 17:1x): 4080/4070/4050 — onde o preço provavelmente faz a verdadeira reversão para nova perna de alta. Engloba OB 1H 4045-4060/4065-4077 + demanda intra 4060-66. LONG só com rejeição + nova perna. NÃO comprar a queda antes.",
-      "validade": "2026-08-08T21:00:00Z"
-    },
-    {
-      "id": "suporte_4285",
-      "low": 4278.0,
-      "high": 4286.0,
-      "tese": "LONG",
-      "criticidade": "critica",
-      "nota": "4285 ROMPIDO (07/08) = suporte de continuação (ex-supply virada demanda). Pullback que rejeite p/ cima AQUI = compra.",
-      "validade": "2026-08-10T21:00:00Z"
-    },
-    {
-      "id": "buy_fvg_4337_4341",
-      "low": 4337.0,
-      "high": 4341.0,
-      "tese": "LONG",
-      "criticidade": "critica",
-      "nota": "REENTRADA LONG — FVG triplo (15M+30M+1H) + demanda 15M/1H. Retest raso. Rejeição p/ cima = compra (método FVG-confluência Cris 10/08).",
-      "validade": "2026-08-13T21:00:00Z"
-    },
-    {
-      "id": "buy_fvg_deep_4298_4303",
-      "low": 4298.0,
-      "high": 4303.0,
-      "tese": "LONG",
-      "criticidade": "critica",
-      "nota": "REENTRADA LONG PRIMÁRIA — FVG-fill PROFUNDO: 15M+30M+1H FVG sobrepostos + demanda 15M 4301-10. Melhor ponto de entry (método Cris 10/08). SL abaixo ~4290. Rejeição+nova perna = compra de qualidade.",
-      "validade": "2026-08-13T21:00:00Z"
-    },
-    {
-      "id": "ob_demand_4313_4330",
-      "low": 4313.24,
-      "high": 4330.49,
-      "tese": "LONG",
-      "criticidade": "critica",
-      "sl": 4307.0,
-      "nota": "CHÃO REAL VIGIADO (Cris 11/08 ~06:15). SOURCE: OB v11 — demanda CONVERGENTE 15M(4313-21)+1H(4316-34), a mais robusta abaixo do preço. Ressaltou a 4318 (10/08). DUPLO PAPEL: (1) alvo do short de polaridade 4386-4398; (2) se o preço vier e imprimir REJEIÇÃO/HOLD = LONG de qualidade (o chão), SL abaixo 4307. Se ESTE chão furar com convicção -> próxima é 4223-4261 (demanda 4H) e a tese vira mais baixista.",
-      "validade": "2026-08-13T21:00:00Z"
-    },
-    {
-      "id": "buy_asia_cont_4330_4335",
-      "low": 4330.0,
-      "high": 4335.0,
-      "tese": "LONG",
-      "criticidade": "critica",
-      "sl": 4310.0,
-      "nota": "SINAL AUTOMÁTICO DE ENTRADA (ordem Cris 10/08, continuação Ásia): se voltar a 4335/4330 com RECLAIM LEGÍTIMO → LONG, SL 4310. Perna atual forte: pullback deve no MÁXIMO vir à polaridade dos topos anteriores ~4360. Topo da demanda OB 4313-4334. Só reclaim genuíno (não fakeout).",
-      "validade": "2026-08-11T14:00:00Z"
-    },
-    {
-      "id": "buy_fvg_4367_4373",
-      "low": 4367.0,
-      "high": 4373.0,
-      "tese": "LONG",
-      "criticidade": "critica",
-      "nota": "ATENÇÃO REDOBRADA (Cris 10/08) — FVG 4367-4373: pullback RASO mais próximo do preço. Fill do gap + reclaim legítimo = continuação. Vigia atenta a reclaim genuíno aqui (1ª zona antes do 4330-35).",
-      "validade": "2026-08-11T14:00:00Z"
-    },
-    {
-      "id": "polarity_ex_supply_4350_4362",
-      "low": 4350.0,
-      "high": 4362.0,
-      "tese": "LONG",
-      "criticidade": "critica",
-      "nota": "POLARIDADE PRIORITÁRIA (Cris 10/08): ex-supply OB 4350-4362 rompida COM FORÇA (preço 4350->4390 impulsivo) = DEMANDA OBRIGATÓRIA, alta-prob de segurar. Ler EM 1º LUGAR como suporte de continuação, mesmo sem a caixa OB. Teto máximo do pullback numa perna forte. Reclaim legítimo aqui = continuação prioritária.",
-      "validade": "2026-08-11T14:00:00Z"
-    },
-    {
-      "id": "short_reject_spike_4400_4420",
-      "low": 4400.0,
-      "high": 4420.53,
-      "tese": "SHORT",
-      "criticidade": "critica",
-      "sl": 4436.0,
-      "nota": "VIGIA DE REJEIÇÃO/SPIKE — ALARME SONORO LOCAL (ordem Cris 11/08; ALARGADO ~14:15 após rejeição a 4404 ter ficado 8pt abaixo do limiar rígido 4412 = erro de literalismo). SOURCE: OB v11 — approach do supply 5M 4415.83-4420.53 + 1H 4418.12-4435.2; banda alargada p/ 4400 pois a rejeição real topou 4404.34. AVISAR O CRIS (som local 4x, NÃO Telegram) se vela 15M/1H imprimir REJEIÇÃO COM SPIKE em qualquer ponto de 4400-4420 (pavio superior grande + fecho de volta abaixo) = potencial SHORT (fim do bounce), alvo 4386 depois chão 4316-4334, SL acima 4436. Intenção>limiar: apanhar a rejeição no supply, não uma linha exata.",
-      "validade": "2026-08-11T20:00:00Z"
-    },
-    {
-      "id": "polarity_short_retest_4386_4398",
-      "low": 4385.68,
-      "high": 4398.25,
-      "tese": "SHORT",
-      "criticidade": "critica",
-      "sl": 4410.0,
-      "nota": "POLARIDADE DE FUNDO FURADA (Cris 11/08 ~06:15). SOURCE: OB v11 5M — a demanda 4386-4398 que armei como LONG FUROU no flush (preço a 4372.3, fecho 4382). Ex-demanda -> agora candidata a SUPPLY. RETESTE POR BAIXO + REJEIÇÃO = SHORT, SL acima 4410 (acima do swing 4398-4409). Respaldo macro: NAS TOP/SHORT=1 em 4H E 1D + 4H +4.16ATR esticado. Alvo = chão 4316-4334, depois 4223-4261 (demanda 4H). CONDICIONAL: só com break CONFIRMADO (absorção 15M ainda a decorrer); se 15M ABSORVER e reclaim 4398+ = tese short cai, volta a long.",
-      "validade": "2026-08-11T20:00:00Z"
+      "nota": "FUNDO DO RANGE. SOURCE: OB 1H 4377.2-4394.3 (base) + cluster polaridade 4375-4397 + inval do reader 4386.20. Rejeição p/ cima aqui = long de range / retomada. Fecho 15M <4375.2 (topo OB 15M 4367.2-4375.2) = DESCEU DIRETO: short de reteste perdeu, não perseguir.",
+      "validade": "2026-08-18T21:00:00Z"
     }
   ],
   "tese_geral": {
-    "direcao": "LONG",
-    "nota": "CONTINUAÇÃO retomada (Cris 07/08: 'esquece shorts'). Inversão bull confirmada: 4285 rompido com fecho, +buy12/0. SHORTS FECHADOS — reversão só 4337-82 macro c/ rejeição clara. FOCO: comprar recuos curtos que os suportes (4285, 4260, 4225) segurem, A1/A2 = motor. CUIDADO: NFP 13:30 hoje (whipsaw). Claude questiona toda tentação de short fora do macro.",
-    "validade": "2026-08-12T21:00:00Z"
+    "direcao": "SHORT_CONDICIONAL",
+    "nota": "18/08: rejeição impressa no íman 4428-4436 (02:00) + higher-low 1H perdido + demanda 4398-4406 quebrada = viés short PARA O RETESTE, mas SÓ com rejeição impressa na zona (regra simétrica). Lateral 4386-4404 há 7h; queda direta <4386.2 sem retest = deixar ir, não perseguir. Reader mantém LONG condicional >4386.20 — conflito declarado, Cris filtra. Macro 1D BEAR (Layer1).",
+    "validade": "2026-08-18T21:00:00Z"
   }
 }

@@ -12,7 +12,6 @@ ALLOW = {
     "alert-bridge/tv_webhook_receiver.py",       # ingress TradingView (HTML próprio, documentado)
     "alert-bridge/telegram_assistant_bridge.py", # ponte bidirecional (chunks/long-poll)
     "alert-bridge/auto_d2r_daily.py",            # relatório D2R (HTML; consumido por tg_trade_signal)
-    "alert-bridge/weekly_review.py",             # legado sem daemon (candidato a archive)
     "alert-bridge/monitor_xau_4h_strategies.py", # LEGACY_DISABLED (trava dura no send)
     "my-strategy/core/stack_watchdog/stack_watchdog.py",  # só chk_network (não envia)
 }
