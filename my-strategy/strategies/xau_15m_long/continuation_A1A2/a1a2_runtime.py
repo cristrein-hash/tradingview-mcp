@@ -14,8 +14,9 @@ DETETOR (causal, por fecho 15M do store):
   4) SL = low real do pullback − 0.1ATR · alvo = 3R (tudo do módulo-mãe). Zero lookahead.
 
 GATES:
-  - macro: structural_1d == BULL (spec aprovada) — destravável por env A1A2_REGIME_GATE_OFF=1 (mesma
-    decisão do L1 05/08: o rótulo atrasa nas viragens; default = gate ON até ordem do Cris).
+  - macro (macro_gate real, AUDIT-FIX D5 19/08 — docstring alinhada ao código): aceita structural_1d em
+    (BULL, RANGE) OU fast-path 4H BULL + legs up; destravável por env A1A2_REGIME_GATE_OFF=1 (mesma
+    decisão do L1 05/08: o rótulo atrasa nas viragens).
   - Telegram (GRUPO — "15M BULL" qualificado pelo Cris 05/08) atrás de A1A2_PRODUCTION_AUTHORIZED=1.
   - dedup por barra de entrada; forward: cada sinal é REGISTADO p/ o a1_forward_score resolver (árbitro).
 py3.9 stdlib."""
@@ -170,8 +171,10 @@ def cycle():
         ts = dt.datetime.fromtimestamp(last_t, LX).strftime("%d/%m %H:%M")
         # formato único notify.py (Cris 2026-08-19) — retest ideal vira tag curta; resto vive no ledger
         import notify as NF
+        _risk = abs(r["ent"] - r["sl"])
+        _rr = round(abs(r["tgt"] - r["ent"]) / _risk, 1) if _risk else None   # AUDIT-FIX 19/08 (D3): R real
         txt = NF.build_signal("ENTRADA", f"A1/A2 {r['layer']}", "15M", "LONG",
-                              r["ent"], r["sl"], r["tgt"], r=3,
+                              r["ent"], r["sl"], r["tgt"], r=_rr,
                               event=f"MB3 · retest ideal {r['retest_zone'][0]:.1f}-{r['retest_zone'][1]:.1f}")
         out["signal"] = {k: r[k] for k in ("layer", "ent", "sl", "tgt", "R", "depth_atr")}
         with open(DEDUP, "a") as f:

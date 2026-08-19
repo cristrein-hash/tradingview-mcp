@@ -55,7 +55,11 @@ def _imminent_ffevent():
         if not ts: continue
         mins = round((ts - now) / 60)
         if mins < -15: continue                    # já passou há muito
-        if best is None or abs(mins) < abs(best[0]):
+        # AUDIT-FIX 19/08 (D8): preferir SEMPRE o próximo evento FUTURO; just-released (<0) só ganha
+        # se não houver nenhum upcoming — antes |Δt| podia apontar p/ um evento já saído com outro à porta.
+        key = (0 if mins >= 0 else 1, abs(mins))
+        cur = (0 if best[0] >= 0 else 1, abs(best[0])) if best else None
+        if best is None or key < cur:
             best = (mins, e.get("event"), e.get("actual"), (-15 <= mins < 5 and e.get("actual") not in (None, "")))
     return best
 

@@ -27,14 +27,18 @@ SOUND = "/System/Library/Sounds/Sosumi.aiff"
 # Zonas vigiadas. side: 'short' (rejeição no topo) | 'long' (rejeição no fundo).
 # SOURCE=OB Detector v11 lida por MCP (READ_OB_ZONES) — NÃO hardcode inventado.
 # entrar = preço ALCANÇA [lo,hi]; rejeição = fecha DE VOLTA fora; invalidação = fecha ALÉM.
+# AUDIT-FIX 19/08 (D7): "expires" (epoch) obrigatório — zona vencida é ignorada no tick (antes as zonas
+# datadas ficavam armadas para sempre; ex.: zonas de 18/08 ainda vivas a 19/08 pós-rally).
 ZONES = [
-    {"id": "short_4408_4420", "side": "short", "lo": 4408.0, "hi": 4420.53, "inval": 4435.20},  # SOURCE: SUPPLY 15M/1H
-    # READ_OB_ZONES — break-retest LONG (Cris 12/08 'alarma quando romper 4416 p/ entrar no retest').
-    # B=topo da SUPPLY 15M 4408.57-4416.06 (id 4314); rompe->alarme, volta a tocar 4416->alarme ENTRADA.
-    {"id": "break_retest_long_4416", "side": "break_retest_long", "B": 4416.06, "fail": 4408.0},
-    # READ_OB_ZONES — próximo nível: break-retest do TOPO DO DIA. SOURCE: SUPPLY 15M/1H 4428.42-4435.2 (id 4300).
-    # Rompe 4435 (blue-sky p/ 4450+) -> alarme; volta a tocar 4435 e segura -> alarme ENTRADA LONG.
-    {"id": "break_retest_long_4435", "side": "break_retest_long", "B": 4435.20, "fail": 4420.0},
+    # READ_OB_ZONES 2026-08-18 (Cris: 'avisa qualquer rejeição impressa'; ~11:55 'PL 1H 4405/4410 + FVG = reteste').
+    # SOURCE: polaridade 1H topos 4404.34/4411.42/4413.72 + FVG 15M 4408.3-4411.7 (dentro do FVG 1H 4408.3-4419)
+    # + ex-demanda 15M 4398.35-4406.2 quebrada 03:30. lo=4404.3 evita falso-alarme no chop 4396-4399.
+    {"id": "short_retest_4404_4413", "side": "short", "lo": 4404.3, "hi": 4413.7, "inval": 4419.0, "expires": 1787263200},
+    # SOURCE: OB supply 15M 4428.5-4436.2 (rejeição impressa 02:00 de 18/08); inval=topo supply 4441-4449.7.
+    {"id": "short_supply_4428_4436", "side": "short", "lo": 4428.5, "hi": 4436.2, "inval": 4449.7, "expires": 1787263200},
+    # Fundo do range: OB 1H 4377.2-4394.3 base + inval do reader 4386.20. Rejeição=long configurou;
+    # DONE_BREAK (fecho <4375.2 = topo OB 15M 4367.2-4375.2) = DESCEU DIRETO, short de reteste perdeu o comboio.
+    {"id": "floor_4377_4386", "side": "long", "lo": 4377.2, "hi": 4386.2, "inval": 4375.2, "expires": 1787263200},
 ]
 
 
@@ -127,6 +131,8 @@ def tick():
         return
     st = load_state()
     for z in ZONES:
+        if z.get("expires") and time.time() > z["expires"]:
+            continue                                     # AUDIT-FIX D7: zona vencida não arma nem alarma
         new, al = step(z, bar, st)
         if new != st.get(z["id"], "ARMED"):
             st[z["id"]] = new

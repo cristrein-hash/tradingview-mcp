@@ -172,9 +172,11 @@ def main_loop():
                         # zona). GO mecânico → reader lê o contexto; só vai a TG se o reader NÃO refutar.
                         # Reader indisponível = fail-open (TG sai — o gate nunca pode calar por avaria).
                         jz = ""
-                        # FAIL-CLOSED p/ SHORT (Cris 10/08: short 4341 vazou ao TG por reader SALTADO —
-                        # dossiê momentaneamente vazio no race, o consult não correu, ok_reader ficou True).
-                        # LONG = fail-open (default True); SHORT = fail-CLOSED (só ao TG se o reader CONFIRMAR).
+                        # FAIL-CLOSED p/ SHORT (Cris 10/08). AUDIT 19/08 (D1): na prática ok_reader começa
+                        # False p/ SHORT e o consult ao reader exige ok_reader=True — logo SHORT NUNCA é
+                        # consultado nem enviado por aqui (fail-closed total, não "só se reader confirmar").
+                        # Pós-19/08 é irrelevante para o Telegram: o GO sai como ⚡ AVISO → shadow sempre.
+                        # LONG = fail-open (default True).
                         ok_reader = (r["tese"] == "LONG")
                         # GATE DE DOUTRINA (Cris 05/08 16:4x): reversão SÓ em região 4H/1D macro (mapa
                         # marca a única permitida). SHORT fora dela = chat-only SEMPRE, mesmo com o

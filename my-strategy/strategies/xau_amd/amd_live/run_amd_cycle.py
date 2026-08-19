@@ -76,7 +76,7 @@ def _ping2(rec, cands):
         lines += [f"[{i}] FVG {c['fvg'][0]}-{c['fvg'][1]} · {c['status']}",
                   f"entry   {c['ent']}",
                   f"SL      {c['sl']}",
-                  f"alvo    {c['tgt']}  (2R)"]
+                  f"alvo    {c['tgt']}  ({round(abs(c['tgt']-c['ent'])/abs(c['ent']-c['sl']),1) if c['ent']!=c['sl'] else '?'}R)"]  # AUDIT-FIX D3: R real
     lines += ["──────────────", "decisão humana · #N (ex: #7 amd fvgN)"]
     return "\n".join(lines)
 

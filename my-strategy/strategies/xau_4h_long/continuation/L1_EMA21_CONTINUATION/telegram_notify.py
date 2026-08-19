@@ -64,7 +64,7 @@ def build_message(cand):
         "🎯 ENTRADA · L1 EMA21 · 4H",
         "──────────────",
         "🟢 LONG XAUUSD — CANDIDATO (revê o chart)",
-        f"barra {cand.get('timestamp','?')}",
+        f"barra {cand.get('candidate_timestamp') or cand.get('timestamp','?')}",   # AUDIT-FIX 19/08 (D2): chave real do runtime
         "──────────────",
         "decisão humana · #N",
     ])

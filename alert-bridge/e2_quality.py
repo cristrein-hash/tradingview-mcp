@@ -202,7 +202,7 @@ def notify_surfaced(cand, th):
         try:
             import sys as _s
             _s.path.insert(0, "/Users/cristrein/tradingview-mcp/my-strategy/core")
-            import reclaim_location_gate as RLG
+            import htf_location_gate as RLG   # AUDIT-FIX D6 19/08: nome real do gate (ex-reclaim_location_gate, shim mantido)
             _dsr, _stale = RLG.load_dossier()
             if _dsr is not None and not _stale:
                 _g = RLG.gate_short(cand, _dsr)

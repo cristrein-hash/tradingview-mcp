@@ -142,8 +142,10 @@ def detect_and_alert(rows, bub, send):
             try:
                 sys.path.insert(0, "/Users/cristrein/tradingview-mcp/alert-bridge")
                 import notify
+                risk = abs(s["ent"] - s["sl"])
+                r_real = round(abs(s["tgt"] - s["ent"]) / risk, 1) if risk else None   # AUDIT-FIX 19/08 (D3): R real, não hardcoded
                 ok = notify.signal("ENTRADA", "CP CAPITULAÇÃO", "15M", "LONG",
-                                   s["ent"], s["sl"], s["tgt"], r=3, audience="group")
+                                   s["ent"], s["sl"], s["tgt"], r=r_real, audience="group")
             except Exception as e:
                 ok = f"ERR {str(e)[:60]}"
         if send and ok is not True:                       # envio TENTADO e FALHOU -> NÃO marca dedup (re-tenta no próximo ciclo)

@@ -92,7 +92,8 @@ def panel():
             continue
         lines.setdefault(s["src"], []).append({**s, **r})
     rows = []
-    now = dt.datetime.now().strftime("%Y-%m-%d %H:%M")
+    from zoneinfo import ZoneInfo
+    now = dt.datetime.now(ZoneInfo("Europe/Lisbon")).strftime("%Y-%m-%d %H:%M")   # AUDIT-FIX D4: TZ explícita
     rows.append(f"SCOREBOARD FORWARD — {now} Lisboa (janela = store 15M ~30d; SL-first)")
     rows.append("linha       N   W-L-O(3R)   sumR(3R)  streak  |  SEGURAR: mediana MFE  sum R-hold  |  falta p/ N")
     for src, sig in sorted(lines.items()):
@@ -127,5 +128,5 @@ if __name__ == "__main__":
             print(f"\n== {src} ==")
             for x in sorted(sig, key=lambda z: z["t"]):
                 print(" %s %-5s e%.1f sl%.1f -> %s r3=%s mfe=%.2fR hold=%.2fR" % (
-                    dt.datetime.utcfromtimestamp(x["t"]).strftime("%d/%m %H:%M"), x.get("dir"),
+                    dt.datetime.fromtimestamp(x["t"], __import__("zoneinfo").ZoneInfo("Europe/Lisbon")).strftime("%d/%m %H:%M"), x.get("dir"),   # AUDIT-FIX D4: Lisboa no detail (era UTC)
                     x["entry"], x["sl"], x["out3"], x["r3"], x["mfe"], x["r_hold"]))
