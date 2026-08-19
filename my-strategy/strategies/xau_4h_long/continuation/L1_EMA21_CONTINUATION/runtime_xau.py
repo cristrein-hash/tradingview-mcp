@@ -174,7 +174,11 @@ def build_live_series(bars_closed, ob_zones, rsi_eval, nas_shift1):
 
 def regime_d1_state(bar_time_unix):
     """Lê regime_L1_v4 p/ a última classificação ANTES de bar_time (D-1 causal).
-    Retorna (state|None, stale: bool). stale se o feed não cobrir D-1 recente."""
+    Retorna (state|None, stale: bool). stale se o feed não cobrir D-1 recente.
+    GATE MANUAL: o escape aprovado é L1_REGIME_GATE_OFF=1 no wrapper (scanner.py:177) — validação
+    humana do regime pelo Cris desliga o gate atrasado; este leitor de feed fica intocado."""
+    if os.environ.get("L1_REGIME_GATE_OFF", "") == "1":
+        return "BULL", False   # gate desligado por validação manual do Cris (mesmo escape do scanner)
     if bar_time_unix is None or not REGIME_L1V4.exists():
         return None, True
     cls = [json.loads(l) for l in REGIME_L1V4.read_text().splitlines() if l.strip()]
