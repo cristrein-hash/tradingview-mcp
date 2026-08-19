@@ -115,6 +115,9 @@ def load_env():
 
 
 def send_telegram(text):
+    # 🛑 LEGADO DESATIVADO (Cris 2026-08-19, auditoria semântica A6): módulo sem daemon; vocabulário
+    # "#SETUP_XAU_4H" fora do formato único. Trava dura — reativar exige migrar para alert-bridge/notify.py.
+    return "LEGACY_DISABLED"
     import os
     if os.path.exists("/Users/cristrein/tradingview-mcp/.telegram_muted"):
         return False                                    # 🔇 MUTE GLOBAL — Cris pausou os sinais (2026-07-21)

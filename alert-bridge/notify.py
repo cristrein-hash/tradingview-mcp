@@ -43,7 +43,21 @@ def _now_lisboa():
     return dt.datetime.now(ZoneInfo("Europe/Lisbon")).strftime("%H:%M Lisboa")
 
 
+INFRA_LOG = os.path.join(REPO, "my-strategy/core/health_check/.health_state/infra_events.jsonl")
+
+
 def _send(text, audience):
+    # 🩺 INFRA NUNCA vai ao Telegram (ordem Cris 2026-08-19: "não quero receber INFRA — é para o Claude
+    # monitorar"). Vai para infra_events.jsonl, que o Claude lê ao auditar saúde (par do PENDING.json).
+    if text.startswith(CH["INFRA"]):
+        try:
+            os.makedirs(os.path.dirname(INFRA_LOG), exist_ok=True)
+            with open(INFRA_LOG, "a") as fh:
+                import json as _j, time as _t
+                fh.write(_j.dumps({"ts": int(_t.time()), "msg": text}, ensure_ascii=False) + "\n")
+        except Exception:
+            pass
+        return "infra-logged(no-telegram)"
     if os.path.exists(MUTE):
         return False
     env = _env()

@@ -42,8 +42,9 @@ def _log(o):
 
 
 def _send(t):
-    try: return TN.send_telegram(t)
-    except Exception as e: return f"ERR {str(e)[:50]}"
+    # 🛑 LEGADO DESATIVADO (Cris 2026-08-19, auditoria A6): conceito nível/breakout CANCELADO 2026-08-11;
+    # sem daemon. Trava dura — reativar exige ordem do Cris + migração para alert-bridge/notify.py.
+    return "LEGACY_DISABLED"
 
 
 def gold_price():

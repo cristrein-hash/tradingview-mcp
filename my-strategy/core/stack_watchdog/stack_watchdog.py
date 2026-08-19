@@ -196,27 +196,14 @@ def components():
 
 
 def _notify(text):
-    """SÓ para o chat pessoal Trading Assistant Trein (AUTHORIZED_CHAT_ID) — ordem Cris 05/08:
-    watchdog NUNCA no grupo. SILENCIADO por default (Cris 2026-08-16: poluía o pessoal). Vigia+log continuam;
-    Telegram só se WATCHDOG_TELEGRAM=on no ambiente/plist."""
-    import os
-    if os.environ.get("WATCHDOG_TELEGRAM", "off") != "on":
-        return "SILENCED (WATCHDOG_TELEGRAM!=on)"
-    if os.path.exists("/Users/cristrein/tradingview-mcp/.telegram_muted"):
-        return "MUTED"    # 2026-08-19: mute global cobre também o watchdog (auditoria A3)
+    """INFRA NUNCA no Telegram (ordem Cris 2026-08-19: 'não quero receber INFRA — é para o Claude
+    monitorar'). Vai para infra_events.jsonl via notify.py (par do PENDING.json do health-check);
+    o aviso LOCAL no Mac (_local_notify) continua a cobrir cegueira offline."""
     try:
-        env = {}
-        for line in (REPO / "alert-bridge/.env").read_text().splitlines():
-            if "=" in line and not line.strip().startswith("#"):
-                k, _, v = line.partition("="); env[k.strip()] = v.strip()
-        tok = env.get("TELEGRAM_BOT_TOKEN"); cid = env.get("AUTHORIZED_CHAT_ID")
-        if not tok or not cid:
-            return "ERR sem credenciais"
-        from urllib.parse import urlencode
-        from urllib.request import Request, urlopen
-        data = urlencode({"chat_id": cid, "text": text}).encode()
-        with urlopen(Request(f"https://api.telegram.org/bot{tok}/sendMessage", data=data), timeout=15) as r:
-            return r.status == 200
+        import sys as _s
+        _s.path.insert(0, str(REPO / "alert-bridge"))
+        import notify as NF
+        return NF.info("INFRA", "STACK WATCHDOG", text)
     except Exception as e:
         return f"ERR {str(e)[:60]}"
 
