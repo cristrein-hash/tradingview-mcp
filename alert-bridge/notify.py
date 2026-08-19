@@ -55,8 +55,9 @@ def _route_to_file(path, text):
         with open(path, "a") as fh:
             import json as _j, time as _t
             fh.write(_j.dumps({"ts": int(_t.time()), "msg": text}, ensure_ascii=False) + "\n")
-    except Exception:
-        pass
+    except Exception as e:
+        # AUDIT-FIX 19/08: falha de escrita do shadow/infra ledger deixava o evento sem rasto nenhum
+        print(f"notify._route_to_file ERR {type(e).__name__}: {str(e)[:80]}", file=sys.stderr)
 
 
 def _send(text, audience):

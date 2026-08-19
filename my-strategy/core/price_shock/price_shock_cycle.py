@@ -231,6 +231,9 @@ def check_ob_touch(price, bars, now, exc):
     DEMAND→LONG), NUNCA por aproximação. Qualidade FRACO/FORTE via cruzamento MTF (classify_zone). SÓ FORTE vai
     ao Telegram; FRACO só loga. Dedup por zona (rearma ao sair >2pts). Alert-only, gated. Devolve os toques."""
     im = mx.cross()                                            # imagem cruzada (zonas tipadas + confluência + fluxo + regime)
+    if im.get("stale"):
+        # AUDIT-FIX 19/08 (C1): store congelado -> zonas/contexto velhos; não classificar nem alertar
+        print(json.dumps({"ob_touch": f"SKIP stale store (age {im.get('store_age_s')}s)"})); return []
     zones = im.get("zones") or []
     if not zones or price is None:
         return []

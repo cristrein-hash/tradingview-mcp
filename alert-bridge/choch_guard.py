@@ -57,6 +57,9 @@ def blocks_long():
     v = verdict()
     if v.get("err"):
         return False                      # sem dossiê E0 = não bloqueia (fail-open, nunca estrangula às cegas)
+    age = v.get("dossier_age_s")
+    if age is None or age > 1800:
+        return False                      # AUDIT-FIX 19/08 (C6): dossiê VELHO = fail-open (docstring já prometia)
     return bool(v.get("dn_1h") and v.get("dn_4h"))
 
 

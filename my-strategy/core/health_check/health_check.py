@@ -41,12 +41,16 @@ DAEMONS = [
 
 
 def market_open(now_utc):
-    """XAU: fecha sex 21:00 UTC, reabre dom 22:00 UTC; pausa DIÁRIA de settlement 21:00-22:00 UTC (seg-qui)."""
-    wd, hm = now_utc.weekday(), now_utc.hour + now_utc.minute / 60
-    if wd == 4 and hm >= 21: return False
+    """XAU: sessão CME/spot ancorada em NY — fecha sex 17:00 NY, reabre dom 18:00 NY; pausa diária de
+    settlement 17:00-18:00 NY (seg-qui). AUDIT-FIX 19/08 (C5): antes usava 21:00 UTC hardcoded, que só é
+    correto no horário de verão dos EUA — no inverno desfasava 1h (falsos congelamentos)."""
+    from zoneinfo import ZoneInfo
+    ny = now_utc.astimezone(ZoneInfo("America/New_York"))
+    wd, hm = ny.weekday(), ny.hour + ny.minute / 60
+    if wd == 4 and hm >= 17: return False
     if wd == 5: return False
-    if wd == 6 and hm < 22: return False
-    if 21 <= hm < 22: return False                 # pausa diária (o feed não produz barras -> não é congelamento)
+    if wd == 6 and hm < 18: return False
+    if 17 <= hm < 18: return False                 # pausa diária (o feed não produz barras -> não é congelamento)
     return True
 
 

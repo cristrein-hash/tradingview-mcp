@@ -274,7 +274,9 @@ def cross(ctx=None, focus="15M"):
     leg = _leg_read(px)
     leg["consumed"] = _consumed(out_zones, px, leg["dir"])   # zonas varridas em cadeia = força da perna
     return {"price": px, "regime": reg, "focus": focus, "zones": out_zones,
-            "structure": structure, "nas": nas, "bubbles": bubbles, "momentum": momentum, "leg": leg}
+            "structure": structure, "nas": nas, "bubbles": bubbles, "momentum": momentum, "leg": leg,
+            # AUDIT-FIX 19/08 (C1): propaga frescura do store aos consumidores (price_shock veta em stale)
+            "stale": ctx.get("stale", False), "store_age_s": ctx.get("store_age_s")}
 
 
 def _regime_align(ty, regime):

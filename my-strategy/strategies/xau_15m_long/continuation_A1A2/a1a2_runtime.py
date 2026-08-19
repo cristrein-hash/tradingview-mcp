@@ -52,8 +52,13 @@ def log(obj):
 
 
 def store_series(n=300):
-    """Constrói S no formato do módulo-mãe a partir do store live (bars fechadas)."""
+    """Constrói S no formato do módulo-mãe a partir do store live (bars fechadas).
+    AUDIT-FIX 19/08 (C1): gate de FRESCURA via store_reader — antes lia bars_15m.jsonl direto sem
+    verificar heartbeat; num store congelado gerava sinais sobre dados velhos."""
     try:
+        import store_reader as SR
+        if not SR.fresh("15"):
+            return None                              # store stale -> no-op (vigias externos alertam)
         rows = [json.loads(l) for l in open(STORE) if l.strip() and l[0] == "{"]
     except Exception:
         return None

@@ -130,7 +130,10 @@ def main():
         new = [c for c in cands if c["candidate_id"] + ":" + c["status"] not in pinged]
         if new:
             ok = _send(_ping2(rec, new)) if send else None
-            for c in new: rec.setdefault("candidates_pinged", []).append(c["candidate_id"] + ":" + c["status"])
+            # AUDIT-FIX 19/08 (C4): só marca pinged com envio CONFIRMADO (ok True) ou em dry-run;
+            # antes um envio falhado marcava os candidatos e o sinal perdia-se sem re-tentativa.
+            if (ok is True) or not send:
+                for c in new: rec.setdefault("candidates_pinged", []).append(c["candidate_id"] + ":" + c["status"])
             ping2 += 1
     # reescreve o ledger inteiro (F1 append + F2 update)
     tmp = LEDGER.with_suffix(".jsonl.tmp"); tmp.write_text("\n".join(json.dumps(r, ensure_ascii=False) for r in rows) + ("\n" if rows else "")); os.replace(tmp, LEDGER)

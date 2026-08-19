@@ -87,9 +87,23 @@ def _smc(res):
     return out
 
 
+def _store_age_s():
+    """AUDIT-FIX 19/08 (C1): idade do heartbeat 15M do bar-store (store_meta.poll). None se ilegível."""
+    try:
+        m = json.loads((STORE / "store_meta.json").read_text())
+        ts = (m.get("poll") or {}).get("15") or 0
+        return max(0, int(dt.datetime.now(dt.timezone.utc).timestamp() - ts)) if ts else None
+    except Exception:
+        return None
+
+
 def read_all():
     px = _price()
-    ctx = {"ts": int(dt.datetime.now(dt.timezone.utc).timestamp()), "price": px, "tf": {}}
+    age = _store_age_s()
+    ctx = {"ts": int(dt.datetime.now(dt.timezone.utc).timestamp()), "price": px, "tf": {},
+           # stale = heartbeat 15M >3×poll(60s): snapshots/preço podem ser velhos — consumidores devem
+           # etiquetar/vetar decisões (antes: nenhum sinal interno de frescura neste caminho)
+           "store_age_s": age, "stale": (age is None or age > 180)}
     for label, res in TFS:
         z = _zones(res); v = _values(res)
         ctx["tf"][label] = {"zones": z, "values": v, "smc": _smc(res)}
