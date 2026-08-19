@@ -237,10 +237,11 @@ def main_loop():
                                 jz = f"\n(reader indisponível — SHORT retido por segurança, não enviado)"
                             else:
                                 jz = f"\n(reader indisponível: {type(ex).__name__} — long enviado sem juízo)"
-                        txt = (f"🎯 VALIDADOR: GO — {r['tese']} @ {r.get('zona')} ({r.get('id')})\n"
-                               f"{r.get('detail','rejeição/break confirmado')}\n"
-                               f"entry {e} · SL {s} · alvo {t or '—'} · RR {rr or '—'}{jz}\n"
-                               f"(validação da TUA entrada — a decisão é tua)")
+                        import notify as NF                   # formato único (Cris 2026-08-19)
+                        txt = NF.build_signal("AVISO", "VALIDADOR GO", "15M",
+                                              "LONG" if r["tese"] == "LONG" else "SHORT",
+                                              e, s, t, r=rr,
+                                              event=f"zona {r.get('zona')} confirmou") + jz
                         print(txt, flush=True)
                         if not ok_reader:
                             print("(canal: chat-only — reader refutou o GO mecânico)", flush=True)
@@ -255,8 +256,12 @@ def main_loop():
                     # sinal que TINHA dado GO e invalidou = alerta de SL/saída (relativo ao sinal — Cris 05/08:
                     # TG só sinais entry/SL/TP e alertas relativos a eles)
                     if r["state"] == "INVALIDOU" and last_state.get(r["id"]) == "GO":
-                        txt = (f"🛑 INVALIDOU — {r.get('tese')} @ {r.get('zona')} ({r.get('id')})\n"
-                               f"{r.get('detail','')}\nSe estás no trade deste sinal: zona perdida, reavalia SL/saída.")
+                        txt = "\n".join([
+                            "⚡ AVISO · VALIDADOR INVALIDOU",
+                            "──────────────",
+                            f"{r.get('tese')} @ {r.get('zona')} — zona perdida",
+                            "se estás no trade deste sinal: reavalia SL/saída",
+                            "──────────────"])
                         print(txt, flush=True)
                         print(f"(canal: {_tg(txt)})", flush=True)
                     last_state[r["id"]] = r["state"]

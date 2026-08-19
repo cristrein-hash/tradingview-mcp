@@ -59,20 +59,21 @@ def load_env():
 
 
 def build_message(cand):
+    # formato único notify.py (Cris 2026-08-19); signal_hash fica no journal, não polui o Telegram
     return "\n".join([
-        f"🔔 {SUITE}",
-        f"   {STRATEGY_LABEL}",
-        f"{cand.get('symbol','PEPPERSTONE:XAUUSD')} · {cand.get('timeframe','240')} · {cand.get('timestamp','?')}",
-        "",
-        "CANDIDATE — revise o chart.",
-        "Alerta de candidato para revisão. A entrada é decisão 100% humana; este aviso não é sinal de compra.",
-        f"signal_hash: {cand.get('signal_hash')}",
+        "🎯 ENTRADA · L1 EMA21 · 4H",
+        "──────────────",
+        "🟢 LONG XAUUSD — CANDIDATO (revê o chart)",
+        f"barra {cand.get('timestamp','?')}",
+        "──────────────",
+        "decisão humana · #N",
     ])
 
 
 def send_telegram(text):
+    # 2026-08-19: prefixo "📊 L1 EMA21 4H" REMOVIDO — era herdado por 7 módulos que importavam este
+    # sender e saíam no grupo vestidos de L1 (bug Cris 19/08). Cada emissor traz o seu header completo.
     import os
-    text = "📊 L1 EMA21 4H\n" + text   # label = nome da estratégia (Cris 05/08: sem LIVE SYSTEM — esse é só do reader)
     if os.path.exists("/Users/cristrein/tradingview-mcp/.telegram_muted"):
         return False                                    # 🔇 MUTE GLOBAL — Cris pausou os sinais (2026-07-21)
     env = load_env()

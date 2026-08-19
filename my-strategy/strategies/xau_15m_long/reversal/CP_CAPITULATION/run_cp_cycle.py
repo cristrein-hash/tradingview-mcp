@@ -136,17 +136,14 @@ def detect_and_alert(rows, bub, send):
             with open(ALERTED_F, "a") as fh:
                 fh.write(json.dumps({**s, "stale": True, "ts": iso(int(time.time()))}) + "\n")
             continue
-        msg = (f"📊 CP CAPITULAÇÃO 15M\n"
-               f"🔻 Cp CAPITULATION LONG (15M) — ENTRY\n"
-               f"entry {s['ent']:.2f} · SL {s['sl']:.2f} · TGT 3R {s['tgt']:.2f}\n"
-               f"fundo {iso(s['fundo_t'])} · barra entrada {iso(s['etime'])} Lisboa\n"
-               f"alert-only · baseline congelado · forward ledger")
+        # formato único notify.py (Cris 2026-08-19) — antes: texto próprio via telegram_notify da L1 (prefixo errado)
         ok = None
         if send:
             try:
-                sys.path.insert(0, str(Path("/Users/cristrein/tradingview-mcp/my-strategy/strategies/xau_4h_long/continuation/L1_EMA21_CONTINUATION")))
-                import telegram_notify as TN
-                ok = TN.send_telegram(msg)
+                sys.path.insert(0, "/Users/cristrein/tradingview-mcp/alert-bridge")
+                import notify
+                ok = notify.signal("ENTRADA", "CP CAPITULAÇÃO", "15M", "LONG",
+                                   s["ent"], s["sl"], s["tgt"], r=3, audience="group")
             except Exception as e:
                 ok = f"ERR {str(e)[:60]}"
         if send and ok is not True:                       # envio TENTADO e FALHOU -> NÃO marca dedup (re-tenta no próximo ciclo)

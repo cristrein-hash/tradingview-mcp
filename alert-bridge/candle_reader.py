@@ -402,11 +402,12 @@ def send_confirmed_tg(tf, bar, v):
                 return "sweep-blocked"
         except Exception:
             pass
-    txt = (f"🤖 LIVE SYSTEM · READER — SINAL CONFIRMADO\n"
-           f"✅ SINAL CONFIRMADO ({tf}M {hm(bar['t'])}) — {v['direction']} XAUUSD\n"
-           f"entry {v['entry']} · SL {v['sl']} · alvo {v['target']} (RR {v.get('rr')})\n"
-           f"{v.get('phase')} · {v.get('at_level') or ''} · convicção {v.get('conviction')}\n"
-           f"{str(v.get('note'))[:180]}\n(advisory — a decisão é tua)")
+    # formato único notify.py (Cris 2026-08-19); phase/nota/convicção ficam no log do reader
+    import notify as NF
+    side = "LONG" if str(v.get("direction", "")).upper().startswith("L") else "SHORT"
+    txt = NF.build_signal("LEITURA", "READER VELA", f"{tf}M", side,
+                          v.get("entry"), v.get("sl"), v.get("target"),
+                          r=v.get("rr"), event=f"confirmado {hm(bar['t'])}")
     try:
         # Reader no GRUPO (Cris 12/08). ANTI-CHASE DESATIVADO (auditoria 13/08): _range_pos media a entry
         # contra o topo do range recente e, numa perna de alta, a entry de CONTINUAÇÃO está sempre perto do

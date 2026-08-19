@@ -118,6 +118,9 @@ def _tg_send(text, audience="group"):
     ROTEAMENTO (Cris 05/08 ~06:4x): audience="group" = TODOS os chat_ids (grupo LIMPO — só sinais
     qualificados: L1/L2/15M-BULL/validados-pelo-reader). audience="assistant" = SÓ o chat privado
     Trading Assistant Trein (AUTHORIZED_CHAT_ID): validador de regiões, leituras de vela, sentinela."""
+    import os as _os
+    if _os.path.exists("/Users/cristrein/tradingview-mcp/.telegram_muted"):
+        return False    # 2026-08-19: mute global passa a cobrir TAMBÉM este caminho (auditoria A3)
     try:
         env = {}
         for line in (BASE / ".env").read_text().splitlines():
@@ -213,13 +216,13 @@ def notify_surfaced(cand, th):
                       f"tese {z['tese']} (\"{z['nota'][:60]}\")\n")
     except Exception:
         pass
-    txt = (f"🤖 LIVE SYSTEM · E1/E2 READER 15M\n"
-           f"{prefix}🧠 E2 {cand.get('direction')} XAUUSD {cand.get('rule')}@{cand.get('tf')}\n"
-           f"entry {cand.get('entry')} · SL {cand.get('sl')} · alvo {cand.get('target')} (RR {cand.get('rr')})\n"
-           f"convergência {th.get('convergence')} · convicção {th.get('conviction')}\n"
-           f"tese: {th.get('thesis')}\n"
-           f"invalida se: {th.get('invalidation')}\n"
-           f"(advisory — a decisão é tua, revê o chart)")
+    # formato único notify.py (Cris 2026-08-19); tese/convergência ficam no verdict ledger
+    import notify as NF
+    side = "LONG" if str(cand.get("direction", "")).upper().startswith("L") else "SHORT"
+    ev = str(cand.get("rule") or "leitura")
+    txt = prefix + NF.build_signal("LEITURA", "READER E2", str(cand.get("tf") or "15M"), side,
+                                   cand.get("entry"), cand.get("sl"), cand.get("target"),
+                                   r=cand.get("rr"), event=ev)
     _tg_send(txt, audience=("group" if recent_strategy_signal(cand.get("direction")) else "assistant"))
 
 READ_SYS = (

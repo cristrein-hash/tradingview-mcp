@@ -71,39 +71,34 @@ def build_entry_message(c):
         zdesc = f"pos no range: {zona.get('pos')}"
     late = f" · LATE ({c.get('late_bars')} barras)" if c.get("late_bars") else ""
     wide = "\n⚠️ WIDE_STOP (risk > 80 pts)" if c.get("wide_stop") else ""
+    # formato único notify.py (Cris 2026-08-19); signal_hash/risk_pts ficam no ledger
+    ev = "CANDIDATO" + late + (" · ⚠️ WIDE_STOP" if c.get("wide_stop") else "")
     return "\n".join([
-        f"🔔 {SUITE}",
-        f"   {STRATEGY_LABEL}",
-        f"{c.get('symbol', 'PEPPERSTONE:XAUUSD')} · {c.get('timeframe', '240')} · "
-        f"{c.get('candidate_timestamp', '?')}{late}",
-        "",
-        "Candidato L2/BPT — revise o chart.",
-        f"entry: {c.get('entry')} · SL: {c.get('sl')} · risk_pts: {c.get('risk_pts')}",
-        f"regime: {c.get('regime')} · {zdesc} · sl_type: {c.get('sl_type')}" + wide,
-        "",
-        "Alerta de candidato para revisão. A entrada é decisão 100% humana; "
-        "este aviso não é sinal de compra.",
-        f"signal_hash: {c.get('signal_hash')}",
+        "🎯 ENTRADA · L2 BPT · 4H",
+        "──────────────",
+        f"🟢 LONG XAUUSD — {ev}",
+        f"entry   {c.get('entry')}",
+        f"SL      {c.get('sl')}",
+        f"regime  {c.get('regime')} · {zdesc}",
+        "──────────────",
+        "decisão humana · #N",
     ])
 
 
 def build_exit_message(c):
     late = f" · LATE ({c.get('late_bars')} barras)" if c.get("late_bars") else ""
     return "\n".join([
-        f"🔔 {SUITE}",
-        f"   {STRATEGY_LABEL}",
-        f"{c.get('symbol', 'PEPPERSTONE:XAUUSD')} · {c.get('timeframe', '240')} · "
-        f"{c.get('bar_time_iso', '?')}{late}",
-        "",
-        f"Saída L2/BPT — motivo: {c.get('mot')} · R contabilístico: {c.get('R')}",
-        "Aviso advisory de gestão; a decisão de saída é 100% humana. Não é ordem.",
-        f"entrada signal_hash: {c.get('entry_signal_hash')}",
+        "⚡ AVISO · L2 BPT SAÍDA · 4H",
+        "──────────────",
+        f"saída {c.get('mot')}{late} · R {c.get('R')}",
+        "gestão advisory — decisão humana",
+        "──────────────",
     ])
 
 
 def send_telegram(text):
+    # 2026-08-19: prefixo "📊 L2 BPT 4H" removido — header completo vem do build (formato único)
     import os
-    text = "📊 L2 BPT 4H\n" + text   # label = nome da estratégia (Cris 05/08: sem LIVE SYSTEM — esse é só do reader)
     if os.path.exists("/Users/cristrein/tradingview-mcp/.telegram_muted"):
         return False                                    # 🔇 MUTE GLOBAL — Cris pausou os sinais (2026-07-21)
     env = load_env()

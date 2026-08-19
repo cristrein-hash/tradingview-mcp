@@ -166,8 +166,12 @@ def main_loop():
                           f"— preço {f['price']:.2f} [{src}]", flush=True)
                     # RECLAIM do gatilho p/ cima = retest a falhar OU invalidação — avisa na hora
                     if f["name"] == "GATILHO_BREAK" and f["dir"] == "ACIMA":
-                        txt = (f"⚠️ RECLAIM {f['level']:.2f} ({hm()}) — preço {f['price']:.2f} de volta ACIMA do nível "
-                               f"rompido. Short de continuação em risco: se segurar acima, invalida; rejeição aqui = retest SHORT.")
+                        txt = "\n".join([                     # formato único (Cris 2026-08-19)
+                            "⚡ AVISO · SENTINELA RECLAIM",
+                            "──────────────",
+                            f"preço {f['price']:.2f} de volta ACIMA de {f['level']:.2f}",
+                            "short de continuação em risco: segurar acima = invalida · rejeição = retest SHORT",
+                            "──────────────", f"{hm()} Lisboa"])
                         print(txt, flush=True)
                         try:
                             import e2_quality as E2
@@ -181,9 +185,10 @@ def main_loop():
                     # ENTRADA PRECISA NO ATO: break do gatilho p/ baixo = SHORT já (sem esperar fecho)
                     if f["name"] == "GATILHO_BREAK" and f["dir"] == "ABAIXO":
                         e = _entry_on_break(f["price"], f["level"])
-                        txt = (f"⚡🔻 ENTRADA SHORT REALTIME — rompeu {f['level']:.2f} AGORA ({hm()})\n"
-                               f"entry {e['entry']} · SL {e['sl']} · alvo {e['target'] or '—'} · RR {e['rr'] or '—'}\n"
-                               f"SL seguro (swing) {e['sl_safe']} · tick-level, NÃO espera fecho")
+                        import notify as NF                   # formato único (Cris 2026-08-19)
+                        txt = NF.build_signal("AVISO", "SENTINELA BREAK", "tick", "SHORT",
+                                              e["entry"], e["sl"], e["target"], r=e.get("rr"),
+                                              event=f"rompeu {f['level']:.2f} agora — não espera fecho")
                         print(txt, flush=True)
                         try:
                             import e2_quality as E2

@@ -46,9 +46,9 @@ def _notify(text):
     if os.environ.get("L1_PRODUCTION_AUTHORIZED") != "1":
         return "DRY (sem L1_PRODUCTION_AUTHORIZED)"
     try:
-        sys.path.insert(0, str(HERE.parent.parent / "strategies/xau_4h_long/continuation/L1_EMA21_CONTINUATION"))
-        import telegram_notify as TN
-        return str(TN.send_telegram(text))
+        sys.path.insert(0, "/Users/cristrein/tradingview-mcp/alert-bridge")
+        import notify as NF                                   # sender único (Cris 2026-08-19)
+        return str(NF._send(text, "group"))
     except Exception as e:
         return f"ERR {str(e)[:60]}"
 
@@ -98,9 +98,12 @@ async def run():
                             except Exception: al = {"last_ts": 0, "last_key": None}
                             key = f"{sh['dir']}:{round(price,1)}"
                             if now - al.get("last_ts", 0) >= COOLDOWN_S and key != al.get("last_key"):
-                                m = (f"⚡ <b>CHOQUE OURO (GLD tick) — {tier} {sh['dir']}</b>\n"
-                                     f"{sh['pct']:+.2f}% em {sh['window_min']}min · GLD {price:.2f}\n"
-                                     f"{iso(now)} Lisboa · sub-segundo · verifica news — contexto, não ordem")
+                                m = "\n".join([               # formato único (Cris 2026-08-19)
+                                    "⚡ AVISO · CHOQUE OURO (GLD tick)",
+                                    "──────────────",
+                                    f"{tier} {sh['dir']} · {sh['pct']:+.2f}% em {sh['window_min']}min · GLD {price:.2f}",
+                                    "verifica news — contexto, não ordem",
+                                    "──────────────", f"{iso(now)} Lisboa"])
                                 r = _notify(m)
                                 ALERT.write_text(json.dumps({"last_ts": now, "last_key": key, "tg": r}))
                                 _log({"ts": now, "SHOCK": tier, "dir": sh["dir"], "pct": sh["pct"], "tg": r})

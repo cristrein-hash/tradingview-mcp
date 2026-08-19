@@ -140,7 +140,11 @@ def main():
         with open(TRANS_F, "a") as fh:
             fh.write(json.dumps({"ts": ts, "from": prev, "to": r["regime"], "as_of": r["as_of_bar"]}) + "\n")
         if os.environ.get("REGIME_TELEGRAM") == "1":
-            _notify(f"🔄 REGIME XAU: {prev} → {r['regime']} (as-of {r['as_of_bar']} Lisboa)")
+            _notify("\n".join([                               # formato único (Cris 2026-08-19)
+                "⚡ AVISO · REGIME XAU",
+                "──────────────",
+                f"{prev} → {r['regime']} (as-of {r['as_of_bar']} Lisboa)",
+                "──────────────"]))
     tmp = CUR_F.with_suffix(".json.tmp"); tmp.write_text(json.dumps({**r, "ts": ts})); os.replace(tmp, CUR_F)
     # LAYER1 1D = autoridade macro (consolidação Cris 2026-07-19): este serviço é o ÚNICO daemon de
     # regime; corre também o Layer1 1D (pura computação, matemática congelada + gate de paridade) e
@@ -163,9 +167,9 @@ def _log(o):
 
 def _notify(text):
     try:
-        sys.path.insert(0, str((CORE.parent / "strategies/xau_4h_long/continuation/L1_EMA21_CONTINUATION")))
-        import telegram_notify as TN
-        TN.send_telegram(text)
+        sys.path.insert(0, "/Users/cristrein/tradingview-mcp/alert-bridge")
+        import notify as NF                                   # sender único (Cris 2026-08-19)
+        NF._send(text, "group")
     except Exception as e:
         _log({"notify_err": str(e)[:80]})
 

@@ -124,12 +124,11 @@ def run_reclaim(rows, out):
             # no ledger (com gate_reason) para auditoria forward, mas NÃO poluem o Telegram.
             if g["pass"] and RECLAIM_TG in ("personal", "group"):
                 try:
-                    import e2_quality as E2
-                    aud = "group" if RECLAIM_TG == "group" else "assistant"   # assistant = chat privado
-                    msg = ("🔄 RETOMADA (reclaim-and-go) LONG XAU 15M @ %.2f\nSL %.2f  TGT3R %.2f  [%s]\n"
-                           "loc: %s · regime %s · reversão-long · forward (NÃO provado)" %
-                           (f["entry"], f["sl"], f["tgt"], f["mode"], g["reason"], out.get("regime")))
-                    if E2._tg_send(msg, audience=aud):
+                    import notify as NF                       # formato único (Cris 2026-08-19)
+                    aud = "group" if RECLAIM_TG == "group" else "personal"
+                    if NF.signal("ENTRADA", "RECLAIM", "15M", "LONG",
+                                 f["entry"], f["sl"], f["tgt"], r=3,
+                                 event=f"reclaim-and-go [{f['mode']}] · forward", audience=aud) is True:
                         sent += 1
                 except Exception:
                     pass

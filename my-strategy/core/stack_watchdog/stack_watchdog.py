@@ -202,6 +202,8 @@ def _notify(text):
     import os
     if os.environ.get("WATCHDOG_TELEGRAM", "off") != "on":
         return "SILENCED (WATCHDOG_TELEGRAM!=on)"
+    if os.path.exists("/Users/cristrein/tradingview-mcp/.telegram_muted"):
+        return "MUTED"    # 2026-08-19: mute global cobre também o watchdog (auditoria A3)
     try:
         env = {}
         for line in (REPO / "alert-bridge/.env").read_text().splitlines():

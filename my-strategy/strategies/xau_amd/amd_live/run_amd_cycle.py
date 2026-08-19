@@ -43,33 +43,40 @@ def _layer1():
     except Exception: return None
 
 
+# formato único notify.py (Cris 2026-08-19): ping1 = ⚡ AVISO (setup armado, sem níveis de entrada);
+# ping2 = 🎯 ENTRADA (candidato com entry/SL/alvo). Detalhe (bias/killzone/ids) fica no ledger.
 def _ping1(s, sid, l1):
-    hu = dt.datetime.fromtimestamp(s["t"], UTC)
     kind = "PDL/PWL" if s["dir"] == "long" else "PDH/PWH"
-    wick = "sweep-low" if s["dir"] == "long" else "sweep-high"
-    return (f"🟡 AMD SETUP ARMADO — XAUUSD (H4)\n"
-            f"{s['dir'].upper()} · varreu {kind} {s['level']} · reclaim close {s['h4c']} (rej {s['close_pos'] if s['dir']=='long' else round(1-s['close_pos'],2)})\n"
-            f"H4 {wick} {s['wick']} · bias D1 {s['bias']} · Layer1 {l1} (contexto) · killzone {KZ.get(hu.hour,'?')}\n"
-            f"barra {lx(s['t'])} Lisboa · {sid}\n"
-            f"▶ Vigia o 1H para o FVG/OB de entrada. Alert-only — tu decides, entras e marcas #N.")
+    side = "🟢 LONG" if s["dir"] == "long" else "🔴 SHORT"
+    return "\n".join([
+        "⚡ AVISO · AMD SETUP ARMADO · 4H",
+        "──────────────",
+        f"{side} XAUUSD — varreu {kind} {s['level']} · reclaim {s['h4c']}",
+        "vigia o 1H para o FVG/OB de entrada",
+        "──────────────",
+        f"{lx(s['t'])} Lisboa · decisão humana · #N",
+    ])
 
 
 def _send(msg):
     try:
-        sys.path.insert(0, str(REPO / "my-strategy/strategies/xau_4h_long/continuation/L1_EMA21_CONTINUATION"))
-        import telegram_notify as TN
-        r = TN.send_telegram(msg); return bool(r.get("ok")) if isinstance(r, dict) else bool(r)
+        sys.path.insert(0, str(REPO / "alert-bridge"))
+        import notify as NF
+        r = NF._send(msg, "group"); return bool(r) if not isinstance(r, str) else r
     except Exception as e:
         return f"ERR {str(e)[:60]}"
 
 
 def _ping2(rec, cands):
-    lines = [f"🟢 AMD 1H CANDIDATOS — {rec['dir'].upper()} (setup {rec['setup_id']}, nível {rec['level']})",
-             f"janela ativa → {lx(rec['window_expires_epoch'])} Lisboa · {len(cands)} candidato(s):"]
+    side = "🟢 LONG" if rec["dir"] == "long" else "🔴 SHORT"
+    lines = ["🎯 ENTRADA · AMD · 1H", "──────────────",
+             f"{side} XAUUSD — {len(cands)} candidato(s) até {lx(rec['window_expires_epoch'])} Lisboa"]
     for i, c in enumerate(cands, 1):
-        lines.append(f" [{i}] FVG {c['fvg'][0]}-{c['fvg'][1]} · OB {c['ob_edge']} · entry {c['ent']} · SL {c['sl']} "
-                     f"· R {c['R']} · tgt(2R) {c['tgt']} · {c['status']}")
-    lines.append("Escolhe o FVG/OB correto, entra manual e marca a tag verde (ex: #7 amd " + rec["setup_id"].split("_")[-1] + " fvgN).")
+        lines += [f"[{i}] FVG {c['fvg'][0]}-{c['fvg'][1]} · {c['status']}",
+                  f"entry   {c['ent']}",
+                  f"SL      {c['sl']}",
+                  f"alvo    {c['tgt']}  (2R)"]
+    lines += ["──────────────", "decisão humana · #N (ex: #7 amd fvgN)"]
     return "\n".join(lines)
 
 

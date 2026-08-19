@@ -250,10 +250,16 @@ def check_ob_touch(price, bars, now, exc):
             fired.append({"zone": zk, "type": z["type"], "dir": want, "mode": mode, "q": q,
                           "sharp_pts": round(mag, 1), "slow_pts": slow_move(bars, want, price)})
             if q == "FORTE" and send:                          # FRACO nunca vai ao Telegram (só loga)
-                arrow = "🟢" if want == "LONG" else "🔻"
-                shock_tag = f"⚡ CHOQUE {mag:.0f}pts · " if mag >= SHOCK_PTS else ""   # choque coincidente = 1 só msg
-                _notify(f"{arrow} <b>{shock_tag}{want} FORTE ({mode}) — OB {z['type']} 15M {lo:.1f}-{hi:.1f}</b>\n"
-                        f"{ck}\n{iso(now)} Lisboa · timing 5M · advisory — decides + marca #N (journal aprende)")
+                arrow = "🟢 LONG" if want == "LONG" else "🔴 SHORT"
+                shock_tag = f"choque {mag:.0f}pts · " if mag >= SHOCK_PTS else ""
+                # formato único notify.py (Cris 2026-08-19); checklist ck fica no log do ciclo
+                _notify("\n".join([
+                    "⚡ AVISO · PRICE-SHOCK · 5M",
+                    "──────────────",
+                    f"{arrow} XAUUSD — {shock_tag}FORTE ({mode})",
+                    f"OB {z['type']} 15M {lo:.1f}-{hi:.1f}",
+                    "──────────────",
+                    f"{iso(now)} Lisboa · decisão humana · #N"]))
         elif not (lo <= price <= hi) and not armed and (price < lo - 2 or price > hi + 2):
             state[zk] = {"armed": True}; changed = True   # saiu da zona -> rearma p/ próximo toque
     if changed:
@@ -262,34 +268,10 @@ def check_ob_touch(price, bars, now, exc):
 
 
 def _notify(text):
-    # Sender PRÓPRIO (Cris 2026-08-19): antes importava o telegram_notify da L1, que prefixa
-    # "📊 L1 EMA21 4H" em tudo — price-shock saía no grupo vestido de L1 e sem parse_mode (o <b> aparecia cru).
-    text = "⚡ PRICE-SHOCK (advisory)\n" + text
-    if os.path.exists("/Users/cristrein/tradingview-mcp/.telegram_muted"):
-        return False
+    # sender único notify.py (Cris 2026-08-19) — header completo já vem no texto (formato único)
     try:
-        from urllib.request import urlopen, Request
-        from urllib.parse import urlencode
-        env = {}
-        for ln in open("/Users/cristrein/tradingview-mcp/alert-bridge/.env"):
-            ln = ln.strip()
-            if ln and not ln.startswith("#") and "=" in ln:
-                k, v = ln.split("=", 1); env[k] = v.strip().strip('"')
-        token = env.get("TELEGRAM_BOT_TOKEN")
-        chat_raw = env.get("TELEGRAM_CHAT_IDS") or env.get("TELEGRAM_CHAT_ID") or ""
-        if not token or not chat_raw:
-            return "ERR telegram nao configurado"
-        ok = True
-        for cid in [x.strip() for x in chat_raw.split(",") if x.strip()]:
-            data = urlencode({"chat_id": cid, "text": text, "parse_mode": "HTML",
-                              "disable_web_page_preview": "true"}).encode()
-            try:
-                with urlopen(Request(f"https://api.telegram.org/bot{token}/sendMessage",
-                                     data=data, method="POST"), timeout=20) as r:
-                    ok = ok and (r.status == 200)
-            except Exception:
-                ok = False
-        return ok
+        import notify as NF
+        return NF._send(text, "group")
     except Exception as e:
         return f"ERR {str(e)[:60]}"
 

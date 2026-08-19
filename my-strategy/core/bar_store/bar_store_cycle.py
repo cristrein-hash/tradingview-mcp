@@ -63,11 +63,11 @@ def _alert_missing(missing):
     if os.environ.get("BAR_STORE_ALERTS") != "1":
         return "DRY"
     try:
-        sys.path.insert(0, str(REPO / "my-strategy/strategies/xau_4h_long/continuation/L1_EMA21_CONTINUATION"))
-        import telegram_notify as TN
-        r = TN.send_telegram(f"⚠️ <b>TAB XAU SUMIU — feed {'/'.join(miss)} abaixo</b>\n"
-                             f"o bar-store não encontra a(s) tab(s) {', '.join(miss)}. "
-                             f"Mudaste o timeframe de alguma tab? Repõe-a para restaurar o feed.")
+        sys.path.insert(0, str(REPO / "alert-bridge"))
+        import notify as NF                                   # sender único (Cris 2026-08-19)
+        r = NF.info("INFRA", "TAB XAU SUMIU",
+                    f"feed {'/'.join(miss)} abaixo — repõe o timeframe da(s) tab(s) para restaurar",
+                    audience="group")
     except Exception as e:
         r = f"ERR {type(e).__name__}"
     tmp = ALERT_STATE.with_suffix(".json.tmp"); tmp.write_text(json.dumps({"last_ts": now, "last_key": key})); os.replace(tmp, ALERT_STATE)

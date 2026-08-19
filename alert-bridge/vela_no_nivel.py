@@ -156,13 +156,14 @@ def alert_text(read, zone, g, notes, tgts, bar_t, tf="15"):
     rrs = " / ".join(f"{abs(read['entry'] - t) / r:.1f}" for t in tgts) if (tgts and r > 0) else "—"
     tgt_s = " / ".join(str(t) for t in tgts) if tgts else "—"
     tflabel = "1H" if tf == "60" else f"{tf}M"
-    return (f"🕯️ VELA-NO-NÍVEL {tflabel} — COPILOTO (leitura de barra, NÃO é sinal E2)\n"
-            f"zona declarada {zone['low']:.2f}–{zone['high']:.2f} (tese {zone['tese']}, crítica): a vela {tflabel} "
-            f"das {hm(bar_t)} tocou {read['touch_extreme']}, pavio {read['wick_pts']}pts "
-            f"({read['wick_pct']}% do range, {read['wick_atr']}×ATR) e fechou de volta em {read['entry']}.\n"
-            f"{'; '.join(notes)}. [grau {g}]\n"
-            f"Leitura {read['direction']}: entry {read['entry']} · SL {read['sl']} · alvos {tgt_s} · RR {rrs}\n"
-            f"(alta sensibilidade por desenho — 1ª rejeição dispara; tu julgas. Não é o gatilho R10.)")
+    # formato único notify.py (Cris 2026-08-19); pavio/notas/grau ficam no log
+    import notify as NF
+    side = "LONG" if str(read["direction"]).upper().startswith("L") else "SHORT"
+    tgt1 = tgts[0] if tgts else None
+    rr1 = (abs(read["entry"] - tgt1) / r) if (tgt1 and r > 0) else None
+    return NF.build_signal("AVISO", "VELA-NO-NÍVEL", tflabel, side,
+                           read["entry"], read["sl"], tgt1, r=round(rr1, 1) if rr1 else None,
+                           event=f"rejeição na zona {zone['low']:.1f}-{zone['high']:.1f} [grau {g}]")
 
 
 def _tg(txt):

@@ -163,27 +163,24 @@ def cycle():
            "regime": reg, "gate": "PASS" if ok_gate else "BLOCK", "detect": why}
     if r and ok_gate and not already(last_t):
         ts = dt.datetime.fromtimestamp(last_t, LX).strftime("%d/%m %H:%M")
-        txt = (f"📊 A1/A2 PULLBACK 15M\n"
-               f"🟢 XAU 15M LONG — {r['layer']} PULLBACK (MB3)\n"
-               f"vela 15M {ts}: MB3 confirmado após fundo de pullback ({r['depth_atr']}×ATR da perna)\n"
-               f"Entry {r['ent']} · SL {r['sl']} (low real −0.1ATR) · alvo {r['tgt']} (3R) · risco {r['R']}pts\n"
-               f"bounce já corrido {r.get('bounce_pct','?')}% — entrada LIMITE ideal no retest "
-               f"{r['retest_zone'][0]:.2f}–{r['retest_zone'][1]:.2f} (melhor preço, mesmo SL)\n"
-               f"(estratégia A1/A2 aprovada — forward em registo; a decisão é tua)")
+        # formato único notify.py (Cris 2026-08-19) — retest ideal vira tag curta; resto vive no ledger
+        import notify as NF
+        txt = NF.build_signal("ENTRADA", f"A1/A2 {r['layer']}", "15M", "LONG",
+                              r["ent"], r["sl"], r["tgt"], r=3,
+                              event=f"MB3 · retest ideal {r['retest_zone'][0]:.1f}-{r['retest_zone'][1]:.1f}")
         out["signal"] = {k: r[k] for k in ("layer", "ent", "sl", "tgt", "R", "depth_atr")}
         with open(DEDUP, "a") as f:
             f.write(json.dumps({"entry_t": last_t, **out["signal"]}) + "\n")
         print(txt, flush=True)
         if PROD:
             try:
-                import e2_quality as E2
                 # GUARD-CHoCH ATIVO (Cris 2026-08-14): A1/A2 é LONG — não enviar se CHoCH-down 4H+1H (faca).
                 import choch_guard as CHG
                 if CHG.blocks_long():
                     out["tg"] = "choch-blocked (dn 4H+1H)"
                     print("(CHoCH-guard: A1/A2 LONG bloqueado — choch_dn 4H+1H, não enviado)", flush=True)
                 else:
-                    out["tg"] = E2._tg_send(txt)              # GRUPO (sinal qualificado 15M BULL)
+                    out["tg"] = NF._send(txt, "group")        # GRUPO (sinal qualificado 15M BULL)
             except Exception as e:
                 out["tg"] = f"erro:{type(e).__name__}"
         else:
