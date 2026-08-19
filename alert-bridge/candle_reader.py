@@ -408,6 +408,11 @@ def send_confirmed_tg(tf, bar, v):
     txt = NF.build_signal("LEITURA", "READER VELA", f"{tf}M", side,
                           v.get("entry"), v.get("sl"), v.get("target"),
                           r=v.get("rr"), event=f"confirmado {hm(bar['t'])}")
+    # READER SHORT = CONTEXTO anti-faca, nunca sinal (Cris 2026-08-19 — mesma regra do E2)
+    if side == "SHORT":
+        txt = "⚡ AVISO · READER CONTEXTO SHORT (anti-faca)\n" + txt.split("\n", 1)[1]
+        E2._tg_send(txt, audience="assistant")            # header ⚡ → shadow via notify
+        return "short-contexto-shadow"
     try:
         # Reader no GRUPO (Cris 12/08). ANTI-CHASE DESATIVADO (auditoria 13/08): _range_pos media a entry
         # contra o topo do range recente e, numa perna de alta, a entry de CONTINUAÇÃO está sempre perto do
