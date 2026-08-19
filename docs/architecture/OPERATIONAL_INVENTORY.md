@@ -1,5 +1,34 @@
 # Operational Inventory
 
+> **SNAPSHOT ATUAL: 2026-08-19** (pós DEEP_AUDIT_20260819 + reorg de sinais 19/08).
+> O conteúdo abaixo da linha "SNAPSHOT HISTÓRICO" é o inventário de 2026-05-25 (pré-stack-live), mantido
+> como histórico — NÃO reflete o presente.
+
+## LaunchAgents reais (2026-08-19) — 33 ativos + 3 _disabled_
+Residentes (KeepAlive): tv-webhook-receiver · cloudflared-tunnel · telegram-assistant-bridge ·
+context-engine · e1-detector · e2-quality · entry-validator · vela-no-nivel · price-sentinel · gld-ws ·
+regime-engine · xau-l1-cycle · xau-l2-cycle (ThrottleInterval 45s adicionado 19/08 aos KeepAlive).
+Periódicos: bar-store 60s · zone-watch 30s · price-shock 30s · choch-guard 300s · sweep-reject-guard 300s ·
+stack-watchdog 300s · health-check 600s · xau-entry-router 900s · xau-amd-cycle 900s · xau-cp-cycle 1800s ·
+xau-a1a2-cycle · e2-outcome-backfill 3600s · external-factors-v2 · external-factors-news · copilot-journal
+(capture+daily) · log-rotate · scoreboard-weekly (dom) · archive-weekly (dom).
+_disabled_: candle-reader (custo LLM, 19/08) · realtime-monitor (conceito cancelado 11/08; formalizado
+19/08) · fj-ws (fonte desligada 31/07; formalizado 19/08).
+
+## Fluxo canónico (2026-08-19)
+TV/CDP → bar_store (único leitor MCP de barras) → store/ + RAW canónicos (contrato:
+REGIME_AND_RAW_AUTHORITY_CONTRACT_20260819) → store_reader → engines (Cp/A1A2/Router/AMD/L1/L2) +
+reader E1→E2 (único caminho LLM; claude_recheck OFF por flag .claude_recheck_off 19/08) + contexto
+(context_engine/mtf_cross) → **notify.py = sender Telegram único** (🎯 ENTRADA + 🧠 LEITURA-LONG ao
+Telegram; ⚡ AVISO → aviso_shadow.jsonl; 🩺 INFRA → infra_events.jsonl). Exceções de transporte
+documentadas: receiver (ingress HTML), assistant-bridge (chunks), auto_d2r/tg_trade_signal (proxy HTML).
+Guard executável: scripts/safety/check_single_telegram_sender.py (BLOCKER em regressão).
+
+---
+# SNAPSHOT HISTÓRICO (2026-05-25) — segue o documento original
+
+# Operational Inventory
+
 > Snapshot as-of **2026-05-25** (updated after Camada 6A.4 — path foundation rollout complete; only physical restructure remains).
 > Verified by live inspection (`launchctl`, import/spawn graph, path references).
 > This is a **map**, not a change plan — see [Next Phases](#11-next-phases).
