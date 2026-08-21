@@ -108,3 +108,7 @@
 - 2026-08-15 16:17 UTC · `memory_delta_20260815a_reader_to_strategies_step2.sql` · memory_items 407→409 · tag-rows 2/2 · OK
 - 2026-08-15 17:15 UTC · `memory_delta_20260815b_behavior_guards_tooling.sql` · memory_items 409→410 · tag-rows 1/1 · OK
 - 2026-08-15 19:10 UTC · `memory_delta_20260815c_xau_short_playbook.sql` · memory_items 410→411 · tag-rows 1/1 · OK
+- 2026-08-17 20:26 UTC · `memory_delta_20260817_gates_and_comm_guards.sql` · memory_items 411→414 · tag-rows 3/3 · OK
+- 2026-08-17 23:52 UTC · `memory_delta_20260818_scoreboard_first_eval.sql` · memory_items 414→415 · tag-rows 1/1 · OK
+- 2026-08-21 12:42 UTC · `memory_delta_20260819_signal_reorg_deep_cleanup.sql` · memory_items 415→418 · tag-rows 3/3 · OK
+- 2026-08-21 00:5x UTC · memory_delta_20260819_signal_reorg_deep_cleanup.sql · memory_items 415→418 · tag-rows 3/3 · OK
