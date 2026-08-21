@@ -34,6 +34,16 @@ def main():
                                      "file": ln.strip(), "reason": "sender fora do notify.py (allowlist)"})
     except Exception as e:
         print(f"[scanner error in check_single_telegram_sender: {e}]")
+    # AUDIT 21/08: contrato SL-first (same-bar => LOSS em todas as implementações)
+    try:
+        import subprocess as _sp2
+        r2 = _sp2.run([sys.executable, str(Path(__file__).resolve().parent / "check_sl_first_contract.py")],
+                      capture_output=True, text=True)
+        if r2.returncode != 0:
+            findings.append({"severity": "BLOCKER", "check": "sl_first_contract",
+                             "file": "ver check_sl_first_contract.py", "reason": r2.stdout.strip()[:120]})
+    except Exception as e:
+        print(f"[scanner error in check_sl_first_contract: {e}]")
     findings.sort(key=lambda f: (SEV_ORDER.get(f["severity"], 9), f["check"], f["file"], f.get("line", 0)))
 
     print("=" * 100)
