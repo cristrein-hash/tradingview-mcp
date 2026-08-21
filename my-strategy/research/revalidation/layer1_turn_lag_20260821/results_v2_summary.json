@@ -1,0 +1,99 @@
+{
+ "p1": "byte-exact PASS",
+ "base": {
+  "transicoes": 25,
+  "ups": 12,
+  "ff": 0
+ },
+ "t1": {
+  "transicoes": 28,
+  "ff": 0,
+  "onsets_kept": true,
+  "paired_n": 11,
+  "better": 2,
+  "worse": 0,
+  "med_gain_d": 0,
+  "ex2026_med_gain": 0,
+  "label_hoje": "RANGE"
+ },
+ "paired": [
+  {
+   "date": "2017-04-10",
+   "lag_base": 81,
+   "lag_t1": 81,
+   "year": 2017
+  },
+  {
+   "date": "2017-09-03",
+   "lag_base": 41,
+   "lag_t1": null,
+   "year": 2017
+  },
+  {
+   "date": "2019-01-28",
+   "lag_base": 86,
+   "lag_t1": 86,
+   "year": 2019
+  },
+  {
+   "date": "2019-06-19",
+   "lag_base": 35,
+   "lag_t1": 35,
+   "year": 2019
+  },
+  {
+   "date": "2019-09-19",
+   "lag_base": 87,
+   "lag_t1": 21,
+   "year": 2019
+  },
+  {
+   "date": "2020-02-18",
+   "lag_base": 45,
+   "lag_t1": 45,
+   "year": 2020
+  },
+  {
+   "date": "2020-03-24",
+   "lag_base": 70,
+   "lag_t1": 45,
+   "year": 2020
+  },
+  {
+   "date": "2022-02-28",
+   "lag_base": 85,
+   "lag_t1": 85,
+   "year": 2022
+  },
+  {
+   "date": "2022-11-13",
+   "lag_base": 35,
+   "lag_t1": 35,
+   "year": 2022
+  },
+  {
+   "date": "2024-03-05",
+   "lag_base": 90,
+   "lag_t1": 90,
+   "year": 2024
+  },
+  {
+   "date": "2025-02-04",
+   "lag_base": 56,
+   "lag_t1": 56,
+   "year": 2025
+  },
+  {
+   "date": "2025-09-04",
+   "lag_base": 82,
+   "lag_t1": 82,
+   "year": 2025
+  }
+ ],
+ "null": {
+  "reps": 60,
+  "t1_ff_excess": 0,
+  "pct_null_ff_le": 1.0,
+  "pct_null_gain_ge": 1.0
+ }
+}

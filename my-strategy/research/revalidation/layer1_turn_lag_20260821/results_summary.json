@@ -1,0 +1,68 @@
+{
+ "p1": {
+  "flips_real": 15,
+  "replica_match": 0.87
+ },
+ "gt": {
+  "fundos": 48,
+  "topos": 50
+ },
+ "variantes": {
+  "base": {
+   "flips": 35,
+   "lag_up_med": 29,
+   "lag_up_n": 17,
+   "lag_up_miss": 31,
+   "lag_dn_med": 11,
+   "false_flips": 6,
+   "onsets_bear_kept": true,
+   "label_hoje": "BEAR",
+   "dias_bear_2026": 113
+  },
+  "T1": {
+   "flips": 40,
+   "lag_up_med": 14,
+   "lag_up_n": 19,
+   "lag_up_miss": 29,
+   "lag_dn_med": 11,
+   "false_flips": 6,
+   "onsets_bear_kept": true,
+   "label_hoje": "BULL",
+   "dias_bear_2026": 101
+  },
+  "T2": {
+   "flips": 38,
+   "lag_up_med": 22,
+   "lag_up_n": 18,
+   "lag_up_miss": 30,
+   "lag_dn_med": 11,
+   "false_flips": 6,
+   "onsets_bear_kept": true,
+   "label_hoje": "BULL",
+   "dias_bear_2026": 101
+  },
+  "T3": {
+   "flips": 30,
+   "lag_up_med": 29,
+   "lag_up_n": 18,
+   "lag_up_miss": 30,
+   "lag_dn_med": 11,
+   "false_flips": 1,
+   "onsets_bear_kept": false,
+   "label_hoje": "BULL",
+   "dias_bear_2026": 101
+  }
+ },
+ "null": {
+  "T1": {
+   "gain_days": 15,
+   "null_ff_median": 0,
+   "pct_null_melhor_ou_igual": 1.0
+  },
+  "T2": {
+   "gain_days": 7,
+   "null_ff_median": 1,
+   "pct_null_melhor_ou_igual": 1.0
+  }
+ }
+}
