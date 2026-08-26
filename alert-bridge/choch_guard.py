@@ -54,18 +54,21 @@ def verdict():
             "trend_1h": tr("60"), "trend_4h": tr("240"), "price": px, "dossier_age_s": age}
 
 
-def blocks_long():
-    """ATIVO: True se deve BLOQUEAR um long agora = CHoCH-down (quebra do higher-low) confirmado no
-    4H **E** 1H em simultâneo (AND = mais estrito, menos falso-positivo: pullback normal quebra só o 1H).
-    Consome o `choch` do dossiê E0. Fail-OPEN: se o dossiê está ausente/velho → NÃO bloqueia (None → False).
-    Cada bloqueio é registado por quem chama. Reavaliar/afinar com evidência forward."""
-    v = verdict()
+def _decide(v):
+    """Decisão PURA sobre um veredito (testável sinteticamente — lição do incidente 26/08:
+    o guard esteve morto 1 semana porque a decisão não tinha teste isolado)."""
     if v.get("err"):
         return False                      # sem dossiê E0 = não bloqueia (fail-open, nunca estrangula às cegas)
     age = v.get("dossier_age_s")
     if age is None or age > 1800:
-        return False                      # AUDIT-FIX 19/08 (C6): dossiê VELHO = fail-open (docstring já prometia)
+        return False                      # dossiê velho/idade ilegível = fail-open (C6)
     return bool(v.get("dn_1h") and v.get("dn_4h"))
+
+
+def blocks_long():
+    """ATIVO: True se deve BLOQUEAR um long agora = CHoCH-down (quebra do higher-low) confirmado no
+    4H **E** 1H em simultâneo. Consome o dossiê E0. Fail-OPEN em ausente/velho."""
+    return _decide(verdict())
 
 
 def tick():
@@ -98,6 +101,15 @@ if __name__ == "__main__":
         t.append(("módulo não-emissor: nenhuma chamada _tg_send/send (bloqueio é dos emissores)",
                   "_tg_send" not in calls and "send" not in calls))
         t.append(("lê market_context (dossiê E0)", "market_context" in _e0.__module__ or True))  # MC path const
+        # COBERTURA DO INCIDENTE 26/08 (guard morto por campo errado): a idade TEM de vir do artefacto real
+        if not v.get("err"):
+            t.append(("age_s NÃO-None com dossiê presente (campo cycle_ts validado contra o artefacto)",
+                      isinstance(v.get("dossier_age_s"), int)))
+        # decisão pura: os 4 casos críticos, sintéticos (independentes do estado do mercado)
+        t.append(("dn+dn+fresco => BLOQUEIA", _decide({"dn_1h": True, "dn_4h": True, "dossier_age_s": 10}) is True))
+        t.append(("dn+dn+age None => fail-open (o caso do bug)", _decide({"dn_1h": True, "dn_4h": True, "dossier_age_s": None}) is False))
+        t.append(("dn+dn+velho(>1800s) => fail-open", _decide({"dn_1h": True, "dn_4h": True, "dossier_age_s": 3600}) is False))
+        t.append(("só 1H dn => NÃO bloqueia (AND estrito)", _decide({"dn_1h": True, "dn_4h": False, "dossier_age_s": 10}) is False))
         for lab, r in t:
             print("  [%s] %s" % ("OK" if r else "FAIL", lab))
         print("verdict atual:", v)
