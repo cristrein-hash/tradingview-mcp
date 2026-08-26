@@ -25,7 +25,11 @@ def read_macro():
         "risk_level": ef.get("external_risk_level"),
         "bias": ef.get("external_bias"),
         "main_reasons": ef.get("external_main_reasons", [])[:3],
-        "imminent_events": [{"event": e.get("event"), "hours_until": e.get("hours_until"),
+        # FIX 26/08 (Cris): hours_until do snapshot DECAI (era o valor da hora da coleta — deu "25min"
+        # com o print a 14min). Recomputa do release_ts na LEITURA, como o collector já recomendava.
+        "imminent_events": [{"event": e.get("event"),
+                             "hours_until": (round((e["release_ts"] - _time.time()) / 3600, 1)
+                                             if e.get("release_ts") else e.get("hours_until")),
                              "impact": e.get("impact")} for e in imm[:5]],
         "news_live": d.get("news_live"),
         "ef_cycle": d.get("_meta", {}).get("cycle_dt"),
