@@ -133,6 +133,37 @@ def _log(o):
         fh.write(json.dumps(o, ensure_ascii=False) + "\n")
 
 
+def check_guards():
+    """LIVENESS dos guards anti-faca (lição do incidente 26/08: o choch_guard esteve MORTO 7 dias por um
+    campo errado e nada gritou — os 2 sinais-faca custaram dinheiro real). Verifica que a DECISÃO consegue
+    ser não-trivial: dossiê presente E idade legível E, num veredito sintético bloqueável, _decide()==True.
+    Falha estrutural (não de mercado) vira PENDING → o Claude corrige."""
+    probs = []
+    try:
+        import sys as _s
+        _s.path.insert(0, "/Users/cristrein/tradingview-mcp/alert-bridge")
+        import choch_guard as CHG
+        v = CHG.verdict()
+        if v.get("err"):
+            probs.append(("choch_guard", f"choch_guard SEM DOSSIÊ E0 ({v.get('err')})"))
+        elif not isinstance(v.get("dossier_age_s"), int):
+            probs.append(("choch_guard", "choch_guard age ILEGÍVEL (campo do dossiê mudou?) — guard fail-open PERMANENTE = MORTO"))
+        elif v["dossier_age_s"] > 1800:
+            probs.append(("choch_guard", f"dossiê E0 VELHO ({v['dossier_age_s']}s) — guard em fail-open"))
+        if not CHG._decide({"dn_1h": True, "dn_4h": True, "dossier_age_s": 10}):
+            probs.append(("choch_guard", "choch_guard._decide QUEBRADO (caso bloqueável não bloqueia)"))
+    except Exception as e:
+        probs.append(("choch_guard", f"choch_guard IMPORT/ERRO: {type(e).__name__}"))
+    try:
+        import sweep_reject_guard as SRG
+        r = SRG.blocks_long()
+        if not isinstance(r, bool):
+            probs.append(("sweep_guard", f"sweep_reject blocks_long devolve {type(r).__name__} (esperado bool)"))
+    except Exception as e:
+        probs.append(("sweep_guard", f"sweep_reject IMPORT/ERRO: {type(e).__name__}"))
+    return probs
+
+
 def run(now=None):
     now = now or time.time()
     now_utc = dt.datetime.utcfromtimestamp(now)
@@ -140,6 +171,7 @@ def run(now=None):
     if market_open(now_utc):
         probs += check_fresh(now)
         probs += check_1d(now_utc)
+        probs += check_guards()                    # guards anti-faca VIVOS (incidente 26/08)
     probs += check_daemons()                       # daemons têm de estar carregados sempre
     sent = alert(probs, now)
     rec = {"ts": now_utc.isoformat(), "market_open": market_open(now_utc),
@@ -160,8 +192,10 @@ if __name__ == "__main__":
         # Nota: às 21:00 de seg a sessão de seg ainda NÃO fechou; esperada = barra da sexta (stamp qui 22:00).
         r = check_1d(dt.datetime(2026, 8, 17, 21, 0))
         t.append(("seg 21:00 (sexta já no store) -> sem alarme", r == []))
-        r2 = check_1d(dt.datetime(2026, 8, 21, 12, 0))       # sex 21/08: esperada barra qua->qui; store parou 16/08
-        t.append(("sex 21/08 (store parado) -> alarme", len(r2) == 1))
+        # FIX 26/08: o cenário antigo dependia do ESTADO VIVO do store (só passava com store parado a 16/08)
+        # = teste frágil. Data futura remota: qualquer store real está sempre "atrasado" -> alarme garantido.
+        r2 = check_1d(dt.datetime(2099, 1, 9, 12, 0))
+        t.append(("data futura (store sempre atrás) -> alarme", len(r2) == 1))
         for lab, ok in t:
             print("  [%s] %s" % ("OK" if ok else "FAIL", lab))
         sys.exit(0 if all(ok for _, ok in t) else 1)
