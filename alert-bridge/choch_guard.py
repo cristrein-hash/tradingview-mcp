@@ -44,7 +44,12 @@ def verdict():
 
     dn60, dn240 = dn("60"), dn("240")
     px = (ax.get("micro_15m") or {}).get("close")
-    age = (d.get("_meta") or {}).get("age_s")
+    # BUGFIX 26/08 (incidente 2-facas): _meta NÃO tem 'age_s' — tem 'cycle_ts'. O fix C6 de 19/08 leu
+    # um campo inexistente → age sempre None → blocks_long() sempre False = guard MORTO 19-26/08.
+    # Idade agora derivada do cycle_ts real.
+    import time as _t
+    cts = (d.get("_meta") or {}).get("cycle_ts")
+    age = max(0, int(_t.time() - cts)) if cts else None
     return {"block": dn60 and dn240, "dn_1h": dn60, "dn_4h": dn240,
             "trend_1h": tr("60"), "trend_4h": tr("240"), "price": px, "dossier_age_s": age}
 
