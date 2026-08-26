@@ -68,6 +68,25 @@ def _ping1(s, sid, l1):
     ])
 
 
+def _long_blocked():
+    """GUARD ANTI-FACA nos envios LONG (incidente 26/08, ordem Cris 'SINAIS AMD TAMBEM'): mesma familia
+    dos outros LONGs (14/08) — choch_dn 4H+1H OU sweep-reject 4H bloqueia o ENVIO (detecao/ledger intactos).
+    Fail-open em erro. Devolve razao ou None."""
+    try:
+        import choch_guard as CHG
+        if CHG.blocks_long():
+            return "choch_dn_4h1h"
+    except Exception:
+        pass
+    try:
+        import sweep_reject_guard as SRG
+        if SRG.blocks_long():
+            return "sweep_reject_4h"
+    except Exception:
+        pass
+    return None
+
+
 def _send(msg):
     try:
         sys.path.insert(0, str(REPO / "alert-bridge"))
@@ -122,8 +141,13 @@ def main():
             armed += 0 if stale else 1
             new_stale += 1 if stale else 0
         if not stale and send:
-            ok = _send(_ping1(s, sid, l1))
-            rec["ping1_sent"] = (ok is True); rec["tg_ok"] = str(ok)   # entregue SÓ se sucesso -> senão re-tenta
+            blk = _long_blocked() if s["dir"] == "long" else None
+            if blk:
+                rec["tg_ok"] = f"guard:{blk}"; ok = None
+                print(f"(guard anti-faca: ping1 LONG {sid} bloqueado — {blk})", flush=True)
+            else:
+                ok = _send(_ping1(s, sid, l1))
+                rec["ping1_sent"] = (ok is True); rec["tg_ok"] = str(ok)   # entregue SÓ se sucesso -> senão re-tenta
         if not existing:
             by_id[sid] = rec; rows.append(rec)
     # --- F2: candidatos 1H p/ setups ARMED dentro da janela ---
@@ -138,6 +162,10 @@ def main():
         pinged = set(rec.get("candidates_pinged", []))
         new = [c for c in cands if c["candidate_id"] + ":" + c["status"] not in pinged]
         if new:
+            blk = _long_blocked() if (send and rec["dir"] == "long") else None
+            if blk:
+                print(f"(guard anti-faca: ping2 LONG {rec['setup_id']} retido — {blk}; re-tenta quando limpar)", flush=True)
+                continue
             ok = _send(_ping2(rec, new)) if send else None
             # AUDIT-FIX 19/08 (C4): só marca pinged com envio CONFIRMADO (ok True) ou em dry-run;
             # antes um envio falhado marcava os candidatos e o sinal perdia-se sem re-tentativa.
