@@ -29,3 +29,7 @@ grupo OFF retém ≥70% do lucro total E bate o null E nenhum semestre inverte o
 SUPORTADA ⇒ proposta "distrib_guard" (família choch/sweep, mesmo wiring de envio LONG) + shadow forward
 ≥2 semanas ANTES de reter qualquer sinal — nunca produção direta. NÃO SUPORTADA ⇒ morre documentada.
 DA adversarial obrigatório antes do relatório. Claims só via claims_ledger.jsonl.
+
+## ADENDA (Cris 28/08, antes de correr): os gates acima ficam como REFERÊNCIA de leitura, NÃO como
+## veredito automático. O estudo entrega o painel COMPLETO dos dois grupos (todas as métricas, ambas as
+## variantes, null, semestres) e a decisão sobre se "presta" é do CRIS sobre a evidência inteira.
