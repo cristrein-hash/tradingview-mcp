@@ -62,7 +62,8 @@ def _cluster(points, atr):
     """Agrupa extremos próximos (≤CLUSTER_ATR×atr) em zonas. points=[(i,price)]. -> [{lo,hi,n,born_i,touches_i}]"""
     out = []
     for i, p in sorted(points, key=lambda x: x[1]):
-        if out and (p - out[-1]["hi"]) <= CLUSTER_ATR * atr:
+        # largura total capada a 1×ATR (fix 27/08: chain-merge criava "zonas" de 170pt = range, não pool)
+        if out and (p - out[-1]["hi"]) <= CLUSTER_ATR * atr and (p - out[-1]["lo"]) <= atr:
             out[-1]["hi"] = max(out[-1]["hi"], p)
             out[-1]["n"] += 1
             out[-1]["idx"].append(i)
@@ -74,26 +75,42 @@ def _cluster(points, atr):
 
 
 def _svp_levels():
-    """POC/VAH/VAL dos study_values (SVP = concentração REAL de volume) — evidência, por TF disponível.
-    LIMITAÇÃO v0 (26/08): os study_values só trazem volumes agregados (Up/Down/Total); os PREÇOS de
-    POC/VAH/VAL são pine_lines, que o bar-store não capta hoje → svp fica False até se adicionar a
-    captura de pine_lines ao bar_store (mudança no produtor = só com ordem do Cris)."""
+    """POC/VAH/VAL REAIS do indicador (estudo 'SVP Levels' que o bar-store funde nos study_values via
+    data_get_study_values_at_bar — Developing POC/VA High/VA Low). AUDIT-FIX 26/08: a v0 filtrava por
+    'volume profile' (nome errado → sempre vazio) e re-derivava evidência só do OHLC; agora LÊ o
+    indicador, prioridade da regra do Cris."""
     lv = []
-    for tf in ("60", "240", "1D"):
+    for tf in ("15", "60", "240", "1D"):
         try:
             d = json.load(open(STORE / f"study_values_{tf}.json")).get("data") or {}
-            for s in d.get("studies") or []:
-                if "volume profile" in (s.get("name") or "").lower():
-                    for k, v in (s.get("values") or {}).items():
+            for st in d.get("studies") or []:
+                if st.get("name") == "SVP Levels":
+                    for v in (st.get("values") or {}).values():
                         try:
-                            fv = float(str(v).replace(",", ""))
-                            if 1000 < fv < 99999:
-                                lv.append(fv)
+                            lv.append(float(v))
                         except Exception:
                             pass
         except Exception:
             pass
     return lv
+
+
+def _smc_eq(tf_store):
+    """EQH/EQL do SMC LuxAlgo (smc_labels_{tf}.json do store) — POOLS DO INDICADOR, fonte PRIORITÁRIA
+    (ordem Cris 27/08 'indicador sempre primeiro'; labels reativados nas 4 tabs 27/08).
+    Devolve [(price, kind)]."""
+    out = []
+    try:
+        d = json.load(open(STORE / f"smc_labels_{tf_store}.json")).get("data") or {}
+        for st in d.get("studies") or []:
+            for l in st.get("labels") or []:
+                t = (l.get("text") or "").strip().upper()
+                px = l.get("price")
+                if px and t.startswith(("EQH", "EQL")):
+                    out.append((float(px), t[:3]))
+    except Exception:
+        pass
+    return out
 
 
 def _lifecycle(zone, side, bars, atr):
@@ -142,16 +159,31 @@ def build_map():
             continue
         atr = _atr(bars)
         his, los = _swings(bars)
+        # INDICADOR PRIMEIRO: EQH/EQL do SMC entram como extremos (ancorados ao índice da barra mais
+        # próxima do preço do label) e marcam o pool como confirmado-pelo-indicador
+        tf_store = {"D": "1D", "4H": "240", "1H": "60"}[tf]
+        smc_pts = _smc_eq(tf_store)
+        smc_prices = set()
+        for px_l, kind in smc_pts:
+            near_i = min(range(len(bars)),
+                         key=lambda i: abs(((bars[i]["h"] if kind == "EQH" else bars[i]["l"])) - px_l))
+            if kind == "EQH":
+                his.append((near_i, px_l))
+            else:
+                los.append((near_i, px_l))
+            smc_prices.add(round(px_l, 1))
         for side, pts in (("BSL", his), ("SSL", los)):
             for z in _cluster(pts, atr):
                 status, cap_i = _lifecycle(z, side, bars, atr)
                 touches = sum(1 for b in bars[z["born_i"]:]
                               if z["lo"] - 0.2 * atr <= (b["l"] if side == "SSL" else b["h"]) <= z["hi"] + 0.2 * atr)
                 svp_hit = any(z["lo"] - 0.3 * atr <= s <= z["hi"] + 0.3 * atr for s in svp)
+                smc_hit = any(z["lo"] - 0.3 * atr <= p <= z["hi"] + 0.3 * atr for p in smc_prices)
+                rel = _relevance(z, w + (1.5 if smc_hit else 0.0), svp_hit, touches)
                 pools.append({
                     "tf": tf, "side": side, "lo": round(z["lo"], 2), "hi": round(z["hi"], 2),
-                    "n_extremos": z["n"], "svp": svp_hit, "reacoes": touches,
-                    "relevancia": _relevance(z, w, svp_hit, touches), "status": status,
+                    "n_extremos": z["n"], "svp": svp_hit, "smc": smc_hit, "reacoes": touches,
+                    "relevancia": rel, "status": status,
                 })
     # dedup entre TFs: zonas sobrepostas mesmo side → fica a de maior TF (D>4H>1H), soma evidência
     order = {"D": 0, "4H": 1, "1H": 2}
@@ -163,6 +195,7 @@ def build_map():
         if hit:
             hit["n_extremos"] += p["n_extremos"]
             hit["svp"] = hit["svp"] or p["svp"]
+            hit["smc"] = hit.get("smc") or p.get("smc")
             hit["lo"] = min(hit["lo"], p["lo"]); hit["hi"] = max(hit["hi"], p["hi"])
             if p["relevancia"] == "ALTA":
                 hit["relevancia"] = "ALTA"
@@ -196,7 +229,7 @@ def print_map():
         print(f"[{side}]")
         for p in ps[:10]:
             print(f"  {p['tf']:>2} {p['lo']:.1f}-{p['hi']:.1f} · {p['relevancia']} · {p['status']}"
-                  f" · ext {p['n_extremos']} · SVP {'✓' if p['svp'] else '·'} · reações {p['reacoes']}")
+                  f" · ext {p['n_extremos']} · SMC {'✓' if p.get('smc') else '·'} · SVP {'✓' if p['svp'] else '·'} · reações {p['reacoes']}")
     print("[ROADMAP pendentes]")
     for d in ("acima", "abaixo"):
         for p in m["roadmap"][d]:
