@@ -431,12 +431,16 @@ def detect(d, p):
                 lo_p, hi_p = pl_.get("lo"), pl_.get("hi")
                 if lo_p is None or hi_p is None:
                     continue
-                if hi_p < close <= hi_p + 0.3 * atr15:            # preço a tocar o topo do pool por cima
+                # Arma no FUNDO da zona (lo_p) — NÃO no topo (Cris 28/08: em zona larga compra-se no fundo
+                # com rejeição, não no topo com SL gigante). Dispara quando o preço TOCA o fundo do pool
+                # (chega a <=0.3 ATR do lo). SL = fundo − 0.1 ATR (logo abaixo do pavio varrido) = curto,
+                # invalidação imediata. Entrada = close no toque; alvo 3R (o próximo pool que o reader lê).
+                if lo_p - 0.05 * atr15 <= close <= lo_p + 0.3 * atr15:
                     sl = round(lo_p - 0.1 * atr15, 2); ent = round(close, 2); risk = ent - sl
                     if 0.05 * atr15 < risk <= 2.5 * atr15:
                         tgt = round(ent + 3 * risk, 2)
                         out.append(dict(rule="pool_touch", tf=pl_.get("tf", "?"), direction="LONG",
-                                        src=f"toque pool SSL {pl_.get('relevancia')} {lo_p}-{hi_p} (liquidity_map)/SL-fundo-pool",
+                                        src=f"toque FUNDO pool SSL {pl_.get('relevancia')} {lo_p}-{hi_p} (liquidity_map)/SL-atras-do-pavio",
                                         entry=ent, sl=sl, target=tgt, rr=3.0))
     except Exception:
         pass
