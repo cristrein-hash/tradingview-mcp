@@ -1,0 +1,363 @@
+{
+ "today": {
+  "date": "2026-08-26",
+  "conf": 0.0,
+  "tc_med": null,
+  "fits": [
+   {
+    "n": 120,
+    "tc_days": 101,
+    "m": 0.1,
+    "w": 6.0,
+    "B": -0.136,
+    "damping": 0.04,
+    "ok": false,
+    "rmse": 0.0265
+   },
+   {
+    "n": 180,
+    "tc_days": 241,
+    "m": 0.3,
+    "w": 6.0,
+    "B": -0.3912,
+    "damping": 0.45,
+    "ok": false,
+    "rmse": 0.034
+   },
+   {
+    "n": 240,
+    "tc_days": 221,
+    "m": 0.1,
+    "w": 8.0,
+    "B": -0.4102,
+    "damping": 0.08,
+    "ok": false,
+    "rmse": 0.0344
+   },
+   {
+    "n": 300,
+    "tc_days": 181,
+    "m": 0.1,
+    "w": 6.0,
+    "B": -1.1324,
+    "damping": 0.23,
+    "ok": false,
+    "rmse": 0.0339
+   },
+   {
+    "n": 360,
+    "tc_days": 181,
+    "m": 0.1,
+    "w": 6.0,
+    "B": -1.1138,
+    "damping": 0.23,
+    "ok": false,
+    "rmse": 0.0335
+   },
+   {
+    "n": 420,
+    "tc_days": 241,
+    "m": 0.1,
+    "w": 6.0,
+    "B": -1.7056,
+    "damping": 0.37,
+    "ok": false,
+    "rmse": 0.0452
+   },
+   {
+    "n": 480,
+    "tc_days": 241,
+    "m": 0.1,
+    "w": 6.0,
+    "B": -2.061,
+    "damping": 0.45,
+    "ok": false,
+    "rmse": 0.0527
+   },
+   {
+    "n": 540,
+    "tc_days": 241,
+    "m": 0.9,
+    "w": 6.0,
+    "B": -0.0016,
+    "damping": 0.69,
+    "ok": false,
+    "rmse": 0.0602
+   },
+   {
+    "n": 640,
+    "tc_days": 241,
+    "m": 0.9,
+    "w": 6.0,
+    "B": -0.0019,
+    "damping": 1.32,
+    "ok": false,
+    "rmse": 0.0656
+   },
+   {
+    "n": 750,
+    "tc_days": 241,
+    "m": 0.9,
+    "w": 6.0,
+    "B": -0.0021,
+    "damping": 3.03,
+    "ok": false,
+    "rmse": 0.0686
+   }
+  ]
+ },
+ "hist": [
+  {
+   "date": "2016-03-20",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1244.0
+  },
+  {
+   "date": "2016-06-16",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1299.0
+  },
+  {
+   "date": "2016-09-13",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1323.0
+  },
+  {
+   "date": "2016-12-11",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1162.0
+  },
+  {
+   "date": "2017-03-12",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1204.0
+  },
+  {
+   "date": "2017-06-08",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1267.0
+  },
+  {
+   "date": "2017-09-05",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1334.0
+  },
+  {
+   "date": "2017-12-26",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1288.0
+  },
+  {
+   "date": "2018-03-26",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1345.0
+  },
+  {
+   "date": "2018-06-24",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1265.0
+  },
+  {
+   "date": "2018-09-19",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1207.0
+  },
+  {
+   "date": "2018-12-17",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1249.0
+  },
+  {
+   "date": "2019-03-18",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1306.0
+  },
+  {
+   "date": "2019-06-16",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1340.0
+  },
+  {
+   "date": "2019-09-11",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1499.0
+  },
+  {
+   "date": "2020-01-01",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1528.0
+  },
+  {
+   "date": "2020-03-30",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1576.0
+  },
+  {
+   "date": "2020-06-28",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1772.0
+  },
+  {
+   "date": "2020-09-23",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1868.0
+  },
+  {
+   "date": "2020-12-21",
+   "conf": 0.1,
+   "tc_med": 231,
+   "price": 1860.0
+  },
+  {
+   "date": "2021-03-22",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1727.0
+  },
+  {
+   "date": "2021-06-20",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1783.0
+  },
+  {
+   "date": "2021-09-15",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1753.0
+  },
+  {
+   "date": "2022-01-04",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1810.0
+  },
+  {
+   "date": "2022-04-03",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1933.0
+  },
+  {
+   "date": "2022-06-30",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1808.0
+  },
+  {
+   "date": "2022-09-27",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1660.0
+  },
+  {
+   "date": "2022-12-26",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1813.0
+  },
+  {
+   "date": "2023-03-26",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1956.0
+  },
+  {
+   "date": "2023-06-22",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1921.0
+  },
+  {
+   "date": "2023-09-19",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 1930.0
+  },
+  {
+   "date": "2024-01-11",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 2049.0
+  },
+  {
+   "date": "2024-04-10",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 2372.0
+  },
+  {
+   "date": "2024-07-08",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 2364.0
+  },
+  {
+   "date": "2024-10-03",
+   "conf": 0.1,
+   "tc_med": 61,
+   "price": 2653.0
+  },
+  {
+   "date": "2025-01-02",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 2639.0
+  },
+  {
+   "date": "2025-04-01",
+   "conf": 0.3,
+   "tc_med": 141,
+   "price": 3131.0
+  },
+  {
+   "date": "2025-06-30",
+   "conf": 0.6,
+   "tc_med": 111,
+   "price": 3339.0
+  },
+  {
+   "date": "2025-09-25",
+   "conf": 0.4,
+   "tc_med": 231,
+   "price": 3761.0
+  },
+  {
+   "date": "2025-12-23",
+   "conf": 0.6,
+   "tc_med": 181,
+   "price": 4479.0
+  },
+  {
+   "date": "2026-03-24",
+   "conf": 0.6,
+   "tc_med": 131,
+   "price": 4506.0
+  },
+  {
+   "date": "2026-06-22",
+   "conf": 0.0,
+   "tc_med": null,
+   "price": 4110.0
+  }
+ ]
+}
