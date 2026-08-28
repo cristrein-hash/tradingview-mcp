@@ -108,7 +108,8 @@ def cycle():
                 import notify
                 notify.info("AVISO", "POOL-LIMIT SHADOW",
                             "ARMA LIMITE %.1f\nSL %.1f · alvo %s (R %.1f)\npool intacto %.1f-%.1f · preço %.1f"
-                            % (rec["lim"], rec["sl"], rec["tgt"], rec["r"] or 0, lo, hi, px))
+                            % (rec["lim"], rec["sl"], rec["tgt"], rec["r"] or 0, lo, hi, px),
+                            audience="personal")   # ordem Cris 28/08: TG PESSOAL, nunca grupo
             except Exception:
                 pass
 

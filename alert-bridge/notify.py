@@ -68,9 +68,12 @@ def _send(text, audience):
         return "infra-logged(no-telegram)"
     # ⚡ AVISO em SHADOW (decisão Cris 2026-08-19): Telegram fica SÓ com 🎯 ENTRADA + 🧠 LEITURA.
     # Avisos continuam a correr e ficam em aviso_shadow.jsonl p/ avaliação futura (validar ou descartar).
+    # EXCEÇÃO (ordem Cris 2026-08-28): AVISO com audience="personal" vai TAMBÉM ao TG pessoal dele
+    # (AUTHORIZED_CHAT_ID) — nunca ao grupo. Caso de uso: pool-limit watch antecipado.
     if text.startswith(CH["AVISO"]):
         _route_to_file(AVISO_SHADOW, text)
-        return "aviso-shadow(no-telegram)"
+        if audience != "personal":
+            return "aviso-shadow(no-telegram)"
     if os.path.exists(MUTE):
         return False
     env = _env()
