@@ -167,6 +167,14 @@ def cycle():
     out = {"ts": dt.datetime.now(dt.timezone.utc).isoformat(),
            "last_bar": dt.datetime.fromtimestamp(last_t, LX).strftime("%d/%m %H:%M"),
            "regime": reg, "gate": "PASS" if ok_gate else "BLOCK", "detect": why}
+    # ORDEM CRIS 28/08: A1 DESLIGADO como emissor (791 sinais censo avgR -0.03, 100% dos sinais live e
+    # das perdas da semana; sem filtro real de mercado short/corretivo). SÓ A2 emite (72 censo avgR +0.24,
+    # pullback raso). A1 continua a ser DETETADO e logado (shadow) para não perder observação — nunca envia.
+    A1_SHADOW = os.environ.get("A1A2_A1_SHADOW", "1") == "1"
+    if r and r.get("layer") == "A1" and A1_SHADOW:
+        out["a1_shadow"] = {k: r[k] for k in ("layer", "ent", "sl", "tgt", "R", "depth_atr")}
+        log(out)
+        return
     if r and ok_gate and not already(last_t):
         ts = dt.datetime.fromtimestamp(last_t, LX).strftime("%d/%m %H:%M")
         # formato único notify.py (Cris 2026-08-19) — retest ideal vira tag curta; resto vive no ledger
