@@ -161,6 +161,19 @@ def check_guards():
             probs.append(("sweep_guard", f"sweep_reject blocks_long devolve {type(r).__name__} (esperado bool)"))
     except Exception as e:
         probs.append(("sweep_guard", f"sweep_reject IMPORT/ERRO: {type(e).__name__}"))
+    # distrib_tracker SHADOW (28/08): não bloqueia nada, mas o forward prereg depende do log contínuo —
+    # tracker parado em silêncio = forward furado (mesma classe de falha do choch morto).
+    try:
+        dlog = "/Users/cristrein/tradingview-mcp/alert-bridge/logs/distrib_tracker.jsonl"
+        import os as _os
+        age = time.time() - _os.path.getmtime(dlog)
+        if age > 1800:
+            probs.append(("distrib_tracker", f"distrib_tracker SEM TICK há {int(age/60)}min (launchd caiu?) — forward a furar"))
+        last = json.loads(open(dlog).read().splitlines()[-1])
+        if last.get("err"):
+            probs.append(("distrib_tracker", f"distrib_tracker em erro persistente: {last['err']}"))
+    except Exception as e:
+        probs.append(("distrib_tracker", f"distrib_tracker log ILEGÍVEL/AUSENTE: {type(e).__name__}"))
     return probs
 
 
