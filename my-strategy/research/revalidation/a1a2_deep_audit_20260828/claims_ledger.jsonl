@@ -8,3 +8,4 @@
 {"claim":"v5-4H sobre censo: NENHUM label tem expectativa RAW negativa (BULL +0.34, RANGE +0.08, BEAR +0.06 a custo 0); RANGE/BEAR 'negativos' a c0.2 = arrasto de custo, nao edge toxico","source":"v5_gate_check + DA","status":"VERIFIED"}
 {"claim":"gate v5 !=BEAR corta +9R brutos; ganho aparente a c0.2 = poupanca de custo, nao selecao","source":"DA","status":"VERIFIED"}
 {"claim":"v5 BULL +0.14 NAO e separacao valida: p_shift 0.12, 2024-H2 negativo (-0.15), calibracao v5 sobrepoe a janela do censo (zonas visuais Cris 2024-26)","source":"DA block-null 2000 reps + proveniencia 1668120","status":"VERIFIED"}
+{"claim":"Flag pool-sweep-12b REPROVADA por CONSTRUTO (DA): capta 3/11 entradas reais do Cris no tempo e 0/11 no preco; gap -0.11 p0.797 NAO refuta o metodo dele — media outra coisa; versao ingenua seria 84% tautologica","source":"pool_sweep_check + DA a54031e","status":"VERIFIED_CONSTRUCT_INVALID"}
