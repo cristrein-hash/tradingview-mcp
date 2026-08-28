@@ -44,6 +44,39 @@ def load_signals():
             continue                                   # shadow anti-faca: não foi enviado, não entra no painel
         S.append({"src": "e2_reader", "t": t, "dir": r.get("direction"),
                   "entry": lv.get("entry"), "sl": lv.get("sl"), "tgt": lv.get("target")})
+    # AMD (Cris 28/08: cobrir TODOS os motores, incl. shadow — memória dos sinais p/ validar bom-vs-faca).
+    # candidatos PINGADOS (ping2) — long e short (short=shadow, marcado no src p/ separar no painel).
+    for r in _jl(REPO / "my-strategy/strategies/xau_amd/amd_live/.amd_state/amd_setups.jsonl"):
+        pinged = set(str(k) for k in (r.get("candidates_pinged") or []))
+        dirn = (r.get("dir") or "long").upper()
+        for c in (r.get("candidates_latest") or []):
+            cid = str(c.get("candidate_id"))
+            if not any(k.startswith(cid) for k in pinged):
+                continue
+            S.append({"src": "amd_" + dirn.lower(), "t": c.get("retest_t") or r.get("h4_bar_t"),
+                      "dir": dirn, "entry": c.get("ent"), "sl": c.get("sl"), "tgt": c.get("tgt")})
+    # L1 EMA21 (4H LONG): ciclos com candidato operacional (state != no_candidate/error)
+    for r in _jl(REPO / "my-strategy/strategies/xau_4h_long/continuation/L1_EMA21_CONTINUATION/.runtime_state/l1_cycle.log"):
+        st = str(r.get("state") or "")
+        sig = r.get("signal") or r.get("candidate") or {}
+        if st and "no_candidate" not in st and "error" not in st and sig.get("entry"):
+            tt = r.get("candidate_timestamp") or r.get("ts")
+            try:
+                tt = int(dt.datetime.fromisoformat(str(tt).replace("Z", "+00:00")).timestamp())
+            except Exception:
+                tt = None
+            S.append({"src": "l1_ema21", "t": tt, "dir": "LONG",
+                      "entry": sig.get("entry"), "sl": sig.get("sl"), "tgt": sig.get("tgt")})
+    # L2 BPT: eventos de sinal do ledger (long-only no painel; exits são gestão, não entram)
+    for r in _jl(REPO / "my-strategy/strategies/xau_4h_long/reversal/L2_BPT_ZONE_TREND_EXIT/.runtime_state/l2_events.jsonl"):
+        if r.get("type") == "signal" and r.get("entry") and r.get("sl"):
+            S.append({"src": "l2_bpt", "t": r.get("bar_time"), "dir": "LONG",
+                      "entry": r.get("entry"), "sl": r.get("sl"), "tgt": r.get("tgt")})
+    # POOL-LIMIT shadow: armados que FILARAM (fill = entrada real simulada; alvo = próximo pool)
+    for r in _jl(REPO / "my-strategy/strategies/xau_15m_long/POOL_LIMIT/.pool_watch/armados.jsonl"):
+        if r.get("status") in ("FILLED", "TGT", "SL") and r.get("lim") and r.get("sl") and r.get("tgt"):
+            S.append({"src": "pool_limit", "t": r.get("fill_t") or r.get("t"), "dir": "LONG",
+                      "entry": r.get("lim"), "sl": r.get("sl"), "tgt": r.get("tgt")})
     return [s for s in S if s["t"] and s["entry"] and s["sl"]]
 
 
