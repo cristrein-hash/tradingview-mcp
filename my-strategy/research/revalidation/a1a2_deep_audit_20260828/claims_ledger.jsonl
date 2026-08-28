@@ -5,3 +5,6 @@
 {"claim":"BULL+OB(in/below) sem filtro risco: N250 avgR +0.148 — tese localizacao OK; composto com risk<=1.5 era ma especificacao (1.5-2.0 ATR e a melhor faixa +0.395)","source":"DA decomposicao","status":"VERIFIED_EXPLORATORY"}
 {"claim":"NENHUM dos 19 splits sobrevive Bonferroni (melhor: segunda p_corr 0.44, e artefacto 2025 — 2026-H1 negativa)","source":"DA block-null 2000 reps","status":"VERIFIED"}
 {"claim":"Features as-of sao da ABERTURA da barra do gatilho (~fecho t-1), nao do fecho — causal/tradeable mas 1 barra stale","source":"DA prova RSI 8/8","status":"VERIFIED"}
+{"claim":"v5-4H sobre censo: NENHUM label tem expectativa RAW negativa (BULL +0.34, RANGE +0.08, BEAR +0.06 a custo 0); RANGE/BEAR 'negativos' a c0.2 = arrasto de custo, nao edge toxico","source":"v5_gate_check + DA","status":"VERIFIED"}
+{"claim":"gate v5 !=BEAR corta +9R brutos; ganho aparente a c0.2 = poupanca de custo, nao selecao","source":"DA","status":"VERIFIED"}
+{"claim":"v5 BULL +0.14 NAO e separacao valida: p_shift 0.12, 2024-H2 negativo (-0.15), calibracao v5 sobrepoe a janela do censo (zonas visuais Cris 2024-26)","source":"DA block-null 2000 reps + proveniencia 1668120","status":"VERIFIED"}
