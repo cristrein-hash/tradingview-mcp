@@ -86,10 +86,32 @@ def veto_stale(cand, dsr, drift_c):
             "reason": f"dossiê stale: {bad}" if fired else ""}
 
 
+def veto_reclaim_hold(cand, dsr):
+    """DURO (Cris 2026-08-28): reclaim-long tem de estar SEGURO na barra de entrada, não ser espeto.
+    Só reclaim-family LONG. Def-1 (reclaim-and-go, aprovada): a última vela 15M fecha ACIMA do nível
+    reclamado E com deslocamento (vela UP c/ corpo >=40% do range = fecho no terço superior). CONSOME o
+    dossiê E0 (micro_15m.close + candles.bars[-1]) — NÃO re-lê store. Nível ≈ SL + 0.1×risco (low varrido)."""
+    if (cand.get("direction") or "").upper() != "LONG" or cand.get("rule") not in ("sweep_reclaim", "ema_reclaim"):
+        return {"name": "reclaim_hold", "hard": True, "fired": False, "value": "n/a", "reason": ""}
+    m = (dsr.get("axes") or {}).get("micro_15m") or {}
+    close = fnum(m.get("close"))
+    bars = ((m.get("candles") or {}).get("bars")) or []
+    e, sl = fnum(cand.get("entry")), fnum(cand.get("sl"))
+    if close is None or not bars or e is None or sl is None or e <= sl:
+        return {"name": "reclaim_hold", "hard": True, "fired": False, "value": "sem_micro", "reason": ""}
+    lvl = sl + 0.1 * (e - sl)
+    b = bars[-1]                                                         # vela 15M de entrada (última fechada)
+    disp = (b.get("dir") == "up") and (fnum(b.get("body_atr")) or 0) >= 0.4 * (fnum(b.get("range_atr")) or 1e9)
+    held = (close > lvl) and disp
+    why = "" if held else (
+        "reclaim SEM hold: " + ("fecho<nível" if close <= lvl else "vela sem deslocamento (espeto/corpo fraco)"))
+    return {"name": "reclaim_hold", "hard": True, "fired": not held, "value": round(lvl, 1), "reason": why}
+
+
 def evaluate_vetos(cand, dsr, drift_c):
-    """GATE binário-causal duro = SÓ HIGIENE: bad_rr (geometria) + stale (dados podres). Todo juízo
-    contextual (sessão, frescura/chase, catalisador, contra-regime) vive no READ, não em vetos."""
-    vs = [veto_bad_rr(cand, dsr), veto_stale(cand, dsr, drift_c)]
+    """GATE binário-causal duro = HIGIENE + reclaim-hold: bad_rr (geometria) + stale (dados podres) +
+    reclaim_hold (espeto de reclaim sem hold, Cris 28/08). CONSOME o E0. Juízo contextual vive no READ."""
+    vs = [veto_bad_rr(cand, dsr), veto_stale(cand, dsr, drift_c), veto_reclaim_hold(cand, dsr)]
     hard = [v for v in vs if v["fired"] and v["hard"]]
     grade = "discard" if hard else "survivor"
     return grade, vs, hard, []
@@ -867,7 +889,18 @@ def cli_selftest():
     r.append(("GATE survivor(sl_atr 2.0, sem chase no sistema)",
               evaluate_vetos({**cand, "materiality": {"sl_atr": 2.0, "confluence": 4}}, base_d, 0)[0] == "survivor"))
     vetonames = [v["name"] for v in evaluate_vetos(cand, base_d, 0)[1]]
-    r.append(("vetos = só bad_rr+stale", vetonames == ["bad_rr", "stale_dossier"]))
+    r.append(("vetos = bad_rr+stale+reclaim_hold", vetonames == ["bad_rr", "stale_dossier", "reclaim_hold"]))
+    # reclaim_hold: fora de escopo (não reclaim) NÃO veta
+    r.append(("reclaim_hold não veta candidato não-reclaim",
+              veto_reclaim_hold({**cand, "rule": "zone_reject"}, base_d)["fired"] is False))
+    # reclaim_hold: reclaim LONG com vela up forte acima do nível = hold OK (não veta)
+    _dh = {"axes": {"micro_15m": {"close": 4600, "candles": {"bars": [{"dir": "up", "body_atr": 0.6, "range_atr": 1.0}]}}}}
+    r.append(("reclaim_hold NÃO veta reclaim com hold",
+              veto_reclaim_hold({"direction": "LONG", "rule": "sweep_reclaim", "entry": 4605, "sl": 4590}, _dh)["fired"] is False))
+    # reclaim_hold: espeto (vela fraca) VETA
+    _de = {"axes": {"micro_15m": {"close": 4600, "candles": {"bars": [{"dir": "up", "body_atr": 0.1, "range_atr": 1.0}]}}}}
+    r.append(("reclaim_hold VETA espeto sem deslocamento",
+              veto_reclaim_hold({"direction": "LONG", "rule": "sweep_reclaim", "entry": 4605, "sl": 4590}, _de)["fired"] is True))
     # renderer não rebenta com dossiê real nem mínimo
     try:
         _ = render_composite(base_d, cand); _ = render_composite(load_dossier() or base_d, cand)
