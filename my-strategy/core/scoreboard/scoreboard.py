@@ -67,9 +67,13 @@ def load_signals():
                 tt = None
             S.append({"src": "l1_ema21", "t": tt, "dir": "LONG",
                       "entry": sig.get("entry"), "sl": sig.get("sl"), "tgt": sig.get("tgt")})
-    # L2 = state-machine de POSIÇÕES (alert-only, estudo de trend-EXIT). Os OPEN/CLOSE de l2_events.jsonl
-    # são rastreio INTERNO — NUNCA foram sinais de compra enviados ao grupo. FORA do painel de sinais-emitidos
-    # (erro corrigido 28/08: eu contei-os como enviados, o Cris não os recebeu porque nunca saíram).
+    # L2 BPT: ENVIA entradas ao GRUPO ("🎯 ENTRADA · L2 BPT · 4H", telegram_notify_l2.build_entry_message);
+    # só a SAÍDA (⚡ AVISO) vai a shadow. Os OPEN de l2_events são as ENTRADAS realmente enviadas.
+    # (Correção 28/08: eu tinha erradamente dito 3× que era exit-only/interno — o código emite 🎯 ao grupo.)
+    for r in _jl(REPO / "my-strategy/strategies/xau_4h_long/reversal/L2_BPT_ZONE_TREND_EXIT/.runtime_state/l2_events.jsonl"):
+        if r.get("type") == "OPEN" and r.get("entry") and r.get("sl"):
+            S.append({"src": "l2_bpt", "t": r.get("bar_time"), "dir": "LONG",
+                      "entry": r.get("entry"), "sl": r.get("sl"), "tgt": r.get("tgt")})
     # POOL-LIMIT shadow: armados que FILARAM (fill = entrada real simulada; alvo = próximo pool)
     for r in _jl(REPO / "my-strategy/strategies/xau_15m_long/POOL_LIMIT/.pool_watch/armados.jsonl"):
         if r.get("status") in ("FILLED", "TGT", "SL") and r.get("lim") and r.get("sl") and r.get("tgt"):
