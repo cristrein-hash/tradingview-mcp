@@ -180,7 +180,11 @@ def append_tf(tf, tid, bars):
             return 0, f"{tf}: OHLC inválido em {iso(t)}"
         if t <= last and t in have:
             continue
-        new.append({"t": t, "o": o, "h": h, "l": l, "c": cc}); have.add(t)
+        row = {"t": t, "o": o, "h": h, "l": l, "c": cc}
+        vol = b.get("volume")                       # D2 Cris 28/08: tick-volume do feed TV (v[5]); barras
+        if vol:                                     # antigas ficam sem "v" — leitores usam .get("v")
+            row["v"] = vol
+        new.append(row); have.add(t)
     if new or trimmed:                              # só reescreve com mudança REAL (WatchPaths = evento limpo)
         rows = sorted(rows + new, key=lambda r: r["t"])
         tmp = f.with_suffix(".jsonl.tmp")
