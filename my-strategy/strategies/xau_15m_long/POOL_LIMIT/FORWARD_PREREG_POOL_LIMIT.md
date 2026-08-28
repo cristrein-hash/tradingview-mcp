@@ -8,3 +8,8 @@ AVALIAÇÃO (semana 31/08-04/09, fecho domingo 06/09): por armado — fill?, res
 (R real do desenho, não 3R fixo), MFE; painel completo; leitura de referência: WR>=45% no alvo OU
 avgR>=+0.3 com N>=8 fills = promissor; veredito = Cris sobre a lista completa um-a-um.
 Canal: ⚡ aviso_shadow (ficheiro) + ledger .pool_watch/armados.jsonl. Telegram só após validação+ordem.
+
+## ADENDA PRÉ-FORWARD (28/08, antes do arranque de segunda — ordem Cris após faca Warsh -4R):
+REGRA DE NOTÍCIA (parte da gramática dele, em falta na v1): evento HIGH a <=30min ou saído há <=15min ⇒
+não arma novos; armados → SUSPENSO_NEWS + aviso pessoal "cancela limites"; pós-janela re-arma só se o
+pool continuar intacto. Os -4R de 28/08 (pré-regra) NÃO contam na validação (forward = 31/08-04/09).

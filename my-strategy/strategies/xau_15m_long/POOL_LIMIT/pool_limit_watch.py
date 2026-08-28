@@ -69,6 +69,28 @@ def _jl(p):
         return []
 
 
+NEWS_BEFORE_S, NEWS_AFTER_S = 30 * 60, 15 * 60   # regra do Cris (28/08, perdeu -4R na faca Warsh):
+                                                  # NUNCA limites armadas dentro de janela HIGH
+
+
+def _news_window():
+    """(True, desc) se evento HIGH a <=30min ou saiu há <=15min (ff_calendar do EF v2)."""
+    try:
+        ff = json.load(open(BASE / "external_factors_v2/snapshots/ff_calendar.json"))
+        evs = ff if isinstance(ff, list) else ff.get("events", [])
+        now = time.time()
+        for e in evs:
+            if str(e.get("impact", "")).upper() not in ("HIGH", "RED"):
+                continue
+            ts = e.get("release_ts") or e.get("ts") or 0
+            if -NEWS_AFTER_S <= ts - now <= NEWS_BEFORE_S:
+                mins = int((ts - now) / 60)
+                return True, f"{e.get('title') or e.get('event')} ({'em %dmin' % mins if mins >= 0 else 'saiu há %dmin' % -mins})"
+    except Exception:
+        pass
+    return False, None
+
+
 def cycle():
     STATE.mkdir(exist_ok=True)
     b = _bars()
@@ -82,8 +104,34 @@ def cycle():
     armados = novos = 0
     recs = []
 
-    # 1) NOVOS pools intactos abaixo → ARMA LIMITE (antecipado)
-    for lo, hi, fi in ssl:
+    # JANELA DE NOTÍCIA HIGH: suspende armados (aviso pessoal 1×) e não arma novos
+    news, ndesc = _news_window()
+    if news:
+        warned = False
+        for rec in led:
+            if rec.get("status") == "ARMADO":
+                rec["status"] = "SUSPENSO_NEWS"; rec["susp_desc"] = ndesc
+                warned = True
+        if warned or not (STATE / f".news_warned_{int(time.time())//1800}").exists():
+            try:
+                sys.path.insert(0, str(BASE / "alert-bridge"))
+                import notify
+                notify.info("AVISO", "POOL-LIMIT SHADOW",
+                            "🚨 JANELA DE NOTÍCIA HIGH: %s\nLIMITES SUSPENSAS (cancela as tuas) — rearma pós-poeira se pool intacto" % ndesc,
+                            audience="personal")
+                (STATE / f".news_warned_{int(time.time())//1800}").write_text("1")
+            except Exception:
+                pass
+    else:
+        # pós-janela: re-arma suspensos cujo pool continua intacto
+        for rec in led:
+            if rec.get("status") == "SUSPENSO_NEWS":
+                lo = float(rec["key"].split("-")[0])
+                intact = not any(x["l"] < lo for x in b if x["t"] > rec["t"])
+                rec["status"] = "ARMADO" if intact else "CANCELADO_POOL_FURADO"
+
+    # 1) NOVOS pools intactos abaixo → ARMA LIMITE (antecipado; bloqueado em janela de notícia)
+    for lo, hi, fi in (ssl if not news else []):
         if not (DIST_MIN * a <= (px - hi) <= DIST_MAX * a):
             continue
         if any(b[k]["l"] < lo for k in range(fi, n)):      # intacto desde a formação
