@@ -1,0 +1,113 @@
+{
+ "recall": 0.48,
+ "fp_fora": 0.28,
+ "bacc": 0.602,
+ "frac_on": 0.37,
+ "periodos": [
+  {
+   "p": "R1_range_claro",
+   "det": true,
+   "lag": 8,
+   "cob": 0.5,
+   "episodios": 1
+  },
+  {
+   "p": "R2_range_agosto",
+   "det": false,
+   "lag": null,
+   "cob": 0.0,
+   "episodios": 0
+  },
+  {
+   "p": "R3_distribuicao",
+   "det": true,
+   "lag": 0,
+   "cob": 1.0,
+   "episodios": 1
+  },
+  {
+   "p": "R4_acumulacao",
+   "det": true,
+   "lag": 56,
+   "cob": 0.47,
+   "episodios": 4
+  },
+  {
+   "p": "R5_range_24_25",
+   "det": true,
+   "lag": 20,
+   "cob": 0.5,
+   "episodios": 4
+  }
+ ],
+ "fp_blocos": [
+  {
+   "ini": "24-09-04",
+   "dias": 7,
+   "net_ini": 0.1,
+   "dias_trend": 0
+  },
+  {
+   "ini": "25-01-12",
+   "dias": 8,
+   "net_ini": 2.5,
+   "dias_trend": 2
+  },
+  {
+   "ini": "25-02-20",
+   "dias": 18,
+   "net_ini": 3.1,
+   "dias_trend": 1
+  },
+  {
+   "ini": "26-01-13",
+   "dias": 6,
+   "net_ini": 1.1,
+   "dias_trend": 4
+  },
+  {
+   "ini": "26-02-05",
+   "dias": 24,
+   "net_ini": 0.5,
+   "dias_trend": 2
+  },
+  {
+   "ini": "26-03-12",
+   "dias": 5,
+   "net_ini": 0.5,
+   "dias_trend": 0
+  },
+  {
+   "ini": "26-04-02",
+   "dias": 10,
+   "net_ini": 1.7,
+   "dias_trend": 1
+  },
+  {
+   "ini": "26-04-16",
+   "dias": 6,
+   "net_ini": 2.6,
+   "dias_trend": 0
+  },
+  {
+   "ini": "26-05-15",
+   "dias": 7,
+   "net_ini": 0.5,
+   "dias_trend": 0
+  }
+ ],
+ "overcall_pct_dias_trend": 11,
+ "null_periodo": {
+  "p": 0.73,
+  "det_real": 4,
+  "lag_med_real": 20,
+  "episodios_on": 23
+ },
+ "jackknife": {
+  "R1_range_claro": 0.48,
+  "R2_range_agosto": 0.5,
+  "R3_distribuicao": 0.47,
+  "R4_acumulacao": 0.49,
+  "R5_range_24_25": 0.47
+ }
+}

@@ -18,3 +18,13 @@ persistente por barra + episódios ON dentro de cada período (flicker) + blocos
 ATRd (overcall em trend = desqualificante, limiar 30% dos dias-em-bloco em |net|>=3 ATRd) + jackknife
 leave-one-period-out. Baselines v5/Layer1 já medidos (results_v3). DA obrigatório. Veredito = Cris.
 Se falhar: família OHLC-mecânica ENCERRADA; range passa para o lane reader/E0 multi-campo.
+
+## VEREDITO PÓS-EXECUÇÃO (28/08, DA a7bf890) — MORRE; FAMÍLIA ENCERRADA conforme prereg
+Execução LIMPA (FSM exit dispara 51/71; causalidade PASS por teste de prefixo; overcall corrigido 11%).
+Mas: null-por-período p=0.73 (o acaso com o mesmo orçamento ON reproduz o perfil de deteção em 73% das
+reps); bacc 0.602 < v5 0.63 < Layer1 0.65; R2 estruturalmente indetetável (2 level-shifts internos em 13d
+consomem o warm-up); banda fixa sai cedo nos ranges longos (EXIT dentro do GT em R4/R1) e re-entrada
+quase impossível (fsw exige sweep fresco). Família OHLC-mecânica ENCERRADA — 4 candidatas, 4 mortes
+limpas. Range passa ao lane reader/E0 multi-campo quando o Cris ordenar.
+REGISTO (hipótese, não evidência): combo R1 lag<=8 + R3 lag=0 (os 2 períodos cegos p/ v5+Layer1) tem
+p=0.199 — cross+fsw ancorado pode servir como FEATURE dentro do reader para ranges curtos/recentes.
