@@ -1,0 +1,77 @@
+{
+ "autor": "Cris",
+ "data": "2026-08-28",
+ "nota": "rotulagem humana; GT canonico para medir detetores de range",
+ "periodos": [
+  {
+   "name": "R1_range_claro",
+   "ini": "2026-06-20",
+   "fim": "2026-08-05",
+   "barras": 198,
+   "dias": 45,
+   "lo": 3942.5,
+   "hi": 4303.1,
+   "larg_pct": 9.1,
+   "larg_atrd": 3.2,
+   "net_frac_larg": 0.27,
+   "fechos_dentro_p5p95": 0.91,
+   "sweeps_borda": 20
+  },
+  {
+   "name": "R2_range_agosto",
+   "ini": "2026-08-07",
+   "fim": "2026-08-19",
+   "barras": 54,
+   "dias": 13,
+   "lo": 4246.9,
+   "hi": 4527.1,
+   "larg_pct": 6.6,
+   "larg_atrd": 3.5,
+   "net_frac_larg": 0.75,
+   "fechos_dentro_p5p95": 0.93,
+   "sweeps_borda": 6
+  },
+  {
+   "name": "R3_distribuicao",
+   "ini": "2026-05-06",
+   "fim": "2026-05-14",
+   "barras": 42,
+   "dias": 9,
+   "lo": 4607.3,
+   "hi": 4773.5,
+   "larg_pct": 3.6,
+   "larg_atrd": 1.9,
+   "net_frac_larg": 0.29,
+   "fechos_dentro_p5p95": 0.9,
+   "sweeps_borda": 9
+  },
+  {
+   "name": "R4_acumulacao",
+   "ini": "2025-04-11",
+   "fim": "2025-08-29",
+   "barras": 598,
+   "dias": 141,
+   "lo": 3120.4,
+   "hi": 3500.0,
+   "larg_pct": 12.2,
+   "larg_atrd": 5.6,
+   "net_frac_larg": 0.66,
+   "fechos_dentro_p5p95": 0.9,
+   "sweeps_borda": 28
+  },
+  {
+   "name": "R5_range_24_25",
+   "ini": "2024-09-16",
+   "fim": "2025-01-10",
+   "barras": 496,
+   "dias": 117,
+   "lo": 2536.6,
+   "hi": 2790.1,
+   "larg_pct": 10.0,
+   "larg_atrd": 9.9,
+   "net_frac_larg": 0.4,
+   "fechos_dentro_p5p95": 0.9,
+   "sweeps_borda": 12
+  }
+ ]
+}
