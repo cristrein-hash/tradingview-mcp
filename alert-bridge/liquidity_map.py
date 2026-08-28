@@ -24,8 +24,10 @@ REV = REPO / "my-strategy/research/revalidation"
 SNAP_OUT = REPO / "external_factors_v2/snapshots/liquidity_map.json"
 
 TF_SRC = {"D": (STORE / "bars_1d.jsonl", 3.0), "4H": (REV / "raw_4h_ohlc.jsonl", 2.0),
-          "1H": (REV / "raw_1h_ohlc.jsonl", 1.0)}
-LOOKBACK = {"D": 200, "4H": 240, "1H": 240}          # barras por TF (mapa estrutural, não micro)
+          "1H": (REV / "raw_1h_ohlc.jsonl", 1.0), "15M": (STORE / "bars_15m.jsonl", 0.5)}
+LOOKBACK = {"D": 200, "4H": 240, "1H": 240, "15M": 400}   # 15M = camada de pavios do shelf (Cris 28/08:
+                                                          # os $$$ dele são clusters de pavio 15M DENTRO
+                                                          # do shelf que os TFs altos não veem)
 CLUSTER_ATR = 0.5                                     # extremos a ≤0.5×ATR(tf) agrupam numa zona
 SWING_K = 3                                           # pivô fractal k barras de cada lado
 RUN_ATR = 1.0                                         # pós-captura: continuou ≥1 ATR além = RUN
@@ -161,7 +163,7 @@ def build_map():
         his, los = _swings(bars)
         # INDICADOR PRIMEIRO: EQH/EQL do SMC entram como extremos (ancorados ao índice da barra mais
         # próxima do preço do label) e marcam o pool como confirmado-pelo-indicador
-        tf_store = {"D": "1D", "4H": "240", "1H": "60"}[tf]
+        tf_store = {"D": "1D", "4H": "240", "1H": "60", "15M": "15"}[tf]
         smc_pts = _smc_eq(tf_store)
         smc_prices = set()
         for px_l, kind in smc_pts:
@@ -185,8 +187,8 @@ def build_map():
                     "n_extremos": z["n"], "svp": svp_hit, "smc": smc_hit, "reacoes": touches,
                     "relevancia": rel, "status": status,
                 })
-    # dedup entre TFs: zonas sobrepostas mesmo side → fica a de maior TF (D>4H>1H), soma evidência
-    order = {"D": 0, "4H": 1, "1H": 2}
+    # dedup entre TFs: zonas sobrepostas mesmo side → fica a de maior TF (D>4H>1H>15M), soma evidência
+    order = {"D": 0, "4H": 1, "1H": 2, "15M": 3}
     pools.sort(key=lambda p: (p["side"], order[p["tf"]]))
     merged = []
     for p in pools:
@@ -207,8 +209,25 @@ def build_map():
         pend = [p for p in merged if p["status"] == "PENDENTE"]
         roadmap["acima"] = sorted([p for p in pend if p["lo"] > px], key=lambda p: p["lo"] - px)[:5]
         roadmap["abaixo"] = sorted([p for p in pend if p["hi"] < px], key=lambda p: px - p["hi"])[:5]
+    # LIQ_BLOCKs (padrão do Cris 28/08): >=2 pools BSL empilhados com gap <=1 ATR(1H) = bloco de supply
+    # acima; LONG não persegue dentro do bloco até ele ser limpo. Simétrico p/ SSL = bloco de demanda.
+    atr1h = _atr(b1h) if b1h else 5.0
+    blocks = []
+    for side in ("BSL", "SSL"):
+        ps = sorted([p for p in merged if p["side"] == side and p["status"] == "PENDENTE"],
+                    key=lambda p: p["lo"])
+        grp = []
+        for p in ps:
+            if grp and (p["lo"] - grp[-1]["hi"]) <= atr1h:
+                grp.append(p)
+            else:
+                if len(grp) >= 2:
+                    blocks.append({"side": side, "lo": grp[0]["lo"], "hi": grp[-1]["hi"], "n_pools": len(grp)})
+                grp = [p]
+        if len(grp) >= 2:
+            blocks.append({"side": side, "lo": grp[0]["lo"], "hi": grp[-1]["hi"], "n_pools": len(grp)})
     return {"ts": int(dt.datetime.now(dt.timezone.utc).timestamp()), "price": px,
-            "pools": merged, "roadmap": roadmap}
+            "pools": merged, "roadmap": roadmap, "blocks": blocks}
 
 
 def write_snapshot():

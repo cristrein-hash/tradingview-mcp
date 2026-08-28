@@ -265,6 +265,15 @@ READ_SYS = (
     "compressão; não é voz contra) vs AGRESSÃO CONTRÁRIA ativa (buy-bubbles, iniciativa compradora, janela "
     "auction do lado buy — essa SIM é voz de veto plena). Guardas: só com-perna (nunca contra-perna), fora "
     "de janelas de evento, e a distância/espaço até ao alvo continua a pesar normalmente.\n"
+    "DOUTRINA DE LIQUIDEZ DO TRADER (Cris 2026-08-28, LEI de 1ª classe — aprendida dos trades REAIS dele, "
+    "10W-0L na semana 24-28/08): a entrada certa é NO nível de liquidez, não no miolo de uma zona. Usa a "
+    "secção # MAPA DE LIQUIDEZ: (1) SWEEP de pool ABAIXO (pavio 15M/1H varre o nível e imprime rejeição = "
+    "reação de compra legítima) → LONG confirmável ALI, no primeiro toque, SL curto atrás do pavio varrido — "
+    "esperar recuo mais fundo = perder o trade (o erro sistémico desta semana). (2) LIQ_BLOCK acima próximo "
+    "(<1.5 ATR) = NÃO perseguir LONG para dentro do bloco; compra só depois de sweep abaixo ou bloco limpo. "
+    "(3) O ALVO natural é o PRÓXIMO pool/bloco acima — se o espaço até lá for <2R, a qualidade cai. "
+    "(4) SHORTS NUNCA são sinal (doutrina permanente): leitura de distribuição/blocos serve só para calar "
+    "LONGs ruins e para antecipar ONDE a busca de liquidez vai gerar a compra.\n"
     "A tua tarefa: julgar se as leituras (estrutura MTF 1D→15M, micro, auction/bubbles, macro, zonas HTF) "
     "CONVERGEM numa história coerente de ALTA PROBABILIDADE — ou não. Convergência NÃO é 'nenhuma leitura "
     "objeta'; convergência = as leituras APONTAM PARA O MESMO LADO e encadeiam uma causa (ex.: fundo de perna "
@@ -520,6 +529,22 @@ def render_composite(dsr, cand):
         L.append(f"  ABAIXO: {_mstr(mag.get('below'))}")
         if pb:
             L.append(f"  perna: {pb.get('leg_dir')} · pullback #{pb.get('ordinal')} ({pb.get('maturity')})")
+    # ---- MAPA DE LIQUIDEZ (Cris 28/08: reader passa a ler os trades DELE) ----
+    try:
+        _lm = json.load(open(REPO / "external_factors_v2" / "snapshots" / "liquidity_map.json"))
+        _rm = _lm.get("roadmap") or {}
+        L.append("\n# MAPA DE LIQUIDEZ (pools de pavio/EQ por TF, inclui camada 15M; blocos = supply empilhada)")
+        L.append("  ACIMA: " + (" · ".join(f"{p['tf']} {p['lo']:.0f}-{p['hi']:.0f}({p['relevancia'][0]})"
+                                           for p in (_rm.get("acima") or [])[:4]) or "—"))
+        L.append("  ABAIXO: " + (" · ".join(f"{p['tf']} {p['lo']:.0f}-{p['hi']:.0f}({p['relevancia'][0]})"
+                                            for p in (_rm.get("abaixo") or [])[:4]) or "—"))
+        for _b in (_lm.get("blocks") or [])[:3]:
+            L.append(f"  ⛔ LIQ_BLOCK {_b['side']} {_b['lo']:.0f}-{_b['hi']:.0f} ({_b['n_pools']} pools)")
+        _age_lm = int(time.time()) - (_lm.get("ts") or 0)
+        if _age_lm > 7200:
+            L.append(f"  (mapa com {_age_lm//3600}h — tratar como aproximado)")
+    except Exception:
+        pass
     L.append("\n# MACRO")
     reg = (dsr["axes"].get("regime") or {})
     v5 = reg.get("v5_4h") or {}; l1 = reg.get("structural_1d") or {}
