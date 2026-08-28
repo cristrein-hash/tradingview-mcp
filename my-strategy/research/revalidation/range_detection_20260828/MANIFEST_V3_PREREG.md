@@ -22,3 +22,14 @@ Por período GT: detetado? lag (dias desde início). Por barra dentro dos perío
 (com a reserva acima). Baselines: v5 atual e Layer1 (rótulo==RANGE) no MESMO árbitro. Null persistente
 mesma fração ON (300 reps). Jackknife = leave-one-period-out (5 folds). DA obrigatório. Veredito=Cris.
 Se prestar: NADA vai a live — próximo passo seria shadow no forward_labeler (campo range_v3) por ordem.
+
+## VEREDITO PÓS-EXECUÇÃO (29/08, DA a7f5a9d) — MORRE, com BUGS_CRITICOS
+1. Saída por ACEITAÇÃO do FSM = dead code (hi inclui o próprio dia ⇒ condição impossível; 0/68 saídas
+   em 2 anos) — o manifest selado NÃO foi o que correu. Estado arrasta-se para dentro de breakouts.
+2. Null por PERÍODO mata o headline: V3 está ON 54% do tempo; janelas aleatórias com a mesma fração
+   detetam >=4/5 períodos com lag<=8d em 82% das reps. bacc 0.62 < null p95 0.662 < v5 0.63 < Layer1 0.65.
+3. Overcall em trend: 23 dias de "RANGE" dentro da parabólica fev/2026 (+5.8 ATRd) + 2 blocos em quedas >4 ATRd.
+4. R2 = doença estrutural do mid-ROLANTE pós-level-shift (mid contaminado pelos lows do range anterior).
+SOBREVIVE: GT humano + null-por-período como árbitro canónico p/ qualquer V4; voto cru honesto em trend
+(8% falso-voto — o dano era do FSM bugado); diagnóstico "range ancorado, não rolante" para o caso R2.
+NÃO vai a shadow. Decisão de V4 (FSM corrigido + banda ANCORADA) = Cris.
