@@ -69,9 +69,12 @@ def load_signals():
                       "entry": sig.get("entry"), "sl": sig.get("sl"), "tgt": sig.get("tgt")})
     # L2 BPT: eventos de sinal do ledger (long-only no painel; exits são gestão, não entram)
     for r in _jl(REPO / "my-strategy/strategies/xau_4h_long/reversal/L2_BPT_ZONE_TREND_EXIT/.runtime_state/l2_events.jsonl"):
-        if r.get("type") == "signal" and r.get("entry") and r.get("sl"):
+        # L2 regista type=OPEN (abertura) / CLOSE (saída c/ R real por REGIME_FLIP ou alvo). Usar o OPEN
+        # como entrada; se houver CLOSE com R, é o resultado REAL do próprio motor (exit de gestão dele).
+        if r.get("type") == "OPEN" and r.get("entry") and r.get("sl"):
             S.append({"src": "l2_bpt", "t": r.get("bar_time"), "dir": "LONG",
-                      "entry": r.get("entry"), "sl": r.get("sl"), "tgt": r.get("tgt")})
+                      "entry": r.get("entry"), "sl": r.get("sl"), "tgt": r.get("tgt"),
+                      "l2_hash": r.get("signal_hash")})
     # POOL-LIMIT shadow: armados que FILARAM (fill = entrada real simulada; alvo = próximo pool)
     for r in _jl(REPO / "my-strategy/strategies/xau_15m_long/POOL_LIMIT/.pool_watch/armados.jsonl"):
         if r.get("status") in ("FILLED", "TGT", "SL") and r.get("lim") and r.get("sl") and r.get("tgt"):
