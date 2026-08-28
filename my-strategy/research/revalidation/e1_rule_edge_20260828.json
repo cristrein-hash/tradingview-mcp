@@ -1,0 +1,106 @@
+[
+ {
+  "rule": "ob_touch_hold",
+  "dir": "LONG",
+  "N": 156,
+  "WR": 41,
+  "sumR": 104.0,
+  "avgR": 0.67
+ },
+ {
+  "rule": "zone_reject",
+  "dir": "LONG",
+  "N": 45,
+  "WR": 44,
+  "sumR": 36.0,
+  "avgR": 0.8
+ },
+ {
+  "rule": "ema_reclaim",
+  "dir": "LONG",
+  "N": 1,
+  "WR": 100,
+  "sumR": 3.0,
+  "avgR": 3.0
+ },
+ {
+  "rule": "magnet_reject",
+  "dir": "LONG",
+  "N": 49,
+  "WR": 24,
+  "sumR": -1.0,
+  "avgR": -0.02
+ },
+ {
+  "rule": "top_fade",
+  "dir": "SHORT",
+  "N": 1,
+  "WR": 0,
+  "sumR": -1.0,
+  "avgR": -1.0
+ },
+ {
+  "rule": "bos_continuation",
+  "dir": "LONG",
+  "N": 6,
+  "WR": 17,
+  "sumR": -2.0,
+  "avgR": -0.33
+ },
+ {
+  "rule": "bos_continuation",
+  "dir": "SHORT",
+  "N": 2,
+  "WR": 0,
+  "sumR": -2.0,
+  "avgR": -1.0
+ },
+ {
+  "rule": "ema_reclaim",
+  "dir": "SHORT",
+  "N": 3,
+  "WR": 0,
+  "sumR": -3.0,
+  "avgR": -1.0
+ },
+ {
+  "rule": "magnet_reject",
+  "dir": "SHORT",
+  "N": 6,
+  "WR": 0,
+  "sumR": -6.0,
+  "avgR": -1.0
+ },
+ {
+  "rule": "zone_reject",
+  "dir": "SHORT",
+  "N": 49,
+  "WR": 12,
+  "sumR": -25.0,
+  "avgR": -0.51
+ },
+ {
+  "rule": "ob_touch_hold",
+  "dir": "SHORT",
+  "N": 108,
+  "WR": 18,
+  "sumR": -28.0,
+  "avgR": -0.26
+ },
+ {
+  "rule": "sweep_reclaim",
+  "dir": "SHORT",
+  "N": 270,
+  "WR": 7,
+  "sumR": -194.0,
+  "avgR": -0.72
+ },
+ {
+  "rule": "sweep_reclaim",
+  "dir": "LONG",
+  "N": 297,
+  "WR": 6,
+  "sumR": -229.0,
+  "avgR": -0.77
+ }
+]
