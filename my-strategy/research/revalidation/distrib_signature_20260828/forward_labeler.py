@@ -42,6 +42,36 @@ def signals():
     return out
 
 
+def _iso_to_epoch(s):
+    import datetime as dt
+    try:
+        return int(dt.datetime.fromisoformat(s.replace("Z", "+00:00")).timestamp())
+    except Exception:
+        return None
+
+
+def regime_asof(t):
+    """Rótulos v5-4H e Layer1 no instante t, reconstruídos dos históricos LIVE (aprovado Cris 28/08:
+    etiquetar com detetores ATUAIS = linha de base para comparar com a futura versão RANGE-fix)."""
+    v5 = None
+    trs = _jl(REPO / "my-strategy/core/regime_engine/.regime_state/regime_transitions.jsonl")
+    for r in trs:
+        ts = _iso_to_epoch(r.get("ts") or "")
+        if ts is None:
+            continue
+        if ts <= t:
+            v5 = r.get("to")
+        elif v5 is None:
+            v5 = r.get("from")
+            break
+    l1 = None
+    for r in _jl(REPO / "my-strategy/core/layer1_service/.layer1_state/layer1_cycle.log"):
+        ts = _iso_to_epoch(r.get("ts") or "")
+        if ts is not None and ts <= t and r.get("regime"):
+            l1 = r.get("regime")
+    return v5, l1
+
+
 def main():
     ticks = [x for x in _jl(TRK) if x.get("logged_at")]
     done = {(r["src"], r["t"]) for r in _jl(OUTF)}
@@ -51,7 +81,8 @@ def main():
             continue
         near = min(ticks, key=lambda x: abs(x["logged_at"] - s["t"])) if ticks else None
         d = abs(near["logged_at"] - s["t"]) if near else None
-        rec = dict(s, labeled_at=int(time.time()))
+        v5, l1 = regime_asof(s["t"])
+        rec = dict(s, labeled_at=int(time.time()), v5=v5, l1=l1)
         if near and d <= MAX_DELTA:
             rec.update(phase=near.get("phase"), score=near.get("score"), comp=near.get("comp"), tick_delta_s=d)
         else:
