@@ -416,6 +416,30 @@ def detect(d, p):
                             fired = True
                         break
                     if fired: break
+
+    # R8 pool_touch (Cris 2026-08-28): arma o reader nos NÍVEIS do liquidity_map (pools de pavios
+    # detetados automaticamente — o Cris não desenha nada). LONG-only (doutrina). Dispara quando o preço
+    # TOCA um pool SSL intacto, relevância ALTA/MÉDIA, a <=0.3 ATR do topo do pool. SL = fundo do pool
+    # −0.1 ATR (curto, atrás do pavio); entrada = close. O reader julga se a rejeição está impressa.
+    try:
+        lm = json.load(open(REPO / "external_factors_v2/snapshots/liquidity_map.json"))
+        import time as _t
+        if _t.time() - (lm.get("ts") or 0) <= 3600 and atr15:
+            for pl_ in (lm.get("roadmap") or {}).get("abaixo", []):
+                if pl_.get("side") != "SSL" or pl_.get("relevancia") not in ("ALTA", "MEDIA"):
+                    continue
+                lo_p, hi_p = pl_.get("lo"), pl_.get("hi")
+                if lo_p is None or hi_p is None:
+                    continue
+                if hi_p < close <= hi_p + 0.3 * atr15:            # preço a tocar o topo do pool por cima
+                    sl = round(lo_p - 0.1 * atr15, 2); ent = round(close, 2); risk = ent - sl
+                    if 0.05 * atr15 < risk <= 2.5 * atr15:
+                        tgt = round(ent + 3 * risk, 2)
+                        out.append(dict(rule="pool_touch", tf=pl_.get("tf", "?"), direction="LONG",
+                                        src=f"toque pool SSL {pl_.get('relevancia')} {lo_p}-{hi_p} (liquidity_map)/SL-fundo-pool",
+                                        entry=ent, sl=sl, target=tgt, rr=3.0))
+    except Exception:
+        pass
     return out
 
 
