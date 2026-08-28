@@ -1,0 +1,1799 @@
+[
+ {
+  "id": "Qtv9Gc",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1784727900,
+    "price": 4165.226381314118
+   },
+   {
+    "t": 1788285600,
+    "price": 4137.006826363755
+   }
+  ],
+  "text": "4H OB",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "ctZLcu",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1785399300,
+    "price": 4059.499811910315
+   },
+   {
+    "t": 1785481200,
+    "price": 4045.726987571345
+   }
+  ],
+  "text": "FVG",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "YuXETB",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1762132500,
+    "price": 3931.7095784891635
+   },
+   {
+    "t": 1786384800,
+    "price": 3883.9179846467346
+   }
+  ],
+  "text": "Macro DM ZONE_ HVN_ DIA",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "t2Gohe",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1762938900,
+    "price": 4003.2522616360147
+   },
+   {
+    "t": 1786399200,
+    "price": 3942.1653591732893
+   }
+  ],
+  "text": "Macro DM ZONE_ HVN_ 4H",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "AvtCAM",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1785849300,
+    "price": 4075.567645088506
+   },
+   {
+    "t": 1785883500,
+    "price": 4065.319181472772
+   }
+  ],
+  "text": "FVG",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "9BP8En",
+  "name": "ray",
+  "points": [
+   {
+    "t": 1769781600,
+    "price": 5598.866691644913
+   },
+   {
+    "t": 1772584200,
+    "price": 5419.137512661438
+   }
+  ],
+  "text": "",
+  "props": {
+   "linecolor": "rgba(103, 58, 183, 1)",
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "m8eHIq",
+  "name": "ray",
+  "points": [
+   {
+    "t": 1772573400,
+    "price": 5420.967559729729
+   },
+   {
+    "t": 1778574600,
+    "price": 4770.666398036929
+   }
+  ],
+  "text": "",
+  "props": {
+   "linecolor": "rgba(103, 58, 183, 1)",
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "EibHyu",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1785907800,
+    "price": 4156.562112248145
+   },
+   {
+    "t": 1786406400,
+    "price": 4142.958663559382
+   }
+  ],
+  "text": "FVG",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "1Ap7ND",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1785897000,
+    "price": 4124.271217305001
+   },
+   {
+    "t": 1786341600,
+    "price": 4108.331924911558
+   }
+  ],
+  "text": "FVG",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "gktTBE",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1785891600,
+    "price": 4095.690417151242
+   },
+   {
+    "t": 1786053600,
+    "price": 4084.2547857650716
+   }
+  ],
+  "text": "FVG",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "TvsaDi",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1785957300,
+    "price": 4238.902657998238
+   },
+   {
+    "t": 1785957300,
+    "price": 4238.902657998238
+   }
+  ],
+  "text": "",
+  "props": {
+   "linecolor": "rgba(242, 54, 69, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "0sMXVk",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1785938400,
+    "price": 4225.615682137911
+   },
+   {
+    "t": 1786071600,
+    "price": 4213.12274841215
+   }
+  ],
+  "text": "FVG",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "XOfznz",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1785463200,
+    "price": 4235.102741413563
+   },
+   {
+    "t": 1785463200,
+    "price": 4235.102741413563
+   }
+  ],
+  "text": "",
+  "props": {
+   "linecolor": "rgba(242, 54, 69, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "OTYEAP",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1786030200,
+    "price": 4230.132163671833
+   },
+   {
+    "t": 1786068000,
+    "price": 4230.132163671833
+   }
+  ],
+  "text": "",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "xHUl5t",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787913000,
+    "price": 4560.9670734250785
+   },
+   {
+    "t": 1788175800,
+    "price": 4560.943800817499
+   }
+  ],
+  "text": "ENTRY_ FN",
+  "props": {
+   "linecolor": "rgba(5, 102, 86, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "iu3eDv",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1788134400,
+    "price": 4561.013582579702
+   },
+   {
+    "t": 1788220800,
+    "price": 4561.005448904944
+   }
+  ],
+  "text": "ENTRY_ FTMO",
+  "props": {
+   "linecolor": "rgba(0, 51, 42, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "96AeaG",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1786105800,
+    "price": 4327.289464154216
+   },
+   {
+    "t": 1786324500,
+    "price": 4315.113784809399
+   }
+  ],
+  "text": "FVG",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "voLrS1",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1785880800,
+    "price": 4222.9911670131105
+   },
+   {
+    "t": 1787263200,
+    "price": 4109.6684546735705
+   }
+  ],
+  "text": "FVG DIA",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "2VR3eE",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1786084200,
+    "price": 4301.3189062210795
+   },
+   {
+    "t": 1787079600,
+    "price": 4274.589620616688
+   }
+  ],
+  "text": "FVG_ 4H",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "GlP7rv",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1786707000,
+    "price": 4366.562583374918
+   },
+   {
+    "t": 1787063400,
+    "price": 4353.900421039133
+   }
+  ],
+  "text": "FVG",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "k8J0kD",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1786599900,
+    "price": 4396.935335853213
+   },
+   {
+    "t": 1786672800,
+    "price": 4385.784792320255
+   }
+  ],
+  "text": "FVG",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "kgdu6U",
+  "name": "horizontal_line",
+  "points": [
+   {
+    "t": 1787530500,
+    "price": 4310.9281401484395
+   }
+  ],
+  "text": "$$$$$",
+  "props": {
+   "linecolor": "rgba(242, 54, 69, 1)",
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "s17TEz",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1786644000,
+    "price": 4312.457564181909
+   },
+   {
+    "t": 1788170400,
+    "price": 4312.382205641262
+   }
+  ],
+  "text": "ALVO 3 + BUY",
+  "props": {
+   "linecolor": "rgba(27, 94, 32, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "OLNXw5",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1786525200,
+    "price": 4437.730995049935
+   },
+   {
+    "t": 1787302800,
+    "price": 4437.060148023333
+   }
+  ],
+  "text": "PLT",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "FgC5jl",
+  "name": "horizontal_line",
+  "points": [
+   {
+    "t": 1787530500,
+    "price": 4301.332416139124
+   }
+  ],
+  "text": "$$$",
+  "props": {
+   "linecolor": "rgba(242, 54, 69, 1)",
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "kFhWx7",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1786974300,
+    "price": 4401.407521484177
+   },
+   {
+    "t": 1787022000,
+    "price": 4389.946019210236
+   }
+  ],
+  "text": "FVG",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "jDtMiR",
+  "name": "ray",
+  "points": [
+   {
+    "t": 1785762000,
+    "price": 4019.4329037269417
+   },
+   {
+    "t": 1786928400,
+    "price": 4271.1213962041365
+   }
+  ],
+  "text": "",
+  "props": {
+   "linecolor": "rgba(103, 58, 183, 1)",
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "qio2mg",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1787142600,
+    "price": 4410.88151262684
+   },
+   {
+    "t": 1787266800,
+    "price": 4374.288603973339
+   }
+  ],
+  "text": "FVG",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "D6O0mE",
+  "name": "horizontal_line",
+  "points": [
+   {
+    "t": 1787530500,
+    "price": 4343.809017232635
+   }
+  ],
+  "text": "",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "16xQQX",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1786312800,
+    "price": 4316.338001730438
+   },
+   {
+    "t": 1786658400,
+    "price": 4316.214671440971
+   }
+  ],
+  "text": "$$$",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "NDA26u",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1786692600,
+    "price": 4341.912032527299
+   },
+   {
+    "t": 1787070600,
+    "price": 4336.717764330871
+   }
+  ],
+  "text": "FVG",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "UUWcKn",
+  "name": "horizontal_line",
+  "points": [
+   {
+    "t": 1787530500,
+    "price": 4282.8921709800725
+   }
+  ],
+  "text": "",
+  "props": {
+   "linecolor": "rgba(242, 54, 69, 1)",
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "bTs18U",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1786685400,
+    "price": 4325.13072619521
+   },
+   {
+    "t": 1787125500,
+    "price": 4311.963008828853
+   }
+  ],
+  "text": "OB 15M",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "Q64NNE",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787144400,
+    "price": 4442.2219808650425
+   },
+   {
+    "t": 1787830200,
+    "price": 4441.132884290019
+   }
+  ],
+  "text": "$$$$$",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "YUkxqf",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787270400,
+    "price": 4508.896730601918
+   },
+   {
+    "t": 1788213600,
+    "price": 4508.591882067313
+   }
+  ],
+  "text": "$$$$$",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "6jmJh1",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787227200,
+    "price": 4450.501881385614
+   },
+   {
+    "t": 1787686200,
+    "price": 4450.1500662386325
+   }
+  ],
+  "text": "$$$",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "Ywdzmr",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787285700,
+    "price": 4558.928934352818
+   },
+   {
+    "t": 1787919300,
+    "price": 4558.768404719898
+   }
+  ],
+  "text": "$$$$$",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "C2gT2g",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787144400,
+    "price": 4424.701088743452
+   },
+   {
+    "t": 1787731200,
+    "price": 4424.303483879305
+   }
+  ],
+  "text": "SUPORTE BULL_LEG",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "FJ4eqH",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787143500,
+    "price": 4411.483384150802
+   },
+   {
+    "t": 1787283000,
+    "price": 4411.483384150802
+   }
+  ],
+  "text": "",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "lpTVnq",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1787143500,
+    "price": 4437.524698292054
+   },
+   {
+    "t": 1787839200,
+    "price": 4410.621359938238
+   }
+  ],
+  "text": "SUPORTE",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "2GY6Kr",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787306400,
+    "price": 4563.665001051522
+   },
+   {
+    "t": 1787918400,
+    "price": 4563.725753973525
+   }
+  ],
+  "text": "$$$$$",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "6SIsvI",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787163300,
+    "price": 4471.9242763101565
+   },
+   {
+    "t": 1787224500,
+    "price": 4471.9242763101565
+   }
+  ],
+  "text": "$$$",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "y4vhqr",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787241600,
+    "price": 4528.87864630894
+   },
+   {
+    "t": 1787914800,
+    "price": 4528.858448267268
+   }
+  ],
+  "text": "$$$$$",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "F5oJbv",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787266800,
+    "price": 4533.056754174313
+   },
+   {
+    "t": 1787274900,
+    "price": 4533.131214655608
+   }
+  ],
+  "text": "$$$",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "3PfXhn",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1788283800,
+    "price": 4560.504154546383
+   },
+   {
+    "t": 1788208200,
+    "price": 4560.596529330825
+   }
+  ],
+  "text": "TRL_ SL",
+  "props": {
+   "linecolor": "rgba(178, 40, 51, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "Wlqy9C",
+  "name": "curve",
+  "points": [
+   {
+    "t": 1787528700,
+    "price": 4594.096841458147
+   },
+   {
+    "t": 1787534100,
+    "price": 4593.456637664487
+   },
+   {
+    "t": 1787530500,
+    "price": 4591.991830533714
+   }
+  ],
+  "text": null,
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "hijCeJ",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787616900,
+    "price": 4627.520289854075
+   },
+   {
+    "t": 1787535900,
+    "price": 4627.492221021927
+   }
+  ],
+  "text": "$$$$$",
+  "props": {
+   "linecolor": "rgba(56, 142, 60, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "XpgLpW",
+  "name": "curve",
+  "points": [
+   {
+    "t": 1787312700,
+    "price": 4563.479036242599
+   },
+   {
+    "t": 1787319000,
+    "price": 4562.83883244894
+   },
+   {
+    "t": 1787315400,
+    "price": 4561.374025318167
+   }
+  ],
+  "text": null,
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "7xxyPe",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1787533200,
+    "price": 4615.078657168766
+   },
+   {
+    "t": 1787616000,
+    "price": 4604.756740086486
+   }
+  ],
+  "text": "",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "sOJFmJ",
+  "name": "curve",
+  "points": [
+   {
+    "t": 1787532300,
+    "price": 4607.669222126001
+   },
+   {
+    "t": 1787538600,
+    "price": 4607.029018332341
+   },
+   {
+    "t": 1787535000,
+    "price": 4605.5642112015685
+   }
+  ],
+  "text": null,
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "XVwbrK",
+  "name": "long_position",
+  "points": [
+   {
+    "t": 1787610600,
+    "price": null
+   },
+   {
+    "t": 1787635800,
+    "price": null
+   }
+  ],
+  "text": null,
+  "props": {
+   "linecolor": "#787B86",
+   "linewidth": 1,
+   "stopLevel": 0,
+   "profitLevel": 0
+  }
+ },
+ {
+  "id": "Hkr0sb",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787617800,
+    "price": 4696.805598313679
+   },
+   {
+    "t": 1787731200,
+    "price": 4696.898237931807
+   }
+  ],
+  "text": "$$$$$",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "YqF725",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787618700,
+    "price": 4686.6381894214865
+   },
+   {
+    "t": 1787743800,
+    "price": 4686.622743240294
+   }
+  ],
+  "text": "$$$$$",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "l67jCT",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787238000,
+    "price": 4503.126626926424
+   },
+   {
+    "t": 1788199200,
+    "price": 4503.0560076255815
+   }
+  ],
+  "text": "$$$$$",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "aDYlDU",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1787565600,
+    "price": 4697.328486282484
+   },
+   {
+    "t": 1787590800,
+    "price": 4560.254244947309
+   }
+  ],
+  "text": "",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "xfmpMn",
+  "name": "curve",
+  "points": [
+   {
+    "t": 1787725800,
+    "price": 4650.046611909755
+   },
+   {
+    "t": 1787717700,
+    "price": 4649.594557407205
+   },
+   {
+    "t": 1787721300,
+    "price": 4650.840823197081
+   }
+  ],
+  "text": null,
+  "props": {
+   "linecolor": "rgba(178, 40, 51, 1)",
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "9MueA9",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1787785200,
+    "price": 4624.127313032207
+   },
+   {
+    "t": 1787799600,
+    "price": 4620.459376812266
+   }
+  ],
+  "text": "",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "xQHPQT",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787318100,
+    "price": 4594.84470752397
+   },
+   {
+    "t": 1787757300,
+    "price": 4594.566685039463
+   }
+  ],
+  "text": "$$$$$",
+  "props": {
+   "linecolor": "rgba(56, 142, 60, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "FQ4qnB",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787304600,
+    "price": 4573.801276599712
+   },
+   {
+    "t": 1787825700,
+    "price": 4573.838964664634
+   }
+  ],
+  "text": "$$$$$",
+  "props": {
+   "linecolor": "rgba(56, 142, 60, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "gWWVke",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787724000,
+    "price": 4641.457121235389
+   },
+   {
+    "t": 1787753700,
+    "price": 4632.882356532591
+   }
+  ],
+  "text": "$$$$$",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "uX8yZX",
+  "name": "curve",
+  "points": [
+   {
+    "t": 1787804100,
+    "price": 4640.436315913627
+   },
+   {
+    "t": 1787796900,
+    "price": 4639.998987382645
+   },
+   {
+    "t": 1787800500,
+    "price": 4641.245253172521
+   }
+  ],
+  "text": null,
+  "props": {
+   "linecolor": "rgba(178, 40, 51, 1)",
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "ooO6Dd",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787723100,
+    "price": 4649.41940274513
+   },
+   {
+    "t": 1787906700,
+    "price": 4649.326516264577
+   }
+  ],
+  "text": "LIQ_BLOCK_ $$$",
+  "props": {
+   "linecolor": "rgba(178, 40, 51, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "49Frku",
+  "name": "curve",
+  "points": [
+   {
+    "t": 1787715000,
+    "price": 4671.687684731102
+   },
+   {
+    "t": 1787706900,
+    "price": 4671.2356302285525
+   },
+   {
+    "t": 1787710500,
+    "price": 4672.481896018428
+   }
+  ],
+  "text": null,
+  "props": {
+   "linecolor": "rgba(178, 40, 51, 1)",
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "q6uB5T",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787799600,
+    "price": 4638.881517059546
+   },
+   {
+    "t": 1787906700,
+    "price": 4638.881517059546
+   }
+  ],
+  "text": "LIQ_BLOCK_ $$$$",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "PkFi3q",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787622300,
+    "price": 4675.164145877018
+   },
+   {
+    "t": 1787661900,
+    "price": 4643.967219324531
+   }
+  ],
+  "text": "$$$$$",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "hk4y4Y",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787612400,
+    "price": 4675.127615432503
+   },
+   {
+    "t": 1787724000,
+    "price": 4675.127615432503
+   }
+  ],
+  "text": "PLF",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "MqEGJS",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787807700,
+    "price": 4621.568592058087
+   },
+   {
+    "t": 1787823000,
+    "price": 4599.666958640662
+   }
+  ],
+  "text": "$$$$$",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "aQdjap",
+  "name": "long_position",
+  "points": [
+   {
+    "t": 1787664600,
+    "price": 4607.95
+   },
+   {
+    "t": 1787679000,
+    "price": 4607.95
+   }
+  ],
+  "text": null,
+  "props": {
+   "linecolor": "#787B86",
+   "linewidth": 1,
+   "stopLevel": 1451,
+   "profitLevel": 6282
+  }
+ },
+ {
+  "id": "EhYslt",
+  "name": "short_position",
+  "points": [
+   {
+    "t": 1787712300,
+    "price": 4658.86
+   },
+   {
+    "t": 1787722200,
+    "price": 4658.86
+   }
+  ],
+  "text": null,
+  "props": {
+   "linecolor": "#787B86",
+   "linewidth": 1,
+   "stopLevel": 1282,
+   "profitLevel": 5864
+  }
+ },
+ {
+  "id": "R0gnaR",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787708700,
+    "price": 4670.8591379554555
+   },
+   {
+    "t": 1787906700,
+    "price": 4670.843110847069
+   }
+  ],
+  "text": "LIQ_BLOCK_ $$$",
+  "props": {
+   "linecolor": "rgba(178, 40, 51, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "XIRbJV",
+  "name": "rectangle",
+  "points": [
+   {
+    "t": 1787795100,
+    "price": 4635.424203681496
+   },
+   {
+    "t": 1787913000,
+    "price": 4616.742021775339
+   }
+  ],
+  "text": "SELL ENTRY",
+  "props": {
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "N06ADX",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787663700,
+    "price": 4608.196836730169
+   },
+   {
+    "t": 1787532300,
+    "price": 4608.095466692846
+   }
+  ],
+  "text": "$$$$$",
+  "props": {
+   "linecolor": "rgba(56, 142, 60, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "mKpAsC",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787322600,
+    "price": 4587.488034476699
+   },
+   {
+    "t": 1787796000,
+    "price": 4587.488034476699
+   }
+  ],
+  "text": " OB 15M +  $$$$$",
+  "props": {
+   "linecolor": "rgba(56, 142, 60, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "Tb1pUS",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787299200,
+    "price": 4558.886776868656
+   },
+   {
+    "t": 1787560200,
+    "price": 4629.428419171461
+   }
+  ],
+  "text": "$$$$",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "e6cSNa",
+  "name": "long_position",
+  "points": [
+   {
+    "t": 1787594400,
+    "price": 4627.57
+   },
+   {
+    "t": 1787614200,
+    "price": 4627.57
+   }
+  ],
+  "text": null,
+  "props": {
+   "linecolor": "#787B86",
+   "linewidth": 1,
+   "stopLevel": 2022,
+   "profitLevel": 6280
+  }
+ },
+ {
+  "id": "9RS2m3",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787144400,
+    "price": 4454.113199347441
+   },
+   {
+    "t": 1787227200,
+    "price": 4453.991548491788
+   }
+  ],
+  "text": "$$$",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "eWL3iT",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787749200,
+    "price": 4601.310286759668
+   },
+   {
+    "t": 1787527800,
+    "price": 4601.454048164375
+   }
+  ],
+  "text": "$$$$$",
+  "props": {
+   "linecolor": "rgba(56, 142, 60, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "47vgul",
+  "name": "long_position",
+  "points": [
+   {
+    "t": 1787743800,
+    "price": 4601.31
+   },
+   {
+    "t": 1787751000,
+    "price": 4601.31
+   }
+  ],
+  "text": null,
+  "props": {
+   "linecolor": "#787B86",
+   "linewidth": 1,
+   "stopLevel": 1419,
+   "profitLevel": 2928
+  }
+ },
+ {
+  "id": "tPutW3",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787281200,
+    "price": 4546.995266752913
+   },
+   {
+    "t": 1787916600,
+    "price": 4547.230629361202
+   }
+  ],
+  "text": "$$$$$",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "JuqFuB",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787845500,
+    "price": 4602.395017774248
+   },
+   {
+    "t": 1787855400,
+    "price": 4602.395017774248
+   }
+  ],
+  "text": "$$$",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "FJEtgM",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787846400,
+    "price": 4616.726780370249
+   },
+   {
+    "t": 1787856300,
+    "price": 4616.726780370249
+   }
+  ],
+  "text": "$$$",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "lkQpYz",
+  "name": "short_position",
+  "points": [
+   {
+    "t": 1787859000,
+    "price": 4610.09
+   },
+   {
+    "t": 1787871600,
+    "price": 4610.09
+   }
+  ],
+  "text": null,
+  "props": {
+   "linecolor": "#787B86",
+   "linewidth": 1,
+   "stopLevel": 860,
+   "profitLevel": 2209
+  }
+ },
+ {
+  "id": "7sFLHw",
+  "name": "long_position",
+  "points": [
+   {
+    "t": 1787903100,
+    "price": 4602.21
+   },
+   {
+    "t": 1787930100,
+    "price": 4602.21
+   }
+  ],
+  "text": null,
+  "props": {
+   "linecolor": "#787B86",
+   "linewidth": 1,
+   "stopLevel": 1947,
+   "profitLevel": 9788
+  }
+ },
+ {
+  "id": "LMGcXP",
+  "name": "info_line",
+  "points": [
+   {
+    "t": 1787875200,
+    "price": 4595.934700074286
+   },
+   {
+    "t": 1787885100,
+    "price": 4595.934700074286
+   }
+  ],
+  "text": "$$$",
+  "props": {
+   "linecolor": "rgba(0, 0, 0, 1)",
+   "linewidth": 1,
+   "linestyle": 0
+  }
+ },
+ {
+  "id": "pZYNr4",
+  "name": "short_position",
+  "points": [
+   {
+    "t": 1787877000,
+    "price": 4600.8
+   },
+   {
+    "t": 1787886000,
+    "price": 4600.8
+   }
+  ],
+  "text": null,
+  "props": {
+   "linecolor": "#787B86",
+   "linewidth": 1,
+   "stopLevel": 582,
+   "profitLevel": 2492
+  }
+ },
+ {
+  "id": "77n3Qr",
+  "name": "short_position",
+  "points": [
+   {
+    "t": 1787853600,
+    "price": 4616.6
+   },
+   {
+    "t": 1787857200,
+    "price": 4616.6
+   }
+  ],
+  "text": null,
+  "props": {
+   "linecolor": "#787B86",
+   "linewidth": 1,
+   "stopLevel": 1181,
+   "profitLevel": 2856
+  }
+ },
+ {
+  "id": "O2tvjG",
+  "name": "short_position",
+  "points": [
+   {
+    "t": 1787752800,
+    "price": 4630.74
+   },
+   {
+    "t": 1787767200,
+    "price": 4630.74
+   }
+  ],
+  "text": null,
+  "props": {
+   "linecolor": "#787B86",
+   "linewidth": 1,
+   "stopLevel": 1437,
+   "profitLevel": 4327
+  }
+ },
+ {
+  "id": "ytwrZV",
+  "name": "long_position",
+  "points": [
+   {
+    "t": 1787842800,
+    "price": 4590.03
+   },
+   {
+    "t": 1787847300,
+    "price": 4590.03
+   }
+  ],
+  "text": null,
+  "props": {
+   "linecolor": "#787B86",
+   "linewidth": 1,
+   "stopLevel": 952,
+   "profitLevel": 2585
+  }
+ },
+ {
+  "id": "aZGbLm",
+  "name": "long_position",
+  "points": [
+   {
+    "t": 1787834700,
+    "price": 4568.88
+   },
+   {
+    "t": 1787847300,
+    "price": 4568.88
+   }
+  ],
+  "text": null,
+  "props": {
+   "linecolor": "#787B86",
+   "linewidth": 1,
+   "stopLevel": 1375,
+   "profitLevel": 4728
+  }
+ },
+ {
+  "id": "4Jb8CL",
+  "name": "ray",
+  "points": [
+   {
+    "t": 1787617800,
+    "price": 4696.819457617772
+   },
+   {
+    "t": 1787688000,
+    "price": 4676.334504874958
+   }
+  ],
+  "text": "",
+  "props": {
+   "linecolor": "rgba(103, 58, 183, 1)",
+   "linewidth": 2,
+   "linestyle": 0
+  }
+ }
+]
