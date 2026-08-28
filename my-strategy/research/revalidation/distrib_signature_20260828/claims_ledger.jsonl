@@ -1,0 +1,4 @@
+{"claim":"V15 nao separa: ON 272 WR30 avgR0.20 vs OFF 591 WR30 avgR0.19; block-null p~0.62","source":"run_study.py+v2, DA 2 passes","status":"VERIFIED"}
+{"claim":"V1H (ATR 1H real): ON 107 WR22 avgR-0.10 vs OFF 756 WR31 avgR+0.24; gap avgR 0.34R; block-null p=0.055 (2000 reps DA), Bonferroni x4=0.22 NAO sobrevive; gap positivo 5/5 semestres","source":"run_study_v2.py + DA replay","status":"VERIFIED_EXPLORATORY"}
+{"claim":"Assinatura FALHA o caso motivador: semana 24-28/08 so 1/8 flags; segunda 24/08 toda OFF (janela por indice atravessa weekend, gap domingo conta como progresso)","source":"week_descriptive_store + DA diagnostico","status":"VERIFIED"}
+{"claim":"Censo detetor real 863 episodios = 889 fires - dedup EP_GAP8; byte-consistente com a2_anchor_lag","source":"DA replay independente","status":"VERIFIED"}
