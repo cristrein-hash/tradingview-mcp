@@ -1,0 +1,7 @@
+{"claim":"BUY-LIMIT (topo do retest_zone, fill 16b) REPROVA como modo unico: total -71.0R vs market -3.6R (c0.2); custo0 +80 vs +169; 89% do lucro bruto vive nos 108 episodios SEM recuo ao limite (68 winners, +165R)","source":"run_audit.py + DA reconciliacao exata","status":"VERIFIED"}
+{"claim":"Por-fill o limit e MELHOR que market (-0.09 vs -0.19 nos mesmos 755) — mas decisao-irrelevante: o valor esta no trade que nao devolve","source":"run_audit.py + DA","status":"VERIFIED"}
+{"claim":"A2 avgR +0.24 (N72) vs A1 -0.03 (N791) a custo 0.2","source":"run_audit.py","status":"VERIFIED_EXPLORATORY"}
+{"claim":"Regime causal: BULL +0.11 (N398) vs BEAR -0.36 (N96); leak same-day corrigido pos-DA (era -0.48)","source":"run_audit.py DA-fix reg_at","status":"VERIFIED_EXPLORATORY"}
+{"claim":"BULL+OB(in/below) sem filtro risco: N250 avgR +0.148 — tese localizacao OK; composto com risk<=1.5 era ma especificacao (1.5-2.0 ATR e a melhor faixa +0.395)","source":"DA decomposicao","status":"VERIFIED_EXPLORATORY"}
+{"claim":"NENHUM dos 19 splits sobrevive Bonferroni (melhor: segunda p_corr 0.44, e artefacto 2025 — 2026-H1 negativa)","source":"DA block-null 2000 reps","status":"VERIFIED"}
+{"claim":"Features as-of sao da ABERTURA da barra do gatilho (~fecho t-1), nao do fecho — causal/tradeable mas 1 barra stale","source":"DA prova RSI 8/8","status":"VERIFIED"}

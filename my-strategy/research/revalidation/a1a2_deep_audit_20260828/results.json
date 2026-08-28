@@ -1,0 +1,219 @@
+{
+ "n": 863,
+ "base": {
+  "N": 863,
+  "WR": 30,
+  "sumR": -3.6,
+  "avgR": -0.0,
+  "maxDD": -57.8,
+  "streak": 21
+ },
+ "A1": {
+  "N": 791,
+  "WR": 29,
+  "sumR": -21.2,
+  "avgR": -0.03,
+  "maxDD": -63.0,
+  "streak": 21
+ },
+ "A2": {
+  "N": 72,
+  "WR": 36,
+  "sumR": 17.6,
+  "avgR": 0.24,
+  "maxDD": -12.4,
+  "streak": 10
+ },
+ "mkt_all": {
+  "N": 863,
+  "WR": 30,
+  "sumR": -3.6,
+  "avgR": -0.0,
+  "maxDD": -57.8,
+  "streak": 21
+ },
+ "lim_fills": {
+  "N": 755,
+  "WR": 28,
+  "sumR": -71.0,
+  "avgR": -0.09,
+  "maxDD": -74.2,
+  "streak": 19
+ },
+ "nofill": {
+  "n": 108,
+  "winners_perdidos": 68,
+  "losers_evitados": 39,
+  "sumR_perdido": 165.0
+ },
+ "mkt_dos_fills": {
+  "N": 755,
+  "WR": 25,
+  "sumR": -147.0,
+  "avgR": -0.19,
+  "maxDD": -150.2,
+  "streak": 20
+ },
+ "splits": {
+  "reg BULL": {
+   "N": 398,
+   "WR": 33,
+   "sumR": 45.4,
+   "avgR": 0.11,
+   "maxDD": -43.6,
+   "streak": 18
+  },
+  "reg TRANSITION": {
+   "N": 0,
+   "WR": null,
+   "sumR": 0,
+   "avgR": null,
+   "maxDD": 0.0,
+   "streak": 0
+  },
+  "reg BEAR": {
+   "N": 96,
+   "WR": 21,
+   "sumR": -34.2,
+   "avgR": -0.36,
+   "maxDD": -46.2,
+   "streak": 21
+  },
+  "distrib v1h ON": {
+   "N": 107,
+   "WR": 22,
+   "sumR": -32.4,
+   "avgR": -0.3,
+   "maxDD": -41.2,
+   "streak": 17
+  },
+  "OB: dentro de zona": {
+   "N": 221,
+   "WR": 28,
+   "sumR": -19.2,
+   "avgR": -0.09,
+   "maxDD": -27.8,
+   "streak": 16
+  },
+  "OB: zona <=1ATR abaixo": {
+   "N": 329,
+   "WR": 33,
+   "sumR": 33.2,
+   "avgR": 0.1,
+   "maxDD": -20.4,
+   "streak": 10
+  },
+  "OB: sem zona perto": {
+   "N": 313,
+   "WR": 28,
+   "sumR": -17.6,
+   "avgR": -0.06,
+   "maxDD": -39.6,
+   "streak": 13
+  },
+  "RSI<40 no gatilho": {
+   "N": 268,
+   "WR": 27,
+   "sumR": -31.6,
+   "avgR": -0.12,
+   "maxDD": -45.4,
+   "streak": 13
+  },
+  "RSI 40-60": {
+   "N": 506,
+   "WR": 31,
+   "sumR": 18.8,
+   "avgR": 0.04,
+   "maxDD": -47.0,
+   "streak": 29
+  },
+  "RSI>60": {
+   "N": 89,
+   "WR": 33,
+   "sumR": 9.2,
+   "avgR": 0.1,
+   "maxDD": -20.4,
+   "streak": 10
+  },
+  "risk<=1.0 ATR": {
+   "N": 22,
+   "WR": 18,
+   "sumR": -10.4,
+   "avgR": -0.47,
+   "maxDD": -15.2,
+   "streak": 9
+  },
+  "risk >1.5 ATR": {
+   "N": 657,
+   "WR": 32,
+   "sumR": 43.6,
+   "avgR": 0.07,
+   "maxDD": -47.8,
+   "streak": 22
+  },
+  "sess\u00e3o LDN+NY (08-17 Lx)": {
+   "N": 379,
+   "WR": 28,
+   "sumR": -20.8,
+   "avgR": -0.05,
+   "maxDD": -47.2,
+   "streak": 22
+  },
+  "madrugada (00-07 Lx)": {
+   "N": 261,
+   "WR": 28,
+   "sumR": -16.2,
+   "avgR": -0.06,
+   "maxDD": -36.0,
+   "streak": 13
+  },
+  "fim de tarde/noite (18-23)": {
+   "N": 223,
+   "WR": 34,
+   "sumR": 33.4,
+   "avgR": 0.15,
+   "maxDD": -28.6,
+   "streak": 18
+  },
+  "segunda-feira": {
+   "N": 178,
+   "WR": 37,
+   "sumR": 50.4,
+   "avgR": 0.28,
+   "maxDD": -16.4,
+   "streak": 10
+  },
+  "depth<=1.5 (raso)": {
+   "N": 31,
+   "WR": 32,
+   "sumR": 2.8,
+   "avgR": 0.09,
+   "maxDD": -11.6,
+   "streak": 7
+  },
+  "ema_d<0 (sob EMA21)": {
+   "N": 436,
+   "WR": 27,
+   "sumR": -56.2,
+   "avgR": -0.13,
+   "maxDD": -63.8,
+   "streak": 17
+  }
+ },
+ "comp_loc": {
+  "N": 69,
+  "WR": 26,
+  "sumR": -10.8,
+  "avgR": -0.16,
+  "maxDD": -14.8,
+  "streak": 8
+ },
+ "comp_resto": {
+  "N": 794,
+  "WR": 30,
+  "sumR": 7.2,
+  "avgR": 0.01,
+  "maxDD": -57.8,
+  "streak": 21
+ }
+}
