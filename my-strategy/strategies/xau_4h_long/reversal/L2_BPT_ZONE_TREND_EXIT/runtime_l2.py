@@ -252,13 +252,19 @@ def cycle(send_telegram=False, dedup_path=DEDUP_DEFAULT, ohlcv_count=400):
                        "late_bars": ec.get("late_bars", 0)}
             res = notify(payload, send_telegram, dedup_path, ec["signal_hash"])
         else:
-            ev = a["event"]
-            key = f"{ev['signal_hash']}:EXIT:{ev['bar_time']}"
-            payload = {"kind": "exit", "strategy_route": CONSUMER, "operational": True,
-                       "symbol": SYMBOL, "timeframe": TF, "mot": ev["mot"], "R": ev["R"],
-                       "bar_time_iso": datetime.utcfromtimestamp(ev["bar_time"]).isoformat(),
-                       "entry_signal_hash": ev["signal_hash"], "late_bars": ev["late_bars"]}
-            res = notify(payload, send_telegram, dedup_path, key)
+            # SAÍDA CANCELADA (ordem Cris 2026-08-28: "eu mesmo giro o critério de saída"). O evento de
+            # fecho continua a ser registado no ledger p/ estudo, mas NÃO se emite alerta de saída.
+            # Reativável com L2_EXIT_ALERTS=1. A entrada (🎯) continua a ir ao grupo, intocada.
+            if os.environ.get("L2_EXIT_ALERTS", "0") != "1":
+                res = "exit-alert-cancelado(Cris 28/08)"
+            else:
+                ev = a["event"]
+                key = f"{ev['signal_hash']}:EXIT:{ev['bar_time']}"
+                payload = {"kind": "exit", "strategy_route": CONSUMER, "operational": True,
+                           "symbol": SYMBOL, "timeframe": TF, "mot": ev["mot"], "R": ev["R"],
+                           "bar_time_iso": datetime.utcfromtimestamp(ev["bar_time"]).isoformat(),
+                           "entry_signal_hash": ev["signal_hash"], "late_bars": ev["late_bars"]}
+                res = notify(payload, send_telegram, dedup_path, key)
         notif.append({"kind": a["kind"], "payload_hash": payload.get("signal_hash")
                       or payload.get("entry_signal_hash"), "notify": res})
     out["alerts"] = notif
