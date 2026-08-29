@@ -1,0 +1,663 @@
+{
+ "coverage": "33/47",
+ "details": [
+  {
+   "case": "chart_jul:t1d45r",
+   "t": 1754073000,
+   "entry": 3299.82,
+   "pool": [
+    3301.35,
+    3301.35
+   ],
+   "dist": 1.5,
+   "datr": 0.42,
+   "covered": true,
+   "respected": true,
+   "status": "CAPTURADA:INCONCLUSIVA"
+  },
+  {
+   "case": "chart_jul:e3uSj5",
+   "t": 1754420400,
+   "entry": 3353.43,
+   "pool": [
+    3351.64,
+    3354.44
+   ],
+   "dist": 1.0,
+   "datr": 0.31,
+   "covered": true,
+   "respected": false,
+   "status": "CAPTURADA:INCONCLUSIVA"
+  },
+  {
+   "case": "chart_jul:NpmHGM",
+   "t": 1755893700,
+   "entry": 3326.21,
+   "pool": [
+    3325.11,
+    3326.93
+   ],
+   "dist": 0.7,
+   "datr": 0.33,
+   "covered": true,
+   "respected": true,
+   "status": "CAPTURADA:INCONCLUSIVA"
+  },
+  {
+   "case": "chart_jul:hsOEgw",
+   "t": 1756296900,
+   "entry": 3375.29,
+   "pool": [
+    3371.95,
+    3373.86
+   ],
+   "dist": 1.4,
+   "datr": 0.47,
+   "covered": true,
+   "respected": true,
+   "status": "SWEPT"
+  },
+  {
+   "case": "chart_jul:6DLWcb",
+   "t": 1756475100,
+   "entry": 3405.59,
+   "pool": [
+    3404.16,
+    3404.37
+   ],
+   "dist": 1.2,
+   "datr": 0.3,
+   "covered": true,
+   "respected": true,
+   "status": "INTACT"
+  },
+  {
+   "case": "chart_jul:teE8Tg",
+   "t": 1756836000,
+   "entry": 3485.8,
+   "pool": [
+    3490.02,
+    3490.02
+   ],
+   "dist": 4.2,
+   "datr": 0.86,
+   "covered": false,
+   "respected": false,
+   "status": "CAPTURADA:INCONCLUSIVA"
+  },
+  {
+   "case": "chart_jul:svZFGC",
+   "t": 1756981800,
+   "entry": 3527.24,
+   "pool": [
+    3524.29,
+    3526.63
+   ],
+   "dist": 0.6,
+   "datr": 0.13,
+   "covered": true,
+   "respected": true,
+   "status": "CAPTURADA:INCONCLUSIVA"
+  },
+  {
+   "case": "chart_jul:7L4acJ",
+   "t": 1757326500,
+   "entry": 3589.51,
+   "pool": [
+    3590.45,
+    3590.45
+   ],
+   "dist": 0.9,
+   "datr": 0.18,
+   "covered": true,
+   "respected": false,
+   "status": "CAPTURADA:INCONCLUSIVA"
+  },
+  {
+   "case": "chart_jul:umsHuG",
+   "t": 1757483100,
+   "entry": 3626,
+   "pool": [
+    3626.73,
+    3628.14
+   ],
+   "dist": 2.1,
+   "datr": 0.65,
+   "covered": false,
+   "respected": true,
+   "status": "SWEPT"
+  },
+  {
+   "case": "chart_jul:6hlsXP",
+   "t": 1757613600,
+   "entry": 3620.23,
+   "pool": [
+    3618.3,
+    3620.13
+   ],
+   "dist": 0.1,
+   "datr": 0.02,
+   "covered": true,
+   "respected": true,
+   "status": "SWEPT"
+  },
+  {
+   "case": "chart_jul:6qde5q",
+   "t": 1757916900,
+   "entry": 3633.84,
+   "pool": [
+    3631.78,
+    3633.16
+   ],
+   "dist": 0.7,
+   "datr": 0.27,
+   "covered": true,
+   "respected": false,
+   "status": "CAPTURADA:INCONCLUSIVA"
+  },
+  {
+   "case": "chart_jul:JKkLYW",
+   "t": 1758195000,
+   "entry": 3638.17,
+   "pool": [
+    3633.65,
+    3637.63
+   ],
+   "dist": 0.5,
+   "datr": 0.12,
+   "covered": true,
+   "respected": true,
+   "status": "SWEPT"
+  },
+  {
+   "case": "chart_jul:tlqDi1",
+   "t": 1758825900,
+   "entry": 3730.13,
+   "pool": [
+    3729.68,
+    3732.33
+   ],
+   "dist": 2.2,
+   "datr": 0.34,
+   "covered": true,
+   "respected": false,
+   "status": "SWEPT"
+  },
+  {
+   "case": "chart_jul:m5TNAo",
+   "t": 1759244400,
+   "entry": 3808.59,
+   "pool": [
+    3801.17,
+    3809.22
+   ],
+   "dist": 0.6,
+   "datr": 0.06,
+   "covered": true,
+   "respected": true,
+   "status": "SWEPT"
+  },
+  {
+   "case": "chart_jul:XDE5Om",
+   "t": 1759437000,
+   "entry": 3837.92,
+   "pool": [
+    3839.72,
+    3840.57
+   ],
+   "dist": 2.7,
+   "datr": 0.65,
+   "covered": false,
+   "respected": true,
+   "status": "CAPTURADA:INCONCLUSIVA"
+  },
+  {
+   "case": "chart_jul:Abz9aJ",
+   "t": 1760097600,
+   "entry": 3966.12,
+   "pool": [
+    3968.96,
+    3969.82
+   ],
+   "dist": 3.7,
+   "datr": 0.47,
+   "covered": true,
+   "respected": false,
+   "status": "CAPTURADA:INCONCLUSIVA"
+  },
+  {
+   "case": "chart_jul:EQg8oV",
+   "t": 1760466600,
+   "entry": 4118.51,
+   "pool": [
+    4121.68,
+    4127.86
+   ],
+   "dist": 9.3,
+   "datr": 1.04,
+   "covered": false,
+   "respected": true,
+   "status": "CAPTURADA:INCONCLUSIVA"
+  },
+  {
+   "case": "chart_jul:nmAkvW",
+   "t": 1760970600,
+   "entry": 4252.96,
+   "pool": [
+    4245.68,
+    4250.75
+   ],
+   "dist": 2.2,
+   "datr": 0.14,
+   "covered": true,
+   "respected": false,
+   "status": "SWEPT"
+  },
+  {
+   "case": "chart_jul:VveF6u",
+   "t": 1761323400,
+   "entry": 4063.56,
+   "pool": [
+    4044.19,
+    4056.36
+   ],
+   "dist": 7.2,
+   "datr": 0.51,
+   "covered": false,
+   "respected": false,
+   "status": "CAPTURADA:INCONCLUSIVA"
+  },
+  {
+   "case": "chart_jul:ztqo8F",
+   "t": 1761808500,
+   "entry": 3935.49,
+   "pool": [
+    3927.93,
+    3927.93
+   ],
+   "dist": 7.6,
+   "datr": 0.53,
+   "covered": false,
+   "respected": true,
+   "status": "SWEPT"
+  },
+  {
+   "case": "chart_jul:RbZioG",
+   "t": 1762324200,
+   "entry": 3940.4,
+   "pool": [
+    3937.66,
+    3937.66
+   ],
+   "dist": 2.7,
+   "datr": 0.42,
+   "covered": true,
+   "respected": false,
+   "status": "CONSUMED"
+  },
+  {
+   "case": "chart_jul:l7U36o",
+   "t": 1762949700,
+   "entry": 4114.59,
+   "pool": [
+    4112.11,
+    4112.11
+   ],
+   "dist": 2.5,
+   "datr": 0.38,
+   "covered": true,
+   "respected": false,
+   "status": "INTACT"
+  },
+  {
+   "case": "chart_jul:M6t8i2",
+   "t": 1763468100,
+   "entry": 4016.94,
+   "pool": [
+    4004.95,
+    4008.29
+   ],
+   "dist": 8.7,
+   "datr": 1.16,
+   "covered": false,
+   "respected": true,
+   "status": "SWEPT"
+  },
+  {
+   "case": "chart_jul:D1mZyV",
+   "t": 1763742600,
+   "entry": 4045.4,
+   "pool": [
+    4038.76,
+    4047.81
+   ],
+   "dist": 2.4,
+   "datr": 0.23,
+   "covered": true,
+   "respected": true,
+   "status": "CONSUMED"
+  },
+  {
+   "case": "chart_jul:37HM4V",
+   "t": 1764333900,
+   "entry": 4165.62,
+   "pool": [
+    4166.68,
+    4167.48
+   ],
+   "dist": 1.9,
+   "datr": 0.28,
+   "covered": true,
+   "respected": false,
+   "status": "CAPTURADA:INCONCLUSIVA"
+  },
+  {
+   "case": "chart_jul:9ktRNN",
+   "t": 1764824400,
+   "entry": 4179.36,
+   "pool": [
+    4180.97,
+    4185.61
+   ],
+   "dist": 6.2,
+   "datr": 1.07,
+   "covered": false,
+   "respected": true,
+   "status": "CAPTURADA:INCONCLUSIVA"
+  },
+  {
+   "case": "chart_jul:n7qkT3",
+   "t": 1765263600,
+   "entry": 4182.79,
+   "pool": [
+    4183.59,
+    4188.2
+   ],
+   "dist": 5.4,
+   "datr": 1.08,
+   "covered": false,
+   "respected": false,
+   "status": "CAPTURADA:INCONCLUSIVA"
+  },
+  {
+   "case": "chart_jul:EO0bU9",
+   "t": 1765887300,
+   "entry": 4287.31,
+   "pool": [
+    4285.32,
+    4285.32
+   ],
+   "dist": 2.0,
+   "datr": 0.38,
+   "covered": true,
+   "respected": false,
+   "status": "CAPTURADA:INCONCLUSIVA"
+  },
+  {
+   "case": "chart_jul:BkeaRs",
+   "t": 1766169900,
+   "entry": 4337.85,
+   "pool": [
+    4335.66,
+    4335.66
+   ],
+   "dist": 2.2,
+   "datr": 0.31,
+   "covered": true,
+   "respected": false,
+   "status": "CONSUMED"
+  },
+  {
+   "case": "chart_jul:2SZFmj",
+   "t": 1767868200,
+   "entry": 4423.13,
+   "pool": [
+    4423.17,
+    4423.17
+   ],
+   "dist": 0.0,
+   "datr": 0.01,
+   "covered": true,
+   "respected": false,
+   "status": "SWEPT"
+  },
+  {
+   "case": "chart_jul:P7Upci",
+   "t": 1768871700,
+   "entry": 4669.43,
+   "pool": [
+    4669.13,
+    4669.13
+   ],
+   "dist": 0.3,
+   "datr": 0.05,
+   "covered": true,
+   "respected": false,
+   "status": "SWEPT"
+  },
+  {
+   "case": "chart_jul:gYgT6D",
+   "t": 1769527800,
+   "entry": 5081.69,
+   "pool": [
+    5065.23,
+    5081.77
+   ],
+   "dist": 0.1,
+   "datr": 0.0,
+   "covered": true,
+   "respected": false,
+   "status": "CAPTURADA:INCONCLUSIVA"
+  },
+  {
+   "case": "chart_jul:EFr2XB",
+   "t": 1770066900,
+   "entry": 4670.31,
+   "pool": [
+    4657.08,
+    4681.35
+   ],
+   "dist": 11.0,
+   "datr": 0.32,
+   "covered": true,
+   "respected": false,
+   "status": "CAPTURADA:INCONCLUSIVA"
+  },
+  {
+   "case": "chart_jul:zL4chs",
+   "t": 1770342300,
+   "entry": 4744.46,
+   "pool": [
+    4745.52,
+    4745.52
+   ],
+   "dist": 1.1,
+   "datr": 0.03,
+   "covered": true,
+   "respected": true,
+   "status": "CAPTURADA:INCONCLUSIVA"
+  },
+  {
+   "case": "chart_jul:RPsNWf",
+   "t": 1771416900,
+   "entry": 4924.55,
+   "pool": [
+    4923.08,
+    4925.14
+   ],
+   "dist": 0.6,
+   "datr": 0.08,
+   "covered": true,
+   "respected": false,
+   "status": "CONSUMED"
+  },
+  {
+   "case": "declared:FN 07/08",
+   "t": 1786122000,
+   "entry": 4338.0,
+   "pool": [
+    4327.33,
+    4327.33
+   ],
+   "dist": 10.7,
+   "datr": 0.83,
+   "covered": false,
+   "respected": false,
+   "status": "INTACT"
+  },
+  {
+   "case": "declared:FTMO 07/08",
+   "t": 1786122000,
+   "entry": 4341.0,
+   "pool": [
+    4327.33,
+    4327.33
+   ],
+   "dist": 13.7,
+   "datr": 1.06,
+   "covered": false,
+   "respected": false,
+   "status": "INTACT"
+  },
+  {
+   "case": "chart_aug:5m",
+   "t": 1787594400,
+   "entry": 4627.57,
+   "pool": [
+    4627.46,
+    4639.91
+   ],
+   "dist": 12.3,
+   "datr": 0.9,
+   "covered": false,
+   "respected": true,
+   "status": "SWEPT"
+  },
+  {
+   "case": "chart_aug:240m",
+   "t": 1787652000,
+   "entry": 4607.95,
+   "pool": [
+    4603.18,
+    4604.65
+   ],
+   "dist": 3.3,
+   "datr": 0.33,
+   "covered": true,
+   "respected": true,
+   "status": "SWEPT"
+  },
+  {
+   "case": "chart_aug:60m",
+   "t": 1787709600,
+   "entry": 4658.86,
+   "pool": [
+    4659.41,
+    4659.92
+   ],
+   "dist": 0.6,
+   "datr": 0.06,
+   "covered": true,
+   "respected": false,
+   "status": "CAPTURADA:INCONCLUSIVA"
+  },
+  {
+   "case": "chart_aug:240m",
+   "t": 1787738400,
+   "entry": 4601.31,
+   "pool": [
+    4603.18,
+    4605.36
+   ],
+   "dist": 4.0,
+   "datr": 0.63,
+   "covered": false,
+   "respected": true,
+   "status": "SWEPT"
+  },
+  {
+   "case": "chart_aug:15m",
+   "t": 1787752800,
+   "entry": 4630.74,
+   "pool": [
+    4623.74,
+    4633.96
+   ],
+   "dist": 7.0,
+   "datr": 0.65,
+   "covered": false,
+   "respected": true,
+   "status": "CAPTURADA:INCONCLUSIVA"
+  },
+  {
+   "case": "chart_aug:15m",
+   "t": 1787834700,
+   "entry": 4568.88,
+   "pool": [
+    4569.09,
+    4569.09
+   ],
+   "dist": 0.2,
+   "datr": 0.02,
+   "covered": true,
+   "respected": false,
+   "status": "INTACT"
+  },
+  {
+   "case": "chart_aug:15m",
+   "t": 1787842800,
+   "entry": 4590.03,
+   "pool": [
+    4577.92,
+    4585.71
+   ],
+   "dist": 4.3,
+   "datr": 0.39,
+   "covered": true,
+   "respected": true,
+   "status": "SWEPT"
+  },
+  {
+   "case": "chart_aug:15m",
+   "t": 1787853600,
+   "entry": 4616.6,
+   "pool": [
+    4616.83,
+    4616.83
+   ],
+   "dist": 0.2,
+   "datr": 0.03,
+   "covered": true,
+   "respected": false,
+   "status": "INTACT"
+  },
+  {
+   "case": "chart_aug:15m",
+   "t": 1787859000,
+   "entry": 4610.09,
+   "pool": [
+    4609.48,
+    4611.91
+   ],
+   "dist": 0.6,
+   "datr": 0.09,
+   "covered": true,
+   "respected": false,
+   "status": "CAPTURADA:INCONCLUSIVA"
+  },
+  {
+   "case": "chart_aug:15m",
+   "t": 1787877000,
+   "entry": 4600.8,
+   "pool": [
+    4601.14,
+    4601.8
+   ],
+   "dist": 0.3,
+   "datr": 0.06,
+   "covered": true,
+   "respected": false,
+   "status": "CONSUMED"
+  }
+ ]
+}
