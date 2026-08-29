@@ -1,0 +1,467 @@
+{
+ "gate": "42/42",
+ "details": [
+  {
+   "case": "chart_jul:t1d45r",
+   "t": 1754073000,
+   "entry": 3299.82,
+   "hit": true,
+   "ind": {
+    "broken": 3354.79,
+    "origin": 3296.82,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:e3uSj5",
+   "t": 1754420400,
+   "entry": 3353.43,
+   "hit": true,
+   "ind": {
+    "broken": 3375.57,
+    "origin": 3349.86,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:NpmHGM",
+   "t": 1755893700,
+   "entry": 3326.21,
+   "hit": true,
+   "ind": {
+    "broken": 3331.71,
+    "origin": 3321.29,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:hsOEgw",
+   "t": 1756296900,
+   "entry": 3375.29,
+   "hit": true,
+   "ind": {
+    "broken": 3381.89,
+    "origin": 3373.51,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:6DLWcb",
+   "t": 1756475100,
+   "entry": 3405.59,
+   "hit": true,
+   "ind": {
+    "broken": 3414.86,
+    "origin": 3404.16,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:teE8Tg",
+   "t": 1756836000,
+   "entry": 3485.8,
+   "hit": true,
+   "ind": {
+    "broken": 3528.86,
+    "origin": 3474.1,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:svZFGC",
+   "t": 1756981800,
+   "entry": 3527.24,
+   "hit": true,
+   "ind": {
+    "broken": 3541.78,
+    "origin": 3524.29,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:7L4acJ",
+   "t": 1757326500,
+   "entry": 3589.51,
+   "hit": true,
+   "ind": {
+    "broken": 3616.92,
+    "origin": 3579.47,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:umsHuG",
+   "t": 1757483100,
+   "entry": 3626,
+   "hit": true,
+   "ind": {
+    "broken": 3638.32,
+    "origin": 3620.13,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:6hlsXP",
+   "t": 1757613600,
+   "entry": 3620.23,
+   "hit": true,
+   "ind": {
+    "broken": 3637.8,
+    "origin": 3618.3,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:6qde5q",
+   "t": 1757916900,
+   "entry": 3633.84,
+   "hit": true,
+   "ind": {
+    "broken": 3645.42,
+    "origin": 3626.51,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:JKkLYW",
+   "t": 1758195000,
+   "entry": 3638.17,
+   "hit": true,
+   "ind": {
+    "broken": 3659.24,
+    "origin": 3633.88,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:tlqDi1",
+   "t": 1758825900,
+   "entry": 3730.13,
+   "hit": true,
+   "ind": {
+    "broken": 3742.75,
+    "origin": 3723.61,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:m5TNAo",
+   "t": 1759244400,
+   "entry": 3808.59,
+   "hit": true,
+   "ind": {
+    "broken": 3817.69,
+    "origin": 3793.11,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:XDE5Om",
+   "t": 1759437000,
+   "entry": 3837.92,
+   "hit": true,
+   "ind": {
+    "broken": 3847.81,
+    "origin": 3840.57,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:Abz9aJ",
+   "t": 1760097600,
+   "entry": 3966.12,
+   "hit": true,
+   "ind": {
+    "broken": 3977.87,
+    "origin": 3952.51,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:EQg8oV",
+   "t": 1760466600,
+   "entry": 4118.51,
+   "hit": true,
+   "ind": {
+    "broken": 4142.63,
+    "origin": 4126.15,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:nmAkvW",
+   "t": 1760970600,
+   "entry": 4252.96,
+   "hit": true,
+   "ind": {
+    "broken": 4327.08,
+    "origin": 4250.75,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:VveF6u",
+   "t": 1761323400,
+   "entry": 4063.56,
+   "hit": true,
+   "ind": {
+    "broken": 4134.91,
+    "origin": 4044.19,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:ztqo8F",
+   "t": 1761808500,
+   "entry": 3935.49,
+   "hit": true,
+   "ind": {
+    "broken": 3966.59,
+    "origin": 3915.33,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:RbZioG",
+   "t": 1762324200,
+   "entry": 3940.4,
+   "hit": true,
+   "ind": {
+    "broken": 3949.44,
+    "origin": 3934.44,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:l7U36o",
+   "t": 1762949700,
+   "entry": 4114.59,
+   "hit": true,
+   "ind": {
+    "broken": 4131.27,
+    "origin": 4117.81,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:M6t8i2",
+   "t": 1763468100,
+   "entry": 4016.94,
+   "hit": true,
+   "ind": {
+    "broken": 4042.73,
+    "origin": 3997.7,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:D1mZyV",
+   "t": 1763742600,
+   "entry": 4045.4,
+   "hit": true,
+   "ind": {
+    "broken": 4076.9,
+    "origin": 4055.2,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:37HM4V",
+   "t": 1764333900,
+   "entry": 4165.62,
+   "hit": true,
+   "ind": {
+    "broken": 4178.43,
+    "origin": 4160.22,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:9ktRNN",
+   "t": 1764824400,
+   "entry": 4179.36,
+   "hit": true,
+   "ind": {
+    "broken": 4212.38,
+    "origin": 4183.34,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:n7qkT3",
+   "t": 1765263600,
+   "entry": 4182.79,
+   "hit": true,
+   "ind": {
+    "broken": 4197.36,
+    "origin": 4186.07,
+    "status": "RESOLVED"
+   }
+  },
+  {
+   "case": "chart_jul:EO0bU9",
+   "t": 1765887300,
+   "entry": 4287.31,
+   "hit": true,
+   "ind": {
+    "broken": 4289.43,
+    "origin": 4273.74,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:BkeaRs",
+   "t": 1766169900,
+   "entry": 4337.85,
+   "hit": true,
+   "ind": {
+    "broken": 4354.63,
+    "origin": 4319.63,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:2SZFmj",
+   "t": 1767868200,
+   "entry": 4423.13,
+   "hit": true,
+   "ind": {
+    "broken": 4333.77,
+    "origin": 4309.72,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:P7Upci",
+   "t": 1768871700,
+   "entry": 4669.43,
+   "hit": true,
+   "ind": {
+    "broken": 4676.11,
+    "origin": 4661.72,
+    "status": "RESOLVED"
+   }
+  },
+  {
+   "case": "chart_jul:gYgT6D",
+   "t": 1769527800,
+   "entry": 5081.69,
+   "hit": true,
+   "ind": {
+    "broken": 5082.17,
+    "origin": 5046.67,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:EFr2XB",
+   "t": 1770066900,
+   "entry": 4670.31,
+   "hit": true,
+   "ind": {
+    "broken": 4733.76,
+    "origin": 4402.72,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:zL4chs",
+   "t": 1770342300,
+   "entry": 4744.46,
+   "hit": true,
+   "ind": {
+    "broken": 4764.51,
+    "origin": 4654.86,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_jul:RPsNWf",
+   "t": 1771416900,
+   "entry": 4924.55,
+   "hit": true,
+   "ind": {
+    "broken": 4884.46,
+    "origin": 4854.08,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "declared:FN 07/08",
+   "t": 1786122000,
+   "entry": 4338.0,
+   "hit": true,
+   "ind": {
+    "broken": 4316.77,
+    "origin": 4282.8,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "declared:FTMO 07/08",
+   "t": 1786122000,
+   "entry": 4341.0,
+   "hit": true,
+   "ind": {
+    "broken": 4316.77,
+    "origin": 4282.8,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_aug:5m",
+   "t": 1787594400,
+   "entry": 4627.57,
+   "hit": true,
+   "ind": {
+    "broken": 4670.01,
+    "origin": 4639.07,
+    "status": "RESOLVED"
+   }
+  },
+  {
+   "case": "chart_aug:240m",
+   "t": 1787652000,
+   "entry": 4607.95,
+   "hit": true,
+   "ind": {
+    "broken": 4640.93,
+    "origin": 4594.95,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_aug:240m",
+   "t": 1787738400,
+   "entry": 4601.31,
+   "hit": true,
+   "ind": {
+    "broken": 4644.35,
+    "origin": 4605.36,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_aug:15m",
+   "t": 1787834700,
+   "entry": 4568.88,
+   "hit": true,
+   "ind": {
+    "broken": 4604.65,
+    "origin": 4563.61,
+    "status": "OPEN"
+   }
+  },
+  {
+   "case": "chart_aug:15m",
+   "t": 1787842800,
+   "entry": 4590.03,
+   "hit": true,
+   "ind": {
+    "broken": 4604.65,
+    "origin": 4563.61,
+    "status": "OPEN"
+   }
+  }
+ ]
+}
