@@ -80,8 +80,10 @@ def session_extremes(b5, t_now, days=2):
 
 
 def regions_at(b5, b15, t_now, price):
-    """Regiões válidas no instante t_now (b5/b15 JÁ cortados a t<=t_now pelo chamador).
-    Devolve [{level, side, score, factors, touches, alive}] ordenado por |level-price|."""
+    """Regiões válidas no instante t_now. DA-fix gate P1: corte defensivo t<=t_now AQUI DENTRO
+    (chamador desatento não pode injetar futuro). Devolve [{level, band, side, score, factors, touches}]."""
+    b5 = [x for x in b5 if x["t"] <= t_now]
+    b15 = [x for x in b15 if x["t"] <= t_now]
     w5 = [x for x in b5 if x["t"] >= t_now - LOOK5]
     if len(w5) < 50:
         return []

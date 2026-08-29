@@ -13,3 +13,9 @@
 - P4 Reader como juiz — Opus julga só o discricionário (narrativa Asia/London/NY, região operável).
 - P5 Shadow forward = ÁRBITRO — semana(s) no pessoal do Cris; scoreboard; nada ao grupo antes.
 LIMPEZAS: E1 velho DELETADO · A1/AMD shadow · L2 só entrada · reader com doutrina liquidez · scoreboard diário.
+
+## DA GATE P1 (29/08): PASS CONDICIONAL
+- Sem bugs críticos; bolhas limpas (0 contagens em barra que não toca o nível); sensibilidade estável.
+- Fidelidade causal-pura (sem fatores snapshot): 7/13 formal, 8/13 real. Null refeito n=150: 47.3% →
+  contraste retroativo NÃO significativo (p=0.11). FIDELIDADE RETROATIVA NÃO É EVIDÊNCIA DE SKILL.
+- Condições cumpridas: corte defensivo t<=t_now dentro de regions_at (aplicado); FORWARD = árbitro ÚNICO.
