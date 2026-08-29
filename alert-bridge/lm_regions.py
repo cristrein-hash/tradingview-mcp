@@ -110,7 +110,9 @@ def regions_at(b5, b15, t_now, price):
     regions = []
     for side, vals, wick in (("BUY", clusters(lows), "l"), ("SELL", clusters(highs), "h")):
         for c in vals:
-            lv = round(sum(c) / len(c), 2)
+            b_lo, b_hi = round(min(c), 2), round(max(c), 2)      # BANDA real (min/max dos pavios)
+            lv = b_hi if side == "BUY" else b_lo                  # borda do lado do preço = onde a limit toca 1º
+
             # evidência
             touches = [x for x in w5 if abs(x[wick] - lv) <= TOL]
             resp = [x for x in touches if not ((x["c"] < lv - TOL) if side == "BUY" else (x["c"] > lv + TOL))]
@@ -151,9 +153,70 @@ def regions_at(b5, b15, t_now, price):
             score = len(factors)
             ok_side = (lv < price) if side == "BUY" else (lv > price)
             if alive and ok_side and score >= 3:
-                regions.append(dict(level=lv, side=side, score=score, factors=factors,
-                                    touches=len(resp)))
+                regions.append(dict(level=lv, band=[b_lo, b_hi], side=side, score=score,
+                                    factors=factors, touches=len(resp)))
     # dedup por nível (fica o de maior score)
+    # candidatos HTF: bordas de zonas OB/SMC (sem exigir cluster de toques) — niveis frescos por testar
+    for z in ob + smcz:
+        for side, lv in (("BUY", z[1]), ("SELL", z[0])):
+            ok_side = (lv < price) if side == "BUY" else (lv > price)
+            if not ok_side:
+                continue
+            if any(abs(lv - r["level"]) <= TOL and r["side"] == side for r in regions):
+                continue
+            factors = ["OB/SMC_zona"]
+            if any(abs(lv - s_[1]) <= TOL or abs(lv - s_[2]) <= TOL for s_ in sess):
+                factors.append("SESSAO")
+            if any(abs(p - lv) <= TOL for p in eq):
+                factors.append("EQ")
+            if any(abs(lv - z2[0]) <= TOL or abs(lv - z2[1]) <= TOL for z2 in po3):
+                factors.append("PO3")
+            bt = sum(1 for x in w5 if abs((x["l"] if side == "BUY" else x["h"]) - lv) <= TOL
+                     and ((x["t"] - x["t"] % 900) in bub))
+            if bt:
+                factors.append(f"bolhas={bt}")
+            if len(factors) >= 2:                     # zona de indicador + 1 confluência = nível HTF fresco
+                regions.append(dict(level=round(lv, 2), band=[round(min(z), 2), round(max(z), 2)],
+                                    side=side, score=len(factors), factors=factors, touches=0))
+    # 3) FLIP DE POLARIDADE: nível cujo lado original foi atravessado-e-ficou vira nível do lado oposto
+    #    (ex-suporte = resistência). Implementação: para clusters MORTOS no lado original, se o preço está
+    #    agora do outro lado, renascem com side invertido (fatores mantidos, +flip).
+    #    (a morte por estado-final já deixa o nível fora do lado original; aqui reavaliamos o oposto)
+    for side_o, vals, wick in (("BUY", clusters(lows), "l"), ("SELL", clusters(highs), "h")):
+        for c in vals:
+            b_lo, b_hi = round(min(c), 2), round(max(c), 2)
+            side_n = "SELL" if side_o == "BUY" else "BUY"
+            lv = b_lo if side_n == "SELL" else b_hi
+            ok_side = (lv > price) if side_n == "SELL" else (lv < price)
+            if not ok_side:
+                continue
+            if any(abs(lv - r["level"]) <= TOL and r["side"] == side_n for r in regions):
+                continue
+            # so flippa se o lado ORIGINAL morreu (preco atravessou-e-ficou do outro lado)
+            w15_ = [x for x in b15 if x["t"] >= t_now - LOOK5]
+            lb = None
+            for i, x in enumerate(w15_):
+                beyond = (x["c"] < b_lo - TOL) if side_o == "BUY" else (x["c"] > b_hi + TOL)
+                if beyond:
+                    lb = i
+            if lb is None:
+                continue
+            back = any(((y["c"] >= b_lo - TOL) if side_o == "BUY" else (y["c"] <= b_hi + TOL))
+                       for y in w15_[lb + 1:lb + 1 + DEATH_BARS])
+            if back:
+                continue
+            touches_n = [x for x in w5 if abs((x["l"] if side_n == "BUY" else x["h"]) - lv) <= TOL
+                         and x["t"] > w15_[lb]["t"]]
+            factors = ["FLIP_polaridade"]
+            if len(touches_n) >= 1:
+                factors.append(f"toques_novo_lado={len(touches_n)}")
+            if any(z[0] - TOL <= lv <= z[1] + TOL for z in ob):
+                factors.append("OB")
+            if any(abs(lv - s_[1]) <= TOL or abs(lv - s_[2]) <= TOL for s_ in sess):
+                factors.append("SESSAO")
+            if len(factors) >= 2:
+                regions.append(dict(level=round(lv, 2), band=[b_lo, b_hi], side=side_n,
+                                    score=len(factors), factors=factors, touches=len(touches_n)))
     regions.sort(key=lambda r: (-r["score"], abs(r["level"] - price)))
     ded = []
     for r in regions:

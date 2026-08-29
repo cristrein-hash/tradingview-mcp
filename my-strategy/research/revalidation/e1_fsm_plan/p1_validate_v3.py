@@ -31,7 +31,7 @@ for l in sorted(gt["limits"],key=lambda x:x["anchor_t"]):
     if rs is None:
         print(f"{side:<6}{hm(ta):<13}{lv:>8.1f}  SEM-DADOS"); continue
     tot+=1
-    match=[r for r in rs if r["side"]==side and abs(r["level"]-lv)<=LR.TOL]
+    match=[r for r in rs if r["side"]==side and (abs(r["level"]-lv)<=LR.TOL or (r.get("band") and r["band"][0]-LR.TOL<=lv<=r["band"][1]+LR.TOL))]
     if match:
         hit+=1; m=match[0]
         print(f"{side:<6}{hm(ta):<13}{lv:>8.1f}  HIT {m['level']} score{m['score']} {m['factors']}")
@@ -53,5 +53,5 @@ for _ in range(60):
     rs=probe(x["t"],x["c"])
     if rs is None: continue
     ntot+=1
-    if any(r["side"]==side and abs(r["level"]-lv)<=LR.TOL for r in rs): nh+=1
+    if any(r["side"]==side and (abs(r["level"]-lv)<=LR.TOL or (r.get("band") and r["band"][0]-LR.TOL<=lv<=r["band"][1]+LR.TOL)) for r in rs): nh+=1
 print(f"NULL (níveis afastados, {ntot} sondas): {nh}/{ntot} ({100*nh//max(ntot,1)}%)")
