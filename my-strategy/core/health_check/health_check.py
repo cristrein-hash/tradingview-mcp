@@ -34,7 +34,7 @@ DAEMONS = [
     "com.cristrein.context-engine", "com.cristrein.external-factors-v2", "com.cristrein.regime-engine",
     "com.cristrein.xau-l1-cycle", "com.cristrein.xau-l2-cycle", "com.cristrein.xau-cp-cycle",
     "com.cristrein.xau-entry-router", "com.cristrein.xau-a1a2-cycle",
-    "com.cristrein.e1-detector", "com.cristrein.e2-quality",
+    "com.cristrein.e2-quality",   # e1-detector DELETADO 29/08 (ordem Cris; Maquina LM substitui)
     "com.cristrein.telegram-assistant-bridge", "com.cristrein.tv-webhook-receiver",
     "com.cristrein.cloudflared-tunnel", "com.cristrein.stack-watchdog",
     "com.cristrein.price-shock",   # AUDIT-FIX 19/08 (F8): gatilho realtime estava fora do vigia redundante
