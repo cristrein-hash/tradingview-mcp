@@ -111,7 +111,8 @@ def regions_at(b5, b15, t_now, price):
     for side, vals, wick in (("BUY", clusters(lows), "l"), ("SELL", clusters(highs), "h")):
         for c in vals:
             b_lo, b_hi = round(min(c), 2), round(max(c), 2)      # BANDA real (min/max dos pavios)
-            lv = b_hi if side == "BUY" else b_lo                  # borda do lado do preço = onde a limit toca 1º
+            lv = round(sum(c) / len(c), 2)                        # nível = CENTRO (medição); banda fica
+                                                                  # para a EXECUÇÃO (limit na borda)
 
             # evidência
             touches = [x for x in w5 if abs(x[wick] - lv) <= TOL]
